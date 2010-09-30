@@ -535,6 +535,14 @@ instances - This indicates the target resource that represents collection of ins
 <t>
 create - This indicates a target to use for creating new instances of a schema. This link definition SHOULD be a submission link with a non-safe method (like POST).
 </t>
+<t>root - This relation indicates that the target 
+SHOULD be treated as the root or the body of the representation for the
+purposes of user agent interaction and fragment resolution (all other
+properties of the instance objects are can be regarded as meta-data
+descriptions for the data).
+
+</t>
+
 </list>
 For example, if a schema is defined:
       <figure>
@@ -743,16 +751,6 @@ identifiers for referencing the value of the foo propery.</t>
 
 </section>
 
-    <section title="root">
-    <t>This attribute indicates that the value of the instance property value
-SHOULD be treated as the root or the body of the representation for the
-purposes of user agent interaction and fragment resolution (all other
-properties of the instance objects are can be regarded as meta-data
-descriptions for the data).
-
-</t>
-
-</section>
 <section title="readonly">
 <t>This indicates that the instance property SHOULD NOT be changed. Attempts by a user agent to modify the value of this property are expected to be rejected by a server.</t>
 </section> 
@@ -777,7 +775,9 @@ schema specifies a starting URI that is longer and also matches the
 instance, this schema SHOULD NOT be applied to the instance. Any schema 
 that does not have a pathStart attribute SHOULD be considered applicable 
 to all the instances for which it is referenced.
-
+</t>
+<t>
+If this URI is relative, it should be resolved against the instance's URI.
 
 </t>
 
@@ -875,7 +875,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 <section title="Registry of Link Relations">
 <t>
 This registry is maintained by IANA per RFC 4287 and this specification adds
-three values: "full", "create", "instances".  New
+four values: "full", "create", "instances", "root".  New
    assignments are subject to IESG Approval, as outlined in [RFC5226].
    Requests should be made by email to IANA, which will then forward the
    request to the IESG, requesting approval.
