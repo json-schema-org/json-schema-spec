@@ -20,7 +20,7 @@
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
 <?rfc rfcedstyle="yes"?>
-<rfc category="info" docName="draft-zyp-json-schema-03" year="2010" ipr="trust200902">
+<rfc category="info" docName="draft-zyp-json-schema-03" ipr="trust200902">
   <front>
     
 
@@ -386,14 +386,15 @@ of this property MAY be a string, indicating the require property name. Or the v
 </section>
 
 <section title="format"><t>This property indicates the type of data, content type, or microformat to be expected in the instance property values. A format attribute MAY be one of the values listed below, and if so, SHOULD adhere to the semantics describing for the format. A format SHOULD only be used give meaning to primitive types (string, integer, number, or boolean). Validators are not required to validate that the instance values conform to a format. The following formats are defined:</t>
+<t>  
 <list>
-</t><t>date-time - This SHOULD be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ in UTC time. This is the recommended form of date/timestamp.
+<t>date-time - This SHOULD be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ in UTC time. This is the recommended form of date/timestamp.
 </t><t>date - This SHOULD be a date in the format of YYYY-MM-DD. It is recommended that you use the "date-time" format instead of "date" unless you need to transfer only the date part.
 </t><t>time - This SHOULD be a time in the format of hh:mm:ss. It is recommended that you use the "date-time" format instead of "time" unless you need to transfer only the time part.
 </t><t>utc-millisec - This SHOULD be the difference, measured in milliseconds, between the specified time and midnight, 00:00 of January 1, 1970 UTC. The value SHOULD be a number (integer or float).
 </t><t>regex - A regular expression, following the regular expression specification from ECMA 262/Perl 5.
-</t><t>color - This is a CSS color (like "#FF0000" or "red"), based on &css21.
-</t><t>style - This is a CSS style definition (like "color: red; background-color:#FFF"), based on &css21.
+</t><t>color - This is a CSS color (like "#FF0000" or "red"), based on <xref target='W3C.CR-CSS21-20070719'>CSS 2.1</xref>.
+</t><t>style - This is a CSS style definition (like "color: red; background-color:#FFF"), based on <xref target='W3C.CR-CSS21-20070719'>CSS 2.1</xref>.
 </t><t>phone - This SHOULD be a phone number (format MAY follow E.123).
 </t><t>uri - This value SHOULD be a URI..
 </t><t>email - This SHOULD be an email address.
@@ -402,6 +403,7 @@ of this property MAY be a string, indicating the require property name. Or the v
 </t><t>host-name - This SHOULD be a host-name.</t>
 <t>Additional custom formats MAY be defined with a URL to a definition of the format.</t>
 </list>
+</t>
 </section> 
 <section title="maxDecimal">
 <t>This indicates the maximum number of decimal points.</t>
@@ -512,7 +514,7 @@ The value of the "rel" property indicates the name of the
 relation to the target resource. The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy. If a resource JSON representation contains a sub object with a property interpreted as a link, that sub-object holds the relation with the target. A relation to target from the top level resource MUST be indicated with the schema describing the top level JSON representation.
 </t>
 <t>
-Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see &rfc4287). However, we define these relation here for clarity of normative interpretation within the context of JSON hyper schema defined relations:
+Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target='RFC4287'>RFC 4287</xref>). However, we define these relation here for clarity of normative interpretation within the context of JSON hyper schema defined relations:
 <list>
 <t>
 self - If the relation value is "self", when this property is encountered in
