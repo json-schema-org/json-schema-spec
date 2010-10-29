@@ -39,8 +39,15 @@
 			"default" : {}
 		},
 		
-		"requires" : {
-			"type" : ["string", "#"]
+		"dependencies" : {
+			"type" : "object",
+			"additionalProperties" : {
+				"type" : ["array", "#"],
+				"items" : {
+					"type" : "string"
+				}
+			},
+			"default" : {}
 		},
 		
 		"minimum" : {

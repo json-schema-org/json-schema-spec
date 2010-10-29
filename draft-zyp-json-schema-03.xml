@@ -337,26 +337,15 @@ If the property is not defined or is not in this list, than any type of value is
 <section title="required">
 <t>This attribute indicates if the instance must have a value, and not be undefined. This is false by default, making the instance optional.</t>
 </section> 
-<section title="requires">
-<t>If this attribute value is a string, then the containing/parent object of the validating instance MUST have a property with a name of the attribute value in order to validate. 
-If this attribute value is a schema, then the containing/parent object of the validating instance MUST be validated against the provided schema.</t>
-      <figure>
-        <preamble>For example, for the following schema:</preamble>
-        <artwork><![CDATA[
-{ 
-  "properties" : {
-    "state":{
-      "optional":true
-    },
-    "town":{
-      "requires":"state",
-      "optional":true
-    }
-  }
-}
-]]></artwork>
-<postamble>An instance MUST include a state property if a town property is included. If a town property is not included, the state property is optional.</postamble>
-</figure>
+<section title="dependencies">
+<t>This attribute is an object that defines the requirements of a property on an instance object. If an object instance has a property with the same name as a property in this attribute's object, then the instance must be valid against the attribute's property value (hereafter referred to as the "dependency value").</t>
+<t>
+The dependency value can take one of two forms:
+<list style="hanging"> 
+<t hangText="Simple Dependency">If the dependency value is an array of strings, then the instance object MUST have a property with the same name as each string in the dependency value's array.</t> 
+<t hangText="Schema Dependency">If the dependency value is a schema, then the instance object MUST be valid against the schema.</t>
+</list>
+</t>
 </section> 
 <section title="minimum">
 <t>This attribute defines the minimum value of the instance property when the type of the instance value is a number.</t>
@@ -938,6 +927,7 @@ instead of numbers</t>
               <t>Replaced "optional" attribute with "required" attribute.</t>
               <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum" attribute.</t>
               <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum" attribute.</t>
+              <t>Replaced "requires" attribute with "dependencies" attribute.</t>
               <t>Moved "default" and "contentEncoding" attributes to hyper schema</t>
               <t>Added "additionalItems" attribute.</t>
               <t>Added "id" attribute.</t>
