@@ -325,6 +325,9 @@ If the property is not defined or is not in this list, than any type of value is
 <section title="properties">
 <t>This attribute is an object with property definitions that define the valid values of instance object property values. When the instance value is an object, the property values of the instance object MUST conform to the property definitions in this object. In this object, each property definition's value MUST be a schema or URI referring to a schema, and the property's name MUST be the name of the instance property that it defines. The instance property value MUST be valid according to the schema from the property definition. Properties are considered unordered, the order of the instance properties MAY be in any order.</t>
 </section> 
+<section title="patternProperties">
+<t>This attribute is an object that defines the schema for a set of property names of an object instance. The name of each property of this attribute's object is a regular expression pattern in the ECMA 262/Perl 5 format, while the value is a schema or URI reference to a schema. If the pattern matches the name of a property on the instance object, the value of the instance's property MUST be valid against the pattern name's schema value.</t>
+</section>
 <section title="additionalProperties">
 <t>This attribute defines a schema for all properties that are not explicitly defined in an object type definition. If specified, the value MUST be a schema, a URI referencing a schema, or a boolean. If false is provided, no additional properties are allowed beyond the properties defined in the schema. The default value is an empty schema which allows any value for additional properties.</t>
 </section> 
@@ -932,7 +935,7 @@ instead of numbers</t>
               <t>Added "additionalItems" attribute.</t>
               <t>Added "id" attribute.</t>
               <t>Switched self-referencing variable substitution from "-this" to "@" to align with reserved characters in URI template.</t>
-              
+              <t>Added "patternProperties" attribute.</t>
             </list>
           </t>
           <t hangText="draft-02">
