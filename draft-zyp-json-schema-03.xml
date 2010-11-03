@@ -308,8 +308,9 @@ This attribute can take one of two forms:
 <t hangText="null">Value MUST be null. Note this is mainly for purpose of being able use union types to define nullability. If this type is not 
 included in a union, null values are not allowed (the primitives listed above do not allow nulls on their own).</t> 
 <t hangText="any">Value MAY be of any type including null. 
-If the property is not defined or is not in this list, than any type of value is acceptable. Other type values MAY be used for custom purposes, but minimal validators of the specification implementation can allow any instance value on unknown type values.</t> 
+</t> 
 </list>
+If the property is not defined or is not in this list, then any type of value is acceptable. Other type values MAY be used for custom purposes, but minimal validators of the specification implementation can allow any instance value on unknown type values.
 </t>
 <t hangText="Union Types">An array of two or more simple type definitions. Each item in the array MUST be a simple type definition, a schema, or a URI for a schema. The instance value is valid if it is of the same type as one of the simple type definitions in the array, or if it is valid by one of the schemas (or a schema referenced by a URI) in the array. 
 </t>
@@ -413,7 +414,7 @@ The dependency value can take one of two forms:
 <t>This attribute defines the maximum number of decimal points a number instance can have.</t>
 </section> 
 <section title="disallow">
-<t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema or a URI referencing a schema in the array, than this instance is not valid.</t>
+<t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema or a URI referencing a schema in the array, then this instance is not valid.</t>
 </section> 
 <section title="extends">
 <t>The value of this property MUST be another schema or a URI referencing a schema which will provide a base schema which the current schema will inherit from. The inheritance rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional properties, constrain existing properties, or add other constraints. The schema MUST NOT define a constraint that conflicts with an extended schema such that no instance may satisfy both schemas. An example of using "extends":
@@ -504,7 +505,7 @@ URI would be:
 http://somesite.com/45
 ]]></artwork>
 </figure>
-If matching braces are found with the string "@" (no quotes) between the braces, than the 
+If matching braces are found with the string "@" (no quotes) between the braces, then the 
 actual instance value SHOULD be used to replace the braces, rather than a property value.
 This should only be used in situations where the instance is a scalar (string, 
 boolean, or number), and not for objects or arrays.
@@ -693,7 +694,7 @@ the fragment identifier, as a path reference in the target JSON
 structure. The final target value of the fragment can be determined by
 starting with the root of the JSON structure from the representation of
 the resource identified by the pre-fragment URI. If the target is a JSON
-object, than the new target is the value of the property with the name
+object, then the new target is the value of the property with the name
 identified by the next property reference token in the fragment. If the
 target is a JSON array, than the target is determined by finding the
 item in array the array with the index defined by the next property
