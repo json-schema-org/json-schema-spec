@@ -132,18 +132,20 @@
   "properties":{
     "id":{
       "type":"number",
-      "description":"Product identifier"
+      "description":"Product identifier",
+      "required":true
     },
     "name":{
       "description":"Name of the product",
-      "type":"string"
+      "type":"string",
+      "required":true
     },
     "price":{
       "type": "number",
-      "minimum":0
+      "minimum":0,
+      "required":true
     },
     "tags":{
-      "optional":true,
       "type":"array",
       "items":{
         "type":"string"
@@ -163,8 +165,8 @@
 }
 ]]></artwork>
 	<postamble>
-	This schema defines the properties of the instance JSON documents and 
-	their required properties (id, name, and price) as well as an optional
+	This schema defines the properties of the instance JSON documents, 
+	the required properties (id, name, and price), as well as an optional
 	property (tags). This also defines the link relations of the instance
 	JSON documents.
 	</postamble>
@@ -279,8 +281,10 @@ Content-Type: application/json;
 
   "properties":{
     "name":{"type":"string"},
-    "age" :{"type":"integer"},
-    "maximum":125
+    "age" :{
+    	"type":"integer",
+    	"maximum":125
+    }
   }
 }     
 	]]></artwork>
@@ -323,7 +327,7 @@ If the property is not defined or is not in this list, then any type of value is
 ]]></artwork>
       </figure>
 </section> 
-<section title="properties">
+<section title="properties" anchor="properties">
 <t>This attribute is an object with property definitions that define the valid values of instance object property values. When the instance value is an object, the property values of the instance object MUST conform to the property definitions in this object. In this object, each property definition's value MUST be a schema or URI referring to a schema, and the property's name MUST be the name of the instance property that it defines. The instance property value MUST be valid according to the schema from the property definition. Properties are considered unordered, the order of the instance properties MAY be in any order.</t>
 </section> 
 <section title="patternProperties">
@@ -369,8 +373,16 @@ The dependency value can take one of two forms:
 <section title="maxItems">
 <t>This attribute defines the maximum number of values in an array when the array is the instance value.</t>
 </section> 
-<section title="uniqueItems">
-<t>This attribute indicates that all the items in an array MUST be unique (no two identical values) within that array when the array is the instance value. Uniqueness is only defined for primitive types: strings, numbers, booleans, and nulls.</t>
+<section title="uniqueItems" anchor="uniqueItems">
+<t>This attribute indicates that all items in an array instance MUST be unique (contains no two identical values).</t>
+<t>Two instance are consider equal if they are both of the same type and:
+<list>
+<t>are null; or</t>
+<t>are booleans/numbers/strings and have the same value; or</t>
+<t>are arrays, contains the same number of items, and each item in the array is equal to the corresponding item in the other array; or</t>
+<t>are objects, contains the same property names, and each property in the object is equal to the corresponding property in the other object.</t>
+</list>
+</t>
 </section> 
 <section title="pattern">
 <t>When the instance value is a string, this provides a regular expression that a string instance MUST match in order to be valid. Regular expressions SHOULD follow the regular expression specification from ECMA 262/Perl 5</t></section>
@@ -381,7 +393,10 @@ The dependency value can take one of two forms:
 <t>When the instance value is a string, this defines the minimum length of the string.</t>
 </section> 
 <section title="enum">
-<t>This provides an enumeration of all possible values that are valid for the instance property. This MUST be an array, and each item in the array represents a possible value for the instance value. If this attribute is defined, the instance value MUST be one of the values in the array in order for the schema to be valid.</t>
+<t>This provides an enumeration of all possible values that are valid for the instance property. This MUST be an array, and each item in the array represents a possible value for the instance value. If this attribute is defined, the instance value MUST be one of the values in the array in order for the schema to be valid. Comparison of enum values uses the same algorithm as defined in <xref target="uniqueItems">"uniqueItems"</xref>.</t>
+</section> 
+<section title="default">
+<t>This attribute defines the default value of the instance when the instance is undefined.</t>
 </section> 
 <section title="title">
 <t>This attribute is a string that provides a short description of the instance property.</t>
@@ -390,7 +405,7 @@ The dependency value can take one of two forms:
 <t>This attribute is a string that provides a full description of the of purpose the instance property.</t>
 </section>
 
-<section title="format"><t>This property defines the type of data, content type, or microformat to be expected in the instance property values. A format attribute MAY be one of the values listed below, and if so, SHOULD adhere to the semantics describing for the format. A format SHOULD only be used to give meaning to primitive types (string, integer, number, or boolean). Validators are not required to validate that the instance values conform to a format. The following formats are predefined:</t>
+<section title="format"><t>This property defines the type of data, content type, or microformat to be expected in the instance property values. A format attribute MAY be one of the values listed below, and if so, SHOULD adhere to the semantics describing for the format. A format SHOULD only be used to give meaning to primitive types (string, integer, number, or boolean). Validators MAY (but are not required to) validate that the instance values conform to a format. The following formats are predefined:</t>
 <t>  
 <list style="hanging">
 <t hangText="date-time">This SHOULD be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ in UTC time. This is the recommended form of date/timestamp.
@@ -408,10 +423,10 @@ The dependency value can take one of two forms:
 </t><t hangText="host-name">This SHOULD be a host-name.</t>
 </list>
 </t>
-<t>Additional custom formats MAY be referenced with a URI.</t>
+<t>Additional custom formats MAY be created. These custom formats MAY be expressed as an URI, and this URI MAY reference a schema of that format.</t>
 </section> 
-<section title="maxDecimal">
-<t>This attribute defines the maximum number of decimal points a number instance can have.</t>
+<section title="divisibleBy">
+<t>This attribute defines what value the number instance must be divisible by with no remainder. (The result of the division must be an integer.)</t>
 </section> 
 <section title="disallow">
 <t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema or a URI referencing a schema in the array, then this instance is not valid.</t>
@@ -658,12 +673,10 @@ the default media type.
 </section>
 <section title="properties">
 <t>
-This is inherited from the base JSON schema definition, and can follow the 
-same structure, but its meaning SHOULD be used to define the acceptable 
+This attribute has the same structure as the core JSON Schema <xref target="properties">"properties" attribute</xref>, 
+but its meaning SHOULD be used to define the acceptable 
 property names and values for the action (whether it be for the GET query 
-or POST body). If properties are omitted, and this form is the child of a 
-schema, the properties from the parent schema SHOULD be used as the basis 
-for the form action.
+or POST body).
 </t>
 </section>
 </section>
@@ -759,10 +772,6 @@ identifiers for referencing the value of the foo propery.</t>
 If the instance property value is a string, this attribute defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this schema property. <xref target='RFC2045'>RFC 2045, Sec 6.1</xref> lists the possible values for this property.
 </t>
 </section>
-
-<section title="default">
-<t>This attribute defines the default value of the instance when the instance is undefined.</t>
-</section> 
 
 <section title="pathStart">
 <t>
@@ -927,12 +936,11 @@ instead of numbers</t>
               <t>Added more explanation of nullability.</t>
               <t>Removed "alternate" attribute.</t>
               <t>Upper cased many normative usages of must, may, and should.</t>
-              <t>Replaced "divisibleBy" attribute with "maxDecimal" attribute.</t>
               <t>Replaced "optional" attribute with "required" attribute.</t>
               <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum" attribute.</t>
               <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum" attribute.</t>
               <t>Replaced "requires" attribute with "dependencies" attribute.</t>
-              <t>Moved "default" and "contentEncoding" attributes to hyper schema</t>
+              <t>Moved "contentEncoding" attribute to hyper schema.</t>
               <t>Added "additionalItems" attribute.</t>
               <t>Added "id" attribute.</t>
               <t>Switched self-referencing variable substitution from "-this" to "@" to align with reserved characters in URI template.</t>

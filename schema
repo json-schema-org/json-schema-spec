@@ -108,6 +108,10 @@
 			"uniqueItems" : true
 		},
 		
+		"default" : {
+			"type" : "any"
+		},
+		
 		"title" : {
 			"type" : "string"
 		},
@@ -137,6 +141,11 @@
 			"type" : ["#", "array"],
 			"items" : "#",
 			"default" : {}
+		},
+		
+		"id" : {
+			"type" : "string",
+			"format" : "uri"
 		}
 	},
 	"links" : [
