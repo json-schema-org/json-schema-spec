@@ -139,11 +139,11 @@
       "type":"string"
     },
     "price":{
+      "required":true,
       "type": "number",
       "minimum":0
     },
     "tags":{
-      "optional":true,
       "type":"array",
       "items":{
         "type":"string"
@@ -279,8 +279,7 @@ Content-Type: application/json;
 
   "properties":{
     "name":{"type":"string"},
-    "age" :{"type":"integer"},
-    "maximum":125
+    "age" :{"type":"integer", "maximum":125},
   }
 }     
 	]]></artwork>
