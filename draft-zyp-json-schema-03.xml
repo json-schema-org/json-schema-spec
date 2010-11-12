@@ -246,17 +246,17 @@ collection. However, ultimately, the mechanism for referencing a schema is up to
 	</t>
 	<section title="Self-Descriptive Schema">
 	<t>
-	JSON Schemas are themselves instances for the schema 
-	schemas. A self-describing JSON Schema for the core JSON Schema can
-	be found at <eref target="http://json-schema.org/schema">http://json-schema.org/schema</eref>, while the hyper schema 
-	self-description can be found at <eref target="http://json-schema.org/hyper-schema">http://json-schema.org/hyper-schema</eref>. All schemas
+	JSON Schemas can themselves be described using JSON Schemas. 
+	A self-describing JSON Schema for the core JSON Schema can
+	be found at <eref target="http://json-schema.org/draft-03/schema">http://json-schema.org/draft-03/schema</eref>, while the hyper schema 
+	self-description can be found at <eref target="http://json-schema.org/draft-03/hyper-schema">http://json-schema.org/draft-03/hyper-schema</eref>. All schemas
 	used within a protocol with media type definitions
 	SHOULD include a MIME parameter that refers to the self-descriptive
 	hyper schema or another schema that extends this hyper schema:
       <figure>
         <artwork><![CDATA[	
 Content-Type: application/json; 
-              profile=http://www.json-schema.org/hyper-schema
+              profile=http://json-schema.org/draft-03/hyper-schema
 ]]></artwork></figure>
 	</t>
 	</section>
@@ -264,14 +264,9 @@ Content-Type: application/json;
 	
       <section title="Core Schema Definition">
         <t>A JSON Schema is a JSON Object that defines various attributes 
-        of the instance and defines it's usage and valid values. JSON
+        (including usage and valid values) of a JSON value. JSON
         Schema has recursive capabilities; there are a number of elements
-        in the structure that allow for a nested JSON Schema or URI
-        referencing a schema. Schema referencing URIs can be relative 
-        or absolute and the target of the URI SHOULD be treated as 
-        the schema for the given element in the schema structure.
-	</t>
-
+        in the structure that allow for nested JSON Schemas.</t>
 
 	<t>An example JSON Schema definition could look like:</t>
       <figure>
@@ -317,7 +312,7 @@ included in a union, null values are not allowed (the primitives listed above do
 </list>
 If the property is not defined or is not in this list, then any type of value is acceptable. Other type values MAY be used for custom purposes, but minimal validators of the specification implementation can allow any instance value on unknown type values.
 </t>
-<t hangText="Union Types">An array of two or more simple type definitions. Each item in the array MUST be a simple type definition, a schema, or a URI for a schema. The instance value is valid if it is of the same type as one of the simple type definitions in the array, or if it is valid by one of the schemas (or a schema referenced by a URI) in the array. 
+<t hangText="Union Types">An array of two or more simple type definitions. Each item in the array MUST be a simple type definition or a schema. The instance value is valid if it is of the same type as one of the simple type definitions, or valid by one of the schemas, in the array. 
 </t>
 </list>
 </t>
@@ -329,19 +324,21 @@ If the property is not defined or is not in this list, then any type of value is
       </figure>
 </section> 
 <section title="properties" anchor="properties">
-<t>This attribute is an object with property definitions that define the valid values of instance object property values. When the instance value is an object, the property values of the instance object MUST conform to the property definitions in this object. In this object, each property definition's value MUST be a schema or URI referring to a schema, and the property's name MUST be the name of the instance property that it defines. The instance property value MUST be valid according to the schema from the property definition. Properties are considered unordered, the order of the instance properties MAY be in any order.</t>
+<t>This attribute is an object with property definitions that define the valid values of instance object property values. When the instance value is an object, the property values of the instance object MUST conform to the property definitions in this object. In this object, each property definition's value MUST be a schema, and the property's name MUST be the name of the instance property that it defines. The instance property value MUST be valid according to the schema from the property definition. Properties are considered unordered, the order of the instance properties MAY be in any order.</t>
 </section> 
 <section title="patternProperties">
-<t>This attribute is an object that defines the schema for a set of property names of an object instance. The name of each property of this attribute's object is a regular expression pattern in the ECMA 262/Perl 5 format, while the value is a schema or URI reference to a schema. If the pattern matches the name of a property on the instance object, the value of the instance's property MUST be valid against the pattern name's schema value.</t>
+<t>This attribute is an object that defines the schema for a set of property names of an object instance. The name of each property of this attribute's object is a regular expression pattern in the ECMA 262/Perl 5 format, while the value is a schema. If the pattern matches the name of a property on the instance object, the value of the instance's property MUST be valid against the pattern name's schema value.</t>
 </section>
-<section title="additionalProperties">
-<t>This attribute defines a schema for all properties that are not explicitly defined in an object type definition. If specified, the value MUST be a schema, a URI referencing a schema, or a boolean. If false is provided, no additional properties are allowed beyond the properties defined in the schema. The default value is an empty schema which allows any value for additional properties.</t>
+<section title="additionalProperties" anchor="additionalProperties">
+<t>This attribute defines a schema for all properties that are not explicitly defined in an object type definition. If specified, the value MUST be a schema or a boolean. If false is provided, no additional properties are allowed beyond the properties defined in the schema. The default value is an empty schema which allows any value for additional properties.</t>
 </section> 
 <section title="items">
-<t>This MUST be a schema or URI referring to a schema or an array of schemas (schema or URI referring to a schema). When this is a schema and the instance value is an array, all the items in the array MUST conform to this schema or schema referenced by the URI. When this is an array of schemas and the instance value is an array, each position in the instance array MUST conform to the schema in the corresponding position for this array. This called tuple typing. When tuple typing is used, additional items are allowed, disallowed, or constrained by the additionalItems attribute using the same rules as "additionalProperties" for objects. The default value is an empty schema which allows any value for items in the instance array.</t>
+<t>This attribute defines the allowed items in an instance array, and MUST be a schema or an array of schemas. The default value is an empty schema which allows any value for items in the instance array.</t>
+<t>When this attribute value is a schema and the instance value is an array, then all the items in the array MUST be valid according to the schema.</t>
+<t>When this attribute value is an array of schemas and the instance value is an array, each position in the instance array MUST conform to the schema in the corresponding position for this array. This called tuple typing. When tuple typing is used, additional items are allowed, disallowed, or constrained by the <xref target="additionalItems">"additionalItems"</xref> attribute using the same rules as <xref target="additionalProperties">"additionalProperties"</xref> for objects.</t>
 </section> 
-<section title="additionalItems">
-<t>This provides a definition for additional items in an array instance when tuple definitions of the items is provided. This can be false to indicate additional items in the array are not allowed, or it can be a schema (or a URI referencing a schema) that defines the schema of the additional items.</t>
+<section title="additionalItems" anchor="additionalItems">
+<t>This provides a definition for additional items in an array instance when tuple definitions of the items is provided. This can be false to indicate additional items in the array are not allowed, or it can be a schema that defines the schema of the additional items.</t>
 </section> 
 <section title="required">
 <t>This attribute indicates if the instance must have a value, and not be undefined. This is false by default, making the instance optional.</t>
@@ -351,7 +348,7 @@ If the property is not defined or is not in this list, then any type of value is
 <t>
 The dependency value can take one of two forms:
 <list style="hanging"> 
-<t hangText="Simple Dependency">If the dependency value is an array of strings, then the instance object MUST have a property with the same name as each string in the dependency value's array.</t> 
+<t hangText="Simple Dependency">If the dependency value is a string, then the instance object MUST have a property with the same name as the dependency value. If the dependency value is an array of strings, then the instance object MUST have a property with the same name as each string in the dependency value's array.</t> 
 <t hangText="Schema Dependency">If the dependency value is a schema, then the instance object MUST be valid against the schema.</t>
 </list>
 </t>
@@ -387,11 +384,11 @@ The dependency value can take one of two forms:
 </section> 
 <section title="pattern">
 <t>When the instance value is a string, this provides a regular expression that a string instance MUST match in order to be valid. Regular expressions SHOULD follow the regular expression specification from ECMA 262/Perl 5</t></section>
-<section title="maxLength">
-<t>When the instance value is a string, this defines the maximum length of the string.</t>
-</section> 
 <section title="minLength">
 <t>When the instance value is a string, this defines the minimum length of the string.</t>
+</section> 
+<section title="maxLength">
+<t>When the instance value is a string, this defines the maximum length of the string.</t>
 </section> 
 <section title="enum">
 <t>This provides an enumeration of all possible values that are valid for the instance property. This MUST be an array, and each item in the array represents a possible value for the instance value. If this attribute is defined, the instance value MUST be one of the values in the array in order for the schema to be valid. Comparison of enum values uses the same algorithm as defined in <xref target="uniqueItems">"uniqueItems"</xref>.</t>
@@ -430,10 +427,10 @@ The dependency value can take one of two forms:
 <t>This attribute defines what value the number instance must be divisible by with no remainder. (The result of the division must be an integer.)</t>
 </section> 
 <section title="disallow">
-<t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema or a URI referencing a schema in the array, then this instance is not valid.</t>
+<t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema in the array, then this instance is not valid.</t>
 </section> 
 <section title="extends">
-<t>The value of this property MUST be another schema or a URI referencing a schema which will provide a base schema which the current schema will inherit from. The inheritance rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional properties, constrain existing properties, or add other constraints. The schema MUST NOT define a constraint that conflicts with an extended schema such that no instance may satisfy both schemas. An example of using "extends":
+<t>The value of this property MUST be another schema which will provide a base schema which the current schema will inherit from. The inheritance rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional attributes, constrain existing attributes, or add other constraints. The schema MUST NOT define a constraint that conflicts with an extended schema such that no instance may satisfy both schemas. An example of using "extends":
       <figure>
         <artwork><![CDATA[
 {
@@ -447,7 +444,7 @@ The dependency value can take one of two forms:
 {
   "description":"Extended schema",
   "properties":{"deprecated":{"type": "boolean"}},
-  "extends":"http://json-schema.org/schema"
+  "extends":"http://json-schema.org/draft-03/schema"
 }
 ]]></artwork></figure>
 
@@ -456,13 +453,30 @@ The dependency value can take one of two forms:
 </section> 
 <section title="id">
 <t>
-This defines the URI of this schema (the target is effectively
+This attribute defines the URI of this schema (this attribute is effectively
 a "self" link). This URI MAY be relative or absolute. If the URI
 is relative, it SHOULD be resolved against the URI used to retrieve this schema.
 </t>
 </section>
+<section title="$ref">
+<t>
+This attribute defines a URI of a schema that contains the full representation of this schema. 
+When a validator encounters this attribute, it SHOULD replace the current schema with the schema referenced by the value's URI (if known and available) and re-validate the instance. 
+This URI MAY be relative or absolute, and relative URIs SHOULD be resolved against the URI of the current schema.
+</t>
+</section>
+<section title="$schema">
+<t>
+This attribute defines a URI of a JSON Schema that is the schema of the current schema. 
+When this attribute is defined, a validator SHOULD use the schema referenced by the value's URI (if known and available) when resolving <xref target="hyper-schema">Hyper Schema</xref> <xref target="links">links</xref>.
+</t>
+<t>
+A validator MAY use this attribute's value to determine which version of JSON Schema the current schema is written in, and provide the appropriate validation features and behavior. 
+Therefore, it is RECOMMENDED that all schema authors include this attribute in their schemas to prevent conflicts with future JSON Schema specification changes.
+</t>
+</section>
     </section>
-<section title="Hyper Schema">
+<section title="Hyper Schema" anchor="hyper-schema">
       <t>The following attributes are specified in addition to those
 attributes that already provided by the core schema with the specific
 purpose of informing user agents of relations between resources based
@@ -472,7 +486,7 @@ Therefore, an empty object is a valid (non-informative) schema, and
 essentially describes plain JSON (no constraints on the structures).
 Addition of attributes provides additive information for user agents.</t>
 
-<section title="links">
+<section title="links" anchor="links">
 <t>
 The value of the links property MUST be an array, where each item 
 in the array is a link description object which describes the link
@@ -487,7 +501,7 @@ values. The link description format can be used on its own in
 regular (non-schema documents), and use of this format can
 be declared by referencing the normative link description
 schema as the the schema for the data structure that uses the 
-links. The URI of the normative link description schema is: <eref target="http://json-schema.org/links">http://json-schema.org/links</eref>.
+links. The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-03/links">http://json-schema.org/draft-03/links</eref>.
 </t>
 <section title="href">
     <t>
@@ -866,7 +880,7 @@ Content-Type: application/json; profile=/schema-for-this-data
    <t>
    	The value of the profile parameter SHOULD be a URI (relative or absolute) that 
    	refers to the schema used to define the structure of this structure (the 
-   	meta-schema). Normally the value would be http://json-schema.org/hyper-schema,
+   	meta-schema). Normally the value would be http://json-schema.org/draft-03/hyper-schema,
    	but it is allowable to use other schemas that extend the hyper schema's meta-
    	schema.
 </t>
@@ -929,7 +943,6 @@ instead of numbers</t>
         <list style="hanging">
           <t hangText="draft-03">
             <list style="symbols">
-              <t>Defined referencing schemas by URI for all elements that accept schemas.</t>
               <t>Added example and verbiage to "extends" attribute.</t>
               <t>Defined slash-delimited to use a leading slash.</t>
               <t>Made "root" a relation instead of an attribute.</t>
@@ -946,6 +959,8 @@ instead of numbers</t>
               <t>Added "id" attribute.</t>
               <t>Switched self-referencing variable substitution from "-this" to "@" to align with reserved characters in URI template.</t>
               <t>Added "patternProperties" attribute.</t>
+              <t>Schema URIs are now namespace versioned.</t>
+              <t>Added "$ref" and "$schema" attributes.</t>
             </list>
           </t>
           <t hangText="draft-02">

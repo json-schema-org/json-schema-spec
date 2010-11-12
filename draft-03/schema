@@ -1,13 +1,13 @@
 {
-	"id" : "http://json-schema.org/schema#",
-	"type" : ["object","string"],
-	"format": "uri",
+	"$schema" : "http://json-schema.org/draft-03/schema#",
+	"id" : "http://json-schema.org/draft-03/schema#",
+	"type" : "object",
 	
 	"properties" : {
 		"type" : {
 			"type" : ["string", "array"],
 			"items" : {
-				"type" : ["string", "#"]
+				"type" : ["string", {"$ref" : "#"}]
 			},
 			"uniqueItems" : true,
 			"default" : "any"
@@ -15,13 +15,29 @@
 		
 		"properties" : {
 			"type" : "object",
-			"additionalProperties" : "#",
+			"additionalProperties" : {"$ref" : "#"},
+			"default" : {}
+		},
+		
+		"patternProperties" : {
+			"type" : "object",
+			"additionalProperties" : {"$ref" : "#"},
+			"default" : {}
+		},
+		
+		"additionalProperties" : {
+			"type" : [{"$ref" : "#"}, "boolean"],
 			"default" : {}
 		},
 		
 		"items" : {
-			"type" : ["#", "array"],
-			"items" : "#",
+			"type" : [{"$ref" : "#"}, "array"],
+			"items" : {"$ref" : "#"},
+			"default" : {}
+		},
+		
+		"additionalItems" : {
+			"type" : [{"$ref" : "#"}, "boolean"],
 			"default" : {}
 		},
 		
@@ -30,25 +46,10 @@
 			"default" : false
 		},
 		
-		"patternProperties" : {
-			"type" : "object",
-			"additionalProperties" : "#",
-			"default" : {}
-		},
-		
-		"additionalProperties" : {
-			"type" : ["#", "boolean"],
-			"default" : {}
-		},
-		"additionalItems" : {
-			"type" : ["#", "boolean"],
-			"default" : {}
-		},
-		
 		"dependencies" : {
 			"type" : "object",
 			"additionalProperties" : {
-				"type" : ["array", "#"],
+				"type" : ["string", "array", {"$ref" : "#"}],
 				"items" : {
 					"type" : "string"
 				}
@@ -65,11 +66,13 @@
 		},
 		
 		"exclusiveMinimum" : {
-			"type" : "number"
+			"type" : "boolean",
+			"default" : false
 		},
 		
 		"exclusiveMaximum" : {
-			"type" : "number"
+			"type" : "boolean",
+			"default" : false
 		},
 		
 		"minItems" : {
@@ -79,7 +82,8 @@
 		},
 		
 		"maxItems" : {
-			"type" : "integer"
+			"type" : "integer",
+			"minimum" : 0
 		},
 		
 		"uniqueItems" : {
@@ -123,37 +127,48 @@
 		"format" : {
 			"type" : "string"
 		},
-				
-		"maxDecimal" : {
+		
+		"divisibleBy" : {
 			"type" : "number",
-			"minimum" : 0
+			"minimum" : 0,
+			"exclusiveMinimum" : true,
+			"default" : 1
 		},
 		
 		"disallow" : {
-			"type" : ["string", "array", "#"],
+			"type" : ["string", "array"],
 			"items" : {
-				"type" : ["string", "#"]
+				"type" : ["string", {"$ref" : "#"}]
 			},
 			"uniqueItems" : true
 		},
 		
 		"extends" : {
-			"type" : ["#", "array"],
-			"items" : "#",
+			"type" : [{"$ref" : "#"}, "array"],
+			"items" : {"$ref" : "#"},
 			"default" : {}
 		},
 		
 		"id" : {
 			"type" : "string",
 			"format" : "uri"
+		},
+		
+		"$ref" : {
+			"type" : "string",
+			"format" : "uri"
+		},
+		
+		"$schema" : {
+			"type" : "string",
+			"format" : "uri"
 		}
 	},
-	"links" : [
-		{
-			"href" : "{id}",
-			"rel" : "self"
-		}
-	],
+	
+	"dependencies" : {
+		"exclusiveMinimum" : "minimum",
+		"exclusiveMaximum" : "maximum"
+	},
 	
 	"default" : {}
 }
