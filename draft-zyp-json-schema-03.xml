@@ -551,7 +551,7 @@ The value of the "rel" property indicates the name of the
 relation to the target resource. The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy. If a resource JSON representation contains a sub object with a property interpreted as a link, that sub-object holds the relation with the target. A relation to target from the top level resource MUST be indicated with the schema describing the top level JSON representation.
 </t>
 <t>
-Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target='RFC4287'>RFC 4287</xref>). However, we define these relation here for clarity of normative interpretation within the context of JSON hyper schema defined relations:
+Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target='RFC4287'>RFC 4287</xref>). However, we define these relations here for clarity of normative interpretation within the context of JSON hyper schema defined relations:
 <list style="hanging">
 <t hangText="self">
 If the relation value is "self", when this property is encountered in
@@ -625,7 +625,7 @@ GET /Resource/
 ]]></artwork>
 </figure>
 
-This would indicate that for the first item in the collection, it's own
+This would indicate that for the first item in the collection, its own
 (self) URI would resolve to "/Resource/thing" and the first item's "up"
 relation SHOULD be resolved to the resource at "/Resource/parent".
 The "children" collection would be located at "/Resource/?upId=thing".
@@ -971,7 +971,7 @@ instead of numbers</t>
             <list style="symbols">
               <t>Replaced "maxDecimal" attribute with "divisibleBy" attribute.</t>
               <t>Added slash-delimited fragment resolution protocol and made it the default.</t>
-              <t>Added language about using links outside of schemas by referencing it's normative URI.</t>
+              <t>Added language about using links outside of schemas by referencing its normative URI.</t>
               <t>Added "uniqueItems" attribute.</t>
               <t>Added "targetSchema" attribute to link description object.</t>
               
