@@ -248,8 +248,10 @@ collection. However, ultimately, the mechanism for referencing a schema is up to
 	<t>
 	JSON Schemas can themselves be described using JSON Schemas. 
 	A self-describing JSON Schema for the core JSON Schema can
-	be found at <eref target="http://json-schema.org/draft-03/schema">http://json-schema.org/draft-03/schema</eref>, while the hyper schema 
-	self-description can be found at <eref target="http://json-schema.org/draft-03/hyper-schema">http://json-schema.org/draft-03/hyper-schema</eref>. All schemas
+	be found at <eref target="http://json-schema.org/schema">http://json-schema.org/schema</eref> for the latest version or 
+	<eref target="http://json-schema.org/draft-03/schema">http://json-schema.org/draft-03/schema</eref> for the draft-03 version. The hyper schema 
+	self-description can be found at <eref target="http://json-schema.org/hyper-schema">http://json-schema.org/hyper-schema</eref> 
+	or <eref target="http://json-schema.org/draft-03/hyper-schema">http://json-schema.org/draft-03/hyper-schema</eref>. All schemas
 	used within a protocol with media type definitions
 	SHOULD include a MIME parameter that refers to the self-descriptive
 	hyper schema or another schema that extends this hyper schema:
@@ -501,7 +503,9 @@ values. The link description format can be used on its own in
 regular (non-schema documents), and use of this format can
 be declared by referencing the normative link description
 schema as the the schema for the data structure that uses the 
-links. The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-03/links">http://json-schema.org/draft-03/links</eref>.
+links. The URI of the normative link description schema is: 
+<eref target="http://json-schema.org/links">http://json-schema.org/links</eref> (latest version) or
+<eref target="http://json-schema.org/draft-03/links">http://json-schema.org/draft-03/links</eref> (draft-03 version).
 </t>
 <section title="href">
     <t>
