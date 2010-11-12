@@ -246,17 +246,17 @@ collection. However, ultimately, the mechanism for referencing a schema is up to
 	</t>
 	<section title="Self-Descriptive Schema">
 	<t>
-	JSON Schemas are themselves instances for the schema 
-	schemas. A self-describing JSON Schema for the core JSON Schema can
-	be found at <eref target="http://json-schema.org/schema">http://json-schema.org/schema</eref>, while the hyper schema 
-	self-description can be found at <eref target="http://json-schema.org/hyper-schema">http://json-schema.org/hyper-schema</eref>. All schemas
+	JSON Schemas can themselves be described using JSON Schemas. 
+	A self-describing JSON Schema for the core JSON Schema can
+	be found at <eref target="http://json-schema.org/draft-03/schema">http://json-schema.org/draft-03/schema</eref>, while the hyper schema 
+	self-description can be found at <eref target="http://json-schema.org/draft-03/hyper-schema">http://json-schema.org/draft-03/hyper-schema</eref>. All schemas
 	used within a protocol with media type definitions
 	SHOULD include a MIME parameter that refers to the self-descriptive
 	hyper schema or another schema that extends this hyper schema:
       <figure>
         <artwork><![CDATA[	
 Content-Type: application/json; 
-              profile=http://www.json-schema.org/hyper-schema
+              profile=http://json-schema.org/draft-03/hyper-schema
 ]]></artwork></figure>
 	</t>
 	</section>
@@ -348,7 +348,7 @@ If the property is not defined or is not in this list, then any type of value is
 <t>
 The dependency value can take one of two forms:
 <list style="hanging"> 
-<t hangText="Simple Dependency">If the dependency value is an array of strings, then the instance object MUST have a property with the same name as each string in the dependency value's array.</t> 
+<t hangText="Simple Dependency">If the dependency value is a string, then the instance object MUST have a property with the same name as the dependency value. If the dependency value is an array of strings, then the instance object MUST have a property with the same name as each string in the dependency value's array.</t> 
 <t hangText="Schema Dependency">If the dependency value is a schema, then the instance object MUST be valid against the schema.</t>
 </list>
 </t>
@@ -384,11 +384,11 @@ The dependency value can take one of two forms:
 </section> 
 <section title="pattern">
 <t>When the instance value is a string, this provides a regular expression that a string instance MUST match in order to be valid. Regular expressions SHOULD follow the regular expression specification from ECMA 262/Perl 5</t></section>
-<section title="maxLength">
-<t>When the instance value is a string, this defines the maximum length of the string.</t>
-</section> 
 <section title="minLength">
 <t>When the instance value is a string, this defines the minimum length of the string.</t>
+</section> 
+<section title="maxLength">
+<t>When the instance value is a string, this defines the maximum length of the string.</t>
 </section> 
 <section title="enum">
 <t>This provides an enumeration of all possible values that are valid for the instance property. This MUST be an array, and each item in the array represents a possible value for the instance value. If this attribute is defined, the instance value MUST be one of the values in the array in order for the schema to be valid. Comparison of enum values uses the same algorithm as defined in <xref target="uniqueItems">"uniqueItems"</xref>.</t>
@@ -444,7 +444,7 @@ The dependency value can take one of two forms:
 {
   "description":"Extended schema",
   "properties":{"deprecated":{"type": "boolean"}},
-  "extends":"http://json-schema.org/schema"
+  "extends":"http://json-schema.org/draft-03/schema"
 }
 ]]></artwork></figure>
 
@@ -453,13 +453,30 @@ The dependency value can take one of two forms:
 </section> 
 <section title="id">
 <t>
-This defines the URI of this schema (this attribute is effectively
+This attribute defines the URI of this schema (this attribute is effectively
 a "self" link). This URI MAY be relative or absolute. If the URI
 is relative, it SHOULD be resolved against the URI used to retrieve this schema.
 </t>
 </section>
+<section title="$ref">
+<t>
+This attribute defines a URI of a schema that contains the full representation of this schema. 
+When a validator encounters this attribute, it SHOULD replace the current schema with the schema referenced by the value's URI (if known and available) and re-validate the instance. 
+This URI MAY be relative or absolute, and relative URIs SHOULD be resolved against the URI of the current schema.
+</t>
+</section>
+<section title="$schema">
+<t>
+This attribute defines a URI of a JSON Schema that is the schema of the current schema. 
+When this attribute is defined, a validator SHOULD use the schema referenced by the value's URI (if known and available) when resolving <xref target="hyper-schema">Hyper Schema</xref> <xref target="links">links</xref>.
+</t>
+<t>
+A validator MAY use this attribute's value to determine which version of JSON Schema the current schema is written in, and provide the appropriate validation features and behavior. 
+Therefore, it is RECOMMENDED that all schema authors include this attribute in their schemas to prevent conflicts with future JSON Schema specification changes.
+</t>
+</section>
     </section>
-<section title="Hyper Schema">
+<section title="Hyper Schema" anchor="hyper-schema">
       <t>The following attributes are specified in addition to those
 attributes that already provided by the core schema with the specific
 purpose of informing user agents of relations between resources based
@@ -469,7 +486,7 @@ Therefore, an empty object is a valid (non-informative) schema, and
 essentially describes plain JSON (no constraints on the structures).
 Addition of attributes provides additive information for user agents.</t>
 
-<section title="links">
+<section title="links" anchor="links">
 <t>
 The value of the links property MUST be an array, where each item 
 in the array is a link description object which describes the link
@@ -484,7 +501,7 @@ values. The link description format can be used on its own in
 regular (non-schema documents), and use of this format can
 be declared by referencing the normative link description
 schema as the the schema for the data structure that uses the 
-links. The URI of the normative link description schema is: <eref target="http://json-schema.org/links">http://json-schema.org/links</eref>.
+links. The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-03/links">http://json-schema.org/draft-03/links</eref>.
 </t>
 <section title="href">
     <t>
@@ -863,7 +880,7 @@ Content-Type: application/json; profile=/schema-for-this-data
    <t>
    	The value of the profile parameter SHOULD be a URI (relative or absolute) that 
    	refers to the schema used to define the structure of this structure (the 
-   	meta-schema). Normally the value would be http://json-schema.org/hyper-schema,
+   	meta-schema). Normally the value would be http://json-schema.org/draft-03/hyper-schema,
    	but it is allowable to use other schemas that extend the hyper schema's meta-
    	schema.
 </t>
@@ -942,6 +959,8 @@ instead of numbers</t>
               <t>Added "id" attribute.</t>
               <t>Switched self-referencing variable substitution from "-this" to "@" to align with reserved characters in URI template.</t>
               <t>Added "patternProperties" attribute.</t>
+              <t>Schema URIs are now namespace versioned.</t>
+              <t>Added "$ref" and "$schema" attributes.</t>
             </list>
           </t>
           <t hangText="draft-02">
