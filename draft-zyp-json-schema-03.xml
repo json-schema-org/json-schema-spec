@@ -694,12 +694,11 @@ the href property is defined. If the method is POST, "application/json" is
 the default media type.
 </t>
 </section>
-<section title="properties">
+<section title="schema">
 <t>
-This attribute has the same structure as the core JSON Schema <xref target="properties">"properties" attribute</xref>, 
-but its meaning SHOULD be used to define the acceptable 
-property names and values for the action (whether it be for the GET query 
-or POST body).
+This attribute contains a schema which defines the acceptable structure of the submitted
+request (for a GET request, this schema would define the properties for the query string 
+and for a POST request, this would define the body).
 </t>
 </section>
 </section>
