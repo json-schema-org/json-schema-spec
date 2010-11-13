@@ -432,7 +432,11 @@ The dependency value can take one of two forms:
 <t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema in the array, then this instance is not valid.</t>
 </section> 
 <section title="extends">
-<t>The value of this property MUST be another schema which will provide a base schema which the current schema will inherit from. The inheritance rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional attributes, constrain existing attributes, or add other constraints. The schema MUST NOT define a constraint that conflicts with an extended schema such that no instance may satisfy both schemas. An example of using "extends":
+<t>The value of this property MUST be another schema which will provide a base schema which the current schema will inherit from. The inheritance rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional attributes, constrain existing attributes, or add other constraints.</t>
+<t>Conceptually, the behavior of extends can be seen as validating an
+instance against all constraints in the extending schema as well as
+the extended schema(s). More optimized implementations that merge
+schemas are possible, but are not required. An example of using "extends":
       <figure>
         <artwork><![CDATA[
 {
