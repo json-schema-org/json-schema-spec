@@ -441,16 +441,16 @@ schemas are possible, but are not required. An example of using "extends":
         <artwork><![CDATA[
 {
   "description":"An adult",
-  "properties":{"age":{"minimum": 21}},
-  "extends":"person"
+  "properties":{"age":{"minimum":21}},
+  "extends":{"$ref":"person"}
 }
 ]]></artwork></figure>
       <figure>
         <artwork><![CDATA[
 {
   "description":"Extended schema",
-  "properties":{"deprecated":{"type": "boolean"}},
-  "extends":"http://json-schema.org/draft-03/schema"
+  "properties":{"deprecated":{"type":"boolean"}},
+  "extends":{"$ref":"http://json-schema.org/draft-03/schema"}
 }
 ]]></artwork></figure>
 
