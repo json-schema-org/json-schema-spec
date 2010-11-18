@@ -459,10 +459,14 @@ schemas are possible, but are not required. An example of using "extends":
 </section> 
 <section title="id">
 <t>
-This attribute defines the URI of this schema (this attribute is effectively
-a "self" link). This URI MAY be relative or absolute. If the URI
-is relative, it SHOULD be resolved against the URI used to retrieve this schema.
-</t>
+This attribute defines the current URI of this schema (this attribute is
+effectively a "self" link). This URI MAY be relative or absolute. If
+the URI is relative it is resolved against the current URI of the parent
+schema it is contained in. If this schema is not contained in any
+parent schema, the current URI of the parent schema is held to be the
+URI under which this schema was addressed. If id is missing, the current URI of a schema is
+defined to be that of the parent schema. The current URI of the schema
+is also used to construct relative references such as for $ref.</t>
 </section>
 <section title="$ref">
 <t>
@@ -957,6 +961,7 @@ instead of numbers</t>
               <t>Added more explanation of nullability.</t>
               <t>Removed "alternate" attribute.</t>
               <t>Upper cased many normative usages of must, may, and should.</t>
+              <t>Replaced the link submission "properties" attribute to "schema" attribute.</t>
               <t>Replaced "optional" attribute with "required" attribute.</t>
               <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum" attribute.</t>
               <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum" attribute.</t>
