@@ -8,7 +8,6 @@
 <!ENTITY rfc3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
 <!ENTITY rfc2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
 <!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
-<!ENTITY rfc2396 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2396.xml">
 <!ENTITY iddiscovery SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hammer-discovery.xml">
 <!ENTITY uritemplate SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.gregorio-uritemplate.xml">
 <!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
@@ -825,89 +824,17 @@ GET /Resource/
 					resolving fragment identifiers in URIs within the instance
 					representations. This applies to the instance object URIs and all
 					children of the instance object's URIs. The default fragment resolution
-					protocol is "slash-delimited", which is defined below. Other fragment
+					protocol is "json-pointer", which is defined below. Other fragment
 					resolution protocols MAY be used, but are not defined in this document.
 				</t>
 				
 				<t>
-					The fragment identifier is based on <xref target="RFC2396">RFC 2396, Sec 5</xref>, and defines the
+					The fragment identifier is based on <xref target="RFC3986">RFC 3986, Sec 5</xref>, and defines the
 					mechanism for resolving references to entities within a document.
 				</t>
 				
-				<section title="slash-delimited fragment resolution">
-					<t>
-						With the slash-delimited fragment resolution protocol, the fragment
-						identifier is interpreted as a series of property reference tokens that start with and
-						are delimited by the "/" character (\x2F). Each property reference token
-						is a series of unreserved or escaped URI characters. Each property
-						reference token SHOULD be interpreted, starting from the beginning of
-						the fragment identifier, as a path reference in the target JSON
-						structure. The final target value of the fragment can be determined by
-						starting with the root of the JSON structure from the representation of
-						the resource identified by the pre-fragment URI. If the target is a JSON
-						object, then the new target is the value of the property with the name
-						identified by the next property reference token in the fragment. If the
-						target is a JSON array, then the target is determined by finding the
-						item in array the array with the index defined by the next property
-						reference token (which MUST be a number). The target is successively
-						updated for each property reference token, until the entire fragment has
-						been traversed. 
-					</t>
-					
-					<t>
-						Property names SHOULD be URI-encoded. In particular, any "/" in a 
-						property name MUST be encoded to avoid being interpreted as a property 
-						delimiter.
-					</t>
-					
-					<t>
-						<figure>
-							<preamble>For example, for the following JSON representation:</preamble>
-							<artwork>
-<![CDATA[
-{
-	"foo": {
-		"anArray": [{
-			"prop": 44
-		}],
-		"another prop": {
-			"baz": "A string"
-		}
-	}
-}
-]]>
-							</artwork>
-						</figure>
-						
-						<figure>
-							<preamble>The following fragment identifiers would be resolved:</preamble>
-							<artwork>
-<![CDATA[
-fragment identifier      resolution
--------------------      ----------
-#                        self, the root of the resource itself
-#/foo                    the object referred to by the foo property
-#/foo/another%20prop     the object referred to by the "another prop"
-                         property of the object referred to by the 
-                         "foo" property
-#/foo/another%20prop/baz the string referred to by the value of "baz"
-                         property of the "another prop" property of 
-                         the object referred to by the "foo" property
-#/foo/anArray/0          the first object in the "anArray" array
-]]>
-							</artwork>
-						</figure>
-					</t>
-				</section>
-				
-				<section title="dot-delimited fragment resolution">
-					<t>
-						The dot-delimited fragment resolution protocol is the same as 
-						slash-delimited fragment resolution protocol except that the "." character 
-						(\x2E) is used as the delimiter between property names (instead of "/") and 
-						the path does not need to start with a ".". For example, #.foo and #foo are a valid fragment
-						identifiers for referencing the value of the foo propery.
-					</t>
+				<section title="json-pointer fragment resolution">
+					<t>The "json-pointer" fragment resolution protocol uses a <xref target="json-pointer">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.</t>
 				</section>
 			</section>
 			
@@ -1037,10 +964,21 @@ Content-Type: application/json; profile=/schema-for-this-data
 		<references title="Normative References">
 			&rfc2045;
 			&rfc2119;
-			&rfc2396;
 			&rfc3339;
 			&rfc3986;
 			&rfc4287;
+			<reference anchor="json-pointer" target="http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer-02">
+				<front>
+					<title>JSON Pointer</title>
+					<author initials="P." surname="Bryan">
+						<organization>ForgeRock US, Inc.</organization>
+					</author>
+					<author initials="K." surname="Zyp">
+						<organization>SitePen (USA)</organization>
+					</author>
+					<date year="2011" month="October" />
+				</front>
+			</reference>
 		</references>
 		<references title="Informative References">
 			&rfc2616;
