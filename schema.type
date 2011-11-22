@@ -1,0 +1,73 @@
+{
+     "type":{
+     	"type":["string",{},[]],
+     	"additionalProperties":{"$ref":"$"},
+	"description":"This is a type definition value. This can be an object type definition, an array type definition, simple type, or a union type",
+	"options":[{"value":"string"},{"value":"object"},{"value":"array"},{"value":"boolean"},{"value":"number"},{"value":"integer"},{"value":"null"},{"value":"any"}],
+	"unconstrained":true,
+	"default":"any"},
+     "optional":{
+     	"type":"boolean",
+     	"description":"This indicates that the instance property in the instance object is not required.",
+	"default":false},
+     "additionalProperties":{
+     	"type":{"$ref":"$"},
+     	"description":"This provides a default property definition for all properties that are not explicitly defined in an object type definition.",
+	"default":{}},
+     "final":{
+        "type":"boolean",
+        "description":"This indicates that the instance objects should not have any additional properties beyond what is defined in the object type definition, and the schema definition should not be extended.",
+        "default":false},
+     "specificity":{
+        "type":"number",
+        "description":"This indicates an order of specificity of properties. If an instance defines another property with a higher specificity than this one, than this instance property is required.",
+        "default":false},
+     "unique":{
+     	"type":"boolean",
+     	"description":"This indicates that the instance property should have unique values. No other property with the same name in the instance object tree should have the same value.",
+	"default":false},
+     "minimum":{
+     	"type":"number",
+     	"description":"This indicates the minimum value for the instance property when the type of the instance value is a number, or it indicates the minimum number of values in an array when an array is the instance value."},
+     "maximum":{
+     	"type":"number",
+     	"description":"This indicates the maximum value for the instance property when the type of the instance value is a number, or it indicates the maximum number of values in an array when an array is the instance value."},
+     "pattern":{
+     	"type":"string",
+     	"format":"regex",
+     	"description":"When the instance value is a string, this provides a regular expression that a instance string value should match in order to be valid.",
+	"default":".*"},
+     "maxLength" :{
+     	"type":"number",
+     	"description":"When the instance value is a string, this indicates maximum length of the string."},
+     "minLength" :{
+     	"type":"number",
+     	"description":"When the instance value is a string, this indicates minimum length of the string."},
+     "options" : {
+     	"type":[],
+     	"description":"This provides an enumeration of possible values that are valid for the instance property."},
+     "unconstrained":{
+     	"type":"boolean",
+     	"description":"When used in conjunction with the options property, this indicates a value can be used that is not in the list of options. This has no meaning when the options property is not a sibling.",
+	"default":false},
+     "readonly":{
+     	"type":"boolean",
+     	"description":"This indicates that the instance property should not be changed (this is only for interaction, it has no effect for standalone validation).",
+	"default":false},
+     "description":{
+     	"type":"string",
+     	"description":"This provides a description of the purpose the instance property. The value can be a string or it can be an object with properties corresponding to various different instance languages (with an optional default property indicating the default description)."},
+     "format":{
+     	"type":"string",
+     	"description":"This indicates what format the data is among some predefined formats which may include:\n\ndate - a string following the ISO format \naddress \nschema - a schema definition object \nperson \npage \nhtml - a string representing HTML"},
+     "default":{
+     	"type":"any",
+     	"description":"This indicates the default for the instance property."},
+     "transient":{
+     	"type":"boolean",
+     	"description":"This indicates that the property will be used for transient/volatile values that should not be persisted.",
+	"default":false},
+     "maxDecimal":{
+     	"type":"integer",
+     	"description":"This indicates the maximum number of decimal places in a floating point number."}
+}

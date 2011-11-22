@@ -1,0 +1,137 @@
+{
+	"id" : "http://json-schema.org/schema#",
+	"type" : ["object","string"],
+	"format": "uri",
+	
+	"properties" : {
+		"type" : {
+			"type" : ["string", "array"],
+			"items" : {
+				"type" : ["string", "#"]
+			},
+			"uniqueItems" : true,
+			"default" : "any"
+		},
+		
+		"properties" : {
+			"type" : "object",
+			"additionalProperties" : "#",
+			"default" : {}
+		},
+		
+		"items" : {
+			"type" : ["#", "array"],
+			"items" : "#",
+			"default" : {}
+		},
+		
+		"required" : {
+			"type" : "boolean",
+			"default" : false
+		},
+		
+		"additionalProperties" : {
+			"type" : ["#", "boolean"],
+			"default" : {}
+		},
+		"additionalItems" : {
+			"type" : ["#", "boolean"],
+			"default" : {}
+		},
+		
+		"requires" : {
+			"type" : ["string", "#"]
+		},
+		
+		"minimum" : {
+			"type" : "number"
+		},
+		
+		"maximum" : {
+			"type" : "number"
+		},
+		
+		"exclusiveMinimum" : {
+			"type" : "number"
+		},
+		
+		"exclusiveMaximum" : {
+			"type" : "number"
+		},
+		
+		"minItems" : {
+			"type" : "integer",
+			"minimum" : 0,
+			"default" : 0
+		},
+		
+		"maxItems" : {
+			"type" : "integer"
+		},
+		
+		"uniqueItems" : {
+			"type" : "boolean",
+			"default" : false
+		},
+		
+		"pattern" : {
+			"type" : "string",
+			"format" : "regex"
+		},
+		
+		"minLength" : {
+			"type" : "integer",
+			"minimum" : 0,
+			"default" : 0
+		},
+		
+		"maxLength" : {
+			"type" : "integer"
+		},
+		
+		"enum" : {
+			"type" : "array",
+			"minItems" : 1,
+			"uniqueItems" : true
+		},
+		
+		"title" : {
+			"type" : "string"
+		},
+		
+		"description" : {
+			"type" : "string"
+		},
+		
+		"format" : {
+			"type" : "string"
+		},
+				
+		"maxDecimal" : {
+			"type" : "number",
+			"minimum" : 0
+		},
+		
+		"disallow" : {
+			"type" : ["string", "array", "#"],
+			"items" : {
+				"type" : ["string", "#"]
+			},
+			"uniqueItems" : true
+		},
+		
+		"extends" : {
+			"type" : ["#", "array"],
+			"items" : "#",
+			"default" : {}
+		}
+	},
+	"links" : [
+		{
+			"href" : "{id}",
+			"rel" : "self"
+		}
+	],
+	
+	"default" : {}
+}

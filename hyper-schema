@@ -1,0 +1,107 @@
+{
+	"id" : "http://json-schema.org/hyper-schema",
+
+	"properties" : {
+		"links" : {
+			"type" : "array",
+			"items" : "http://json-schema.org/links"
+		},
+		
+		"fragmentResolution" : {
+			"type" : "string",
+			"default" : "slash-delimited"
+		},
+		
+		"root" : {
+			"type" : "boolean",
+			"default" : false
+		},
+		
+		"readonly" : {
+			"type" : "boolean",
+			"default" : false
+		},
+		
+		"pathStart" : {
+			"type" : "string",
+			"format" : "uri"
+		},
+		
+		"mediaType" : {
+			"type" : "string",
+			"format" : "media-type"
+		},
+		
+		"alternate" : {
+			"type" : "array",
+			"items" : "http://json-schema.org/hyper-schema-or-uri"
+		},
+		
+		"type" : {
+			"type" : ["string", "array"],
+			"items" : {
+				"type" : ["string", "http://json-schema.org/hyper-schema-or-uri"]
+			},
+			"uniqueItems" : true,
+			"default" : "any"
+		},
+
+		"properties" : {
+			"type" : "object",
+			"additionalProperties" : "http://json-schema.org/hyper-schema-or-uri",
+			"default" : {}
+		},
+
+		"items" : {
+			"type" : ["http://json-schema.org/hyper-schema-or-uri", "array"],
+			"items" : "http://json-schema.org/hyper-schema-or-uri",
+			"default" : {}
+		},
+		"additionalProperties" : {
+			"type" : ["http://json-schema.org/hyper-schema-or-uri", "boolean"],
+			"default" : {}
+		},
+		"additionalItems" : {
+			"type" : ["http://json-schema.org/hyper-schema-or-uri", "boolean"],
+			"default" : {}
+		},
+		"contentEncoding" : {
+			"type" : "string"
+		},
+		
+		"default" : {
+		},
+		
+		"requires" : {
+			"type" : ["string", "http://json-schema.org/hyper-schema-or-uri"]
+		},
+		"disallow" : {
+			"type" : ["string", "array", "http://json-schema.org/hyper-schema-or-uri"],
+			"items" : {
+				"type" : ["string", "http://json-schema.org/hyper-schema-or-uri"]
+			},
+			"uniqueItems" : true
+		},
+		"extends" : {
+			"type" : ["http://json-schema.org/hyper-schema-or-uri", "array"],
+			"items" : "http://json-schema.org/hyper-schema-or-uri",
+			"default" : {}
+		}
+
+	},
+	
+	"links" : [
+		{
+			"href" : "{$schema}",
+			"rel" : "describedby"
+		},
+		
+		{
+			"href" : "{$ref}",
+			"rel" : "full"
+		}
+	],
+	
+	"fragmentResolution" : "dot-delimited",
+	"extends" : "http://json-schema.org/schema"
+}
