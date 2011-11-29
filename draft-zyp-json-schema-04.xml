@@ -377,7 +377,7 @@ Content-Type: application/json;
 			</section>
 			
 			<section title="required">
-				<t>This attribute indicates if the instance must have a value, and not be undefined. This is false by default, making the instance optional.</t>
+				<t>This attribute is an array of strings that defines all the property names that must exist on the object instance.</t>
 			</section>
 			
 			<section title="dependencies">
@@ -421,6 +421,14 @@ Content-Type: application/json;
 				<t>This attribute defines the maximum number of values in an array when the array is the instance value.</t>
 			</section>
 			
+			<section title="minProperties">
+				<t>This attribute defines the minimum number of properties required on an object instance.</t>
+			</section>
+			
+			<section title="maxProperties">
+				<t>This attribute defines the maximum number of properties the object instance can have.</t>
+			</section>
+			
 			<section title="uniqueItems" anchor="uniqueItems">
 				<t>This attribute indicates that all items in an array instance MUST be unique (contains no two identical values).</t>
 				<t>
@@ -461,32 +469,6 @@ Content-Type: application/json;
 			
 			<section title="description">
 				<t>This attribute is a string that provides a full description of the of purpose the instance property.</t>
-			</section>
-			
-			<section title="format">
-				<t>This property defines the type of data, content type, or microformat to be expected in the instance property values. A format attribute MAY be one of the values listed below, and if so, SHOULD adhere to the semantics describing for the format. A format SHOULD only be used to give meaning to primitive types (string, integer, number, or boolean). Validators MAY (but are not required to) validate that the instance values conform to a format.</t>
-				
-				<t>
-					The following formats are predefined:
-					
-					<list style="hanging">
-						<t hangText="date-time">This SHOULD be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ in UTC time. This is the recommended form of date/timestamp.</t>
-						<t hangText="date">This SHOULD be a date in the format of YYYY-MM-DD. It is recommended that you use the "date-time" format instead of "date" unless you need to transfer only the date part.</t>
-						<t hangText="time">This SHOULD be a time in the format of hh:mm:ss. It is recommended that you use the "date-time" format instead of "time" unless you need to transfer only the time part.</t>
-						<t hangText="utc-millisec">This SHOULD be the difference, measured in milliseconds, between the specified time and midnight, 00:00 of January 1, 1970 UTC. The value SHOULD be a number (integer or float).</t>
-						<t hangText="regex">A regular expression, following the regular expression specification from ECMA 262/Perl 5.</t>
-						<t hangText="color">This is a CSS color (like "#FF0000" or "red"), based on <xref target="W3C.CR-CSS21-20070719">CSS 2.1</xref>.</t>
-						<t hangText="style">This is a CSS style definition (like "color: red; background-color:#FFF"), based on <xref target="W3C.CR-CSS21-20070719">CSS 2.1</xref>.</t>
-						<t hangText="phone">This SHOULD be a phone number (format MAY follow E.123).</t>
-						<t hangText="uri">This value SHOULD be a URI.</t>
-						<t hangText="email">This SHOULD be an email address.</t>
-						<t hangText="ip-address">This SHOULD be an ip version 4 address.</t>
-						<t hangText="ipv6">This SHOULD be an ip version 6 address.</t>
-						<t hangText="host-name">This SHOULD be a host-name.</t>
-					</list>
-				</t>
-				
-				<t>Additional custom formats MAY be created. These custom formats MAY be expressed as an URI, and this URI MAY reference a schema of that format.</t>
 			</section>
 			
 			<section title="divisibleBy">
@@ -606,7 +588,7 @@ Content-Type: application/json;
 						<eref target="http://json-schema.org/draft-03/links">http://json-schema.org/draft-03/links</eref> (draft-03 version).
 					</t>
 					
-					<section title="href">
+					<section title="href" anchor="href">
 						<t>
 							The value of the "href" link description property
 							indicates the target URI of the related resource. The value
@@ -739,6 +721,10 @@ GET /Resource/
 							relation SHOULD be resolved to the resource at "/Resource/parent".
 							The "children" collection would be located at "/Resource/?upId=thing".
 						</t>
+					</section>
+					
+					<section title="template">
+						<t>This property value is a string that defines the templating language used in the <xref target="href">"href"</xref> attribute. If no templating language is defined, then the default <xref target="href">Link Description Object templating langauge</xref> is used.</t>
 					</section>
 					
 					<section title="targetSchema">
@@ -994,6 +980,17 @@ Content-Type: application/json; profile=/schema-for-this-data
 		<section title="Change Log">
 			<t>
 				<list style="hanging">
+					<t hangText="draft-04">
+						<list style="symbols">
+							<t>Changed "required" attribute to an array of strings.</t>
+							<t>Removed "format" attribute.</t>
+							<t>Added "minProperties" and "maxProperties" attributes.</t>
+							<t>Replaced "slash-delimited" fragment resolution with "json-pointer".</t>
+							<t>Added "template" LDO attribute.</t>
+							<t>Removed irrelevant "Open Issues" section.</t>
+						</list>
+					</t>
+				
 					<t hangText="draft-03">
 						<list style="symbols">
 							<t>Added example and verbiage to "extends" attribute.</t>
@@ -1039,17 +1036,6 @@ Content-Type: application/json; profile=/schema-for-this-data
 							<t>Initial draft.</t>
 						</list>
 					</t>
-				</list>
-			</t>
-		</section>
-		
-		<section title="Open Issues">
-			<t>
-				<list>
-					<t>Should we give a preference to MIME headers over Link headers (or only use one)?</t>
-					<t>Should "root" be a MIME parameter?</t>
-					<t>Should "format" be renamed to "mediaType" or "contentType" to reflect the usage MIME media types that are allowed?</t>
-					<t>How should dates be handled?</t>
 				</list>
 			</t>
 		</section>
