@@ -5,9 +5,19 @@
 	
 	"properties" : {
 		"type" : {
-			"type" : ["string", "array"],
+			"type" : [
+				{
+					"id" : "#simple-type",
+					"type" : "string",
+					"enum" : ["object", "array", "string", "number", "boolean", "null", "any"]
+				}, 
+				"array"
+			],
 			"items" : {
-				"type" : ["string", {"$ref" : "#"}]
+				"type" : [
+					{"$ref" : "#simple-type"}, 
+					{"$ref" : "#"}
+				]
 			},
 			"uniqueItems" : true,
 			"default" : "any"
