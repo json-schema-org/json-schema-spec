@@ -327,6 +327,7 @@ Content-Type: application/json;
 								<t hangText="array">Instance MUST be an array.</t>
 								<t hangText="string">Instance MUST be a string.</t>
 								<t hangText="number">Instance MUST be a number, including floating point numbers.</t>
+								<t hangText="integer">Instance MUST be an integer number (a positive or negative natural number with no fractional or decimal component).</t>
 								<t hangText="boolean">Instance MUST be the JSON literal "true" or "false".</t>
 								<t hangText="null">Instance MUST be the JSON literal "null". Note that without this type, null values are not allowed.</t>
 								<t hangText="any">Instance MAY be of any type, including null.</t>
@@ -491,7 +492,7 @@ Content-Type: application/json;
 				<t>This attribute is a string that provides a full description of the of purpose the instance property.</t>
 			</section>
 			
-			<section title="divisibleBy" anchor="divisibleBy">
+			<section title="mod" anchor="mod">
 				<t>This attribute defines what value the number instance must be divisible by with no remainder (the result of the division must be an integer.) The value of this attribute SHOULD NOT be 0.</t>
 			</section>
 			
@@ -1014,8 +1015,8 @@ Content-Type: application/json; profile=/schema-for-this-data
 							<t>Removed irrelevant "Open Issues" section.</t>
 							<t>Merged Conventions and Terminology sections.</t>
 							<t>Defined terms used in specification.</t>
-							<t>Removed "integer" type in favor of {"type":"number", "divisibleBy":1}.</t>
 							<t>Restricted "type" to only the core JSON types.</t>
+							<t>Renamed "divisibleBy" to "mod".</t>
 							<t>Improved wording of many sections.</t>
 						</list>
 					</t>
