@@ -305,307 +305,419 @@ Content-Type: application/json;
 ]]>
 				</artwork>
 			</figure>
-			
-			<t>
-				A JSON Schema object MAY have any of the following optional properties:
-			</t>
-			
-			<!-- TODO: Break attributes up into type sections -->
-			<!-- TODO: Add examples for (almost) every attribute -->
-			
-			<section title="type" anchor="type">
-				<t>
-					This attribute defines what the primitive type or the schema of the instance MUST be in order to validate. 
-					This attribute can take one of two forms:
 
-					<list style="hanging">
-						<t hangText="Simple Types">
-							A string indicating a primitive or simple type. The string MUST be one of the following values:
+            <t>A JSON Schema object MAY have one or more of the properties defined in this section. These properties (called "keywords" in this section) are
+            grouped in subsections according to the type of instance they can validate, while some properties apply to all instance types. Some other keywords
+            do not participate in instance validation and are into a section of their own.</t>
 
-							<list style="hanging">
-								<t hangText="object">Instance MUST be an object.</t>
-								<t hangText="array">Instance MUST be an array.</t>
-								<t hangText="string">Instance MUST be a string.</t>
-								<t hangText="number">Instance MUST be a number, including floating point numbers.</t>
-								<t hangText="integer">Instance MUST be an integer number (a positive or negative natural number with no fractional or decimal component).</t>
-								<t hangText="boolean">Instance MUST be the JSON literal "true" or "false".</t>
-								<t hangText="null">Instance MUST be the JSON literal "null". Note that without this type, null values are not allowed.</t>
-								<t hangText="any">Instance MAY be of any type, including null.</t>
-							</list>
-						</t>
-						
-						<t hangText="Union Types">
-							An array of one or more simple or schema types.
-							The instance value is valid if it is of the same type as one of the simple types, or valid by one of the schemas, in the array. 
-						</t>
-					</list>
-					
-					If this attribute is not specified, then all value types are accepted. 
-				</t>
-				
-				<figure>
-					<preamble>For example, a schema that defines if an instance can be a string or a number would be:</preamble>
-					<artwork>
+    <section title="Keywords for numeric instances (number, integer)">
+
+        <section title="minimum" anchor="minimum">
+
+            <t>The value of this keyword is a number which defines the minimum value of the instance.</t>
+
+        </section>
+
+        <section title="maximum" anchor="maximum">
+
+            <t>The value of this keyword is a number which defines the maximum value of the instance.</t>
+
+        </section>
+
+        <section title="exclusiveMinimum" anchor="exclusiveMinimum">
+
+            <t>This keyword MUST be paired with "minimum". Its value is a boolean. If false (the default), then the instance may be greater than or equal to "minimum". If true, then the instance must be strictly greater than "minimum".</t>
+
+        </section>
+
+        <section title="exclusiveMaximum" anchor="exclusiveMaximum">
+
+            <t>This keyword MUST be paired with "maximum". Its value is a boolean. If false (the default), then the instance may be less than or equal to "maximum". If true, then the instance must be strictly lower than "maximum".</t>
+
+        </section>
+
+        <section title="mod" anchor="mod">
+
+            <t>This keyword's value is a number which must divide instance with no remainder (that is, the result of the division must be an integer.) The value of this keyword MUST NOT be 0.</t>
+
+        </section>
+
+    </section>
+
+    <section title="Keywords for string instances">
+
+        <section title="pattern" anchor="pattern">
+
+            <t>The value of this keyword is an ECMA 262 regular expression that the instance MUST match in order to be valid.</t>
+
+        </section>
+
+        <section title="minLength" anchor="minLength">
+
+            <t>The value of this keyword is an integer which defines the minimum length of the instance.</t>
+
+        </section>
+
+        <section title="maxLength" anchor="maxLength">
+
+            <t>The value of this keyword is an integer which defines the maximum length of the instance.</t>
+
+        </section>
+
+    </section>
+
+    <section title="Keywords for array instances">
+
+        <section title="minItems" anchor="minItems">
+
+            <t>The value of this keyword is an integer which defines the minimum number of elements in the instance.</t>
+
+        </section>
+
+        <section title="maxItems" anchor="maxItems">
+
+            <t>The value of this keyword is an integer which defines the minimum number of elements in the instance.</t>
+
+        </section>
+
+        <section title="items" anchor="items">
+
+            <t>This keyword defines a set of allowed items in the instance. The value of this keyword MUST be a schema or an array of schemas:
+                <list>
+                    <t>if it is a schema, then all items in the instance MUST be valid against this schema;</t>
+                    <t>if it is an array of schemas, then the item at a given position in the instance MUST be valid according to the corresponding schema at
+                    the same position in the keyword value. This is called tuple typing. Constraints on items in the instance which have no corresponding
+                    schema in the keyword value are defined by <xref target="additionalItems">"additionalItems"</xref>.</t>
+                </list>
+            </t>
+
+        </section>
+
+        <section title="additionalItems" anchor="additionalItems">
+
+            <t>This keyword specifies how to handle items in the instance which are is not explicitly defined by <xref target="items">"items"</xref>. Its value
+            MUST be a schema or a boolean. Boolean value true is equivalent to an empty schema.</t>
+
+            <t>If <xref target="items">"items"</xref> is present and its value is a schema, "additionalItems" is ignored.</t>
+
+            <t>If <xref target="items">"items"</xref> is defined and is an array of n elements, then:
+                <list>
+                    <t>if "additionalItems" is false, then the instance is valid with regards to this keyword if and only if it has at most n elements;</t>
+                    <t>if "additionalItems" is a schema, then all instance elements of index n or greater (assuming array indexes start at 0) MUST be valid
+                    against this schema.</t>
+                </list>
+            </t>
+
+            <t>If <xref target="items">"items"</xref> is not defined, then:
+                <list>
+                    <t>if "additionalItems" is false, then the instance is invalid;</t>
+                    <t>if "additionalItems" is a schema, then all instance elements MUST be valid against this schema.</t>
+                </list>
+            </t>
+
+            <t>The default value is an empty schema, which allows any value for additional items.</t>
+
+        </section>
+
+        <section title="uniqueItems" anchor="uniqueItems">
+
+            <t>This keyword indicates that all items in the instance MUST be unique (contains no two identical values).</t>
+
+            <t>
+                Two JSON instances are consider equal if they are both of the same type and:
+                <list>
+                    <t>are null; or</t>
+                    <t>are booleans/numbers/strings and have the same value; or</t>
+                    <t>are arrays, contain the same number of items, and each item in the array is equal to the item at the corresponding index in the other
+                    array; or</t>
+                    <t>are objects, contain the same set of property names, and each property in the object is equal to the corresponding property in the other
+                    object.</t>
+                </list>
+            </t>
+
+        </section>
+
+    </section>
+
+    <section title="Keywords for object instances">
+
+        <section title="minProperties" anchor="minProperties">
+
+            <t>The value of this keyword is a positive integer which defines the minimum number of properties the instance must have.</t>
+
+        </section>
+
+        <section title="maxProperties" anchor="maxProperties">
+
+            <t>The value of this keyword is a positive integer which defines the maximum number of properties the instance must have.</t>
+
+        </section>
+
+        <section title="properties" anchor="properties">
+
+            <t>The value of this keyword is an object where:
+                <list>
+                    <t>property name match equivalent property names in the instance, if any, and</t>
+                    <t>property values are schemas.</t>
+                </list>
+            </t>
+
+            <t>If the instance has a property name which is equal to a property name defined in this keyword, then the property value MUST be valid against the
+            corresponding schema.</t>
+
+            <t>Objects are unordered, therefore the order of the instance properties or attribute properties MUST NOT determine validation success.</t>
+
+        </section>
+
+        <section title="patternProperties" anchor="patternProperties">
+
+            <t>The value of this keyword is an object where:
+                <list>
+                    <t>property names are ECMA 262 regular expressions, and</t>
+                    <t>property values are schemas.</t>
+                </list>
+            </t>
+
+            <t>For each property name of the instance, if it is matched by one or more regular expressions defined by this keyword, then the matching value MUST
+            be valid against all such schemas.</t>
+
+            <t>Note that regular expressions are not anchored.</t>
+
+        </section>
+
+        <section title="additionalProperties" anchor="additionalProperties">
+
+            <t>This keyword defines how to handle an instance's properties which could not be matched by either <xref target="properties">"properties"</xref> or
+            <xref target="patternProperties">"patternProperties"</xref> (here after referred to as "additional properties"). Its value MUST be either a schema
+            or a boolean. Boolean value true is equivalent to an empty schema.</t>
+
+            <t>If the value of this keyword is false, then the instance is valid if and only if there are no additional properties in the instance.</t>
+
+            <t>If the value of this keyword is a schema, then all additional properties MUST be valid against this schema.</t>
+
+            <t>The default value is an empty schema, which allows any value for additional properties.</t>
+
+        </section>
+
+        <section title="required" anchor="required">
+
+            <t>The value of this keyword is an array of strings which defines all the property names that must exist on the instance for it to be valid.</t>
+
+        </section>
+
+        <section title="dependencies" anchor="dependencies">
+
+            <t>The value of this keyword is an object. Property names of this object match equivalent property names in the instance, if any. Property values are either of:
+                <list>
+                    <t>a string or an array of strings; in this case, the instance is valid if and only if the instance has the corresponding property name(s);</t>
+                    <t>a schema; in this case, the instance is valid if and only if the value of the corresponding property name is valid against this schema.</t>
+                </list>
+            </t>
+
+        </section>
+
+        <section title="Note on properties and patternProperties">
+
+            <t>It should be noted that validation by "properties" and "patternProperties" are not exclusive: if a property name in an instance is matched by
+            both a property name in "properties" and one or more regular expressions in "patternProperties", then the corresponding value MUST validate against
+            all of these schemas.</t>
+
+        </section>
+
+    </section>
+
+    <section title="Keywords for instances of any type">
+
+        <section title="type" anchor="type">
+
+            <t>This keyword defines what the primitive type or the schema of the instance MUST be in order to validate.  This attribute can take one of two
+            forms:
+                <list style="hanging">
+                    <t hangText="Simple Types">A string indicating a primitive or simple type. The string MUST be one of the following values:
+                        <list style="hanging">
+                            <t hangText="object">Instance MUST be an object.</t>
+                            <t hangText="array">Instance MUST be an array.</t>
+                            <t hangText="string">Instance MUST be a string.</t>
+                            <t hangText="number">Instance MUST be a number, including floating point numbers.</t>
+                            <t hangText="integer">Instance MUST be an integer number (a positive or negative natural number with no fractional or decimal component).</t>
+                            <t hangText="boolean">Instance MUST be a JSON boolean (true or false).</t>
+                            <t hangText="null">Instance MUST be the JSON literal null. Note that without this type, null values are not allowed.</t>
+                            <t hangText="any">Instance MAY be of any type, including null.</t>
+                        </list>
+                    </t>
+                    <t hangText="Union Types">An array of one or more simple types or schemas. The instance value is valid if it is of the same type as one of
+                    the simple types, or valid by one of the schemas. </t>
+                </list>
+            </t>
+
+            <t>If this attribute is not specified, then all value types are accepted.</t>
+
+            <figure>
+                <preamble>For example, a schema that defines if an instance can be a string or a number would be:</preamble>
+                <artwork>
 <![CDATA[
 {
-	"type": ["string", "number"]
-}
-]]></artwork>
-				</figure>
-			</section>
-			
-			<section title="properties" anchor="properties">
-				<t>
-					This attribute is an object with properties that specify the schemas for the properties of the instance object.
-					In this attribute's object, each property value MUST be a schema. 
-					When the instance value is an object, the value of the instance's properties MUST be valid according to the schemas with the same property names specified in this attribute.
-					Objects are unordered, so therefore the order of the instance properties or attribute properties MUST NOT determine validation success.
-				</t>
-			</section>
-			
-			<section title="patternProperties" anchor="patternProperties">
-				<t>
-					This attribute is an object that defines the schema for a set of property names of an object instance. 
-					The name of each property of this attribute's object is a regular expression pattern in the ECMA 262/Perl 5 format, while the value is a schema. 
-					If the pattern matches the name of a property on the instance object, the value of the instance's property MUST be valid against the pattern name's schema value.
-				</t>
-			</section>
-			
-			<section title="additionalProperties" anchor="additionalProperties">
-				<t>This attribute specifies how any instance property that is not explicitly defined by either the <xref target="properties">"properties"</xref> or <xref target="patternProperties">"patternProperties"</xref> attributes (hereafter referred to as "additional properties") is handled. If specified, the value MUST be a schema or a boolean.</t> 
-				<t>If a schema is provided, then all additional properties MUST be valid according to the schema.</t>
-				<t>If false is provided, then no additional properties are allowed.</t>
-				<t>The default value is an empty schema, which allows any value for additional properties.</t>
-			</section>
-			
-			<section title="items" anchor="items">
-				<t>This attribute provides the allowed items in an array instance. If specified, this attribute MUST be a schema or an array of schemas.</t>
-				<t>When this attribute value is a schema and the instance value is an array, then all the items in the array MUST be valid according to the schema.</t>
-				<t>When this attribute value is an array of schemas and the instance value is an array, each position in the instance array MUST be valid according to the schema in the corresponding position for this array. This called tuple typing. When tuple typing is used, additional items are allowed, disallowed, or constrained by the <xref target="additionalItems">"additionalItems"</xref> attribute the same way as <xref target="additionalProperties">"additionalProperties"</xref> for objects is.</t>
-			</section>
-			
-			<section title="additionalItems" anchor="additionalItems">
-				<t>This attribute specifies how any item in the array instance that is not explicitly defined by <xref target="items">"items"</xref> (hereafter referred to as "additional items") is handled. If specified, the value MUST be a schema or a boolean.</t>
-				<t>If a schema is provided:
-					<list>
-						<t>If the <xref target="items">"items"</xref> attribute is unspecified, then all items in the array instance must be valid against this schema.</t>
-						<t>If the <xref target="items">"items"</xref> attribute is a schema, then this attribute is ignored.</t>
-						<t>If the <xref target="items">"items"</xref> attribute is an array (during tuple typing), then any additional items MUST be valid against this schema.</t>
-					</list>
-				</t>
-				<t>If false is provided, then any additional items in the array are not allowed.</t>
-				<t>The default value is an empty schema, which allows any value for additional items.</t>
-			</section>
-			
-			<section title="required" anchor="required">
-				<t>This attribute is an array of strings that defines all the property names that must exist on the object instance.</t>
-			</section>
-			
-			<section title="dependencies" anchor="dependencies">
-				<t>This attribute is an object that specifies the requirements of a property on an object instance. If an object instance has a property with the same name as a property in this attribute's object, then the instance must be valid against the attribute's property value (hereafter referred to as the "dependency value").</t>
-				<t>
-					The dependency value can take one of two forms:
-					
-					<list style="hanging">
-						<t hangText="Simple Dependency">
-							If the dependency value is a string, then the instance object MUST have a property with the same name as the dependency value.
-							If the dependency value is an array of strings, then the instance object MUST have a property with the same name as each string in the dependency value's array.
-						</t>
-						<t hangText="Schema Dependency">
-							If the dependency value is a schema, then the instance object MUST be valid against the schema.
-						</t>
-					</list>
-				</t>
-			</section>
-			
-			<section title="minimum" anchor="minimum">
-				<t>This attribute defines the minimum value of the instance property when the type of the instance value is a number.</t>
-			</section>
-			
-			<section title="maximum" anchor="maximum">
-				<t>This attribute defines the maximum value of the instance property when the type of the instance value is a number.</t>
-			</section>
-			
-			<section title="exclusiveMinimum" anchor="exclusiveMinimum">
-				<t>This attribute indicates if the value of the instance (if the instance is a number) can not equal the number defined by the "minimum" attribute. This is false by default, meaning the instance value can be greater then or equal to the minimum value.</t>
-			</section>
-			
-			<section title="exclusiveMaximum" anchor="exclusiveMaximum">
-				<t>This attribute indicates if the value of the instance (if the instance is a number) can not equal the number defined by the "maximum" attribute. This is false by default, meaning the instance value can be less then or equal to the maximum value.</t>
-			</section>
-			
-			<section title="minItems" anchor="minItems">
-				<t>This attribute defines the minimum number of values in an array when the array is the instance value.</t>
-			</section>
-			
-			<section title="maxItems" anchor="maxItems">
-				<t>This attribute defines the maximum number of values in an array when the array is the instance value.</t>
-			</section>
-			
-			<section title="minProperties" anchor="minProperties">
-				<t>This attribute defines the minimum number of properties required on an object instance.</t>
-			</section>
-			
-			<section title="maxProperties" anchor="maxProperties">
-				<t>This attribute defines the maximum number of properties the object instance can have.</t>
-			</section>
-			
-			<section title="uniqueItems" anchor="uniqueItems">
-				<t>This attribute indicates that all items in an array instance MUST be unique (contains no two identical values).</t>
-				<t>
-					Two instance are consider equal if they are both of the same type and:
-					
-					<list>
-						<t>are null; or</t>
-						<t>are booleans/numbers/strings and have the same value; or</t>
-						<t>are arrays, contains the same number of items, and each item in the array is equal to the item at the corresponding index in the other array; or</t>
-						<t>are objects, contains the same property names, and each property in the object is equal to the corresponding property in the other object.</t>
-					</list>
-				</t>
-			</section>
-
-                        <section title="format">
-                               <t>This property helps to refine the type of data, content type, or microformat an instance value must adhere to. A format
-                               attribute MAY be one of the values listed below, and if so, SHOULD adhere to the semantics describing for the format. A format
-                               SHOULD only be used to give meaning to primitive types (string, integer, number, or boolean). Validators MUST validate that the
-                               instance values conform to a format.</t>
-
-                               <t>A format attribute only validates a defined set of primitive types. If the primitive type of the currently validated instance
-                               is not a member of this set, the instance MUST be considered valid for this keyword. All format attributes defined below are
-                               listed along with the primitive types they validate.</t>
-
-                               <t>The following formats are predefined:
-
-                                       <list style="hanging">
-                                               <t hangText="date-time"> (string) This SHOULD be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ in UTC time.
-                                               This is the recommended form of date/timestamp.</t>
-                                               <t hangText="date">(string) This SHOULD be a date in the format of YYYY-MM-DD. It is recommended that you use the
-                                               "date-time" format instead of "date" unless you need to transfer only the date part.</t>
-                                               <t hangText="time">(string) This SHOULD be a time in the format of hh:mm:ss. It is recommended that you use the
-                                               "date-time" format instead of "time" unless you need to transfer only the time part.</t>
-                                               <t hangText="utc-millisec">(number) This SHOULD be the difference, measured in milliseconds, between the
-                                               specified time and midnight, 00:00 of January 1, 1970 UTC.</t>
-                                               <t hangText="regex">(string) This SHOULD be an ECMA 262 (ie, JavaScript) regular expression.</t>
-                                               <t hangText="phone">(string) This SHOULD be a phone number (format MAY follow E.123).</t>
-                                               <t hangText="uri">(string) This value SHOULD be a URI.</t>
-                                               <t hangText="email">(string) This SHOULD be an email address.</t>
-                                               <t hangText="ip-address">(string) This SHOULD be an ip version 4 address.</t>
-                                               <t hangText="ipv6">(string) This SHOULD be an ip version 6 address.</t>
-                                               <t hangText="host-name">(string) This SHOULD be a host-name.</t>
-                                       </list>
-                               </t>
-                        </section>
-
-			<section title="pattern" anchor="pattern">
-				<t>When the instance value is a string, this provides a regular expression that a string instance MUST match in order to be valid. Regular expressions SHOULD follow the regular expression specification from ECMA 262/Perl 5</t>
-			</section>
-			
-			<section title="minLength" anchor="minLength">
-				<t>When the instance value is a string, this defines the minimum length of the string.</t>
-			</section>
-			
-			<section title="maxLength" anchor="maxLength">
-				<t>When the instance value is a string, this defines the maximum length of the string.</t>
-			</section>
-			
-			<section title="enum" anchor="enum">
-				<t>This provides an enumeration of all possible values that are valid for the instance property. This MUST be an array, and each item in the array represents a possible value for the instance value. If this attribute is defined, the instance value MUST be one of the values in the array in order for the schema to be valid. Comparison of enum values uses the same algorithm as defined in <xref target="uniqueItems">"uniqueItems"</xref>.</t>
-			</section>
-			
-			<section title="default" anchor="default">
-				<t>This attribute defines the default value of the instance when the instance is undefined.</t>
-			</section>
-			
-			<section title="title" anchor="title">
-				<t>This attribute is a string that provides a short description of the instance property.</t>
-			</section>
-			
-			<section title="description" anchor="description">
-				<t>This attribute is a string that provides a full description of the of purpose the instance property.</t>
-			</section>
-			
-			<section title="mod" anchor="mod">
-				<t>This attribute defines what value the number instance must be divisible by with no remainder (the result of the division must be an integer.) The value of this attribute SHOULD NOT be 0.</t>
-			</section>
-			
-			<section title="disallow" anchor="disallow">
-				<t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema in the array, then this instance is not valid.</t>
-			</section>
-			
-			<section title="extends" anchor="extends">
-				<t>The value of this property MUST be another schema which will provide a base schema which the current schema will inherit from. The inheritance rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional attributes, constrain existing attributes, or add other constraints.</t>
-				<t>
-					Conceptually, the behavior of extends can be seen as validating an
-					instance against all constraints in the extending schema as well as
-					the extended schema(s). More optimized implementations that merge
-					schemas are possible, but are not required. Some examples of using "extends":
-					
-					<figure>
-						<artwork>
-<![CDATA[
-{
-	"description": "An adult",
-	"properties": {
-		"age": {
-			"minimum": 21
-		}
-	},
-	"extends": {"$ref": "person"}
-}
-]]>
-						</artwork>
-					</figure>
-					
-					<figure>
-						<artwork>
-<![CDATA[
-{
-	"description": "Extended schema",
-	"properties": {
-		"deprecated": {
-			"type": "boolean"
-		}
-	},
-	"extends": {"$ref": "http://json-schema.org/draft-04/schema"}
+    "type": ["string", "number"]
 }
 ]]>
-						</artwork>
-					</figure>
-				</t>
-			</section>
-			
-			<section title="id" anchor="id">
-				<t>
-					This attribute defines the current URI of this schema (this attribute is
-					effectively a "self" link). This URI MAY be relative or absolute. If
-					the URI is relative it is resolved against the current URI of the parent
-					schema it is contained in. If this schema is not contained in any
-					parent schema, the current URI of the parent schema is held to be the
-					URI under which this schema was addressed. If id is missing, the current URI of a schema is
-					defined to be that of the parent schema. The current URI of the schema
-					is also used to construct relative references such as for $ref.
-				</t>
-			</section>
-			
-			<section title="$ref" anchor="ref">
-				<t>
-					This attribute defines a URI of a schema that contains the full representation of this schema. 
-					When a validator encounters this attribute, it SHOULD replace the current schema with the schema referenced by the value's URI (if known and available) and re-validate the instance. 
-					This URI MAY be relative or absolute, and relative URIs SHOULD be resolved against the URI of the current schema.
-				</t>
-			</section>
-			
-			<section title="$schema" anchor="schema">
-				<t>
-					This attribute defines a URI of a JSON Schema that is the schema of the current schema. 
-					When this attribute is defined, a validator SHOULD use the schema referenced by the value's URI (if known and available) when resolving <xref target="hyper-schema">Hyper Schema</xref><xref target="links">links</xref>.
-				</t>
-				
-				<t>
-					A validator MAY use this attribute's value to determine which version of JSON Schema the current schema is written in, and provide the appropriate validation features and behavior. 
-					Therefore, it is RECOMMENDED that all schema authors include this attribute in their schemas to prevent conflicts with future JSON Schema specification changes.
-				</t>
-			</section>
+                </artwork>
+            </figure>
+
+        </section>
+
+        <section title="disallow" anchor="disallow">
+
+            <t>This attribute takes the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the
+            instance matches any type or schema in the array, then this instance is not valid.</t>
+
+        </section>
+
+
+
+        <section title="format">
+
+               <t>This property helps to refine the type of data, content type, or microformat an instance value must adhere to. A format attribute MAY be one
+               of the values listed below, and if so, SHOULD adhere to the semantics describing for the format. A format SHOULD only be used to give meaning to
+               primitive types (string, integer, number, or boolean). Validators MUST validate that instances conform to a format.</t>
+
+               <t>A format attribute only validates a defined set of primitive types. If the primitive type of the currently validated instance is not a member
+               of this set, the instance MUST be considered valid for this keyword. All format attributes defined below are listed along with the primitive
+               types they validate.</t>
+
+               <t>The following formats are predefined:
+                   <list style="hanging">
+                       <t hangText="date-time">(string) This SHOULD be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ in UTC time.
+                       This is the recommended form of date/timestamp.</t>
+                       <t hangText="date">(string) This SHOULD be a date in the format of YYYY-MM-DD. It is recommended that you use the
+                       "date-time" format instead of "date" unless you need to transfer only the date part.</t>
+                       <t hangText="time">(string) This SHOULD be a time in the format of hh:mm:ss. It is recommended that you use the
+                       "date-time" format instead of "time" unless you need to transfer only the time part.</t>
+                       <t hangText="utc-millisec">(number) This SHOULD be the difference, measured in milliseconds, between the
+                       specified time and midnight, 00:00 of January 1, 1970 UTC.</t>
+                       <t hangText="regex">(string) This SHOULD be an ECMA 262 (ie, JavaScript) regular expression.</t>
+                       <t hangText="phone">(string) This SHOULD be a phone number (format MAY follow E.123).</t>
+                       <t hangText="uri">(string) This value SHOULD be a URI.</t>
+                       <t hangText="email">(string) This SHOULD be an email address.</t>
+                       <t hangText="ip-address">(string) This SHOULD be an ip version 4 address.</t>
+                       <t hangText="ipv6">(string) This SHOULD be an ip version 6 address.</t>
+                       <t hangText="host-name">(string) This SHOULD be a host-name.</t>
+                   </list>
+               </t>
+
+        </section>
+
+        <section title="enum" anchor="enum">
+
+            <t>The value of this keyword is an array which provides an enumeration of JSON instances. The instance value MUST be one of the values in the array in order
+            for the schema to be valid. Comparison of enum values uses the same algorithm as defined in <xref target="uniqueItems">"uniqueItems"</xref>.</t>
+
+            <t>The array MUST have at least one element. Elements in the array MUST be unique.</t>
+
+        </section>
+
+        <section title="extends" anchor="extends">
+
+            <t>The value of this keyword MUST be another schema which will provide a base schema which the current schema will inherit from. The inheritance
+            rules are such that any instance that is valid according to the current schema MUST be valid according to the referenced schema. This MAY also be an
+            array, in which case, the instance MUST be valid for all the schemas in the array. A schema that extends another schema MAY define additional
+            attributes, constrain existing attributes, or add other constraints.</t>
+
+            <t>Conceptually, the behavior of extends can be seen as validating an instance against all constraints in the extending schema as well as the
+            extended schema(s). More optimized implementations that merge schemas are possible, but are not required. Some examples of using "extends":
+
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "description": "An adult",
+    "properties": {
+        "age": {
+            "minimum": 21
+        }
+    },
+    "extends": {"$ref": "person"}
+}
+]]>
+                    </artwork>
+                </figure>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "description": "Extended schema",
+    "properties": {
+        "deprecated": {
+            "type": "boolean"
+        }
+    },
+    "extends": {"$ref": "http://json-schema.org/draft-04/schema"}
+}
+]]>
+                    </artwork>
+                </figure>
+            </t>
+
+        </section>
+
+    </section>
+
+    <section title="Metadata keywords">
+
+        <t>The following keywords do not play any role in instance validation "per se", however three of them ("$ref", "id" and "$schema") play an important role in the validation process.</t>
+
+        <section title="default" anchor="default">
+
+            <t>This keyword defines the default value of the instance when the instance is undefined.</t>
+
+            <t>Note that it is NOT required that the value of the instance matches the enclosing schema.</t>
+
+        </section>
+
+        <section title="title" anchor="title">
+
+            <t>This keyword is a string that provides a short description of the instance property.</t>
+
+        </section>
+
+        <section title="description" anchor="description">
+
+            <t>This keyword is a string that provides a full description of the of purpose the instance property.</t>
+
+        </section>
+
+
+        <section title="id" anchor="id">
+
+            <t>This keyword defines the current URI of this schema (this attribute is effectively a "self" link). This URI MAY be relative or absolute. If the
+            URI is relative it is resolved against the current URI of the parent schema it is contained in. If this schema is not contained in any parent
+            schema, the current URI of the parent schema is held to be the URI under which this schema was addressed. If id is missing, the current URI of a
+            schema is defined to be that of the parent schema. The current URI of the schema is also used to construct relative references such as for $ref.</t>
+
+        </section>
+
+        <section title="$ref" anchor="ref">
+
+            <t>This attribute defines a URI of a schema that contains the full representation of this schema.  When a validator encounters this attribute, it
+            SHOULD replace the current schema with the schema referenced by the value's URI (if known and available) and re-validate the instance.  This URI MAY
+            be relative or absolute, and relative URIs SHOULD be resolved against the URI of the current schema.</t>
+
+        </section>
+
+        <section title="$schema" anchor="schema">
+
+            <t>This attribute defines a URI of a JSON Schema that is the schema of the current schema.  When this attribute is defined, a validator SHOULD use
+            the schema referenced by the value's URI (if known and available) when resolving <xref target="hyper-schema">Hyper Schema</xref><xref
+            target="links">links</xref>.</t>
+
+            <t>A validator MAY use this attribute's value to determine which version of JSON Schema the current schema is written in, and provide the
+            appropriate validation features and behavior.  Therefore, it is RECOMMENDED that all schema authors include this attribute in their schemas to
+            prevent conflicts with future JSON Schema specification changes. </t>
+
+        </section>
+
+    </section>
+
 		</section>
 		
 		<section title="Hyper Schema" anchor="hyper-schema">
