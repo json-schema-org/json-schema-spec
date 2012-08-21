@@ -1,10 +1,10 @@
 {
-	"id" : "http://json-schema.org/hyper-schema-or-uri",
-	"type" : [{
-		"type": "string",
-		"links": [{
-			"rel": "full",
-			"href": "{@}"
-		}]},
-		"http://json-schema.org/hyper-schema"]
+	"id": "http://json-schema.org/hyper-schema-or-uri",
+	"type": [
+        {
+		    "type": "string",
+		    "links": [ { "rel": "full", "href": "{@}" } ]
+        },
+		{ "$ref": "http://json-schema.org/hyper-schema" }
+    ]
 }
