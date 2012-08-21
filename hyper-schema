@@ -1,107 +1,106 @@
 {
-	"id" : "http://json-schema.org/hyper-schema",
+	"id": "http://json-schema.org/hyper-schema",
 
-	"properties" : {
-		"links" : {
-			"type" : "array",
-			"items" : "http://json-schema.org/links"
+	"properties": {
+		"links": {
+			"type": "array",
+			"items": { "$ref": "http://json-schema.org/links" }
 		},
 		
-		"fragmentResolution" : {
-			"type" : "string",
-			"default" : "slash-delimited"
+		"fragmentResolution": {
+			"type": "string",
+			"default": "slash-delimited"
 		},
 		
-		"root" : {
-			"type" : "boolean",
-			"default" : false
+		"root": {
+			"type": "boolean",
+			"default": false
 		},
 		
-		"readonly" : {
-			"type" : "boolean",
-			"default" : false
+		"readonly": {
+			"type": "boolean",
+			"default": false
 		},
 		
-		"pathStart" : {
-			"type" : "string",
-			"format" : "uri"
+		"pathStart": {
+			"type": "string",
+			"format": "uri"
 		},
 		
-		"mediaType" : {
-			"type" : "string",
-			"format" : "media-type"
+		"mediaType": {
+			"type": "string"
 		},
 		
-		"alternate" : {
-			"type" : "array",
-			"items" : "http://json-schema.org/hyper-schema-or-uri"
+		"alternate": {
+			"type": "array",
+			"items": { "$ref": "http://json-schema.org/hyper-schema-or-uri" }
 		},
 		
-		"type" : {
-			"type" : ["string", "array"],
-			"items" : {
-				"type" : ["string", "http://json-schema.org/hyper-schema-or-uri"]
+		"type": {
+			"type": [ "string", "array" ],
+			"items": {
+				"type": [ "string", { "$ref": "http://json-schema.org/hyper-schema-or-uri" } ]
 			},
-			"uniqueItems" : true,
-			"default" : "any"
+			"uniqueItems": true,
+			"default": "any"
 		},
 
-		"properties" : {
-			"type" : "object",
-			"additionalProperties" : "http://json-schema.org/hyper-schema-or-uri",
-			"default" : {}
+		"properties": {
+			"type": "object",
+			"additionalProperties": { "$ref": "http://json-schema.org/hyper-schema-or-uri" },
+			"default": {}
 		},
 
-		"items" : {
-			"type" : ["http://json-schema.org/hyper-schema-or-uri", "array"],
-			"items" : "http://json-schema.org/hyper-schema-or-uri",
-			"default" : {}
+		"items": {
+			"type": [ { "$ref": "http://json-schema.org/hyper-schema-or-uri" }, "array" ],
+			"items": { "$ref": "http://json-schema.org/hyper-schema-or-uri" },
+			"default": {}
 		},
-		"additionalProperties" : {
-			"type" : ["http://json-schema.org/hyper-schema-or-uri", "boolean"],
-			"default" : {}
+		"additionalProperties": {
+			"type": [ { "$ref": "http://json-schema.org/hyper-schema-or-uri" }, "boolean" ],
+			"default": {}
 		},
-		"additionalItems" : {
-			"type" : ["http://json-schema.org/hyper-schema-or-uri", "boolean"],
-			"default" : {}
+		"additionalItems": {
+			"type": [ { "$ref": "http://json-schema.org/hyper-schema-or-uri" }, "boolean" ],
+			"default": {}
 		},
-		"contentEncoding" : {
-			"type" : "string"
-		},
-		
-		"default" : {
+		"contentEncoding": {
+			"type": "string"
 		},
 		
-		"requires" : {
-			"type" : ["string", "http://json-schema.org/hyper-schema-or-uri"]
+		"default": {
 		},
-		"disallow" : {
-			"type" : ["string", "array", "http://json-schema.org/hyper-schema-or-uri"],
-			"items" : {
-				"type" : ["string", "http://json-schema.org/hyper-schema-or-uri"]
+		
+		"requires": {
+			"type": [ "string", { "$ref": "http://json-schema.org/hyper-schema-or-uri" } ]
+		},
+		"disallow": {
+			"type": [ "string", "array", { "$ref": "http://json-schema.org/hyper-schema-or-uri" } ],
+			"items": {
+				"type": [ "string", { "$ref": "http://json-schema.org/hyper-schema-or-uri" } ]
 			},
-			"uniqueItems" : true
+			"uniqueItems": true
 		},
-		"extends" : {
-			"type" : ["http://json-schema.org/hyper-schema-or-uri", "array"],
-			"items" : "http://json-schema.org/hyper-schema-or-uri",
-			"default" : {}
+		"extends": {
+			"type": [ { "$ref": "http://json-schema.org/hyper-schema-or-uri" }, "array"],
+			"items": { "$ref": "http://json-schema.org/hyper-schema-or-uri" },
+			"default": {}
 		}
 
 	},
 	
-	"links" : [
+	"links": [
 		{
-			"href" : "{$schema}",
-			"rel" : "describedby"
+			"href": "{$schema}",
+			"rel": "describedby"
 		},
 		
 		{
-			"href" : "{$ref}",
-			"rel" : "full"
+			"href": "{$ref}",
+			"rel": "full"
 		}
 	],
 	
-	"fragmentResolution" : "dot-delimited",
-	"extends" : "http://json-schema.org/schema"
+	"fragmentResolution": "dot-delimited",
+	"extends": { "$ref": "http://json-schema.org/schema" }
 }
