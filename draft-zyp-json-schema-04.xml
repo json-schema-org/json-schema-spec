@@ -23,7 +23,7 @@
 <rfc category="info" docName="draft-zyp-json-schema-04" ipr="trust200902">
 	<front>
 		<title abbrev="JSON Schema Media Type">A JSON Media Type for Describing the Structure and Meaning of JSON Documents</title>
-		
+
 		<author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
 			<organization>SitePen (USA)</organization>
 			<address>
@@ -36,7 +36,7 @@
 				<email>kris@sitepen.com</email>
 			</address>
 		</author>
-		
+
 		<author fullname="Gary Court" initials="G" surname="Court">
 			<address>
 				<postal>
@@ -47,7 +47,7 @@
 				<email>gary.court@gmail.com</email>
 			</address>
 		</author>
-		
+
 		<date year="2011" />
 		<workgroup>Internet Engineering Task Force</workgroup>
 		<keyword>JSON</keyword>
@@ -57,48 +57,48 @@
 		<keyword>Notation</keyword>
 		<keyword>Hyper Schema</keyword>
 		<keyword>Hypermedia</keyword>
-		
+
 		<abstract>
 			<t>
-				JSON (JavaScript Object Notation) Schema defines the media type "application/schema+json", 
-				a JSON based format for defining the structure of JSON data. JSON Schema provides a contract for what JSON 
-				data is required for a given application and how to interact with it. JSON 
-				Schema is intended to define validation, documentation, hyperlink 
-				navigation, and interaction control of JSON data. 
+				JSON (JavaScript Object Notation) Schema defines the media type "application/schema+json",
+				a JSON based format for defining the structure of JSON data. JSON Schema provides a contract for what JSON
+				data is required for a given application and how to interact with it. JSON
+				Schema is intended to define validation, documentation, hyperlink
+				navigation, and interaction control of JSON data.
 			</t>
 		</abstract>
 	</front>
-	
+
 	<middle>
 		<section title="Introduction">
 			<t>
-				JSON (JavaScript Object Notation) Schema is a JSON media type for defining 
-				the structure of JSON data. JSON Schema provides a contract for what JSON 
-				data is required for a given application and how to interact with it. JSON 
-				Schema is intended to define validation, documentation, hyperlink 
-				navigation, and interaction control of JSON data. 
+				JSON (JavaScript Object Notation) Schema is a JSON media type for defining
+				the structure of JSON data. JSON Schema provides a contract for what JSON
+				data is required for a given application and how to interact with it. JSON
+				Schema is intended to define validation, documentation, hyperlink
+				navigation, and interaction control of JSON data.
 			</t>
 		</section>
-		
+
 		<section title="Conventions and Terminology">
 			<t>
-				<!-- The text in this section has been copied from the official boilerplate, 
+				<!-- The text in this section has been copied from the official boilerplate,
 				and should not be modified.-->
-				
-				The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", 
+
+				The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 				"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
 				interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
 			</t>
-			
+
 			<t>
-				The terms "JSON", "JSON text", "JSON value", "member", "element", "object", 
-				"array", "number", "string", "boolean", "true", "false", and "null" in this 
+				The terms "JSON", "JSON text", "JSON value", "member", "element", "object",
+				"array", "number", "string", "boolean", "true", "false", and "null" in this
 				document are to be interpreted as defined in <xref target="RFC4627">RFC 4627</xref>.
 			</t>
-			
+
 			<t>
 				This specification also uses the following defined terms:
-			
+
 				<list style="hanging">
 					<t hangText="schema">A JSON Schema object.</t>
 					<t hangText="instance">Equivalent to "JSON value" as defined in <xref target="RFC4627">RFC 4627</xref>.</t>
@@ -108,35 +108,35 @@
 				</list>
 			</t>
 		</section>
-		
+
 		<section title="Overview">
 			<t>
-				JSON Schema defines the media type "application/schema+json" for 
-				describing the structure of JSON text. JSON Schemas are also written in JSON and includes facilities 
+				JSON Schema defines the media type "application/schema+json" for
+				describing the structure of JSON text. JSON Schemas are also written in JSON and includes facilities
 				for describing the structure of JSON in terms of
 				allowable values, descriptions, and interpreting relations with other resources.
 			</t>
 			<t>
-				This document is organized into several separate definitions. The first 
-				definition is the core schema specification. This definition is primary 
+				This document is organized into several separate definitions. The first
+				definition is the core schema specification. This definition is primary
 				concerned with describing a JSON structure and specifying valid elements
 				in the structure. The second definition is the Hyper Schema specification
 				which is intended to define elements in a structure that can be interpreted as
 				hyperlinks.
-				Hyper Schema builds on JSON Schema to describe the hyperlink structure of 
+				Hyper Schema builds on JSON Schema to describe the hyperlink structure of
 				JSON values. This allows user agents to be able to successfully navigate
 				documents containing JSON based on their schemas.
 			</t>
 			<t>
-				Cumulatively JSON Schema acts as meta-JSON that can be used to define the 
+				Cumulatively JSON Schema acts as meta-JSON that can be used to define the
 				required type and constraints on JSON values, as well as define the meaning
 				of the JSON values for the purpose of describing a resource and determining
-				hyperlinks within the representation. 
+				hyperlinks within the representation.
 			</t>
 			<figure>
 				<preamble>An example JSON Schema that describes products might look like:</preamble>
 				<artwork>
-<![CDATA[	
+<![CDATA[
 {
 	"title": "Product",
 	"properties": {
@@ -171,12 +171,12 @@
 ]]>
 				</artwork>
 				<postamble>
-					This schema defines the properties of the instance, 
+					This schema defines the properties of the instance,
 					the required properties (id, name, and price), as well as an optional
 					property (tags). This also defines the link relations of the instance.
 				</postamble>
 			</figure>
-			
+
 			<section title="Design Considerations">
 				<t>
 					The JSON Schema media type does not attempt to dictate the structure of JSON
@@ -195,7 +195,7 @@
 					This specification is protocol agnostic.
 					The underlying protocol (such as HTTP) should sufficiently define the
 					semantics of the client-server interface, the retrieval of resource
-					representations linked to by JSON representations, and modification of 
+					representations linked to by JSON representations, and modification of
 					those resources. The goal of this
 					format is to sufficiently describe JSON structures such that one can
 					utilize existing information available in existing JSON
@@ -204,35 +204,35 @@
 				</t>
 			</section>
 		</section>
-		
+
 		<section title="Schema/Instance Association">
 			<t>
 				JSON values are correlated to their schema by the "describedby"
 				relation, where the schema is the target of the relation.
 				JSON values MUST be of the "application/json" media type or
-				any other subtype. Consequently, dictating how a JSON value should 
+				any other subtype. Consequently, dictating how a JSON value should
 				specify the relation to the schema is beyond the normative scope
 				of this document since this document specifically defines the JSON
 				Schema media type, and no other. It is RECOMMNENDED that JSON values
 				specify their schema so that user agents can interpret the instance
 				and retain the self-descriptive	characteristics. This avoides the need for out-of-band information about
 				instance data. Two approaches are recommended for declaring the
-				relation to the schema that describes the meaning of a JSON instance's (or collection 
+				relation to the schema that describes the meaning of a JSON instance's (or collection
 				of instances) structure. A MIME type parameter named
 				"profile" or a relation of "describedby" (which could be specified by a Link header) may be used:
-				
+
 				<figure>
 					<artwork>
-<![CDATA[	
+<![CDATA[
 Content-Type: application/my-media-type+json;
               profile=http://example.com/my-hyper-schema
 ]]>
 					</artwork>
 				</figure>
-				
+
 				or if the content is being transferred by a protocol (such as HTTP) that
 				provides headers, a Link header can be used:
-				
+
 				<figure>
 					<artwork>
 <![CDATA[
@@ -240,32 +240,32 @@ Link: <http://example.com/my-hyper-schema>; rel="describedby"
 ]]>
 					</artwork>
 				</figure>
-				
-				Instances MAY specify multiple schemas, to indicate all the schemas that 
-				are applicable to the data, and the data SHOULD be valid by all the schemas. 
-				The instance data MAY have multiple schemas 
-				that it is described by (the instance data SHOULD be valid for those schemas). 
-				Or if the document is a collection of instances, the collection MAY contain 
-				instances from different schemas. The mechanism for referencing a schema is 
-				determined by the media type of the instance (if it provides a method for 
+
+				Instances MAY specify multiple schemas, to indicate all the schemas that
+				are applicable to the data, and the data SHOULD be valid by all the schemas.
+				The instance data MAY have multiple schemas
+				that it is described by (the instance data SHOULD be valid for those schemas).
+				Or if the document is a collection of instances, the collection MAY contain
+				instances from different schemas. The mechanism for referencing a schema is
+				determined by the media type of the instance (if it provides a method for
 				referencing schemas).
 			</t>
-			
+
 			<section title="Self-Descriptive Schema">
 				<t>
-					JSON Schemas can themselves be described using JSON Schemas. 
+					JSON Schemas can themselves be described using JSON Schemas.
 					A self-describing JSON Schema for the core JSON Schema can
-					be found at <eref target="http://json-schema.org/schema">http://json-schema.org/schema</eref> for the latest version or 
-					<eref target="http://json-schema.org/draft-04/schema">http://json-schema.org/draft-04/schema</eref> for the draft-04 version. The hyper schema 
-					self-description can be found at <eref target="http://json-schema.org/hyper-schema">http://json-schema.org/hyper-schema</eref> 
+					be found at <eref target="http://json-schema.org/schema">http://json-schema.org/schema</eref> for the latest version or
+					<eref target="http://json-schema.org/draft-04/schema">http://json-schema.org/draft-04/schema</eref> for the draft-04 version. The hyper schema
+					self-description can be found at <eref target="http://json-schema.org/hyper-schema">http://json-schema.org/hyper-schema</eref>
 					or <eref target="http://json-schema.org/draft-04/hyper-schema">http://json-schema.org/draft-04/hyper-schema</eref>. All schemas
 					used within a protocol with a media type specified SHOULD include a MIME parameter that refers to the self-descriptive
 					hyper schema or another schema that extends this hyper schema:
-					
+
 					<figure>
 						<artwork>
-<![CDATA[	
-Content-Type: application/json; 
+<![CDATA[
+Content-Type: application/json;
               profile=http://json-schema.org/draft-04/hyper-schema
 ]]>
 						</artwork>
@@ -273,15 +273,15 @@ Content-Type: application/json;
 				</t>
 			</section>
 		</section>
-		
+
 		<section title="Core Schema Definition">
 			<t>
-				A JSON Schema is a JSON object that defines various attributes 
+				A JSON Schema is a JSON object that defines various attributes
 				(including usage and valid values) of a JSON value. JSON
 				Schema has recursive capabilities; there are a number of elements
 				in the structure that allow for nested JSON Schemas.
 			</t>
-			
+
 			<figure>
 				<preamble>An example JSON Schema could look like:</preamble>
 				<artwork>
@@ -719,7 +719,7 @@ Content-Type: application/json;
     </section>
 
 		</section>
-		
+
 		<section title="Hyper Schema" anchor="hyper-schema">
 			<t>
 				The following attributes are specified in addition to those
@@ -731,30 +731,30 @@ Content-Type: application/json;
 				essentially describes plain JSON (no constraints on the structures).
 				Addition of attributes provides additive information for user agents.
 			</t>
-			
+
 			<section title="links" anchor="links">
 				<t>
-					The value of the links property MUST be an array, where each item 
+					The value of the links property MUST be an array, where each item
 					in the array is a link description object which describes the link
 					relations of the instances.
 				</t>
-				
+
 				<!-- TODO: Needs more clarification and examples -->
-				
+
 				<section title="Link Description Object">
 					<t>
-						A link description object is used to describe link relations. In 
-						the context of a schema, it defines the link relations of the 
+						A link description object is used to describe link relations. In
+						the context of a schema, it defines the link relations of the
 						instances of the schema, and can be parameterized by the instance
-						values. The link description format can be used without JSON Schema, 
+						values. The link description format can be used without JSON Schema,
 						and use of this format can
 						be declared by referencing the normative link description
-						schema as the the schema for the data structure that uses the 
-						links. The URI of the normative link description schema is: 
+						schema as the the schema for the data structure that uses the
+						links. The URI of the normative link description schema is:
 						<eref target="http://json-schema.org/links">http://json-schema.org/links</eref> (latest version) or
 						<eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
 					</t>
-					
+
 					<section title="href" anchor="href">
 						<t>
 							The value of the "href" link description property
@@ -762,19 +762,19 @@ Content-Type: application/json;
 							of the instance property SHOULD be resolved as a URI-Reference per <xref target="RFC3986">RFC 3986</xref>
 							and MAY be a relative URI. The base URI to be used for relative resolution
 							SHOULD be the URI used to retrieve the instance object (not the schema)
-							when used within a schema. Also, when links are used within a schema, the URI 
-							SHOULD be parametrized by the property values of the instance 
+							when used within a schema. Also, when links are used within a schema, the URI
+							SHOULD be parametrized by the property values of the instance
 							object, if property values exist for the corresponding variables
 							in the template (otherwise they MAY be provided from alternate sources, like user input).
 						</t>
-						
+
 						<t>
 							Instance property values SHOULD be substituted into the URIs where
 							matching braces ('{', '}') are found surrounding zero or more characters,
 							creating an expanded URI. Instance property value substitutions are resolved
 							by using the text between the braces to denote the property name
-							from the instance to get the value to substitute. 
-							
+							from the instance to get the value to substitute.
+
 							<figure>
 								<preamble>For example, if an href value is defined:</preamble>
 								<artwork>
@@ -784,7 +784,7 @@ http://somesite.com/{id}
 								</artwork>
 								<postamble>Then it would be resolved by replace the value of the "id" property value from the instance object.</postamble>
 							</figure>
-							
+
 							<figure>
 								<preamble>If the value of the "id" property was "45", the expanded URI would be:</preamble>
 								<artwork>
@@ -793,23 +793,23 @@ http://somesite.com/45
 ]]>
 								</artwork>
 							</figure>
-							
-							If matching braces are found with the string "@" (no quotes) between the braces, then the 
+
+							If matching braces are found with the string "@" (no quotes) between the braces, then the
 							actual instance value SHOULD be used to replace the braces, rather than a property value.
-							This should only be used in situations where the instance is a scalar (string, 
+							This should only be used in situations where the instance is a scalar (string,
 							boolean, or number), and not for objects or arrays.
 						</t>
 					</section>
-					
+
 					<section title="rel">
 						<t>
-							The value of the "rel" property indicates the name of the 
+							The value of the "rel" property indicates the name of the
 							relation to the target resource. The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy. If a resource JSON representation contains a sub object with a property interpreted as a link, that sub-object holds the relation with the target. A relation to target from the top level resource MUST be indicated with the schema describing the top level JSON representation.
 						</t>
-						
+
 						<t>
 							Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target="RFC4287">RFC 4287</xref>). However, we define these relations here for clarity of normative interpretation within the context of JSON hyper schema defined relations:
-							
+
 							<list style="hanging">
 								<t hangText="self">
 									If the relation value is "self", when this property is encountered in
@@ -817,15 +817,15 @@ http://somesite.com/45
 									treated as a full representation of the target resource identified by
 									the specified URI.
 								</t>
-								
+
 								<t hangText="full">
 									This indicates that the target of the link is the full representation for the instance object. The object that contains this link possibly may not be the full representation.
 								</t>
-								
+
 								<t hangText="describedby">
 									This indicates the target of the link is the schema for the instance object. This MAY be used to specifically denote the schemas of objects within a JSON object hierarchy, facilitating polymorphic type data structures.
 								</t>
-								
+
 								<t hangText="root">
 									This relation indicates that the target of the link
 									SHOULD be treated as the root or the body of the representation for the
@@ -835,7 +835,7 @@ http://somesite.com/45
 								</t>
 							</list>
 						</t>
-						
+
 						<t>
 							The following relations are applicable for schemas (the schema as the "from" resource in the relation):
 
@@ -844,7 +844,7 @@ http://somesite.com/45
 								<t hangText="create">This indicates a target to use for creating new instances of a schema. This link definition SHOULD be a submission link with a non-safe method (like POST).</t>
 							</list>
 						</t>
-						
+
 						<t>
 							<figure>
 								<preamble>For example, if a schema is defined:</preamble>
@@ -865,7 +865,7 @@ http://somesite.com/45
 ]]>
 								</artwork>
 							</figure>
-							
+
 							<figure>
 								<preamble>And if a collection of instance resource's JSON representation was retrieved:</preamble>
 								<artwork>
@@ -889,41 +889,41 @@ GET /Resource/
 							The "children" collection would be located at "/Resource/?upId=thing".
 						</t>
 					</section>
-					
+
 					<section title="template">
 						<t>This property value is a string that defines the templating language used in the <xref target="href">"href"</xref> attribute. If no templating language is defined, then the default <xref target="href">Link Description Object templating langauge</xref> is used.</t>
 					</section>
-					
+
 					<section title="targetSchema">
 						<t>This property value is a schema that defines the expected structure of the JSON representation of the target of the link.</t>
 					</section>
-					
+
 					<section title="Submission Link Properties">
 						<t>
-							The following properties also apply to link definition objects, and 
-							provide functionality analogous to HTML forms, in providing a 
+							The following properties also apply to link definition objects, and
+							provide functionality analogous to HTML forms, in providing a
 							means for submitting extra (often user supplied) information to send to a server.
 						</t>
-						
+
 						<section title="method">
 							<t>
-								This attribute defines which method can be used to access the target resource. 
-								In an HTTP environment, this would be "GET" or "POST" (other HTTP methods 
-								such as "PUT" and "DELETE" have semantics that are clearly implied by 
-								accessed resources, and do not need to be defined here). 
+								This attribute defines which method can be used to access the target resource.
+								In an HTTP environment, this would be "GET" or "POST" (other HTTP methods
+								such as "PUT" and "DELETE" have semantics that are clearly implied by
+								accessed resources, and do not need to be defined here).
 								This defaults to "GET".
 							</t>
 						</section>
-						
+
 						<section title="enctype">
 							<t>
 								If present, this property indicates a query media type format that the server
-								supports for querying or posting to the collection of instances at the target 
-								resource. The query can be 
+								supports for querying or posting to the collection of instances at the target
+								resource. The query can be
 								suffixed to the target URI to query the collection with
 								property-based constraints on the resources that SHOULD be returned from
 								the server or used to post data to the resource (depending on the method).
-								
+
 								<figure>
 									<preamble>For example, with the following schema:</preamble>
 									<artwork>
@@ -944,7 +944,7 @@ GET /Resource/
 									</artwork>
 									<postamble>This indicates that the client can query the server for instances that have a specific name.</postamble>
 								</figure>
-								
+
 								<figure>
 									<preamble>For example:</preamble>
 									<artwork>
@@ -954,23 +954,23 @@ GET /Resource/
 									</artwork>
 								</figure>
 
-								If no enctype or method is specified, only the single URI specified by 
-								the href property is defined. If the method is POST, "application/json" is 
+								If no enctype or method is specified, only the single URI specified by
+								the href property is defined. If the method is POST, "application/json" is
 								the default media type.
 							</t>
 						</section>
-						
+
 						<section title="schema">
 							<t>
 								This attribute contains a schema which defines the acceptable structure of the submitted
-								request (for a GET request, this schema would define the properties for the query string 
+								request (for a GET request, this schema would define the properties for the query string
 								and for a POST request, this would define the body).
 							</t>
 						</section>
 					</section>
 				</section>
 			</section>
-			
+
 			<section title="fragmentResolution">
 				<t>
 					This property indicates the fragment resolution protocol to use for
@@ -980,62 +980,62 @@ GET /Resource/
 					protocol is "json-pointer", which is defined below. Other fragment
 					resolution protocols MAY be used, but are not defined in this document.
 				</t>
-				
+
 				<t>
 					The fragment identifier is based on <xref target="RFC3986">RFC 3986, Sec 5</xref>, and defines the
 					mechanism for resolving references to entities within a document.
 				</t>
-				
+
 				<section title="json-pointer fragment resolution">
 					<t>The "json-pointer" fragment resolution protocol uses a <xref target="json-pointer">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.</t>
 				</section>
 			</section>
-			
+
 			<!-- TODO: Remove this? -->
-			
+
 			<section title="readonly">
 				<t>This attribute indicates that the instance value SHOULD NOT be changed. Attempts by a user agent to modify the value of this property are expected to be rejected by a server.</t>
 			</section>
-			
+
 			<section title="contentEncoding">
 				<t>If the instance property value is a string, this attribute defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this schema property. <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible values for this property.</t>
 			</section>
-			
+
 			<section title="pathStart">
 				<t>
-					This attribute is a URI that defines what the instance's URI MUST start with in order to validate. 
-					The value of the "pathStart" attribute MUST be resolved as per <xref target="RFC3986">RFC 3986, Sec 5</xref>, 
+					This attribute is a URI that defines what the instance's URI MUST start with in order to validate.
+					The value of the "pathStart" attribute MUST be resolved as per <xref target="RFC3986">RFC 3986, Sec 5</xref>,
 					and is relative to the instance's URI.
 				</t>
-				
+
 				<t>
-					When multiple schemas have been referenced for an instance, the user agent 
-					can determine if this schema is applicable for a particular instance by 
+					When multiple schemas have been referenced for an instance, the user agent
+					can determine if this schema is applicable for a particular instance by
 					determining if the URI of the instance begins with the the value of the "pathStart"
-					attribute. If the URI of the instance does not start with this URI, 
-					or if another schema specifies a starting URI that is longer and also matches the 
-					instance, this schema SHOULD NOT be applied to the instance. Any schema 
-					that does not have a pathStart attribute SHOULD be considered applicable 
+					attribute. If the URI of the instance does not start with this URI,
+					or if another schema specifies a starting URI that is longer and also matches the
+					instance, this schema SHOULD NOT be applied to the instance. Any schema
+					that does not have a pathStart attribute SHOULD be considered applicable
 					to all the instances for which it is referenced.
 				</t>
 			</section>
-			
+
 			<section title="mediaType">
 				<t>This attribute defines the media type of the instance representations that this schema is defining.</t>
 			</section>
 		</section>
-		
+
 		<section title="Security Considerations">
 			<t>
-				This specification is a sub-type of the JSON format, and 
-				consequently the security considerations are generally the same as <xref target="RFC4627">RFC 4627</xref>. 
+				This specification is a sub-type of the JSON format, and
+				consequently the security considerations are generally the same as <xref target="RFC4627">RFC 4627</xref>.
 				However, an additional issue is that when link relation of "self"
-				is used to denote a full representation of an object, the user agent 
+				is used to denote a full representation of an object, the user agent
 				SHOULD NOT consider the representation to be the authoritative representation
 				of the resource denoted by the target URI if the target URI is not
-				equivalent to or a sub-path of the the URI used to request the resource 
+				equivalent to or a sub-path of the the URI used to request the resource
 				representation which contains the target URI with the "self" link.
-				
+
 				<figure>
 					<preamble>For example, if a hyper schema was defined:</preamble>
 					<artwork>
@@ -1049,7 +1049,7 @@ GET /Resource/
 ]]>
 					</artwork>
 				</figure>
-				
+
 				<figure>
 					<preamble>And a resource was requested from somesite.com:</preamble>
 					<artwork>
@@ -1086,22 +1086,22 @@ Content-Type: application/json; profile=/schema-for-this-data
 				</figure>
 			</t>
 		</section>
-		
+
 		<section title="IANA Considerations">
 			<t>The proposed MIME media type for JSON Schema is "application/schema+json".</t>
 			<t>Type name: application</t>
 			<t>Subtype name: schema+json</t>
 			<t>Required parameters: profile</t>
 			<t>
-				The value of the profile parameter SHOULD be a URI (relative or absolute) that 
-				refers to the schema used to define the structure of this structure (the 
+				The value of the profile parameter SHOULD be a URI (relative or absolute) that
+				refers to the schema used to define the structure of this structure (the
 				meta-schema). Normally the value would be http://json-schema.org/draft-04/hyper-schema,
 				but it is allowable to use other schemas that extend the hyper schema's meta-
 				schema.
 			</t>
 			<t>Optional parameters: pretty</t>
 			<t>The value of the pretty parameter MAY be true or false to indicate if additional whitespace has been included to make the JSON representation easier to read.</t>
-			
+
 			<section title="Registry of Link Relations">
 				<t>
 					This registry is maintained by IANA per <xref target="RFC4287">RFC 4287</xref> and this specification adds
@@ -1113,7 +1113,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 			</section>
 		</section>
 	</middle>
-	
+
 	<back>
 		<!-- References Section -->
 		<references title="Normative References">
@@ -1164,7 +1164,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 							<t>Improved wording of many sections.</t>
 						</list>
 					</t>
-				
+
 					<t hangText="draft-03">
 						<list style="symbols">
 							<t>Added example and verbiage to "extends" attribute.</t>
@@ -1188,7 +1188,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 							<t>Added "$ref" and "$schema" attributes.</t>
 						</list>
 					</t>
-					
+
 					<t hangText="draft-02">
 						<list style="symbols">
 							<t>Replaced "maxDecimal" attribute with "divisibleBy" attribute.</t>
@@ -1198,13 +1198,13 @@ Content-Type: application/json; profile=/schema-for-this-data
 							<t>Added "targetSchema" attribute to link description object.</t>
 						</list>
 					</t>
-					
+
 					<t hangText="draft-01">
 						<list style="symbols">
 							<t>Fixed category and updates from template.</t>
 						</list>
 					</t>
-					
+
 					<t hangText="draft-00">
 						<list style="symbols">
 							<t>Initial draft.</t>
