@@ -1,7 +1,20 @@
-## New Home JSON Schema repository
+## Welcome to JSON Schema
 
-Is the repository for the JSON Schema specification, reference schemas and a CommonJS implementation of JSON Schema (not the only JavaScript implementation of JSON Schema, JSV is another excellent JavaScript validator).
+This repository contains the current, and historical, JSON Schema
+specifications, along wit a CommonJS implementation (authored by Kris Zyp, one
+of the initiators of JSON Schema).
 
-Code is licensed under the AFL or BSD license. 
+The <a href="https://github.com/json-schema/json-schema/wiki">wiki</a> contains
+a detailed description of JSON Schema, and discussion about the next version of
+the specification.
 
-Contributors welcome!
+See also the JSON Schema web site: http://json-schema.org
+
+Note that the content of the aforementioned web site is available from this
+repository (branch <tt>gh-pages</tt>). Pull requests to improve the content of
+the site will be considered.
+
+## License
+
+The source material in this repository is licensed under the AFL or BSD license. 
+
