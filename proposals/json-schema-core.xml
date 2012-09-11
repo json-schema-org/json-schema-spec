@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
+<!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY rfc3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
+<!ENTITY rfc2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
+<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
+<!ENTITY iddiscovery SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hammer-discovery.xml">
+<!ENTITY uritemplate SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.gregorio-uritemplate.xml">
+<!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
+<!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
+<!ENTITY css21 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-CSS21-20070719.xml">
+]>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<rfc category="info" docName="json-schema-core" ipr="trust200902">
+    <front>
+        <title abbrev="JSON Schema">JSON Schema: core definitions and purposes</title>
+
+        <author fullname="Francis Galiegue" initials="fge" role="editor"
+            surname="Galiegue">
+            <address>
+                <email>fgaliegue@gmail.com</email>
+            </address>
+        </author>
+
+        <date year="2012"/>
+        <workgroup>Internet Engineering Task Force</workgroup>
+        <keyword>JSON</keyword>
+        <keyword>Schema</keyword>
+        <keyword>Hyper Schema</keyword>
+        <keyword>Hypermedia</keyword>
+
+        <abstract>
+            <t>
+                JSON Schema defines the media type "application/schema+json", a JSON based format
+                for defining the structure of JSON data. JSON Schema provides a contract for what
+                JSON data is required for a given application and how to interact with it. JSON
+                Schema is intended to define validation, documentation, hyperlink navigation, and
+                interaction control of JSON data.
+            </t>
+        </abstract>
+    </front>
+
+    <middle>
+        <section title="Introduction">
+            <t>
+                JSON Schema is a JSON media type for defining the structure of JSON data. JSON
+                Schema provides a contract for what JSON data is required for a given application
+                and how to interact with it. JSON Schema is intended to define validation,
+                documentation, hyperlink navigation, and interaction control of JSON data.
+            </t>
+
+            <t>
+                This document defines the core terminology used by JSON Schema. Other linked
+                specifications, which expand on a particular role of JSON Schema, will use that
+                terminology.
+            </t>
+
+            <t>
+                This document also defines inter schema relationships: how a particular JSON Schema
+                is identified (in a possibly unique way), how to address a JSON Schema in full, or
+                only parts of it.
+            </t>
+        </section>
+
+        <section title="Conventions and Terminology">
+            <t>
+                <!-- The text in this section has been copied from the official boilerplate,
+                and should not be modified.-->
+
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+            </t>
+
+            <t>
+                The terms "JSON", "JSON text", "JSON value", "member", "element", "object", "array",
+                "number", "string", "boolean", "true", "false", and "null" in this document are to
+                be interpreted as defined in <xref target="RFC4627">RFC 4627</xref>.
+            </t>
+        </section>
+
+        <section title="Core definitions of JSON Schema">
+            
+            <section title="JSON Schema, keywords">
+                <t>
+                    A JSON Schema is a JSON document, and that document MUST be an object. Object
+                    members of a JSON Schema are called keywords, or schema keywords.
+                </t>
+
+                <t>
+                    A JSON Schema MAY be empty.
+                </t>
+            </section>
+
+            <section title="Enclosing schema, parent schema">
+                <t>
+                    JSON Schemas can be nested, as in this example:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "name": "parent",
+    "otherschema": {
+        "name": "nested",
+        "anotherschema": {
+            "name": "alsonested"
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    In this example, the enclosing schema of both "nested" and "alsonested" is
+                    "parent". The schema with name "parent" is said to be a parent schema because it
+                    is not enclosed within another schema.
+                </t>
+            </section>
+
+            <section title="JSON Schema primitive types">
+                <t>
+                    JSON Schema defines seven primitive types for JSON values:
+                </t>
+
+                <list style="hanging">
+                    <t hangText="array">A JSON array.</t>
+                    <t hangText="boolean">A JSON boolean (true or false).</t>
+                    <t hangText="integer">A JSON number without a decimal part.</t>
+                    <t hangText="number">Any JSON number. Number includes integer.</t>
+                    <t hangText="null">The JSON null value.</t>
+                    <t hangText="object">A JSON object.</t>
+                    <t hangText="string">A JSON string.</t>
+                </list>
+
+            </section>
+
+            <section title="Instance">
+                <t>
+                    An instance is any JSON value which is being processed by a JSON Schema. The
+                    specification may also refer to an instance as a JSON instance.
+                </t>
+            </section>
+
+        </section>
+
+        <section title="Overview">
+            <t>
+                JSON Schema defines the media type "application/schema+json" for describing the
+                structure of JSON instances. JSON Schemas are themselves written in JSON and include
+                facilities for describing the structure of JSON in terms of allowable values,
+                descriptions, and interpreting relations with other resources.
+            </t>
+
+            <t>
+                JSON Schema serves different purposes, which are summarized below. Each purpose has
+                a defined set of keywords which is described in its own specification.
+            </t>
+
+            <list style="hanging">
+                <t hangText="Documentation">JSON Schema can be used to decorate either itself, or
+                instances, with descriptive text highlighting the schema's, or instance's,
+                purposes.</t>
+                <t hangText="Hyperlinking">JSON Schema can be used to associate an instance to a
+                Link Description Object, as defined by FIXME.</t>
+                <t hangText="Validation">JSON Schema can be used to validate the structure of an
+                instance. Keywords also exist for semantic analysis, although implementations are
+                not required to implement them.</t>
+            </list>
+
+            <section title="Design Considerations">
+                <t>
+                    JSON Schema provides a separate format for flexibly communicating how a JSON
+                    value should be interpreted and/or validated, such that clients can properly
+                    understand acceptable structures for, and/or extract the needed information
+                    from, the JSON instance being processed.
+                </t>
+                <t>
+                    It is acknowledged that JSON values can be of any type defined by the JSON
+                    specification. As such, JSON Schema does not mandate that the instance being
+                    processed be of a particular type: JSON Schema can process any JSON value,
+                    including null. It is the domain of JSON Schema validation to add useful
+                    constraints to the structure and, optionally, semantics, of the JSON instance
+                    being processed.
+                </t>
+                <t>
+                    JSON Schema is agnostic with regards to both protocols and programming
+                    languages. In particular, this means that defining the semantics of the
+                    client-server interface is dependent on the protocol being used.
+                </t>
+            </section>
+        </section>
+
+        <section title="JSON Schema identification information and addressing">
+
+            <section title="Purpose of this section">
+                <t>
+                    This section describes the following:
+                </t>
+
+                <list>
+                    <t>available mechanisms for identifying the schema in a unique way: its
+                    location, but also the version of the JSON Schema specification it is written
+                    against;</t>
+                    <t>available mechanisms for addressing a JSON Schema, or a specific subschema in
+                    a JSON Schema.</t>
+                </list>
+                
+                <section title="Associated keywords">
+
+                <t>
+                    The three keywords defined for this purpose are "$ref", "id" and "$schema".
+                </t>
+
+                </section>
+
+                <section title="Possible keyword values">
+                    <t>
+                        The value for these keywords MUST be JSON strings. These strings MUST be
+                        valid URIs, as defined in FIXME.
+                    </t>
+                </section>
+            </section>
+
+            <section title="$schema">
+
+                <t>
+                    This keyword serves two purposes:
+                </t>
+
+                <list>
+                    <t>implementations use this value to determine which version of the draft this
+                    schema is written against;</t>
+                    <t>it is also a link to a resource which is itself a JSON Schema, against which
+                    the schema MUST validate successfully.</t>
+                </list>
+
+                <t>
+                    This keyword SHOULD NOT be used in subschemas. In the event that it is
+                    encountered in a subschema, implementations SHALL ignore it.
+                </t>
+
+                <t>
+                    If a schema does not have a "$schema" keyword, implementations SHOULD consider
+                    that the schema is written against the most current published version of the
+                    JSON Schema specification.
+                </t>
+
+            </section>
+
+            <section title="id">
+
+                <t>
+                    In addition to being a URI, additional constraints are placed on this keyword
+                    depending on whether it is being used in a parent schema or a subschema.
+                </t>
+
+                <section title="In parent schemas">
+
+                    <t>
+                        In parent schemas, the value of "id" SHOULD be an absolute URI. This URI
+                        SHOULD have either no fragment part, or an empty fragment part.
+                    </t>
+                    
+                    <t>
+                        If the two requirements above are not fulfilled, implementations SHOULD NOT
+                        consider this URI as being the schema location, as this URI is effectively
+                        unreferenceable from any other schema.
+                    </t>
+    
+                    <t>
+                        In addition, if the JSON Schema has been fetched from a URI which differs
+                        from this schema's "id" keyword value, implementations SHOULD consider that
+                        the schema location is the URI having been used to fetch the schema.
+                    </t>
+                </section>
+
+                <section title="In subschemas">
+
+                    <t>
+                        In subschemas, the value of "id" SHOULD be a path component. This path
+                        component MUST NOT start with a slash. In a same schema, there MUST NOT be
+                        two identical values for "id" in different subschemas.
+                    </t>
+
+                    <t>
+                        If the two requirements above are not fulfilled, implementations SHOULD fail
+                        to look up a subschema by this id (see next section).
+                    </t>
+
+                </section>
+            </section>
+
+            <section title="$ref">
+
+                <t>
+                    A JSON Schema with a keyword named "$ref" MUST be handled as a JSON Reference,
+                    as described by --FIXME: link to draft--. Implementations MUST follow the rules
+                    defined by this specification. Among other rules, it is important to note that
+                    when processing a JSON Reference, other schema keywords, if any, SHALL be
+                    ignored.
+                </t>
+
+                <t>
+                    In addition, JSON Schema defines the following extensions to JSON Reference:
+                </t>
+
+                <list>
+                    <t>when an initial JSON Reference is encountered, implementations MUST resolve
+                    the reference's URI against the current schema's URI, as described in FIXME;</t>
+                    <t>if the fragment is not a valid JSON Pointer (FIXME: link to draft),
+                    implementations SHOULD try and find a subschema with an id by the same value in
+                    the target schema.</t>
+                </list>
+
+                <t>
+                    Handling JSON Reference processing failures, for whatever reason (unable to
+                    dereference URI, inappropriate content at URI, or JSON Reference loop), is out
+                    of the normative scope of this document.
+                </t>
+
+            </section>
+
+        </section>
+
+        <section title="Schema/Instance Association">
+
+            <section title="Purpose of this section">
+                <t>
+                    A JSON instance MAY be correlated to a JSON Schema. This correlation MAY be
+                    embodied witin existing protocol headers; failing that, a correlation MAY be
+                    embodied in a JSON instance if this instance is an object, by means of a member
+                    named "describedby", and provided that this member not be used for any other
+                    purpose by the instance.
+                </t>
+
+                <t>
+                    In addition:
+                </t>
+
+                <list>
+                    <t>if the protocol also carries media type information (by means, for instance,
+                    of a "Content-Type" header), an instance MUST be one of "application/json" or
+                    any other subtype;</t>
+                    <t>implementations SHOULD prefer correlation information carried by the protocol
+                    in preference to similar information embodied within JSON object instances.</t>
+                </list>
+
+                <t>
+                    Should both scenarios above be inapplicable, due either to the absence of, or
+                    restrictions on, protocol headers, or to the JSON instance not being an object
+                    value, such a correlation is out of the normative scope of this specification.
+                </t>
+            </section>
+
+            <section title='JSON object instances and the "describedby" member'>
+                <t>
+                    Provided that this particular member is not used for other purposes (see
+                    above), a JSON object instance MAY use a "describedby" member to correlate this
+                    instance to a given JSON Schema.
+                </t>
+
+                <t>
+                    Should such a member be present for correlation purposes:
+                </t>
+
+                <list>
+                    <t>its value MUST be a JSON string;</t>
+                    <t>this string MUST be a valid URI;</t>
+                    <t>this URI MUST resolve to a valid JSON Schema.</t>
+                </list>
+
+                <t>
+                    Should any of the provisions defined above fail, implementations SHOULD NOT
+                    attempt to correlate with the "describedby" member value.
+                </t>
+            </section>
+
+            <section title="Recommended correlation mechanisms for use with the HTTP protocol">
+
+                <t>
+                    It is acknowledged by this specification that the majority of interactive JSON
+                    Schema processing will be over HTTP. This section therefore gives
+                    recommendations for materializing an instance/schema correlation using
+                    mechanisms currently available for this protocol.
+                </t>
+
+                <section title='Correlation by means of the "Content-Type" header'>
+                    <t>
+                        It is RECOMMENDED that a MIME type parameter by the name of "profile" be
+                        appended to the "Content-Type" header of the instance being processed. If
+                        present, the value of this parameter MUST be a valid URI, and this URI
+                        SHOULD resolve to a valid JSON Schema.
+                    </t>
+
+                    <t>
+                        An example of such a header would be:
+                    </t>
+                      
+                    <figure>
+                        <artwork>
+<![CDATA[
+Content-Type: application/my-media-type+json;
+              profile=http://example.com/my-hyper-schema
+]]>
+                        </artwork>
+                    </figure>
+
+                </section>
+
+                <section title='Correlation by means of the "Link" header'>
+                    <t>
+                        When using the "Link" header, it is RECOMMENDED that a relationship by the
+                        name "describedby" be used, as defined by RFC 2048, section 19.6.2.4 (FIXME:
+                        make real link). Note: it should be remembered that relationship values are
+                        case insensitive, so "describedBy" is just as valid a relationship as
+                        "describedby".
+                    </t>
+
+                    <t>
+                        The target URI of the "Link" header SHOULD be dereferenceable; the content
+                        referenced by this URI MUST be a valid JSON Schema.
+                    </t>
+
+                    <t>
+                        An example of such a header would be:
+                    </t>
+
+                    <figure>
+                        <artwork>
+<![CDATA[
+Link: <http://example.com/my-hyper-schema>; rel="describedby"
+]]>
+                        </artwork>
+                    </figure>
+
+                </section>
+            </section>
+
+        </section>
+
+        <section title="IANA Considerations">
+            <t>
+                The proposed MIME media type for JSON Schema is defined as follows:
+            </t>
+
+            <list>
+                <t>type name: application;</t>
+                <t>subtype name: schema+json;</t>
+                <t>required parameters: profile.</t>
+            </list>
+
+        </section>
+    </middle>
+
+    <back>
+        <!-- References Section -->
+        <references title="Normative References">
+            &rfc2045;
+            &rfc2119;
+            &rfc3339;
+            &rfc3986;
+            &rfc4287;
+            <reference anchor="json-pointer"
+                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">
+                <front>
+                    <title>JSON Pointer</title>
+                    <author initials="P." surname="Bryan">
+                        <organization>ForgeRock US, Inc.</organization>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2011" month="October" />
+                </front>
+            </reference>
+        </references>
+        <references title="Informative References">
+            &rfc2616;
+            &rfc4627;
+            &rfc5226;
+            &iddiscovery;
+            &uritemplate;
+            &linkheader;
+            &html401;
+            &css21;
+        </references>
+
+        <section title="ChangeLog">
+            <t>TODO</t>
+            <!--
+            <t>
+                <list style="hanging">
+                    <t hangText="draft-04">
+                        <list style="symbols">
+                            <t>Changed "required" attribute to an array of strings.</t>
+                            <t>Removed "format" attribute.</t>
+                            <t>Added "minProperties" and "maxProperties" attributes.</t>
+                            <t>Replaced "slash-delimited" fragment resolution with
+                            "json-pointer".</t>
+                            <t>Added "template" LDO attribute.</t>
+                            <t>Removed irrelevant "Open Issues" section.</t>
+                            <t>Merged Conventions and Terminology sections.</t>
+                            <t>Defined terms used in specification.</t>
+                            <t>Restricted "type" to only the core JSON types.</t>
+                            <t>Renamed "divisibleBy" to "mod".</t>
+                            <t>Improved wording of many sections.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-03">
+                        <list style="symbols">
+                            <t>Added example and verbiage to "extends" attribute.</t>
+                            <t>Defined slash-delimited to use a leading slash.</t>
+                            <t>Made "root" a relation instead of an attribute.</t>
+                            <t>Removed address values, and MIME media type from format to reduce
+                            confusion (mediaType already exists, so it can be used for MIME
+                            types).</t>
+                            <t>Added more explanation of nullability.</t>
+                            <t>Removed "alternate" attribute.</t>
+                            <t>Upper cased many normative usages of must, may, and should.</t>
+                            <t>Replaced the link submission "properties" attribute to "schema"
+                            attribute.</t>
+                            <t>Replaced "optional" attribute with "required" attribute.</t>
+                            <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum"
+                            attribute.</t>
+                            <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
+                            attribute.</t>
+                            <t>Replaced "requires" attribute with "dependencies" attribute.</t>
+                            <t>Moved "contentEncoding" attribute to hyper schema.</t>
+                            <t>Added "additionalItems" attribute.</t>
+                            <t>Added "id" attribute.</t>
+                            <t>Switched self-referencing variable substitution from "-this" to "@"
+                            to align with reserved characters in URI template.</t>
+                            <t>Added "patternProperties" attribute.</t>
+                            <t>Schema URIs are now namespace versioned.</t>
+                            <t>Added "$ref" and "$schema" attributes.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-02">
+                        <list style="symbols">
+                            <t>Replaced "maxDecimal" attribute with "divisibleBy" attribute.</t>
+                            <t>Added slash-delimited fragment resolution protocol and made it the
+                            default.</t>
+                            <t>Added language about using links outside of schemas by referencing
+                            its normative URI.</t>
+                            <t>Added "uniqueItems" attribute.</t>
+                            <t>Added "targetSchema" attribute to link description object.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-01">
+                        <list style="symbols">
+                            <t>Fixed category and updates from template.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-00">
+                        <list style="symbols">
+                            <t>Initial draft.</t>
+                        </list>
+                    </t>
+                </list>
+            </t>
+            -->
+        </section>
+    </back>
+</rfc>
