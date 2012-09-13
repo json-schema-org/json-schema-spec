@@ -1,26 +1,26 @@
 {
-	"$schema" : "http://json-schema.org/hyper-schema",
-	"id" : "http://json-schema.org/json-ref",
+	"$schema": "http://json-schema.org/hyper-schema",
+	"id": "http://json-schema.org/json-ref",
 	
-	"items" : "#",
-	"additionalProperties" : "#",
+	"items": { "$ref": "#" },
+	"additionalProperties": { "$ref": "#" },
 	
-	"links" : [
+	"links": [
 		{
-			"href" : "{$ref}",
-			"rel" : "full"
+			"href": "{$ref}",
+			"rel": "full"
 		},
 		
 		{
-			"href" : "{$schema}",
-			"rel" : "describedby"
+			"href": "{$schema}",
+			"rel": "describedby"
 		},
 		
 		{
-			"href" : "{id}",
-			"rel" : "self"
+			"href": "{id}",
+			"rel": "self"
 		}
-	],
+	]
 	
-	"fragmentResolution" : "dot-delimited"
+	"fragmentResolution": "json-pointer"
 }
