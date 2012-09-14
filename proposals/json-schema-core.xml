@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY rfc4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
-<!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
-<!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
-<!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
-<!ENTITY rfc3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
-<!ENTITY rfc2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
-<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
-<!ENTITY iddiscovery SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hammer-discovery.xml">
-<!ENTITY uritemplate SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.gregorio-uritemplate.xml">
-<!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
-<!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
-<!ENTITY css21 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-CSS21-20070719.xml">
+<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -24,10 +13,32 @@
     <front>
         <title abbrev="JSON Schema">JSON Schema: core definitions and purposes</title>
 
-        <author fullname="Francis Galiegue" initials="fge" role="editor"
-            surname="Galiegue">
+        <author fullname="Francis Galiegue" initials="fge" surname="Galiegue">
             <address>
                 <email>fgaliegue@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
+            <organization>SitePen (USA)</organization>
+            <address>
+                <postal>
+                    <street>530 Lytton Avenue</street>
+                    <city>Palo Alto, CA 94301</city>
+                    <country>USA</country>
+                </postal>
+                <phone>+1 650 968 8787</phone>
+                <email>kris@sitepen.com</email>
+            </address>
+        </author>
+
+        <author fullname="Gary Court" initials="G" surname="Court">
+            <address>
+                <postal>
+                    <city>Calgary, AB</city>
+                    <country>Canada</country>
+                </postal>
+                <email>gary.court@gmail.com</email>
             </address>
         </author>
 
@@ -65,9 +76,8 @@
             </t>
 
             <t>
-                This document also defines inter schema relationships: how a particular JSON Schema
-                is identified (in a possibly unique way), how to address a JSON Schema in full, or
-                only parts of it.
+                This document also defines the mechanisms used for JSON Schema identification and
+                referencing.
             </t>
         </section>
 
@@ -88,7 +98,7 @@
             </t>
         </section>
 
-        <section title="Core definitions of JSON Schema">
+        <section title="Core terminology of JSON Schema">
             
             <section title="JSON Schema, keywords">
                 <t>
@@ -101,7 +111,7 @@
                 </t>
             </section>
 
-            <section title="Enclosing schema, parent schema">
+            <section title="Enclosing schema, root schema">
                 <t>
                     JSON Schemas can be nested, as in this example:
                 </t>
@@ -109,11 +119,11 @@
                     <artwork>
 <![CDATA[
 {
-    "name": "parent",
+    "title": "root",
     "otherschema": {
-        "name": "nested",
+        "title": "nested",
         "anotherschema": {
-            "name": "alsonested"
+            "title": "alsonested"
         }
     }
 }
@@ -123,7 +133,7 @@
 
                 <t>
                     In this example, the enclosing schema of both "nested" and "alsonested" is
-                    "parent". The schema with name "parent" is said to be a parent schema because it
+                    "root". The schema with title "root" is said to be a root schema because it
                     is not enclosed within another schema.
                 </t>
             </section>
@@ -145,9 +155,40 @@
 
             </section>
 
+            <section title="JSON value equality">
+                <t>
+                    Two JSON values are said to be equal if and only if:
+                </t>
+
+                <list>
+                    <t>both are nulls; or</t>
+                    <t>both are booleans or strings, and have the same value; or</t>
+                    <t>both are numbers, and have the same JSON reprensetation; or</t>
+                    <t>both are arrays, and:
+                        <list>
+                            <t>have the same number of elements; and</t>
+                            <t>elements at the same index are equal according to this definition;
+                            or</t>
+                        </list>
+                    </t>
+                    <t>both are objects, and:
+                        <list>
+                            <t>have the same set of members; and</t>
+                            <t>values for a same member are equal according to this definition.</t>
+                        </list>
+                    </t>
+                </list>
+            </section>
+
+            <t>
+                Note about numbers: the two JSON number values, 1.0 and 1, for instance, are
+                mathematically equivalent; however they are NOT equal, since their JSON
+                representation differs.
+            </t>
+
             <section title="Instance">
                 <t>
-                    An instance is any JSON value which is being processed by a JSON Schema. The
+                    An instance is any JSON value being processed by a JSON Schema. The
                     specification may also refer to an instance as a JSON instance.
                 </t>
             </section>
@@ -187,11 +228,10 @@
                 </t>
                 <t>
                     It is acknowledged that JSON values can be of any type defined by the JSON
-                    specification. As such, JSON Schema does not mandate that the instance being
-                    processed be of a particular type: JSON Schema can process any JSON value,
-                    including null. It is the domain of JSON Schema validation to add useful
-                    constraints to the structure and, optionally, semantics, of the JSON instance
-                    being processed.
+                    specification. As such, JSON Schema does not mandate that an instance be of a
+                    particular type: JSON Schema can process any JSON value, including null. It is
+                    the domain of JSON Schema validation to add useful constraints to the structure
+                    and, optionally, semantics, of the JSON instance being processed.
                 </t>
                 <t>
                     JSON Schema is agnostic with regards to both protocols and programming
@@ -201,188 +241,171 @@
             </section>
         </section>
 
-        <section title="JSON Schema identification information and addressing">
+        <section title="JSON Schema identification">
 
             <section title="Purpose of this section">
                 <t>
-                    This section describes the following:
+                    This section describes the available mechanisms for identifying the schema in a
+                    unique way: its location, but also the version of the JSON Schema specification
+                    it is written against.
+                </t>
+            </section>
+
+            <section title="Meta-schema identification using $schema">
+                <t>
+                    TODO -- core schema, hyper schema, etc etc...
+                </t>
+            </section>
+
+            <section title="Root schema identification">
+                <t>
+                    A root schema MAY be uniquely identified by the presence of a "location"
+                    keyword. This keyword's value MUST be a string, and this string MUST be a URI;
+                    the URI MUST be absolute, and MUST have either no fragment, or an empty
+                    fragment.
                 </t>
 
-                <list>
-                    <t>available mechanisms for identifying the schema in a unique way: its
-                    location, but also the version of the JSON Schema specification it is written
-                    against;</t>
-                    <t>available mechanisms for addressing a JSON Schema, or a specific subschema in
-                    a JSON Schema.</t>
-                </list>
+                <t>
+                    This keyword MUST NOT be used in subschemas.
+                </t>
+
+            </section>
+
+            <section title="Subschema identification">
+                <t>
+                    Within JSON Schemas, a subschema MAY be identified by the presence of a "subId"
+                    keyword. This keyword's value MUST be a string.
+                </t>
+
+                <t>
+                    This string MUST NOT be empty. It MUST NOT start with a solidus (/). A same
+                    string MUST NOT be used more than once in a same root schema.
+                </t>
+
+                <t>
+                    This keyword MAY also be used in a root schema.
+                </t>
+            </section>
+
+            <section title='Identification using \"id\"'>
+
+                <t>
+                    The value for this keyword MUST be a string. This string MUST be a URI.
+                </t>
+
+                <t>
+                    For backwards compatibility, JSON Schemas MAY use the "id" keyword for
+                    identification purposes. However, due to numerous ambiguity concerns, this is
+                    NOT RECOMMENDED.
+                </t>
+
+                <t>
+                    Schema authors willing to use "id" for identification purposes SHOULD follow the
+                    following recommendations:
+                </t>
                 
-                <section title="Associated keywords">
-
-                <t>
-                    The three keywords defined for this purpose are "$ref", "id" and "$schema".
-                </t>
-
-                </section>
-
-                <section title="Possible keyword values">
-                    <t>
-                        The value for these keywords MUST be JSON strings. These strings MUST be
-                        valid URIs, as defined in FIXME.
-                    </t>
-                </section>
-            </section>
-
-            <section title="$schema">
-
-                <t>
-                    This keyword serves two purposes:
-                </t>
-
                 <list>
-                    <t>implementations use this value to determine which version of the draft this
-                    schema is written against;</t>
-                    <t>it is also a link to a resource which is itself a JSON Schema, against which
-                    the schema MUST validate successfully.</t>
+                    <t>in root schemas, "id" SHOULD obey the same constraints as described for
+                    "location";</t>
+                    <t>if used in subschemas, "id" SHOULD be a fragment-only URI.</t>
                 </list>
 
                 <t>
-                    This keyword SHOULD NOT be used in subschemas. In the event that it is
-                    encountered in a subschema, implementations SHALL ignore it.
+                    In any event, implementations SHOULD NOT expect peer implementations to support
+                    JSON Schema identification by the means of the "id" keyword.
                 </t>
-
-                <t>
-                    If a schema does not have a "$schema" keyword, implementations SHOULD consider
-                    that the schema is written against the most current published version of the
-                    JSON Schema specification.
-                </t>
-
-            </section>
-
-            <section title="id">
-
-                <t>
-                    In addition to being a URI, additional constraints are placed on this keyword
-                    depending on whether it is being used in a parent schema or a subschema.
-                </t>
-
-                <section title="In parent schemas">
-
-                    <t>
-                        In parent schemas, the value of "id" SHOULD be an absolute URI. This URI
-                        SHOULD have either no fragment part, or an empty fragment part.
-                    </t>
-                    
-                    <t>
-                        If the two requirements above are not fulfilled, implementations SHOULD NOT
-                        consider this URI as being the schema location, as this URI is effectively
-                        unreferenceable from any other schema.
-                    </t>
-    
-                    <t>
-                        In addition, if the JSON Schema has been fetched from a URI which differs
-                        from this schema's "id" keyword value, implementations SHOULD consider that
-                        the schema location is the URI having been used to fetch the schema.
-                    </t>
-                </section>
-
-                <section title="In subschemas">
-
-                    <t>
-                        In subschemas, the value of "id" SHOULD be a path component. This path
-                        component MUST NOT start with a slash. In a same schema, there MUST NOT be
-                        two identical values for "id" in different subschemas.
-                    </t>
-
-                    <t>
-                        If the two requirements above are not fulfilled, implementations SHOULD fail
-                        to look up a subschema by this id (see next section).
-                    </t>
-
-                </section>
-            </section>
-
-            <section title="$ref">
-
-                <t>
-                    A JSON Schema with a keyword named "$ref" MUST be handled as a JSON Reference,
-                    as described by --FIXME: link to draft--. Implementations MUST follow the rules
-                    defined by this specification. Among other rules, it is important to note that
-                    when processing a JSON Reference, other schema keywords, if any, SHALL be
-                    ignored.
-                </t>
-
-                <t>
-                    In addition, JSON Schema defines the following extensions to JSON Reference:
-                </t>
-
-                <list>
-                    <t>when an initial JSON Reference is encountered, implementations MUST resolve
-                    the reference's URI against the current schema's URI, as described in FIXME;</t>
-                    <t>if the fragment is not a valid JSON Pointer (FIXME: link to draft),
-                    implementations SHOULD try and find a subschema with an id by the same value in
-                    the target schema.</t>
-                </list>
-
-                <t>
-                    Handling JSON Reference processing failures, for whatever reason (unable to
-                    dereference URI, inappropriate content at URI, or JSON Reference loop), is out
-                    of the normative scope of this document.
-                </t>
-
             </section>
 
         </section>
 
+        <section title="JSON Schema referencing">
+
+            <section title="Purpose of this section">
+                <t>
+                    JSON Schema referencing is done using JSON Reference (FIXME: link to draft).
+                </t>
+
+                <t>
+                    In addition, JSON Schema extends the specification so as to use a dedicated
+                    fragment resolution scheme, by the name "json-schema". This mechanism is
+                    explained below. FIXME: RFC for fragment-resolution?
+                </t>
+            </section>
+
+            <section title="Determining the URI of a schema">
+
+                <t>
+                    Implementations SHOULD determine the URI of a schema as follows:
+                </t>
+
+                <list>
+                    <t>if the schema was loaded from an absolute URI with no fragment part, or an
+                    empty fragment part, then the URI of the schema SHOULD be considered to be the
+                    loading URI, regardless of the values of "location" or "id";</t>
+                    <t>in any other situations:
+                        <list>
+                            <t>if the "location" keyword is present and conforms to this
+                            specification, the value of this keyword SHOULD be considered as the
+                            schema URI;</t>
+                            <t>if the "id" keyword is present and conforms to FIXME: crosslink, the
+                            value of this keyword MAY be considered as the schema URI;</t>
+                            <t>otherwise, implementations SHOULD choose an arbitrary URN, or the
+                            empty URI.</t>
+                        </list>
+                    </t>
+                </list>
+
+            </section>
+
+            <section title="Loading schemas using JSON Reference">
+                <t>
+                    When encountering a JSON Reference, implementations MUST follow the rules
+                    defined by the JSON Reference draft. In addition:
+                </t>
+
+                <list>
+                    <t>if resolution of the JSON Reference fails, or the dereferenced content is not
+                    a JSON Schema, it is RECOMMENDED that implementations consider this a failure
+                    and stop JSON Schema processing;</t>
+                    <t>implementations MUST perform fragment resolution as per the mechanism
+                    described below.</t>
+                </list>
+            </section>
+
+            <section title='The "json-schema" fragment resolution scheme'>
+                <t>
+                    The "json-schema" fragment resolution scheme is an extension to the
+                    "json-pointer" fragment resolution scheme and works as follows:
+                </t>
+
+                <list>
+                    <t>implementations first try and treat this fragment as a JSON Pointer; if
+                    successful, they try and dereference that pointer against the current JSON
+                    Schema;</t>
+                    <t>if the fragment is not a JSON Pointer, implementations try and find in the
+                    JSON Schema a subschema with a "subId" keyword, which value is strictly equal to
+                    the fragment's URI-decoded string value.</t>
+                </list>
+            </section>
+        </section>
         <section title="Schema/Instance Association">
 
             <section title="Purpose of this section">
                 <t>
-                    A JSON instance MAY be correlated to a JSON Schema. This correlation MAY be
-                    embodied witin existing protocol headers; failing that, a correlation MAY be
-                    embodied in a JSON instance if this instance is an object, by means of a member
-                    named "describedby", and provided that this member not be used for any other
-                    purpose by the instance.
+                    A JSON instance MAY be correlated to one, or even several, JSON Schemas. This
+                    correlation MAY be embodied witin existing protocol headers.
                 </t>
 
                 <t>
-                    In addition:
-                </t>
-
-                <list>
-                    <t>if the protocol also carries media type information (by means, for instance,
-                    of a "Content-Type" header), an instance MUST be one of "application/json" or
-                    any other subtype;</t>
-                    <t>implementations SHOULD prefer correlation information carried by the protocol
-                    in preference to similar information embodied within JSON object instances.</t>
-                </list>
-
-                <t>
-                    Should both scenarios above be inapplicable, due either to the absence of, or
-                    restrictions on, protocol headers, or to the JSON instance not being an object
-                    value, such a correlation is out of the normative scope of this specification.
-                </t>
-            </section>
-
-            <section title='JSON object instances and the "describedby" member'>
-                <t>
-                    Provided that this particular member is not used for other purposes (see
-                    above), a JSON object instance MAY use a "describedby" member to correlate this
-                    instance to a given JSON Schema.
+                    In addition, if the protocol also carries media type information (by means, for
+                    instance, of a "Content-Type" header), an instance MUST be one of
+                    "application/json" or any other subtype.
                 </t>
 
                 <t>
-                    Should such a member be present for correlation purposes:
-                </t>
-
-                <list>
-                    <t>its value MUST be a JSON string;</t>
-                    <t>this string MUST be a valid URI;</t>
-                    <t>this URI MUST resolve to a valid JSON Schema.</t>
-                </list>
-
-                <t>
-                    Should any of the provisions defined above fail, implementations SHOULD NOT
-                    attempt to correlate with the "describedby" member value.
+                    Should the scenario above be inapplicable, due either to the absence of, or
+                    restrictions on, protocol headers, such a correlation is out of the normative
+                    scope of this specification.
                 </t>
             </section>
 
@@ -421,15 +444,14 @@ Content-Type: application/my-media-type+json;
                 <section title='Correlation by means of the "Link" header'>
                     <t>
                         When using the "Link" header, it is RECOMMENDED that a relationship by the
-                        name "describedby" be used, as defined by RFC 2048, section 19.6.2.4 (FIXME:
+                        name "describedBy" be used, as defined by RFC 2048, section 19.6.2.4 (FIXME:
                         make real link). Note: it should be remembered that relationship values are
                         case insensitive, so "describedBy" is just as valid a relationship as
-                        "describedby".
+                        "DESCRIBEDBY".
                     </t>
 
                     <t>
-                        The target URI of the "Link" header SHOULD be dereferenceable; the content
-                        referenced by this URI MUST be a valid JSON Schema.
+                        The target URI of the "Link" header SHOULD be a valid JSON Schema.
                     </t>
 
                     <t>
@@ -439,7 +461,7 @@ Content-Type: application/my-media-type+json;
                     <figure>
                         <artwork>
 <![CDATA[
-Link: <http://example.com/my-hyper-schema>; rel="describedby"
+Link: <http://example.com/my-hyper-schema>; rel="describedBy"
 ]]>
                         </artwork>
                     </figure>
@@ -458,6 +480,7 @@ Link: <http://example.com/my-hyper-schema>; rel="describedby"
                 <t>type name: application;</t>
                 <t>subtype name: schema+json;</t>
                 <t>required parameters: profile.</t>
+                <t>FIXME: fragment resolution?</t>
             </list>
 
         </section>
@@ -466,13 +489,9 @@ Link: <http://example.com/my-hyper-schema>; rel="describedby"
     <back>
         <!-- References Section -->
         <references title="Normative References">
-            &rfc2045;
-            &rfc2119;
-            &rfc3339;
-            &rfc3986;
-            &rfc4287;
+            &RFC2119;
             <reference anchor="json-pointer"
-                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">
+                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-04">
                 <front>
                     <title>JSON Pointer</title>
                     <author initials="P." surname="Bryan">
@@ -486,14 +505,7 @@ Link: <http://example.com/my-hyper-schema>; rel="describedby"
             </reference>
         </references>
         <references title="Informative References">
-            &rfc2616;
-            &rfc4627;
-            &rfc5226;
-            &iddiscovery;
-            &uritemplate;
-            &linkheader;
-            &html401;
-            &css21;
+            &RFC4627;
         </references>
 
         <section title="ChangeLog">
