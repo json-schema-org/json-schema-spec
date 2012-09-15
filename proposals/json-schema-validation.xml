@@ -1,0 +1,1212 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+]>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<rfc category="info" docName="json-schema-validation" ipr="trust200902">
+    <front>
+        <title abbrev="JSON Schema">JSON Schema: instance validation</title>
+
+        <author fullname="Francis Galiegue" initials="fge" surname="Galiegue">
+            <address>
+                <email>fgaliegue@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
+            <organization>SitePen (USA)</organization>
+            <address>
+                <postal>
+                    <street>530 Lytton Avenue</street>
+                    <city>Palo Alto, CA 94301</city>
+                    <country>USA</country>
+                </postal>
+                <phone>+1 650 968 8787</phone>
+                <email>kris@sitepen.com</email>
+            </address>
+        </author>
+
+        <author fullname="Gary Court" initials="G" surname="Court">
+            <address>
+                <postal>
+                    <city>Calgary, AB</city>
+                    <country>Canada</country>
+                </postal>
+                <email>gary.court@gmail.com</email>
+            </address>
+        </author>
+
+        <date year="2012"/>
+        <workgroup>Internet Engineering Task Force</workgroup>
+        <keyword>JSON</keyword>
+        <keyword>Schema</keyword>
+        <keyword>validation</keyword>
+
+        <abstract>
+            <t>
+                JSON Schema (application/schema+json) has several purposes, one of which is instance
+                validation. This validation can be non interactive. This specification describes
+                schema keywords dedicated to validation purposes, what value these keywords should
+                have and how to validate JSON instances against these keywords.
+            </t>
+        </abstract>
+    </front>
+
+    <middle>
+        <section title="Introduction">
+            <t>
+                JSON Schema can be used to require that a given JSON document (an instance)
+                satisfies a certain number of criteria. These criteria are materialized by a set of
+                keywords which are described in this specification.
+            </t>
+
+            <t>
+                Validation is primarily concerned about structural validation of instances.
+                Extensions also exist to perform semantic analysis, but these are part of another
+                specification.
+            </t>
+
+            <t>
+                This specification will use the terminology defined by the JSON Schema core
+                specification. It is advised that readers have a copy of this specification.
+            </t>
+
+        </section>
+
+        <section title="Conventions and Terminology">
+            <t>
+                <!-- The text in this section has been copied from the official boilerplate,
+                and should not be modified.-->
+
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+            </t>
+
+            <t>
+                This specification uses the term "container instance" to refer to both array and
+                object instances. It uses the term "children instances" to refer to array elements
+                or object member values.
+            </t>
+        </section>
+
+        <section title="Interoperability considerations">
+
+            <section title="Validation of numeric instances">
+
+                <t>
+                    The JSON specification does not define any bounds to the scale or precision of
+                    numeric values. JSON Schema does not define any such bounds either. This means
+                    that numeric instances processed by JSON Schema can be arbitrarily large and/or
+                    have an arbitrarily large decimal part, regardless of the ability of the
+                    underlying programming language to deal with such data.
+                </t>
+
+            </section>
+
+            <section title="Regular expressions">
+
+                <t>
+                    Two validation keywords, "pattern" and "patternProperties", use regular
+                    expressions as a part of validation mechanics. These regular expressions SHOULD
+                    be valid according to the ECMA 262 regular expression dialect.
+                </t>
+
+                <t>
+                    However, regular expression dialects vary, sometimes widely, between programming
+                    languages, to the extent that a same regular expression token may behave
+                    differently between programming languages. For instance, "\w", which is a common
+                    idiom used to match a character which is "part of a word", will only match
+                    letters, digits and the underscore in the US-ASCII character set in Java,
+                    whereas it matches any Unicode alphanumeric character, plus the underscore, in
+                    ECMA 262.
+                </t>
+
+                <t>
+                    For this reason, if regular expressions need to be used in a schema meant to be
+                    used by peer implementations, it is RECOMMENDED that schema authors limit
+                    themselves to the following regular expression tokens:
+                </t>
+
+                <list>
+                    <t>individual Unicode characters, as defined by the JSON RFC (FIXME_LINK);</t>
+                    <t>simple character classes ([abc]), range character classes ([a-z]);</t>
+                    <t>quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or one), "{x}"
+                    where "x" is an integer (exactly x occurrences), "{x,y}" where "x" and "y" are
+                    integers (at least x, at most y, occurrences);</t>
+                    <t>the beginning-of-input ("^") and end-of-input ("$") anchors;</t>
+                    <t>grouping ("(...)") and alternation ("|").</t>
+                </list>
+
+                <t>
+                    Schema authors choosing to use other regular expression features in their
+                    schemas SHOULD NOT expect peer implementations to support these features.
+                </t>
+
+            </section>
+
+        </section>
+
+        <section title="General validation considerations">
+
+            <section title="Keywords and instance primitive types">
+
+                <t>
+                    Some validation keywords only apply to one or more primitive types. When the
+                    primitive type of the instance cannot be validated by a given keyword,
+                    validation for this keyword and instance SHOULD succeed.
+                </t>
+
+                <t>
+                    This specification groups keywords in different sections, according to the
+                    primitive type, or types, these keywords validate. Note that some keywords
+                    validate all instance types.
+                </t>
+
+                <t>
+                    Additionally, validation of some keywords are influenced by the presence of
+                    other keywords. In this case, all these keywords will be grouped in the same
+                    section.
+                </t>
+
+                <t>
+                    Finally, some keywords, if absent, MAY be regarded by implementations as having
+                    a default value. In this case, the default value will be mentioned.
+                </t>
+            </section>
+
+            <section title="Validation of container instances">
+
+                <t>
+                    It should be noted that keywords with the possibility to validate container
+                    instances only validate this instance's structure. They do not, in and out of
+                    them, validate children instances. Some of these keywords do, however,
+                    influence the schema, or schemas, which a child instance must validate.
+                </t>
+
+                <t>
+                    The algorithms to determine the schema, or schemas, which a child instance must
+                    validate against are explained in separate sections (FIXME_LINK).
+                </t>
+
+                <t>
+                    It is RECOMMENDED that implementations do not validate a container instance's
+                    children until the container instance itself has validated successfully against
+                    all relevant keywords.
+                </t>
+            </section>
+
+        </section>
+
+        <section title="Validation keywords sorted by instance types">
+
+            <section title="Validation keywords for numeric instances (number and integer)">
+
+                <!-- FIXME: draft v4 wanted this to be "mod", but I prefer "divisibleBy" -->
+                <section title="divisibleBy">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be a JSON number. This number MUST be
+                            strictly greater than 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            A numeric instance is valid against "divisibleBy" if and only if the
+                            remainder of the division of the instance by this keyword's value is
+                            exactly 0.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="maximum and exclusiveMaximum">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for the "maximum" keyword MUST be a JSON number. The value for
+                            the "exclusiveMaximum" keyword MUST be a boolean.
+                        </t>
+
+                        <t>
+                            If "exclusiveMaximum" is present, "maximum" MUST also be present.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            Successful validation depends on the presence and value of
+                            "exclusiveMaximum":
+                        </t>
+
+                        <list>
+                            <t>if "exclusiveMaximum" is not present, or has boolean value false,
+                            then the instance is valid if and only if it is greater than, or equal
+                            to, the value of "maximum";</t>
+                            <t>if "exclusiveMaximum" is present and has boolean value true, the the
+                            instance is valid if and only if it is strictly greater than the value
+                            of "maximum".</t>
+                        </list>
+                    </section>
+
+                    <section title="Default values">
+                        <t>
+                            "exclusiveMaximum", if absent, may be considered as being present with
+                            boolean value false.
+                        </t>
+                    </section>
+                </section>
+
+                <section title="minimum and exclusiveMinimum">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for the "minimum" keyword MUST be a JSON number. The value for
+                            the "exclusiveMinimum" keyword MUST be a boolean.
+                        </t>
+
+                        <t>
+                            If "exclusiveMinimum" is present, "minimum" MUST also be present.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            Successful validation depends on the presence and value of
+                            "exclusiveMinimum":
+                        </t>
+
+                        <list>
+                            <t>if "exclusiveMinimum" is not present, or has boolean value false,
+                            then the instance is valid if and only if it is lower than, or equal
+                            to, the value of "minimum";</t>
+                            <t>if "exclusiveMinimum" is present and has boolean value true, the the
+                            instance is valid if and only if it is strictly lower than the value
+                            of "minimum".</t>
+                        </list>
+                    </section>
+
+                    <section title="Default value">
+                        <t>
+                            "exclusiveMinimum", if absent, may be considered as being present with
+                            boolean value false.
+                        </t>
+                    </section>
+                </section>
+
+            </section>
+
+            <section title="Validation keywords for strings">
+
+                <section title="maxLength">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an integer. This integer MUST be
+                            greater than, or equal to, 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            A string instance is valid against this keyword if and only if its
+                            length is less than, or equal to, the value of this keyword.
+                        </t>
+
+                        <t>
+                            The length of a string instance is defined as the number of its
+                            characters as defined by FIXME_LINK.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="minLength">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an integer. This integer MUST be
+                            greater than, or equal to, 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            A string instance is valid against this keyword if and only if its
+                            length is greater than, or equal to, the value of this keyword.
+                        </t>
+
+                        <t>
+                            The length of a string instance is defined as the number of its
+                            characters as defined by FIXME_LINK.
+                        </t>
+                    </section>
+
+                    <section title="Default value">
+                        <t>
+                            "minLength", if absent, may be considered as being present with integer
+                            value 0.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="pattern">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be a string. This string MUST be a valid
+                            regular expression, according to the ECMA 262 regular expression
+                            dialect, as defined by FIXME_LINK.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            A string instance is considered valid if and only if the regular
+                            expression matches the instance successfully.
+                        </t>
+
+                    </section>
+
+                    <section title="Notes about regular expressions">
+                        <t>
+                            Implementations MUST NOT consider that regular expressions are
+                            surrounded by either the beginning-of-input ("^") or end-of-input ("$")
+                            anchors. This means that, for instance, "x" matches "exercise".
+                        </t>
+                        <t>
+                            The ECMA 262 regular expression dialect has poor programming language
+                            support; the only programming language with native ECMA 262 regular
+                            expression support is JavaScript. It is therefore RECOMMENDED that
+                            schema authors limit themselves to the regular expression feature set
+                            defined in section FIXME_LINK.
+                        </t>
+                    </section>
+
+                </section>
+
+            </section>
+
+            <section title="Validation keywords for arrays">
+
+                <section title="additionalItems and items">
+
+                    <section title="Valid values">
+                        <t>
+                            The value of "additionalItems" MUST be either a boolean or an object. If
+                            it is an object, this object MUST be a valid JSON Schema.
+                        </t>
+
+                        <t>
+                            The item keyword's value MUST be either an object or an array. If it is
+                            an object, this object MUST be a valid JSON Schema. If it is an array,
+                            elements of this array MUST be objects, and each of these objects MUST
+                            be a valid JSON Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            Successful validation of an array instance with regards to these two
+                            keywords is determined as follows:
+                        </t>
+
+                        <list>
+                            <t>if "items" is not present, or its value is an object, validation of
+                            the instance always succeeds, regardless of the value of
+                            "additionalItems";</t>
+                            <t>if the value of "additionalItems" is boolean value true or an object,
+                            validation of the instance always succeeds;</t>
+                            <t>if the value of additionalItems is boolean value false and the value
+                            of items is an array (which is must be at this point), the instance is
+                            valid if and only if its number of elements is less than, or equal to,
+                            the number of elements in the array value of items.</t>
+                        </list>
+                    </section>
+
+                    <section title="Example">
+                        <t>
+                            The following example covers the case where "additionalItems" has
+                            boolean value false and "items" has an array value, since this is the
+                            only situation under which an instance may fail to validate
+                            successfully.
+                        </t>
+
+                        <figure>
+                            <preamble>This is an example schema:</preamble>
+                            <artwork>
+<![CDATA[
+{
+    "items": [ {}, {}, {} ],
+    "additionalItems": false
+}
+]]>
+                            </artwork>
+                        </figure>
+
+                        <t>
+                            With this schema, the following instances are valid:
+                        </t>
+
+                        <list>
+                            <t>[] (an empty array),</t>
+                            <t>[ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ] ],</t>
+                            <t>[ 1, 2, 3 ];</t>
+                        </list>
+
+                        <t>
+                            the following instances are invalid:
+                        </t>
+
+                        <list>
+                            <t>[ 1, 2, 3, 4 ],</t>
+                            <t>[ null, { "a": "b" }, true, 31.000002020013 ]</t>
+                        </list>
+                    </section>
+
+                    <section title="Default values">
+                        <t>
+                            If either keyword is absent, it may be considered present with an empty
+                            schema.
+                        </t>
+                    </section>
+                </section>
+
+                <section title="maxItems">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an integer. This integer MUST be
+                            greater than, or equal to, 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An array instance is valid against "maxItems" if and only if its number
+                            of elements is less than, or equal to, the value of this keyword.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="minItems">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an integer. This integer MUST be
+                            greater than, or equal to, 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An array instance is valid against "minItems" if and only if its number
+                            of elements is greater than, or equal to, the value of this keyword.
+                        </t>
+                    </section>
+
+                    <section title="Default value">
+                        <t>
+                            If this keyword is not present, it may be considered present with a
+                            value of 0.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="uniqueItems">
+
+                    <section title="Valid values">
+                        <t>
+                            The value of this keyword MUST be a boolean.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            If this keyword has boolean value false, then the instance validates
+                            successfully. If it has boolean value true, then the instance validates
+                            successfully if and only if all of its elements are unique. In other
+                            words, no two elements of the array instance should be equal as per the
+                            definition in FIXME_LINK.
+                        </t>
+                    </section>
+
+                    <section title="Default value">
+                        <t>
+                            If not present, this keyword may be considered present with boolean
+                            false as a value.
+                        </t>
+                    </section>
+
+                </section>
+
+            </section>
+
+            <section title="Validation keywords for objects">
+
+                <section title="maxProperties">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an integer. This integer MUST be
+                            greater than, or equal to, 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An object instance is valid against "maxProperties" if and only if its
+                            number of members is less than, or equal to, the value of this keyword.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="minProperties">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an integer. This integer MUST be
+                            greater than, or equal to, 0.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An object instance is valid against "minProperties" if and only if its
+                            number of members is greater than, or equal to, the value of this
+                            keyword.
+                        </t>
+                    </section>
+
+                    <section title="Default value">
+                        <t>
+                            If this keyword is not present, it may be considered present with a
+                            value of 0.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="required">
+
+                    <section title="Valid values">
+                        <t>
+                            The value for this keyword MUST be an array. This array MUST have at
+                            least one element. Elements of this array MUST be strings, and MUST be
+                            unique.
+                        </t>
+
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An object instance is valid against this keyword if and only if the set
+                            of its member names contains all elements in this keyword's array.
+                        </t>
+                    </section>
+
+                    <section title="Example">
+
+                        <figure>
+                            <preamble>Against this schema:</preamble>
+                            <artwork>
+<![CDATA[
+{
+    "required": [ "a", "b" ]
+}
+]]>
+                            </artwork>
+                        </figure>
+
+                        <t>
+                            the following instances are valid:
+                        </t>
+
+                        <list>
+                            <t>{ "a": 1, "b": 2 };</t>
+                            <t>{ "a": 1, "b": 2, "c": 3 };</t>
+                        </list>
+
+                        <t>
+                            the following instances are invalid:
+                        </t>
+
+                        <list>
+                            <t>{} (the empty object);</t>
+                            <t>{ "b": 2 } (required member name "a" is missing).</t>
+                        </list>
+                    </section>
+
+                </section>
+
+                <section title="additionalProperties, properties and patternProperties">
+
+                    <section title="Valid values">
+                        <t>
+                            The value of "additionalProperties" MUST be a boolean or an object. If
+                            it is an object, it MUST also be a valid JSON Schema.
+                        </t>
+
+                        <t>
+                            The value of "properties" MUST be an object. Each value of this object
+                            MUST be an object, and each object MUST be a valid JSON Schema.
+                        </t>
+
+                        <t>
+                            The value of "patternProperties" MUST be an object. Each member name of
+                            this object MUST be a valid regular expression, according to the ECMA
+                            262 regular expression dialect, as defined by FIXME_LINK. Each value of
+                            this object MUST be an object, and each object MUST be a valid JSON
+                            Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            Successful validation of an object instance against these three keywords
+                            depends on the value of "additionalProperties":
+                        </t>
+
+                        <list>
+                            <t>if its value is boolean true or a schema, validation succeeds;</t>
+                            <t>if its value is boolean false, the algorithm to determine validation
+                            success is described in the next section.</t>
+                        </list>
+                    </section>
+
+                    <section title='If "additionalProperties" has boolean value false'>
+                        <t>
+                            In this case, validation of the instance depends on the member names of
+                            "properties" and "patternProperties". In this section, member names of
+                            "patternProperties" will be called regexes for convenience.
+                        </t>
+
+                        <t>
+                            The first step is to collect the following sets:
+                        </t>
+
+                        <list style="hanging">
+                            <t hangText="s">The set of member names of the instance to validate.</t>
+                            <t hangText="p">The set of member names from "properties".</t>
+                            <t hangtext="pp">The set of regexes from "patternProperties".</t>
+                        </list>
+
+                        <t>
+                            Having collected these three sets, the process is as follows:
+                        </t>
+
+                        <list>
+                            <t>remove from "s" all members of "p", if any;</t>
+                            <t>for each regex in "pp", remove all members of "s" which this regex
+                            matches.</t>
+                        </list>
+
+                        <t>
+                            Validation of the instance succeeds if and only if, after these two
+                            steps, set "s" is empty.
+                        </t>
+                    </section>
+
+                    <section title="Example">
+
+                        <t>
+                            This schema will be used as an example:
+                        </t>
+
+                        <figure>
+                            <artwork>
+<![CDATA[
+{
+    "properties": {
+        "p1": {}
+    },
+    "patternProperties": {
+        "p": {},
+        "\\d": {}
+    }
+}
+]]>
+                            </artwork>
+                        </figure>
+
+                        <t>
+                            This is the instance to validate:
+                        </t>
+
+                        <figure>
+                            <artwork>
+<![CDATA[
+{
+    "p1": true,
+    "p2": null,
+    "a32&o": "foobar",
+    "": [],
+    "finance": "ruins",
+    "apple": "pie"
+}
+]]>
+                            </artwork>
+                        </figure>
+
+                        <t>
+                            The three sets are:
+                        </t>
+
+                        <list style="hanging">
+                            <t hangText="s">{ "p1", "p2", "a32&amp;o", "", "finance", "apple" }</t>
+                            <t hangText="p">{ "p1" }</t>
+                            <t hangText="pp">{ "p", "\\d" }</t>
+                        </list>
+
+                        <t>
+                            Applying the two steps of the algorithm:
+                        </t>
+
+                        <list>
+                            <t>after the first step, "p1" is removed from "s";</t>
+                            <t>after the second step, "p2", "a32&amp;o" and "apple" are removed from
+                            "s".</t>
+                        </list>
+
+                        <t>
+                            The set still contains two elements, "" and "finance". Validation
+                            therefore fails.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="dependencies">
+
+                    <section title="Valid values">
+                        <t>
+                            This keyword's value MUST be an object. Values for this object MUST be
+                            either of a string, an array or an object. If the value is an object,
+                            it MUST be a valid JSON Schema.
+                        </t>
+
+                        <t>
+                            If the value is an array:
+                        </t>
+
+                        <list>
+                            <t>this array MUST have at least one element;</t>
+                            <t>elements of this array MUST be strings;</t>
+                            <t>elements of this array MUST be unique.</t>
+                        </list>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            For each member name in the object instance with an equivalent member
+                            name in "dependencies":
+                        </t>
+
+                        <list>
+                            <t>if the value in "dependencies" is an object, therefore a schema, then
+                            the object instance is considered valid if and only if it also validates
+                            successfully against this schema (note: the object instance itself, not
+                            the value of that particular member);</t>
+                            <t>if the value in "dependencies" is a string or an array of strings,
+                            this (these) strings should be considered as member name(s), and the
+                            object instance is required to have members by the same name(s) in order
+                            to validate successfully.</t>
+                        </list>
+                    </section>
+
+                </section>
+
+            </section>
+
+            <section title="Validation keywords for any instance type">
+
+                <section title="enum">
+
+                    <section title="Valid values">
+                        <t>
+                            The value of this keyword MUST be an array. This array MUST have at
+                            least one element. Elements in the array MUST be unique.
+                        </t>
+
+                        <t>
+                            Elements in the array MAY be of any type, including null.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An instance validates successfully against this keyword if and only if
+                            its value is exactly equal to one of the elements in this keyword's
+                            array value, according to the definition in FIXME_LINK.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="type">
+
+                    <section title="Valid values">
+                        <t>
+                            The value of this keyword MUST be a string or an array. If the value is
+                            an array, elements of this array MUST be unique.  This keyword's string
+                            value, or array element values, MUST be either of:
+                        </t>
+
+                        <list>
+                            <t>one of the seven primitive types defined by FIXME_LINK; or</t>
+                            <t>"any", which is equivalent to all seven primitive types.</t>
+                        </list>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An instance matches successfully if and only if its primitive type, as
+                            defined in FIXME_LINK, is one of the primitive types allowed by this
+                            keyword's value. Recall: "number" includes "integer".
+                        </t>
+                    </section>
+                </section>
+
+                <section title="allOf">
+
+                    <section title="Valid values">
+                        <t>
+                            This keyword's value MUST be an array. This array MUST have at least one
+                            element.
+                        </t>
+
+                        <t>
+                            Elements of the array MUST be objects. Each object MUST be a valid JSON
+                            Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An instance validates successfully against this keyword if and only if
+                            it validates successfully against all schemas defined by this keyword's
+                            value.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="anyOf">
+
+                    <section title="Valid values">
+                        <t>
+                            This keyword's value MUST be an array. This array MUST have at least one
+                            element.
+                        </t>
+
+                        <t>
+                            Elements of the array MUST be objects. Each object MUST be a valid JSON
+                            Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An instance validates successfully against this keyword if and only if
+                            it validates successfully against at least one defined by this keyword's
+                            value.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="oneOf">
+
+                    <section title="Valid values">
+                        <t>
+                            This keyword's value MUST be an array. This array MUST have at least one
+                            element.
+                        </t>
+
+                        <t>
+                            Elements of the array MUST be objects. Each object MUST be a valid JSON
+                            Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An instance validates successfully against this keyword if and only if
+                            it validates successfully against exactly one schema defined by this
+                            keyword's value.
+                        </t>
+                    </section>
+
+                </section>
+
+                <section title="not">
+
+                    <section title="Valid values">
+                        <t>
+                            This keyword's value MUST be an object. This object MUST be a valid JSON
+                            Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            An instance is valid against this keyword if and only if it fails to
+                            validate successfully against the schema defined by this keyword.
+                        </t>
+                    </section>
+
+                </section>
+            </section>
+
+        </section>
+
+        <section title="Calculating schemas which children instances must validate against">
+
+            <section title="Foreword">
+                <t>
+                    Calculating the schema, or schemas, a child instance must validate against is
+                    influenced by the following, in addition to the container instance type:
+                </t>
+
+                <list>
+                    <t>the container instance type;</t>
+                    <t>the child instance's defining characteristic in the container instance;</t>
+                    <t>the value of keywords implied in the calculation.</t>
+                </list>
+
+                <t>
+                    In addition, it is important that if one or more keyword(s) implied in the
+                    calculation are not defined, it be considered present with its default value,
+                    which will be recalled in this section.
+                </t>
+            </section>
+
+            <section title="Array elements">
+
+                <section title="Defining characteristic">
+                    <t>
+                        The defining characteristic of the child instance is this instance's index
+                        in the array instance. Recall: array indices start at 0.
+                    </t>
+                </section>
+
+                <section title="Implied keywords and default values.">
+                    <t>
+                        The two implied keywords in this calculation are "items" and
+                        "additionalItems".
+                    </t>
+
+                    <t>
+                        If either keyword is absent, it is considered present with an empty schema as a
+                        value.
+                    </t>
+                </section>
+
+                <section title="Calculation">
+
+                    <section title='If "items" is a schema'>
+                        <t>
+                            If items is a schema, then the child instance must be valid against this
+                            schema, regardless of its index, and regardless of the value of
+                            "additionalItems".
+                        </t>
+                    </section>
+
+                    <section title='If "items" is an array'>
+                        <t>
+                            In this situation, the schema depends on the index of the child
+                            instance:
+                        </t>
+
+                        <list>
+                            <t>if the index is less than, or equal to, the maximum index in the
+                            "items" array, then the child instance must be valid against the
+                            corresponding schema in the "items" array;</t>
+                            <t>otherwise, it must be valid against the schema defined by
+                            "additionalItems".</t>
+                        </list>
+                    </section>
+                </section>
+
+            </section>
+
+            <section title="Object values">
+
+                <section title="Defining characteristic">
+                    <t>
+                        The defining characteristic of the child instance of an object is the member
+                        name this child is associated to.
+                    </t>
+                </section>
+
+                <section title="Implied keywords">
+                    <t>
+                        The three keywords implied in this calculation are "properties",
+                        "patternProperties" and "additionalProperties".
+                    </t>
+
+                    <t>
+                        If "properties" of "patternProperties" are absent, they are considered
+                        present with an empty object as a value (note, an empty object, NOT an empty
+                        schema).
+                    </t>
+
+                    <t>
+                        If "additionalProperties" is absent, it is considered present with an empty
+                        schema as a value. In addition, boolean value true is considered equivalent
+                        to an empty schema.
+                    </t>
+                </section>
+
+                <section title="Calculation">
+
+                    <section title="Names used in this calculation">
+                        <t>
+                            The calculation below uses the following names:
+                        </t>
+
+                        <list style="hanging">
+                            <t hangText="m">The member name the child instance is associated to.</t>
+                            <t hangText="p">The set of member names from "properties", if any.</t>
+                            <t hangText="pp">The set of member names from "patternProperties", if
+                            any. Member names from this set will be called regexes for convenience.</t>
+                            <t hangText="s">The set of schemas the child instance must validate
+                            against.</t>
+                        </list>
+
+                    </section>
+
+                    <section title='First step: schemas in "properties"'>
+                        <t>
+                            If set "p" contains value "m", then the corresponding schema in
+                            "properties" is added to "s".
+                        </t>
+                    </section>
+
+                    <section title='Second step: schemas in "patternProperties"'>
+                        <t>
+                            For each regex in "pp", if it matches "m" successfully, the
+                            corresponding schema in "patternProperties" is added to "s".
+                        </t>
+                    </section>
+
+                    <section title='Third step: "additionalProperties"'>
+                        <t>
+                            The schema defined by "additionalProperties" is added to "s" if and only
+                            if, at this stage, "s" is empty.
+                        </t>
+                    </section>
+                </section>
+            </section>
+        </section>
+
+        <section title="IANA Considerations">
+            <t>
+                This specification does not have any influence with regards to IANA.
+            </t>
+
+        </section>
+    </middle>
+
+    <back>
+        <!-- References Section -->
+        <references title="Normative References">
+            &RFC2119;
+        </references>
+        <references title="Informative References">
+            &RFC4627;
+        </references>
+
+        <section title="ChangeLog">
+            <t>TODO</t>
+            <!--
+            <t>
+                <list style="hanging">
+                    <t hangText="draft-04">
+                        <list style="symbols">
+                            <t>Changed "required" attribute to an array of strings.</t>
+                            <t>Removed "format" attribute.</t>
+                            <t>Added "minProperties" and "maxProperties" attributes.</t>
+                            <t>Replaced "slash-delimited" fragment resolution with
+                            "json-pointer".</t>
+                            <t>Added "template" LDO attribute.</t>
+                            <t>Removed irrelevant "Open Issues" section.</t>
+                            <t>Merged Conventions and Terminology sections.</t>
+                            <t>Defined terms used in specification.</t>
+                            <t>Restricted "type" to only the core JSON types.</t>
+                            <t>Renamed "divisibleBy" to "mod".</t>
+                            <t>Improved wording of many sections.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-03">
+                        <list style="symbols">
+                            <t>Added example and verbiage to "extends" attribute.</t>
+                            <t>Defined slash-delimited to use a leading slash.</t>
+                            <t>Made "root" a relation instead of an attribute.</t>
+                            <t>Removed address values, and MIME media type from format to reduce
+                            confusion (mediaType already exists, so it can be used for MIME
+                            types).</t>
+                            <t>Added more explanation of nullability.</t>
+                            <t>Removed "alternate" attribute.</t>
+                            <t>Upper cased many normative usages of must, may, and should.</t>
+                            <t>Replaced the link submission "properties" attribute to "schema"
+                            attribute.</t>
+                            <t>Replaced "optional" attribute with "required" attribute.</t>
+                            <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum"
+                            attribute.</t>
+                            <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
+                            attribute.</t>
+                            <t>Replaced "requires" attribute with "dependencies" attribute.</t>
+                            <t>Moved "contentEncoding" attribute to hyper schema.</t>
+                            <t>Added "additionalItems" attribute.</t>
+                            <t>Added "id" attribute.</t>
+                            <t>Switched self-referencing variable substitution from "-this" to "@"
+                            to align with reserved characters in URI template.</t>
+                            <t>Added "patternProperties" attribute.</t>
+                            <t>Schema URIs are now namespace versioned.</t>
+                            <t>Added "$ref" and "$schema" attributes.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-02">
+                        <list style="symbols">
+                            <t>Replaced "maxDecimal" attribute with "divisibleBy" attribute.</t>
+                            <t>Added slash-delimited fragment resolution protocol and made it the
+                            default.</t>
+                            <t>Added language about using links outside of schemas by referencing
+                            its normative URI.</t>
+                            <t>Added "uniqueItems" attribute.</t>
+                            <t>Added "targetSchema" attribute to link description object.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-01">
+                        <list style="symbols">
+                            <t>Fixed category and updates from template.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-00">
+                        <list style="symbols">
+                            <t>Initial draft.</t>
+                        </list>
+                    </t>
+                </list>
+            </t>
+            -->
+        </section>
+    </back>
+</rfc>
