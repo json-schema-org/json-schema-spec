@@ -134,7 +134,8 @@
                 <t>
                     In this example, the enclosing schema of both "nested" and "alsonested" is
                     "root". The schema with title "root" is said to be a root schema because it
-                    is not enclosed within another schema.
+                    is not enclosed within another schema. The enclosing schema of a root schema is
+                    itself.
                 </t>
             </section>
 
@@ -212,6 +213,7 @@
                 <t hangText="Documentation">JSON Schema can be used to decorate either itself, or
                 instances, with descriptive text highlighting the schema's, or instance's,
                 purposes.</t>
+                <!-- FIXME: there is a suggestion for hypermedia instead of hyperlinking -->
                 <t hangText="Hyperlinking">JSON Schema can be used to associate an instance to a
                 Link Description Object, as defined by FIXME.</t>
                 <t hangText="Validation">JSON Schema can be used to validate the structure of an
@@ -224,7 +226,8 @@
                     JSON Schema provides a separate format for flexibly communicating how a JSON
                     value should be interpreted and/or validated, such that clients can properly
                     understand acceptable structures for, and/or extract the needed information
-                    from, the JSON instance being processed.
+                    from, the JSON instance being processed. This information ranges from
+                    documentation to external resource links, and processing of these links.
                 </t>
                 <t>
                     It is acknowledged that JSON values can be of any type defined by the JSON
@@ -241,153 +244,96 @@
             </section>
         </section>
 
-        <section title="JSON Schema identification">
+        <section title='Schema identification: the "id" keyword'>
 
-            <section title="Purpose of this section">
+            <section title="Usage">
                 <t>
-                    This section describes the available mechanisms for identifying the schema in a
-                    unique way: its location, but also the version of the JSON Schema specification
-                    it is written against.
-                </t>
-            </section>
-
-            <section title="Meta-schema identification using $schema">
-                <t>
-                    TODO -- core schema, hyper schema, etc etc...
-                </t>
-            </section>
-
-            <section title="Root schema identification">
-                <t>
-                    A root schema MAY be uniquely identified by the presence of a "location"
-                    keyword. This keyword's value MUST be a string, and this string MUST be a URI;
-                    the URI MUST be absolute, and MUST have either no fragment, or an empty
-                    fragment.
+                    Schema authors MAY choose to use the "id" keyword to add identification
+                    information to a JSON Schema.  The value of this keyword MUST be a string, and
+                    this string MUST be a valid URI. The URI MUST be normalized.
                 </t>
 
                 <t>
-                    This keyword MUST NOT be used in subschemas.
+                    When used in a root schema, the URI SHOULD be absolute and have no, or an empty,
+                    fragment part. Failing that, an implementation MAY choose to ignore the "id"
+                    value. It is RECOMMENDED that when used in subschemas, the URI be relative. In
+                    subschemas, "id" MUST NOT be the empty fragment ("#").
+                </t>
+
+                <t>
+                    In a same schema, there SHOULD NOT be two equivalent "id" values. Failing that,
+                    as JSON objects do not define an order for members, URI resolution is undefined.
+                </t>
+
+                <t>
+                    Implementations MUST consider that a URI with no fragment part is equivalent to
+                    this same URI with an empty fragment part.
                 </t>
 
             </section>
 
-            <section title="Subschema identification">
+            <section title="Inner schema addressing">
                 <t>
-                    Within JSON Schemas, a subschema MAY be identified by the presence of a "subId"
-                    keyword. This keyword's value MUST be a string.
+                    When "id" is encountered in a subschema, implementations MAY resolve this URI
+                    against the root schema's URI, and consider that the canonical URI of this
+                    subschema is the calculated URI. This is called inner schema addressing.
                 </t>
 
-                <t>
-                    This string MUST NOT be empty. It MUST NOT start with a solidus (/). A same
-                    string MUST NOT be used more than once in a same root schema.
-                </t>
-
-                <t>
-                    This keyword MAY also be used in a root schema.
-                </t>
-            </section>
-
-            <section title='Identification using \"id\"'>
-
-                <t>
-                    The value for this keyword MUST be a string. This string MUST be a URI.
-                </t>
-
-                <t>
-                    For backwards compatibility, JSON Schemas MAY use the "id" keyword for
-                    identification purposes. However, due to numerous ambiguity concerns, this is
-                    NOT RECOMMENDED.
-                </t>
-
-                <t>
-                    Schema authors willing to use "id" for identification purposes SHOULD follow the
-                    following recommendations:
-                </t>
+                <figure>
+                    <preamble>This schema will be taken as an example:</preamble>
+                    <artwork>
+                    <!-- FIXME: http again as a scheme, maybe another one? It can be any scheme
+                    after all -->
+<![CDATA[
+{
+    "id": "http://x.y.z/rootschema.json#",
+    "schema1": {
+        "id": "#foo"
+    },
+    "schema2": {
+        "id": "otherschema.json",
+        "nested": {
+            "id": "#bar"
+        },
+        "alsonested": {
+            "id": t/inner.json#a"
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
                 
-                <list>
-                    <t>in root schemas, "id" SHOULD obey the same constraints as described for
-                    "location";</t>
-                    <t>if used in subschemas, "id" SHOULD be a fragment-only URI.</t>
+                <t>
+                    Subschemas at the following URI-encoded JSON Pointers (starting from the root of
+                    the schema) have the following URIs:
+                </t>
+
+                <list style="hanging">
+                    <t hangtext="# (document root)">http://x.y.z/rootschema.json#</t>
+                    <t hangtext="#/schema1">http://x.y.z/rootschema.json#foo</t>
+                    <t hangtext="#/schema2">http://x.y.z/otherschema.json#</t>
+                    <t hangtext="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
+                    <t hangtext="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
                 </list>
 
-                <t>
-                    In any event, implementations SHOULD NOT expect peer implementations to support
-                    JSON Schema identification by the means of the "id" keyword.
-                </t>
             </section>
 
+            <section title="Security considerations">
+                <t>
+                    Inner schema addressing can produce canonical URIs which differ from the
+                    canonical URI of the root schema. Implementations therefore MAY choose, for
+                    security reasons, to ignore inner schema addressing, and always dereference
+                    canonical URIs.
+                </t>
+
+                <t>
+                    As such, schema authors SHALL NOT expect that inner schema addressing be used by
+                    an implementation.
+                </t>
+            </section>
         </section>
 
-        <section title="JSON Schema referencing">
-
-            <section title="Purpose of this section">
-                <t>
-                    JSON Schema referencing is done using JSON Reference (FIXME: link to draft).
-                </t>
-
-                <t>
-                    In addition, JSON Schema extends the specification so as to use a dedicated
-                    fragment resolution scheme, by the name "json-schema". This mechanism is
-                    explained below. FIXME: RFC for fragment-resolution?
-                </t>
-            </section>
-
-            <section title="Determining the URI of a schema">
-
-                <t>
-                    Implementations SHOULD determine the URI of a schema as follows:
-                </t>
-
-                <list>
-                    <t>if the schema was loaded from an absolute URI with no fragment part, or an
-                    empty fragment part, then the URI of the schema SHOULD be considered to be the
-                    loading URI, regardless of the values of "location" or "id";</t>
-                    <t>in any other situations:
-                        <list>
-                            <t>if the "location" keyword is present and conforms to this
-                            specification, the value of this keyword SHOULD be considered as the
-                            schema URI;</t>
-                            <t>if the "id" keyword is present and conforms to FIXME: crosslink, the
-                            value of this keyword MAY be considered as the schema URI;</t>
-                            <t>otherwise, implementations SHOULD choose an arbitrary URN, or the
-                            empty URI.</t>
-                        </list>
-                    </t>
-                </list>
-
-            </section>
-
-            <section title="Loading schemas using JSON Reference">
-                <t>
-                    When encountering a JSON Reference, implementations MUST follow the rules
-                    defined by the JSON Reference draft. In addition:
-                </t>
-
-                <list>
-                    <t>if resolution of the JSON Reference fails, or the dereferenced content is not
-                    a JSON Schema, it is RECOMMENDED that implementations consider this a failure
-                    and stop JSON Schema processing;</t>
-                    <t>implementations MUST perform fragment resolution as per the mechanism
-                    described below.</t>
-                </list>
-            </section>
-
-            <section title='The "json-schema" fragment resolution scheme'>
-                <t>
-                    The "json-schema" fragment resolution scheme is an extension to the
-                    "json-pointer" fragment resolution scheme and works as follows:
-                </t>
-
-                <list>
-                    <t>implementations first try and treat this fragment as a JSON Pointer; if
-                    successful, they try and dereference that pointer against the current JSON
-                    Schema;</t>
-                    <t>if the fragment is not a JSON Pointer, implementations try and find in the
-                    JSON Schema a subschema with a "subId" keyword, which value is strictly equal to
-                    the fragment's URI-decoded string value.</t>
-                </list>
-            </section>
-        </section>
         <section title="Schema/Instance Association">
 
             <section title="Purpose of this section">
