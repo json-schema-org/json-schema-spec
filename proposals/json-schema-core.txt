@@ -80,10 +80,10 @@ Table of Contents
    6.  Schema/Instance Association . . . . . . . . . . . . . . . . . . 7
      6.1.  Purpose of this section . . . . . . . . . . . . . . . . . . 7
      6.2.  Recommended correlation mechanisms for use with the
-           HTTP protocol . . . . . . . . . . . . . . . . . . . . . . . 7
+           HTTP protocol . . . . . . . . . . . . . . . . . . . . . . . 8
        6.2.1.  Correlation by means of the "Content-Type" header . . . 8
        6.2.2.  Correlation by means of the "Link" header . . . . . . . 8
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 8
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 9
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 9
      8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 9
      8.2.  Informative References  . . . . . . . . . . . . . . . . . . 9
@@ -318,7 +318,7 @@ Internet-Draft                 JSON Schema                September 2012
    canonical URI of this subschema is the calculated URI.  This is
    called inner schema addressing.
 
-
+   This schema will be taken as an example:
 
 
 
@@ -337,23 +337,35 @@ Galiegue, et al.         Expires March 20, 2013                 [Page 6]
 Internet-Draft                 JSON Schema                September 2012
 
 
-   This schema will be taken as an example:
-
-
+   {
+       "id": "http://x.y.z/rootschema.json#",
+       "schema1": {
+           "id": "#foo"
+       },
+       "schema2": {
+           "id": "otherschema.json",
+           "nested": {
+               "id": "#bar"
+           },
+           "alsonested": {
+               "id": t/inner.json#a"
+           }
+       }
+   }
 
 
    Subschemas at the following URI-encoded JSON Pointers (starting from
    the root of the schema) have the following URIs:
 
-      http://x.y.z/rootschema.json#
+   # (document root)  http://x.y.z/rootschema.json#
 
-      http://x.y.z/rootschema.json#foo
+   #/schema1  http://x.y.z/rootschema.json#foo
 
-      http://x.y.z/otherschema.json#
+   #/schema2  http://x.y.z/otherschema.json#
 
-      http://x.y.z/rootschema.json#bar
+   #/schema2/nested  http://x.y.z/rootschema.json#bar
 
-      http://x.y.z/t/inner.json#a
+   #/schema2/alsonested  http://x.y.z/t/inner.json#a
 
 5.3.  Security considerations
 
@@ -373,6 +385,14 @@ Internet-Draft                 JSON Schema                September 2012
    Schemas.  This correlation MAY be embodied witin existing protocol
    headers.
 
+
+
+
+Galiegue, et al.         Expires March 20, 2013                 [Page 7]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
    In addition, if the protocol also carries media type information (by
    means, for instance, of a "Content-Type" header), an instance MUST be
    one of "application/json" or any other subtype.
@@ -385,14 +405,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    It is acknowledged by this specification that the majority of
    interactive JSON Schema processing will be over HTTP.  This section
-
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 7]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
    therefore gives recommendations for materializing an instance/schema
    correlation using mechanisms currently available for this protocol.
 
@@ -426,6 +438,17 @@ Internet-Draft                 JSON Schema                September 2012
    Link: <http://example.com/my-hyper-schema>; rel="describedBy"
 
 
+
+
+
+
+
+
+Galiegue, et al.         Expires March 20, 2013                 [Page 8]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 7.  IANA Considerations
 
    The proposed MIME media type for JSON Schema is defined as follows:
@@ -439,15 +462,6 @@ Internet-Draft                 JSON Schema                September 2012
       FIXME: fragment resolution?
 
 8.  References
-
-
-
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 8]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 8.1.  Normative References
 
@@ -475,6 +489,22 @@ Authors' Addresses
    EMail: fgaliegue@gmail.com
 
 
+
+
+
+
+
+
+
+
+
+
+
+Galiegue, et al.         Expires March 20, 2013                 [Page 9]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
    Kris Zyp (editor)
    SitePen (USA)
    530 Lytton Avenue
@@ -500,5 +530,31 @@ Authors' Addresses
 
 
 
-Galiegue, et al.         Expires March 20, 2013                 [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Galiegue, et al.         Expires March 20, 2013                [Page 10]
 

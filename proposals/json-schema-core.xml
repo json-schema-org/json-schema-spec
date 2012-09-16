@@ -279,11 +279,14 @@
                     subschema is the calculated URI. This is called inner schema addressing.
                 </t>
 
+                <t>
+                    This schema will be taken as an example:
+                </t>
+
+                <!-- FIXME: http again as a scheme, maybe another one? It can be any scheme after
+                all -->
                 <figure>
-                    <preamble>This schema will be taken as an example:</preamble>
                     <artwork>
-                    <!-- FIXME: http again as a scheme, maybe another one? It can be any scheme
-                    after all -->
 <![CDATA[
 {
     "id": "http://x.y.z/rootschema.json#",
@@ -310,11 +313,11 @@
                 </t>
 
                 <list style="hanging">
-                    <t hangtext="# (document root)">http://x.y.z/rootschema.json#</t>
-                    <t hangtext="#/schema1">http://x.y.z/rootschema.json#foo</t>
-                    <t hangtext="#/schema2">http://x.y.z/otherschema.json#</t>
-                    <t hangtext="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
-                    <t hangtext="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
+                    <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
+                    <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
+                    <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
+                    <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
+                    <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
                 </list>
 
             </section>
