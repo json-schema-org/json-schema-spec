@@ -14,6 +14,8 @@ Proposed specifications are here:
 
 https://github.com/json-schema/json-schema/tree/next/proposals
 
+Pull requests _will_ be considered.
+
 ## The wiki
  
 The <a href="https://github.com/json-schema/json-schema/wiki">wiki</a> contains
