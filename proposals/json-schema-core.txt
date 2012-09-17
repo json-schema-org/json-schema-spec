@@ -4,9 +4,9 @@
 Internet Engineering Task Force                            fge. Galiegue
 Internet-Draft
 Intended status: Informational                               K. Zyp, Ed.
-Expires: March 20, 2013                                    SitePen (USA)
+Expires: March 21, 2013                                    SitePen (USA)
                                                                 G. Court
-                                                      September 16, 2012
+                                                      September 17, 2012
 
 
                JSON Schema: core definitions and purposes
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 20, 2013.
+   This Internet-Draft will expire on March 21, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Galiegue, et al.         Expires March 20, 2013                 [Page 1]
+Galiegue, et al.         Expires March 21, 2013                 [Page 1]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -63,31 +63,33 @@ Internet-Draft                 JSON Schema                September 2012
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
-   2.  Conventions and Terminology . . . . . . . . . . . . . . . . . . 3
-   3.  Core terminology of JSON Schema . . . . . . . . . . . . . . . . 3
-     3.1.  JSON Schema, keywords . . . . . . . . . . . . . . . . . . . 3
-     3.2.  Enclosing schema, root schema . . . . . . . . . . . . . . . 3
-     3.3.  JSON Schema primitive types . . . . . . . . . . . . . . . . 4
-     3.4.  JSON value equality . . . . . . . . . . . . . . . . . . . . 4
-     3.5.  Instance  . . . . . . . . . . . . . . . . . . . . . . . . . 5
-   4.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
-     4.1.  Design Considerations . . . . . . . . . . . . . . . . . . . 5
-   5.  Schema identification: the "id" keyword . . . . . . . . . . . . 6
-     5.1.  Usage . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     5.2.  Inner schema addressing . . . . . . . . . . . . . . . . . . 6
-     5.3.  Security considerations . . . . . . . . . . . . . . . . . . 7
-   6.  Schema/Instance Association . . . . . . . . . . . . . . . . . . 7
-     6.1.  Purpose of this section . . . . . . . . . . . . . . . . . . 7
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.  Conventions and Terminology  . . . . . . . . . . . . . . . . .  3
+   3.  Core terminology of JSON Schema  . . . . . . . . . . . . . . .  3
+     3.1.  JSON Schema, keywords  . . . . . . . . . . . . . . . . . .  3
+     3.2.  Root schema, subschema . . . . . . . . . . . . . . . . . .  3
+     3.3.  JSON Schema primitive types  . . . . . . . . . . . . . . .  4
+     3.4.  JSON value equality  . . . . . . . . . . . . . . . . . . .  4
+     3.5.  Instance . . . . . . . . . . . . . . . . . . . . . . . . .  5
+   4.  Overview . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     4.1.  Design Considerations  . . . . . . . . . . . . . . . . . .  5
+   5.  Schema addressing  . . . . . . . . . . . . . . . . . . . . . .  6
+     5.1.  Addressing mechanisms and general considerations . . . . .  6
+     5.2.  URI of a root schema . . . . . . . . . . . . . . . . . . .  6
+     5.3.  Canonical addressing . . . . . . . . . . . . . . . . . . .  6
+     5.4.  Inner schema addressing  . . . . . . . . . . . . . . . . .  6
+     5.5.  Security considerations  . . . . . . . . . . . . . . . . .  8
+   6.  Schema/Instance Association  . . . . . . . . . . . . . . . . .  8
+     6.1.  Purpose of this section  . . . . . . . . . . . . . . . . .  8
      6.2.  Recommended correlation mechanisms for use with the
-           HTTP protocol . . . . . . . . . . . . . . . . . . . . . . . 8
-       6.2.1.  Correlation by means of the "Content-Type" header . . . 8
-       6.2.2.  Correlation by means of the "Link" header . . . . . . . 8
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 9
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 9
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 9
-     8.2.  Informative References  . . . . . . . . . . . . . . . . . . 9
-   Appendix A.  ChangeLog  . . . . . . . . . . . . . . . . . . . . . . 9
+           HTTP protocol  . . . . . . . . . . . . . . . . . . . . . .  8
+       6.2.1.  Correlation by means of the "Content-Type" header  . .  8
+       6.2.2.  Correlation by means of the "Link" header  . . . . . .  9
+   7.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  9
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     8.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
+     8.2.  Informative References . . . . . . . . . . . . . . . . . .  9
+   Appendix A.  ChangeLog . . . . . . . . . . . . . . . . . . . . . . 10
 
 
 
@@ -106,9 +108,7 @@ Table of Contents
 
 
 
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 2]
+Galiegue, et al.         Expires March 21, 2013                 [Page 2]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -149,7 +149,7 @@ Internet-Draft                 JSON Schema                September 2012
 
    A JSON Schema MAY be empty.
 
-3.2.  Enclosing schema, root schema
+3.2.  Root schema, subschema
 
    JSON Schemas can be nested, as in this example:
 
@@ -164,7 +164,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue, et al.         Expires March 20, 2013                 [Page 3]
+Galiegue, et al.         Expires March 21, 2013                 [Page 3]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -173,10 +173,8 @@ Internet-Draft                 JSON Schema                September 2012
    }
 
 
-   In this example, the enclosing schema of both "nested" and
-   "alsonested" is "root".  The schema with title "root" is said to be a
-   root schema because it is not enclosed within another schema.  The
-   enclosing schema of a root schema is itself.
+   In this example, "nested" and "alsonested" are subschemas, and "root"
+   is a root schema.
 
 3.3.  JSON Schema primitive types
 
@@ -217,16 +215,15 @@ Internet-Draft                 JSON Schema                September 2012
 
          have the same set of members; and
 
+         values for a same member are equal according to this
+         definition.
 
 
 
-Galiegue, et al.         Expires March 20, 2013                 [Page 4]
+Galiegue, et al.         Expires March 21, 2013                 [Page 4]
 
 Internet-Draft                 JSON Schema                September 2012
 
-
-         values for a same member are equal according to this
-         definition.
 
    Note about numbers: the two JSON number values, 1.0 and 1, for
    instance, are mathematically equivalent; however they are NOT equal,
@@ -273,68 +270,80 @@ Internet-Draft                 JSON Schema                September 2012
    JSON specification.  As such, JSON Schema does not mandate that an
    instance be of a particular type: JSON Schema can process any JSON
    value, including null.  It is the domain of JSON Schema validation to
+   add useful constraints to the structure and, optionally, semantics,
+   of the JSON instance being processed.
 
 
 
-Galiegue, et al.         Expires March 20, 2013                 [Page 5]
+
+Galiegue, et al.         Expires March 21, 2013                 [Page 5]
 
 Internet-Draft                 JSON Schema                September 2012
 
-
-   add useful constraints to the structure and, optionally, semantics,
-   of the JSON instance being processed.
 
    JSON Schema is agnostic with regards to both protocols and
    programming languages.  In particular, this means that defining the
    semantics of the client-server interface is dependent on the protocol
    being used.
 
-5.  Schema identification: the "id" keyword
+5.  Schema addressing
 
-5.1.  Usage
+5.1.  Addressing mechanisms and general considerations
 
-   Schema authors MAY choose to use the "id" keyword to add
-   identification information to a JSON Schema.  The value of this
-   keyword MUST be a string, and this string MUST be a valid URI.  The
-   URI MUST be normalized.
+   JSON Schema defines two addressing mechanisms: canonical addressing,
+   and inner schema addressing.  Implementations MUST support canonical
+   addressing, and MAY support inner schema addressing.
 
-   When used in a root schema, the URI SHOULD be absolute and have no,
-   or an empty, fragment part.  Failing that, an implementation MAY
-   choose to ignore the "id" value.  It is RECOMMENDED that when used in
-   subschemas, the URI be relative.  In subschemas, "id" MUST NOT be the
-   empty fragment ("#").
+   Inner schema addressing is done by the means of the "id" keyword.
+   The value of this keyword MUST be a string, and this string MUST be a
+   valid URI, and MUST be normalized.  When used in a root schema, the
+   value of this keyword SHOULD be an absolute URI, and MUST have no
+   fragment, or an empty fragment.
 
-   In a same schema, there SHOULD NOT be two equivalent "id" values.
-   Failing that, as JSON objects do not define an order for members, URI
-   resolution is undefined.
+5.2.  URI of a root schema
 
-   Implementations MUST consider that a URI with no fragment part is
-   equivalent to this same URI with an empty fragment part.
+   When a schema is loaded via a URI, the loading URI SHALL be
+   considered to be the URI for this schema.  If a schema is loaded
+   without a URI:
 
-5.2.  Inner schema addressing
+      if "id" is present in the root schema, and obeys the provisions in
+      the previous paragraph, the value of "id" MAY be considered to be
+      the schema URI;
+
+      otherwise, it is RECOMMENDED that implementations consider that
+      the URI of the schema is either the empty URI, or a URN.
+
+   In addition, implementations MUST consider, for root schema URIs,
+   that the URI with no fragment, or an empty fragment, are strictly
+   equivalent.
+
+5.3.  Canonical addressing
+
+   Canonical addressing in JSON Schema is done using JSON Reference
+   (FIXME_LINK).  As defined by the JSON Reference specification, when
+   encountering a JSON Reference, other schema keywords SHALL be
+   ignored.
+
+5.4.  Inner schema addressing
 
    When "id" is encountered in a subschema, implementations MAY resolve
    this URI against the root schema's URI, and consider that the
    canonical URI of this subschema is the calculated URI.  This is
-   called inner schema addressing.
-
-   This schema will be taken as an example:
 
 
 
-
-
-
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 6]
+Galiegue, et al.         Expires March 21, 2013                 [Page 6]
 
 Internet-Draft                 JSON Schema                September 2012
+
+
+   called inner schema addressing.
+
+   There SHOULD NOT be two identical "id" values in the same schema.
+   Failing that, subschema lookup using inner schema addressing is
+   undefined.
+
+   This schema will be taken as an example:
 
 
    {
@@ -350,6 +359,9 @@ Internet-Draft                 JSON Schema                September 2012
            "alsonested": {
                "id": t/inner.json#a"
            }
+       },
+       "schema3": {
+           "id": "some://where.else/completely#"
        }
    }
 
@@ -367,15 +379,32 @@ Internet-Draft                 JSON Schema                September 2012
 
    #/schema2/alsonested  http://x.y.z/t/inner.json#a
 
-5.3.  Security considerations
+   #/schema3  some://where.else/completely#
+
+
+
+
+
+
+
+
+Galiegue, et al.         Expires March 21, 2013                 [Page 7]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+5.5.  Security considerations
 
    Inner schema addressing can produce canonical URIs which differ from
-   the canonical URI of the root schema.  Implementations therefore MAY
-   choose, for security reasons, to ignore inner schema addressing, and
-   always dereference canonical URIs.
+   the canonical URI of the root schema.  Implementations MAY choose,
+   for security reasons, to ignore inner schema addressing, and always
+   dereference canonical URIs.  Schema authors SHALL NOT expect that
+   inner schema addressing be used by an implementation.
 
-   As such, schema authors SHALL NOT expect that inner schema addressing
-   be used by an implementation.
+   Dereferencing canonical URIs MAY fail to complete, or MAY lead to
+   content which is not a JSON Schema (another type of JSON value, or
+   not a JSON value).  It is RECOMMENDED that JSON Schema processing be
+   stopped in such a situation.
 
 6.  Schema/Instance Association
 
@@ -384,14 +413,6 @@ Internet-Draft                 JSON Schema                September 2012
    A JSON instance MAY be correlated to one, or even several, JSON
    Schemas.  This correlation MAY be embodied witin existing protocol
    headers.
-
-
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 7]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
    In addition, if the protocol also carries media type information (by
    means, for instance, of a "Content-Type" header), an instance MUST be
@@ -422,6 +443,12 @@ Internet-Draft                 JSON Schema                September 2012
                  profile=http://example.com/my-hyper-schema
 
 
+
+Galiegue, et al.         Expires March 21, 2013                 [Page 8]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 6.2.2.  Correlation by means of the "Link" header
 
    When using the "Link" header, it is RECOMMENDED that a relationship
@@ -436,17 +463,6 @@ Internet-Draft                 JSON Schema                September 2012
 
 
    Link: <http://example.com/my-hyper-schema>; rel="describedBy"
-
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 8]
-
-Internet-Draft                 JSON Schema                September 2012
 
 
 7.  IANA Considerations
@@ -478,6 +494,17 @@ Internet-Draft                 JSON Schema                September 2012
                    JavaScript Object Notation (JSON)", RFC 4627,
                    July 2006.
 
+
+
+
+
+
+
+Galiegue, et al.         Expires March 21, 2013                 [Page 9]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 Appendix A.  ChangeLog
 
    TODO
@@ -487,22 +514,6 @@ Authors' Addresses
    Francis Galiegue
 
    EMail: fgaliegue@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 20, 2013                 [Page 9]
-
-Internet-Draft                 JSON Schema                September 2012
 
 
    Kris Zyp (editor)
@@ -545,16 +556,5 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 20, 2013                [Page 10]
+Galiegue, et al.         Expires March 21, 2013                [Page 10]
 

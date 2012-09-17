@@ -119,7 +119,13 @@
                 </t>
 
                 <t>
-                    However, regular expression dialects vary, sometimes widely, between programming
+                    Implementations MUST NOT consider that regular expressions are anchored, neither
+                    at the beginning or at the end. This means, for instance, that "es" matches
+                    "expression".
+                </t>
+
+                <t>
+                    Regular expression dialects vary, sometimes widely, between programming
                     languages, to the extent that a same regular expression token may behave
                     differently between programming languages. For instance, "\w", which is a common
                     idiom used to match a character which is "part of a word", will only match
@@ -129,14 +135,15 @@
                 </t>
 
                 <t>
-                    For this reason, if regular expressions need to be used in a schema meant to be
-                    used by peer implementations, it is RECOMMENDED that schema authors limit
+                    For this reason, if regular expressions are used in a schema meant to be
+                    processed by peer implementations, it is RECOMMENDED that schema authors limit
                     themselves to the following regular expression tokens:
                 </t>
 
                 <list>
                     <t>individual Unicode characters, as defined by the JSON RFC (FIXME_LINK);</t>
                     <t>simple character classes ([abc]), range character classes ([a-z]);</t>
+                    <t>complemented character classes ([^abc], [^a-z]);</t>
                     <t>quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or one), "{x}"
                     where "x" is an integer (exactly x occurrences), "{x,y}" where "x" and "y" are
                     integers (at least x, at most y, occurrences);</t>
@@ -249,15 +256,15 @@
 
                         <list>
                             <t>if "exclusiveMaximum" is not present, or has boolean value false,
-                            then the instance is valid if and only if it is greater than, or equal
-                            to, the value of "maximum";</t>
+                            then the instance is valid if and only if it is lower than, or equal to,
+                            the value of "maximum";</t>
                             <t>if "exclusiveMaximum" is present and has boolean value true, the the
-                            instance is valid if and only if it is strictly greater than the value
-                            of "maximum".</t>
+                            instance is valid if and only if it is strictly lower than the value of
+                            "maximum".</t>
                         </list>
                     </section>
 
-                    <section title="Default values">
+                    <section title="Default value">
                         <t>
                             "exclusiveMaximum", if absent, may be considered as being present with
                             boolean value false.
@@ -286,10 +293,10 @@
 
                         <list>
                             <t>if "exclusiveMinimum" is not present, or has boolean value false,
-                            then the instance is valid if and only if it is lower than, or equal
+                            then the instance is valid if and only if it is greater than, or equal
                             to, the value of "minimum";</t>
                             <t>if "exclusiveMinimum" is present and has boolean value true, the the
-                            instance is valid if and only if it is strictly lower than the value
+                            instance is valid if and only if it is strictly greater than the value
                             of "minimum".</t>
                         </list>
                     </section>
@@ -375,21 +382,6 @@
                             expression matches the instance successfully.
                         </t>
 
-                    </section>
-
-                    <section title="Notes about regular expressions">
-                        <t>
-                            Implementations MUST NOT consider that regular expressions are
-                            surrounded by either the beginning-of-input ("^") or end-of-input ("$")
-                            anchors. This means that, for instance, "x" matches "exercise".
-                        </t>
-                        <t>
-                            The ECMA 262 regular expression dialect has poor programming language
-                            support; the only programming language with native ECMA 262 regular
-                            expression support is JavaScript. It is therefore RECOMMENDED that
-                            schema authors limit themselves to the regular expression feature set
-                            defined in section FIXME_LINK.
-                        </t>
                     </section>
 
                 </section>
@@ -534,8 +526,8 @@
 
                     <section title="Conditions for successful validation">
                         <t>
-                            If this keyword has boolean value false, then the instance validates
-                            successfully. If it has boolean value true, then the instance validates
+                            If this keyword has boolean value false, the instance validates
+                            successfully. If it has boolean value true, the instance validates
                             successfully if and only if all of its elements are unique. In other
                             words, no two elements of the array instance should be equal as per the
                             definition in FIXME_LINK.
@@ -617,38 +609,6 @@
                         </t>
                     </section>
 
-                    <section title="Example">
-
-                        <figure>
-                            <preamble>Against this schema:</preamble>
-                            <artwork>
-<![CDATA[
-{
-    "required": [ "a", "b" ]
-}
-]]>
-                            </artwork>
-                        </figure>
-
-                        <t>
-                            the following instances are valid:
-                        </t>
-
-                        <list>
-                            <t>{ "a": 1, "b": 2 };</t>
-                            <t>{ "a": 1, "b": 2, "c": 3 };</t>
-                        </list>
-
-                        <t>
-                            the following instances are invalid:
-                        </t>
-
-                        <list>
-                            <t>{} (the empty object);</t>
-                            <t>{ "b": 2 } (required member name "a" is missing).</t>
-                        </list>
-                    </section>
-
                 </section>
 
                 <section title="additionalProperties, properties and patternProperties">
@@ -682,8 +642,21 @@
                         <list>
                             <t>if its value is boolean true or a schema, validation succeeds;</t>
                             <t>if its value is boolean false, the algorithm to determine validation
-                            success is described in the next section.</t>
+                            success is described below.</t>
                         </list>
+                    </section>
+
+                    <section title="Default values">
+                        <t>
+                            If either "properties" or "patternProperties" are absent, they can be
+                            considered present with an empty object as a value (NOTE: an empty
+                            object, NOT an empty schema).
+                        </t>
+
+                        <t>
+                            If "additionalProperties" is absent, it may be considered present with
+                            an empty schema as a value.
+                        </t>
                     </section>
 
                     <section title='If "additionalProperties" has boolean value false'>

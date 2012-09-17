@@ -111,7 +111,7 @@
                 </t>
             </section>
 
-            <section title="Enclosing schema, root schema">
+            <section title="Root schema, subschema">
                 <t>
                     JSON Schemas can be nested, as in this example:
                 </t>
@@ -132,10 +132,8 @@
                 </figure>
 
                 <t>
-                    In this example, the enclosing schema of both "nested" and "alsonested" is
-                    "root". The schema with title "root" is said to be a root schema because it
-                    is not enclosed within another schema. The enclosing schema of a root schema is
-                    itself.
+                    In this example, "nested" and "alsonested" are subschemas, and "root" is a root
+                    schema.
                 </t>
             </section>
 
@@ -229,6 +227,7 @@
                     from, the JSON instance being processed. This information ranges from
                     documentation to external resource links, and processing of these links.
                 </t>
+
                 <t>
                     It is acknowledged that JSON values can be of any type defined by the JSON
                     specification. As such, JSON Schema does not mandate that an instance be of a
@@ -236,6 +235,7 @@
                     the domain of JSON Schema validation to add useful constraints to the structure
                     and, optionally, semantics, of the JSON instance being processed.
                 </t>
+                
                 <t>
                     JSON Schema is agnostic with regards to both protocols and programming
                     languages. In particular, this means that defining the semantics of the
@@ -244,32 +244,50 @@
             </section>
         </section>
 
-        <section title='Schema identification: the "id" keyword'>
+        <section title="Schema addressing">
 
-            <section title="Usage">
+            <section title="Addressing mechanisms and general considerations">
                 <t>
-                    Schema authors MAY choose to use the "id" keyword to add identification
-                    information to a JSON Schema.  The value of this keyword MUST be a string, and
-                    this string MUST be a valid URI. The URI MUST be normalized.
+                    JSON Schema defines two addressing mechanisms: canonical addressing, and inner
+                    schema addressing. Implementations MUST support canonical addressing, and MAY
+                    support inner schema addressing.
                 </t>
 
                 <t>
-                    When used in a root schema, the URI SHOULD be absolute and have no, or an empty,
-                    fragment part. Failing that, an implementation MAY choose to ignore the "id"
-                    value. It is RECOMMENDED that when used in subschemas, the URI be relative. In
-                    subschemas, "id" MUST NOT be the empty fragment ("#").
+                    Inner schema addressing is done by the means of the "id" keyword. The value of
+                    this keyword MUST be a string, and this string MUST be a valid URI, and MUST be
+                    normalized. When used in a root schema, the value of this keyword SHOULD be an
+                    absolute URI, and MUST have no fragment, or an empty fragment.
                 </t>
+            </section>
+
+            <section title="URI of a root schema">
+                <t>
+                    When a schema is loaded via a URI, the loading URI SHALL be considered to be the
+                    URI for this schema. If a schema is loaded without a URI:
+                </t>
+
+                <list>
+                    <t>if "id" is present in the root schema, and obeys the provisions in the
+                    previous paragraph, the value of "id" MAY be considered to be the schema
+                    URI;</t>
+                    <t>otherwise, it is RECOMMENDED that implementations consider that the URI of
+                    the schema is either the empty URI, or a URN.</t>
+                </list>
 
                 <t>
-                    In a same schema, there SHOULD NOT be two equivalent "id" values. Failing that,
-                    as JSON objects do not define an order for members, URI resolution is undefined.
+                    In addition, implementations MUST consider, for root schema URIs, that the URI
+                    with no fragment, or an empty fragment, are strictly equivalent.
                 </t>
 
+            </section>
+
+            <section title="Canonical addressing">
                 <t>
-                    Implementations MUST consider that a URI with no fragment part is equivalent to
-                    this same URI with an empty fragment part.
+                    Canonical addressing in JSON Schema is done using JSON Reference (FIXME_LINK).
+                    As defined by the JSON Reference specification, when encountering a JSON
+                    Reference, other schema keywords SHALL be ignored.
                 </t>
-
             </section>
 
             <section title="Inner schema addressing">
@@ -277,6 +295,11 @@
                     When "id" is encountered in a subschema, implementations MAY resolve this URI
                     against the root schema's URI, and consider that the canonical URI of this
                     subschema is the calculated URI. This is called inner schema addressing.
+                </t>
+
+                <t>
+                    There SHOULD NOT be two identical "id" values in the same schema. Failing that,
+                    subschema lookup using inner schema addressing is undefined.
                 </t>
 
                 <t>
@@ -301,6 +324,9 @@
         "alsonested": {
             "id": t/inner.json#a"
         }
+    },
+    "schema3": {
+        "id": "some://where.else/completely#"
     }
 }
 ]]>
@@ -318,6 +344,7 @@
                     <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
                     <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
                     <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
+                    <t hangText="#/schema3">some://where.else/completely#</t>
                 </list>
 
             </section>
@@ -325,14 +352,16 @@
             <section title="Security considerations">
                 <t>
                     Inner schema addressing can produce canonical URIs which differ from the
-                    canonical URI of the root schema. Implementations therefore MAY choose, for
-                    security reasons, to ignore inner schema addressing, and always dereference
-                    canonical URIs.
+                    canonical URI of the root schema. Implementations MAY choose, for security
+                    reasons, to ignore inner schema addressing, and always dereference canonical
+                    URIs. Schema authors SHALL NOT expect that inner schema addressing be used by
+                    an implementation.
                 </t>
 
                 <t>
-                    As such, schema authors SHALL NOT expect that inner schema addressing be used by
-                    an implementation.
+                    Dereferencing canonical URIs MAY fail to complete, or MAY lead to content which
+                    is not a JSON Schema (another type of JSON value, or not a JSON value). It is
+                    RECOMMENDED that JSON Schema processing be stopped in such a situation.
                 </t>
             </section>
         </section>
