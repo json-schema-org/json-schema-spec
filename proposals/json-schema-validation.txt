@@ -104,7 +104,7 @@ Table of Contents
        5.5.4.  anyOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
        5.5.5.  oneOf  . . . . . . . . . . . . . . . . . . . . . . . . 17
        5.5.6.  not  . . . . . . . . . . . . . . . . . . . . . . . . . 17
-   6.  Calculatin child instances' schema(s)  . . . . . . . . . . . . 17
+   6.  Metadata keywords  . . . . . . . . . . . . . . . . . . . . . . 17
 
 
 
@@ -113,37 +113,37 @@ Galiegue, et al.         Expires March 26, 2013                 [Page 2]
 Internet-Draft                 JSON Schema                September 2012
 
 
-     6.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 17
-     6.2.  Array elements . . . . . . . . . . . . . . . . . . . . . . 18
-       6.2.1.  Defining characteristic  . . . . . . . . . . . . . . . 18
-       6.2.2.  Implied keywords and default values. . . . . . . . . . 18
-       6.2.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 18
-     6.3.  Object values  . . . . . . . . . . . . . . . . . . . . . . 18
-       6.3.1.  Defining characteristic  . . . . . . . . . . . . . . . 18
-       6.3.2.  Implied keywords . . . . . . . . . . . . . . . . . . . 18
-       6.3.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 19
-   7.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 19
-   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 19
-     8.1.  Normative References . . . . . . . . . . . . . . . . . . . 19
-     8.2.  Informative References . . . . . . . . . . . . . . . . . . 20
-   Appendix A.  ChangeLog . . . . . . . . . . . . . . . . . . . . . . 20
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     6.1.  "title" and "description"  . . . . . . . . . . . . . . . . 17
+       6.1.1.  Valid values . . . . . . . . . . . . . . . . . . . . . 17
+       6.1.2.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . 17
+     6.2.  "default"  . . . . . . . . . . . . . . . . . . . . . . . . 18
+       6.2.1.  Valid values . . . . . . . . . . . . . . . . . . . . . 18
+       6.2.2.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . 18
+   7.  Semantic validation with "format"  . . . . . . . . . . . . . . 18
+     7.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 18
+     7.2.  Implementation requirements  . . . . . . . . . . . . . . . 18
+     7.3.  Defined attributes . . . . . . . . . . . . . . . . . . . . 18
+       7.3.1.  date-time  . . . . . . . . . . . . . . . . . . . . . . 19
+       7.3.2.  email  . . . . . . . . . . . . . . . . . . . . . . . . 19
+       7.3.3.  hostname . . . . . . . . . . . . . . . . . . . . . . . 19
+       7.3.4.  ipv4 . . . . . . . . . . . . . . . . . . . . . . . . . 19
+       7.3.5.  ipv6 . . . . . . . . . . . . . . . . . . . . . . . . . 20
+       7.3.6.  uri  . . . . . . . . . . . . . . . . . . . . . . . . . 20
+   8.  Calculating child instances' schema(s) . . . . . . . . . . . . 20
+     8.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 20
+     8.2.  Array elements . . . . . . . . . . . . . . . . . . . . . . 20
+       8.2.1.  Defining characteristic  . . . . . . . . . . . . . . . 20
+       8.2.2.  Implied keywords and default values. . . . . . . . . . 21
+       8.2.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 21
+     8.3.  Object values  . . . . . . . . . . . . . . . . . . . . . . 21
+       8.3.1.  Defining characteristic  . . . . . . . . . . . . . . . 21
+       8.3.2.  Implied keywords . . . . . . . . . . . . . . . . . . . 21
+       8.3.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 22
+   9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 22
+   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+     10.1. Normative References . . . . . . . . . . . . . . . . . . . 22
+     10.2. Informative References . . . . . . . . . . . . . . . . . . 22
+   Appendix A.  ChangeLog . . . . . . . . . . . . . . . . . . . . . . 23
 
 
 
@@ -925,9 +925,172 @@ Internet-Draft                 JSON Schema                September 2012
    An instance is valid against this keyword if and only if it fails to
    validate successfully against the schema defined by this keyword.
 
-6.  Calculatin child instances' schema(s)
+6.  Metadata keywords
 
-6.1.  Foreword
+6.1.  "title" and "description"
+
+6.1.1.  Valid values
+
+   The value for both of these keywords MUST be a string.
+
+6.1.2.  Purpose
+
+   Both of these keywords can be used to decorate a user interface with
+   information about the data produced by this user interface.  A title
+   will preferrably be short, whereas a description will provide
+   explanation about the purpose of the produced value associated with
+   this schema.
+
+   Both of these keywords MAY be used in root schemas, and in any
+   subschemas.
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 17]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+6.2.  "default"
+
+6.2.1.  Valid values
+
+   There are no restrictions placed on the value of this keyword.
+
+6.2.2.  Purpose
+
+   This keyword can be used to substitute a default value for the
+   production of a user interface.  It is RECOMMENDED that a default
+   value be valid against the associated schema.
+
+   This keyword MAY be used in root schemas, and in any subschemas.
+
+7.  Semantic validation with "format"
+
+7.1.  Foreword
+
+   Structural validation alone may be insufficient to validate that an
+   instance meets all the requirements of an application.  The "format"
+   keyword is defined to allow interoperable semantic validation for a
+   fixed subset of values which are accurately described by
+   authoritative resources, be they RFCs or other external
+   specifications.
+
+   The value of this keyword MUST be a string.  This value is called a
+   format attribute.  A format attribute can generally only validate a
+   given set of instance types.  If the type of the instance to validate
+   is not in this set, validation for this format attribute and instance
+   SHOULD succeed.
+
+7.2.  Implementation requirements
+
+   Implementations MAY support the "format" keyword.  They MAY implement
+   part of, or all, of the format attributes defined below.  They MUST
+   implement validation for defined attributes according to their
+   definitions.
+
+   Implementations MAY add custom format attributes.  Format attributes
+   SHOULD NOT be defined to validate container instances.  Save for
+   agreement between parties, schema authors SHALL NOT expect that a
+   peer implementation has support for a given attribute, or even for
+   the "format" keyword altogether.
+
+7.3.  Defined attributes
+
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 18]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+7.3.1.  date-time
+
+7.3.1.1.  Applicability
+
+   This attribute applies to string instances.
+
+7.3.1.2.  Validation
+
+   A string instance is valid against this attribute if and only if it
+   is a valid date representation as defined by RFC 3339, section 5.6
+   [RFC3339].
+
+7.3.2.  email
+
+7.3.2.1.  Applicability
+
+   This attribute applies to string instances.
+
+7.3.2.2.  Validation
+
+   A string instance is valid against this attribute if and only if it
+   is a valid Internet email address as defined by RFC 5322, section
+   3.4.1 [RFC5322].
+
+7.3.3.  hostname
+
+7.3.3.1.  Applicability
+
+   This attribute applies to string instances.
+
+7.3.3.2.  Validation
+
+   A string instance is valid against this attribute if and only if it
+   is a valid representation for an Internet host name, as defined by
+   RFC 1034, section 3.1 [RFC1034].
+
+7.3.4.  ipv4
+
+7.3.4.1.  Applicability
+
+   This attribute applies to string instances.
+
+7.3.4.2.  Validation
+
+   A string instance is valid against this attribute if and only if it
+   is a valid representation of an IPv4 address according to the
+   "dotted-quad" ABNF syntax as defined in RFC 2673, section 3.2
+   [RFC2673].
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 19]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+7.3.5.  ipv6
+
+7.3.5.1.  Applicability
+
+   This attribute applies to string instances.
+
+7.3.5.2.  Validation
+
+   A string instance is valid against this attribute if and only if it
+   is a valid representation of an IPv6 address as defined in RFC 2373,
+   section 2.2 [RFC2373].
+
+7.3.6.  uri
+
+7.3.6.1.  Applicability
+
+   This attribute applies to string instances.
+
+7.3.6.2.  Validation
+
+   A string instance is valid against this attribute if and only if it
+   is a valid URI, according to [RFC3986].
+
+8.  Calculating child instances' schema(s)
+
+8.1.  Foreword
 
    Calculating the schema, or schemas, a child instance must validate
    against is influenced by the following:
@@ -943,24 +1106,22 @@ Internet-Draft                 JSON Schema                September 2012
    in the calculation are not defined, it be considered present with its
    default value, which will be recalled in this section.
 
+8.2.  Array elements
 
-
-
-
-
-Galiegue, et al.         Expires March 26, 2013                [Page 17]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
-6.2.  Array elements
-
-6.2.1.  Defining characteristic
+8.2.1.  Defining characteristic
 
    The defining characteristic of the child instance is this instance's
    index in the array instance.  Recall: array indices start at 0.
 
-6.2.2.  Implied keywords and default values.
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 20]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+8.2.2.  Implied keywords and default values.
 
    The two implied keywords in this calculation are "items" and
    "additionalItems".
@@ -968,15 +1129,15 @@ Internet-Draft                 JSON Schema                September 2012
    If either keyword is absent, it is considered present with an empty
    schema as a value.
 
-6.2.3.  Calculation
+8.2.3.  Calculation
 
-6.2.3.1.  If "items" is a schema
+8.2.3.1.  If "items" is a schema
 
    If items is a schema, then the child instance must be valid against
    this schema, regardless of its index, and regardless of the value of
    "additionalItems".
 
-6.2.3.2.  If "items" is an array
+8.2.3.2.  If "items" is an array
 
    In this situation, the schema depends on the index of the child
    instance:
@@ -988,27 +1149,19 @@ Internet-Draft                 JSON Schema                September 2012
       otherwise, it must be valid against the schema defined by
       "additionalItems".
 
-6.3.  Object values
+8.3.  Object values
 
-6.3.1.  Defining characteristic
+8.3.1.  Defining characteristic
 
    The defining characteristic of the child instance of an object is the
    member name this child is associated to.
 
-6.3.2.  Implied keywords
+8.3.2.  Implied keywords
 
    The three keywords implied in this calculation are "properties",
    "patternProperties" and "additionalProperties".
 
    If "properties" of "patternProperties" are absent, they are
-
-
-
-Galiegue, et al.         Expires March 26, 2013                [Page 18]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
    considered present with an empty object as a value (note, an empty
    object, NOT an empty schema).
 
@@ -1016,9 +1169,17 @@ Internet-Draft                 JSON Schema                September 2012
    empty schema as a value.  In addition, boolean value true is
    considered equivalent to an empty schema.
 
-6.3.3.  Calculation
 
-6.3.3.1.  Names used in this calculation
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 21]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+8.3.3.  Calculation
+
+8.3.3.1.  Names used in this calculation
 
    The calculation below uses the following names:
 
@@ -1031,44 +1192,62 @@ Internet-Draft                 JSON Schema                September 2012
 
    s  The set of schemas for the child instance.
 
-6.3.3.2.  First step: schemas in "properties"
+8.3.3.2.  First step: schemas in "properties"
 
    If set "p" contains value "m", then the corresponding schema in
    "properties" is added to "s".
 
-6.3.3.3.  Second step: schemas in "patternProperties"
+8.3.3.3.  Second step: schemas in "patternProperties"
 
    For each regex in "pp", if it matches "m" successfully, the
    corresponding schema in "patternProperties" is added to "s".
 
-6.3.3.4.  Third step: "additionalProperties"
+8.3.3.4.  Third step: "additionalProperties"
 
    The schema defined by "additionalProperties" is added to "s" if and
    only if, at this stage, "s" is empty.
 
-7.  IANA Considerations
+9.  IANA Considerations
 
    This specification does not have any influence with regards to IANA.
 
-8.  References
+10.  References
 
-8.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
+10.2.  Informative References
+
+   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
+              STD 13, RFC 1034, November 1987.
+
+   [RFC2373]  Hinden, R. and S. Deering, "IP Version 6 Addressing
+              Architecture", RFC 2373, July 1998.
 
 
 
-Galiegue, et al.         Expires March 26, 2013                [Page 19]
+Galiegue, et al.         Expires March 26, 2013                [Page 22]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
-8.2.  Informative References
+   [RFC2673]  Crawford, M., "Binary Labels in the Domain Name System",
+              RFC 2673, August 1999.
+
+   [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
+              Internet: Timestamps", RFC 3339, July 2002.
+
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, January 2005.
 
    [RFC4627]  Crockford, D., "The application/json Media Type for
               JavaScript Object Notation (JSON)", RFC 4627, July 2006.
+
+   [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
+              October 2008.
 
    [ecma262]  "ECMA 262 specification", <http://
               www.ecma-international.org/publications/files/ECMA-ST/
@@ -1105,16 +1284,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 26, 2013                [Page 20]
+Galiegue, et al.         Expires March 26, 2013                [Page 23]
 
