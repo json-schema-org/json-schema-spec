@@ -4,21 +4,23 @@
 Internet Engineering Task Force                            fge. Galiegue
 Internet-Draft
 Intended status: Informational                               K. Zyp, Ed.
-Expires: March 21, 2013                                    SitePen (USA)
+Expires: March 26, 2013                                    SitePen (USA)
                                                                 G. Court
-                                                      September 17, 2012
+                                                      September 22, 2012
 
 
-                    JSON Schema: instance validation
+        JSON Schema: interactive and non interactive validation
                          json-schema-validation
 
 Abstract
 
    JSON Schema (application/schema+json) has several purposes, one of
-   which is instance validation.  This validation can be non
-   interactive.  This specification describes schema keywords dedicated
-   to validation purposes, what value these keywords should have and how
-   to validate JSON instances against these keywords.
+   which is instance validation.  The validation process may be
+   interactive or non interactive.  For instance, applications may use
+   JSON Schema to build a user interface enabling interactive content
+   generation in addition to user input checking, or validate data
+   retrieved from various sources.  This specification describes schema
+   keywords dedicated to validation purposes.
 
 Status of This Memo
 
@@ -35,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 21, 2013.
+   This Internet-Draft will expire on March 26, 2013.
 
 Copyright Notice
 
@@ -47,16 +49,16 @@ Copyright Notice
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
 
 
 
-Galiegue, et al.         Expires March 21, 2013                 [Page 1]
+Galiegue, et al.         Expires March 26, 2013                 [Page 1]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
@@ -65,54 +67,56 @@ Table of Contents
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  4
    2.  Conventions and Terminology  . . . . . . . . . . . . . . . . .  4
    3.  Interoperability considerations  . . . . . . . . . . . . . . .  4
-     3.1.  Validation of numeric instances  . . . . . . . . . . . . .  4
-     3.2.  Regular expressions  . . . . . . . . . . . . . . . . . . .  4
+     3.1.  Validation of string instances . . . . . . . . . . . . . .  4
+     3.2.  Validation of numeric instances  . . . . . . . . . . . . .  4
+     3.3.  Regular expressions  . . . . . . . . . . . . . . . . . . .  5
    4.  General validation considerations  . . . . . . . . . . . . . .  5
-     4.1.  Keywords and instance primitive types  . . . . . . . . . .  5
-     4.2.  Validation of container instances  . . . . . . . . . . . .  6
+     4.1.  Keywords and instance primitive types  . . . . . . . . . .  6
+     4.2.  Inter-dependent keywords . . . . . . . . . . . . . . . . .  6
+     4.3.  Default values for missing keywords  . . . . . . . . . . .  6
+     4.4.  Validation of container instances  . . . . . . . . . . . .  6
    5.  Validation keywords sorted by instance types . . . . . . . . .  6
      5.1.  Validation keywords for numeric instances (number and
            integer) . . . . . . . . . . . . . . . . . . . . . . . . .  6
-       5.1.1.  divisibleBy  . . . . . . . . . . . . . . . . . . . . .  6
-       5.1.2.  maximum and exclusiveMaximum . . . . . . . . . . . . .  6
+       5.1.1.  multipleOf . . . . . . . . . . . . . . . . . . . . . .  6
+       5.1.2.  maximum and exclusiveMaximum . . . . . . . . . . . . .  7
        5.1.3.  minimum and exclusiveMinimum . . . . . . . . . . . . .  7
      5.2.  Validation keywords for strings  . . . . . . . . . . . . .  8
        5.2.1.  maxLength  . . . . . . . . . . . . . . . . . . . . . .  8
        5.2.2.  minLength  . . . . . . . . . . . . . . . . . . . . . .  8
-       5.2.3.  pattern  . . . . . . . . . . . . . . . . . . . . . . .  8
+       5.2.3.  pattern  . . . . . . . . . . . . . . . . . . . . . . .  9
      5.3.  Validation keywords for arrays . . . . . . . . . . . . . .  9
        5.3.1.  additionalItems and items  . . . . . . . . . . . . . .  9
        5.3.2.  maxItems . . . . . . . . . . . . . . . . . . . . . . . 10
-       5.3.3.  minItems . . . . . . . . . . . . . . . . . . . . . . . 10
+       5.3.3.  minItems . . . . . . . . . . . . . . . . . . . . . . . 11
        5.3.4.  uniqueItems  . . . . . . . . . . . . . . . . . . . . . 11
      5.4.  Validation keywords for objects  . . . . . . . . . . . . . 11
-       5.4.1.  maxProperties  . . . . . . . . . . . . . . . . . . . . 11
+       5.4.1.  maxProperties  . . . . . . . . . . . . . . . . . . . . 12
        5.4.2.  minProperties  . . . . . . . . . . . . . . . . . . . . 12
        5.4.3.  required . . . . . . . . . . . . . . . . . . . . . . . 12
        5.4.4.  additionalProperties, properties and
                patternProperties  . . . . . . . . . . . . . . . . . . 12
-       5.4.5.  dependencies . . . . . . . . . . . . . . . . . . . . . 14
+       5.4.5.  dependencies . . . . . . . . . . . . . . . . . . . . . 15
      5.5.  Validation keywords for any instance type  . . . . . . . . 15
        5.5.1.  enum . . . . . . . . . . . . . . . . . . . . . . . . . 15
-       5.5.2.  type . . . . . . . . . . . . . . . . . . . . . . . . . 15
+       5.5.2.  type . . . . . . . . . . . . . . . . . . . . . . . . . 16
        5.5.3.  allOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
        5.5.4.  anyOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
-       5.5.5.  oneOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
+       5.5.5.  oneOf  . . . . . . . . . . . . . . . . . . . . . . . . 17
        5.5.6.  not  . . . . . . . . . . . . . . . . . . . . . . . . . 17
-   6.  Calculating schemas which children instances must validate
-       against  . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
-     6.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 17
-     6.2.  Array elements . . . . . . . . . . . . . . . . . . . . . . 18
-       6.2.1.  Defining characteristic  . . . . . . . . . . . . . . . 18
-       6.2.2.  Implied keywords and default values. . . . . . . . . . 18
+   6.  Calculatin child instances' schema(s)  . . . . . . . . . . . . 17
 
 
 
-Galiegue, et al.         Expires March 21, 2013                 [Page 2]
+Galiegue, et al.         Expires March 26, 2013                 [Page 2]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
+     6.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 17
+     6.2.  Array elements . . . . . . . . . . . . . . . . . . . . . . 18
+       6.2.1.  Defining characteristic  . . . . . . . . . . . . . . . 18
+       6.2.2.  Implied keywords and default values. . . . . . . . . . 18
        6.2.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 18
      6.3.  Object values  . . . . . . . . . . . . . . . . . . . . . . 18
        6.3.1.  Defining characteristic  . . . . . . . . . . . . . . . 18
@@ -160,11 +164,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 3]
+Galiegue, et al.         Expires March 26, 2013                 [Page 3]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -174,11 +174,13 @@ Internet-Draft                 JSON Schema                September 2012
    JSON Schema can be used to require that a given JSON document (an
    instance) satisfies a certain number of criteria.  These criteria are
    materialized by a set of keywords which are described in this
+   specification.  In addition, a set of keywords is defined to assist
+   in interactive instance generation.  Those are also described in this
    specification.
 
    Validation is primarily concerned about structural validation of
-   instances.  Extensions also exist to perform semantic analysis, but
-   these are part of another specification.
+   instances.  Keywords also exist to perform semantic analysis;
+   however, support for these keywords is optional.
 
    This specification will use the terminology defined by the JSON
    Schema core specification.  It is advised that readers have a copy of
@@ -194,18 +196,39 @@ Internet-Draft                 JSON Schema                September 2012
    both array and object instances.  It uses the term "children
    instances" to refer to array elements or object member values.
 
+   This specification uses the term "member set" for an object instance
+   as the set of its member names; for instance, the member set of
+   object value { "a": 1, "b": 2 } is [ "a", "b" ]
+
 3.  Interoperability considerations
 
-3.1.  Validation of numeric instances
+3.1.  Validation of string instances
+
+   It should be noted that the null character (\x00) is valid in JSON
+   string values.  JSON Schema does not define any further constraints
+   than RFC 4627 [RFC4627] on validated instances, and as such, an
+   instance to validate MAY be and/or contain such a string value,
+   regardless of the ability of the underlying programming language to
+   deal with such data.
+
+3.2.  Validation of numeric instances
 
    The JSON specification does not define any bounds to the scale or
    precision of numeric values.  JSON Schema does not define any such
    bounds either.  This means that numeric instances processed by JSON
    Schema can be arbitrarily large and/or have an arbitrarily large
+
+
+
+Galiegue, et al.         Expires March 26, 2013                 [Page 4]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
    decimal part, regardless of the ability of the underlying programming
    language to deal with such data.
 
-3.2.  Regular expressions
+3.3.  Regular expressions
 
    Two validation keywords, "pattern" and "patternProperties", use
    regular expressions as a part of validation mechanics.  These regular
@@ -213,31 +236,19 @@ Internet-Draft                 JSON Schema                September 2012
    expression dialect.
 
    Implementations MUST NOT consider that regular expressions are
-   anchored, neither at the beginning or at the end.  This means, for
+   anchored, neither at the beginning nor at the end.  This means, for
    instance, that "es" matches "expression".
 
    Regular expression dialects vary, sometimes widely, between
-
-
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 4]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
-   programming languages, to the extent that a same regular expression
-   token may behave differently between programming languages.  For
-   instance, "\w", which is a common idiom used to match a character
-   which is "part of a word", will only match letters, digits and the
-   underscore in the US-ASCII character set in Java, whereas it matches
-   any Unicode alphanumeric character, plus the underscore, in ECMA 262.
-
-   For this reason, if regular expressions are used in a schema meant to
-   be processed by peer implementations, it is RECOMMENDED that schema
-   authors limit themselves to the following regular expression tokens:
+   programming languages, to the extent that a same commonly used
+   regular expression token may behave differently between programming
+   languages.  For this reason, if regular expressions are used in a
+   schema meant to be processed by peer implementations, it is
+   RECOMMENDED that schema authors limit themselves to the following
+   regular expression tokens:
 
       individual Unicode characters, as defined by the JSON RFC
-      (FIXME_LINK);
+      [RFC4627];
 
       simple character classes ([abc]), range character classes ([a-z]);
 
@@ -254,9 +265,21 @@ Internet-Draft                 JSON Schema                September 2012
 
    Schema authors choosing to use other regular expression features in
    their schemas SHOULD NOT expect peer implementations to support these
-   features.
+   features.  Should an implementation fail to correctly interpret a
+   regular expression, it is RECOMMENDED that JSON Schema processing be
+   considered a failure.
 
 4.  General validation considerations
+
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                 [Page 5]
+
+Internet-Draft                 JSON Schema                September 2012
+
 
 4.1.  Keywords and instance primitive types
 
@@ -269,43 +292,50 @@ Internet-Draft                 JSON Schema                September 2012
    to the primitive type, or types, these keywords validate.  Note that
    some keywords validate all instance types.
 
-   Additionally, validation of some keywords are influenced by the
-   presence of other keywords.  In this case, all these keywords will be
-   grouped in the same section.
+4.2.  Inter-dependent keywords
 
+   In order to validate an instance, some keywords are influenced by the
+   presence (or absence) of other keywords.  In this case, all these
+   keywords will be grouped in the same section.
 
+4.3.  Default values for missing keywords
 
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 5]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
-   Finally, some keywords, if absent, MAY be regarded by implementations
-   as having a default value.  In this case, the default value will be
+   Some keywords, if absent, MAY be regarded by implementations as
+   having a default value.  In this case, the default value will be
    mentioned.
 
-4.2.  Validation of container instances
+4.4.  Validation of container instances
 
-   It should be noted that keywords with the possibility to validate
-   container instances only validate this instance's structure.  They do
-   not, in and out of them, validate children instances.  Some of these
-   keywords do, however, influence the schema, or schemas, which a child
-   instance must validate.
+   Keywords with the possibility to validate container instances only
+   validate this instance's structure, not this instance's children.
+   Some of these keywords do, however, contain information which is
+   necessary for calculating which schema(s) a child instance must be
+   valid against.  It should be noted that while an array element will
+   only have to validate against one schema, object member values may
+   have to validate against more than one schema.
 
-   The algorithms to determine the schema, or schemas, which a child
-   instance must validate against are explained in separate sections
-   (FIXME_LINK).
-
-   It is RECOMMENDED that implementations do not validate a container
-   instance's children until the container instance itself has validated
-   successfully against all relevant keywords.
+   The algorithms to calculate a child instance's relevant schema(s) are
+   explained in a separate section.  While such calculation may be done
+   in real time for applications performing interactive validation, it
+   is RECOMMENDED that applications performing non interactive
+   validation do not attempt to validate children until the container
+   instance itself has been validated succesfully.
 
 5.  Validation keywords sorted by instance types
 
 5.1.  Validation keywords for numeric instances (number and integer)
 
-5.1.1.  divisibleBy
+5.1.1.  multipleOf
+
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                 [Page 6]
+
+Internet-Draft                 JSON Schema                September 2012
+
 
 5.1.1.1.  Valid values
 
@@ -314,9 +344,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.1.1.2.  Conditions for successful validation
 
-   A numeric instance is valid against "divisibleBy" if and only if the
-   remainder of the division of the instance by this keyword's value is
-   exactly 0.
+   A numeric instance is valid against "multipleOf" if and only if the
+   result of the division of the instance by this keyword's value is an
+   integer.
 
 5.1.2.  maximum and exclusiveMaximum
 
@@ -326,16 +356,6 @@ Internet-Draft                 JSON Schema                September 2012
    for the "exclusiveMaximum" keyword MUST be a boolean.
 
    If "exclusiveMaximum" is present, "maximum" MUST also be present.
-
-
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 6]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 5.1.2.2.  Conditions for successful validation
 
@@ -364,6 +384,15 @@ Internet-Draft                 JSON Schema                September 2012
 
    If "exclusiveMinimum" is present, "minimum" MUST also be present.
 
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                 [Page 7]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 5.1.3.2.  Conditions for successful validation
 
    Successful validation depends on the presence and value of
@@ -382,17 +411,6 @@ Internet-Draft                 JSON Schema                September 2012
    "exclusiveMinimum", if absent, may be considered as being present
    with boolean value false.
 
-
-
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 7]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
 5.2.  Validation keywords for strings
 
 5.2.1.  maxLength
@@ -408,7 +426,7 @@ Internet-Draft                 JSON Schema                September 2012
    length is less than, or equal to, the value of this keyword.
 
    The length of a string instance is defined as the number of its
-   characters as defined by FIXME_LINK.
+   characters as defined by RFC 4627 [RFC4627].
 
 5.2.2.  minLength
 
@@ -423,7 +441,15 @@ Internet-Draft                 JSON Schema                September 2012
    length is greater than, or equal to, the value of this keyword.
 
    The length of a string instance is defined as the number of its
-   characters as defined by FIXME_LINK.
+
+
+
+Galiegue, et al.         Expires March 26, 2013                 [Page 8]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+   characters as defined by RFC 4627 [RFC4627].
 
 5.2.2.3.  Default value
 
@@ -434,20 +460,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.2.3.1.  Valid values
 
-   The value for this keyword MUST be a string.  This string MUST be a
+   The value for this keyword MUST be a string.  This string SHOULD be a
    valid regular expression, according to the ECMA 262 regular
-   expression dialect, as defined by FIXME_LINK.
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 8]
-
-Internet-Draft                 JSON Schema                September 2012
-
+   expression dialect.
 
 5.2.3.2.  Conditions for successful validation
 
@@ -482,6 +497,14 @@ Internet-Draft                 JSON Schema                September 2012
 
       if the value of additionalItems is boolean value false and the
       value of items is an array (which is must be at this point), the
+
+
+
+Galiegue, et al.         Expires March 26, 2013                 [Page 9]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
       instance is valid if and only if its number of elements is less
       than, or equal to, the number of elements in the array value of
       items.
@@ -492,18 +515,6 @@ Internet-Draft                 JSON Schema                September 2012
    boolean value false and "items" has an array value, since this is the
    only situation under which an instance may fail to validate
    successfully.
-
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                 [Page 9]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
    This is an example schema:
 
@@ -540,6 +551,16 @@ Internet-Draft                 JSON Schema                September 2012
    The value for this keyword MUST be an integer.  This integer MUST be
    greater than, or equal to, 0.
 
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 10]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 5.3.2.2.  Conditions for successful validation
 
    An array instance is valid against "maxItems" if and only if its
@@ -552,14 +573,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    The value for this keyword MUST be an integer.  This integer MUST be
    greater than, or equal to, 0.
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                [Page 10]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 5.3.3.2.  Conditions for successful validation
 
@@ -593,6 +606,17 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.4.  Validation keywords for objects
 
+
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 11]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 5.4.1.  maxProperties
 
 5.4.1.1.  Valid values
@@ -605,17 +629,6 @@ Internet-Draft                 JSON Schema                September 2012
    An object instance is valid against "maxProperties" if and only if
    its number of members is less than, or equal to, the value of this
    keyword.
-
-
-
-
-
-
-
-Galiegue, et al.         Expires March 21, 2013                [Page 11]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 5.4.2.  minProperties
 
@@ -645,11 +658,20 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.4.3.2.  Conditions for successful validation
 
-   An object instance is valid against this keyword if and only if the
-   set of its member names contains all elements in this keyword's
-   array.
+   An object instance is valid against this keyword if and only if its
+   member set contains all elements in this keyword's array.
 
 5.4.4.  additionalProperties, properties and patternProperties
+
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 12]
+
+Internet-Draft                 JSON Schema                September 2012
+
 
 5.4.4.1.  Valid values
 
@@ -661,17 +683,9 @@ Internet-Draft                 JSON Schema                September 2012
    Schema.
 
    The value of "patternProperties" MUST be an object.  Each member name
-   of this object MUST be a valid regular expression, according to the
-   ECMA 262 regular expression dialect, as defined by FIXME_LINK.  Each
-   value of this object MUST be an object, and each object MUST be a
-   valid JSON Schema.
-
-
-
-Galiegue, et al.         Expires March 21, 2013                [Page 12]
-
-Internet-Draft                 JSON Schema                September 2012
-
+   of this object SHOULD be a valid regular expression, according to the
+   ECMA 262 regular expression dialect.  Each value of this object MUST
+   be an object, and each object MUST be a valid JSON Schema.
 
 5.4.4.2.  Conditions for successful validation
 
@@ -694,24 +708,35 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.4.4.4.  If "additionalProperties" has boolean value false
 
-   In this case, validation of the instance depends on the member names
-   of "properties" and "patternProperties".  In this section, member
-   names of "patternProperties" will be called regexes for convenience.
+   In this case, validation of the instance depends on the member set of
+   "properties" and "patternProperties".  In this section, the elements
+   of "patternProperties"' member set will be called regexes for
+   convenience.
 
    The first step is to collect the following sets:
 
-   s  The set of member names of the instance to validate.
+   s  The member set of the instance to validate.
 
-   p  The set of member names from "properties".
+   p  The member set from "properties".
 
-      The set of regexes from "patternProperties".
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 13]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+   pp The member set from "patternProperties".
 
    Having collected these three sets, the process is as follows:
 
-      remove from "s" all members of "p", if any;
+      remove from "s" all elements of "p", if any;
 
-      for each regex in "pp", remove all members of "s" which this regex
-      matches.
+      for each regex in "pp", remove all elements of "s" which this
+      regex matches.
 
    Validation of the instance succeeds if and only if, after these two
    steps, set "s" is empty.
@@ -721,21 +746,13 @@ Internet-Draft                 JSON Schema                September 2012
    This schema will be used as an example:
 
 
-
-
-
-Galiegue, et al.         Expires March 21, 2013                [Page 13]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
    {
        "properties": {
            "p1": {}
        },
        "patternProperties": {
            "p": {},
-           "\\d": {}
+           "[0-9]": {}
        }
    }
 
@@ -757,16 +774,27 @@ Internet-Draft                 JSON Schema                September 2012
 
    s  { "p1", "p2", "a32&o", "", "finance", "apple" }
 
+
+
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 14]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
    p  { "p1" }
 
-   pp { "p", "\\d" }
+   pp { "p", "[0-9]" }
 
    Applying the two steps of the algorithm:
 
       after the first step, "p1" is removed from "s";
 
-      after the second step, "p2", "a32&o" and "apple" are removed from
-      "s".
+      after the second step, "p2" (matched by "p"), "a32&o" (matched by
+      "[0-9]) and "apple" (matched by "p") are removed from "s".
 
    The set still contains two elements, "" and "finance".  Validation
    therefore fails.
@@ -775,40 +803,18 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.4.5.1.  Valid values
 
-   This keyword's value MUST be an object.  Values for this object MUST
-   be either of a string, an array or an object.  If the value is an
-
-
-
-Galiegue, et al.         Expires March 21, 2013                [Page 14]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
-   object, it MUST be a valid JSON Schema.
-
-   If the value is an array:
-
-      this array MUST have at least one element;
-
-      elements of this array MUST be strings;
-
-      elements of this array MUST be unique.
+   This keyword's value MUST be an object.  This object MUST be a valid
+   JSON Schema.
 
 5.4.5.2.  Conditions for successful validation
 
-   For each member name in the object instance with an equivalent member
-   name in "dependencies":
+   For each element in the object instance's member set, if
+   "dependencies" contains a member by the same name, the object
+   instance must validate successfully against the matching schema in
+   "dependencies".
 
-      if the value in "dependencies" is an object, therefore a schema,
-      then the object instance is considered valid if and only if it
-      also validates successfully against this schema (note: the object
-      instance itself, not the value of that particular member);
-
-      if the value in "dependencies" is a string or an array of strings,
-      this (these) strings should be considered as member name(s), and
-      the object instance is required to have members by the same
-      name(s) in order to validate successfully.
+   Note that this is the object instance itself which must validate
+   successfully, not the value associated with that member.
 
 5.5.  Validation keywords for any instance type
 
@@ -824,34 +830,29 @@ Internet-Draft                 JSON Schema                September 2012
 5.5.1.2.  Conditions for successful validation
 
    An instance validates successfully against this keyword if and only
-   if its value is exactly equal to one of the elements in this
-   keyword's array value, according to the definition in FIXME_LINK.
+   if its value is equal to one of the elements in this keyword's array
+   value.
+
+
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 15]
+
+Internet-Draft                 JSON Schema                September 2012
+
 
 5.5.2.  type
 
 5.5.2.1.  Valid values
 
-   The value of this keyword MUST be a string or an array.  If the value
-   is an array, elements of this array MUST be unique.  This keyword's
-
-
-
-Galiegue, et al.         Expires March 21, 2013                [Page 15]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
-   string value, or array element values, MUST be either of:
-
-      one of the seven primitive types defined by FIXME_LINK; or
-
-      "any", which is equivalent to all seven primitive types.
+   The value of this keyword MUST be a string.  The value of this string
+   MUST be one of the seven primitive types defined by FIXME_LINK.
 
 5.5.2.2.  Conditions for successful validation
 
-   An instance matches successfully if and only if its primitive type,
-   as defined in FIXME_LINK, is one of the primitive types allowed by
-   this keyword's value.  Recall: "number" includes "integer".
+   An instance matches successfully if and only if its primitive type is
+   the one defined by the value of this keyword.  Recall: "number"
+   includes "integer".
 
 5.5.3.  allOf
 
@@ -885,17 +886,18 @@ Internet-Draft                 JSON Schema                September 2012
    if it validates successfully against at least one defined by this
    keyword's value.
 
-5.5.5.  oneOf
 
 
 
 
 
 
-Galiegue, et al.         Expires March 21, 2013                [Page 16]
+Galiegue, et al.         Expires March 26, 2013                [Page 16]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+5.5.5.  oneOf
 
 5.5.5.1.  Valid values
 
@@ -923,13 +925,12 @@ Internet-Draft                 JSON Schema                September 2012
    An instance is valid against this keyword if and only if it fails to
    validate successfully against the schema defined by this keyword.
 
-6.  Calculating schemas which children instances must validate against
+6.  Calculatin child instances' schema(s)
 
 6.1.  Foreword
 
    Calculating the schema, or schemas, a child instance must validate
-   against is influenced by the following, in addition to the container
-   instance type:
+   against is influenced by the following:
 
       the container instance type;
 
@@ -947,8 +948,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-
-Galiegue, et al.         Expires March 21, 2013                [Page 17]
+Galiegue, et al.         Expires March 26, 2013                [Page 17]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -1004,7 +1004,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue, et al.         Expires March 21, 2013                [Page 18]
+Galiegue, et al.         Expires March 26, 2013                [Page 18]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -1024,12 +1024,12 @@ Internet-Draft                 JSON Schema                September 2012
 
    m  The member name the child instance is associated to.
 
-   p  The set of member names from "properties", if any.
+   p  The member set from "properties".
 
-   pp The set of member names from "patternProperties", if any.  Member
-      names from this set will be called regexes for convenience.
+   pp The member set from "patternProperties".  Elements of this set
+      will be called regexes for convenience.
 
-   s  The set of schemas the child instance must validate against.
+   s  The set of schemas for the child instance.
 
 6.3.3.2.  First step: schemas in "properties"
 
@@ -1060,7 +1060,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue, et al.         Expires March 21, 2013                [Page 19]
+Galiegue, et al.         Expires March 26, 2013                [Page 19]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -1092,8 +1092,6 @@ Authors' Addresses
 
 
    Gary Court
-   Calgary, AB
-   Canada
 
    EMail: gary.court@gmail.com
 
@@ -1116,5 +1114,7 @@ Authors' Addresses
 
 
 
-Galiegue, et al.         Expires March 21, 2013                [Page 20]
+
+
+Galiegue, et al.         Expires March 26, 2013                [Page 20]
 

@@ -3,9 +3,6 @@
     "$schema": "http://json-schema.org/current/schema-core.json#",
     "description": "Core schema meta-schema",
     "common": {
-        "primitiveTypes": {
-            "enum": [ "array", "boolean", "integer", "null", "number", "object", "string", "any" ]
-        },
         "schemaArray": {
             "type": "array",
             "minItems": 1,
@@ -17,12 +14,6 @@
         },
         "positiveIntegerDefault0": {
             "allOf": [ { "$ref": "#/common/positiveInteger" }, { "default": 0 } ]
-        },
-        "stringArray": {
-            "type": "array",
-            "minItems": 1,
-            "items": { "type": "string" },
-            "uniqueItems": true
         }
     },
     "type": "object",
@@ -42,7 +33,7 @@
             "type": "string"
         },
         "default": {},
-        "divisibleBy": {
+        "multipleOf": {
             "type": "number",
             "minimum": 0,
             "exclusiveMinimum": true
@@ -89,7 +80,12 @@
         },
         "maxProperties": { "$ref": "#/common/positiveInteger" },
         "minProperties": { "$ref": "#/common/positiveIntegerDefault0" },
-        "required": { "$ref": "#/common/stringArray" },
+        "required": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        }
         "additionalProperties": {
             "anyOf": [
                 { "type": "boolean" },
@@ -109,13 +105,7 @@
         },
         "dependencies": {
             "type": "object",
-            "additionalProperties": {
-                "anyOf": [
-                    { "type": "string" },
-                    { "$ref": "#/common/stringArray" },
-                    { "$ref": "#" }
-                ]
-            }
+            "additionalProperties": { "$ref": "#" }
         },
         "enum": {
             "type": "array",
@@ -123,15 +113,7 @@
             "uniqueItems": true
         },
         "type": {
-            "anyOf": [
-                { "$ref": "#/common/primitiveTypes" },
-                {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": { "$ref": "#/common/primitiveTypes" }
-                }
-            ],
-            "default": "any"
+            "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
         },
         "allOf": { "$ref": "#/common/schemaArray" },
         "anyOf": { "$ref": "#/common/schemaArray" },
@@ -144,4 +126,3 @@
     },
     "default": {}
 }
-
