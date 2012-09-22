@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -34,10 +35,6 @@
 
         <author fullname="Gary Court" initials="G" surname="Court">
             <address>
-                <postal>
-                    <city>Calgary, AB</city>
-                    <country>Canada</country>
-                </postal>
                 <email>gary.court@gmail.com</email>
             </address>
         </author>
@@ -140,50 +137,44 @@
             <section title="JSON Schema primitive types">
                 <t>
                     JSON Schema defines seven primitive types for JSON values:
+                    <list style="hanging">
+                        <t hangText="array">A JSON array.</t>
+                        <t hangText="boolean">A JSON boolean (true or false).</t>
+                        <t hangText="integer">A JSON number without a decimal part.</t>
+                        <t hangText="number">Any JSON number. Number includes integer.</t>
+                        <t hangText="null">The JSON null value.</t>
+                        <t hangText="object">A JSON object.</t>
+                        <t hangText="string">A JSON string.</t>
+                    </list>
                 </t>
-
-                <list style="hanging">
-                    <t hangText="array">A JSON array.</t>
-                    <t hangText="boolean">A JSON boolean (true or false).</t>
-                    <t hangText="integer">A JSON number without a decimal part.</t>
-                    <t hangText="number">Any JSON number. Number includes integer.</t>
-                    <t hangText="null">The JSON null value.</t>
-                    <t hangText="object">A JSON object.</t>
-                    <t hangText="string">A JSON string.</t>
-                </list>
-
             </section>
 
             <section title="JSON value equality">
                 <t>
                     Two JSON values are said to be equal if and only if:
+
+                    <list>
+                        <t>both are nulls; or</t>
+                        <t>both are booleans, and have the same value; or</t>
+                        <t>both are strings, and have the same value; or</t>
+                        <t>both are numbers, and evaluate to the same numeric value; or</t>
+                        <t>both are arrays, and:
+                            <list>
+                                <t>have the same number of elements; and</t>
+                                <t>elements at the same index are equal according to this
+                                definition; or</t>
+                            </list>
+                        </t>
+                        <t>both are objects, and:
+                            <list>
+                                <t>have the same set of members; and</t>
+                                <t>values for a same member are equal according to this
+                                definition.</t>
+                            </list>
+                        </t>
+                    </list>
                 </t>
-
-                <list>
-                    <t>both are nulls; or</t>
-                    <t>both are booleans or strings, and have the same value; or</t>
-                    <t>both are numbers, and have the same JSON representation; or</t>
-                    <t>both are arrays, and:
-                        <list>
-                            <t>have the same number of elements; and</t>
-                            <t>elements at the same index are equal according to this definition;
-                            or</t>
-                        </list>
-                    </t>
-                    <t>both are objects, and:
-                        <list>
-                            <t>have the same set of members; and</t>
-                            <t>values for a same member are equal according to this definition.</t>
-                        </list>
-                    </t>
-                </list>
             </section>
-
-            <t>
-                Note about numbers: the two JSON number values, 1.0 and 1, for instance, are
-                mathematically equivalent; however they are NOT equal, since their JSON
-                representation differs.
-            </t>
 
             <section title="Instance">
                 <t>
@@ -207,27 +198,25 @@
                 a defined set of keywords which is described in its own specification.
             </t>
 
-            <list style="hanging">
-                <t hangText="Documentation">JSON Schema can be used to decorate either itself, or
-                instances, with descriptive text highlighting the schema's, or instance's,
-                purposes.</t>
-                <!-- FIXME: there is a suggestion for hypermedia instead of hyperlinking -->
-                <t hangText="Hyperlinking">JSON Schema can be used to associate an instance to a
-                Link Description Object, as defined by FIXME.</t>
-                <t hangText="Validation">JSON Schema can be used to validate the structure of an
-                instance. Keywords also exist for semantic analysis, although implementations are
-                not required to implement them.</t>
-            </list>
+            <section title="Instance validation">
+                <t>
+                    JSON Schema allows applications to validate any JSON instance, either
+                    noninteractively or interactively. For instance, an application may use an
+                    external service to collect JSON instances and check that these collected
+                    instances match its requirements against a given schema; another application may
+                    use a schema to build an interactve interface in order to collect user input,
+                    and check the correctness of said input.
+                </t>
+            </section>
+
+            <section title="Hyperlinking">
+                <t>
+                    JSON Schema defines a mechanism to build links to a variety of resources. FIXME:
+                    describe it better.
+                </t>
+            </section>
 
             <section title="Design Considerations">
-                <t>
-                    JSON Schema provides a separate format for flexibly communicating how a JSON
-                    value should be interpreted and/or validated, such that clients can properly
-                    understand acceptable structures for, and/or extract the needed information
-                    from, the JSON instance being processed. This information ranges from
-                    documentation to external resource links, and processing of these links.
-                </t>
-
                 <t>
                     It is acknowledged that JSON values can be of any type defined by the JSON
                     specification. As such, JSON Schema does not mandate that an instance be of a
@@ -248,16 +237,16 @@
 
             <section title="Addressing mechanisms and general considerations">
                 <t>
-                    JSON Schema defines two addressing mechanisms: canonical addressing, and inner
-                    schema addressing. Implementations MUST support canonical addressing, and MAY
-                    support inner schema addressing.
+                    JSON Schema addressing is done using <xref target="RFC3986">URIs</xref>. Two
+                    addressing mechanisms are defined: canonical addressing and inner schema
+                    addressing. Implementations MUST support canonical addressing, and MAY support
+                    inner schema addressing.
                 </t>
 
                 <t>
                     Inner schema addressing is done by the means of the "id" keyword. The value of
-                    this keyword MUST be a string, and this string MUST be a valid URI, and MUST be
-                    normalized. When used in a root schema, the value of this keyword SHOULD be an
-                    absolute URI, and MUST have no fragment, or an empty fragment.
+                    this keyword MUST be a string; this string MUST be a valid URI, and SHOULD be
+                    normalized.
                 </t>
             </section>
 
@@ -265,28 +254,22 @@
                 <t>
                     When a schema is loaded via a URI, the loading URI SHALL be considered to be the
                     URI for this schema. If a schema is loaded without a URI:
+
+                    <list>
+                        <t>if "id" is present in the root schema, its value MAY be considered to be
+                        the schema URI;</t>
+                        <t>otherwise, it is RECOMMENDED that implementations consider that the URI
+                        of the schema is either the empty URI, or a URN.</t>
+                    </list>
                 </t>
-
-                <list>
-                    <t>if "id" is present in the root schema, and obeys the provisions in the
-                    previous paragraph, the value of "id" MAY be considered to be the schema
-                    URI;</t>
-                    <t>otherwise, it is RECOMMENDED that implementations consider that the URI of
-                    the schema is either the empty URI, or a URN.</t>
-                </list>
-
-                <t>
-                    In addition, implementations MUST consider, for root schema URIs, that the URI
-                    with no fragment, or an empty fragment, are strictly equivalent.
-                </t>
-
             </section>
 
             <section title="Canonical addressing">
                 <t>
-                    Canonical addressing in JSON Schema is done using JSON Reference (FIXME_LINK).
-                    As defined by the JSON Reference specification, when encountering a JSON
-                    Reference, other schema keywords SHALL be ignored.
+                    Canonical addressing in JSON Schema is done using <xref
+                    target="json-reference">JSON Reference</xref>. JSON References, when
+                    encountered, MUST be resolved against the root schema URI before being
+                    processed.
                 </t>
             </section>
 
@@ -298,8 +281,9 @@
                 </t>
 
                 <t>
-                    There SHOULD NOT be two identical "id" values in the same schema. Failing that,
-                    subschema lookup using inner schema addressing is undefined.
+                    There SHOULD NOT be two identical "id" values in the same schema which resolve
+                    to the same URI. If this is the case, subschema lookup using inner schema
+                    addressing is undefined.
                 </t>
 
                 <t>
@@ -334,18 +318,18 @@
                 </figure>
                 
                 <t>
-                    Subschemas at the following URI-encoded JSON Pointers (starting from the root of
-                    the schema) have the following URIs:
+                    Subschemas at the following URI-encoded <xref target="json-pointer">JSON
+                    Pointer</xref>s (starting from the root schema) have the following URIs:
+ 
+                    <list style="hanging">
+                        <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
+                        <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
+                        <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
+                        <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
+                        <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
+                        <t hangText="#/schema3">some://where.else/completely#</t>
+                    </list>
                 </t>
-
-                <list style="hanging">
-                    <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
-                    <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
-                    <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
-                    <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
-                    <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
-                    <t hangText="#/schema3">some://where.else/completely#</t>
-                </list>
 
             </section>
 
@@ -359,9 +343,9 @@
                 </t>
 
                 <t>
-                    Dereferencing canonical URIs MAY fail to complete, or MAY lead to content which
-                    is not a JSON Schema (another type of JSON value, or not a JSON value). It is
-                    RECOMMENDED that JSON Schema processing be stopped in such a situation.
+                    Dereferencing URIs may fail to complete, or may lead to content which is not a
+                    JSON Schema (another type of JSON value, or not a JSON value). It is RECOMMENDED
+                    that JSON Schema processing be stopped in such a situation.
                 </t>
             </section>
         </section>
@@ -371,7 +355,7 @@
             <section title="Purpose of this section">
                 <t>
                     A JSON instance MAY be correlated to one, or even several, JSON Schemas. This
-                    correlation MAY be embodied witin existing protocol headers.
+                    correlation MAY be embodied within existing protocol headers.
                 </t>
 
                 <t>
@@ -452,14 +436,12 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
         <section title="IANA Considerations">
             <t>
                 The proposed MIME media type for JSON Schema is defined as follows:
-            </t>
 
-            <list>
-                <t>type name: application;</t>
-                <t>subtype name: schema+json;</t>
-                <t>required parameters: profile.</t>
-                <t>FIXME: fragment resolution?</t>
-            </list>
+                <list>
+                    <t>type name: application;</t>
+                    <t>subtype name: schema+json.</t>
+                </list>
+            </t>
 
         </section>
     </middle>
@@ -468,6 +450,19 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
         <!-- References Section -->
         <references title="Normative References">
             &RFC2119;
+            <reference anchor="json-reference"
+                target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
+                <front>
+                    <title>JSON Reference</title>
+                    <author initials="P." surname="Bryan">
+                        <organization>ForgeRock US, Inc.</organization>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2012" month="September"/>
+                </front>
+            </reference>
             <reference anchor="json-pointer"
                 target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-04">
                 <front>
@@ -478,12 +473,13 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
                     <author initials="K." surname="Zyp">
                         <organization>SitePen (USA)</organization>
                     </author>
-                    <date year="2011" month="October" />
+                    <date year="2012" month="September"/>
                 </front>
             </reference>
         </references>
         <references title="Informative References">
             &RFC4627;
+            &RFC3986;
         </references>
 
         <section title="ChangeLog">
