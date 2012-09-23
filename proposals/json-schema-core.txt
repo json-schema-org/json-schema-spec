@@ -184,7 +184,8 @@ Internet-Draft                 JSON Schema                September 2012
 
    boolean  A JSON boolean (true or false).
 
-   integer  A JSON number without a decimal part.
+   integer  A JSON number without a decimal or exponent part (see RFC
+      4627, section 2.4 [RFC4627].
 
    number  Any JSON number.  Number includes integer.
 
@@ -204,7 +205,7 @@ Internet-Draft                 JSON Schema                September 2012
 
       both are strings, and have the same value; or
 
-      both are numbers, and evaluate to the same numeric value; or
+      both are numbers, and have the same JSON representation; or
 
       both are arrays, and:
 
@@ -215,7 +216,6 @@ Internet-Draft                 JSON Schema                September 2012
 
       both are objects, and:
 
-         have the same set of members; and
 
 
 
@@ -224,6 +224,8 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 4]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+         have the same set of members; and
 
          values for a same member are equal according to this
          definition.
@@ -271,8 +273,6 @@ Internet-Draft                 JSON Schema                September 2012
    add useful constraints to the structure and, optionally, semantics,
    of the JSON instance being processed.
 
-   JSON Schema is agnostic with regards to both protocols and
-   programming languages.  In particular, the semantics of the client-
 
 
 
@@ -281,6 +281,8 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 5]
 Internet-Draft                 JSON Schema                September 2012
 
 
+   JSON Schema is agnostic with regards to both protocols and
+   programming languages.  In particular, the semantics of the client-
    server interface is dependent on the protocol being used.  This
    specification nevertheless suggests mechanisms to correlate an
    instance to a schema over HTTP, which is the dominant protocol used
@@ -327,8 +329,6 @@ Internet-Draft                 JSON Schema                September 2012
    Implementations MAY choose to define additional keywords to JSON
    Schema.  Save for explicit agreement, schema authors SHALL NOT expect
    these additional keywords to be supported by peer implementations.
-
-
 
 
 

@@ -140,7 +140,8 @@
                     <list style="hanging">
                         <t hangText="array">A JSON array.</t>
                         <t hangText="boolean">A JSON boolean (true or false).</t>
-                        <t hangText="integer">A JSON number without a decimal part.</t>
+                        <t hangText="integer">A JSON number without a decimal or exponent part (see
+                        <xref target="RFC4627">RFC 4627, section 2.4</xref>.</t>
                         <t hangText="number">Any JSON number. Number includes integer.</t>
                         <t hangText="null">The JSON null value.</t>
                         <t hangText="object">A JSON object.</t>
@@ -157,7 +158,7 @@
                         <t>both are nulls; or</t>
                         <t>both are booleans, and have the same value; or</t>
                         <t>both are strings, and have the same value; or</t>
-                        <t>both are numbers, and evaluate to the same numeric value; or</t>
+                        <t>both are numbers, and have the same JSON representation; or</t>
                         <t>both are arrays, and:
                             <list>
                                 <t>have the same number of elements; and</t>
