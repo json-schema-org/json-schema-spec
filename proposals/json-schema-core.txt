@@ -69,7 +69,7 @@ Table of Contents
      3.1.  JSON Schema, keywords  . . . . . . . . . . . . . . . . . .  3
      3.2.  Root schema, subschema . . . . . . . . . . . . . . . . . .  3
      3.3.  JSON Schema primitive types  . . . . . . . . . . . . . . .  4
-     3.4.  JSON value equality  . . . . . . . . . . . . . . . . . . .  4
+     3.4.  JSON value lexical equivalence . . . . . . . . . . . . . .  4
      3.5.  Instance . . . . . . . . . . . . . . . . . . . . . . . . .  5
    4.  Overview . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
      4.1.  Instance validation  . . . . . . . . . . . . . . . . . . .  5
@@ -184,7 +184,7 @@ Internet-Draft                 JSON Schema                September 2012
 
    boolean  A JSON boolean (true or false).
 
-   integer  A JSON number without a decimal or exponent part (see RFC
+   integer  A JSON number without a fraction or exponent part (see RFC
       4627, section 2.4) [RFC4627].
 
    number  Any JSON number.  Number includes integer.
@@ -195,28 +195,28 @@ Internet-Draft                 JSON Schema                September 2012
 
    string  A JSON string.
 
-3.4.  JSON value equality
+3.4.  JSON value lexical equivalence
 
-   Two JSON values are said to be equal if and only if:
+   Two JSON values are said to be lexically equivalent if and only if:
 
       both are nulls; or
 
       both are booleans, and have the same value; or
 
-      both are strings, and have the same value; or
+      both are strings, and have the same lexical representation (see
+      RFC 4627, section 2.5 [RFC4627]; or
 
-      both are integers, and have the same value; or
+      both are integers, and have the same lexical representation; or
 
-      both are numbers, and have the same integer and decimal/exponent
-      part; or
+      both are numbers, and have the same lexical representation (see
+      RFC 4627, section 2.4) [RFC4627]; or
 
       both are arrays, and:
 
          have the same number of elements; and
 
-         elements at the same index are equal according to this
-         definition; or
-
+         elements at the same index are lexically equivalent according
+         to this definition; or
 
 
 
@@ -229,8 +229,8 @@ Internet-Draft                 JSON Schema                September 2012
 
          have the same set of members; and
 
-         values for a same member are equal according to this
-         definition.
+         values for a same member are lexically equivalent according to
+         this definition.
 
 3.5.  Instance
 
