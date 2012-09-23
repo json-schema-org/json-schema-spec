@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2048 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2048.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
@@ -141,7 +142,7 @@
                         <t hangText="array">A JSON array.</t>
                         <t hangText="boolean">A JSON boolean (true or false).</t>
                         <t hangText="integer">A JSON number without a decimal or exponent part (see
-                        <xref target="RFC4627">RFC 4627, section 2.4</xref>.</t>
+                        <xref target="RFC4627">RFC 4627, section 2.4)</xref>.</t>
                         <t hangText="number">Any JSON number. Number includes integer.</t>
                         <t hangText="null">The JSON null value.</t>
                         <t hangText="object">A JSON object.</t>
@@ -218,17 +219,20 @@
             </section>
         </section>
 
-        <section title="Design discussion">
+        <section title="General considerations">
 
-            <section title="Generic considerations">
+            <section title="Valid instances">
                 <t>
-                    It is acknowledged that JSON values can be of any type defined by the JSON
-                    specification. As such, JSON Schema does not mandate that an instance be of a
-                    particular type: JSON Schema can process any JSON value, including null. It is
-                    the domain of JSON Schema validation to add useful constraints to the structure
-                    and, optionally, semantics, of the JSON instance being processed.
+                    It is acknowledged that a JSON instance may be any valid JSON value as defined
+                    by <xref target="RFC4627"/>. As such, JSON Schema does not mandate that an
+                    instance be of a particular type: JSON Schema can process any JSON value,
+                    including null. It is the domain of JSON Schema validation to add useful
+                    constraints to the structure and, optionally, semantics, of the JSON instance
+                    being processed.
                 </t>
-                
+            </section>
+
+            <section title="Protocol and programming language independence">
                 <t>
                     JSON Schema is agnostic with regards to both protocols and programming
                     languages. In particular, the semantics of the client-server interface is
@@ -238,53 +242,6 @@
                 </t>
             </section>
 
-            <section title='The "$schema" keyword'>
-                <section title="Purpose">
-                    <t>
-                        The "$schema" keyword plays two roles in JSON Schema:
-
-                        <list>
-                            <t>it defines the version of the schema which a particular JSON Schema
-                            is valid against;</t>
-                            <t>it is a URI which is a location to a JSON Schema which validates any
-                            schema written for this version.</t>
-                        </list>
-                    </t>
-
-                    <t>
-                        Any of these schemas also validate themselves successfully.
-                    </t>
-                </section>
-
-                <section title="Valid values">
-                    <t>
-                        The value of this keyword MUST be one of the following string values:
-
-                        <list>
-                            <t>"http://json-schema.org/draft-03/schema#" (core JSON Schema written
-                            against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
-                            <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema
-                            hyperschema written against <xref target="json-schema-03">JSON Schema,
-                            draft v3</xref>);</t>
-                            <t>"http://json-schema.org/current/schema-core.json#" (schema written
-                            against the current version of the specification -- this one).</t>
-                        </list>
-                    </t>
-                </section>
-
-                <section title="Usage">
-                    <t>
-                        It is RECOMMENDED that schema authors include this keyword in their schemas.
-                        This keyword MUST be located at the root of a schema.
-                    </t>
-
-                    <t>
-                        It is RECOMMENDED that implementations not supporting a particular schema
-                        version fail JSON Schema processing.
-                    </t>
-                </section>
-            </section>
-
             <section title="Extending JSON Schema">
                 <t>
                     Implementations MAY choose to define additional keywords to JSON Schema. Save
@@ -292,21 +249,81 @@
                     keywords to be supported by peer implementations.
                 </t>
             </section>
+
+            <section title="Security considerations">
+                <t>
+                    Both schemas and instances are written in JSON. As such, all security
+                    considerations defined in <xref target="RFC4627"/> apply.
+                </t>
+
+                <t>
+                    JSON Schema does not define an internal security mechanism. It is up to
+                    applications to determine the level of trust placed into JSON data coming from
+                    external sources (whether this data be an instance or a schema).
+                </t>
+            </section>
+        </section>
+
+        <section title='The "$schema" keyword'>
+            <section title="Purpose">
+                <t>
+                    The "$schema" keyword plays two roles in JSON Schema:
+
+                    <list>
+                        <t>it defines the version of the schema which a particular JSON Schema is
+                        valid against;</t>
+                        <t>it is a URI which is a location to a JSON Schema which validates any
+                        schema written for this version.</t>
+                    </list>
+                </t>
+
+                <t>
+                    Any of these schemas also validate themselves successfully.
+                </t>
+            </section>
+
+            <section title="Valid values">
+                <t>
+                    The value of this keyword MUST be one of the following string values:
+
+                    <list>
+                        <t>"http://json-schema.org/draft-03/schema#" (core JSON Schema written
+                        against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
+                        <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
+                        written against <xref target="json-schema-03">JSON Schema, draft
+                        v3</xref>);</t>
+                        <t>"http://json-schema.org/current/schema-core.json#" (schema written
+                        against the current version of the specification -- this one).</t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Usage">
+                <t>
+                    It is RECOMMENDED that schema authors include this keyword in their schemas.
+                    This keyword MUST be located at the root of a schema.
+                </t>
+
+                <t>
+                    It is RECOMMENDED that implementations not supporting a particular schema
+                    version fail JSON Schema processing.
+                </t>
+            </section>
         </section>
 
         <section title="Schema addressing">
 
-            <section title="Addressing mechanisms and general considerations">
+            <section title="Addressing mechanisms">
                 <t>
                     JSON Schema addressing is done using <xref target="RFC3986">URIs</xref>. Two
-                    addressing mechanisms are defined: canonical addressing and inner schema
-                    addressing. Implementations MUST support canonical addressing, and MAY support
-                    inner schema addressing.
+                    addressing mechanisms are defined: canonical addressing and internal addressing.
+                    Implementations MUST support canonical addressing, and MAY support internal
+                    addressing.
                 </t>
 
                 <t>
-                    Inner schema addressing is done by the means of the "id" keyword. The value of
-                    this keyword MUST be a string; this string MUST be a valid URI, and SHOULD be
+                    Internal addressing is done by the means of the "id" keyword. The value of this
+                    keyword MUST be a string; this string MUST be a valid URI, and SHOULD be
                     normalized.
                 </t>
             </section>
@@ -334,17 +351,17 @@
                 </t>
             </section>
 
-            <section title="Inner schema addressing">
+            <section title="Internal addressing">
                 <t>
                     When "id" is encountered in a subschema, implementations MAY resolve this URI
                     against the root schema's URI, and consider that the canonical URI of this
-                    subschema is the calculated URI. This is called inner schema addressing.
+                    subschema is the calculated URI. This is called internal addressing.
                 </t>
 
                 <t>
                     There SHOULD NOT be two identical "id" values in the same schema which resolve
-                    to the same URI. If this is the case, subschema lookup using inner schema
-                    addressing is undefined.
+                    to the same URI. If this is the case, subschema lookup using internal addressing
+                    is undefined.
                 </t>
 
                 <t>
@@ -396,17 +413,16 @@
 
             <section title="Security considerations">
                 <t>
-                    Inner schema addressing can produce canonical URIs which differ from the
-                    canonical URI of the root schema. Implementations MAY choose, for security
-                    reasons, to ignore inner schema addressing, and always dereference canonical
-                    URIs. Schema authors SHALL NOT expect that inner schema addressing be used by
-                    an implementation.
+                    Internal addressing can produce canonical URIs which differ from the canonical
+                    URI of the root schema. Implementations MAY choose, for security reasons, to
+                    ignore internal addressing, and always dereference canonical URIs. Schema
+                    authors SHALL NOT expect that internal addressing be used by an implementation.
                 </t>
 
                 <t>
                     Dereferencing URIs may fail to complete, or may lead to content which is not a
                     JSON Schema (another type of JSON value, or not a JSON value). It is RECOMMENDED
-                    that JSON Schema processing be stopped in such a situation.
+                    that JSON Schema processing be considered a failure in such a situation.
                 </t>
             </section>
         </section>
@@ -467,10 +483,10 @@ Content-Type: application/my-media-type+json;
                 <section title='Correlation by means of the "Link" header'>
                     <t>
                         When using the "Link" header, it is RECOMMENDED that a relationship by the
-                        name "describedBy" be used, as defined by RFC 2048, section 19.6.2.4 (FIXME:
-                        make real link). Note: it should be remembered that relationship values are
-                        case insensitive, so "describedBy" is just as valid a relationship as
-                        "DESCRIBEDBY".
+                        name "describedBy" be used, as defined by <xref target="RFC2048">RFC 2048,
+                        section 19.6.2.4</xref>. Note: it should be remembered that relationship
+                        values are case insensitive, so "describedBy" is just as valid a
+                        relationship as "DESCRIBEDBY".
                     </t>
 
                     <t>
@@ -511,6 +527,11 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
         <!-- References Section -->
         <references title="Normative References">
             &RFC2119;
+        </references>
+        <references title="Informative References">
+            &RFC2048;
+            &RFC4627;
+            &RFC3986;
             <reference anchor="json-reference"
                 target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
                 <front>
@@ -550,10 +571,6 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
                     <date year="2012" month="September"/>
                 </front>
             </reference>
-        </references>
-        <references title="Informative References">
-            &RFC4627;
-            &RFC3986;
         </references>
 
         <section title="ChangeLog">
