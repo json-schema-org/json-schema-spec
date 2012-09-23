@@ -55,8 +55,7 @@
         "maxLength": { "$ref": "#/common/positiveInteger" },
         "minLength": { "$ref": "#/common/positiveIntegerDefault0" },
         "pattern": {
-            "type": "string",
-            "format": "regex"
+            "type": "string"
         },
         "additionalItems": {
             "anyOf": [
@@ -121,8 +120,8 @@
         "not": { "$ref": "#" }
     },
     "dependencies": {
-        "exclusiveMaximum": "maximum",
-        "exclusiveMinimum": "minimum"
+        "exclusiveMaximum": { "required": [ "maximum" ] },
+        "exclusiveMinimum": { "required": [ "minimum" ] }
     },
     "default": {}
 }

@@ -215,8 +215,11 @@
                     describe it better.
                 </t>
             </section>
+        </section>
 
-            <section title="Design Considerations">
+        <section title="Design discussion">
+
+            <section title="Generic considerations">
                 <t>
                     It is acknowledged that JSON values can be of any type defined by the JSON
                     specification. As such, JSON Schema does not mandate that an instance be of a
@@ -227,8 +230,65 @@
                 
                 <t>
                     JSON Schema is agnostic with regards to both protocols and programming
-                    languages. In particular, this means that defining the semantics of the
-                    client-server interface is dependent on the protocol being used.
+                    languages. In particular, the semantics of the client-server interface is
+                    dependent on the protocol being used. This specification nevertheless suggests
+                    mechanisms to correlate an instance to a schema over HTTP, which is the dominant
+                    protocol used for Internet-enabled interactive applications.
+                </t>
+            </section>
+
+            <section title='The "$schema" keyword'>
+                <section title="Purpose">
+                    <t>
+                        The "$schema" keyword plays two roles in JSON Schema:
+
+                        <list>
+                            <t>it defines the version of the schema which a particular JSON Schema
+                            is valid against;</t>
+                            <t>it is a URI which is a location to a JSON Schema which validates any
+                            schema written for this version.</t>
+                        </list>
+                    </t>
+
+                    <t>
+                        Any of these schemas also validate themselves successfully.
+                    </t>
+                </section>
+
+                <section title="Valid values">
+                    <t>
+                        The value of this keyword MUST be one of the following string values:
+
+                        <list>
+                            <t>"http://json-schema.org/draft-03/schema#" (core JSON Schema written
+                            against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
+                            <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema
+                            hyperschema written against <xref target="json-schema-03">JSON Schema,
+                            draft v3</xref>);</t>
+                            <t>"http://json-schema.org/current/schema-core.json#" (schema written
+                            against the current version of the specification -- this one).</t>
+                        </list>
+                    </t>
+                </section>
+
+                <section title="Usage">
+                    <t>
+                        It is RECOMMENDED that schema authors include this keyword in their schemas.
+                        This keyword MUST be located at the root of a schema.
+                    </t>
+
+                    <t>
+                        It is RECOMMENDED that implementations not supporting a particular schema
+                        version fail JSON Schema processing.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Extending JSON Schema">
+                <t>
+                    Implementations MAY choose to define additional keywords to JSON Schema. Save
+                    for explicit agreement, schema authors SHALL NOT expect these additional
+                    keywords to be supported by peer implementations.
                 </t>
             </section>
         </section>
@@ -469,6 +529,19 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
                     <title>JSON Pointer</title>
                     <author initials="P." surname="Bryan">
                         <organization>ForgeRock US, Inc.</organization>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2012" month="September"/>
+                </front>
+            </reference>
+            <reference anchor="json-schema-03"
+                target="http://tools.ietf.org/html/draft-zyp-json-schema-03">
+                <front>
+                    <title>JSON Schema, draft 3</title>
+                    <author initials="G." surname="Court">
+                        <organization/>
                     </author>
                     <author initials="K." surname="Zyp">
                         <organization>SitePen (USA)</organization>
