@@ -159,7 +159,9 @@
                         <t>both are nulls; or</t>
                         <t>both are booleans, and have the same value; or</t>
                         <t>both are strings, and have the same value; or</t>
-                        <t>both are numbers, and have the same JSON representation; or</t>
+                        <t>both are integers, and have the same value; or</t>
+                        <t>both are numbers, and have the same integer and decimal/exponent part;
+                        or</t>
                         <t>both are arrays, and:
                             <list>
                                 <t>have the same number of elements; and</t>
@@ -316,13 +318,13 @@
             <section title="Addressing mechanisms">
                 <t>
                     JSON Schema addressing is done using <xref target="RFC3986">URIs</xref>. Two
-                    addressing mechanisms are defined: canonical addressing and internal addressing.
-                    Implementations MUST support canonical addressing, and MAY support internal
+                    addressing mechanisms are defined: canonical addressing and inline addressing.
+                    Implementations MUST support canonical addressing, and MAY support inline
                     addressing.
                 </t>
 
                 <t>
-                    Internal addressing is done by the means of the "id" keyword. The value of this
+                    Inline addressing is done by the means of the "id" keyword. The value of this
                     keyword MUST be a string; this string MUST be a valid URI, and SHOULD be
                     normalized.
                 </t>
@@ -351,16 +353,16 @@
                 </t>
             </section>
 
-            <section title="Internal addressing">
+            <section title="Inline addressing">
                 <t>
                     When "id" is encountered in a subschema, implementations MAY resolve this URI
                     against the root schema's URI, and consider that the canonical URI of this
-                    subschema is the calculated URI. This is called internal addressing.
+                    subschema is the calculated URI. This is called inline addressing.
                 </t>
 
                 <t>
                     There SHOULD NOT be two identical "id" values in the same schema which resolve
-                    to the same URI. If this is the case, subschema lookup using internal addressing
+                    to the same URI. If this is the case, subschema lookup using inline addressing
                     is undefined.
                 </t>
 
@@ -413,10 +415,10 @@
 
             <section title="Security considerations">
                 <t>
-                    Internal addressing can produce canonical URIs which differ from the canonical
-                    URI of the root schema. Implementations MAY choose, for security reasons, to
-                    ignore internal addressing, and always dereference canonical URIs. Schema
-                    authors SHALL NOT expect that internal addressing be used by an implementation.
+                    Inline addressing can produce canonical URIs which differ from the canonical URI
+                    of the root schema. Implementations MAY choose, for security reasons, to ignore
+                    inline addressing, and always dereference canonical URIs. Schema authors SHALL
+                    NOT expect that inline addressing be used by an implementation.
                 </t>
 
                 <t>

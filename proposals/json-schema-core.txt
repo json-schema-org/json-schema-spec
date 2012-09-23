@@ -87,7 +87,7 @@ Table of Contents
      7.1.  Addressing mechanisms  . . . . . . . . . . . . . . . . . .  7
      7.2.  URI of a root schema . . . . . . . . . . . . . . . . . . .  7
      7.3.  Canonical addressing . . . . . . . . . . . . . . . . . . .  7
-     7.4.  Internal addressing  . . . . . . . . . . . . . . . . . . .  7
+     7.4.  Inline addressing  . . . . . . . . . . . . . . . . . . . .  8
      7.5.  Security considerations  . . . . . . . . . . . . . . . . .  9
    8.  Schema/Instance Association  . . . . . . . . . . . . . . . . .  9
      8.1.  Purpose of this section  . . . . . . . . . . . . . . . . .  9
@@ -205,7 +205,10 @@ Internet-Draft                 JSON Schema                September 2012
 
       both are strings, and have the same value; or
 
-      both are numbers, and have the same JSON representation; or
+      both are integers, and have the same value; or
+
+      both are numbers, and have the same integer and decimal/exponent
+      part; or
 
       both are arrays, and:
 
@@ -214,9 +217,6 @@ Internet-Draft                 JSON Schema                September 2012
          elements at the same index are equal according to this
          definition; or
 
-      both are objects, and:
-
-
 
 
 
@@ -224,6 +224,8 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 4]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+      both are objects, and:
 
          have the same set of members; and
 
@@ -271,8 +273,6 @@ Internet-Draft                 JSON Schema                September 2012
    an instance be of a particular type: JSON Schema can process any JSON
    value, including null.  It is the domain of JSON Schema validation to
    add useful constraints to the structure and, optionally, semantics,
-   of the JSON instance being processed.
-
 
 
 
@@ -280,6 +280,8 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 5]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+   of the JSON instance being processed.
 
 5.2.  Protocol and programming language independence
 
@@ -327,8 +329,6 @@ Internet-Draft                 JSON Schema                September 2012
       "http://json-schema.org/draft-03/schema#" (core JSON Schema
       written against JSON Schema, draft v3 [json-schema-03]);
 
-      "http://json-schema.org/draft-03/hyper-schema#" (JSON Schema
-      hyperschema written against JSON Schema, draft v3
 
 
 
@@ -337,6 +337,8 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 6]
 Internet-Draft                 JSON Schema                September 2012
 
 
+      "http://json-schema.org/draft-03/hyper-schema#" (JSON Schema
+      hyperschema written against JSON Schema, draft v3
       [json-schema-03]);
 
       "http://json-schema.org/current/schema-core.json#" (schema written
@@ -355,11 +357,11 @@ Internet-Draft                 JSON Schema                September 2012
 7.1.  Addressing mechanisms
 
    JSON Schema addressing is done using URIs [RFC3986].  Two addressing
-   mechanisms are defined: canonical addressing and internal addressing.
+   mechanisms are defined: canonical addressing and inline addressing.
    Implementations MUST support canonical addressing, and MAY support
-   internal addressing.
+   inline addressing.
 
-   Internal addressing is done by the means of the "id" keyword.  The
+   Inline addressing is done by the means of the "id" keyword.  The
    value of this keyword MUST be a string; this string MUST be a valid
    URI, and SHOULD be normalized.
 
@@ -381,10 +383,8 @@ Internet-Draft                 JSON Schema                September 2012
    [json-reference].  JSON References, when encountered, MUST be
    resolved against the root schema URI before being processed.
 
-7.4.  Internal addressing
 
-   When "id" is encountered in a subschema, implementations MAY resolve
-   this URI against the root schema's URI, and consider that the
+
 
 
 
@@ -393,12 +393,16 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 7]
 Internet-Draft                 JSON Schema                September 2012
 
 
+7.4.  Inline addressing
+
+   When "id" is encountered in a subschema, implementations MAY resolve
+   this URI against the root schema's URI, and consider that the
    canonical URI of this subschema is the calculated URI.  This is
-   called internal addressing.
+   called inline addressing.
 
    There SHOULD NOT be two identical "id" values in the same schema
    which resolve to the same URI.  If this is the case, subschema lookup
-   using internal addressing is undefined.
+   using inline addressing is undefined.
 
    This schema will be taken as an example:
 
@@ -434,10 +438,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    #/schema2/nested  http://x.y.z/rootschema.json#bar
 
-   #/schema2/alsonested  http://x.y.z/t/inner.json#a
-
-   #/schema3  some://where.else/completely#
-
 
 
 
@@ -449,13 +449,17 @@ Galiegue, et al.         Expires March 27, 2013                 [Page 8]
 Internet-Draft                 JSON Schema                September 2012
 
 
+   #/schema2/alsonested  http://x.y.z/t/inner.json#a
+
+   #/schema3  some://where.else/completely#
+
 7.5.  Security considerations
 
-   Internal addressing can produce canonical URIs which differ from the
+   Inline addressing can produce canonical URIs which differ from the
    canonical URI of the root schema.  Implementations MAY choose, for
-   security reasons, to ignore internal addressing, and always
-   dereference canonical URIs.  Schema authors SHALL NOT expect that
-   internal addressing be used by an implementation.
+   security reasons, to ignore inline addressing, and always dereference
+   canonical URIs.  Schema authors SHALL NOT expect that inline
+   addressing be used by an implementation.
 
    Dereferencing URIs may fail to complete, or may lead to content which
    is not a JSON Schema (another type of JSON value, or not a JSON
@@ -495,14 +499,14 @@ Internet-Draft                 JSON Schema                September 2012
    An example of such a header would be:
 
 
-   Content-Type: application/my-media-type+json;
-                 profile=http://example.com/my-hyper-schema
-
-
 
 Galiegue, et al.         Expires March 27, 2013                 [Page 9]
 
 Internet-Draft                 JSON Schema                September 2012
+
+
+   Content-Type: application/my-media-type+json;
+                 profile=http://example.com/my-hyper-schema
 
 
 8.2.2.  Correlation by means of the "Link" header
@@ -549,10 +553,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    [RFC3986]         Berners-Lee, T., Fielding, R., and L. Masinter,
                      "Uniform Resource Identifier (URI): Generic
-                     Syntax", STD 66, RFC 3986, January 2005.
-
-   [json-reference]  Bryan, P. and K. Zyp, "JSON Reference",
-                     September 2012, <http://tools.ietf.org/html/
 
 
 
@@ -561,6 +561,10 @@ Galiegue, et al.         Expires March 27, 2013                [Page 10]
 Internet-Draft                 JSON Schema                September 2012
 
 
+                     Syntax", STD 66, RFC 3986, January 2005.
+
+   [json-reference]  Bryan, P. and K. Zyp, "JSON Reference",
+                     September 2012, <http://tools.ietf.org/html/
                      draft-pbryan-zyp-json-ref-03>.
 
    [json-pointer]    Bryan, P. and K. Zyp, "JSON Pointer",
@@ -595,10 +599,6 @@ Authors' Addresses
    Gary Court
 
    EMail: gary.court@gmail.com
-
-
-
-
 
 
 
