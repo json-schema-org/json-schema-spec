@@ -104,7 +104,7 @@
             <t>
                 This specification uses the term "member set" for an object instance as the set of
                 its member names; for instance, the member set of object value { "a": 1, "b": 2 } is
-                [ "a", "b" ]
+                [ "a", "b" ].
             </t>
 
         </section>
@@ -112,13 +112,12 @@
         <section title="Interoperability considerations">
 
             <section title="Validation of string instances">
-                
+
                 <t>
-                    It should be noted that the null character (\x00) is valid in JSON string
-                    values. JSON Schema does not define any further constraints than <xref
-                    target="RFC4627">RFC 4627</xref> on validated instances, and as such, an
-                    instance to validate MAY be and/or contain such a string value, regardless of
-                    the ability of the underlying programming language to deal with such data.
+                    It should be noted that the null character (\x00) is a valid character in a JSON
+                    string. An instance to validate may contain a string value with this character,
+                    regardless of the ability of the underlying programming language to deal with
+                    such data.
                 </t>
 
             </section>
@@ -215,7 +214,7 @@
                     Some keywords, if absent, MAY be regarded by implementations as having
                     a default value. In this case, the default value will be mentioned.
                 </t>
-            
+
             </section>
 
             <section title="Validation of container instances">
@@ -224,17 +223,14 @@
                     Keywords with the possibility to validate container instances only validate this
                     instance's structure, not this instance's children. Some of these keywords do,
                     however, contain information which is necessary for calculating which schema(s)
-                    a child instance must be valid against. It should be noted that while an array
-                    element will only have to validate against one schema, object member values may
-                    have to validate against more than one schema.
+                    a child instance must be valid against. The algorithms to calculate a child
+                    instance's relevant schema(s) are explained in a separate section.
                 </t>
 
                 <t>
-                    The algorithms to calculate a child instance's relevant schema(s) are explained
-                    in a separate section. While such calculation may be done in real time for
-                    applications performing interactive validation, it is RECOMMENDED that
-                    applications performing non interactive validation do not attempt to validate
-                    children until the container instance itself has been validated succesfully.
+                    It should be noted that while an array element will only have to validate
+                    against one schema, object member values may have to validate against more than
+                    one schema.
                 </t>
             </section>
 
@@ -779,7 +775,7 @@
                             <list>
                                 <t>after the first step, "p1" is removed from "s";</t>
                                 <t>after the second step, "p2" (matched by "p"), "a32&amp;o"
-                                (matched by "[0-9]) and "apple" (matched by "p") are removed from
+                                (matched by "[0-9]") and "apple" (matched by "p") are removed from
                                 "s".</t>
                             </list>
                         </t>
@@ -956,7 +952,7 @@
         <section title="Metadata keywords">
 
             <section title='"title" and "description"'>
-                
+
                 <section title="Valid values">
                     <t>
                         The value for both of these keywords MUST be a string.
@@ -979,7 +975,7 @@
             </section>
 
             <section title='"default"'>
-                
+
                 <section title="Valid values">
                     <t>
                         There are no restrictions placed on the value of this keyword.
@@ -1002,7 +998,7 @@
         </section>
 
         <section title='Semantic validation with "format"'>
-            
+
             <section title="Foreword">
                 <t>
                     Structural validation alone may be insufficient to validate that an instance
@@ -1027,7 +1023,7 @@
                     all, of the format attributes defined below. They MUST implement validation for
                     defined attributes according to their definitions.
                 </t>
-                
+
                 <t>
                     Implementations MAY add custom format attributes. Format attributes SHOULD NOT
                     be defined to validate container instances. Save for agreement between parties,
