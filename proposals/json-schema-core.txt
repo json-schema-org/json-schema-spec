@@ -77,16 +77,16 @@ Table of Contents
    5.  General considerations . . . . . . . . . . . . . . . . . . . .  5
      5.1.  Valid instances  . . . . . . . . . . . . . . . . . . . . .  5
      5.2.  Protocol and programming language independence . . . . . .  6
-     5.3.  Extending JSON Schema  . . . . . . . . . . . . . . . . . .  6
+     5.3.  Keyword support and extension  . . . . . . . . . . . . . .  6
      5.4.  Security considerations  . . . . . . . . . . . . . . . . .  6
    6.  The "$schema" keyword  . . . . . . . . . . . . . . . . . . . .  6
      6.1.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . . .  6
-     6.2.  Valid values . . . . . . . . . . . . . . . . . . . . . . .  6
+     6.2.  Valid values . . . . . . . . . . . . . . . . . . . . . . .  7
      6.3.  Usage  . . . . . . . . . . . . . . . . . . . . . . . . . .  7
    7.  Schema addressing  . . . . . . . . . . . . . . . . . . . . . .  7
      7.1.  Addressing mechanisms  . . . . . . . . . . . . . . . . . .  7
      7.2.  URI of a root schema . . . . . . . . . . . . . . . . . . .  7
-     7.3.  Canonical addressing . . . . . . . . . . . . . . . . . . .  7
+     7.3.  Canonical addressing . . . . . . . . . . . . . . . . . . .  8
      7.4.  Inline addressing  . . . . . . . . . . . . . . . . . . . .  8
        7.4.1.  JSON Reference extension . . . . . . . . . . . . . . .  9
      7.5.  Security considerations  . . . . . . . . . . . . . . . . .  9
@@ -96,7 +96,7 @@ Table of Contents
            HTTP protocol  . . . . . . . . . . . . . . . . . . . . . . 10
        8.2.1.  Correlation by means of the "Content-Type" header  . . 10
        8.2.2.  Correlation by means of the "Link" header  . . . . . . 10
-   9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 10
+   9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 11
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 11
      10.1. Normative References . . . . . . . . . . . . . . . . . . . 11
      10.2. Informative References . . . . . . . . . . . . . . . . . . 11
@@ -295,21 +295,23 @@ Internet-Draft                 JSON Schema                September 2012
    instance to a schema over HTTP, which is the dominant protocol used
    for Internet-enabled interactive applications.
 
-5.3.  Extending JSON Schema
+5.3.  Keyword support and extension
 
    Implementations MAY choose to define additional keywords to JSON
    Schema.  Save for explicit agreement, schema authors SHALL NOT expect
    these additional keywords to be supported by peer implementations.
 
+   Implementations SHOULD ignore keywords they do not handle.
+
 5.4.  Security considerations
 
-   Both schemas and instances are written in JSON.  As such, all
-   security considerations defined in [RFC4627] apply.
+   Both schemas and instances are JSON values.  As such, all security
+   considerations defined in [RFC4627] apply.
 
    JSON Schema does not define an internal security mechanism.  It is up
-   to applications to determine the level of trust placed into JSON data
-   coming from external sources (whether this data be an instance or a
-   schema).
+   to applications to determine the level of trust placed into JSON
+   values coming from external sources (whether this data be an instance
+   or a schema), using any mechanism at their disposal.
 
 6.  The "$schema" keyword
 
@@ -325,9 +327,7 @@ Internet-Draft                 JSON Schema                September 2012
 
    Any of these schemas also validate themselves successfully.
 
-6.2.  Valid values
 
-   The value of this keyword MUST be one of the following string values:
 
 
 
@@ -336,6 +336,10 @@ Galiegue, et al.         Expires March 29, 2013                 [Page 6]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+6.2.  Valid values
+
+   The value of this keyword MUST be one of the following string values:
 
       "http://json-schema.org/draft-03/schema#" (core JSON Schema
       written against JSON Schema, draft v3 [json-schema-03]);
@@ -380,11 +384,7 @@ Internet-Draft                 JSON Schema                September 2012
       otherwise, it is RECOMMENDED that implementations consider that
       the URI of the schema is either the empty URI, or a URN.
 
-7.3.  Canonical addressing
 
-   Canonical addressing in JSON Schema is done using JSON Reference
-   [json-reference].  JSON References, when encountered, MUST be
-   resolved against the URI of the current root schema.
 
 
 
@@ -392,6 +392,12 @@ Galiegue, et al.         Expires March 29, 2013                 [Page 7]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+7.3.  Canonical addressing
+
+   Canonical addressing in JSON Schema is done using JSON Reference
+   [json-reference].  JSON References, when encountered, MUST be
+   resolved against the URI of the current root schema.
 
 7.4.  Inline addressing
 
@@ -432,12 +438,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    # (document root)  http://x.y.z/rootschema.json#
 
-   #/schema1  http://x.y.z/rootschema.json#foo
-
-   #/schema2  http://x.y.z/otherschema.json#
-
-   #/schema2/nested  http://x.y.z/rootschema.json#bar
-
 
 
 
@@ -448,6 +448,12 @@ Galiegue, et al.         Expires March 29, 2013                 [Page 8]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+   #/schema1  http://x.y.z/rootschema.json#foo
+
+   #/schema2  http://x.y.z/otherschema.json#
+
+   #/schema2/nested  http://x.y.z/rootschema.json#bar
 
    #/schema2/alsonested  http://x.y.z/t/inner.json#a
 
@@ -491,12 +497,6 @@ Internet-Draft                 JSON Schema                September 2012
    headers.
 
    In addition, if the protocol also carries media type information (by
-   means, for instance, of a "Content-Type" header), an instance MUST be
-   one of "application/json" or any other subtype.
-
-   Should the scenario above be inapplicable, due either to the absence
-   of, or restrictions on, protocol headers, such a correlation is out
-   of the normative scope of this specification.
 
 
 
@@ -504,6 +504,13 @@ Galiegue, et al.         Expires March 29, 2013                 [Page 9]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+   means, for instance, of a "Content-Type" header), an instance MUST be
+   one of "application/json" or any other subtype.
+
+   Should the scenario above be inapplicable, due either to the absence
+   of, or restrictions on, protocol headers, such a correlation is out
+   of the normative scope of this specification.
 
 8.2.  Recommended correlation mechanisms for use with the HTTP protocol
 
@@ -542,15 +549,8 @@ Internet-Draft                 JSON Schema                September 2012
    Link: <http://example.com/my-hyper-schema>; rel="describedBy"
 
 
-9.  IANA Considerations
 
-   The proposed MIME media type for JSON Schema is defined as follows:
 
-      type name: application;
-
-      subtype name: schema+json.
-
-10.  References
 
 
 
@@ -560,6 +560,16 @@ Galiegue, et al.         Expires March 29, 2013                [Page 10]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+9.  IANA Considerations
+
+   The proposed MIME media type for JSON Schema is defined as follows:
+
+      type name: application;
+
+      subtype name: schema+json.
+
+10.  References
 
 10.1.  Normative References
 
@@ -597,16 +607,6 @@ Appendix A.  ChangeLog
 
    TODO
 
-Authors' Addresses
-
-   Francis Galiegue
-
-   EMail: fgaliegue@gmail.com
-
-
-
-
-
 
 
 
@@ -615,6 +615,13 @@ Authors' Addresses
 Galiegue, et al.         Expires March 29, 2013                [Page 11]
 
 Internet-Draft                 JSON Schema                September 2012
+
+
+Authors' Addresses
+
+   Francis Galiegue
+
+   EMail: fgaliegue@gmail.com
 
 
    Kris Zyp (editor)
@@ -630,13 +637,6 @@ Internet-Draft                 JSON Schema                September 2012
    Gary Court
 
    EMail: gary.court@gmail.com
-
-
-
-
-
-
-
 
 
 

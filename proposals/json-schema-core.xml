@@ -249,24 +249,29 @@
                 </t>
             </section>
 
-            <section title="Extending JSON Schema">
+            <section title="Keyword support and extension">
                 <t>
                     Implementations MAY choose to define additional keywords to JSON Schema. Save
                     for explicit agreement, schema authors SHALL NOT expect these additional
                     keywords to be supported by peer implementations.
                 </t>
+
+                <t>
+                    Implementations SHOULD ignore keywords they do not handle.
+                </t>
             </section>
 
             <section title="Security considerations">
                 <t>
-                    Both schemas and instances are written in JSON. As such, all security
-                    considerations defined in <xref target="RFC4627"/> apply.
+                    Both schemas and instances are JSON values. As such, all security considerations
+                    defined in <xref target="RFC4627"/> apply.
                 </t>
 
                 <t>
                     JSON Schema does not define an internal security mechanism. It is up to
-                    applications to determine the level of trust placed into JSON data coming from
-                    external sources (whether this data be an instance or a schema).
+                    applications to determine the level of trust placed into JSON values coming from
+                    external sources (whether this data be an instance or a schema), using any
+                    mechanism at their disposal.
                 </t>
             </section>
         </section>
