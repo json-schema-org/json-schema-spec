@@ -69,7 +69,7 @@ Table of Contents
      3.1.  JSON Schema, keywords  . . . . . . . . . . . . . . . . . .  3
      3.2.  Root schema, subschema . . . . . . . . . . . . . . . . . .  3
      3.3.  JSON Schema primitive types  . . . . . . . . . . . . . . .  4
-     3.4.  JSON value equivalence . . . . . . . . . . . . . . . . . .  4
+     3.4.  JSON value lexical equivalence . . . . . . . . . . . . . .  4
      3.5.  Instance . . . . . . . . . . . . . . . . . . . . . . . . .  5
    4.  Overview . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
      4.1.  Instance validation  . . . . . . . . . . . . . . . . . . .  5
@@ -178,45 +178,45 @@ Internet-Draft                 JSON Schema                September 2012
 
 3.3.  JSON Schema primitive types
 
-   JSON Schema defines seven primitive types for JSON values.  Primitive
-   types "array", "boolean", "number", "null", "object" and "string" are
-   equivalent to the same values as defined by RFC 4627 [RFC4627].
+   JSON Schema defines seven primitive types for JSON values:
 
-   In addition, JSON Schema defines an "integer" as any JSON number
-   whose mathematical value is an integer.  This means that the
-   following JSON numbers are viewed as integers:
+   array  A JSON array.
 
-      1;
+   boolean  A JSON boolean (true or false).
 
-      1.0;
+   integer  A JSON number without a fraction or exponent part (see RFC
+      4627, section 2.4) [RFC4627].
 
-      1e0;
+   number  Any JSON number.  Number includes integer.
 
-      20e-1;
+   null  The JSON null value.
 
-      -0.3e3;
+   object  A JSON object.
 
-      etc.
+   string  A JSON string.
 
-3.4.  JSON value equivalence
+3.4.  JSON value lexical equivalence
 
-   Two JSON values are said to be equivalent if and only if:
+   Two JSON values are said to be lexically equivalent if and only if:
 
       both are nulls; or
 
       both are booleans, and have the same value; or
 
-      both are strings, and have the same value; or
+      both are strings, and have the same lexical representation (see
+      RFC 4627, section 2.5 [RFC4627]; or
 
-      both are numbers, and have the same mathematical value; or
+      both are integers, and have the same lexical representation; or
+
+      both are numbers, and have the same lexical representation (see
+      RFC 4627, section 2.4) [RFC4627]; or
 
       both are arrays, and:
 
          have the same number of elements; and
 
-         elements at the same index are equivalent according to this
-         definition; or
-
+         elements at the same index are lexically equivalent according
+         to this definition; or
 
 
 
@@ -229,8 +229,8 @@ Internet-Draft                 JSON Schema                September 2012
 
          have the same set of members; and
 
-         values for a same member are equivalent according to this
-         definition.
+         values for a same member are lexically equivalent according to
+         this definition.
 
 3.5.  Instance
 

@@ -198,7 +198,7 @@ Internet-Draft                 JSON Schema                September 2012
    "b" ].
 
    Elements in an array value are said to be unique if no two elements
-   of this array are equal, as defined in FIXME_LINK.
+   of this array are lexically equivalent, as defined in FIXME_LINK.
 
 3.  Interoperability considerations
 
@@ -808,8 +808,8 @@ Internet-Draft                 JSON Schema                September 2012
 5.5.1.2.  Conditions for successful validation
 
    An instance validates successfully against this keyword if and only
-   if its value is equal to one of the elements in this keyword's array
-   value.
+   if its value is lexically equivalent to one of the elements in this
+   keyword's array value.
 
 5.5.2.  type
 

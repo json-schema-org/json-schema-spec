@@ -84,7 +84,7 @@
 
             <t>
                 Elements in an array value are said to be unique if no two elements of this array
-                are equal, as defined in FIXME_LINK.
+                are lexically equivalent, as defined in FIXME_LINK.
             </t>
         </section>
 
@@ -809,7 +809,8 @@
                     <section title="Conditions for successful validation">
                         <t>
                             An instance validates successfully against this keyword if and only if
-                            its value is equal to one of the elements in this keyword's array value.
+                            its value is lexically equivalent to one of the elements in this
+                            keyword's array value.
                         </t>
                     </section>
 

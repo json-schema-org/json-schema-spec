@@ -137,47 +137,44 @@
 
             <section title="JSON Schema primitive types">
                 <t>
-                    JSON Schema defines seven primitive types for JSON values. Primitive types
-                    "array", "boolean", "number", "null", "object" and "string" are equivalent to
-                    the same values as defined by <xref target="RFC4627">RFC 4627</xref>.
-                </t>
-
-                <t>
-                    In addition, JSON Schema defines an "integer" as any JSON number whose
-                    mathematical value is an integer. This means that the following JSON numbers are
-                    viewed as integers:
-                    <list>
-                        <t>1;</t>
-                        <t>1.0;</t>
-                        <t>1e0;</t>
-                        <t>20e-1;</t>
-                        <t>-0.3e3;</t>
-                        <t>etc.</t>
+                    JSON Schema defines seven primitive types for JSON values:
+                    <list style="hanging">
+                        <t hangText="array">A JSON array.</t>
+                        <t hangText="boolean">A JSON boolean (true or false).</t>
+                        <t hangText="integer">A JSON number without a fraction or exponent part (see
+                        <xref target="RFC4627">RFC 4627, section 2.4)</xref>.</t>
+                        <t hangText="number">Any JSON number. Number includes integer.</t>
+                        <t hangText="null">The JSON null value.</t>
+                        <t hangText="object">A JSON object.</t>
+                        <t hangText="string">A JSON string.</t>
                     </list>
                 </t>
             </section>
 
-            <section title="JSON value equivalence">
+            <section title="JSON value lexical equivalence">
                 <t>
-                    Two JSON values are said to be equivalent if and only if:
+                    Two JSON values are said to be lexically equivalent if and only if:
 
                     <list>
                         <t>both are nulls; or</t>
                         <t>both are booleans, and have the same value; or</t>
-                        <t>both are strings, and have the same value; or</t>
-                        <t>both are numbers, and have the same mathematical value; or</t>
+                        <t>both are strings, and have the same lexical representation (see <xref
+                        target="RFC4627">RFC 4627, section 2.5</xref>; or</t>
+                        <t>both are integers, and have the same lexical representation; or</t>
+                        <t>both are numbers, and have the same lexical representation (see <xref
+                        target="RFC4627">RFC 4627, section 2.4)</xref>; or</t>
                         <t>both are arrays, and:
                             <list>
                                 <t>have the same number of elements; and</t>
-                                <t>elements at the same index are equivalent according to this
-                                definition; or</t>
+                                <t>elements at the same index are lexically equivalent according to
+                                this definition; or</t>
                             </list>
                         </t>
                         <t>both are objects, and:
                             <list>
                                 <t>have the same set of members; and</t>
-                                <t>values for a same member are equivalent according to this
-                                definition.</t>
+                                <t>values for a same member are lexically equivalent according to
+                                this definition.</t>
                             </list>
                         </t>
                     </list>
