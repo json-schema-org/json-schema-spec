@@ -182,9 +182,9 @@ Internet-Draft                 JSON Schema                September 2012
    types "array", "boolean", "number", "null", "object" and "string" are
    equivalent to the same values as defined by RFC 4627 [RFC4627].
 
-   In addition, JSON Schema defines "integer" as a subset of JSON
-   numbers whose mathematical values are natural numbers.  This means
-   that the following JSON numbers are viewed as integers:
+   In addition, JSON Schema defines an "integer" as any JSON number
+   whose mathematical value is an integer.  This means that the
+   following JSON numbers are viewed as integers:
 
       1;
 
@@ -193,6 +193,8 @@ Internet-Draft                 JSON Schema                September 2012
       1e0;
 
       20e-1;
+
+      -0.3e3;
 
       etc.
 
@@ -214,8 +216,6 @@ Internet-Draft                 JSON Schema                September 2012
 
          elements at the same index are equivalent according to this
          definition; or
-
-
 
 
 

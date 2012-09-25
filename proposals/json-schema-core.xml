@@ -143,14 +143,15 @@
                 </t>
 
                 <t>
-                    In addition, JSON Schema defines "integer" as a subset of JSON numbers whose
-                    mathematical values are natural numbers. This means that the following JSON
-                    numbers are viewed as integers:
+                    In addition, JSON Schema defines an "integer" as any JSON number whose
+                    mathematical value is an integer. This means that the following JSON numbers are
+                    viewed as integers:
                     <list>
                         <t>1;</t>
                         <t>1.0;</t>
                         <t>1e0;</t>
                         <t>20e-1;</t>
+                        <t>-0.3e3;</t>
                         <t>etc.</t>
                     </list>
                 </t>
