@@ -137,44 +137,46 @@
 
             <section title="JSON Schema primitive types">
                 <t>
-                    JSON Schema defines seven primitive types for JSON values:
-                    <list style="hanging">
-                        <t hangText="array">A JSON array.</t>
-                        <t hangText="boolean">A JSON boolean (true or false).</t>
-                        <t hangText="integer">A JSON number without a fraction or exponent part (see
-                        <xref target="RFC4627">RFC 4627, section 2.4)</xref>.</t>
-                        <t hangText="number">Any JSON number. Number includes integer.</t>
-                        <t hangText="null">The JSON null value.</t>
-                        <t hangText="object">A JSON object.</t>
-                        <t hangText="string">A JSON string.</t>
+                    JSON Schema defines seven primitive types for JSON values. Primitive types
+                    "array", "boolean", "number", "null", "object" and "string" are equivalent to
+                    the same values as defined by <xref target="RFC4627">RFC 4627</xref>.
+                </t>
+
+                <t>
+                    In addition, JSON Schema defines "integer" as a subset of JSON numbers whose
+                    mathematical values are natural numbers. This means that the following JSON
+                    numbers are viewed as integers:
+                    <list>
+                        <t>1;</t>
+                        <t>1.0;</t>
+                        <t>1e0;</t>
+                        <t>20e-1;</t>
+                        <t>etc.</t>
                     </list>
                 </t>
             </section>
 
-            <section title="JSON value lexical equivalence">
+            <section title="JSON value equivalence">
                 <t>
-                    Two JSON values are said to be lexically equivalent if and only if:
+                    Two JSON values are said to be equivalent if and only if:
 
                     <list>
                         <t>both are nulls; or</t>
                         <t>both are booleans, and have the same value; or</t>
-                        <t>both are strings, and have the same lexical representation (see <xref
-                        target="RFC4627">RFC 4627, section 2.5</xref>; or</t>
-                        <t>both are integers, and have the same lexical representation; or</t>
-                        <t>both are numbers, and have the same lexical representation (see <xref
-                        target="RFC4627">RFC 4627, section 2.4)</xref>; or</t>
+                        <t>both are strings, and have the same value; or</t>
+                        <t>both are numbers, and have the same mathematical value; or</t>
                         <t>both are arrays, and:
                             <list>
                                 <t>have the same number of elements; and</t>
-                                <t>elements at the same index are lexically equivalent according to
-                                this definition; or</t>
+                                <t>elements at the same index are equivalent according to this
+                                definition; or</t>
                             </list>
                         </t>
                         <t>both are objects, and:
                             <list>
                                 <t>have the same set of members; and</t>
-                                <t>values for a same member are lexically equivalent according to
-                                this definition.</t>
+                                <t>values for a same member are equivalent according to this
+                                definition.</t>
                             </list>
                         </t>
                     </list>
@@ -205,19 +207,21 @@
 
             <section title="Instance validation">
                 <t>
-                    JSON Schema allows applications to validate any JSON instance, either
-                    noninteractively or interactively. For instance, an application may use an
-                    external service to collect JSON instances and check that these collected
-                    instances match its requirements against a given schema; another application may
-                    use a schema to build an interactve interface in order to collect user input,
-                    and check the correctness of said input.
+                    JSON Schema allows applications to validate any JSON instance, either non
+                    interactively or interactively. For instance, an application may use an external
+                    service to collect JSON instances and check that these collected instances match
+                    its requirements against a given schema; another application may use a schema to
+                    build an interactve interface in order to collect user input, and check the
+                    correctness of said input.
                 </t>
             </section>
 
-            <section title="Hyperlinking">
+            <section title="Hypermedia and linking">
                 <t>
-                    JSON Schema defines a mechanism to build links to a variety of resources. FIXME:
-                    describe it better.
+                    JSON Schema provides a method for defining link relations from instances to
+                    other resources, as well as describing interpretations of instances as
+                    multimedia data. This allows JSON data to be interpreted as rich hypermedia
+                    documents, placed in the context of a larger set of related resources.
                 </t>
             </section>
         </section>
@@ -349,22 +353,21 @@
                 <t>
                     Canonical addressing in JSON Schema is done using <xref
                     target="json-reference">JSON Reference</xref>. JSON References, when
-                    encountered, MUST be resolved against the root schema URI before being
-                    processed.
+                    encountered, MUST be resolved against the URI of the current root schema.
                 </t>
             </section>
 
             <section title="Inline addressing">
                 <t>
                     When "id" is encountered in a subschema, implementations MAY resolve this URI
-                    against the root schema's URI, and consider that the canonical URI of this
+                    against the URI of a root schema, and consider that the canonical URI of this
                     subschema is the calculated URI. This is called inline addressing.
                 </t>
 
                 <t>
-                    There SHOULD NOT be two identical "id" values in the same schema which resolve
-                    to the same URI. If this is the case, subschema lookup using inline addressing
-                    is undefined.
+                    There SHOULD NOT be two identical "id" values in the same root schema which
+                    resolve to the same URI. If this is the case, subschema lookup using inline
+                    addressing is undefined.
                 </t>
 
                 <t>
@@ -387,7 +390,7 @@
             "id": "#bar"
         },
         "alsonested": {
-            "id": t/inner.json#a"
+            "id": "t/inner.json#a"
         }
     },
     "schema3": {
@@ -412,14 +415,38 @@
                     </list>
                 </t>
 
+                <section title="JSON Reference extension">
+                    <t>
+                        The JSON Reference specification mandates that the fragment part of a
+                        reference, if any, be a JSON Pointer. However, this would prevent some of
+                        the URIs in the example above from being addressable. Schema authors MAY use
+                        an extended form of a JSON Reference for inline addressing, such as in this
+                        example:
+                    </t>
+
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "$ref": "http://x.y.z/t/inner.json#a
+}
+]]>
+                        </artwork>
+                    </figure>
+
+                    <t>
+                        An implementation choosing to support inline addressing SHOULD support this
+                        extension to JSON Reference.
+                    </t>
+                </section>
             </section>
 
             <section title="Security considerations">
                 <t>
                     Inline addressing can produce canonical URIs which differ from the canonical URI
                     of the root schema. Implementations MAY choose, for security reasons, to ignore
-                    inline addressing, and always dereference canonical URIs. Schema authors SHALL
-                    NOT expect that inline addressing be used by an implementation.
+                    inline addressing in such a situation, and always dereference such canonical
+                    URIs.
                 </t>
 
                 <t>

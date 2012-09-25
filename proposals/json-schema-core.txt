@@ -4,9 +4,9 @@
 Internet Engineering Task Force                            fge. Galiegue
 Internet-Draft
 Intended status: Informational                               K. Zyp, Ed.
-Expires: March 27, 2013                                    SitePen (USA)
+Expires: March 29, 2013                                    SitePen (USA)
                                                                 G. Court
-                                                      September 23, 2012
+                                                      September 25, 2012
 
 
                JSON Schema: core definitions and purposes
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 27, 2013.
+   This Internet-Draft will expire on March 29, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Galiegue, et al.         Expires March 27, 2013                 [Page 1]
+Galiegue, et al.         Expires March 29, 2013                 [Page 1]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -69,11 +69,11 @@ Table of Contents
      3.1.  JSON Schema, keywords  . . . . . . . . . . . . . . . . . .  3
      3.2.  Root schema, subschema . . . . . . . . . . . . . . . . . .  3
      3.3.  JSON Schema primitive types  . . . . . . . . . . . . . . .  4
-     3.4.  JSON value lexical equivalence . . . . . . . . . . . . . .  4
+     3.4.  JSON value equivalence . . . . . . . . . . . . . . . . . .  4
      3.5.  Instance . . . . . . . . . . . . . . . . . . . . . . . . .  5
    4.  Overview . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
      4.1.  Instance validation  . . . . . . . . . . . . . . . . . . .  5
-     4.2.  Hyperlinking . . . . . . . . . . . . . . . . . . . . . . .  5
+     4.2.  Hypermedia and linking . . . . . . . . . . . . . . . . . .  5
    5.  General considerations . . . . . . . . . . . . . . . . . . . .  5
      5.1.  Valid instances  . . . . . . . . . . . . . . . . . . . . .  5
      5.2.  Protocol and programming language independence . . . . . .  6
@@ -88,17 +88,18 @@ Table of Contents
      7.2.  URI of a root schema . . . . . . . . . . . . . . . . . . .  7
      7.3.  Canonical addressing . . . . . . . . . . . . . . . . . . .  7
      7.4.  Inline addressing  . . . . . . . . . . . . . . . . . . . .  8
+       7.4.1.  JSON Reference extension . . . . . . . . . . . . . . .  9
      7.5.  Security considerations  . . . . . . . . . . . . . . . . .  9
    8.  Schema/Instance Association  . . . . . . . . . . . . . . . . .  9
      8.1.  Purpose of this section  . . . . . . . . . . . . . . . . .  9
      8.2.  Recommended correlation mechanisms for use with the
-           HTTP protocol  . . . . . . . . . . . . . . . . . . . . . .  9
-       8.2.1.  Correlation by means of the "Content-Type" header  . .  9
+           HTTP protocol  . . . . . . . . . . . . . . . . . . . . . . 10
+       8.2.1.  Correlation by means of the "Content-Type" header  . . 10
        8.2.2.  Correlation by means of the "Link" header  . . . . . . 10
    9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 10
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 10
-     10.1. Normative References . . . . . . . . . . . . . . . . . . . 10
-     10.2. Informative References . . . . . . . . . . . . . . . . . . 10
+   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+     10.1. Normative References . . . . . . . . . . . . . . . . . . . 11
+     10.2. Informative References . . . . . . . . . . . . . . . . . . 11
    Appendix A.  ChangeLog . . . . . . . . . . . . . . . . . . . . . . 11
 
 
@@ -107,8 +108,7 @@ Table of Contents
 
 
 
-
-Galiegue, et al.         Expires March 27, 2013                 [Page 2]
+Galiegue, et al.         Expires March 29, 2013                 [Page 2]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -164,7 +164,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue, et al.         Expires March 27, 2013                 [Page 3]
+Galiegue, et al.         Expires March 29, 2013                 [Page 3]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -178,49 +178,49 @@ Internet-Draft                 JSON Schema                September 2012
 
 3.3.  JSON Schema primitive types
 
-   JSON Schema defines seven primitive types for JSON values:
+   JSON Schema defines seven primitive types for JSON values.  Primitive
+   types "array", "boolean", "number", "null", "object" and "string" are
+   equivalent to the same values as defined by RFC 4627 [RFC4627].
 
-   array  A JSON array.
+   In addition, JSON Schema defines "integer" as a subset of JSON
+   numbers whose mathematical values are natural numbers.  This means
+   that the following JSON numbers are viewed as integers:
 
-   boolean  A JSON boolean (true or false).
+      1;
 
-   integer  A JSON number without a fraction or exponent part (see RFC
-      4627, section 2.4) [RFC4627].
+      1.0;
 
-   number  Any JSON number.  Number includes integer.
+      1e0;
 
-   null  The JSON null value.
+      20e-1;
 
-   object  A JSON object.
+      etc.
 
-   string  A JSON string.
+3.4.  JSON value equivalence
 
-3.4.  JSON value lexical equivalence
-
-   Two JSON values are said to be lexically equivalent if and only if:
+   Two JSON values are said to be equivalent if and only if:
 
       both are nulls; or
 
       both are booleans, and have the same value; or
 
-      both are strings, and have the same lexical representation (see
-      RFC 4627, section 2.5 [RFC4627]; or
+      both are strings, and have the same value; or
 
-      both are integers, and have the same lexical representation; or
-
-      both are numbers, and have the same lexical representation (see
-      RFC 4627, section 2.4) [RFC4627]; or
+      both are numbers, and have the same mathematical value; or
 
       both are arrays, and:
 
          have the same number of elements; and
 
-         elements at the same index are lexically equivalent according
-         to this definition; or
+         elements at the same index are equivalent according to this
+         definition; or
 
 
 
-Galiegue, et al.         Expires March 27, 2013                 [Page 4]
+
+
+
+Galiegue, et al.         Expires March 29, 2013                 [Page 4]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -229,8 +229,8 @@ Internet-Draft                 JSON Schema                September 2012
 
          have the same set of members; and
 
-         values for a same member are lexically equivalent according to
-         this definition.
+         values for a same member are equivalent according to this
+         definition.
 
 3.5.  Instance
 
@@ -252,17 +252,20 @@ Internet-Draft                 JSON Schema                September 2012
 4.1.  Instance validation
 
    JSON Schema allows applications to validate any JSON instance, either
-   noninteractively or interactively.  For instance, an application may
+   non interactively or interactively.  For instance, an application may
    use an external service to collect JSON instances and check that
    these collected instances match its requirements against a given
    schema; another application may use a schema to build an interactve
    interface in order to collect user input, and check the correctness
    of said input.
 
-4.2.  Hyperlinking
+4.2.  Hypermedia and linking
 
-   JSON Schema defines a mechanism to build links to a variety of
-   resources.  FIXME: describe it better.
+   JSON Schema provides a method for defining link relations from
+   instances to other resources, as well as describing interpretations
+   of instances as multimedia data.  This allows JSON data to be
+   interpreted as rich hypermedia documents, placed in the context of a
+   larger set of related resources.
 
 5.  General considerations
 
@@ -270,17 +273,17 @@ Internet-Draft                 JSON Schema                September 2012
 
    It is acknowledged that a JSON instance may be any valid JSON value
    as defined by [RFC4627].  As such, JSON Schema does not mandate that
-   an instance be of a particular type: JSON Schema can process any JSON
-   value, including null.  It is the domain of JSON Schema validation to
-   add useful constraints to the structure and, optionally, semantics,
 
 
 
-Galiegue, et al.         Expires March 27, 2013                 [Page 5]
+Galiegue, et al.         Expires March 29, 2013                 [Page 5]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
+   an instance be of a particular type: JSON Schema can process any JSON
+   value, including null.  It is the domain of JSON Schema validation to
+   add useful constraints to the structure and, optionally, semantics,
    of the JSON instance being processed.
 
 5.2.  Protocol and programming language independence
@@ -326,16 +329,16 @@ Internet-Draft                 JSON Schema                September 2012
 
    The value of this keyword MUST be one of the following string values:
 
-      "http://json-schema.org/draft-03/schema#" (core JSON Schema
-      written against JSON Schema, draft v3 [json-schema-03]);
 
 
 
-
-Galiegue, et al.         Expires March 27, 2013                 [Page 6]
+Galiegue, et al.         Expires March 29, 2013                 [Page 6]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+      "http://json-schema.org/draft-03/schema#" (core JSON Schema
+      written against JSON Schema, draft v3 [json-schema-03]);
 
       "http://json-schema.org/draft-03/hyper-schema#" (JSON Schema
       hyperschema written against JSON Schema, draft v3
@@ -381,14 +384,11 @@ Internet-Draft                 JSON Schema                September 2012
 
    Canonical addressing in JSON Schema is done using JSON Reference
    [json-reference].  JSON References, when encountered, MUST be
-   resolved against the root schema URI before being processed.
+   resolved against the URI of the current root schema.
 
 
 
-
-
-
-Galiegue, et al.         Expires March 27, 2013                 [Page 7]
+Galiegue, et al.         Expires March 29, 2013                 [Page 7]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -396,11 +396,11 @@ Internet-Draft                 JSON Schema                September 2012
 7.4.  Inline addressing
 
    When "id" is encountered in a subschema, implementations MAY resolve
-   this URI against the root schema's URI, and consider that the
+   this URI against the URI of a root schema, and consider that the
    canonical URI of this subschema is the calculated URI.  This is
    called inline addressing.
 
-   There SHOULD NOT be two identical "id" values in the same schema
+   There SHOULD NOT be two identical "id" values in the same root schema
    which resolve to the same URI.  If this is the case, subschema lookup
    using inline addressing is undefined.
 
@@ -418,7 +418,7 @@ Internet-Draft                 JSON Schema                September 2012
                "id": "#bar"
            },
            "alsonested": {
-               "id": t/inner.json#a"
+               "id": "t/inner.json#a"
            }
        },
        "schema3": {
@@ -444,7 +444,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue, et al.         Expires March 27, 2013                 [Page 8]
+Galiegue, et al.         Expires March 29, 2013                 [Page 8]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -453,13 +453,29 @@ Internet-Draft                 JSON Schema                September 2012
 
    #/schema3  some://where.else/completely#
 
+7.4.1.  JSON Reference extension
+
+   The JSON Reference specification mandates that the fragment part of a
+   reference, if any, be a JSON Pointer.  However, this would prevent
+   some of the URIs in the example above from being addressable.  Schema
+   authors MAY use an extended form of a JSON Reference for inline
+   addressing, such as in this example:
+
+
+   {
+       "$ref": "http://x.y.z/t/inner.json#a
+   }
+
+
+   An implementation choosing to support inline addressing SHOULD
+   support this extension to JSON Reference.
+
 7.5.  Security considerations
 
    Inline addressing can produce canonical URIs which differ from the
    canonical URI of the root schema.  Implementations MAY choose, for
-   security reasons, to ignore inline addressing, and always dereference
-   canonical URIs.  Schema authors SHALL NOT expect that inline
-   addressing be used by an implementation.
+   security reasons, to ignore inline addressing in such a situation,
+   and always dereference such canonical URIs.
 
    Dereferencing URIs may fail to complete, or may lead to content which
    is not a JSON Schema (another type of JSON value, or not a JSON
@@ -482,6 +498,13 @@ Internet-Draft                 JSON Schema                September 2012
    of, or restrictions on, protocol headers, such a correlation is out
    of the normative scope of this specification.
 
+
+
+Galiegue, et al.         Expires March 29, 2013                 [Page 9]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 8.2.  Recommended correlation mechanisms for use with the HTTP protocol
 
    It is acknowledged by this specification that the majority of
@@ -497,12 +520,6 @@ Internet-Draft                 JSON Schema                September 2012
    URI, and this URI SHOULD resolve to a valid JSON Schema.
 
    An example of such a header would be:
-
-
-
-Galiegue, et al.         Expires March 27, 2013                 [Page 9]
-
-Internet-Draft                 JSON Schema                September 2012
 
 
    Content-Type: application/my-media-type+json;
@@ -535,6 +552,15 @@ Internet-Draft                 JSON Schema                September 2012
 
 10.  References
 
+
+
+
+
+Galiegue, et al.         Expires March 29, 2013                [Page 10]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
 10.1.  Normative References
 
    [RFC2119]         Bradner, S., "Key words for use in RFCs to Indicate
@@ -553,14 +579,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    [RFC3986]         Berners-Lee, T., Fielding, R., and L. Masinter,
                      "Uniform Resource Identifier (URI): Generic
-
-
-
-Galiegue, et al.         Expires March 27, 2013                [Page 10]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
                      Syntax", STD 66, RFC 3986, January 2005.
 
    [json-reference]  Bryan, P. and K. Zyp, "JSON Reference",
@@ -584,6 +602,19 @@ Authors' Addresses
    Francis Galiegue
 
    EMail: fgaliegue@gmail.com
+
+
+
+
+
+
+
+
+
+
+Galiegue, et al.         Expires March 29, 2013                [Page 11]
+
+Internet-Draft                 JSON Schema                September 2012
 
 
    Kris Zyp (editor)
@@ -612,5 +643,30 @@ Authors' Addresses
 
 
 
-Galiegue, et al.         Expires March 27, 2013                [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Galiegue, et al.         Expires March 29, 2013                [Page 12]
 
