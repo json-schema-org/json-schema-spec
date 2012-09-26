@@ -2,11 +2,9 @@
 
 
 Internet Engineering Task Force                            fge. Galiegue
-Internet-Draft
-Intended status: Informational                               K. Zyp, Ed.
-Expires: March 29, 2013                                    SitePen (USA)
-                                                                G. Court
-                                                      September 25, 2012
+Internet-Draft                                        September 26, 2012
+Intended status: Informational
+Expires: March 30, 2013
 
 
                JSON Schema: core definitions and purposes
@@ -36,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 29, 2013.
+   This Internet-Draft will expire on March 30, 2013.
 
 Copyright Notice
 
@@ -49,16 +47,16 @@ Copyright Notice
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
 
 
 
-Galiegue, et al.         Expires March 29, 2013                 [Page 1]
+Galiegue                 Expires March 30, 2013                 [Page 1]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
 Table of Contents
@@ -69,7 +67,7 @@ Table of Contents
      3.1.  JSON Schema, keywords  . . . . . . . . . . . . . . . . . .  3
      3.2.  Root schema, subschema . . . . . . . . . . . . . . . . . .  3
      3.3.  JSON Schema primitive types  . . . . . . . . . . . . . . .  4
-     3.4.  JSON value lexical equivalence . . . . . . . . . . . . . .  4
+     3.4.  JSON value equality  . . . . . . . . . . . . . . . . . . .  4
      3.5.  Instance . . . . . . . . . . . . . . . . . . . . . . . . .  5
    4.  Overview . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
      4.1.  Instance validation  . . . . . . . . . . . . . . . . . . .  5
@@ -77,8 +75,9 @@ Table of Contents
    5.  General considerations . . . . . . . . . . . . . . . . . . . .  5
      5.1.  Valid instances  . . . . . . . . . . . . . . . . . . . . .  5
      5.2.  Protocol and programming language independence . . . . . .  6
-     5.3.  Keyword support and extension  . . . . . . . . . . . . . .  6
-     5.4.  Security considerations  . . . . . . . . . . . . . . . . .  6
+     5.3.  Integer numeric instances  . . . . . . . . . . . . . . . .  6
+     5.4.  JSON Schema extension  . . . . . . . . . . . . . . . . . .  6
+     5.5.  Security considerations  . . . . . . . . . . . . . . . . .  6
    6.  The "$schema" keyword  . . . . . . . . . . . . . . . . . . . .  6
      6.1.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . . .  6
      6.2.  Valid values . . . . . . . . . . . . . . . . . . . . . . .  7
@@ -108,7 +107,8 @@ Table of Contents
 
 
 
-Galiegue, et al.         Expires March 29, 2013                 [Page 2]
+
+Galiegue                 Expires March 30, 2013                 [Page 2]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -123,10 +123,8 @@ Internet-Draft                 JSON Schema                September 2012
 
    This document defines the core terminology used by JSON Schema.
    Other linked specifications, which expand on a particular role of
-   JSON Schema, will use that terminology.
-
-   This document also defines the mechanisms used for JSON Schema
-   identification and referencing.
+   JSON Schema, will use that terminology.  This document also defines
+   the mechanisms used for JSON Schema identification and addressing.
 
 2.  Conventions and Terminology
 
@@ -161,16 +159,14 @@ Internet-Draft                 JSON Schema                September 2012
            "anotherschema": {
                "title": "alsonested"
            }
-
-
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 3]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
        }
    }
+
+
+
+Galiegue                 Expires March 30, 2013                 [Page 3]
+
+Internet-Draft                 JSON Schema                September 2012
 
 
    In this example, "nested" and "alsonested" are subschemas, and "root"
@@ -182,7 +178,7 @@ Internet-Draft                 JSON Schema                September 2012
 
    array  A JSON array.
 
-   boolean  A JSON boolean (true or false).
+   boolean  A JSON boolean.
 
    integer  A JSON number without a fraction or exponent part (see RFC
       4627, section 2.4) [RFC4627].
@@ -195,42 +191,42 @@ Internet-Draft                 JSON Schema                September 2012
 
    string  A JSON string.
 
-3.4.  JSON value lexical equivalence
+3.4.  JSON value equality
 
-   Two JSON values are said to be lexically equivalent if and only if:
+   Two JSON values are said to be equal if and only if:
 
       both are nulls; or
 
       both are booleans, and have the same value; or
 
-      both are strings, and have the same lexical representation (see
-      RFC 4627, section 2.5 [RFC4627]; or
+      both are strings, and have the same value; or
 
-      both are integers, and have the same lexical representation; or
+      both are integers, and have the same value; or
 
-      both are numbers, and have the same lexical representation (see
-      RFC 4627, section 2.4) [RFC4627]; or
+      both are numbers, and have the same value; or
 
       both are arrays, and:
 
          have the same number of elements; and
 
-         elements at the same index are lexically equivalent according
-         to this definition; or
-
-
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 4]
-
-Internet-Draft                 JSON Schema                September 2012
-
+         elements at the same index are equal according to this
+         definition; or
 
       both are objects, and:
 
          have the same set of members; and
 
-         values for a same member are lexically equivalent according to
-         this definition.
+
+
+
+
+Galiegue                 Expires March 30, 2013                 [Page 4]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
+         values for a same member are equal according to this
+         definition.
 
 3.5.  Instance
 
@@ -273,18 +269,17 @@ Internet-Draft                 JSON Schema                September 2012
 
    It is acknowledged that a JSON instance may be any valid JSON value
    as defined by [RFC4627].  As such, JSON Schema does not mandate that
-
-
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 5]
-
-Internet-Draft                 JSON Schema                September 2012
-
-
    an instance be of a particular type: JSON Schema can process any JSON
    value, including null.  It is the domain of JSON Schema validation to
    add useful constraints to the structure and, optionally, semantics,
    of the JSON instance being processed.
+
+
+
+Galiegue                 Expires March 30, 2013                 [Page 5]
+
+Internet-Draft                 JSON Schema                September 2012
+
 
 5.2.  Protocol and programming language independence
 
@@ -295,23 +290,34 @@ Internet-Draft                 JSON Schema                September 2012
    instance to a schema over HTTP, which is the dominant protocol used
    for Internet-enabled interactive applications.
 
-5.3.  Keyword support and extension
+5.3.  Integer numeric instances
+
+   It is acknowledged by this specification that programming language
+   support for numeric types vary.  In particular, some programming
+   languages, and their associated parsers, yield different internal
+   representations for floating point numbers and integers, while others
+   do not.
+
+   As a consequence, for interoperability reasons, schema authors and
+   instance producers SHOULD ensure that integer numeric values be
+   written using their canonical mathematical representation.
+
+5.4.  JSON Schema extension
 
    Implementations MAY choose to define additional keywords to JSON
    Schema.  Save for explicit agreement, schema authors SHALL NOT expect
    these additional keywords to be supported by peer implementations.
+   Implementations SHOULD ignore keywords they do not support.
 
-   Implementations SHOULD ignore keywords they do not handle.
-
-5.4.  Security considerations
+5.5.  Security considerations
 
    Both schemas and instances are JSON values.  As such, all security
    considerations defined in [RFC4627] apply.
 
    JSON Schema does not define an internal security mechanism.  It is up
-   to applications to determine the level of trust placed into JSON
-   values coming from external sources (whether this data be an instance
-   or a schema), using any mechanism at their disposal.
+   to applications to determine the level of trust placed into JSON data
+   coming from external sources (whether this data be an instance or a
+   schema), using any mechanism at their disposal.
 
 6.  The "$schema" keyword
 
@@ -322,20 +328,19 @@ Internet-Draft                 JSON Schema                September 2012
       it defines the version of the schema which a particular JSON
       Schema is valid against;
 
+
+
+
+
+Galiegue                 Expires March 30, 2013                 [Page 6]
+
+Internet-Draft                 JSON Schema                September 2012
+
+
       it is a URI which is a location to a JSON Schema which validates
       any schema written for this version.
 
    Any of these schemas also validate themselves successfully.
-
-
-
-
-
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 6]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 6.2.  Valid values
 
@@ -381,17 +386,15 @@ Internet-Draft                 JSON Schema                September 2012
       if "id" is present in the root schema, its value MAY be considered
       to be the schema URI;
 
-      otherwise, it is RECOMMENDED that implementations consider that
-      the URI of the schema is either the empty URI, or a URN.
 
 
-
-
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 7]
+Galiegue                 Expires March 30, 2013                 [Page 7]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+      otherwise, it is RECOMMENDED that implementations consider that
+      the URI of the schema is either the empty URI, or a URN.
 
 7.3.  Canonical addressing
 
@@ -436,18 +439,17 @@ Internet-Draft                 JSON Schema                September 2012
    Subschemas at the following URI-encoded JSON Pointer [json-pointer]s
    (starting from the root schema) have the following URIs:
 
-   # (document root)  http://x.y.z/rootschema.json#
 
 
 
 
 
-
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 8]
+Galiegue                 Expires March 30, 2013                 [Page 8]
 
 Internet-Draft                 JSON Schema                September 2012
 
+
+   # (document root)  http://x.y.z/rootschema.json#
 
    #/schema1  http://x.y.z/rootschema.json#foo
 
@@ -481,9 +483,9 @@ Internet-Draft                 JSON Schema                September 2012
    Inline addressing can produce canonical URIs which differ from the
    canonical URI of the root schema.  Implementations MAY choose, for
    security reasons, to ignore inline addressing in such a situation,
-   and always dereference such canonical URIs.
+   and fall back to canonical addressing.
 
-   Dereferencing URIs may fail to complete, or may lead to content which
+   Dereferencing URIs MAY fail to complete, or MAY procude content which
    is not a JSON Schema (another type of JSON value, or not a JSON
    value).  It is RECOMMENDED that JSON Schema processing be considered
    a failure in such a situation.
@@ -496,15 +498,14 @@ Internet-Draft                 JSON Schema                September 2012
    Schemas.  This correlation MAY be embodied within existing protocol
    headers.
 
-   In addition, if the protocol also carries media type information (by
 
 
-
-Galiegue, et al.         Expires March 29, 2013                 [Page 9]
+Galiegue                 Expires March 30, 2013                 [Page 9]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
+   In addition, if the protocol also carries media type information (by
    means, for instance, of a "Content-Type" header), an instance MUST be
    one of "application/json" or any other subtype.
 
@@ -555,8 +556,7 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-
-Galiegue, et al.         Expires March 29, 2013                [Page 10]
+Galiegue                 Expires March 30, 2013                [Page 10]
 
 Internet-Draft                 JSON Schema                September 2012
 
@@ -612,31 +612,18 @@ Appendix A.  ChangeLog
 
 
 
-Galiegue, et al.         Expires March 29, 2013                [Page 11]
+Galiegue                 Expires March 30, 2013                [Page 11]
 
 Internet-Draft                 JSON Schema                September 2012
 
 
-Authors' Addresses
+Author's Address
 
    Francis Galiegue
 
    EMail: fgaliegue@gmail.com
 
 
-   Kris Zyp (editor)
-   SitePen (USA)
-   530 Lytton Avenue
-   Palo Alto, CA 94301
-   USA
-
-   Phone: +1 650 968 8787
-   EMail: kris@sitepen.com
-
-
-   Gary Court
-
-   EMail: gary.court@gmail.com
 
 
 
@@ -668,5 +655,18 @@ Authors' Addresses
 
 
 
-Galiegue, et al.         Expires March 29, 2013                [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Galiegue                 Expires March 30, 2013                [Page 12]
 

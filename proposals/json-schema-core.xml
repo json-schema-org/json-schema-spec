@@ -21,25 +21,6 @@
             </address>
         </author>
 
-        <author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
-            <organization>SitePen (USA)</organization>
-            <address>
-                <postal>
-                    <street>530 Lytton Avenue</street>
-                    <city>Palo Alto, CA 94301</city>
-                    <country>USA</country>
-                </postal>
-                <phone>+1 650 968 8787</phone>
-                <email>kris@sitepen.com</email>
-            </address>
-        </author>
-
-        <author fullname="Gary Court" initials="G" surname="Court">
-            <address>
-                <email>gary.court@gmail.com</email>
-            </address>
-        </author>
-
         <date year="2012"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
@@ -70,12 +51,8 @@
             <t>
                 This document defines the core terminology used by JSON Schema. Other linked
                 specifications, which expand on a particular role of JSON Schema, will use that
-                terminology.
-            </t>
-
-            <t>
-                This document also defines the mechanisms used for JSON Schema identification and
-                referencing.
+                terminology. This document also defines the mechanisms used for JSON Schema
+                identification and addressing.
             </t>
         </section>
 
@@ -140,7 +117,7 @@
                     JSON Schema defines seven primitive types for JSON values:
                     <list style="hanging">
                         <t hangText="array">A JSON array.</t>
-                        <t hangText="boolean">A JSON boolean (true or false).</t>
+                        <t hangText="boolean">A JSON boolean.</t>
                         <t hangText="integer">A JSON number without a fraction or exponent part (see
                         <xref target="RFC4627">RFC 4627, section 2.4)</xref>.</t>
                         <t hangText="number">Any JSON number. Number includes integer.</t>
@@ -151,30 +128,28 @@
                 </t>
             </section>
 
-            <section title="JSON value lexical equivalence">
+            <section title="JSON value equality">
                 <t>
-                    Two JSON values are said to be lexically equivalent if and only if:
+                    Two JSON values are said to be equal if and only if:
 
                     <list>
                         <t>both are nulls; or</t>
                         <t>both are booleans, and have the same value; or</t>
-                        <t>both are strings, and have the same lexical representation (see <xref
-                        target="RFC4627">RFC 4627, section 2.5</xref>; or</t>
-                        <t>both are integers, and have the same lexical representation; or</t>
-                        <t>both are numbers, and have the same lexical representation (see <xref
-                        target="RFC4627">RFC 4627, section 2.4)</xref>; or</t>
+                        <t>both are strings, and have the same value; or</t>
+                        <t>both are integers, and have the same value; or</t>
+                        <t>both are numbers, and have the same value; or</t>
                         <t>both are arrays, and:
                             <list>
                                 <t>have the same number of elements; and</t>
-                                <t>elements at the same index are lexically equivalent according to
-                                this definition; or</t>
+                                <t>elements at the same index are equal according to this
+                                definition; or</t>
                             </list>
                         </t>
                         <t>both are objects, and:
                             <list>
                                 <t>have the same set of members; and</t>
-                                <t>values for a same member are lexically equivalent according to
-                                this definition.</t>
+                                <t>values for a same member are equal according to this
+                                definition.</t>
                             </list>
                         </t>
                     </list>
@@ -247,15 +222,27 @@
                 </t>
             </section>
 
-            <section title="Keyword support and extension">
+            <section title="Integer numeric instances">
                 <t>
-                    Implementations MAY choose to define additional keywords to JSON Schema. Save
-                    for explicit agreement, schema authors SHALL NOT expect these additional
-                    keywords to be supported by peer implementations.
+                    It is acknowledged by this specification that programming language support for
+                    numeric types vary. In particular, some programming languages, and their
+                    associated parsers, yield different internal representations for floating point
+                    numbers and integers, while others do not.
                 </t>
 
                 <t>
-                    Implementations SHOULD ignore keywords they do not handle.
+                    As a consequence, for interoperability reasons, schema authors and instance
+                    producers SHOULD ensure that integer numeric values be written using their
+                    canonical mathematical representation.
+                </t>
+            </section>
+
+            <section title="JSON Schema extension">
+                <t>
+                    Implementations MAY choose to define additional keywords to JSON Schema. Save
+                    for explicit agreement, schema authors SHALL NOT expect these additional
+                    keywords to be supported by peer implementations. Implementations SHOULD ignore
+                    keywords they do not support.
                 </t>
             </section>
 
@@ -267,7 +254,7 @@
 
                 <t>
                     JSON Schema does not define an internal security mechanism. It is up to
-                    applications to determine the level of trust placed into JSON values coming from
+                    applications to determine the level of trust placed into JSON data coming from
                     external sources (whether this data be an instance or a schema), using any
                     mechanism at their disposal.
                 </t>
@@ -377,8 +364,9 @@
                     This schema will be taken as an example:
                 </t>
 
-                <!-- FIXME: http again as a scheme, maybe another one? It can be any scheme after
-                all -->
+                <!--
+                    FIXME: http again as a scheme, maybe another one? It can be any scheme after all
+                -->
                 <figure>
                     <artwork>
 <![CDATA[
@@ -448,12 +436,11 @@
                 <t>
                     Inline addressing can produce canonical URIs which differ from the canonical URI
                     of the root schema. Implementations MAY choose, for security reasons, to ignore
-                    inline addressing in such a situation, and always dereference such canonical
-                    URIs.
+                    inline addressing in such a situation, and fall back to canonical addressing.
                 </t>
 
                 <t>
-                    Dereferencing URIs may fail to complete, or may lead to content which is not a
+                    Dereferencing URIs MAY fail to complete, or MAY procude content which is not a
                     JSON Schema (another type of JSON value, or not a JSON value). It is RECOMMENDED
                     that JSON Schema processing be considered a failure in such a situation.
                 </t>
