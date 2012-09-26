@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
+<!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY rfc3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
+<!ENTITY rfc2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
+<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
+<!ENTITY rfc2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
+<!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY iddiscovery SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hammer-discovery.xml">
+<!ENTITY uritemplate SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.gregorio-uritemplate.xml">
+<!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
+<!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
+<!ENTITY css21 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-CSS21-20070719.xml">
+]>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<rfc category="info" docName="draft-zyp-json-hyper-schema-04" ipr="trust200902">
+    <front>
+        <title abbrev="JSON Schema Media Type">Hyperlinks and media for JSON Schema</title>
+
+        <author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
+            <organization>SitePen (USA)</organization>
+            <address>
+                <postal>
+                    <street>530 Lytton Avenue</street>
+                    <city>Palo Alto, CA 94301</city>
+                    <country>USA</country>
+                </postal>
+                <phone>+1 650 968 8787</phone>
+                <email>kris@sitepen.com</email>
+            </address>
+        </author>
+
+        <author fullname="Gary Court" initials="G" surname="Court">
+            <address>
+                <postal>
+                    <street></street>
+                    <city>Calgary, AB</city>
+                    <country>Canada</country>
+                </postal>
+                <email>gary.court@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname="Geraint Luff" initials="G" surname="Luff">
+        </author>
+
+        <date year="2012" />
+        <workgroup>Internet Engineering Task Force</workgroup>
+        <keyword>JSON</keyword>
+        <keyword>Schema</keyword>
+        <keyword>JavaScript</keyword>
+        <keyword>Object</keyword>
+        <keyword>Notation</keyword>
+        <keyword>Hyper Schema</keyword>
+        <keyword>Hypermedia</keyword>
+
+        <abstract>
+            <t>
+                JSON Schema is a JSON based format for defining the structure of JSON data.
+                This document specifies hyperlink- and hypermedia-related keywords for the JSON Schema format.
+            </t>
+        </abstract>
+    </front>
+
+    <middle>
+        <section title="Introduction">
+            <t>
+                JSON Schema is a JSON based format for defining the structure of JSON data.
+                This document specifies hyperlink- and hypermedia-related keywords for the JSON Schema format.
+            </t>
+        </section>
+
+        <section title="Conventions and Terminology">
+            <t>
+                <!-- The text in this section has been copied from the official boilerplate,
+                and should not be modified.-->
+
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+            </t>
+
+            <t>
+                The terms "JSON", "JSON text", "JSON value", "member", "element", "object", "array",
+                "number", "string", "boolean", "true", "false", and "null" in this document are to
+                be interpreted as defined in <xref target="RFC4627">RFC 4627</xref>.
+            </t>
+
+            <t>
+                This specification also uses the following defined terms:
+
+                <list style="hanging">
+                    <t hangText="schema">A JSON Schema object.</t>
+                    <t hangText="instance">Equivalent to "JSON value" as defined in <xref
+                    target="RFC4627">RFC 4627</xref>.</t>
+                    <t hangText="property">Equivalent to "member" as defined in <xref
+                    target="RFC4627">RFC 4627</xref>.</t>
+                    <t hangText="item">Equivalent to "element" as defined in <xref
+                    target="RFC4627">RFC 4627</xref>.</t>
+                    <t hangText="attribute">A property of a JSON Schema object.</t>
+                </list>
+            </t>
+        </section>
+
+        <section title="Overview">
+            <t>
+                JSON Schema defines the media type "application/schema+json".
+                JSON Schemas are also written in JSON and include facilities for describing the structure of JSON data in terms of allowable values, descriptions, and interpreting relations with other resources.
+            </t>
+            <t>
+                This document describes how JSON Schema can be used to define hyperlinks on instance data, and to define how to interpret JSON data as rich multimedia documents.
+            </t>
+            <t>
+                Just as with the core JSON schema attributes, all the attributes described here are optional.
+                Therefore, an empty object is a valid (non-informative) schema, and essentially describes plain JSON.
+                Addition of attributes provides additive information for user agents.
+            </t>
+            <figure>
+                <preamble>An example JSON Schema defining hyperlinks, and providing hypermedia interpretation for one of the properties is:</preamble>
+                <artwork>
+<![CDATA[
+{
+    "title": "Written Article",
+    "properties": {
+        "id": {
+            "title": "Article Identifier",
+            "type": "number"
+        },
+        "title": {
+            "title": "Article Title",
+            "type": "string"
+        },
+        "author": {
+            "type": "integer"
+        },
+        "imgData": {
+            "title": "Article Illustration (small)",
+            "type": "string",
+            "media": {
+                "contentEncoding": "base64",
+                "mediaType": "image/png"
+            }
+        }
+    },
+    "required" : ["id", "title", "author"],
+    "links": [
+        {
+            "rel": "full",
+            "href": "{id}"
+        },
+        {
+            "rel": "author",
+            "href": "/user?id={author}"
+        }
+    ]
+}
+]]>
+                </artwork>
+                <postamble>
+                    This schema defines the properties of the instance, as well as a hypermedia interpretation for the "imgData" property.
+                    It also defines link relations for the instance, with URIs incorporating values from the instance.
+                </postamble>
+            </figure>
+
+            <section title="Design Considerations">
+                <t>
+                    In addition to the design considerations for the core JSON Schema specification:
+                </t>
+                <t>
+                    This specification is protocol agnostic.
+                    The underlying protocol (such as HTTP) should sufficiently define the semantics of the client-server interface, the retrieval of resource representations linked to by JSON representations, and modification of those resources.
+                    The goal of this format is to sufficiently describe JSON structures such that one can utilize existing information available in existing JSON representations from a large variety of services that leverage a representational state transfer architecture using existing protocols.
+                </t>
+            </section>
+        </section>
+
+        <section title="Keywords">
+            <t>
+                The following properties are defined for JSON Schema objects:
+            </t>
+            
+            <section title="links">
+                <t>
+                    The <tt>links</tt> property of schemas is used to associate Link Description Options with instances.  The value of this property MUST be an array, and the items in the array must be Link Description Objects, as defined below.
+                </t>
+
+                <figure>
+                    <preamble>An example schema using the links keywords could be:</preamble>
+                    <artwork>
+<![CDATA[
+{
+    "title": "Schema defining links",
+    "links": [
+        {
+            "rel": "full",
+            "href": "{id}"
+        },
+        {
+            "rel": "parent",
+            "href": "{parent}"
+        }
+    ]
+}
+]]>
+                    </artwork>
+                </figure>
+
+                <section title="Link Description Object">
+                    <t>
+                        A link description object is used to describe link relations.
+                        In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
+                        The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
+                        The URI of the normative link description schema is: <eref target="http://json-schema.org/links">http://json-schema.org/links</eref> (latest version) or <eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
+                    </t>
+
+                    <section title="href" anchor="href">
+                        <t>
+                            The value of the "href" link description property indicates the target URI of the related resource.
+                            The value of the instance property SHOULD be resolved as a URI-Reference per <xref target="RFC3986">RFC 3986</xref> and MAY be a relative URI.
+                            The base URI to be used for relative resolution SHOULD be the URI used to retrieve the instance object (not the schema) when used within a schema.
+                            Also, when links are used within a schema, the URI SHOULD be parametrized by the property values of the instance object, if property values exist for the corresponding variables in the template (otherwise they MAY be provided from alternate sources, like user input).
+                        </t>
+
+                        <t>
+                            Instance property values SHOULD be substituted into the URIs where matching braces ('{', '}') are found surrounding zero or more characters, creating an expanded URI.
+                            Instance property value substitutions are resolved by using the text between the braces to denote the property name from the instance to get the value to substitute.
+                            The property name between the braces SHOULD be percent encoded (FIXME reference?).
+                            In particular, the character for the braces ('{' and '}') as well as the percent sign ('%') MUST be encoded, such that decoding the text obtains the correct property name.
+
+                            <figure>
+                                <preamble>For example, if an href value is defined:</preamble>
+                                <artwork>
+<![CDATA[
+http://somesite.com/{id}
+]]>
+                                </artwork>
+                                <postamble>Then it would be resolved by replace the value of the "id" property value from the instance object.</postamble>
+                            </figure>
+
+                            <figure>
+                                <preamble>If the value of the "id" property was "45", the expanded URI would be:</preamble>
+                                <artwork>
+<![CDATA[
+http://somesite.com/45
+]]>
+                                </artwork>
+                            </figure>
+
+                            If matching braces are found with the string "@" (no quotes) between the braces, then the actual instance value SHOULD be used to replace the braces, rather than a property value.
+                        </t>
+                        <section title="Missing values">
+                            <t>Values may only be used for substitution if they are of a scalar type (string, boolean or number).</t>
+                            <t>In cases where suitable values do not exist for substitution because they are of an incorrect type, then they should be treated as if the values were missing, and substitute values MAY be provided from alternate sources, like user input.</t>
+                        </section>
+                    </section>
+
+                    <section title="rel">
+                        <t>
+                            The value of the "rel" property indicates the name of the relation to the target resource.
+                            The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy.
+                            If a resource JSON representation contains a sub object with a property interpreted as a link, that sub-object holds the relation with the target.
+                            A link relation from the top level resource to a target MUST be indicated with the schema describing the top level JSON representation.
+                        </t>
+
+                        <t>
+                            Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target="RFC4287">RFC 4287</xref>).
+                            However, we define these relations here for clarity of normative interpretation within the context of JSON Schema defined relations:
+
+                            <list style="hanging">
+                                <t hangText="self">
+                                    If the relation value is "self", when this property is encountered in the instance object, the object represents a resource and the instance object is treated as a full representation of the target resource identified by the specified URI.
+                                </t>
+
+                                <t hangText="full">
+                                    This indicates that the target of the link is the full representation for the instance object.
+                                    The instance that contains this link may not be the full representation.
+                                </t>
+
+                                <t hangText="describedBy">
+                                    This indicates the target of the link is a schema describing the instance object.
+                                    This MAY be used to specifically denote the schemas of objects within a JSON object hierarchy, facilitating polymorphic type data structures.
+                                </t>
+
+                                <t hangText="root">
+                                    This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
+                                    All other properties of the instance objects can be regarded as meta-data descriptions for the data.
+                                </t>
+                            </list>
+                        </t>
+
+                        <t>
+                            The following relations are applicable for schemas (the schema as the "from" resource in the relation):
+
+                            <list style="hanging">
+                                <t hangText="instances">
+                                    This indicates the target resource that represents a collection of instances of a schema.
+                                </t>
+                                <t hangText="create">
+                                    This indicates a target to use for creating new instances of a schema.
+                                    This link definition SHOULD be a submission link with a non-safe method (like POST).
+                                </t>
+                            </list>
+                            
+                            Links defined in the schema using these relation values SHOULD not require parameterization with data from the instance, as they describe a link for the schema, not the instances.
+                        </t>
+
+                        <t>
+                            <figure>
+                                <preamble>For example, if a schema is defined:</preamble>
+                                <artwork>
+<![CDATA[
+{
+    "links": [{
+        "rel": "self",
+        "href": "{id}"
+    }, {
+        "rel": "up",
+        "href": "{upId}"
+    }, {
+        "rel": "children",
+        "href": "?upId={id}"
+    }]
+}
+]]>
+                                </artwork>
+                            </figure>
+
+                            <figure>
+                                <preamble>And if a collection of instance resources were retrieved with JSON representation:</preamble>
+                                <artwork>
+<![CDATA[
+GET /Resource/
+
+[{
+    "id": "thing",
+    "upId": "parent"
+}, {
+    "id": "thing2",
+    "upId": "parent"
+}]
+]]>
+                                </artwork>
+                            </figure>
+
+                            This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
+                            The "children" collection would be located at "/Resource/?upId=thing".
+                        </t>
+                        <t>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.</t>
+                    </section>
+
+                    <section title="template">
+                        <t>
+                            This property value is a string that defines the templating language used in the <xref target="href">"href"</xref> attribute.
+                            If no templating language is defined, then the default <xref target="href">Link Description Object templating language</xref> is used.
+                        </t>
+                    </section>
+
+                    <section title="targetSchema">
+                        <t>
+                            This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
+                        </t>
+                    </section>
+                    
+                    <section title="mediaType">
+                        <t>
+                            The value of this property is advisory only, and represents the media type <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when fetching this resource.
+                            This property value MAY be a media range instead, using the same pattern defined in <xref target="RFC2616">RFC 2161, section 14.1 - HTTP "Accept" header</xref>.
+                        </t>
+                        
+                        <t>
+                            This property is analogous to the "type" property of <tt>&lt;a</tt> elements in HTML 4.01 (advisory content type), or the "type" parameter in the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.
+                            User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
+                            When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
+                        </t>
+                        
+                        <t>
+                            If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <xref target="RFC2616">RFC 2616, section 14.1</xref>, then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
+                        </t>
+                        
+                        <t>
+                            If this property's value is not specified, then the value should be taken to be "application/json".
+                        </t>
+
+                        <t>
+                            <figure>
+                                <preamble>For example, if a schema is defined:</preamble>
+                                <artwork>
+<![CDATA[
+{
+    "links": [{
+        "rel": "self",
+        "href": "/{id}/json"
+    }, {
+        "rel": "alternate",
+        "href": "/{id}/html",
+        "mimeType": "text/html"
+    }, {
+        "rel": "alternate",
+        "href": "/{id}/rss",
+        "mimeType": "application/rss+xml"
+    }, {
+        "rel": "icon",
+        "href": "{id}/icon",
+        "mimeType": "image/*"
+    }]
+}
+]]>
+                                </artwork>
+                            </figure>
+                            
+                            A suitable instance described by this schema would have four links defined.
+                            The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
+                            The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
+                            The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+                        </t>
+                        
+                        <t>
+                            A visual user agent displaying the item from the above example might present a button representing an RSS feed, which when pressed passes the target URI (calculated "href" value) to an view more suited to displaying it, such as a news feed aggregator tab.
+                        </t>
+                        
+                        <t>
+                            Note that presenting the link in the above manner, or passing the URI to a news feed aggregator view does not constitute interpretation of the data, but an interpretation of the link.
+                            The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
+                        </t>
+                    </section>
+
+                    <section title="invalidates">
+                        <t>
+                            The value of this property is advisory only, and represents a URI or set of URIs which may change in response to this link being followed. Its value must be either a string or an array.
+                        </t>
+                        
+                        <t>
+                            If this property value is a string, then when the link is followed, this value should be filled out as a template and resolved to a full URI using the same method as used for the &quot;<xref target="href">href</xref>&quot; property.
+                            Any stored data fetched from a URI matching this value MAY then be considered out-of-date by the client, and removed from any cache.
+                        </t>
+                        
+                        <t>
+                            If this property is an array, then its entries MUST be strings, each of which is treated according to the above behaviour.
+                        </t>
+                    </section>
+
+                    <section title="Submission Link Properties">
+                        <t>
+                            The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
+                        </t>
+
+                        <section title="method">
+                            <t>
+                                This attribute defines which method can be used to access the target resource.
+                                In an HTTP environment, this could be "GET" or "POST" (other HTTP methods such as "PUT" and "DELETE" have semantics that are clearly implied by accessed resources, and do not need to be defined here).
+                                This defaults to "GET".
+                            </t>
+                        </section>
+
+                        <section title="encType">
+                            <t>
+                                If present, this property indicates a query media type format that the server supports for querying or posting to the collection of instances at the target resource.
+                                The query can be suffixed to the target URI to query the collection with property-based constraints on the resources that SHOULD be returned from the server or used to post data to the resource (depending on the method).
+
+                                <figure>
+                                    <preamble>For example, with the following schema:</preamble>
+                                    <artwork>
+<![CDATA[
+{
+    "links": [{
+        "encType": "application/x-www-form-urlencoded",
+        "method": "GET",
+        "href": "/Product/",
+        "properties": {
+            "name": {
+                "description": "name of the product"
+            }
+        }
+    }]
+}
+]]>
+                                    </artwork>
+                                    <postamble>This indicates that the client can query the server for instances that have a specific name.</postamble>
+                                </figure>
+
+                                <figure>
+                                    <preamble>For example:</preamble>
+                                    <artwork>
+<![CDATA[
+/Product/?name=Slinky
+]]>
+                                    </artwork>
+                                </figure>
+
+                                If no encType or method is specified, only the single URI specified by the href property is defined.
+                                If the method is POST, "application/json" is the default media type.
+                            </t>
+                        </section>
+
+                        <section title="schema">
+                            <t>
+                                This attribute contains a schema which defines the acceptable structure of the submitted request.
+                                For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
+                            </t>
+                        </section>
+                    </section>
+                </section>
+            </section>
+
+            <section title="fragmentResolution">
+                <t>
+                    This property indicates the fragment resolution protocol to use for resolving fragment identifiers in URIs within the instance representations.
+                    This applies to the instance object URIs and all children of the instance object's URIs.
+                    The default fragment resolution protocol is "json-pointer", which is defined below.
+                    Other fragment resolution protocols MAY be used, but are not defined in this document.
+                </t>
+
+                <t>
+                    The fragment identifier is based on <xref target="RFC3986">RFC 3986, Sec 5</xref>, and defines the mechanism for resolving references to entities within a document.
+                </t>
+
+                <t>
+                    Note that if the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the HTTP Link header, then all fragment resolution should be resolved relative to the target of the root link.
+                    The only exception to this is the resolution of "root" links themselves.
+                </t>
+
+                <section title="json-pointer fragment resolution">
+                    <t>
+                        The "json-pointer" fragment resolution protocol uses a <xref target="json-pointer">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.
+                    </t>
+                </section>
+            </section>
+
+            <section title="media">
+                <t>
+                    The value of this attribute MUST be an object.  It MAY contain any of the following properties:
+                </t>
+                
+                <section title="contentEncoding">
+                    <t>
+                        The value of this property SHOULD be ignored for any instance that is not a string.
+                        If the instance value is a string, this attribute defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
+                        <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible values for this property.
+                    </t>
+                </section>
+
+                <section title="mediaType">
+                    <t>
+                        The value of this property must be a media type <xref target="RFC2046">RFC 2046</xref>.
+                        This attribute defines the media type of instances which this schema defines.
+                    </t>
+                    
+                    <t>
+                        If the "contentEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document, and the character set SHOULD be considered to be UTF-8.
+                    </t>
+                </section>
+                
+                <t>
+                    <figure>
+                        <preamble>For example:</preamble>
+                        <artwork>
+<![CDATA[
+{
+    "type": "string",
+    "media": {
+        "contentEncoding": "base64",
+        "mediaType": "image/png"
+    }
+}
+]]>
+                        </artwork>
+                        <postamble>Instances described by this schema should be strings, and their values should be interpretable as base64-encoded PNG images.</postamble>
+                    </figure>
+                    
+                    <figure>
+                        <preamble>Another example:</preamble>
+                        <artwork>
+<![CDATA[
+{
+    "type": "string",
+    "media": {
+        "mediaType": "text/html"
+    }
+}
+]]>
+                        </artwork>
+                        <postamble>Instances described by this schema should be strings containing HTML, using the UTF-8 character set.</postamble>
+                    </figure>
+                </t>
+            </section>
+
+            <section title="pathStart">
+                <t>
+                    This attribute is a URI that defines what the instance's URI MUST start with in order to validate.
+                    The value of the "pathStart" attribute MUST be resolved as per <xref target="RFC3986">RFC 3986, Sec 5</xref>, and is relative to the instance's URI.
+                </t>
+
+                <t>
+                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" attribute.
+                    If the URI of the instance does not start with this URI, or if another schema specifies a starting URI that is longer and also matches the instance, this schema SHOULD NOT be considered to describe the instance.
+                    Any schema that does not have a pathStart attribute SHOULD be considered applicable to all the instances for which it is referenced.
+                </t>
+            </section>
+        </section>
+
+        <section title="Security Considerations">
+            <t>
+                This specification is a sub-type of the JSON format, and consequently the security considerations are generally the same as <xref target="RFC4627">RFC 4627</xref>.
+                However, there are additional security concerns when using the hyperlink definitions.
+            </t>
+            
+            <section title="&quot;self&quot; links">
+                <t>
+                    When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
+    
+                    <figure>
+                        <preamble>For example, if a hyper schema was defined:</preamble>
+                        <artwork>
+<![CDATA[
+{
+    "links": [{
+        "rel": "self",
+        "href": "{id}"
+    }]
+}
+]]>
+                        </artwork>
+                    </figure>
+    
+                    <figure>
+                        <preamble>And a resource was requested from somesite.com:</preamble>
+                        <artwork>
+<![CDATA[
+GET /foo/
+]]>
+                        </artwork>
+                    </figure>
+    
+                    <figure>
+                        <preamble>With a response of:</preamble>
+                        <artwork>
+<![CDATA[
+Content-Type: application/json; profile=/schema-for-this-data
+
+[{
+    "id": "bar",
+    "name": "This representation can be safely treated \
+        as authoritative "
+}, {
+    "id": "/baz",
+    "name": "This representation should not be treated as \
+        authoritative the user agent should make request the resource\
+        from '/baz' to ensure it has the authoritative representation"
+}, {
+    "id": "http://othersite.com/something",
+    "name": "This representation\
+        should also not be treated as authoritative and the target\
+        resource representation should be retrieved for the\
+        authoritative representation"
+}]
+]]>
+                        </artwork>
+                    </figure>
+                </t>
+            </section>
+            
+            <section title="&quot;mediaType&quot; property of Link Description Objects">
+                <t>
+                    The "mediaType" property in link definitions defines the expected format of the link's target.
+                    However, this is advisory only, and MUST NOT be considered authoritative.
+                    User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
+                    If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
+                </t>
+                
+                <t>
+                    When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mimeType" property of the link MUST NOT be used.
+                </t>
+                
+                <t>
+                    This is to guard against situations where a source is providing data that is safe when interpreted as the correct type (for example plain text), but that could be damaging if a third party were allowed to provide a different interpretation (such as client-side code).
+                </t>
+            </section>
+            
+            <section title="&quot;targetSchema&quot; property of Link Description Objects">
+                <t>
+                    Since, through the "media" keyword, schemas can provide interpretations of string data, exactly the same considerations apply for this keyword as for the "mediaType" keyword of Link Description Objects.
+                </t>
+            </section>
+            
+            <section title="&quot;invalidates&quot; property of Link Description Objects">
+                <t>
+                    User agents also MUST NOT fetch the target of a link when the resulting data is validated, unless the user has already explicitly or implicitly indicated them to do so.
+                    If the user's intentions are not known, then the user agent SHOULD NOT refetch the data unless the target of the link is a sub-path of the URI being invalidated.
+                    (See above for a discussion of how to determine if one path is a sub-path of another.)
+                </t>
+                
+                <t>
+                    This is to guard against the possibility of tricking user agents into making requests on behalf of the user, to track their behaviour.
+                </t>
+            </section>
+        </section>
+
+        <section title="IANA Considerations">
+            <t>The proposed MIME media type for JSON Schema is "application/schema+json".</t>
+            <t>Type name: application</t>
+            <t>Subtype name: schema+json</t>
+            <t>Required parameters: profile</t>
+            <t>
+                The value of the profile parameter SHOULD be a URI (relative or absolute) that refers to the schema used to define the structure of this structure (the meta-schema).
+                Normally the value would be http://json-schema.org/draft-04/hyper-schema, but it is allowable to use other schemas that extend the hyper schema's meta-schema.
+            </t>
+            <t>Optional parameters: pretty</t>
+            <t>The value of the pretty parameter MAY be true or false to indicate if additional
+            whitespace has been included to make the JSON representation easier to read.</t>
+
+            <section title="Registry of Link Relations">
+                <t>
+                    This registry is maintained by IANA per <xref target="RFC4287">RFC 4287</xref> and this specification adds four values: "full", "create", "instances", "root".
+                    New assignments are subject to IESG Approval, as outlined in <xref target="RFC5226">RFC 5226</xref>.
+                    Requests should be made by email to IANA, which will then forward the request to the IESG, requesting approval.
+                </t>
+            </section>
+        </section>
+    </middle>
+
+    <back>
+        <!-- References Section -->
+        <references title="Normative References">
+            &rfc2045;
+            &rfc2119;
+            &rfc3339;
+            &rfc3986;
+            &rfc4287;
+            <reference anchor="json-pointer" target="http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer-02">
+                <front>
+                    <title>JSON Pointer</title>
+                    <author initials="P." surname="Bryan">
+                        <organization>ForgeRock US, Inc.</organization>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2011" month="October" />
+                </front>
+            </reference>
+        </references>
+        <references title="Informative References">
+            &rfc2616;
+            &rfc4627;
+            &rfc5226;
+            &rfc2046;
+            &iddiscovery;
+            &uritemplate;
+            &linkheader;
+            &html401;
+            &css21;
+        </references>
+
+        <section title="Change Log">
+            <t>
+                <list style="hanging">
+                    <t hangText="draft-04">
+                        <list style="symbols">
+                            <t>Split hyper-schema definition out from main schema.</t>
+                            <t>Removed "readonly"</t>
+                            <t>Capitalised the T in "encType"</t>
+                            <t>Moved "mediaType" and "contentEncoding" to the new "media" property</t>
+                            <t>Added "mediaType" property to LDOs</t>
+                            <t>Added "invalidates" property to LDOs</t>
+                            <t>Replaced "slash-delimited" fragment resolution with
+                            "json-pointer".</t>
+                            <t>Added "template" LDO attribute.</t>
+                            <t>Improved wording of sections.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-03">
+                        <list style="symbols">
+                            <t>Added example and verbiage to "extends" attribute.</t>
+                            <t>Defined slash-delimited to use a leading slash.</t>
+                            <t>Made "root" a relation instead of an attribute.</t>
+                            <t>Removed address values, and MIME media type from format to reduce
+                            confusion (mediaType already exists, so it can be used for MIME
+                            types).</t>
+                            <t>Added more explanation of nullability.</t>
+                            <t>Removed "alternate" attribute.</t>
+                            <t>Upper cased many normative usages of must, may, and should.</t>
+                            <t>Replaced the link submission "properties" attribute to "schema"
+                            attribute.</t>
+                            <t>Replaced "optional" attribute with "required" attribute.</t>
+                            <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum"
+                            attribute.</t>
+                            <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
+                            attribute.</t>
+                            <t>Replaced "requires" attribute with "dependencies" attribute.</t>
+                            <t>Moved "contentEncoding" attribute to hyper schema.</t>
+                            <t>Added "additionalItems" attribute.</t>
+                            <t>Added "id" attribute.</t>
+                            <t>Switched self-referencing variable substitution from "-this" to "@"
+                            to align with reserved characters in URI template.</t>
+                            <t>Added "patternProperties" attribute.</t>
+                            <t>Schema URIs are now namespace versioned.</t>
+                            <t>Added "$ref" and "$schema" attributes.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-02">
+                        <list style="symbols">
+                            <t>Replaced "maxDecimal" attribute with "divisibleBy" attribute.</t>
+                            <t>Added slash-delimited fragment resolution protocol and made it the
+                            default.</t>
+                            <t>Added language about using links outside of schemas by referencing
+                            its normative URI.</t>
+                            <t>Added "uniqueItems" attribute.</t>
+                            <t>Added "targetSchema" attribute to link description object.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-01">
+                        <list style="symbols">
+                            <t>Fixed category and updates from template.</t>
+                        </list>
+                    </t>
+
+                    <t hangText="draft-00">
+                        <list style="symbols">
+                            <t>Initial draft.</t>
+                        </list>
+                    </t>
+                </list>
+            </t>
+        </section>
+    </back>
+</rfc>
