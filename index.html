@@ -34,31 +34,7 @@
 
 <p>JSON Schema is a JSON based format for describing JSON data. JSON Schema is to JSON as XSD is to XML.</p>
 
-<h2>JSON Schema by example</h2>
-
-<p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a product which has an <em>id</em>, a <em>name</em>, a <em>price</em>, and an optional set of <em>tags</em>.
-</p>
-
-<h3>Example JSON data for a product API</h3>
-<p>An example product in this API is:</p>
-
-<pre><code>{
-  "id": 1,
-  "name": "A green door",
-  "price": 12.50,
-  "tags": ["home", "green"]
-}</code></pre>
-
-<p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
-
-<ul>
-  <li>What is id?</li>
-  <li>Is name required?</li>
-  <li>Can price be 0?</li>
-  <li>Are all tags strings?</li>
-</ul>
-
-<p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data. Specifically, JSON Schema is a draft media type (<span class="contentType">application/schema+json</span>) with the following goals:</p>
+<p>JSON Schema is a proposed Internet draft defining a JSON media type (application/schema+json) with the following goals:</p>
 
 <dl class="dl-horizontal">
 <dt>Validation</dt> <dd>You can use JSON Schema to validate your JSON data.</dd>
@@ -68,6 +44,10 @@ interaction.</dd>
 <dt>Hyperlinking</dt> <dd>You can pair your JSON data with the defining JSON
 Schema to build hyperlinks into parts of that JSON data.</dd>
 </dl>
+<h2>JSON Schema by example</h2>
+
+<p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a...
+    continue to the <a href="examples.html">examples page</a> to read more...</p>
 
 <h2 id="definitions">JSON Schema standard draft</h2>
 

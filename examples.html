@@ -15,6 +15,26 @@
 </div>
 <div class="row">
 <div class="span8">
+<h2>JSON Schema by example</h2>
+
+<p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a product which has an <em>id</em>, a <em>name</em>, a <em>price</em>, and an optional set of <em>tags</em>.
+</p>
+
+<h3>Example JSON data for a product API</h3>
+<p>An example product in this API is:</p>
+
+<script src="https://gist.github.com/4337461.js"></script>
+
+<p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
+
+<ul>
+  <li>What is id?</li>
+  <li>Is name required?</li>
+  <li>Can price be 0?</li>
+  <li>Are all tags strings?</li>
+</ul>
+
+<p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
 <h3>Example schema for the product API</h3>
 <p>To start a schema definition, let's begin with a basic to JSON schema.</p>
 
