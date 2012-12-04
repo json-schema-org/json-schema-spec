@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/bootstrap-min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<div class="row">
+    <div class="span8">
+        <div class="page-header">
+            <h1>JSON Schema Examples</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+<div class="span8">
+<h3>Example schema for the product API</h3>
+<p>To start a schema definition, let's begin with a basic to JSON schema.</p>
+
+<script src="https://gist.github.com/4336909.js"></script>
+
+<p>The above schema has a <em>description</em> saying we are going to describe a product, a <em>type</em> saying our product is a JSON object (versus a simple datapoint like a string/number), and a <em>properties</em>section for describing the data in that object.</p>
+
+<p>Next let's answer our previous questions about this API, starting with id.</p>
+
+<h4>What is id?</h4>
+<p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
+
+<p>In JSON Schema terms, we can update our schema to:</p>
+<script src="https://gist.github.com/4336918.js"></script>
+
+<h4>Is name required?</h4>
+<p><em>name</em> is a string value that describes a product. Since there isn't much to a product, it also is required. Adding this gives us the schema:</p>
+
+<script src="https://gist.github.com/4336933.js"></script>
+
+<h4>Can price be 0?</h4>
+<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum, and by default minimum is exclusive of the minimum value. Therefore we can update our schema with <em>price</em>:</p>
+
+<script src="https://gist.github.com/4336945.js"></script>
+
+<h4>Are all tags strings?</h4>
+<p>Finally, we come to the tags property. Unlike the previous properties, tags have many values, and is represented as a JSON array. According to Acme's docs, all tags must be strings, but you aren't required to specify tags. Since <em>required</em> is an optional attribute of a propery (ironically), we can leave it out of the tags definition, giving us:</p>
+
+<script src="https://gist.github.com/4336949.js"></script>
+
+<h3>Example summary</h3>
+<p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
+
+<p>As a final example, here's a spec for an array of products, with the products having 2 new properties. The first is a <em>dimensions</em> property for the size of the product, and the second is a <em>warehouseLocation</em> field for where the warehouse that stores them is geographically located.</p>
+
+<p>And also, since JSON Schema defines a reference schema for a geographic location, instead of coming up with our own, we'll reference the <a href="http://json-schema.org/geo">canonical one</a>.</p>
+
+<h4>Set of products:</h4>
+<script src="https://gist.github.com/4336950.js"></script>
+
+<h4>Set of products schema:</h4>
+
+<script src="https://gist.github.com/4336979.js"></script>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

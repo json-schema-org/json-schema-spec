@@ -32,8 +32,33 @@
 
 <h2>What is JSON Schema</h2>
 
-<p>JSON Schema is a proposed Internet draft defining a JSON media type
-(<tt>application/schema+json</tt>) with the following goals:</p>
+<p>JSON Schema is a JSON based format for describing JSON data. JSON Schema is to JSON as XSD is to XML.</p>
+
+<h2>JSON Schema by example</h2>
+
+<p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a product which has an <em>id</em>, a <em>name</em>, a <em>price</em>, and an optional set of <em>tags</em>.
+</p>
+
+<h3>Example JSON data for a product API</h3>
+<p>An example product in this API is:</p>
+
+<pre><code>{
+  "id": 1,
+  "name": "A green door",
+  "price": 12.50,
+  "tags": ["home", "green"]
+}</code></pre>
+
+<p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
+
+<ul>
+  <li>What is id?</li>
+  <li>Is name required?</li>
+  <li>Can price be 0?</li>
+  <li>Are all tags strings?</li>
+</ul>
+
+<p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data. Specifically, JSON Schema is a draft media type (<span class="contentType">application/schema+json</span>) with the following goals:</p>
 
 <dl class="dl-horizontal">
 <dt>Validation</dt> <dd>You can use JSON Schema to validate your JSON data.</dd>
@@ -44,19 +69,20 @@ interaction.</dd>
 Schema to build hyperlinks into parts of that JSON data.</dd>
 </dl>
 
-<h2>Existing IETF drafts</h2>
+<h2 id="definitions">JSON Schema standard draft</h2>
 
-<p>The latest IETF published draft to date can be found <a id="link-draft-zyp-json-schema-03"
-href="http://tools.ietf.org/html/draft-zyp-json-schema-03">here</a>. It is in
-the process of being updated.</p>
+<p>The latest IETF published draft is <a id="link-draft-zyp-json-schema-03"
+href="http://tools.ietf.org/html/draft-zyp-json-schema-03">v3</a>. While not yet published,
+<a id="link-github-json-schema"  href="https://github.com/json-schema/json-schema">v4</a>
+ of the draft is being updated on github.</p>
 
 <p>JSON Schema also uses two other specifications:</p>
 
 <ul>
-<li><a id="link-draft-pbryan-zyp-json-ref-02" href="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-02">JSON
-Reference</a>;</li>
-<li><a id="link-draft-ietf-appsawg-json-pointer-03" href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">JSON
-Pointer</a>.</li>
+<li><a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-02">JSON
+Reference</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">JSON
+Pointer</a></li>
 </ul>
 
 <h2>Implementations</h2>
@@ -75,7 +101,7 @@ group</a>.</p>
 can be found on <a id="link-github" href="https://github.com/json-schema/">GitHub</a>.
 Feature/pull requests are welcome.</p>
 
-<h2>Schemas</h2>
+<h2>Reference schemas</h2>
 <p>The following are schemas that are available for referencing (more to come):
 <dl class="dl-horizontal span8">
 <dt><a id="link-schema-meta" href="schema">Core Meta-Schema</a> </dt><dd> This is the meta-schema
