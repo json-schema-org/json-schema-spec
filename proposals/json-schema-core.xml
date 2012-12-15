@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC2048 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2048.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -75,6 +75,16 @@
 
         <section title="Core terminology of JSON Schema">
 
+            <section title="Property, item">
+                <t>
+                    A property of a JSON object is equivalent to a member, as defined by RFC 4627.
+                </t>
+
+                <t>
+                    An item of a JSON array is equivalent to an element, as defined by RFC 4627.
+                </t>
+            </section>
+
             <section title="JSON Schema, keywords">
                 <t>
                     A JSON Schema is a JSON document, and that document MUST be an object. Object
@@ -88,17 +98,30 @@
 
             <section title="Root schema, subschema">
                 <t>
-                    JSON Schemas can be nested, as in this example:
+                    This is a simple example of a JSON Schema, with no nested schemas:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "title": "root"
+}
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    JSON Schemas can also be nested, as in this example:
                 </t>
                 <figure>
                     <artwork>
 <![CDATA[
 {
     "title": "root",
-    "otherschema": {
+    "otherSchema": {
         "title": "nested",
-        "anotherschema": {
-            "title": "alsonested"
+        "anotherSchema": {
+            "title": "alsoNested"
         }
     }
 }
@@ -107,7 +130,7 @@
                 </figure>
 
                 <t>
-                    In this example, "nested" and "alsonested" are subschemas, and "root" is a root
+                    In this example, "nested" and "alsoNested" are subschemas, and "root" is a root
                     schema.
                 </t>
             </section>
@@ -119,7 +142,7 @@
                         <t hangText="array">A JSON array.</t>
                         <t hangText="boolean">A JSON boolean.</t>
                         <t hangText="integer">A JSON number without a fraction or exponent part (see
-                        <xref target="RFC4627">RFC 4627, section 2.4)</xref>.</t>
+                        <xref target="RFC4627">RFC 4627, section 2.4</xref>).</t>
                         <t hangText="number">Any JSON number. Number includes integer.</t>
                         <t hangText="null">The JSON null value.</t>
                         <t hangText="object">A JSON object.</t>
@@ -136,8 +159,7 @@
                         <t>both are nulls; or</t>
                         <t>both are booleans, and have the same value; or</t>
                         <t>both are strings, and have the same value; or</t>
-                        <t>both are integers, and have the same value; or</t>
-                        <t>both are numbers, and have the same value; or</t>
+                        <t>both are numbers, and have the same mathematical value; or</t>
                         <t>both are arrays, and:
                             <list>
                                 <t>have the same number of elements; and</t>
@@ -158,8 +180,8 @@
 
             <section title="Instance">
                 <t>
-                    An instance is any JSON value being processed by a JSON Schema. The
-                    specification may also refer to an instance as a JSON instance.
+                    An instance is any JSON value, which may be defined by one or more JSON Schemas.
+                    The specification may also refer to an instance as a JSON instance.
                 </t>
             </section>
 
@@ -167,10 +189,10 @@
 
         <section title="Overview">
             <t>
-                JSON Schema defines the media type "application/schema+json" for describing the
-                structure of JSON instances. JSON Schemas are themselves written in JSON and include
-                facilities for describing the structure of JSON in terms of allowable values,
-                descriptions, and interpreting relations with other resources.
+                This document proposes a new media type "application/schema+json" to identify JSON
+                Schema for describing the structure of JSON instances. JSON Schemas are themselves
+                written in JSON and include facilities for describing the structure of JSON in terms
+                of allowable values, descriptions, and interpreting relations with other resources.
             </t>
 
             <t>
@@ -208,7 +230,7 @@
                     instance be of a particular type: JSON Schema can process any JSON value,
                     including null. It is the domain of JSON Schema validation to add useful
                     constraints to the structure and, optionally, semantics, of the JSON instance
-                    being processed.
+                    being described.
                 </t>
             </section>
 
@@ -249,61 +271,54 @@
             <section title="Security considerations">
                 <t>
                     Both schemas and instances are JSON values. As such, all security considerations
-                    defined in <xref target="RFC4627"/> apply.
-                </t>
-
-                <t>
-                    JSON Schema does not define an internal security mechanism. It is up to
-                    applications to determine the level of trust placed into JSON data coming from
-                    external sources (whether this data be an instance or a schema), using any
-                    mechanism at their disposal.
+                    defined in <xref target="RFC4627">RFC 4627</xref> apply.
                 </t>
             </section>
+
         </section>
 
         <section title='The "$schema" keyword'>
             <section title="Purpose">
                 <t>
-                    The "$schema" keyword plays two roles in JSON Schema:
-
-                    <list>
-                        <t>it defines the version of the schema which a particular JSON Schema is
-                        valid against;</t>
-                        <t>it is a URI which is a location to a JSON Schema which validates any
-                        schema written for this version.</t>
-                    </list>
+                    The "$schema" keyword is both used as a JSON Schema version identifier and the
+                    location of a resource which is itself a JSON Schema, which describes any schema
+                    written for this particular version.
                 </t>
 
                 <t>
-                    Any of these schemas also validate themselves successfully.
+                    This keyword MUST be located at the root of a JSON Schema. The value of this
+                    keyword MUST be a URI, and this URI MUST be both absolute and normalized. The
+                    resource located at this URI MUST successfully describe itself. It is
+                    RECOMMENDED that schema authors include this keyword in their schemas.
                 </t>
-            </section>
 
-            <section title="Valid values">
                 <t>
-                    The value of this keyword MUST be one of the following string values:
+                    The following values are predefined:
 
                     <list>
-                        <t>"http://json-schema.org/draft-03/schema#" (core JSON Schema written
+                        <t>"http://json-schema.org/schema#" (JSON Schema written
+                        against the current version of the specification);</t>
+                        <t>"http://json-schema.org/schema#" (JSON Schema written
+                        against the current version of the specification);</t>
+                        <t>"http://json-schema.org/draft-04/schema#" (JSON Schema written
+                        against JSON Schema, draft v4);</t>
+                        <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
+                        written against JSON Schema, draft v4);</t>
+                        <t>"http://json-schema.org/draft-03/schema#" (JSON Schema written
                         against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
                         <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
                         written against <xref target="json-schema-03">JSON Schema, draft
-                        v3</xref>);</t>
-                        <t>"http://json-schema.org/current/schema-core.json#" (schema written
-                        against the current version of the specification -- this one).</t>
+                        v3</xref>).</t>
                     </list>
                 </t>
             </section>
 
-            <section title="Usage">
+            <section title="Customization">
                 <t>
-                    It is RECOMMENDED that schema authors include this keyword in their schemas.
-                    This keyword MUST be located at the root of a schema.
-                </t>
-
-                <t>
-                    It is RECOMMENDED that implementations not supporting a particular schema
-                    version fail JSON Schema processing.
+                    When extending JSON Schema with custom keywords, schema authors MAY define a
+                    custom URI and the associated resource, and SHOULD use the "$schema" keyword for
+                    any schema written with these custom keywords. The chosen URI MUST NOT be one of
+                    the predefined values.
                 </t>
             </section>
         </section>
@@ -319,9 +334,9 @@
                 </t>
 
                 <t>
-                    Inline addressing is done by the means of the "id" keyword. The value of this
-                    keyword MUST be a string; this string MUST be a valid URI, and SHOULD be
-                    normalized.
+                    Inline addressing is done by the means of the "id" keyword. When present, the
+                    value of this keyword MUST be a string; this string MUST be a valid URI, and
+                    SHOULD be normalized.
                 </t>
             </section>
 
@@ -502,15 +517,9 @@ Content-Type: application/my-media-type+json;
 
                 <section title='Correlation by means of the "Link" header'>
                     <t>
-                        When using the "Link" header, it is RECOMMENDED that a relationship by the
-                        name "describedBy" be used, as defined by <xref target="RFC2048">RFC 2048,
-                        section 19.6.2.4</xref>. Note: it should be remembered that relationship
-                        values are case insensitive, so "describedBy" is just as valid a
-                        relationship as "DESCRIBEDBY".
-                    </t>
-
-                    <t>
-                        The target URI of the "Link" header SHOULD be a valid JSON Schema.
+                        When using the "Link" header, the relation type used MUST be "describedBy",
+                        as defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>. The
+                        target URI of the "Link" header SHOULD be a valid JSON Schema.
                     </t>
 
                     <t>
@@ -520,7 +529,7 @@ Content-Type: application/my-media-type+json;
                     <figure>
                         <artwork>
 <![CDATA[
-Link: <http://example.com/my-hyper-schema>; rel="describedBy"
+Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
 ]]>
                         </artwork>
                     </figure>
@@ -549,9 +558,9 @@ Link: <http://example.com/my-hyper-schema>; rel="describedBy"
             &RFC2119;
         </references>
         <references title="Informative References">
-            &RFC2048;
-            &RFC4627;
             &RFC3986;
+            &RFC4627;
+            &RFC5988;
             <reference anchor="json-reference"
                 target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
                 <front>
