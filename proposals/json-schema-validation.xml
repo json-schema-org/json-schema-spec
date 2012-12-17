@@ -739,10 +739,10 @@
                             The three sets are:
 
                             <list style="hanging">
-                                <t hangText="s">{ "p1", "p2", "a32&amp;o", "", "finance", "apple"
-                                }</t>
-                                <t hangText="p">{ "p1" }</t>
-                                <t hangText="pp">{ "p", "[0-9]" }</t>
+                                <t hangText="s">[ "p1", "p2", "a32&amp;o", "", "finance", "apple"
+                                ]</t>
+                                <t hangText="p">[ "p1" ]</t>
+                                <t hangText="pp">[ "p", "[0-9]" ]</t>
                             </list>
                         </t>
 
@@ -770,21 +770,43 @@
                     <section title="Valid values">
                         <t>
                             This keyword's value MUST be an object. Each value of this object MUST
-                            be an object, and MUST be a valid JSON Schema.
+                            be either an object or an array.
+                        </t>
+
+                        <t>
+                            If the value is an object, it MUST be a valid JSON Schema. This is
+                            called a schema dependency.
+                        </t>
+
+                        <t>
+                            If the value is an array, it MUST have at least one element. Each
+                            element MUST be a string, and elements in the array MUST be unique. This
+                            is called a property dependency.
                         </t>
                     </section>
 
                     <section title="Conditions for successful validation">
-                        <t>
-                            For each element in the object instance's key set, if "dependencies"
-                            contains a key by the same name, the object instance must validate
-                            successfully against the matching schema in "dependencies".
-                        </t>
+                        <section title="Schema dependencies">
+                            <t>
+                                For each schema dependency, if the object instance to validate has a
+                                property by the same name, then it must also be valid by the schema
+                                value.
+                            </t>
 
-                        <t>
-                            Note that this is the object instance itself which must validate
-                            successfully, not the value associated with that key.
-                        </t>
+                            <t>
+                                Note that this is the object instance itself which must validate
+                                successfully, not the value associated with that key.
+                            </t>
+                        </section>
+
+                        <section title="Property dependencies">
+                            <t>
+                                For each property dependency, if the object instance to validate has
+                                a property by the same name, then it must also have properties with
+                                the same name as each of the property dependency value.
+                            </t>
+                        </section>
+
                     </section>
 
                 </section>
@@ -819,15 +841,19 @@
 
                     <section title="Valid values">
                         <t>
-                            The value of this keyword MUST be a string. The value of this string
-                            MUST be one of the seven primitive types defined by FIXME_LINK.
+                            The value of this keyword MUST be either a string or an array. If it is
+                            an array, elements of the array MUST be strings and MUST be unique.
+                        </t>
+                        <t>
+                            The values of the string or of each element of the array MUST be one of
+                            the seven primitive types defined by FIXME_LINK.
                         </t>
                     </section>
 
                     <section title="Conditions for successful validation">
                         <t>
                             An instance matches successfully if and only if its primitive type is
-                            the one defined by the value of this keyword. Recall: "number" includes
+                            one of the types defined by keyword. Recall: "number" includes
                             "integer".
                         </t>
                     </section>

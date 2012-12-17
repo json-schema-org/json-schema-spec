@@ -2,9 +2,9 @@
 
 
 Internet Engineering Task Force                            fge. Galiegue
-Internet-Draft                                        September 26, 2012
+Internet-Draft                                         December 17, 2012
 Intended status: Informational
-Expires: March 30, 2013
+Expires: June 20, 2013
 
 
         JSON Schema: interactive and non interactive validation
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 30, 2013.
+   This Internet-Draft will expire on June 20, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 1]
+Galiegue                  Expires June 20, 2013                 [Page 1]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -98,45 +98,45 @@ Table of Contents
      5.5.  Validation keywords for any instance type  . . . . . . . . 15
        5.5.1.  enum . . . . . . . . . . . . . . . . . . . . . . . . . 15
        5.5.2.  type . . . . . . . . . . . . . . . . . . . . . . . . . 15
-       5.5.3.  allOf  . . . . . . . . . . . . . . . . . . . . . . . . 15
+       5.5.3.  allOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
        5.5.4.  anyOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
        5.5.5.  oneOf  . . . . . . . . . . . . . . . . . . . . . . . . 16
-       5.5.6.  not  . . . . . . . . . . . . . . . . . . . . . . . . . 16
+       5.5.6.  not  . . . . . . . . . . . . . . . . . . . . . . . . . 17
    6.  Metadata keywords  . . . . . . . . . . . . . . . . . . . . . . 17
      6.1.  "title" and "description"  . . . . . . . . . . . . . . . . 17
        6.1.1.  Valid values . . . . . . . . . . . . . . . . . . . . . 17
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 2]
+Galiegue                  Expires June 20, 2013                 [Page 2]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
        6.1.2.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . 17
      6.2.  "default"  . . . . . . . . . . . . . . . . . . . . . . . . 17
        6.2.1.  Valid values . . . . . . . . . . . . . . . . . . . . . 17
-       6.2.2.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . 17
-   7.  Semantic validation with "format"  . . . . . . . . . . . . . . 17
-     7.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 17
+       6.2.2.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . 18
+   7.  Semantic validation with "format"  . . . . . . . . . . . . . . 18
+     7.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 18
      7.2.  Implementation requirements  . . . . . . . . . . . . . . . 18
      7.3.  Defined attributes . . . . . . . . . . . . . . . . . . . . 18
        7.3.1.  date-time  . . . . . . . . . . . . . . . . . . . . . . 18
-       7.3.2.  email  . . . . . . . . . . . . . . . . . . . . . . . . 18
+       7.3.2.  email  . . . . . . . . . . . . . . . . . . . . . . . . 19
        7.3.3.  hostname . . . . . . . . . . . . . . . . . . . . . . . 19
        7.3.4.  ipv4 . . . . . . . . . . . . . . . . . . . . . . . . . 19
        7.3.5.  ipv6 . . . . . . . . . . . . . . . . . . . . . . . . . 19
-       7.3.6.  uri  . . . . . . . . . . . . . . . . . . . . . . . . . 19
+       7.3.6.  uri  . . . . . . . . . . . . . . . . . . . . . . . . . 20
    8.  Calculating child instances' schema(s) . . . . . . . . . . . . 20
      8.1.  Foreword . . . . . . . . . . . . . . . . . . . . . . . . . 20
      8.2.  Array elements . . . . . . . . . . . . . . . . . . . . . . 20
        8.2.1.  Defining characteristic  . . . . . . . . . . . . . . . 20
-       8.2.2.  Implied keywords and default values. . . . . . . . . . 20
-       8.2.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 20
+       8.2.2.  Implied keywords and default values. . . . . . . . . . 21
+       8.2.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 21
      8.3.  Object values  . . . . . . . . . . . . . . . . . . . . . . 21
        8.3.1.  Defining characteristic  . . . . . . . . . . . . . . . 21
        8.3.2.  Implied keywords . . . . . . . . . . . . . . . . . . . 21
-       8.3.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 21
+       8.3.3.  Calculation  . . . . . . . . . . . . . . . . . . . . . 22
    9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 22
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 22
      10.1. Normative References . . . . . . . . . . . . . . . . . . . 22
@@ -164,9 +164,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 3]
+Galiegue                  Expires June 20, 2013                 [Page 3]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 1.  Introduction
@@ -220,9 +220,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 4]
+Galiegue                  Expires June 20, 2013                 [Page 4]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 3.3.  Regular expressions
@@ -276,9 +276,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 5]
+Galiegue                  Expires June 20, 2013                 [Page 5]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
    succeed.
@@ -332,9 +332,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 6]
+Galiegue                  Expires June 20, 2013                 [Page 6]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 5.1.2.  maximum and exclusiveMaximum
@@ -388,9 +388,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 7]
+Galiegue                  Expires June 20, 2013                 [Page 7]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 5.1.3.3.  Default value
@@ -444,9 +444,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 8]
+Galiegue                  Expires June 20, 2013                 [Page 8]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
    expression dialect.
@@ -500,9 +500,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                 [Page 9]
+Galiegue                  Expires June 20, 2013                 [Page 9]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
    This is an example schema:
@@ -556,9 +556,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                [Page 10]
+Galiegue                  Expires June 20, 2013                [Page 10]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 5.3.3.2.  Conditions for successful validation
@@ -612,9 +612,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                [Page 11]
+Galiegue                  Expires June 20, 2013                [Page 11]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 5.4.2.1.  Valid values
@@ -668,9 +668,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                [Page 12]
+Galiegue                  Expires June 20, 2013                [Page 12]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
 5.4.4.2.  Conditions for successful validation
@@ -724,9 +724,9 @@ Internet-Draft                 JSON Schema                September 2012
 
 
 
-Galiegue                 Expires March 30, 2013                [Page 13]
+Galiegue                  Expires June 20, 2013                [Page 13]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
 
    {
@@ -755,11 +755,11 @@ Internet-Draft                 JSON Schema                September 2012
 
    The three sets are:
 
-   s  { "p1", "p2", "a32&o", "", "finance", "apple" }
+   s  [ "p1", "p2", "a32&o", "", "finance", "apple" ]
 
-   p  { "p1" }
+   p  [ "p1" ]
 
-   pp { "p", "[0-9]" }
+   pp [ "p", "[0-9]" ]
 
    Applying the two steps of the algorithm:
 
@@ -776,23 +776,38 @@ Internet-Draft                 JSON Schema                September 2012
 5.4.5.1.  Valid values
 
    This keyword's value MUST be an object.  Each value of this object
-   MUST be an object, and MUST be a valid JSON Schema.
+   MUST be either an object or an array.
 
 
 
-Galiegue                 Expires March 30, 2013                [Page 14]
+Galiegue                  Expires June 20, 2013                [Page 14]
 
-Internet-Draft                 JSON Schema                September 2012
+Internet-Draft                 JSON Schema                 December 2012
 
+
+   If the value is an object, it MUST be a valid JSON Schema.  This is
+   called a schema dependency.
+
+   If the value is an array, it MUST have at least one element.  Each
+   element MUST be a string, and elements in the array MUST be unique.
+   This is called a property dependency.
 
 5.4.5.2.  Conditions for successful validation
 
-   For each element in the object instance's key set, if "dependencies"
-   contains a key by the same name, the object instance must validate
-   successfully against the matching schema in "dependencies".
+5.4.5.2.1.  Schema dependencies
+
+   For each schema dependency, if the object instance to validate has a
+   property by the same name, then it must also be valid by the schema
+   value.
 
    Note that this is the object instance itself which must validate
    successfully, not the value associated with that key.
+
+5.4.5.2.2.  Property dependencies
+
+   For each property dependency, if the object instance to validate has
+   a property by the same name, then it must also have properties with
+   the same name as each of the property dependency value.
 
 5.5.  Validation keywords for any instance type
 
@@ -815,14 +830,25 @@ Internet-Draft                 JSON Schema                September 2012
 
 5.5.2.1.  Valid values
 
-   The value of this keyword MUST be a string.  The value of this string
-   MUST be one of the seven primitive types defined by FIXME_LINK.
+   The value of this keyword MUST be either a string or an array.  If it
+   is an array, elements of the array MUST be strings and MUST be
+   unique.
+
+
+
+Galiegue                  Expires June 20, 2013                [Page 15]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
+   The values of the string or of each element of the array MUST be one
+   of the seven primitive types defined by FIXME_LINK.
 
 5.5.2.2.  Conditions for successful validation
 
    An instance matches successfully if and only if its primitive type is
-   the one defined by the value of this keyword.  Recall: "number"
-   includes "integer".
+   one of the types defined by keyword.  Recall: "number" includes
+   "integer".
 
 5.5.3.  allOf
 
@@ -833,13 +859,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    Elements of the array MUST be objects.  Each object MUST be a valid
    JSON Schema.
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 15]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 5.5.3.2.  Conditions for successful validation
 
@@ -870,6 +889,14 @@ Internet-Draft                 JSON Schema                September 2012
    This keyword's value MUST be an array.  This array MUST have at least
    one element.
 
+
+
+
+Galiegue                  Expires June 20, 2013                [Page 16]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
    Elements of the array MUST be objects.  Each object MUST be a valid
    JSON Schema.
 
@@ -885,17 +912,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    This keyword's value MUST be an object.  This object MUST be a valid
    JSON Schema.
-
-
-
-
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 16]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 5.5.6.2.  Conditions for successful validation
 
@@ -927,6 +943,16 @@ Internet-Draft                 JSON Schema                September 2012
 
    There are no restrictions placed on the value of this keyword.
 
+
+
+
+
+
+Galiegue                  Expires June 20, 2013                [Page 17]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
 6.2.2.  Purpose
 
    This keyword can be used to substitute a default value for the
@@ -945,13 +971,6 @@ Internet-Draft                 JSON Schema                September 2012
    fixed subset of values which are accurately described by
    authoritative resources, be they RFCs or other external
    specifications.
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 17]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
    The value of this keyword MUST be a string.  This value is called a
    format attribute.  A format attribute can generally only validate a
@@ -980,6 +999,16 @@ Internet-Draft                 JSON Schema                September 2012
 
    This attribute applies to string instances.
 
+
+
+
+
+
+Galiegue                  Expires June 20, 2013                [Page 18]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
 7.3.1.2.  Validation
 
    A string instance is valid against this attribute if and only if it
@@ -997,17 +1026,6 @@ Internet-Draft                 JSON Schema                September 2012
    A string instance is valid against this attribute if and only if it
    is a valid Internet email address as defined by RFC 5322, section
    3.4.1 [RFC5322].
-
-
-
-
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 18]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 7.3.3.  hostname
 
@@ -1036,6 +1054,17 @@ Internet-Draft                 JSON Schema                September 2012
 
 7.3.5.  ipv6
 
+
+
+
+
+
+
+Galiegue                  Expires June 20, 2013                [Page 19]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
 7.3.5.1.  Applicability
 
    This attribute applies to string instances.
@@ -1056,14 +1085,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    A string instance is valid against this attribute if and only if it
    is a valid URI, according to [RFC3986].
-
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 19]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 8.  Calculating child instances' schema(s)
 
@@ -1090,6 +1111,16 @@ Internet-Draft                 JSON Schema                September 2012
    The defining characteristic of the child instance is this instance's
    index in the array instance.  Recall: array indices start at 0.
 
+
+
+
+
+
+Galiegue                  Expires June 20, 2013                [Page 20]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
 8.2.2.  Implied keywords and default values.
 
    The two implied keywords in this calculation are "items" and
@@ -1111,15 +1142,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    In this situation, the schema depends on the index of the child
    instance:
-
-
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 20]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
       if the index is less than, or equal to, the maximum index in the
       "items" array, then the child instance must be valid against the
@@ -1148,6 +1170,13 @@ Internet-Draft                 JSON Schema                September 2012
    empty schema as a value.  In addition, boolean value true is
    considered equivalent to an empty schema.
 
+
+
+Galiegue                  Expires June 20, 2013                [Page 21]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
 8.3.3.  Calculation
 
 8.3.3.1.  Names used in this calculation
@@ -1167,15 +1196,6 @@ Internet-Draft                 JSON Schema                September 2012
 
    If set "p" contains value "m", then the corresponding schema in
    "properties" is added to "s".
-
-
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 21]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 8.3.3.3.  Second step: schemas in "patternProperties"
 
@@ -1206,6 +1226,13 @@ Internet-Draft                 JSON Schema                September 2012
    [RFC2373]  Hinden, R. and S. Deering, "IP Version 6 Addressing
               Architecture", RFC 2373, July 1998.
 
+
+
+Galiegue                  Expires June 20, 2013                [Page 22]
+
+Internet-Draft                 JSON Schema                 December 2012
+
+
    [RFC2673]  Crawford, M., "Binary Labels in the Domain Name System",
               RFC 2673, August 1999.
 
@@ -1225,13 +1252,6 @@ Internet-Draft                 JSON Schema                September 2012
    [ecma262]  "ECMA 262 specification", <http://
               www.ecma-international.org/publications/files/ECMA-ST/
               Ecma-262.pdf>.
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 22]
-
-Internet-Draft                 JSON Schema                September 2012
-
 
 Appendix A.  ChangeLog
 
@@ -1264,25 +1284,5 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Galiegue                 Expires March 30, 2013                [Page 23]
+Galiegue                  Expires June 20, 2013                [Page 23]
 
