@@ -1,34 +1,31 @@
 {
-	"$schema" : "http://json-schema.org/hyper-schema",
-	"id" : "http://json-schema.org/links",
-	"type" : "object",
-	
-	"properties" : {
-		"href" : {
-			"type" : "string",
-			"required": true
-		},
-		
-		"rel" : {
-			"type" : "string",
-			"required": true
-		},
-		
-		"targetSchema" : "http://json-schema.org/hyper-schema",
-		
-		"method" : {
-			"type" : "string",
-			"default" : "GET"
-		},
-		
-		"enctype" : {
-			"type" : "string",
-			"requires" : "method"
-		},
-		
-		"properties" : {
-			"type" : "object",
-			"additionalProperties" : "http://json-schema.org/hyper-schema"
-		}
-	}
+    "$schema": "http://json-schema.org/draft-03/hyper-schema#",
+    "id": "http://json-schema.org/draft-03/links#",
+    "type": "object",
+    
+    "properties": {
+        "href": {
+            "type": "string",
+            "required": true
+        },
+        "rel": {
+            "type": "string",
+            "required": true
+        },
+        "targetSchema": { "$ref": "http://json-schema.org/draft-03/hyper-schema#" },
+        "method": {
+            "type": "string",
+            "default": "GET"
+        },
+        "enctype": {
+            "type": "string"
+        },
+        "schema": {
+            "type": "object",
+            "additionalProperties": { "$ref": "http://json-schema.org/draft-03/hyper-schema#" }
+        }
+    },
+    "dependencies": {
+        "enctype": "method"
+    }
 }
