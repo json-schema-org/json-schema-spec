@@ -224,30 +224,30 @@ Link Description Object<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#href">5.1.</a>&nbsp;
 href<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">5.1.1.</a>&nbsp;
-Missing values<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.2.</a>&nbsp;
+URI Templating<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">5.2.</a>&nbsp;
 rel<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.2.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">5.2.1.</a>&nbsp;
 Security Considerations for &quot;self&quot; links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">5.3.</a>&nbsp;
 targetSchema<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.3.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">5.3.1.</a>&nbsp;
 Security Considerations for &quot;targetSchema&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">5.4.</a>&nbsp;
 mediaType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">5.4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">5.4.1.</a>&nbsp;
 Security concerns for &quot;mediaType&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">5.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">5.5.</a>&nbsp;
 Submission Link Properties<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">5.5.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">5.5.1.</a>&nbsp;
 method<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">5.5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">5.5.2.</a>&nbsp;
 encType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">5.5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor33">5.5.3.</a>&nbsp;
 schema<br />
-<a href="#anchor27">6.</a>&nbsp;
+<a href="#anchor34">6.</a>&nbsp;
 IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">6.1.</a>&nbsp;
 Registry of Link Relations<br />
 <a href="#rfc.references1">7.</a>&nbsp;
 References<br />
@@ -255,7 +255,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor31">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor38">Appendix&nbsp;A.</a>&nbsp;
 Change Log<br />
 </p>
 <br clear="all" />
@@ -567,49 +567,161 @@ Link Description Object</h3>
 href</h3>
 
 <p>
-					The value of the "href" link description property indicates the target URI of the related resource.
+					The value of the "href" link description property is a template used to determine the target URI of the related resource.
 					The value of the instance property SHOULD be resolved as a URI-Reference per <a class='info' href='#RFC3986'>RFC 3986<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986] and MAY be a relative URI.
-					The base URI to be used for relative resolution SHOULD be the URI used to retrieve the instance object (not the schema) when used within a schema.
-					Also, when links are used within a schema, the URI SHOULD be parametrized by the property values of the instance object, if property values exist for the corresponding variables in the template (otherwise they MAY be provided from alternate sources, like user input).
+					The base URI to be used for relative URI resolution SHOULD be the URI used to retrieve the instance object (not the schema).
 				
 </p>
-<p>
-					Instance property values SHOULD be substituted into the URIs where matching braces ('{', '}') are found surrounding zero or more characters, creating an expanded URI.
-					Instance property value substitutions are resolved by using the text between the braces to denote the property name from the instance to get the value to substitute.
-					The property name between the braces SHOULD be percent encoded (FIXME reference?).
-					In particular, the character for the braces ('{' and '}') as well as the percent sign ('%') MUST be encoded, such that decoding the text obtains the correct property name.
-
-					
-<p>For example, if an href value is defined:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-http://somesite.com/{id}
-
-</pre></div>
-<p>Then it would be resolved by replace the value of the "id" property value from the instance object.
-</p>
-
-					
-<p>If the value of the "id" property was "45", the expanded URI would be:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-http://somesite.com/45
-
-</pre></div>
-
-					If matching braces are found with the string "@" (no quotes) between the braces, then the actual instance value SHOULD be used to replace the braces, rather than a property value.
-				
-
 <a name="anchor16"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
-Missing values</h3>
+URI Templating</h3>
 
-<p>Values may only be used for substitution if they are of a scalar type (string, boolean or number).
-</p>
-<p>In cases where suitable values do not exist for substitution because they are of an incorrect type, then they should be treated as if the values were missing, and substitute values MAY be provided from alternate sources, like user input.
+<p>
+						The value of "href" is to be used as a URI Template, as defined in <a class='info' href='#RFC6570'>RFC 6570<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a> [RFC6570].  However, some special considerations apply:
+					
 </p>
 <a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1"></a><h3>5.1.1.1.&nbsp;
+Pre-processing</h3>
+
+<p>
+							The <a class='info' href='#RFC6570'>URI Template specification<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a> [RFC6570] has a very restrictive set of characters available for variable names.
+							Property names in JSON, however, can be any UTF-8 string.  As such, the following pre-processing rules apply:
+						
+</p>
+<a name="anchor18"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.1"></a><h3>5.1.1.1.1.&nbsp;
+Bracket escaping</h3>
+
+<p>
+								For any text that is:
+								</p>
+<blockquote class="text">
+<p>Surrounded by a pair of rounded brackets: ( )
+</p>
+<p>The closing rounded bracket is not immediately followed by another closing bracket
+</p>
+<p>The closing rounded bracket is not immediately preceded by an odd number of closing brackets
+</p>
+<p>The surrounding rounded brackets are themselves contained within a pair of curly brackets: { }
+</p>
+</blockquote><p>
+							
+</p>
+<p>
+								Before using "href" as a template, that section of the text MUST be replaced, according to the following rules:
+								</p>
+<blockquote class="text">
+<p>If the brackets contained no text (the empty string), then they MUST be replaced with "%65mpty" (which is "empty" with a percent-encoded "e")
+</p>
+<p>Otherwise, the text should be replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this includes encoding characters such as "*" and "!")
+</p>
+</blockquote><p>
+							
+</p>
+<a name="anchor19"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.2"></a><h3>5.1.1.1.2.&nbsp;
+Replacing $</h3>
+
+<p>
+								After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
+							
+</p>
+<a name="anchor20"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.3"></a><h3>5.1.1.1.3.&nbsp;
+Examples</h3>
+
+<p>
+								
+<p>For example, here are some possible values for "href", followed by the results after pre-processing:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+Input                    Output
+-----------------------------------------
+"no change"              "no change"
+"(no change)"            "(no change)"
+"{(escape space)}"       "{escape%20space}"
+"{(escape+plus)}"        "{escape%2Bplus}"
+"{(escape*asterisk)}"    "{escape%2Aasterisk}"
+"{(escape(bracket)}"     "{escape%28bracket}"
+"{(escape))bracket)}"    "{escape%29bracket}"
+"{(a (b)))}"             "{a%20%28b%29}
+"{()}"                   "{%65mpty}
+"{+$*}"                   "{+%73elf*}
+"{+($)*}"                 "{+%24*}
+
+</pre></div>
+<p>
+										Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
+									
+</p>
+							
+
+<a name="anchor21"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.2"></a><h3>5.1.1.2.&nbsp;
+Values for substitution</h3>
+
+<p>
+							After pre-processing, the template is filled out using data from the instance.
+							For a given variable name, the value to use is determined as follows:
+							</p>
+<blockquote class="text">
+<p>If the variable name is "%73elf", then the instance value itself MUST be used.
+</p>
+<p>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).
+</p>
+<p>If the instance is an array, and the variable name is a representation of a positive integer, then the value at the corresponding array index MUST be used (if it exists).
+</p>
+<p>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).
+</p>
+</blockquote><p>
+						
+</p>
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.2.1"></a><h3>5.1.1.2.1.&nbsp;
+Converting to strings</h3>
+
+<p>
+								When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
+								</p>
+<blockquote class="text">
+<p>null values SHOULD be replaced by the text "null"
+</p>
+<p>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"
+</p>
+<p>numbers SHOULD be replaced with their original JSON representation.
+</p>
+</blockquote><p>
+							
+</p>
+<p>
+								In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
+								Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
+							
+</p>
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.3"></a><h3>5.1.1.3.&nbsp;
+Missing values</h3>
+
+<p>
+							Sometimes, the appropriate values will not be available.
+							For example, the template might specify the use of object properties, but the instance is an array or a string.
+						
+</p>
+<p>
+							If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
+							Otherwise, the link definition SHOULD be considered not to apply to the instance.
+						
+</p>
+<a name="anchor24"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 rel</h3>
@@ -716,7 +828,7 @@ GET /Resource/
 
 <p>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <a class='info' href='#I-D.nottingham-http-link-header'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; May&nbsp;2010.</span><span>)</span></a> [I&#8209;D.nottingham&#8209;http&#8209;link&#8209;header].
 </p>
-<a name="anchor18"></a><br /><hr />
+<a name="anchor25"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.1"></a><h3>5.2.1.&nbsp;
 Security Considerations for &quot;self&quot; links</h3>
@@ -771,7 +883,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 </pre></div>
 					
 
-<a name="anchor19"></a><br /><hr />
+<a name="anchor26"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 targetSchema</h3>
@@ -780,7 +892,7 @@ targetSchema</h3>
 					This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
 				
 </p>
-<a name="anchor20"></a><br /><hr />
+<a name="anchor27"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3.1"></a><h3>5.3.1.&nbsp;
 Security Considerations for &quot;targetSchema&quot;</h3>
@@ -840,7 +952,7 @@ Security Considerations for &quot;targetSchema&quot;</h3>
 </p>
 					
 
-<a name="anchor21"></a><br /><hr />
+<a name="anchor28"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 mediaType</h3>
@@ -909,7 +1021,7 @@ mediaType</h3>
 					The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
 				
 </p>
-<a name="anchor22"></a><br /><hr />
+<a name="anchor29"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4.1"></a><h3>5.4.1.&nbsp;
 Security concerns for &quot;mediaType&quot;</h3>
@@ -929,7 +1041,7 @@ Security concerns for &quot;mediaType&quot;</h3>
 						This is to guard against re-interpretation of "safe" data, similar to the precautions for "targetSchema".
 					
 </p>
-<a name="anchor23"></a><br /><hr />
+<a name="anchor30"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
 Submission Link Properties</h3>
@@ -938,7 +1050,7 @@ Submission Link Properties</h3>
 					The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
 				
 </p>
-<a name="anchor24"></a><br /><hr />
+<a name="anchor31"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5.1"></a><h3>5.5.1.&nbsp;
 method</h3>
@@ -949,7 +1061,7 @@ method</h3>
 						This defaults to "GET".
 					
 </p>
-<a name="anchor25"></a><br /><hr />
+<a name="anchor32"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5.2"></a><h3>5.5.2.&nbsp;
 encType</h3>
@@ -991,7 +1103,7 @@ encType</h3>
 						If the method is POST, "application/json" is the default media type.
 					
 
-<a name="anchor26"></a><br /><hr />
+<a name="anchor33"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5.3"></a><h3>5.5.3.&nbsp;
 schema</h3>
@@ -1001,7 +1113,7 @@ schema</h3>
 						For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
 					
 </p>
-<a name="anchor27"></a><br /><hr />
+<a name="anchor34"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6"></a><h3>6.&nbsp;
 IANA Considerations</h3>
@@ -1024,7 +1136,7 @@ IANA Considerations</h3>
 <p>The value of the pretty parameter MAY be true or false to indicate if additional
             whitespace has been included to make the JSON representation easier to read.
 </p>
-<a name="anchor28"></a><br /><hr />
+<a name="anchor35"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 Registry of Link Relations</h3>
@@ -1054,6 +1166,8 @@ References</h3>
 <td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC4287">[RFC4287]</a></td>
 <td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6570">[RFC6570]</a></td>
+<td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="json-pointer">[json-pointer]</a></td>
 <td class="author-text">Bryan, P. and K. Zyp, &ldquo;<a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer-02">JSON Pointer</a>,&rdquo; October&nbsp;2011.</td></tr>
 </table>
@@ -1072,8 +1186,6 @@ References</h3>
 <td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>,&rdquo; RFC&nbsp;2046, November&nbsp;1996 (<a href="http://www.rfc-editor.org/rfc/rfc2046.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="I-D.hammer-discovery">[I-D.hammer-discovery]</a></td>
 <td class="author-text">Hammer-Lahav, E., &ldquo;<a href="http://tools.ietf.org/html/draft-hammer-discovery-06">LRDD: Link-based Resource Descriptor Discovery</a>,&rdquo; draft-hammer-discovery-06 (work in progress), May&nbsp;2010 (<a href="http://www.ietf.org/internet-drafts/draft-hammer-discovery-06.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="I-D.gregorio-uritemplate">[I-D.gregorio-uritemplate]</a></td>
-<td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/draft-gregorio-uritemplate-08">URI Template</a>,&rdquo; draft-gregorio-uritemplate-08 (work in progress), January&nbsp;2012 (<a href="http://www.ietf.org/internet-drafts/draft-gregorio-uritemplate-08.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="I-D.nottingham-http-link-header">[I-D.nottingham-http-link-header]</a></td>
 <td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/draft-nottingham-http-link-header-10">Web Linking</a>,&rdquo; draft-nottingham-http-link-header-10 (work in progress), May&nbsp;2010 (<a href="http://www.ietf.org/internet-drafts/draft-nottingham-http-link-header-10.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="W3C.REC-html401-19991224">[W3C.REC-html401-19991224]</a></td>
@@ -1082,7 +1194,7 @@ References</h3>
 <td class="author-text">Hickson, I., Lie, H., Çelik, T., and B. Bos, &ldquo;<a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>,&rdquo; World Wide Web Consortium CR&nbsp;CR-CSS21-20070719, July&nbsp;2007 (<a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">HTML</a>).</td></tr>
 </table>
 
-<a name="anchor31"></a><br /><hr />
+<a name="anchor38"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Change Log</h3>

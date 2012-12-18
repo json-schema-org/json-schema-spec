@@ -10,8 +10,8 @@
 <!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY rfc2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
 <!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY iddiscovery SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hammer-discovery.xml">
-<!ENTITY uritemplate SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.gregorio-uritemplate.xml">
 <!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
 <!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
 <!ENTITY css21 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-CSS21-20070719.xml">
@@ -333,43 +333,116 @@
 
 			<section title="href" anchor="href">
 				<t>
-					The value of the "href" link description property indicates the target URI of the related resource.
+					The value of the "href" link description property is a template used to determine the target URI of the related resource.
 					The value of the instance property SHOULD be resolved as a URI-Reference per <xref target="RFC3986">RFC 3986</xref> and MAY be a relative URI.
-					The base URI to be used for relative resolution SHOULD be the URI used to retrieve the instance object (not the schema) when used within a schema.
-					Also, when links are used within a schema, the URI SHOULD be parametrized by the property values of the instance object, if property values exist for the corresponding variables in the template (otherwise they MAY be provided from alternate sources, like user input).
+					The base URI to be used for relative URI resolution SHOULD be the URI used to retrieve the instance object (not the schema).
 				</t>
-
-				<t>
-					Instance property values SHOULD be substituted into the URIs where matching braces ('{', '}') are found surrounding zero or more characters, creating an expanded URI.
-					Instance property value substitutions are resolved by using the text between the braces to denote the property name from the instance to get the value to substitute.
-					The property name between the braces SHOULD be percent encoded (FIXME reference?).
-					In particular, the character for the braces ('{' and '}') as well as the percent sign ('%') MUST be encoded, such that decoding the text obtains the correct property name.
-
-					<figure>
-						<preamble>For example, if an href value is defined:</preamble>
-						<artwork>
+				
+				<section title="URI Templating">
+					<t>
+						The value of "href" is to be used as a URI Template, as defined in <xref target="RFC6570">RFC 6570</xref>.  However, some special considerations apply:
+					</t>
+					
+					<section title="Pre-processing">
+						<t>
+							The <xref target="RFC6570">URI Template specification</xref> has a very restrictive set of characters available for variable names.
+							Property names in JSON, however, can be any UTF-8 string.  As such, the following pre-processing rules apply:
+						</t>
+						
+						<section title="Bracket escaping">
+							<t>
+								For any text that is:
+								<list>
+									<t>Surrounded by a pair of rounded brackets: ( )</t>
+									<t>The closing rounded bracket is not immediately followed by another closing bracket</t>
+									<t>The closing rounded bracket is not immediately preceded by an odd number of closing brackets</t>
+									<t>The surrounding rounded brackets are themselves contained within a pair of curly brackets: { }</t>
+								</list>
+							</t>
+							<t>
+								Before using "href" as a template, that section of the text MUST be replaced, according to the following rules:
+								<list>
+									<t>If the brackets contained no text (the empty string), then they MUST be replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
+									<t>Otherwise, the text should be replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this includes encoding characters such as "*" and "!")</t>
+								</list>
+							</t>
+						</section>
+						
+						<section title="Replacing $">
+							<t>
+								After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
+							</t>
+						</section>
+						<section title="Examples">
+							<t>
+								<figure>
+									<preamble>For example, here are some possible values for "href", followed by the results after pre-processing:</preamble>
+									<artwork>
 <![CDATA[
-http://somesite.com/{id}
+Input                    Output
+-----------------------------------------
+"no change"              "no change"
+"(no change)"            "(no change)"
+"{(escape space)}"       "{escape%20space}"
+"{(escape+plus)}"        "{escape%2Bplus}"
+"{(escape*asterisk)}"    "{escape%2Aasterisk}"
+"{(escape(bracket)}"     "{escape%28bracket}"
+"{(escape))bracket)}"    "{escape%29bracket}"
+"{(a (b)))}"             "{a%20%28b%29}
+"{()}"                   "{%65mpty}
+"{+$*}"                   "{+%73elf*}
+"{+($)*}"                 "{+%24*}
 ]]>
-						</artwork>
-						<postamble>Then it would be resolved by replace the value of the "id" property value from the instance object.</postamble>
-					</figure>
-
-					<figure>
-						<preamble>If the value of the "id" property was "45", the expanded URI would be:</preamble>
-						<artwork>
-<![CDATA[
-http://somesite.com/45
-]]>
-						</artwork>
-					</figure>
-
-					If matching braces are found with the string "@" (no quotes) between the braces, then the actual instance value SHOULD be used to replace the braces, rather than a property value.
-				</t>
-				<section title="Missing values">
-					<t>Values may only be used for substitution if they are of a scalar type (string, boolean or number).</t>
-					<t>In cases where suitable values do not exist for substitution because they are of an incorrect type, then they should be treated as if the values were missing, and substitute values MAY be provided from alternate sources, like user input.</t>
+									</artwork>
+									<postamble>
+										Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
+									</postamble>
+								</figure>
+							</t>
+						</section>
+					</section>
+					
+					<section title="Values for substitution">
+						<t>
+							After pre-processing, the template is filled out using data from the instance.
+							For a given variable name, the value to use is determined as follows:
+							<list>
+								<t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
+								<t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
+								<t>If the instance is an array, and the variable name is a representation of a positive integer, then the value at the corresponding array index MUST be used (if it exists).</t>
+								<t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t> 
+							</list>
+						</t>
+						
+						<section title="Converting to strings">
+							<t>
+								When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
+								<list>
+									<t>null values SHOULD be replaced by the text "null"</t>
+									<t>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"</t>
+									<t>numbers SHOULD be replaced with their original JSON representation.</t>
+								</list>
+							</t>
+							<t>
+								In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
+								Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
+							</t>
+						</section>
+					</section>
+					
+					<section title="Missing values">
+						<t>
+							Sometimes, the appropriate values will not be available.
+							For example, the template might specify the use of object properties, but the instance is an array or a string.
+						</t>
+						
+						<t>
+							If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
+							Otherwise, the link definition SHOULD be considered not to apply to the instance.
+						</t>
+					</section>
 				</section>
+
 			</section>
 
 			<section title="rel">
@@ -757,6 +830,7 @@ Content-Type: application/json; profile=/schema-for-this-data
             &rfc3339;
             &rfc3986;
             &rfc4287;
+            &rfc6570;
             <reference anchor="json-pointer" target="http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer-02">
                 <front>
                     <title>JSON Pointer</title>
@@ -776,7 +850,6 @@ Content-Type: application/json; profile=/schema-for-this-data
             &rfc5226;
             &rfc2046;
             &iddiscovery;
-            &uritemplate;
             &linkheader;
             &html401;
             &css21;
