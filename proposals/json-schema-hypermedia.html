@@ -216,7 +216,7 @@ media<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">4.3.1.</a>&nbsp;
 contentEncoding<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor13">4.3.2.</a>&nbsp;
-mediaType<br />
+type<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">4.4.</a>&nbsp;
 pathStart<br />
 <a href="#anchor15">5.</a>&nbsp;
@@ -227,43 +227,35 @@ href<br />
 Missing values<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.2.</a>&nbsp;
 rel<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.3.</a>&nbsp;
-template<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.2.1.</a>&nbsp;
+Security Considerations for &quot;self&quot; links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.3.</a>&nbsp;
 targetSchema<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.3.1.</a>&nbsp;
+Security Considerations for &quot;targetSchema&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.4.</a>&nbsp;
 mediaType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.6.</a>&nbsp;
-invalidates<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">5.7.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">5.4.1.</a>&nbsp;
+Security concerns for &quot;mediaType&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">5.5.</a>&nbsp;
 Submission Link Properties<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">5.7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">5.5.1.</a>&nbsp;
 method<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">5.7.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">5.5.2.</a>&nbsp;
 encType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">5.7.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">5.5.3.</a>&nbsp;
 schema<br />
-<a href="#anchor26">6.</a>&nbsp;
-Security Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">6.1.</a>&nbsp;
-&quot;self&quot; links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">6.2.</a>&nbsp;
-&quot;mediaType&quot; property of Link Description Objects<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">6.3.</a>&nbsp;
-&quot;targetSchema&quot; property of Link Description Objects<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">6.4.</a>&nbsp;
-&quot;invalidates&quot; property of Link Description Objects<br />
-<a href="#anchor31">7.</a>&nbsp;
+<a href="#anchor27">6.</a>&nbsp;
 IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">6.1.</a>&nbsp;
 Registry of Link Relations<br />
-<a href="#rfc.references1">8.</a>&nbsp;
+<a href="#rfc.references1">7.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor35">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor31">Appendix&nbsp;A.</a>&nbsp;
 Change Log<br />
 </p>
 <br clear="all" />
@@ -337,7 +329,7 @@ Overview</h3>
             "type": "string",
             "media": {
                 "contentEncoding": "base64",
-                "mediaType": "image/png"
+                "type": "image/png"
             }
         }
     },
@@ -497,7 +489,7 @@ contentEncoding</h3>
 <a name="anchor13"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.2"></a><h3>4.3.2.&nbsp;
-mediaType</h3>
+type</h3>
 
 <p>
                         The value of this property must be a media type <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046].
@@ -726,17 +718,62 @@ GET /Resource/
 </p>
 <a name="anchor18"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
-template</h3>
+<a name="rfc.section.5.2.1"></a><h3>5.2.1.&nbsp;
+Security Considerations for &quot;self&quot; links</h3>
 
 <p>
-					This property value is a string that defines the templating language used in the <a class='info' href='#href'>"href"<span> (</span><span class='info'>href</span><span>)</span></a> property.
-					If no templating language is defined, then the default <a class='info' href='#href'>Link Description Object templating language<span> (</span><span class='info'>href</span><span>)</span></a> is used.
-				
-</p>
+						When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
+		
+						
+<p>For example, if a hyper schema was defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+	"links": [{
+		"rel": "self",
+		"href": "{id}"
+	}]
+}
+
+</pre></div>
+		
+						
+<p>And a resource was requested from somesite.com:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+GET /foo/
+
+</pre></div>
+		
+						
+<p>With a response of:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+Content-Type: application/json; profile=/schema-for-this-data
+
+[{
+	"id": "bar",
+	"name": "This representation can be safely treated \
+		as authoritative "
+}, {
+	"id": "/baz",
+	"name": "This representation should not be treated as \
+		authoritative the user agent should make request the resource\
+		from '/baz' to ensure it has the authoritative representation"
+}, {
+	"id": "http://othersite.com/something",
+	"name": "This representation\
+		should also not be treated as authoritative and the target\
+		resource representation should be retrieved for the\
+		authoritative representation"
+}]
+
+</pre></div>
+					
+
 <a name="anchor19"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 targetSchema</h3>
 
 <p>
@@ -745,7 +782,67 @@ targetSchema</h3>
 </p>
 <a name="anchor20"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
+<a name="rfc.section.5.3.1"></a><h3>5.3.1.&nbsp;
+Security Considerations for &quot;targetSchema&quot;</h3>
+
+<p>
+						This property has similar security concerns to that of "mediaType".
+						Clients MUST NOT use the value of this property to aid in the interpretation of the data received in response to following the link, as this leaves "safe" data open to re-interpretation.
+					
+</p>
+<p>
+						
+<p>
+								For example, suppose two programmers are having a discussion about web security using a text-only message board.
+								Here is some data from that conversation, with a URI of: http://forum.example.com/topics/152/comments/13
+							
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "topicId": 152,
+    "commentId": 13,
+    "from": {
+        "name": "Jane",
+        "id": 5
+    },
+    "to": {
+    	"name": "Jason",
+    	"id": 8
+    },
+    "message": "It's easy, you just add some HTML like this: &lt;script&gt;doSomethingEvil()&lt;/script&gt;"
+}
+</pre></div>
+					
+
+<p>
+						A third party might then write provide the following Link Description Object at another location:
+						</p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+	"rel": "evil-attack",
+	"href": "http://forum.example.com/topics/152/comments/13",
+	"targetSchema": {
+		"properties": {
+			"message": {
+				"description": "Re-interpret the message text as HTML",
+				"media": {
+					"type": "text/html"
+				}
+			}
+		}
+	}
+}
+</pre></div><p>
+
+<p>
+								If the client used this "targetSchema" value when interpreting the above data, then it might display the contents of "message" as HTML.
+								At this point, the JavaScript embedded in the message might be executed (in the context of the "forum.example.com" domain).
+							
+</p>
+					
+
+<a name="anchor21"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 mediaType</h3>
 
 <p>
@@ -779,24 +876,28 @@ mediaType</h3>
     }, {
         "rel": "alternate",
         "href": "/{id}/html",
-        "mimeType": "text/html"
+        "mediaType": "text/html"
     }, {
         "rel": "alternate",
         "href": "/{id}/rss",
-        "mimeType": "application/rss+xml"
+        "mediaType": "application/rss+xml"
     }, {
         "rel": "icon",
         "href": "{id}/icon",
-        "mimeType": "image/*"
+        "mediaType": "image/*"
     }]
 }
 
 </pre></div>
 					
-					A suitable instance described by this schema would have four links defined.
-					The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
-					The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
-					The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+					
+<p>
+						A suitable instance described by this schema would have four links defined.
+						The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
+						The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
+						The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+					
+</p>
 				
 
 <p>
@@ -808,36 +909,38 @@ mediaType</h3>
 					The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
 				
 </p>
-<a name="anchor21"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
-invalidates</h3>
-
-<p>
-					The value of this property is advisory only, and represents a URI or set of URIs which may change in response to this link being followed. Its value must be either a string or an array.
-				
-</p>
-<p>
-					If this property value is a string, then when the link is followed, this value should be filled out as a template and resolved to a full URI using the same method as used for the &quot;<a class='info' href='#href'>href<span> (</span><span class='info'>href</span><span>)</span></a>&quot; property.
-					Any stored data fetched from a URI matching this value MAY then be considered out-of-date by the client, and removed from any cache.
-				
-</p>
-<p>
-					If this property is an array, then its entries MUST be strings, each of which is treated according to the above behaviour.
-				
-</p>
 <a name="anchor22"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
+<a name="rfc.section.5.4.1"></a><h3>5.4.1.&nbsp;
+Security concerns for &quot;mediaType&quot;</h3>
+
+<p>
+						The "mediaType" property in link definitions defines the expected format of the link's target.
+						However, this is advisory only, and MUST NOT be considered authoritative.
+					
+</p>
+<p>
+						When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mediaType" property of the link MUST NOT be used.
+						User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
+						If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
+					
+</p>
+<p>
+						This is to guard against re-interpretation of "safe" data, similar to the precautions for "targetSchema".
+					
+</p>
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
 Submission Link Properties</h3>
 
 <p>
 					The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
 				
 </p>
-<a name="anchor23"></a><br /><hr />
+<a name="anchor24"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.7.1"></a><h3>5.7.1.&nbsp;
+<a name="rfc.section.5.5.1"></a><h3>5.5.1.&nbsp;
 method</h3>
 
 <p>
@@ -846,9 +949,9 @@ method</h3>
 						This defaults to "GET".
 					
 </p>
-<a name="anchor24"></a><br /><hr />
+<a name="anchor25"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.7.2"></a><h3>5.7.2.&nbsp;
+<a name="rfc.section.5.5.2"></a><h3>5.5.2.&nbsp;
 encType</h3>
 
 <p>
@@ -888,9 +991,9 @@ encType</h3>
 						If the method is POST, "application/json" is the default media type.
 					
 
-<a name="anchor25"></a><br /><hr />
+<a name="anchor26"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.7.3"></a><h3>5.7.3.&nbsp;
+<a name="rfc.section.5.5.3"></a><h3>5.5.3.&nbsp;
 schema</h3>
 
 <p>
@@ -898,118 +1001,9 @@ schema</h3>
 						For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
 					
 </p>
-<a name="anchor26"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
-Security Considerations</h3>
-
-<p>
-                This specification is a sub-type of the JSON format, and consequently the security considerations are generally the same as <a class='info' href='#RFC4627'>RFC 4627<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627].
-                However, there are additional security concerns when using the hyperlink definitions.
-            
-</p>
 <a name="anchor27"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
-&quot;self&quot; links</h3>
-
-<p>
-                    When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
-    
-                    
-<p>For example, if a hyper schema was defined:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-{
-    "links": [{
-        "rel": "self",
-        "href": "{id}"
-    }]
-}
-
-</pre></div>
-    
-                    
-<p>And a resource was requested from somesite.com:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-GET /foo/
-
-</pre></div>
-    
-                    
-<p>With a response of:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-Content-Type: application/json; profile=/schema-for-this-data
-
-[{
-    "id": "bar",
-    "name": "This representation can be safely treated \
-        as authoritative "
-}, {
-    "id": "/baz",
-    "name": "This representation should not be treated as \
-        authoritative the user agent should make request the resource\
-        from '/baz' to ensure it has the authoritative representation"
-}, {
-    "id": "http://othersite.com/something",
-    "name": "This representation\
-        should also not be treated as authoritative and the target\
-        resource representation should be retrieved for the\
-        authoritative representation"
-}]
-
-</pre></div>
-                
-
-<a name="anchor28"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
-&quot;mediaType&quot; property of Link Description Objects</h3>
-
-<p>
-                    The "mediaType" property in link definitions defines the expected format of the link's target.
-                    However, this is advisory only, and MUST NOT be considered authoritative.
-                    User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
-                    If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
-                
-</p>
-<p>
-                    When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mimeType" property of the link MUST NOT be used.
-                
-</p>
-<p>
-                    This is to guard against situations where a source is providing data that is safe when interpreted as the correct type (for example plain text), but that could be damaging if a third party were allowed to provide a different interpretation (such as client-side code).
-                
-</p>
-<a name="anchor29"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.3"></a><h3>6.3.&nbsp;
-&quot;targetSchema&quot; property of Link Description Objects</h3>
-
-<p>
-                    Since, through the "media" keyword, schemas can provide interpretations of string data, exactly the same considerations apply for this keyword as for the "mediaType" keyword of Link Description Objects.
-                
-</p>
-<a name="anchor30"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.4"></a><h3>6.4.&nbsp;
-&quot;invalidates&quot; property of Link Description Objects</h3>
-
-<p>
-                    User agents also MUST NOT fetch the target of a link when the resulting data is validated, unless the user has already explicitly or implicitly indicated them to do so.
-                    If the user's intentions are not known, then the user agent SHOULD NOT refetch the data unless the target of the link is a sub-path of the URI being invalidated.
-                    (See above for a discussion of how to determine if one path is a sub-path of another.)
-                
-</p>
-<p>
-                    This is to guard against the possibility of tricking user agents into making requests on behalf of the user, to track their behaviour.
-                
-</p>
-<a name="anchor31"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 IANA Considerations</h3>
 
 <p>The proposed MIME media type for JSON Schema is "application/schema+json".
@@ -1030,9 +1024,9 @@ IANA Considerations</h3>
 <p>The value of the pretty parameter MAY be true or false to indicate if additional
             whitespace has been included to make the JSON representation easier to read.
 </p>
-<a name="anchor32"></a><br /><hr />
+<a name="anchor28"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 Registry of Link Relations</h3>
 
 <p>
@@ -1043,12 +1037,12 @@ Registry of Link Relations</h3>
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8"></a><h3>8.&nbsp;
+<a name="rfc.section.7"></a><h3>7.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.1.&nbsp;Normative References</h3>
+<h3>7.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2045">[RFC2045]</a></td>
 <td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996 (<a href="http://www.rfc-editor.org/rfc/rfc2045.txt">TXT</a>).</td></tr>
@@ -1066,7 +1060,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.2.&nbsp;Informative References</h3>
+<h3>7.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
@@ -1088,7 +1082,7 @@ References</h3>
 <td class="author-text">Hickson, I., Lie, H., Çelik, T., and B. Bos, &ldquo;<a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>,&rdquo; World Wide Web Consortium CR&nbsp;CR-CSS21-20070719, July&nbsp;2007 (<a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">HTML</a>).</td></tr>
 </table>
 
-<a name="anchor35"></a><br /><hr />
+<a name="anchor31"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Change Log</h3>
@@ -1109,8 +1103,6 @@ Change Log</h3>
 <li>Moved "mediaType" and "contentEncoding" to the new "media" property
 </li>
 <li>Added "mediaType" property to LDOs
-</li>
-<li>Added "invalidates" property to LDOs
 </li>
 <li>Replaced "slash-delimited" fragment resolution with
                             "json-pointer".

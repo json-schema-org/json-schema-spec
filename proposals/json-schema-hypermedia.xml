@@ -131,7 +131,7 @@
             "type": "string",
             "media": {
                 "contentEncoding": "base64",
-                "mediaType": "image/png"
+                "type": "image/png"
             }
         }
     },
@@ -264,7 +264,7 @@
                     </t>
                 </section>
 
-                <section title="mediaType">
+                <section title="type">
                     <t>
                         The value of this property must be a media type <xref target="RFC2046">RFC 2046</xref>.
                         This property defines the media type of instances which this schema defines.
@@ -464,19 +464,122 @@ GET /Resource/
 					The "children" collection would be located at "/Resource/?upId=thing".
 				</t>
 				<t>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.</t>
-			</section>
 
-			<section title="template">
-				<t>
-					This property value is a string that defines the templating language used in the <xref target="href">"href"</xref> property.
-					If no templating language is defined, then the default <xref target="href">Link Description Object templating language</xref> is used.
-				</t>
+				<section title="Security Considerations for &quot;self&quot; links">
+					<t>
+						When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
+		
+						<figure>
+							<preamble>For example, if a hyper schema was defined:</preamble>
+							<artwork>
+<![CDATA[
+{
+	"links": [{
+		"rel": "self",
+		"href": "{id}"
+	}]
+}
+]]>
+							</artwork>
+						</figure>
+		
+						<figure>
+							<preamble>And a resource was requested from somesite.com:</preamble>
+							<artwork>
+<![CDATA[
+GET /foo/
+]]>
+							</artwork>
+						</figure>
+		
+						<figure>
+							<preamble>With a response of:</preamble>
+							<artwork>
+<![CDATA[
+Content-Type: application/json; profile=/schema-for-this-data
+
+[{
+	"id": "bar",
+	"name": "This representation can be safely treated \
+		as authoritative "
+}, {
+	"id": "/baz",
+	"name": "This representation should not be treated as \
+		authoritative the user agent should make request the resource\
+		from '/baz' to ensure it has the authoritative representation"
+}, {
+	"id": "http://othersite.com/something",
+	"name": "This representation\
+		should also not be treated as authoritative and the target\
+		resource representation should be retrieved for the\
+		authoritative representation"
+}]
+]]>
+							</artwork>
+						</figure>
+					</t>
+				</section>
 			</section>
 
 			<section title="targetSchema">
 				<t>
 					This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
 				</t>
+
+				<section title="Security Considerations for &quot;targetSchema&quot;">
+					<t>
+						This property has similar security concerns to that of "mediaType".
+						Clients MUST NOT use the value of this property to aid in the interpretation of the data received in response to following the link, as this leaves "safe" data open to re-interpretation.
+					</t>
+					<t>
+						<figure>
+							<preamble>
+								For example, suppose two programmers are having a discussion about web security using a text-only message board.
+								Here is some data from that conversation, with a URI of: http://forum.example.com/topics/152/comments/13
+							</preamble>
+							<artwork>
+<![CDATA[{
+    "topicId": 152,
+    "commentId": 13,
+    "from": {
+        "name": "Jane",
+        "id": 5
+    },
+    "to": {
+    	"name": "Jason",
+    	"id": 8
+    },
+    "message": "It's easy, you just add some HTML like this: <script>doSomethingEvil()</script>"
+}]]>
+							</artwork>
+						</figure>
+					</t>
+					<t>
+						A third party might then write provide the following Link Description Object at another location:
+						<figure>
+							<artwork>
+<![CDATA[{
+	"rel": "evil-attack",
+	"href": "http://forum.example.com/topics/152/comments/13",
+	"targetSchema": {
+		"properties": {
+			"message": {
+				"description": "Re-interpret the message text as HTML",
+				"media": {
+					"type": "text/html"
+				}
+			}
+		}
+	}
+}]]>
+							</artwork>
+							<postamble>
+								If the client used this "targetSchema" value when interpreting the above data, then it might display the contents of "message" as HTML.
+								At this point, the JavaScript embedded in the message might be executed (in the context of the "forum.example.com" domain).
+							</postamble>
+						</figure>
+					</t>
+				</section>
 			</section>
 			
 			<section title="mediaType">
@@ -511,25 +614,27 @@ GET /Resource/
     }, {
         "rel": "alternate",
         "href": "/{id}/html",
-        "mimeType": "text/html"
+        "mediaType": "text/html"
     }, {
         "rel": "alternate",
         "href": "/{id}/rss",
-        "mimeType": "application/rss+xml"
+        "mediaType": "application/rss+xml"
     }, {
         "rel": "icon",
         "href": "{id}/icon",
-        "mimeType": "image/*"
+        "mediaType": "image/*"
     }]
 }
 ]]>
 						</artwork>
 					</figure>
 					
-					A suitable instance described by this schema would have four links defined.
-					The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
-					The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
-					The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+					<postamble>
+						A suitable instance described by this schema would have four links defined.
+						The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
+						The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
+						The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+					</postamble>
 				</t>
 				
 				<t>
@@ -540,21 +645,23 @@ GET /Resource/
 					Note that presenting the link in the above manner, or passing the URI to a news feed aggregator view does not constitute interpretation of the data, but an interpretation of the link.
 					The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
 				</t>
-			</section>
 
-			<section title="invalidates">
-				<t>
-					The value of this property is advisory only, and represents a URI or set of URIs which may change in response to this link being followed. Its value must be either a string or an array.
-				</t>
+				<section title="Security concerns for &quot;mediaType&quot;">				
+					<t>
+						The "mediaType" property in link definitions defines the expected format of the link's target.
+						However, this is advisory only, and MUST NOT be considered authoritative.
+					</t>
 				
-				<t>
-					If this property value is a string, then when the link is followed, this value should be filled out as a template and resolved to a full URI using the same method as used for the &quot;<xref target="href">href</xref>&quot; property.
-					Any stored data fetched from a URI matching this value MAY then be considered out-of-date by the client, and removed from any cache.
-				</t>
-				
-				<t>
-					If this property is an array, then its entries MUST be strings, each of which is treated according to the above behaviour.
-				</t>
+					<t>
+						When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mediaType" property of the link MUST NOT be used.
+						User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
+						If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
+					</t>
+					
+					<t>
+						This is to guard against re-interpretation of "safe" data, similar to the precautions for "targetSchema".
+					</t>
+				</section>
 			</section>
 
 			<section title="Submission Link Properties">
@@ -618,103 +725,6 @@ GET /Resource/
 				</section>
 			</section>
 		</section>
-
-        <section title="Security Considerations">
-            <t>
-                This specification is a sub-type of the JSON format, and consequently the security considerations are generally the same as <xref target="RFC4627">RFC 4627</xref>.
-                However, there are additional security concerns when using the hyperlink definitions.
-            </t>
-            
-            <section title="&quot;self&quot; links">
-                <t>
-                    When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
-    
-                    <figure>
-                        <preamble>For example, if a hyper schema was defined:</preamble>
-                        <artwork>
-<![CDATA[
-{
-    "links": [{
-        "rel": "self",
-        "href": "{id}"
-    }]
-}
-]]>
-                        </artwork>
-                    </figure>
-    
-                    <figure>
-                        <preamble>And a resource was requested from somesite.com:</preamble>
-                        <artwork>
-<![CDATA[
-GET /foo/
-]]>
-                        </artwork>
-                    </figure>
-    
-                    <figure>
-                        <preamble>With a response of:</preamble>
-                        <artwork>
-<![CDATA[
-Content-Type: application/json; profile=/schema-for-this-data
-
-[{
-    "id": "bar",
-    "name": "This representation can be safely treated \
-        as authoritative "
-}, {
-    "id": "/baz",
-    "name": "This representation should not be treated as \
-        authoritative the user agent should make request the resource\
-        from '/baz' to ensure it has the authoritative representation"
-}, {
-    "id": "http://othersite.com/something",
-    "name": "This representation\
-        should also not be treated as authoritative and the target\
-        resource representation should be retrieved for the\
-        authoritative representation"
-}]
-]]>
-                        </artwork>
-                    </figure>
-                </t>
-            </section>
-            
-            <section title="&quot;mediaType&quot; property of Link Description Objects">
-                <t>
-                    The "mediaType" property in link definitions defines the expected format of the link's target.
-                    However, this is advisory only, and MUST NOT be considered authoritative.
-                    User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
-                    If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
-                </t>
-                
-                <t>
-                    When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mimeType" property of the link MUST NOT be used.
-                </t>
-                
-                <t>
-                    This is to guard against situations where a source is providing data that is safe when interpreted as the correct type (for example plain text), but that could be damaging if a third party were allowed to provide a different interpretation (such as client-side code).
-                </t>
-            </section>
-            
-            <section title="&quot;targetSchema&quot; property of Link Description Objects">
-                <t>
-                    Since, through the "media" keyword, schemas can provide interpretations of string data, exactly the same considerations apply for this keyword as for the "mediaType" keyword of Link Description Objects.
-                </t>
-            </section>
-            
-            <section title="&quot;invalidates&quot; property of Link Description Objects">
-                <t>
-                    User agents also MUST NOT fetch the target of a link when the resulting data is validated, unless the user has already explicitly or implicitly indicated them to do so.
-                    If the user's intentions are not known, then the user agent SHOULD NOT refetch the data unless the target of the link is a sub-path of the URI being invalidated.
-                    (See above for a discussion of how to determine if one path is a sub-path of another.)
-                </t>
-                
-                <t>
-                    This is to guard against the possibility of tricking user agents into making requests on behalf of the user, to track their behaviour.
-                </t>
-            </section>
-        </section>
 
         <section title="IANA Considerations">
             <t>The proposed MIME media type for JSON Schema is "application/schema+json".</t>
@@ -782,7 +792,6 @@ Content-Type: application/json; profile=/schema-for-this-data
                             <t>Capitalised the T in "encType"</t>
                             <t>Moved "mediaType" and "contentEncoding" to the new "media" property</t>
                             <t>Added "mediaType" property to LDOs</t>
-                            <t>Added "invalidates" property to LDOs</t>
                             <t>Replaced "slash-delimited" fragment resolution with
                             "json-pointer".</t>
                             <t>Added "template" LDO attribute.</t>
