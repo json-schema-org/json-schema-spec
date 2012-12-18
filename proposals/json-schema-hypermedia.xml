@@ -102,16 +102,11 @@
 
         <section title="Overview">
             <t>
-                JSON Schema defines the media type "application/schema+json".
-                JSON Schemas are also written in JSON and include facilities for describing the structure of JSON data in terms of allowable values, descriptions, and interpreting relations with other resources.
-            </t>
-            <t>
-                This document describes how JSON Schema can be used to define hyperlinks on instance data, and to define how to interpret JSON data as rich multimedia documents.
+                This document describes how JSON Schema can be used to define hyperlinks on instance data.  It also defines how to provide additional information required to interpret JSON data as rich multimedia documents.
             </t>
             <t>
                 Just as with the core JSON schema keywords, all the properties described in the "Schema Keywords" section are optional.
-                Therefore, an empty object is a valid (non-informative) schema, and essentially describes plain JSON.
-                Addition of properties provides additive information for user agents.
+                However, some of the properties of Link Description Objects are not optional.
             </t>
             <figure>
                 <preamble>An example JSON Schema defining hyperlinks, and providing hypermedia interpretation for one of the properties is:</preamble>
@@ -128,7 +123,7 @@
             "title": "Article Title",
             "type": "string"
         },
-        "author": {
+        "authorId": {
             "type": "integer"
         },
         "imgData": {
@@ -140,7 +135,7 @@
             }
         }
     },
-    "required" : ["id", "title", "author"],
+    "required" : ["id", "title", "authorId"],
     "links": [
         {
             "rel": "full",
@@ -148,27 +143,54 @@
         },
         {
             "rel": "author",
-            "href": "/user?id={author}"
+            "href": "/user?id={authorId}"
         }
     ]
 }
 ]]>
                 </artwork>
                 <postamble>
-                    This schema defines the properties of the instance, as well as a hypermedia interpretation for the "imgData" property.
+                    This example schema defines the properties of the instance, as well as a hypermedia interpretation for the "imgData" property, specifically that it should be base64-decoded and the resulting binary data treated as a PNG image.
                     It also defines link relations for the instance, with URIs incorporating values from the instance.
                 </postamble>
             </figure>
+            
+            <figure>
+            	<preamble>An example of data following the above schema might be:</preamble>
+            	<artwork>
+<![CDATA[
+{
+    "id": 15,
+    "title": "Example data",
+    "authorId": 105,
+    "imgData": "iVBORw...kJggg=="
+}
+]]>
+            	</artwork>
+				<postamble>The base-64 data has been abbreviated for readability.</postamble>
+            </figure>
 
             <section title="Design Considerations">
-                <t>
-                    In addition to the design considerations for the core JSON Schema specification:
-                </t>
-                <t>
-                    This specification is protocol agnostic.
-                    The underlying protocol (such as HTTP) should sufficiently define the semantics of the client-server interface, the retrieval of resource representations linked to by JSON representations, and modification of those resources.
-                    The goal of this format is to sufficiently describe JSON structures such that one can utilize existing information available in existing JSON representations from a large variety of services that leverage a representational state transfer architecture using existing protocols.
-                </t>
+                <section title="Describing interaction">
+					<t>
+						There are useful conventions when designing APIs, such as representational state transfer (REST), that make them flexible and easy to understand.
+						They use appropriate methods of the protocol to perform actions (for instance, HTTP POST for creating new items), making large portions of the API guessable.
+					</t>
+					<t>
+						However, if URIs for links are included in the data, the client still needs to know which parts of the data represent links, as opposed to content that merely happens to be in URI form.
+						Also, for some actions (such as a search, or tagging a picture), the parameters that need to be supplied need to be explicitly described, so that clients can be written to supply the correct information.
+					</t>
+					<t>
+						The hyper-schema keywords in this document provide a means of precisely documenting the parameters required, in a machine-readable (and fairly human-friendly) way.
+						This could be used to generate documentation, or even used directly by the client to present interactive options to the user.
+					</t>
+                </section>
+                <section title="Hypermedia interpretation">
+					<t>
+						This specification also provides a vocabulary to describe JSON data as rich documents containing more than one media type.
+						For instance, an API may be using JSON as a container format, with binary data being transported using base-64 or some other encoding.
+					</t>
+                </section>
             </section>
         </section>
 

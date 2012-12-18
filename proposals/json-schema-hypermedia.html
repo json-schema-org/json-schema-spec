@@ -199,59 +199,63 @@ Conventions and Terminology<br />
 Overview<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">3.1.</a>&nbsp;
 Design Considerations<br />
-<a href="#anchor5">4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">3.1.1.</a>&nbsp;
+Describing interaction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">3.1.2.</a>&nbsp;
+Hypermedia interpretation<br />
+<a href="#anchor7">4.</a>&nbsp;
 Schema keywords<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">4.1.</a>&nbsp;
 links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">4.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">4.2.</a>&nbsp;
 fragmentResolution<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">4.2.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">4.2.1.</a>&nbsp;
 json-pointer fragment resolution<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">4.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">4.3.</a>&nbsp;
 media<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">4.3.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">4.3.1.</a>&nbsp;
 contentEncoding<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">4.3.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor13">4.3.2.</a>&nbsp;
 mediaType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">4.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">4.4.</a>&nbsp;
 pathStart<br />
-<a href="#anchor13">5.</a>&nbsp;
+<a href="#anchor15">5.</a>&nbsp;
 Link Description Object<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#href">5.1.</a>&nbsp;
 href<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">5.1.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">5.1.1.</a>&nbsp;
 Missing values<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.2.</a>&nbsp;
 rel<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.3.</a>&nbsp;
 template<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.4.</a>&nbsp;
 targetSchema<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.5.</a>&nbsp;
 mediaType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.6.</a>&nbsp;
 invalidates<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.7.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">5.7.</a>&nbsp;
 Submission Link Properties<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">5.7.1.</a>&nbsp;
 method<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">5.7.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">5.7.2.</a>&nbsp;
 encType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">5.7.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">5.7.3.</a>&nbsp;
 schema<br />
-<a href="#anchor24">6.</a>&nbsp;
+<a href="#anchor26">6.</a>&nbsp;
 Security Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">6.1.</a>&nbsp;
 &quot;self&quot; links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">6.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">6.2.</a>&nbsp;
 &quot;mediaType&quot; property of Link Description Objects<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">6.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">6.3.</a>&nbsp;
 &quot;targetSchema&quot; property of Link Description Objects<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">6.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">6.4.</a>&nbsp;
 &quot;invalidates&quot; property of Link Description Objects<br />
-<a href="#anchor29">7.</a>&nbsp;
+<a href="#anchor31">7.</a>&nbsp;
 IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">7.1.</a>&nbsp;
 Registry of Link Relations<br />
 <a href="#rfc.references1">8.</a>&nbsp;
 References<br />
@@ -259,7 +263,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor33">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor35">Appendix&nbsp;A.</a>&nbsp;
 Change Log<br />
 </p>
 <br clear="all" />
@@ -303,18 +307,12 @@ Conventions and Terminology</h3>
 Overview</h3>
 
 <p>
-                JSON Schema defines the media type "application/schema+json".
-                JSON Schemas are also written in JSON and include facilities for describing the structure of JSON data in terms of allowable values, descriptions, and interpreting relations with other resources.
-            
-</p>
-<p>
-                This document describes how JSON Schema can be used to define hyperlinks on instance data, and to define how to interpret JSON data as rich multimedia documents.
+                This document describes how JSON Schema can be used to define hyperlinks on instance data.  It also defines how to provide additional information required to interpret JSON data as rich multimedia documents.
             
 </p>
 <p>
                 Just as with the core JSON schema keywords, all the properties described in the "Schema Keywords" section are optional.
-                Therefore, an empty object is a valid (non-informative) schema, and essentially describes plain JSON.
-                Addition of properties provides additive information for user agents.
+                However, some of the properties of Link Description Objects are not optional.
             
 </p>
 <p>An example JSON Schema defining hyperlinks, and providing hypermedia interpretation for one of the properties is:
@@ -331,7 +329,7 @@ Overview</h3>
             "title": "Article Title",
             "type": "string"
         },
-        "author": {
+        "authorId": {
             "type": "integer"
         },
         "imgData": {
@@ -343,7 +341,7 @@ Overview</h3>
             }
         }
     },
-    "required" : ["id", "title", "author"],
+    "required" : ["id", "title", "authorId"],
     "links": [
         {
             "rel": "full",
@@ -351,33 +349,66 @@ Overview</h3>
         },
         {
             "rel": "author",
-            "href": "/user?id={author}"
+            "href": "/user?id={authorId}"
         }
     ]
 }
 
 </pre></div>
 <p>
-                    This schema defines the properties of the instance, as well as a hypermedia interpretation for the "imgData" property.
+                    This example schema defines the properties of the instance, as well as a hypermedia interpretation for the "imgData" property, specifically that it should be base64-decoded and the resulting binary data treated as a PNG image.
                     It also defines link relations for the instance, with URIs incorporating values from the instance.
                 
+</p>
+<p>An example of data following the above schema might be:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "id": 15,
+    "title": "Example data",
+    "authorId": 105,
+    "imgData": "iVBORw...kJggg=="
+}
+
+</pre></div>
+<p>The base-64 data has been abbreviated for readability.
 </p>
 <a name="anchor4"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
 Design Considerations</h3>
 
-<p>
-                    In addition to the design considerations for the core JSON Schema specification:
-                
-</p>
-<p>
-                    This specification is protocol agnostic.
-                    The underlying protocol (such as HTTP) should sufficiently define the semantics of the client-server interface, the retrieval of resource representations linked to by JSON representations, and modification of those resources.
-                    The goal of this format is to sufficiently describe JSON structures such that one can utilize existing information available in existing JSON representations from a large variety of services that leverage a representational state transfer architecture using existing protocols.
-                
-</p>
 <a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1.1"></a><h3>3.1.1.&nbsp;
+Describing interaction</h3>
+
+<p>
+						There are useful conventions when designing APIs, such as representational state transfer (REST), that make them flexible and easy to understand.
+						They use appropriate methods of the protocol to perform actions (for instance, HTTP POST for creating new items), making large portions of the API guessable.
+					
+</p>
+<p>
+						However, if URIs for links are included in the data, the client still needs to know which parts of the data represent links, as opposed to content that merely happens to be in URI form.
+						Also, for some actions (such as a search, or tagging a picture), the parameters that need to be supplied need to be explicitly described, so that clients can be written to supply the correct information.
+					
+</p>
+<p>
+						The hyper-schema keywords in this document provide a means of precisely documenting the parameters required, in a machine-readable (and fairly human-friendly) way.
+						This could be used to generate documentation, or even used directly by the client to present interactive options to the user.
+					
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1.2"></a><h3>3.1.2.&nbsp;
+Hypermedia interpretation</h3>
+
+<p>
+						This specification also provides a vocabulary to describe JSON data as rich documents containing more than one media type.
+						For instance, an API may be using JSON as a container format, with binary data being transported using base-64 or some other encoding.
+					
+</p>
+<a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
 Schema keywords</h3>
@@ -386,7 +417,7 @@ Schema keywords</h3>
                 The following properties are defined for JSON Schema objects:
             
 </p>
-<a name="anchor6"></a><br /><hr />
+<a name="anchor8"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 links</h3>
@@ -413,7 +444,7 @@ links</h3>
 }
 
 </pre></div>
-<a name="anchor7"></a><br /><hr />
+<a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
 fragmentResolution</h3>
@@ -434,7 +465,7 @@ fragmentResolution</h3>
                     The only exception to this is the resolution of "root" links themselves.
                 
 </p>
-<a name="anchor8"></a><br /><hr />
+<a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2.1"></a><h3>4.2.1.&nbsp;
 json-pointer fragment resolution</h3>
@@ -443,7 +474,7 @@ json-pointer fragment resolution</h3>
                         The "json-pointer" fragment resolution protocol uses a <a class='info' href='#json-pointer'>JSON Pointer<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Pointer,&rdquo; October&nbsp;2011.</span><span>)</span></a> [json&#8209;pointer] to resolve fragment identifiers in URIs within instance representations.
                     
 </p>
-<a name="anchor9"></a><br /><hr />
+<a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
 media</h3>
@@ -452,7 +483,7 @@ media</h3>
                     The value of this properties MUST be an object.  It MAY contain any of the following properties:
                 
 </p>
-<a name="anchor10"></a><br /><hr />
+<a name="anchor12"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.1"></a><h3>4.3.1.&nbsp;
 contentEncoding</h3>
@@ -463,7 +494,7 @@ contentEncoding</h3>
                         <a class='info' href='#RFC2045'>RFC 2045, Sec 6.1<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2045] lists the possible values for this property.
                     
 </p>
-<a name="anchor11"></a><br /><hr />
+<a name="anchor13"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.2"></a><h3>4.3.2.&nbsp;
 mediaType</h3>
@@ -510,7 +541,7 @@ mediaType</h3>
 </p>
                 
 
-<a name="anchor12"></a><br /><hr />
+<a name="anchor14"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
 pathStart</h3>
@@ -526,7 +557,7 @@ pathStart</h3>
                     Any schema that does not have a pathStart property SHOULD be considered applicable to all the instances for which it is referenced.
                 
 </p>
-<a name="anchor13"></a><br /><hr />
+<a name="anchor15"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
 Link Description Object</h3>
@@ -577,7 +608,7 @@ http://somesite.com/45
 					If matching braces are found with the string "@" (no quotes) between the braces, then the actual instance value SHOULD be used to replace the braces, rather than a property value.
 				
 
-<a name="anchor14"></a><br /><hr />
+<a name="anchor16"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
 Missing values</h3>
@@ -586,7 +617,7 @@ Missing values</h3>
 </p>
 <p>In cases where suitable values do not exist for substitution because they are of an incorrect type, then they should be treated as if the values were missing, and substitute values MAY be provided from alternate sources, like user input.
 </p>
-<a name="anchor15"></a><br /><hr />
+<a name="anchor17"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 rel</h3>
@@ -693,7 +724,7 @@ GET /Resource/
 
 <p>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <a class='info' href='#I-D.nottingham-http-link-header'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; May&nbsp;2010.</span><span>)</span></a> [I&#8209;D.nottingham&#8209;http&#8209;link&#8209;header].
 </p>
-<a name="anchor16"></a><br /><hr />
+<a name="anchor18"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 template</h3>
@@ -703,7 +734,7 @@ template</h3>
 					If no templating language is defined, then the default <a class='info' href='#href'>Link Description Object templating language<span> (</span><span class='info'>href</span><span>)</span></a> is used.
 				
 </p>
-<a name="anchor17"></a><br /><hr />
+<a name="anchor19"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 targetSchema</h3>
@@ -712,7 +743,7 @@ targetSchema</h3>
 					This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
 				
 </p>
-<a name="anchor18"></a><br /><hr />
+<a name="anchor20"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
 mediaType</h3>
@@ -777,7 +808,7 @@ mediaType</h3>
 					The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
 				
 </p>
-<a name="anchor19"></a><br /><hr />
+<a name="anchor21"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
 invalidates</h3>
@@ -795,7 +826,7 @@ invalidates</h3>
 					If this property is an array, then its entries MUST be strings, each of which is treated according to the above behaviour.
 				
 </p>
-<a name="anchor20"></a><br /><hr />
+<a name="anchor22"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
 Submission Link Properties</h3>
@@ -804,7 +835,7 @@ Submission Link Properties</h3>
 					The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
 				
 </p>
-<a name="anchor21"></a><br /><hr />
+<a name="anchor23"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.7.1"></a><h3>5.7.1.&nbsp;
 method</h3>
@@ -815,7 +846,7 @@ method</h3>
 						This defaults to "GET".
 					
 </p>
-<a name="anchor22"></a><br /><hr />
+<a name="anchor24"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.7.2"></a><h3>5.7.2.&nbsp;
 encType</h3>
@@ -857,7 +888,7 @@ encType</h3>
 						If the method is POST, "application/json" is the default media type.
 					
 
-<a name="anchor23"></a><br /><hr />
+<a name="anchor25"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.7.3"></a><h3>5.7.3.&nbsp;
 schema</h3>
@@ -867,7 +898,7 @@ schema</h3>
 						For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
 					
 </p>
-<a name="anchor24"></a><br /><hr />
+<a name="anchor26"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6"></a><h3>6.&nbsp;
 Security Considerations</h3>
@@ -877,7 +908,7 @@ Security Considerations</h3>
                 However, there are additional security concerns when using the hyperlink definitions.
             
 </p>
-<a name="anchor25"></a><br /><hr />
+<a name="anchor27"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 &quot;self&quot; links</h3>
@@ -932,7 +963,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 </pre></div>
                 
 
-<a name="anchor26"></a><br /><hr />
+<a name="anchor28"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
 &quot;mediaType&quot; property of Link Description Objects</h3>
@@ -952,7 +983,7 @@ Content-Type: application/json; profile=/schema-for-this-data
                     This is to guard against situations where a source is providing data that is safe when interpreted as the correct type (for example plain text), but that could be damaging if a third party were allowed to provide a different interpretation (such as client-side code).
                 
 </p>
-<a name="anchor27"></a><br /><hr />
+<a name="anchor29"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.3"></a><h3>6.3.&nbsp;
 &quot;targetSchema&quot; property of Link Description Objects</h3>
@@ -961,7 +992,7 @@ Content-Type: application/json; profile=/schema-for-this-data
                     Since, through the "media" keyword, schemas can provide interpretations of string data, exactly the same considerations apply for this keyword as for the "mediaType" keyword of Link Description Objects.
                 
 </p>
-<a name="anchor28"></a><br /><hr />
+<a name="anchor30"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.4"></a><h3>6.4.&nbsp;
 &quot;invalidates&quot; property of Link Description Objects</h3>
@@ -976,7 +1007,7 @@ Content-Type: application/json; profile=/schema-for-this-data
                     This is to guard against the possibility of tricking user agents into making requests on behalf of the user, to track their behaviour.
                 
 </p>
-<a name="anchor29"></a><br /><hr />
+<a name="anchor31"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.7"></a><h3>7.&nbsp;
 IANA Considerations</h3>
@@ -999,7 +1030,7 @@ IANA Considerations</h3>
 <p>The value of the pretty parameter MAY be true or false to indicate if additional
             whitespace has been included to make the JSON representation easier to read.
 </p>
-<a name="anchor30"></a><br /><hr />
+<a name="anchor32"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
 Registry of Link Relations</h3>
@@ -1057,7 +1088,7 @@ References</h3>
 <td class="author-text">Hickson, I., Lie, H., Çelik, T., and B. Bos, &ldquo;<a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>,&rdquo; World Wide Web Consortium CR&nbsp;CR-CSS21-20070719, July&nbsp;2007 (<a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">HTML</a>).</td></tr>
 </table>
 
-<a name="anchor33"></a><br /><hr />
+<a name="anchor35"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Change Log</h3>
