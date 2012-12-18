@@ -141,8 +141,6 @@ Internet-Draft           JSON Schema Media Type            December 2012
 
    item  Equivalent to "element" as defined in RFC 4627 [RFC4627].
 
-   attribute  A property of a JSON Schema object.
-
 3.  Overview
 
    JSON Schema defines the media type "application/schema+json".  JSON
@@ -154,10 +152,12 @@ Internet-Draft           JSON Schema Media Type            December 2012
    hyperlinks on instance data, and to define how to interpret JSON data
    as rich multimedia documents.
 
-   Just as with the core JSON schema attributes, all the attributes
-   described here are optional.  Therefore, an empty object is a valid
-   (non-informative) schema, and essentially describes plain JSON.
-   Addition of attributes provides additive information for user agents.
+   Just as with the core JSON schema keywords, all the properties
+   described in the "Schema Keywords" section are optional.  Therefore,
+   an empty object is a valid (non-informative) schema, and essentially
+   describes plain JSON.  Addition of properties provides additive
+   information for user agents.
+
 
 
 
@@ -309,13 +309,13 @@ Internet-Draft           JSON Schema Media Type            December 2012
 
 4.3.  media
 
-   The value of this attribute MUST be an object.  It MAY contain any of
-   the following properties:
+   The value of this properties MUST be an object.  It MAY contain any
+   of the following properties:
 
 4.3.1.  contentEncoding
 
    The value of this property SHOULD be ignored for any instance that is
-   not a string.  If the instance value is a string, this attribute
+   not a string.  If the instance value is a string, this property
    defines that the string SHOULD be interpreted as binary data and
    decoded using the encoding named by this property.  RFC 2045, Sec 6.1
    [RFC2045] lists the possible values for this property.
@@ -323,7 +323,7 @@ Internet-Draft           JSON Schema Media Type            December 2012
 4.3.2.  mediaType
 
    The value of this property must be a media type RFC 2046 [RFC2046].
-   This attribute defines the media type of instances which this schema
+   This property defines the media type of instances which this schema
    defines.
 
    If the "contentEncoding" property is not set, but the instance value
@@ -368,19 +368,19 @@ Internet-Draft           JSON Schema Media Type            December 2012
 
 4.4.  pathStart
 
-   This attribute is a URI that defines what the instance's URI MUST
+   This property is a URI that defines what the instance's URI MUST
    start with in order to validate.  The value of the "pathStart"
-   attribute MUST be resolved as per RFC 3986, Sec 5 [RFC3986], and is
+   property MUST be resolved as per RFC 3986, Sec 5 [RFC3986], and is
    relative to the instance's URI.
 
    When multiple schemas have been referenced for an instance, the user
    agent can determine if this schema is applicable for a particular
    instance by determining if the URI of the instance begins with the
-   the value of the "pathStart" attribute.  If the URI of the instance
+   the value of the "pathStart" property.  If the URI of the instance
    does not start with this URI, or if another schema specifies a
    starting URI that is longer and also matches the instance, this
    schema SHOULD NOT be considered to describe the instance.  Any schema
-   that does not have a pathStart attribute SHOULD be considered
+   that does not have a pathStart property SHOULD be considered
    applicable to all the instances for which it is referenced.
 
 
@@ -589,9 +589,9 @@ Internet-Draft           JSON Schema Media Type            December 2012
 5.3.  template
 
    This property value is a string that defines the templating language
-   used in the "href" (Section 5.1) attribute.  If no templating
-   language is defined, then the default Link Description Object
-   templating language (Section 5.1) is used.
+   used in the "href" (Section 5.1) property.  If no templating language
+   is defined, then the default Link Description Object templating
+   language (Section 5.1) is used.
 
 5.4.  targetSchema
 
@@ -710,7 +710,7 @@ Internet-Draft           JSON Schema Media Type            December 2012
 
 5.7.1.  method
 
-   This attribute defines which method can be used to access the target
+   This property defines which method can be used to access the target
    resource.  In an HTTP environment, this could be "GET" or "POST"
    (other HTTP methods such as "PUT" and "DELETE" have semantics that
    are clearly implied by accessed resources, and do not need to be
@@ -765,7 +765,7 @@ Internet-Draft           JSON Schema Media Type            December 2012
 
 5.7.3.  schema
 
-   This attribute contains a schema which defines the acceptable
+   This property contains a schema which defines the acceptable
    structure of the submitted request.  For a GET request, this schema
    would define the properties for the query string and for a POST
    request, this would define the body.

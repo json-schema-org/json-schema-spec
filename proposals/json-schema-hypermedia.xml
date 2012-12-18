@@ -106,7 +106,6 @@
                     target="RFC4627">RFC 4627</xref>.</t>
                     <t hangText="item">Equivalent to "element" as defined in <xref
                     target="RFC4627">RFC 4627</xref>.</t>
-                    <t hangText="attribute">A property of a JSON Schema object.</t>
                 </list>
             </t>
         </section>
@@ -120,9 +119,9 @@
                 This document describes how JSON Schema can be used to define hyperlinks on instance data, and to define how to interpret JSON data as rich multimedia documents.
             </t>
             <t>
-                Just as with the core JSON schema attributes, all the attributes described here are optional.
+                Just as with the core JSON schema keywords, all the properties described in the "Schema Keywords" section are optional.
                 Therefore, an empty object is a valid (non-informative) schema, and essentially describes plain JSON.
-                Addition of attributes provides additive information for user agents.
+                Addition of properties provides additive information for user agents.
             </t>
             <figure>
                 <preamble>An example JSON Schema defining hyperlinks, and providing hypermedia interpretation for one of the properties is:</preamble>
@@ -242,13 +241,13 @@
 
             <section title="media">
                 <t>
-                    The value of this attribute MUST be an object.  It MAY contain any of the following properties:
+                    The value of this properties MUST be an object.  It MAY contain any of the following properties:
                 </t>
                 
                 <section title="contentEncoding">
                     <t>
                         The value of this property SHOULD be ignored for any instance that is not a string.
-                        If the instance value is a string, this attribute defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
+                        If the instance value is a string, this property defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
                         <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible values for this property.
                     </t>
                 </section>
@@ -256,7 +255,7 @@
                 <section title="mediaType">
                     <t>
                         The value of this property must be a media type <xref target="RFC2046">RFC 2046</xref>.
-                        This attribute defines the media type of instances which this schema defines.
+                        This property defines the media type of instances which this schema defines.
                     </t>
                     
                     <t>
@@ -300,14 +299,14 @@
 
             <section title="pathStart">
                 <t>
-                    This attribute is a URI that defines what the instance's URI MUST start with in order to validate.
-                    The value of the "pathStart" attribute MUST be resolved as per <xref target="RFC3986">RFC 3986, Sec 5</xref>, and is relative to the instance's URI.
+                    This property is a URI that defines what the instance's URI MUST start with in order to validate.
+                    The value of the "pathStart" property MUST be resolved as per <xref target="RFC3986">RFC 3986, Sec 5</xref>, and is relative to the instance's URI.
                 </t>
 
                 <t>
-                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" attribute.
+                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" property.
                     If the URI of the instance does not start with this URI, or if another schema specifies a starting URI that is longer and also matches the instance, this schema SHOULD NOT be considered to describe the instance.
-                    Any schema that does not have a pathStart attribute SHOULD be considered applicable to all the instances for which it is referenced.
+                    Any schema that does not have a pathStart property SHOULD be considered applicable to all the instances for which it is referenced.
                 </t>
             </section>
         </section>
@@ -457,7 +456,7 @@ GET /Resource/
 
 			<section title="template">
 				<t>
-					This property value is a string that defines the templating language used in the <xref target="href">"href"</xref> attribute.
+					This property value is a string that defines the templating language used in the <xref target="href">"href"</xref> property.
 					If no templating language is defined, then the default <xref target="href">Link Description Object templating language</xref> is used.
 				</t>
 			</section>
@@ -553,7 +552,7 @@ GET /Resource/
 
 				<section title="method">
 					<t>
-						This attribute defines which method can be used to access the target resource.
+						This property defines which method can be used to access the target resource.
 						In an HTTP environment, this could be "GET" or "POST" (other HTTP methods such as "PUT" and "DELETE" have semantics that are clearly implied by accessed resources, and do not need to be defined here).
 						This defaults to "GET".
 					</t>
@@ -601,7 +600,7 @@ GET /Resource/
 
 				<section title="schema">
 					<t>
-						This attribute contains a schema which defines the acceptable structure of the submitted request.
+						This property contains a schema which defines the acceptable structure of the submitted request.
 						For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
 					</t>
 				</section>

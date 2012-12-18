@@ -310,9 +310,6 @@ Conventions and Terminology</h3>
 <dt>item</dt>
 <dd>Equivalent to "element" as defined in <a class='info' href='#RFC4627'>RFC 4627<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627].
 </dd>
-<dt>attribute</dt>
-<dd>A property of a JSON Schema object.
-</dd>
 </dl></blockquote><p>
             
 </p>
@@ -331,9 +328,9 @@ Overview</h3>
             
 </p>
 <p>
-                Just as with the core JSON schema attributes, all the attributes described here are optional.
+                Just as with the core JSON schema keywords, all the properties described in the "Schema Keywords" section are optional.
                 Therefore, an empty object is a valid (non-informative) schema, and essentially describes plain JSON.
-                Addition of attributes provides additive information for user agents.
+                Addition of properties provides additive information for user agents.
             
 </p>
 <p>An example JSON Schema defining hyperlinks, and providing hypermedia interpretation for one of the properties is:
@@ -468,7 +465,7 @@ json-pointer fragment resolution</h3>
 media</h3>
 
 <p>
-                    The value of this attribute MUST be an object.  It MAY contain any of the following properties:
+                    The value of this properties MUST be an object.  It MAY contain any of the following properties:
                 
 </p>
 <a name="anchor10"></a><br /><hr />
@@ -478,7 +475,7 @@ contentEncoding</h3>
 
 <p>
                         The value of this property SHOULD be ignored for any instance that is not a string.
-                        If the instance value is a string, this attribute defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
+                        If the instance value is a string, this property defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
                         <a class='info' href='#RFC2045'>RFC 2045, Sec 6.1<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2045] lists the possible values for this property.
                     
 </p>
@@ -489,7 +486,7 @@ mediaType</h3>
 
 <p>
                         The value of this property must be a media type <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046].
-                        This attribute defines the media type of instances which this schema defines.
+                        This property defines the media type of instances which this schema defines.
                     
 </p>
 <p>
@@ -535,14 +532,14 @@ mediaType</h3>
 pathStart</h3>
 
 <p>
-                    This attribute is a URI that defines what the instance's URI MUST start with in order to validate.
-                    The value of the "pathStart" attribute MUST be resolved as per <a class='info' href='#RFC3986'>RFC 3986, Sec 5<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986], and is relative to the instance's URI.
+                    This property is a URI that defines what the instance's URI MUST start with in order to validate.
+                    The value of the "pathStart" property MUST be resolved as per <a class='info' href='#RFC3986'>RFC 3986, Sec 5<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986], and is relative to the instance's URI.
                 
 </p>
 <p>
-                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" attribute.
+                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" property.
                     If the URI of the instance does not start with this URI, or if another schema specifies a starting URI that is longer and also matches the instance, this schema SHOULD NOT be considered to describe the instance.
-                    Any schema that does not have a pathStart attribute SHOULD be considered applicable to all the instances for which it is referenced.
+                    Any schema that does not have a pathStart property SHOULD be considered applicable to all the instances for which it is referenced.
                 
 </p>
 <a name="anchor13"></a><br /><hr />
@@ -718,7 +715,7 @@ GET /Resource/
 template</h3>
 
 <p>
-					This property value is a string that defines the templating language used in the <a class='info' href='#href'>"href"<span> (</span><span class='info'>href</span><span>)</span></a> attribute.
+					This property value is a string that defines the templating language used in the <a class='info' href='#href'>"href"<span> (</span><span class='info'>href</span><span>)</span></a> property.
 					If no templating language is defined, then the default <a class='info' href='#href'>Link Description Object templating language<span> (</span><span class='info'>href</span><span>)</span></a> is used.
 				
 </p>
@@ -829,7 +826,7 @@ Submission Link Properties</h3>
 method</h3>
 
 <p>
-						This attribute defines which method can be used to access the target resource.
+						This property defines which method can be used to access the target resource.
 						In an HTTP environment, this could be "GET" or "POST" (other HTTP methods such as "PUT" and "DELETE" have semantics that are clearly implied by accessed resources, and do not need to be defined here).
 						This defaults to "GET".
 					
@@ -882,7 +879,7 @@ encType</h3>
 schema</h3>
 
 <p>
-						This attribute contains a schema which defines the acceptable structure of the submitted request.
+						This property contains a schema which defines the acceptable structure of the submitted request.
 						For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
 					
 </p>
