@@ -145,8 +145,8 @@
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">K. Zyp, Ed.</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">SitePen (USA)</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">G. Court</td></tr>
-<tr><td class="header">Expires: March 30, 2013</td><td class="header">G. Luff</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">September 26, 2012</td></tr>
+<tr><td class="header">Expires: June 21, 2013</td><td class="header">G. Luff</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">December 18, 2012</td></tr>
 </table></td></tr></table>
 <h1><br />Hyperlinks and media for JSON Schema<br />draft-zyp-json-hyper-schema-04</h1>
 
@@ -172,7 +172,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on March 30, 2013.</p>
+This Internet-Draft will expire on June 21, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -200,42 +200,64 @@ Overview<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">3.1.</a>&nbsp;
 Design Considerations<br />
 <a href="#anchor5">4.</a>&nbsp;
-Keywords<br />
+Schema keywords<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">4.1.</a>&nbsp;
 links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">4.1.1.</a>&nbsp;
-Link Description Object<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">4.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">4.2.</a>&nbsp;
 fragmentResolution<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">4.2.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">4.2.1.</a>&nbsp;
 json-pointer fragment resolution<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">4.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">4.3.</a>&nbsp;
 media<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">4.3.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">4.3.1.</a>&nbsp;
 contentEncoding<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">4.3.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">4.3.2.</a>&nbsp;
 mediaType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">4.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">4.4.</a>&nbsp;
 pathStart<br />
-<a href="#anchor24">5.</a>&nbsp;
+<a href="#anchor13">5.</a>&nbsp;
+Link Description Object<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#href">5.1.</a>&nbsp;
+href<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">5.1.1.</a>&nbsp;
+Missing values<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">5.2.</a>&nbsp;
+rel<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">5.3.</a>&nbsp;
+template<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.4.</a>&nbsp;
+targetSchema<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.5.</a>&nbsp;
+mediaType<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.6.</a>&nbsp;
+invalidates<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.7.</a>&nbsp;
+Submission Link Properties<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.7.1.</a>&nbsp;
+method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor22">5.7.2.</a>&nbsp;
+encType<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">5.7.3.</a>&nbsp;
+schema<br />
+<a href="#anchor24">6.</a>&nbsp;
 Security Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">5.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor25">6.1.</a>&nbsp;
 &quot;self&quot; links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">6.2.</a>&nbsp;
 &quot;mediaType&quot; property of Link Description Objects<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">6.3.</a>&nbsp;
 &quot;targetSchema&quot; property of Link Description Objects<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">6.4.</a>&nbsp;
 &quot;invalidates&quot; property of Link Description Objects<br />
-<a href="#anchor29">6.</a>&nbsp;
+<a href="#anchor29">7.</a>&nbsp;
 IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">7.1.</a>&nbsp;
 Registry of Link Relations<br />
-<a href="#rfc.references1">7.</a>&nbsp;
+<a href="#rfc.references1">8.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
 Informative References<br />
 <a href="#anchor33">Appendix&nbsp;A.</a>&nbsp;
 Change Log<br />
@@ -377,7 +399,7 @@ Design Considerations</h3>
 <a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
-Keywords</h3>
+Schema keywords</h3>
 
 <p>
                 The following properties are defined for JSON Schema objects:
@@ -412,347 +434,6 @@ links</h3>
 </pre></div>
 <a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1"></a><h3>4.1.1.&nbsp;
-Link Description Object</h3>
-
-<p>
-                        A link description object is used to describe link relations.
-                        In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
-                        The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
-                        The URI of the normative link description schema is: <a href='http://json-schema.org/links'>http://json-schema.org/links</a> (latest version) or <a href='http://json-schema.org/draft-04/links'>http://json-schema.org/draft-04/links</a> (draft-04 version).
-                    
-</p>
-<a name="href"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.1"></a><h3>4.1.1.1.&nbsp;
-href</h3>
-
-<p>
-                            The value of the "href" link description property indicates the target URI of the related resource.
-                            The value of the instance property SHOULD be resolved as a URI-Reference per <a class='info' href='#RFC3986'>RFC 3986<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986] and MAY be a relative URI.
-                            The base URI to be used for relative resolution SHOULD be the URI used to retrieve the instance object (not the schema) when used within a schema.
-                            Also, when links are used within a schema, the URI SHOULD be parametrized by the property values of the instance object, if property values exist for the corresponding variables in the template (otherwise they MAY be provided from alternate sources, like user input).
-                        
-</p>
-<p>
-                            Instance property values SHOULD be substituted into the URIs where matching braces ('{', '}') are found surrounding zero or more characters, creating an expanded URI.
-                            Instance property value substitutions are resolved by using the text between the braces to denote the property name from the instance to get the value to substitute.
-                            The property name between the braces SHOULD be percent encoded (FIXME reference?).
-                            In particular, the character for the braces ('{' and '}') as well as the percent sign ('%') MUST be encoded, such that decoding the text obtains the correct property name.
-
-                            
-<p>For example, if an href value is defined:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-http://somesite.com/{id}
-
-</pre></div>
-<p>Then it would be resolved by replace the value of the "id" property value from the instance object.
-</p>
-
-                            
-<p>If the value of the "id" property was "45", the expanded URI would be:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-http://somesite.com/45
-
-</pre></div>
-
-                            If matching braces are found with the string "@" (no quotes) between the braces, then the actual instance value SHOULD be used to replace the braces, rather than a property value.
-                        
-
-<a name="anchor8"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.1.1"></a><h3>4.1.1.1.1.&nbsp;
-Missing values</h3>
-
-<p>Values may only be used for substitution if they are of a scalar type (string, boolean or number).
-</p>
-<p>In cases where suitable values do not exist for substitution because they are of an incorrect type, then they should be treated as if the values were missing, and substitute values MAY be provided from alternate sources, like user input.
-</p>
-<a name="anchor9"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.2"></a><h3>4.1.1.2.&nbsp;
-rel</h3>
-
-<p>
-                            The value of the "rel" property indicates the name of the relation to the target resource.
-                            The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy.
-                            If a resource JSON representation contains a sub object with a property interpreted as a link, that sub-object holds the relation with the target.
-                            A link relation from the top level resource to a target MUST be indicated with the schema describing the top level JSON representation.
-                        
-</p>
-<p>
-                            Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <a class='info' href='#RFC4287'>RFC 4287<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> [RFC4287]).
-                            However, we define these relations here for clarity of normative interpretation within the context of JSON Schema defined relations:
-
-                            </p>
-<blockquote class="text"><dl>
-<dt>self</dt>
-<dd>
-                                    If the relation value is "self", when this property is encountered in the instance object, the object represents a resource and the instance object is treated as a full representation of the target resource identified by the specified URI.
-                                
-</dd>
-<dt>full</dt>
-<dd>
-                                    This indicates that the target of the link is the full representation for the instance object.
-                                    The instance that contains this link may not be the full representation.
-                                
-</dd>
-<dt>describedBy</dt>
-<dd>
-                                    This indicates the target of the link is a schema describing the instance object.
-                                    This MAY be used to specifically denote the schemas of objects within a JSON object hierarchy, facilitating polymorphic type data structures.
-                                
-</dd>
-<dt>root</dt>
-<dd>
-                                    This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
-                                    All other properties of the instance objects can be regarded as meta-data descriptions for the data.
-                                
-</dd>
-</dl></blockquote><p>
-                        
-</p>
-<p>
-                            The following relations are applicable for schemas (the schema as the "from" resource in the relation):
-
-                            </p>
-<blockquote class="text"><dl>
-<dt>instances</dt>
-<dd>
-                                    This indicates the target resource that represents a collection of instances of a schema.
-                                
-</dd>
-<dt>create</dt>
-<dd>
-                                    This indicates a target to use for creating new instances of a schema.
-                                    This link definition SHOULD be a submission link with a non-safe method (like POST).
-                                
-</dd>
-</dl></blockquote><p>
-                            
-                            Links defined in the schema using these relation values SHOULD not require parameterization with data from the instance, as they describe a link for the schema, not the instances.
-                        
-</p>
-<p>
-                            
-<p>For example, if a schema is defined:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-{
-    "links": [{
-        "rel": "self",
-        "href": "{id}"
-    }, {
-        "rel": "up",
-        "href": "{upId}"
-    }, {
-        "rel": "children",
-        "href": "?upId={id}"
-    }]
-}
-
-</pre></div>
-
-                            
-<p>And if a collection of instance resources were retrieved with JSON representation:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-GET /Resource/
-
-[{
-    "id": "thing",
-    "upId": "parent"
-}, {
-    "id": "thing2",
-    "upId": "parent"
-}]
-
-</pre></div>
-
-                            This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
-                            The "children" collection would be located at "/Resource/?upId=thing".
-                        
-
-<p>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <a class='info' href='#I-D.nottingham-http-link-header'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; May&nbsp;2010.</span><span>)</span></a> [I&#8209;D.nottingham&#8209;http&#8209;link&#8209;header].
-</p>
-<a name="anchor10"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.3"></a><h3>4.1.1.3.&nbsp;
-template</h3>
-
-<p>
-                            This property value is a string that defines the templating language used in the <a class='info' href='#href'>"href"<span> (</span><span class='info'>href</span><span>)</span></a> attribute.
-                            If no templating language is defined, then the default <a class='info' href='#href'>Link Description Object templating language<span> (</span><span class='info'>href</span><span>)</span></a> is used.
-                        
-</p>
-<a name="anchor11"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.4"></a><h3>4.1.1.4.&nbsp;
-targetSchema</h3>
-
-<p>
-                            This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
-                        
-</p>
-<a name="anchor12"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.5"></a><h3>4.1.1.5.&nbsp;
-mediaType</h3>
-
-<p>
-                            The value of this property is advisory only, and represents the media type <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046], that is expected to be returned when fetching this resource.
-                            This property value MAY be a media range instead, using the same pattern defined in <a class='info' href='#RFC2616'>RFC 2161, section 14.1 - HTTP "Accept" header<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616].
-                        
-</p>
-<p>
-                            This property is analogous to the "type" property of  elements in HTML 4.01 (advisory content type), or the "type" parameter in the <a class='info' href='#I-D.nottingham-http-link-header'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; May&nbsp;2010.</span><span>)</span></a> [I&#8209;D.nottingham&#8209;http&#8209;link&#8209;header].
-                            User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
-                            When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
-                        
-</p>
-<p>
-                            If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <a class='info' href='#RFC2616'>RFC 2616, section 14.1<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616], then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
-                        
-</p>
-<p>
-                            If this property's value is not specified, then the value should be taken to be "application/json".
-                        
-</p>
-<p>
-                            
-<p>For example, if a schema is defined:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-{
-    "links": [{
-        "rel": "self",
-        "href": "/{id}/json"
-    }, {
-        "rel": "alternate",
-        "href": "/{id}/html",
-        "mimeType": "text/html"
-    }, {
-        "rel": "alternate",
-        "href": "/{id}/rss",
-        "mimeType": "application/rss+xml"
-    }, {
-        "rel": "icon",
-        "href": "{id}/icon",
-        "mimeType": "image/*"
-    }]
-}
-
-</pre></div>
-                            
-                            A suitable instance described by this schema would have four links defined.
-                            The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
-                            The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
-                            The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
-                        
-
-<p>
-                            A visual user agent displaying the item from the above example might present a button representing an RSS feed, which when pressed passes the target URI (calculated "href" value) to an view more suited to displaying it, such as a news feed aggregator tab.
-                        
-</p>
-<p>
-                            Note that presenting the link in the above manner, or passing the URI to a news feed aggregator view does not constitute interpretation of the data, but an interpretation of the link.
-                            The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
-                        
-</p>
-<a name="anchor13"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.6"></a><h3>4.1.1.6.&nbsp;
-invalidates</h3>
-
-<p>
-                            The value of this property is advisory only, and represents a URI or set of URIs which may change in response to this link being followed. Its value must be either a string or an array.
-                        
-</p>
-<p>
-                            If this property value is a string, then when the link is followed, this value should be filled out as a template and resolved to a full URI using the same method as used for the &quot;<a class='info' href='#href'>href<span> (</span><span class='info'>href</span><span>)</span></a>&quot; property.
-                            Any stored data fetched from a URI matching this value MAY then be considered out-of-date by the client, and removed from any cache.
-                        
-</p>
-<p>
-                            If this property is an array, then its entries MUST be strings, each of which is treated according to the above behaviour.
-                        
-</p>
-<a name="anchor14"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.7"></a><h3>4.1.1.7.&nbsp;
-Submission Link Properties</h3>
-
-<p>
-                            The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
-                        
-</p>
-<a name="anchor15"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.7.1"></a><h3>4.1.1.7.1.&nbsp;
-method</h3>
-
-<p>
-                                This attribute defines which method can be used to access the target resource.
-                                In an HTTP environment, this could be "GET" or "POST" (other HTTP methods such as "PUT" and "DELETE" have semantics that are clearly implied by accessed resources, and do not need to be defined here).
-                                This defaults to "GET".
-                            
-</p>
-<a name="anchor16"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.7.2"></a><h3>4.1.1.7.2.&nbsp;
-encType</h3>
-
-<p>
-                                If present, this property indicates a query media type format that the server supports for querying or posting to the collection of instances at the target resource.
-                                The query can be suffixed to the target URI to query the collection with property-based constraints on the resources that SHOULD be returned from the server or used to post data to the resource (depending on the method).
-
-                                
-<p>For example, with the following schema:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-{
-    "links": [{
-        "encType": "application/x-www-form-urlencoded",
-        "method": "GET",
-        "href": "/Product/",
-        "properties": {
-            "name": {
-                "description": "name of the product"
-            }
-        }
-    }]
-}
-
-</pre></div>
-<p>This indicates that the client can query the server for instances that have a specific name.
-</p>
-
-                                
-<p>For example:
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-/Product/?name=Slinky
-
-</pre></div>
-
-                                If no encType or method is specified, only the single URI specified by the href property is defined.
-                                If the method is POST, "application/json" is the default media type.
-                            
-
-<a name="anchor17"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1.1.7.3"></a><h3>4.1.1.7.3.&nbsp;
-schema</h3>
-
-<p>
-                                This attribute contains a schema which defines the acceptable structure of the submitted request.
-                                For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
-                            
-</p>
-<a name="anchor18"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
 fragmentResolution</h3>
 
@@ -772,7 +453,7 @@ fragmentResolution</h3>
                     The only exception to this is the resolution of "root" links themselves.
                 
 </p>
-<a name="anchor19"></a><br /><hr />
+<a name="anchor8"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2.1"></a><h3>4.2.1.&nbsp;
 json-pointer fragment resolution</h3>
@@ -781,7 +462,7 @@ json-pointer fragment resolution</h3>
                         The "json-pointer" fragment resolution protocol uses a <a class='info' href='#json-pointer'>JSON Pointer<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Pointer,&rdquo; October&nbsp;2011.</span><span>)</span></a> [json&#8209;pointer] to resolve fragment identifiers in URIs within instance representations.
                     
 </p>
-<a name="anchor20"></a><br /><hr />
+<a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
 media</h3>
@@ -790,7 +471,7 @@ media</h3>
                     The value of this attribute MUST be an object.  It MAY contain any of the following properties:
                 
 </p>
-<a name="anchor21"></a><br /><hr />
+<a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.1"></a><h3>4.3.1.&nbsp;
 contentEncoding</h3>
@@ -801,7 +482,7 @@ contentEncoding</h3>
                         <a class='info' href='#RFC2045'>RFC 2045, Sec 6.1<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2045] lists the possible values for this property.
                     
 </p>
-<a name="anchor22"></a><br /><hr />
+<a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3.2"></a><h3>4.3.2.&nbsp;
 mediaType</h3>
@@ -848,7 +529,7 @@ mediaType</h3>
 </p>
                 
 
-<a name="anchor23"></a><br /><hr />
+<a name="anchor12"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
 pathStart</h3>
@@ -864,9 +545,350 @@ pathStart</h3>
                     Any schema that does not have a pathStart attribute SHOULD be considered applicable to all the instances for which it is referenced.
                 
 </p>
-<a name="anchor24"></a><br /><hr />
+<a name="anchor13"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
+Link Description Object</h3>
+
+<p>
+				A link description object is used to describe link relations.
+				In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
+				The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
+				The URI of the normative link description schema is: <a href='http://json-schema.org/links'>http://json-schema.org/links</a> (latest version) or <a href='http://json-schema.org/draft-04/links'>http://json-schema.org/draft-04/links</a> (draft-04 version).
+			
+</p>
+<a name="href"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+href</h3>
+
+<p>
+					The value of the "href" link description property indicates the target URI of the related resource.
+					The value of the instance property SHOULD be resolved as a URI-Reference per <a class='info' href='#RFC3986'>RFC 3986<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986] and MAY be a relative URI.
+					The base URI to be used for relative resolution SHOULD be the URI used to retrieve the instance object (not the schema) when used within a schema.
+					Also, when links are used within a schema, the URI SHOULD be parametrized by the property values of the instance object, if property values exist for the corresponding variables in the template (otherwise they MAY be provided from alternate sources, like user input).
+				
+</p>
+<p>
+					Instance property values SHOULD be substituted into the URIs where matching braces ('{', '}') are found surrounding zero or more characters, creating an expanded URI.
+					Instance property value substitutions are resolved by using the text between the braces to denote the property name from the instance to get the value to substitute.
+					The property name between the braces SHOULD be percent encoded (FIXME reference?).
+					In particular, the character for the braces ('{' and '}') as well as the percent sign ('%') MUST be encoded, such that decoding the text obtains the correct property name.
+
+					
+<p>For example, if an href value is defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+http://somesite.com/{id}
+
+</pre></div>
+<p>Then it would be resolved by replace the value of the "id" property value from the instance object.
+</p>
+
+					
+<p>If the value of the "id" property was "45", the expanded URI would be:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+http://somesite.com/45
+
+</pre></div>
+
+					If matching braces are found with the string "@" (no quotes) between the braces, then the actual instance value SHOULD be used to replace the braces, rather than a property value.
+				
+
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
+Missing values</h3>
+
+<p>Values may only be used for substitution if they are of a scalar type (string, boolean or number).
+</p>
+<p>In cases where suitable values do not exist for substitution because they are of an incorrect type, then they should be treated as if the values were missing, and substitute values MAY be provided from alternate sources, like user input.
+</p>
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+rel</h3>
+
+<p>
+					The value of the "rel" property indicates the name of the relation to the target resource.
+					The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy.
+					If a resource JSON representation contains a sub object with a property interpreted as a link, that sub-object holds the relation with the target.
+					A link relation from the top level resource to a target MUST be indicated with the schema describing the top level JSON representation.
+				
+</p>
+<p>
+					Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <a class='info' href='#RFC4287'>RFC 4287<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> [RFC4287]).
+					However, we define these relations here for clarity of normative interpretation within the context of JSON Schema defined relations:
+
+					</p>
+<blockquote class="text"><dl>
+<dt>self</dt>
+<dd>
+							If the relation value is "self", when this property is encountered in the instance object, the object represents a resource and the instance object is treated as a full representation of the target resource identified by the specified URI.
+						
+</dd>
+<dt>full</dt>
+<dd>
+							This indicates that the target of the link is the full representation for the instance object.
+							The instance that contains this link may not be the full representation.
+						
+</dd>
+<dt>describedBy</dt>
+<dd>
+							This indicates the target of the link is a schema describing the instance object.
+							This MAY be used to specifically denote the schemas of objects within a JSON object hierarchy, facilitating polymorphic type data structures.
+						
+</dd>
+<dt>root</dt>
+<dd>
+							This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
+							All other properties of the instance objects can be regarded as meta-data descriptions for the data.
+						
+</dd>
+</dl></blockquote><p>
+				
+</p>
+<p>
+					The following relations are applicable for schemas (the schema as the "from" resource in the relation):
+
+					</p>
+<blockquote class="text"><dl>
+<dt>instances</dt>
+<dd>
+							This indicates the target resource that represents a collection of instances of a schema.
+						
+</dd>
+<dt>create</dt>
+<dd>
+							This indicates a target to use for creating new instances of a schema.
+							This link definition SHOULD be a submission link with a non-safe method (like POST).
+						
+</dd>
+</dl></blockquote><p>
+					
+					Links defined in the schema using these relation values SHOULD not require parameterization with data from the instance, as they describe a link for the schema, not the instances.
+				
+</p>
+<p>
+					
+<p>For example, if a schema is defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "links": [{
+        "rel": "self",
+        "href": "{id}"
+    }, {
+        "rel": "up",
+        "href": "{upId}"
+    }, {
+        "rel": "children",
+        "href": "?upId={id}"
+    }]
+}
+
+</pre></div>
+
+					
+<p>And if a collection of instance resources were retrieved with JSON representation:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+GET /Resource/
+
+[{
+    "id": "thing",
+    "upId": "parent"
+}, {
+    "id": "thing2",
+    "upId": "parent"
+}]
+
+</pre></div>
+
+					This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
+					The "children" collection would be located at "/Resource/?upId=thing".
+				
+
+<p>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <a class='info' href='#I-D.nottingham-http-link-header'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; May&nbsp;2010.</span><span>)</span></a> [I&#8209;D.nottingham&#8209;http&#8209;link&#8209;header].
+</p>
+<a name="anchor16"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+template</h3>
+
+<p>
+					This property value is a string that defines the templating language used in the <a class='info' href='#href'>"href"<span> (</span><span class='info'>href</span><span>)</span></a> attribute.
+					If no templating language is defined, then the default <a class='info' href='#href'>Link Description Object templating language<span> (</span><span class='info'>href</span><span>)</span></a> is used.
+				
+</p>
+<a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+targetSchema</h3>
+
+<p>
+					This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
+				
+</p>
+<a name="anchor18"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
+mediaType</h3>
+
+<p>
+					The value of this property is advisory only, and represents the media type <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046], that is expected to be returned when fetching this resource.
+					This property value MAY be a media range instead, using the same pattern defined in <a class='info' href='#RFC2616'>RFC 2161, section 14.1 - HTTP "Accept" header<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616].
+				
+</p>
+<p>
+					This property is analogous to the "type" property of  elements in HTML 4.01 (advisory content type), or the "type" parameter in the <a class='info' href='#I-D.nottingham-http-link-header'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; May&nbsp;2010.</span><span>)</span></a> [I&#8209;D.nottingham&#8209;http&#8209;link&#8209;header].
+					User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
+					When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
+				
+</p>
+<p>
+					If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <a class='info' href='#RFC2616'>RFC 2616, section 14.1<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616], then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
+				
+</p>
+<p>
+					If this property's value is not specified, then the value should be taken to be "application/json".
+				
+</p>
+<p>
+					
+<p>For example, if a schema is defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "links": [{
+        "rel": "self",
+        "href": "/{id}/json"
+    }, {
+        "rel": "alternate",
+        "href": "/{id}/html",
+        "mimeType": "text/html"
+    }, {
+        "rel": "alternate",
+        "href": "/{id}/rss",
+        "mimeType": "application/rss+xml"
+    }, {
+        "rel": "icon",
+        "href": "{id}/icon",
+        "mimeType": "image/*"
+    }]
+}
+
+</pre></div>
+					
+					A suitable instance described by this schema would have four links defined.
+					The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
+					The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
+					The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+				
+
+<p>
+					A visual user agent displaying the item from the above example might present a button representing an RSS feed, which when pressed passes the target URI (calculated "href" value) to an view more suited to displaying it, such as a news feed aggregator tab.
+				
+</p>
+<p>
+					Note that presenting the link in the above manner, or passing the URI to a news feed aggregator view does not constitute interpretation of the data, but an interpretation of the link.
+					The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
+				
+</p>
+<a name="anchor19"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
+invalidates</h3>
+
+<p>
+					The value of this property is advisory only, and represents a URI or set of URIs which may change in response to this link being followed. Its value must be either a string or an array.
+				
+</p>
+<p>
+					If this property value is a string, then when the link is followed, this value should be filled out as a template and resolved to a full URI using the same method as used for the &quot;<a class='info' href='#href'>href<span> (</span><span class='info'>href</span><span>)</span></a>&quot; property.
+					Any stored data fetched from a URI matching this value MAY then be considered out-of-date by the client, and removed from any cache.
+				
+</p>
+<p>
+					If this property is an array, then its entries MUST be strings, each of which is treated according to the above behaviour.
+				
+</p>
+<a name="anchor20"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
+Submission Link Properties</h3>
+
+<p>
+					The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
+				
+</p>
+<a name="anchor21"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.7.1"></a><h3>5.7.1.&nbsp;
+method</h3>
+
+<p>
+						This attribute defines which method can be used to access the target resource.
+						In an HTTP environment, this could be "GET" or "POST" (other HTTP methods such as "PUT" and "DELETE" have semantics that are clearly implied by accessed resources, and do not need to be defined here).
+						This defaults to "GET".
+					
+</p>
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.7.2"></a><h3>5.7.2.&nbsp;
+encType</h3>
+
+<p>
+						If present, this property indicates a query media type format that the server supports for querying or posting to the collection of instances at the target resource.
+						The query can be suffixed to the target URI to query the collection with property-based constraints on the resources that SHOULD be returned from the server or used to post data to the resource (depending on the method).
+
+						
+<p>For example, with the following schema:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "links": [{
+        "encType": "application/x-www-form-urlencoded",
+        "method": "GET",
+        "href": "/Product/",
+        "properties": {
+            "name": {
+                "description": "name of the product"
+            }
+        }
+    }]
+}
+
+</pre></div>
+<p>This indicates that the client can query the server for instances that have a specific name.
+</p>
+
+						
+<p>For example:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+/Product/?name=Slinky
+
+</pre></div>
+
+						If no encType or method is specified, only the single URI specified by the href property is defined.
+						If the method is POST, "application/json" is the default media type.
+					
+
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.7.3"></a><h3>5.7.3.&nbsp;
+schema</h3>
+
+<p>
+						This attribute contains a schema which defines the acceptable structure of the submitted request.
+						For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
+					
+</p>
+<a name="anchor24"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 Security Considerations</h3>
 
 <p>
@@ -876,7 +898,7 @@ Security Considerations</h3>
 </p>
 <a name="anchor25"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 &quot;self&quot; links</h3>
 
 <p>
@@ -931,7 +953,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 
 <a name="anchor26"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
 &quot;mediaType&quot; property of Link Description Objects</h3>
 
 <p>
@@ -951,7 +973,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 </p>
 <a name="anchor27"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+<a name="rfc.section.6.3"></a><h3>6.3.&nbsp;
 &quot;targetSchema&quot; property of Link Description Objects</h3>
 
 <p>
@@ -960,7 +982,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 </p>
 <a name="anchor28"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+<a name="rfc.section.6.4"></a><h3>6.4.&nbsp;
 &quot;invalidates&quot; property of Link Description Objects</h3>
 
 <p>
@@ -975,7 +997,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 </p>
 <a name="anchor29"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.7"></a><h3>7.&nbsp;
 IANA Considerations</h3>
 
 <p>The proposed MIME media type for JSON Schema is "application/schema+json".
@@ -998,7 +1020,7 @@ IANA Considerations</h3>
 </p>
 <a name="anchor30"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
 Registry of Link Relations</h3>
 
 <p>
@@ -1009,12 +1031,12 @@ Registry of Link Relations</h3>
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.8"></a><h3>8.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>7.1.&nbsp;Normative References</h3>
+<h3>8.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2045">[RFC2045]</a></td>
 <td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996 (<a href="http://www.rfc-editor.org/rfc/rfc2045.txt">TXT</a>).</td></tr>
@@ -1032,7 +1054,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>7.2.&nbsp;Informative References</h3>
+<h3>8.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
