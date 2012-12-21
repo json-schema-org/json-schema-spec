@@ -948,6 +948,48 @@
                     </section>
 
                 </section>
+
+                <section title="definitions">
+
+                    <section title="Valid values">
+                        <t>
+                            This keyword's value MUST be an object. Each member value of this object
+                            MUST be a valid JSON Schema.
+                        </t>
+                    </section>
+
+                    <section title="Conditions for successful validation">
+                        <t>
+                            This keyword plays no role in validation per se. Its role is to provide
+                            a standardized location for schema authors to inline JSON Schemas into a
+                            more general schema.
+                        </t>
+
+                        <t>
+                            As an example, here is a schema describing an array of positive
+                            integers, where the positive integer constraint is a subschema in
+                            "definitions":
+
+                            <figure>
+                                <artwork>
+<![CDATA[
+{
+    "type": "array",
+    "items": { "$ref": "#/definitions/positiveInteger" },
+    "definitions": {
+        "positiveInteger": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+        }
+    }
+}
+]]>
+                                </artwork>
+                            </figure>
+                        </t>
+                    </section>
+                </section>
             </section>
 
         </section>
