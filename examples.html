@@ -36,11 +36,21 @@
 
 <p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
 <h3>Example schema for the product API</h3>
-<p>To start a schema definition, let's begin with a basic to JSON schema.</p>
+<p>To start a schema definition, let's begin with a basic JSON schema:</p>
 
 <script src="https://gist.github.com/4461646.js"></script>
 
-<p>The above schema has a <em>description</em> saying we are going to describe a product, a <em>type</em> saying our product is a JSON object (versus a simple datapoint like a string/number), and a <em>properties</em>section for describing the data in that object.</p>
+<p>The above schema has four properties called <em>keywords</em>.
+
+The <em>title</em> and <em>description</em> keywords are descriptive only, in that they do not add
+constraints to the data being validated. The intent of the schema is stated with these two keywords
+(that is, this schema describes a product).</p>
+
+<p>The <em>type</em> keyword defines the first constraint on our JSON data: it has to be a JSON
+Object.</p>
+
+<p>Finally, the <em>$schema</em> keyword states that this schema is written according to the draft
+v4 specification.</p>
 
 <p>Next let's answer our previous questions about this API, starting with id.</p>
 
