@@ -32,7 +32,7 @@
 
 <h2>What is JSON Schema</h2>
 
-<p>JSON Schema is a JSON based format for describing JSON data. JSON Schema is to JSON as XSD is to XML.</p>
+<p>JSON Schema is a JSON based format for describing JSON data.</p>
 
 <p>JSON Schema is a proposed Internet draft defining a JSON media type (application/schema+json) with the following goals:</p>
 
@@ -59,9 +59,9 @@ href="http://tools.ietf.org/html/draft-zyp-json-schema-03">v3</a>. While not yet
 <p>JSON Schema also uses two other specifications:</p>
 
 <ul>
-<li><a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-02">JSON
+<li><a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">JSON
 Reference</a></li>
-<li><a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">JSON
+<li><a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-07">JSON
 Pointer</a></li>
 </ul>
 
@@ -82,19 +82,22 @@ can be found on <a id="link-github" href="https://github.com/json-schema/">GitHu
 Feature/pull requests are welcome.</p>
 
 <h2>Reference schemas</h2>
-<p>The following are schemas that are available for referencing (more to come):
+
+<p>JSON Schema defines meta schemas. These are schemas which can be used to
+validate other schemas (including themselves). Those are:</p>
+
 <dl class="dl-horizontal span8">
-<dt><a id="link-schema-meta" href="schema">Core Meta-Schema</a> </dt><dd> This is the meta-schema
-definition for schemas themselves (the type/validation part of schemas).</dd>
-<dt><a id="link-schema-hyper" href="hyper-schema">Hyper Meta-Schema</a> </dt><dd> This is the extended
-full meta-schema definition for schemas with link definitions (hyper
-schemas).</dd>
-<dt><a id="link-schema-json-ref" href="json-ref">JSON Referencing</a> </dt><dd> This is the schema that
-defines a generic linking mechanism called JSON referencing (which is used by
-the meta-schema for links).</dd>
-<dt><a id="link-schema-interfaces" href="interfaces">JSON Schema Interfaces</a> </dt><dd> This is the
-meta-schema definition for schemas which define class-style method interfaces
-for programming languages.</dd>
+<dt><a id="link-schema-meta" href="schema">Core Meta-Schema</a> </dt><dd>Used for schemas written
+for pure validation.</dd>
+<dt><a id="link-schema-hyper" href="hyper-schema">Hyper Meta-Schema</a></dt><dd>Used for schemas
+written for validation and hyper linking.</dd>
+</dl>
+
+<h2>Sample schemas</h2>
+
+<p>These sample schemas describe simple data structures which can be expressed as JSON:</p>
+
+<dl class="dl-horizontal span8">
 <dt><a id="link-schema-geo" href="geo">Geographic Coordinate</a></dt><dd>&nbsp;</dd>
 <dt><a id="link-schema-card" href="card">Card</a> </dt><dd> A schema for microformat style
 representation of a person, company, organization, or place.</dd>
