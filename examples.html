@@ -72,9 +72,22 @@ much to a product without a name, it also is required. Adding this gives us the 
 <script src="https://gist.github.com/4461668.js"></script>
 
 <h4>Are all tags strings?</h4>
-<p>Finally, we come to the <em>tags</em> property. Unlike the previous properties, tags have many values, and is represented as a JSON array. According to Acme's docs, all tags must be strings, but you aren't required to specify tags. We simply leave <em>tags</em> out of the list of required properties, giving us:</p>
+<p>Finally, we come to the <em>tags</em> property. Unlike the previous
+properties, tags have many values, and is represented as a JSON array. According
+to Acme's docs, all tags must be strings, but you aren't required to specify
+tags. We simply leave <em>tags</em> out of the list of required properties.</p>
 
-<script src="https://gist.github.com/4461679.js"></script>
+<p>However, Acme's docs add two constraints:</p>
+
+<ul>
+<li>there must be at least one tag,</li>
+<li>all tags must be unique.</li>
+</ul>
+
+<p>The first constraint can be added with <em>minItems</em>, and the second one by
+specifying <em>uniqueItems</em> as being true:</p>
+
+<script src="https://gist.github.com/4461739.js"></script>
 
 <h3>Example summary</h3>
 <p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
@@ -88,7 +101,7 @@ much to a product without a name, it also is required. Adding this gives us the 
 
 <h4>Set of products schema:</h4>
 
-<script src="https://gist.github.com/4461695.js"></script>
+<script src="https://gist.github.com/4461781.js"></script>
 
 </div>
 </div>
