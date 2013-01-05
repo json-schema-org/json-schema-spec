@@ -56,7 +56,7 @@
 <script src="https://gist.github.com/4460756.js"></script>
 
 <h4>Can price be 0?</h4>
-<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum, and by default minimum is exclusive of the minimum value. Therefore we can update our schema with <em>price</em>:</p>
+<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum.  By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
 
 <script src="https://gist.github.com/4460762.js"></script>
 
