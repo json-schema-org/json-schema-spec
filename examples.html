@@ -38,7 +38,7 @@
 <h3>Example schema for the product API</h3>
 <p>To start a schema definition, let's begin with a basic to JSON schema.</p>
 
-<script src="https://gist.github.com/4460744.js"></script>
+<script src="https://gist.github.com/4461646.js"></script>
 
 <p>The above schema has a <em>description</em> saying we are going to describe a product, a <em>type</em> saying our product is a JSON object (versus a simple datapoint like a string/number), and a <em>properties</em>section for describing the data in that object.</p>
 
@@ -48,22 +48,22 @@
 <p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
 
 <p>In JSON Schema terms, we can update our schema to:</p>
-<script src="https://gist.github.com/4460750.js"></script>
+<script src="https://gist.github.com/4461657.js"></script>
 
 <h4>Is name required?</h4>
 <p><em>name</em> is a string value that describes a product. Since there isn't much to a product, it also is required. Adding this gives us the schema:</p>
 
-<script src="https://gist.github.com/4460756.js"></script>
+<script src="https://gist.github.com/4461659.js"></script>
 
 <h4>Can price be 0?</h4>
 <p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum.  By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
 
-<script src="https://gist.github.com/4460762.js"></script>
+<script src="https://gist.github.com/4461668.js"></script>
 
 <h4>Are all tags strings?</h4>
 <p>Finally, we come to the tags property. Unlike the previous properties, tags have many values, and is represented as a JSON array. According to Acme's docs, all tags must be strings, but you aren't required to specify tags. We simply leave <em>tags</em> out of the list of required properties, giving us:</p>
 
-<script src="https://gist.github.com/4460767.js"></script>
+<script src="https://gist.github.com/4461679.js"></script>
 
 <h3>Example summary</h3>
 <p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
@@ -77,7 +77,7 @@
 
 <h4>Set of products schema:</h4>
 
-<script src="https://gist.github.com/4460778.js"></script>
+<script src="https://gist.github.com/4461695.js"></script>
 
 </div>
 </div>
