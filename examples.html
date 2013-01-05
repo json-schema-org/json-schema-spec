@@ -36,11 +36,21 @@
 
 <p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
 <h3>Example schema for the product API</h3>
-<p>To start a schema definition, let's begin with a basic to JSON schema.</p>
+<p>To start a schema definition, let's begin with a basic JSON schema:</p>
 
-<script src="https://gist.github.com/4460744.js"></script>
+<script src="https://gist.github.com/4461646.js"></script>
 
-<p>The above schema has a <em>description</em> saying we are going to describe a product, a <em>type</em> saying our product is a JSON object (versus a simple datapoint like a string/number), and a <em>properties</em>section for describing the data in that object.</p>
+<p>The above schema has four properties called <em>keywords</em>.
+
+The <em>title</em> and <em>description</em> keywords are descriptive only, in that they do not add
+constraints to the data being validated. The intent of the schema is stated with these two keywords
+(that is, this schema describes a product).</p>
+
+<p>The <em>type</em> keyword defines the first constraint on our JSON data: it has to be a JSON
+Object.</p>
+
+<p>Finally, the <em>$schema</em> keyword states that this schema is written according to the draft
+v4 specification.</p>
 
 <p>Next let's answer our previous questions about this API, starting with id.</p>
 
@@ -48,22 +58,36 @@
 <p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
 
 <p>In JSON Schema terms, we can update our schema to:</p>
-<script src="https://gist.github.com/4460750.js"></script>
+<script src="https://gist.github.com/4461657.js"></script>
 
 <h4>Is name required?</h4>
-<p><em>name</em> is a string value that describes a product. Since there isn't much to a product, it also is required. Adding this gives us the schema:</p>
+<p><em>name</em> is a string value that describes a product. Since there isn't
+much to a product without a name, it also is required. Adding this gives us the schema:</p>
 
-<script src="https://gist.github.com/4460756.js"></script>
+<script src="https://gist.github.com/4461659.js"></script>
 
 <h4>Can price be 0?</h4>
-<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum.  By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
+<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum. By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
 
-<script src="https://gist.github.com/4460762.js"></script>
+<script src="https://gist.github.com/4461668.js"></script>
 
 <h4>Are all tags strings?</h4>
-<p>Finally, we come to the tags property. Unlike the previous properties, tags have many values, and is represented as a JSON array. According to Acme's docs, all tags must be strings, but you aren't required to specify tags. We simply leave <em>tags</em> out of the list of required properties, giving us:</p>
+<p>Finally, we come to the <em>tags</em> property. Unlike the previous
+properties, tags have many values, and is represented as a JSON array. According
+to Acme's docs, all tags must be strings, but you aren't required to specify
+tags. We simply leave <em>tags</em> out of the list of required properties.</p>
 
-<script src="https://gist.github.com/4460767.js"></script>
+<p>However, Acme's docs add two constraints:</p>
+
+<ul>
+<li>there must be at least one tag,</li>
+<li>all tags must be unique.</li>
+</ul>
+
+<p>The first constraint can be added with <em>minItems</em>, and the second one by
+specifying <em>uniqueItems</em> as being true:</p>
+
+<script src="https://gist.github.com/4461739.js"></script>
 
 <h3>Example summary</h3>
 <p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
@@ -77,7 +101,7 @@
 
 <h4>Set of products schema:</h4>
 
-<script src="https://gist.github.com/4460778.js"></script>
+<script src="https://gist.github.com/4461781.js"></script>
 
 </div>
 </div>
