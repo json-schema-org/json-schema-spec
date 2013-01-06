@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Another JSON Schema example</title>
+    <link href="lib/bootstrap-min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<div class="row">
+    <div class="span8">
+        <div class="page-header">
+            <h1>JSON Schema example: fstab</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+<div class="span8">
+<h2>Purpose of the example</h2>
+
+<p>This example shows a possible JSON representation of a hypothetical machine's mount points as
+represented in an <tt>/etc/fstab</tt> file.</p>
+
+<p>An entry in the fstab file can have many different forms. Here is a possible representation of a
+full fstab:</p>
+
+<script src="https://gist.github.com/4467334.js"></script>
+
+<p>Not all constraints to an fstab file can be modeled using JSON Schema alone; however, it can
+already represent a good number of them. We will add constraints one after the other until we get to
+a satisfactory result.</p>
+
+<h2>Base schema</h2>
+
+<p>We will start with a base schema expressing the following constraints:</p>
+
+<ul>
+<li>the list of entries is a JSON object;</li>
+<li>the member names (or property names) of this object must all be valid, absolute paths;</li>
+<li>there must be an entry for the root filesystem (ie, <tt>/</tt>).</li>
+</ul>
+
+<p>We also want the schema to be regarded as a draft v4 schema, we must therefore specify
+<em>$schema</em>:</p>
+
+<script src="https://gist.github.com/4467480.js"></script>
+
+<p>Note how the valid paths constraint is enforced here:</p>
+
+<ul>
+<li>we have a <em>properties</em> keyword with only a <tt>/</tt> entry;</li>
+<li>we use <em>patternProperties</em> to match other property names via a regular
+expression (note that it does not match <tt>/</tt>);</li>
+<li>as <em>additionalProperties</em> is false, it constrains object properties to be either
+<tt>/</tt> or to match the regular expression.</li>
+</ul>
+
+<p>You will notice that the regular expression is explicitly anchored: in JSON Schema, regular
+expressions (in <em>patternProperties</em> and in <em>pattern</em>) are not anchored by default, you
+must add anchors if you need them.</p>
+
+<p>For now, the schemas describing individual entries are empty: we will start describing the
+constraints in the following paragraphs, using another schema, which we will reference from the main
+schema when we are ready.</p>
+
+<h2>The entry schema</h2>
+
+<h3>The skeleton</h3>
+
+<p>Here again we will proceed little by little. We will start with the global structure of our
+schema, which will be as such:</p>
+
+<script src="https://gist.github.com/4467942.js"></script>
+
+<p>The expressed constraints you should already be familiar with: the JSON value must be an object, and this
+object must have a property by the name <em>storage</em>; what is more, that <em>storage</em>
+property must be an object. There are a couple of novelties:</p>
+
+<ul>
+<li>you will notice the appearance of JSON References, via the <em>$ref</em> keyword; here, all
+references used are local to the schema, and the fragment part is a URI encoded JSON Pointer;</li>
+<li>you will notice the appearance of an <em>id</em>: this is the URI of this resource; we assume
+here that this URI is the actual URI of this schema;</li>
+<li>the <em>oneOf</em> keyword is new; its argument is an array of schemas, and the data will be
+valid if and only if it validates against only one of the schemas in the array;</li>
+<li>finally, the <em>definitions</em> keyword is a standardized placeholder in which you can define
+inline subschemas to be used in a schema.
+</ul>
+
+<h3>The <em>fstype</em>, <em>options</em> and <em>readonly</em> properties</h3>
+
+<p>Let us now extend this skeleton to add constraints to the aforementioned properties. Note that
+none of them is required:</p>
+
+<ul>
+<li>we only support <tt>ext3</tt>, <tt>ext4</tt> and <tt>btrfs</tt> as filesystem types;</li>
+<li>the <em>options</em> array only allows strings; moreover, when specified, there must be at least
+one option, and all options should be unique;</li>
+<li><em>readonly</em> can only be a boolean.</li>
+</ul>
+
+<p>With these added constraints, the schema now looks like this:</p>
+
+<script src="https://gist.github.com/4468023.js"></script>
+
+<p>It is now time we filled the different storage definitions.</p>
+
+<h3>The <em>diskDevice</em> storage type</h3>
+
+<p>This storage type has two required properties, <em>type</em> and <em>device</em>. The type can
+only be <em>disk</em>, and the device must be an absolute path starting with <em>/dev</em>. No other
+properties are allowed:</p>
+
+<script src="https://gist.github.com/4468082.js"></script>
+
+<h3>The <em>diskUUID</em> storage type</h3>
+
+<p>This storage type has two required properties, <em>type</em> and <em>label</em>. The type can
+only be <em>disk</em>, and the label must be a valid UUID. No other properties are allowed:</p>
+
+<script src="https://gist.github.com/4468166.js"></script>
+
+<h3>The <em>nfs</em> storage type</h3>
+
+<p>This storage type has three required properties: <em>type</em>, <em>server</em> and
+<em>remotePath</em>. What is more, the server may be either a host name, an IPv4 address or an IPv6
+address.</p>
+
+<p>For the constraints on <em>server</em>, we use a new keyword: <em>format</em>. While it is not
+required that <em>format</em> be supported, we will suppose that it is here:</p>
+
+<script src="https://gist.github.com/4468254.js"></script>
+
+<h3> The <em>tmpfs</em> storage type</h3>
+
+<p>This storage type has two required properties: <em>type</em> and <em>sizeInMB</em>. The size can
+only be an integer. What is more, we will require that the size be between 16 and 512,
+inclusive:</p>
+
+<script src="https://gist.github.com/4468307.js"></script>
+
+<h2>Plugging this into our main schema</h2>
+
+<p>Now that all possible entries have been described, we can refer to the entry schema from our main
+schema. We will, again, use a JSON Reference here: </p>
+
+<script src="https://gist.github.com/4468331.js"></script>
+
+<h2>Wrap up</h2>
+
+<p>This example is much more advanced than the previous example; you will have learned of schema
+referencing and identification, you will have been introduced to other keywords. It also raises some
+interesting points.</p>
+
+<h3>The schema can be improved</h3>
+
+<p>For instance:</p>
+
+<ul>
+<li>it makes no sense for <tt>/</tt> to be mounted on a tmpfs filesystem;</li>
+<li>it makes no sense to specify the filesystem type if the storage is either NFS or tmpfs.</li>
+</ul>
+
+<p>As an exercise, you can always try and add these constraints. It would probably require splitting
+the schema further.</p>
+
+<h3>JSON Schema limits itself to structural validation</h3>
+
+<p>The <em>format</em> keyword is the only exception to this (with it, you can do semantic
+validation of primitive types, such as strings), but supporting it is not required.</p>
+
+<p>What is more, if we take an NFS entry as an example, it would be the role of your application
+code to check that the submitted NFS server's hostname, or IP address, is actually correct.</p>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>
