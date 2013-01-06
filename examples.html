@@ -3,6 +3,7 @@
 <head>
     <title></title>
     <link href="lib/bootstrap-min.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/json-highlight.css"></link>
 </head>
 <body>
 <div class="container">
@@ -23,7 +24,14 @@
 <h3>Example JSON data for a product API</h3>
 <p>An example product in this API is:</p>
 
-<script src="https://gist.github.com/4460710.js"></script>
+<pre class="json">
+{
+    "id": 1,
+    "name": "A green door",
+    "price": 12.50,
+    "tags": ["home", "green"]
+}
+</pre>
 
 <p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
 
@@ -38,7 +46,13 @@
 <h3>Example schema for the product API</h3>
 <p>To start a schema definition, let's begin with a basic to JSON schema.</p>
 
-<script src="https://gist.github.com/4460744.js"></script>
+<pre class="json-schema">
+{
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object"
+}
+</pre>
 
 <p>The above schema has a <em>description</em> saying we are going to describe a product, a <em>type</em> saying our product is a JSON object (versus a simple datapoint like a string/number), and a <em>properties</em>section for describing the data in that object.</p>
 
@@ -48,22 +62,98 @@
 <p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
 
 <p>In JSON Schema terms, we can update our schema to:</p>
-<script src="https://gist.github.com/4460750.js"></script>
+<pre class="json-schema">
+{
+    "title": "Product",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        }
+    },
+    "required": ["id"]
+}
+</pre>
 
 <h4>Is name required?</h4>
 <p><em>name</em> is a string value that describes a product. Since there isn't much to a product, it also is required. Adding this gives us the schema:</p>
 
-<script src="https://gist.github.com/4460756.js"></script>
+<pre class="json-schema">
+{
+    "title": "Product",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        }
+    },
+    "required": ["id", "name"]
+}
+</pre>
 
 <h4>Can price be 0?</h4>
 <p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum.  By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
 
-<script src="https://gist.github.com/4460762.js"></script>
+<pre class="json-schema">
+{
+    "title": "Product",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        },
+        "price": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMinimum": true
+        }
+    },
+    "required": ["id", "name", "price"]
+}
+</pre>
 
 <h4>Are all tags strings?</h4>
 <p>Finally, we come to the tags property. Unlike the previous properties, tags have many values, and is represented as a JSON array. According to Acme's docs, all tags must be strings, but you aren't required to specify tags. We simply leave <em>tags</em> out of the list of required properties, giving us:</p>
 
-<script src="https://gist.github.com/4460767.js"></script>
+<pre class="json-schema">
+{
+    "title": "Product",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        },
+        "price": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMinimum": true
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": ["id", "name", "price"]
+}
+</pre>
 
 <h3>Example summary</h3>
 <p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
@@ -73,15 +163,91 @@
 <p>And also, since JSON Schema defines a reference schema for a geographic location, instead of coming up with our own, we'll reference the <a href="http://json-schema.org/geo">canonical one</a>.</p>
 
 <h4>Set of products:</h4>
-<script src="https://gist.github.com/4460776.js"></script>
+<pre class="json">
+[
+    {
+        "id": 2,
+        "name": "An ice sculpture",
+        "price": 12.50,
+        "tags": ["cold", "ice"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 3,
+        "name": "A blue mouse",
+        "price": 25.50,
+            "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    }
+]
+</pre>
 
 <h4>Set of products schema:</h4>
 
-<script src="https://gist.github.com/4460778.js"></script>
+<pre class="json-schema">
+{
+    "title": "Product set",
+    "type": "array",
+    "items": {
+        "title": "Product",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "The unique identifier for a product",
+                "type": "number"
+            },
+            "name": {
+                "type": "string"
+            },
+            "price": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMinimum": true
+            },
+            "tags": {
+                "type": "array",
+                    "items": {
+                    "type": "string"
+                }
+            },
+            "dimensions": {
+                "type": "object",
+                "properties": {
+                    "length": {"type": "number"},
+                    "width": {"type": "number"},
+                    "height": {"type": "number"}
+                },
+                "required": ["length", "width", "height"]
+            },
+            "warehouseLocation": {
+                "description": "Co-ordinates of the warehouse with the product",
+                "$ref": "http://json-schema.org/geo"
+            }
+        },
+        "required": ["id", "name", "price"]
+    }
+}
+</pre>
 
 </div>
 </div>
 </div>
 
+<script src="lib/json-highlight.js"></script>
 </body>
 </html>
