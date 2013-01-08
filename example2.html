@@ -3,6 +3,7 @@
 <head>
     <title>Another JSON Schema example</title>
     <link href="lib/bootstrap-min.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/json-highlight.css"></link>
 </head>
 <body>
 <div class="container">
@@ -23,7 +24,39 @@ represented in an <tt>/etc/fstab</tt> file.</p>
 <p>An entry in the fstab file can have many different forms. Here is a possible representation of a
 full fstab:</p>
 
-<script src="https://gist.github.com/4467334.js"></script>
+<pre class="json">
+{
+    "/": {
+        "storage": {
+            "type": "disk",
+            "device": "/dev/sda1"
+        },
+        "fstype": "btrfs",
+        "readonly": true
+    },
+    "/var": {
+        "storage": {
+            "type": "disk",
+            "label": "8f3ba6f4-5c70-46ec-83af-0d5434953e5f"
+        },
+        "fstype": "ext4",
+        "options": [ "nosuid" ]
+    },
+    "/tmp": {
+        "storage": {
+            "type": "tmpfs",
+            "sizeInMB": 64
+        }
+    },
+    "/var/www": {
+        "storage": {
+            "type": "nfs",
+            "server": "my.nfs.server",
+            "remotePath": "/exports/mypath"
+        }
+    }
+}
+</pre>
 
 <p>Not all constraints to an fstab file can be modeled using JSON Schema alone; however, it can
 already represent a good number of them. We will add constraints one after the other until we get to
@@ -42,7 +75,20 @@ a satisfactory result.</p>
 <p>We also want the schema to be regarded as a draft v4 schema, we must therefore specify
 <em>$schema</em>:</p>
 
-<script src="https://gist.github.com/4467480.js"></script>
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "/": {}
+    },
+    "patternProperties": {
+        "^(/[^/]+)+$": {}
+    },
+    "additionalProperties": false,
+    "required": [ "/" ]
+}
+</pre>
 
 <p>Note how the valid paths constraint is enforced here:</p>
 
@@ -69,7 +115,32 @@ schema when we are ready.</p>
 <p>Here again we will proceed little by little. We will start with the global structure of our
 schema, which will be as such:</p>
 
-<script src="https://gist.github.com/4467942.js"></script>
+<pre class="json-schema">
+{
+    "id": "http://some.site.somewhere/entry-schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "schema for an fstab entry",
+    "type": "object",
+    "required": [ "storage" ],
+    "properties": {
+        "storage": {
+            "type": "object",
+            "oneOf": [
+                { "$ref": "#/definitions/diskDevice" },
+                { "$ref": "#/definitions/diskUUID" },
+                { "$ref": "#/definitions/nfs" },
+                { "$ref": "#/definitions/tmpfs" }
+            ]
+        }
+    },
+    "definitions": {
+        "diskDevice": {},
+        "diskUUID": {},
+        "nfs": {},
+        "tmpfs": {}
+    }
+}
+</pre>
 
 <p>The expressed constraints you should already be familiar with: the JSON value must be an object, and this
 object must have a property by the name <em>storage</em>; what is more, that <em>storage</em>
@@ -100,7 +171,42 @@ one option, and all options should be unique;</li>
 
 <p>With these added constraints, the schema now looks like this:</p>
 
-<script src="https://gist.github.com/4468023.js"></script>
+<pre class="json-schema">
+{
+    "id": "http://some.site.somewhere/entry-schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "schema for an fstab entry",
+    "type": "object",
+    "required": [ "storage" ],
+    "properties": {
+        "storage": {
+            "type": "object",
+            "oneOf": [
+                { "$ref": "#/definitions/diskDevice" },
+                { "$ref": "#/definitions/diskUUID" },
+                { "$ref": "#/definitions/nfs" },
+                { "$ref": "#/definitions/tmpfs" }
+            ]
+        },
+        "fstype": {
+            "enum": [ "ext3", "ext4", "btrfs" ]
+        },
+        "options": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        },
+        "readonly": { "type": "boolean" }
+    },
+    "definitions": {
+        "diskDevice": {},
+        "diskUUID": {},
+        "nfs": {},
+        "tmpfs": {}
+    }
+}
+</pre>
 
 <p>It is now time we filled the different storage definitions.</p>
 
@@ -110,14 +216,114 @@ one option, and all options should be unique;</li>
 only be <em>disk</em>, and the device must be an absolute path starting with <em>/dev</em>. No other
 properties are allowed:</p>
 
-<script src="https://gist.github.com/4468082.js"></script>
+<pre class="json-schema">
+{
+    "id": "http://some.site.somewhere/entry-schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "schema for an fstab entry",
+    "type": "object",
+    "required": [ "storage" ],
+    "properties": {
+        "storage": {
+            "type": "object",
+            "oneOf": [
+                { "$ref": "#/definitions/diskDevice" },
+                { "$ref": "#/definitions/diskUUID" },
+                { "$ref": "#/definitions/nfs" },
+                { "$ref": "#/definitions/tmpfs" }
+            ]
+        },
+        "fstype": {
+            "enum": [ "ext3", "ext4", "btrfs" ]
+        },
+        "options": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        },
+        "readonly": { "type": "boolean" }
+    },
+    "definitions": {
+        "diskDevice": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "device": {
+                    "type": "string",
+                    "pattern": "^/dev/[^/]+(/[^/]+)*$"
+                }
+            },
+            "required": [ "type", "device" ],
+            "additionalProperties": false
+        },
+        "diskUUID": {},
+        "nfs": {},
+        "tmpfs": {}
+    }
+}
+</pre>
 
 <h3>The <em>diskUUID</em> storage type</h3>
 
 <p>This storage type has two required properties, <em>type</em> and <em>label</em>. The type can
 only be <em>disk</em>, and the label must be a valid UUID. No other properties are allowed:</p>
 
-<script src="https://gist.github.com/4468166.js"></script>
+<pre class="json-schema">
+{
+    "id": "http://some.site.somewhere/entry-schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "schema for an fstab entry",
+    "type": "object",
+    "required": [ "storage" ],
+    "properties": {
+        "storage": {
+            "type": "object",
+            "oneOf": [
+                { "$ref": "#/definitions/diskDevice" },
+                { "$ref": "#/definitions/diskUUID" },
+                { "$ref": "#/definitions/nfs" },
+                { "$ref": "#/definitions/tmpfs" }
+            ]
+        },
+        "fstype": {
+            "enum": [ "ext3", "ext4", "btrfs" ]
+        },
+        "options": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        },
+        "readonly": { "type": "boolean" }
+    },
+    "definitions": {
+        "diskDevice": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "device": {
+                    "type": "string",
+                    "pattern": "^/dev/[^/]+(/[^/]+)*$"
+                }
+            },
+            "required": [ "type", "device" ],
+            "additionalProperties": false
+        },
+        "diskUUID": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "label": {
+                    "type": "string",
+                    "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+                }
+            },
+            "required": [ "type", "label" ],
+            "additionalProperties": false
+        },
+        "nfs": {},
+        "tmpfs": {}
+    }
+}
+</pre>
 
 <h3>The <em>nfs</em> storage type</h3>
 
@@ -128,7 +334,80 @@ address.</p>
 <p>For the constraints on <em>server</em>, we use a new keyword: <em>format</em>. While it is not
 required that <em>format</em> be supported, we will suppose that it is here:</p>
 
-<script src="https://gist.github.com/4468254.js"></script>
+<pre class="json-schema">
+{
+    "id": "http://some.site.somewhere/entry-schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "schema for an fstab entry",
+    "type": "object",
+    "required": [ "storage" ],
+    "properties": {
+        "storage": {
+            "type": "object",
+            "oneOf": [
+                { "$ref": "#/definitions/diskDevice" },
+                { "$ref": "#/definitions/diskUUID" },
+                { "$ref": "#/definitions/nfs" },
+                { "$ref": "#/definitions/tmpfs" }
+            ]
+        },
+        "fstype": {
+            "enum": [ "ext3", "ext4", "btrfs" ]
+        },
+        "options": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        },
+        "readonly": { "type": "boolean" }
+    },
+    "definitions": {
+        "diskDevice": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "device": {
+                    "type": "string",
+                    "pattern": "^/dev/[^/]+(/[^/]+)*$"
+                }
+            },
+            "required": [ "type", "device" ],
+            "additionalProperties": false
+        },
+        "diskUUID": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "label": {
+                    "type": "string",
+                    "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+                }
+            },
+            "required": [ "type", "label" ],
+            "additionalProperties": false
+        },
+        "nfs": {
+            "properties": {
+                "type": { "enum": [ "nfs" ] },
+                "remotePath": {
+                    "type": "string",
+                    "pattern": "^(/[^/]+)+$"
+                },
+                "server": {
+                    "type": "string",
+                    "oneOf": [
+                        { "format": "host-name" },
+                        { "format": "ipv4" },
+                        { "format": "ipv6" }
+                    ]
+                }
+            },
+            "required": [ "type", "server", "remotePath" ],
+            "additionalProperties": false
+        },
+        "tmpfs": {}
+    }
+}
+</pre>
 
 <h3> The <em>tmpfs</em> storage type</h3>
 
@@ -136,14 +415,111 @@ required that <em>format</em> be supported, we will suppose that it is here:</p>
 only be an integer. What is more, we will require that the size be between 16 and 512,
 inclusive:</p>
 
-<script src="https://gist.github.com/4468307.js"></script>
+<pre class="json-schema">
+{
+    "id": "http://some.site.somewhere/entry-schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "schema for an fstab entry",
+    "type": "object",
+    "required": [ "storage" ],
+    "properties": {
+        "storage": {
+            "type": "object",
+            "oneOf": [
+                { "$ref": "#/definitions/diskDevice" },
+                { "$ref": "#/definitions/diskUUID" },
+                { "$ref": "#/definitions/nfs" },
+                { "$ref": "#/definitions/tmpfs" }
+            ]
+        },
+        "fstype": {
+            "enum": [ "ext3", "ext4", "btrfs" ]
+        },
+        "options": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        },
+        "readonly": { "type": "boolean" }
+    },
+    "definitions": {
+        "diskDevice": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "device": {
+                    "type": "string",
+                    "pattern": "^/dev/[^/]+(/[^/]+)*$"
+                }
+            },
+            "required": [ "type", "device" ],
+            "additionalProperties": false
+        },
+        "diskUUID": {
+            "properties": {
+                "type": { "enum": [ "disk" ] },
+                "label": {
+                    "type": "string",
+                    "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+                }
+            },
+            "required": [ "type", "label" ],
+            "additionalProperties": false
+        },
+        "nfs": {
+            "properties": {
+                "type": { "enum": [ "nfs" ] },
+                "remotePath": {
+                    "type": "string",
+                    "pattern": "^(/[^/]+)+$"
+                },
+                "server": {
+                    "type": "string",
+                    "oneOf": [
+                        { "format": "host-name" },
+                        { "format": "ipv4" },
+                        { "format": "ipv6" }
+                    ]
+                }
+            },
+            "required": [ "type", "server", "remotePath" ],
+            "additionalProperties": false
+        },
+        "tmpfs": {
+            "properties": {
+                "type": { "enum": [ "tmpfs" ] },
+                "sizeInMB": {
+                    "type": "integer",
+                    "minimum": 16,
+                    "maximum": 512
+                }
+            },
+            "required": [ "type", "sizeInMB" ],
+            "additionalProperties": false
+        }
+    }
+}
+</pre>
 
 <h2>Plugging this into our main schema</h2>
 
 <p>Now that all possible entries have been described, we can refer to the entry schema from our main
 schema. We will, again, use a JSON Reference here: </p>
 
-<script src="https://gist.github.com/4468331.js"></script>
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "/": { "$ref": "http://some.site.somewhere/entry-schema#" }
+    },
+    "patternProperties": {
+        "^(/[^/]+)+$": { "$ref": "http://some.site.somewhere/entry-schema#" }
+    },
+    "additionalProperties": false,
+    "required": [ "/" ]
+}
+</pre>
 
 <h2>Wrap up</h2>
 
@@ -175,5 +551,6 @@ code to check that the submitted NFS server's hostname, or IP address, is actual
 </div>
 </div>
 
+<script src="lib/json-highlight.js"></script>
 </body>
 </html>

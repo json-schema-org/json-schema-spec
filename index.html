@@ -17,6 +17,7 @@
         })();
 
     </script>
+    <link rel="stylesheet" href="lib/json-highlight.css"></link>
 </head>
 <body>
 <div class="container">
@@ -48,7 +49,26 @@ Schema to build hyperlinks into parts of that JSON data.</dd>
 
 <p>Here is a basic example of a JSON Schema:
 
-<script src="https://gist.github.com/4460727.js"></script>
+<pre class="json-schema">
+{
+	"title": "Example Schema",
+	"type": "object",
+	"properties": {
+		"firstName": {
+			"type": "string"
+		},
+		"lastName": {
+			"type": "string"
+		},
+		"age": {
+			"description": "Age in years",
+			"type": "integer",
+			"minimum": 0
+		}
+	},
+	"required": ["firstName", "lastName"]
+}
+</pre>
 
 <p>The two examples below are step-by-step guides into building a schema:</p>
 
@@ -120,5 +140,6 @@ representation of an address.</dd>
   </div>
   </div>
 </div>
+<script src="lib/json-highlight.js"></script>
 </body>
 </html>
