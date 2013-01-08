@@ -44,17 +44,28 @@
 
 <p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
 <h3>Example schema for the product API</h3>
-<p>To start a schema definition, let's begin with a basic to JSON schema.</p>
+<p>To start a schema definition, let's begin with a basic JSON schema:</p>
 
 <pre class="json-schema">
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Product",
     "description": "A product from Acme's catalog",
     "type": "object"
 }
 </pre>
 
-<p>The above schema has a <em>description</em> saying we are going to describe a product, a <em>type</em> saying our product is a JSON object (versus a simple datapoint like a string/number), and a <em>properties</em>section for describing the data in that object.</p>
+<p>The above schema has four properties called <em>keywords</em>.
+
+The <em>title</em> and <em>description</em> keywords are descriptive only, in that they do not add
+constraints to the data being validated. The intent of the schema is stated with these two keywords
+(that is, this schema describes a product).</p>
+
+<p>The <em>type</em> keyword defines the first constraint on our JSON data: it has to be a JSON
+Object.</p>
+
+<p>Finally, the <em>$schema</em> keyword states that this schema is written according to the draft
+v4 specification.</p>
 
 <p>Next let's answer our previous questions about this API, starting with id.</p>
 
@@ -64,7 +75,9 @@
 <p>In JSON Schema terms, we can update our schema to:</p>
 <pre class="json-schema">
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Product",
+    "description": "A product from Acme's catalog",
     "type": "object",
     "properties": {
         "id": {
@@ -77,11 +90,14 @@
 </pre>
 
 <h4>Is name required?</h4>
-<p><em>name</em> is a string value that describes a product. Since there isn't much to a product, it also is required. Adding this gives us the schema:</p>
+<p><em>name</em> is a string value that describes a product. Since there isn't
+much to a product without a name, it also is required. Adding this gives us the schema:</p>
 
 <pre class="json-schema">
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Product",
+    "description": "A product from Acme's catalog",
     "type": "object",
     "properties": {
         "id": {
@@ -98,11 +114,13 @@
 </pre>
 
 <h4>Can price be 0?</h4>
-<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum.  By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
+<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum. By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
 
 <pre class="json-schema">
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Product",
+    "description": "A product from Acme's catalog",
     "type": "object",
     "properties": {
         "id": {
@@ -124,11 +142,26 @@
 </pre>
 
 <h4>Are all tags strings?</h4>
-<p>Finally, we come to the tags property. Unlike the previous properties, tags have many values, and is represented as a JSON array. According to Acme's docs, all tags must be strings, but you aren't required to specify tags. We simply leave <em>tags</em> out of the list of required properties, giving us:</p>
+<p>Finally, we come to the <em>tags</em> property. Unlike the previous
+properties, tags have many values, and is represented as a JSON array. According
+to Acme's docs, all tags must be strings, but you aren't required to specify
+tags. We simply leave <em>tags</em> out of the list of required properties.</p>
+
+<p>However, Acme's docs add two constraints:</p>
+
+<ul>
+<li>there must be at least one tag,</li>
+<li>all tags must be unique.</li>
+</ul>
+
+<p>The first constraint can be added with <em>minItems</em>, and the second one by
+specifying <em>uniqueItems</em> as being true:</p>
 
 <pre class="json-schema">
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Product",
+    "description": "A product from Acme's catalog",
     "type": "object",
     "properties": {
         "id": {
@@ -148,7 +181,9 @@
             "type": "array",
             "items": {
                 "type": "string"
-            }
+            },
+            "minItems": 1,
+            "uniqueItems": true
         }
     },
     "required": ["id", "name", "price"]
@@ -201,6 +236,7 @@
 
 <pre class="json-schema">
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Product set",
     "type": "array",
     "items": {
@@ -221,9 +257,11 @@
             },
             "tags": {
                 "type": "array",
-                    "items": {
+                "items": {
                     "type": "string"
-                }
+                },
+                "minItems": 1,
+                "uniqueItems": true
             },
             "dimensions": {
                 "type": "object",
@@ -235,7 +273,7 @@
                 "required": ["length", "width", "height"]
             },
             "warehouseLocation": {
-                "description": "Co-ordinates of the warehouse with the product",
+                "description": "Coordinates of the warehouse with the product",
                 "$ref": "http://json-schema.org/geo"
             }
         },
