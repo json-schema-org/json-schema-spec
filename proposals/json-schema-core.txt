@@ -2,12 +2,12 @@
 
 
 Internet Engineering Task Force                            fge. Galiegue
-Internet-Draft                                         November 23, 2012
+Internet-Draft                                           January 9, 2013
 Intended status: Informational
-Expires: May 27, 2013
+Expires: July 13, 2013
 
 
-               JSON Schema: core definitions and purposes
+             JSON Schema: core definitions and terminology
                             json-schema-core
 
 Abstract
@@ -34,11 +34,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 27, 2013.
+   This Internet-Draft will expire on July 13, 2013.
 
 Copyright Notice
 
-   Copyright (c) 2012 IETF Trust and the persons identified as the
+   Copyright (c) 2013 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 1]
+Galiegue                  Expires July 13, 2013                 [Page 1]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
    described in the Simplified BSD License.
@@ -63,7 +63,7 @@ Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
    2.  Conventions and Terminology  . . . . . . . . . . . . . . . . .  3
-   3.  Core terminology of JSON Schema  . . . . . . . . . . . . . . .  3
+   3.  Core terminology . . . . . . . . . . . . . . . . . . . . . . .  3
      3.1.  Property, item . . . . . . . . . . . . . . . . . . . . . .  3
      3.2.  JSON Schema, keywords  . . . . . . . . . . . . . . . . . .  3
      3.3.  Root schema, subschema . . . . . . . . . . . . . . . . . .  3
@@ -77,7 +77,7 @@ Table of Contents
      5.1.  Valid instances  . . . . . . . . . . . . . . . . . . . . .  6
      5.2.  Protocol and programming language independence . . . . . .  6
      5.3.  Integer numeric instances  . . . . . . . . . . . . . . . .  6
-     5.4.  JSON Schema extension  . . . . . . . . . . . . . . . . . .  6
+     5.4.  Extending JSON Schema  . . . . . . . . . . . . . . . . . .  6
      5.5.  Security considerations  . . . . . . . . . . . . . . . . .  7
    6.  The "$schema" keyword  . . . . . . . . . . . . . . . . . . . .  7
      6.1.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . . .  7
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 2]
+Galiegue                  Expires July 13, 2013                 [Page 2]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
 1.  Introduction
@@ -121,10 +121,11 @@ Internet-Draft                 JSON Schema                 November 2012
    intended to define validation, documentation, hyperlink navigation,
    and interaction control of JSON data.
 
-   This document defines the core terminology used by JSON Schema.
-   Other linked specifications, which expand on a particular role of
-   JSON Schema, will use that terminology.  This document also defines
-   the mechanisms used for JSON Schema identification and addressing.
+   This specification acts as a reference to other related
+   specifications, inasmuch as it defines JSON Schema core terminology
+   as well as its applications; related specifcations will use this core
+   terminology, and cover one or more of these applications in a
+   detailed manner.
 
 2.  Conventions and Terminology
 
@@ -137,38 +138,38 @@ Internet-Draft                 JSON Schema                 November 2012
    and "null" in this document are to be interpreted as defined in RFC
    4627 [RFC4627].
 
-3.  Core terminology of JSON Schema
+3.  Core terminology
 
 3.1.  Property, item
 
-   A property of a JSON object is equivalent to a member, as defined by
-   RFC 4627.
+   When refering to a JSON Object, as defined by [RFC4627], the terms
+   "member" and "property" may be used interchangeably.
 
-   An item of a JSON array is equivalent to an element, as defined by
-   RFC 4627.
+   When refering to a JSON Array, as defined by [RFC4627], the terms
+   "element" and "item" may be used interchangeably.
 
 3.2.  JSON Schema, keywords
 
    A JSON Schema is a JSON document, and that document MUST be an
-   object.  Object members of a JSON Schema are called keywords, or
-   schema keywords.
+   object.  Object members (or properties) of a JSON Schema are called
+   keywords, or schema keywords.
 
-   A JSON Schema MAY be empty.
+   A JSON Schema MAY be empty.  That is, it may have no members.
 
 3.3.  Root schema, subschema
 
-   This is a simple example of a JSON Schema, with no nested schemas:
+   This example of a JSON Schema has no subschemas:
+
+
+
+
+
+Galiegue                  Expires July 13, 2013                 [Page 3]
+
+Internet-Draft                 JSON Schema                  January 2013
 
 
    {
-
-
-
-Galiegue                  Expires May 27, 2013                  [Page 3]
-
-Internet-Draft                 JSON Schema                 November 2012
-
-
        "title": "root"
    }
 
@@ -198,8 +199,7 @@ Internet-Draft                 JSON Schema                 November 2012
 
    boolean  A JSON boolean.
 
-   integer  A JSON number without a fraction or exponent part (see RFC
-      4627, section 2.4 [RFC4627]).
+   integer  A JSON number without a fraction or exponent part.
 
    number  Any JSON number.  Number includes integer.
 
@@ -220,9 +220,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 4]
+Galiegue                  Expires July 13, 2013                 [Page 4]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
       both are strings, and have the same value; or
@@ -246,8 +246,7 @@ Internet-Draft                 JSON Schema                 November 2012
 3.6.  Instance
 
    An instance is any JSON value, which may be defined by one or more
-   JSON Schemas.  The specification may also refer to an instance as a
-   JSON instance.
+   JSON Schemas.
 
 4.  Overview
 
@@ -276,9 +275,10 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 5]
+
+Galiegue                  Expires July 13, 2013                 [Page 5]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
 4.2.  Hypermedia and linking
@@ -318,10 +318,10 @@ Internet-Draft                 JSON Schema                 November 2012
    do not.
 
    As a consequence, for interoperability reasons, schema authors and
-   instance producers SHOULD ensure that integer numeric values be
+   instance providers SHOULD ensure that integer numeric values be
    written using their canonical mathematical representation.
 
-5.4.  JSON Schema extension
+5.4.  Extending JSON Schema
 
    Implementations MAY choose to define additional keywords to JSON
    Schema.  Save for explicit agreement, schema authors SHALL NOT expect
@@ -332,9 +332,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 6]
+Galiegue                  Expires July 13, 2013                 [Page 6]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
 5.5.  Security considerations
@@ -388,9 +388,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 7]
+Galiegue                  Expires July 13, 2013                 [Page 7]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
 7.  Schema addressing
@@ -444,9 +444,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 8]
+Galiegue                  Expires July 13, 2013                 [Page 8]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
    {
@@ -500,9 +500,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                  [Page 9]
+Galiegue                  Expires July 13, 2013                 [Page 9]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
    An implementation choosing to support inline addressing SHOULD
@@ -556,9 +556,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                 [Page 10]
+Galiegue                  Expires July 13, 2013                [Page 10]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
    Content-Type: application/my-media-type+json;
@@ -612,9 +612,9 @@ Internet-Draft                 JSON Schema                 November 2012
 
 
 
-Galiegue                  Expires May 27, 2013                 [Page 11]
+Galiegue                  Expires July 13, 2013                [Page 11]
 
-Internet-Draft                 JSON Schema                 November 2012
+Internet-Draft                 JSON Schema                  January 2013
 
 
    [json-pointer]    Bryan, P. and K. Zyp, "JSON Pointer",
@@ -627,7 +627,86 @@ Internet-Draft                 JSON Schema                 November 2012
 
 Appendix A.  ChangeLog
 
-   TODO
+   draft-04
+
+      *  Split draft: core definitions (this one), validation, hyper
+         schema.
+
+   draft-03
+
+      *  Added example and verbiage to "extends" attribute.
+
+      *  Defined slash-delimited to use a leading slash.
+
+      *  Made "root" a relation instead of an attribute.
+
+      *  Removed address values, and MIME media type from format to
+         reduce confusion (mediaType already exists, so it can be used
+         for MIME types).
+
+      *  Added more explanation of nullability.
+
+      *  Removed "alternate" attribute.
+
+      *  Upper cased many normative usages of must, may, and should.
+
+      *  Replaced the link submission "properties" attribute to "schema"
+         attribute.
+
+      *  Replaced "optional" attribute with "required" attribute.
+
+      *  Replaced "maximumCanEqual" attribute with "exclusiveMaximum"
+         attribute.
+
+      *  Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
+         attribute.
+
+      *  Replaced "requires" attribute with "dependencies" attribute.
+
+      *  Moved "contentEncoding" attribute to hyper schema.
+
+
+
+
+Galiegue                  Expires July 13, 2013                [Page 12]
+
+Internet-Draft                 JSON Schema                  January 2013
+
+
+      *  Added "additionalItems" attribute.
+
+      *  Added "id" attribute.
+
+      *  Switched self-referencing variable substitution from "-this" to
+         "@" to align with reserved characters in URI template.
+
+      *  Added "patternProperties" attribute.
+
+      *  Schema URIs are now namespace versioned.
+
+      *  Added "$ref" and "$schema" attributes.
+
+   draft-02
+
+      *  Replaced "maxDecimal" attribute with "divisibleBy" attribute.
+
+      *  Added slash-delimited fragment resolution protocol and made it
+         the default.
+
+      *  Added language about using links outside of schemas by
+         referencing its normative URI.
+
+      *  Added "uniqueItems" attribute.
+
+      *  Added "targetSchema" attribute to link description object.
+
+   draft-01
+
+      *  Fixed category and updates from template.
+
+   draft-00
+
+      *  Initial draft.
 
 Author's Address
 
@@ -645,28 +724,5 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Galiegue                  Expires May 27, 2013                 [Page 12]
+Galiegue                  Expires July 13, 2013                [Page 13]
 

@@ -13,7 +13,7 @@
 <?rfc rfcedstyle="yes"?>
 <rfc category="info" docName="json-schema-core" ipr="trust200902">
     <front>
-        <title abbrev="JSON Schema">JSON Schema: core definitions and purposes</title>
+        <title abbrev="JSON Schema">JSON Schema: core definitions and terminology</title>
 
         <author fullname="Francis Galiegue" initials="fge" surname="Galiegue">
             <address>
@@ -21,7 +21,7 @@
             </address>
         </author>
 
-        <date year="2012"/>
+        <date year="2013"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -49,10 +49,10 @@
             </t>
 
             <t>
-                This document defines the core terminology used by JSON Schema. Other linked
-                specifications, which expand on a particular role of JSON Schema, will use that
-                terminology. This document also defines the mechanisms used for JSON Schema
-                identification and addressing.
+                This specification acts as a reference to other related specifications, inasmuch as
+                it defines JSON Schema core terminology as well as its applications; related
+                specifcations will use this core terminology, and cover one or more of these
+                applications in a detailed manner.
             </t>
         </section>
 
@@ -73,32 +73,34 @@
             </t>
         </section>
 
-        <section title="Core terminology of JSON Schema">
+        <section title="Core terminology">
 
             <section title="Property, item">
                 <t>
-                    A property of a JSON object is equivalent to a member, as defined by RFC 4627.
+                    When refering to a JSON Object, as defined by <xref target="RFC4627"/>, the
+                    terms "member" and "property" may be used interchangeably.
                 </t>
 
                 <t>
-                    An item of a JSON array is equivalent to an element, as defined by RFC 4627.
+                    When refering to a JSON Array, as defined by <xref target="RFC4627"/>, the terms
+                    "element" and "item" may be used interchangeably.
                 </t>
             </section>
 
             <section title="JSON Schema, keywords">
                 <t>
                     A JSON Schema is a JSON document, and that document MUST be an object. Object
-                    members of a JSON Schema are called keywords, or schema keywords.
+                    members (or properties) of a JSON Schema are called keywords, or schema keywords.
                 </t>
 
                 <t>
-                    A JSON Schema MAY be empty.
+                    A JSON Schema MAY be empty. That is, it may have no members.
                 </t>
             </section>
 
             <section title="Root schema, subschema">
                 <t>
-                    This is a simple example of a JSON Schema, with no nested schemas:
+                    This example of a JSON Schema has no subschemas:
                 </t>
                 <figure>
                     <artwork>
@@ -141,8 +143,7 @@
                     <list style="hanging">
                         <t hangText="array">A JSON array.</t>
                         <t hangText="boolean">A JSON boolean.</t>
-                        <t hangText="integer">A JSON number without a fraction or exponent part (see
-                        <xref target="RFC4627">RFC 4627, section 2.4</xref>).</t>
+                        <t hangText="integer">A JSON number without a fraction or exponent part.</t>
                         <t hangText="number">Any JSON number. Number includes integer.</t>
                         <t hangText="null">The JSON null value.</t>
                         <t hangText="object">A JSON object.</t>
@@ -181,7 +182,6 @@
             <section title="Instance">
                 <t>
                     An instance is any JSON value, which may be defined by one or more JSON Schemas.
-                    The specification may also refer to an instance as a JSON instance.
                 </t>
             </section>
 
@@ -254,12 +254,12 @@
 
                 <t>
                     As a consequence, for interoperability reasons, schema authors and instance
-                    producers SHOULD ensure that integer numeric values be written using their
+                    providers SHOULD ensure that integer numeric values be written using their
                     canonical mathematical representation.
                 </t>
             </section>
 
-            <section title="JSON Schema extension">
+            <section title="Extending JSON Schema">
                 <t>
                     Implementations MAY choose to define additional keywords to JSON Schema. Save
                     for explicit agreement, schema authors SHALL NOT expect these additional
@@ -603,27 +603,13 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
         </references>
 
         <section title="ChangeLog">
-            <t>TODO</t>
-            <!--
             <t>
                 <list style="hanging">
                     <t hangText="draft-04">
                         <list style="symbols">
-                            <t>Changed "required" attribute to an array of strings.</t>
-                            <t>Removed "format" attribute.</t>
-                            <t>Added "minProperties" and "maxProperties" attributes.</t>
-                            <t>Replaced "slash-delimited" fragment resolution with
-                            "json-pointer".</t>
-                            <t>Added "template" LDO attribute.</t>
-                            <t>Removed irrelevant "Open Issues" section.</t>
-                            <t>Merged Conventions and Terminology sections.</t>
-                            <t>Defined terms used in specification.</t>
-                            <t>Restricted "type" to only the core JSON types.</t>
-                            <t>Renamed "divisibleBy" to "mod".</t>
-                            <t>Improved wording of many sections.</t>
+                            <t>Split draft: core definitions (this one), validation, hyper schema.</t>
                         </list>
                     </t>
-
                     <t hangText="draft-03">
                         <list style="symbols">
                             <t>Added example and verbiage to "extends" attribute.</t>
@@ -679,7 +665,6 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
                     </t>
                 </list>
             </t>
-            -->
         </section>
     </back>
 </rfc>
