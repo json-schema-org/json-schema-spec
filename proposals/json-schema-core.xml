@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
@@ -49,10 +50,9 @@
             </t>
 
             <t>
-                This specification acts as a reference to other related specifications, inasmuch as
-                it defines JSON Schema core terminology as well as its applications; related
-                specifcations will use this core terminology, and cover one or more of these
-                applications in a detailed manner.
+                This specification defines JSON Schema core terminology and mechanisms; related
+                specifications build upon this specification and define different applications of
+                JSON Schema.
             </t>
         </section>
 
@@ -90,11 +90,19 @@
             <section title="JSON Schema, keywords">
                 <t>
                     A JSON Schema is a JSON document, and that document MUST be an object. Object
-                    members (or properties) of a JSON Schema are called keywords, or schema keywords.
+                    members (or properties) defined by JSON Schema (this specification, or related
+                    specifcations) are called keywords, or schema keywords.
                 </t>
 
                 <t>
-                    A JSON Schema MAY be empty. That is, it may have no members.
+                    A JSON Schema MAY contain properties which are not schema keywords.
+                </t>
+            </section>
+
+            <section title="Empty schema">
+                <t>
+                    An empty schema is a JSON Schema with no properties, or with properties which
+                    are not schema keywords.
                 </t>
             </section>
 
@@ -163,15 +171,15 @@
                         <t>both are numbers, and have the same mathematical value; or</t>
                         <t>both are arrays, and:
                             <list>
-                                <t>have the same number of elements; and</t>
-                                <t>elements at the same index are equal according to this
-                                definition; or</t>
+                                <t>have the same number of items; and</t>
+                                <t>items at the same index are equal according to this definition;
+                                or</t>
                             </list>
                         </t>
                         <t>both are objects, and:
                             <list>
-                                <t>have the same set of members; and</t>
-                                <t>values for a same member are equal according to this
+                                <t>have the same set of property names; and</t>
+                                <t>values for a same property name are equal according to this
                                 definition.</t>
                             </list>
                         </t>
@@ -181,7 +189,12 @@
 
             <section title="Instance">
                 <t>
-                    An instance is any JSON value, which may be defined by one or more JSON Schemas.
+                    An instance is any JSON value. An instance may be described by one or more
+                    schemas.
+                </t>
+
+                <t>
+                    An instance may also be referred to as "JSON instance", or "JSON data".
                 </t>
             </section>
 
@@ -190,30 +203,26 @@
         <section title="Overview">
             <t>
                 This document proposes a new media type "application/schema+json" to identify JSON
-                Schema for describing the structure of JSON instances. JSON Schemas are themselves
-                written in JSON and include facilities for describing the structure of JSON in terms
-                of allowable values, descriptions, and interpreting relations with other resources.
+                Schema for describing JSON data. JSON Schemas are themselves written in JSON.  This,
+                and related specifications, define keywords allowing to describe this data in terms
+                of allowable values, textual descriptions and interpreting relations with other
+                resources. The following sections are a summary of features defined by related
+                specifications.
             </t>
 
-            <t>
-                JSON Schema serves different purposes, which are summarized below. Each purpose has
-                a defined set of keywords which is described in its own specification.
-            </t>
-
-            <section title="Instance validation">
+            <section title="Validation">
                 <t>
-                    JSON Schema allows applications to validate any JSON instance, either non
-                    interactively or interactively. For instance, an application may use an external
-                    service to collect JSON instances and check that these collected instances match
-                    its requirements against a given schema; another application may use a schema to
-                    build an interactve interface in order to collect user input, and check the
-                    correctness of said input.
+                    JSON Schema allows applications to validate instances, either non interactively
+                    or interactively. For instance, an application may collect JSON data and check
+                    that this data matches a given set of constraints; another application may use a
+                    JSON Schema to build an interactve interface in order to collect user input
+                    according to constraints described by JSON Schema.
                 </t>
             </section>
 
             <section title="Hypermedia and linking">
                 <t>
-                    JSON Schema provides a method for defining link relations from instances to
+                    JSON Schema provides a method for extracting link relations from instances to
                     other resources, as well as describing interpretations of instances as
                     multimedia data. This allows JSON data to be interpreted as rich hypermedia
                     documents, placed in the context of a larger set of related resources.
@@ -223,39 +232,58 @@
 
         <section title="General considerations">
 
-            <section title="Valid instances">
+            <section title="Applicability to all JSON values">
                 <t>
-                    It is acknowledged that a JSON instance may be any valid JSON value as defined
+                    It is acknowledged that an instance may be any valid JSON value as defined
                     by <xref target="RFC4627"/>. As such, JSON Schema does not mandate that an
-                    instance be of a particular type: JSON Schema can process any JSON value,
-                    including null. It is the domain of JSON Schema validation to add useful
-                    constraints to the structure and, optionally, semantics, of the JSON instance
-                    being described.
+                    instance be of a particular type: JSON Schema can describe any JSON value,
+                    including null.
                 </t>
             </section>
 
-            <section title="Protocol and programming language independence">
+            <section title="Programming language independence">
                 <t>
-                    JSON Schema is agnostic with regards to both protocols and programming
-                    languages. In particular, the semantics of the client-server interface is
-                    dependent on the protocol being used. This specification nevertheless suggests
-                    mechanisms to correlate an instance to a schema over HTTP, which is the dominant
-                    protocol used for Internet-enabled interactive applications.
+                    JSON Schema is programming language agnostic. The only limitations are the ones
+                    expressed by <xref target="RFC4627"/> and those of the host programming
+                    language.
                 </t>
             </section>
 
-            <section title="Integer numeric instances">
+            <section title="JSON Schema and HTTP">
                 <t>
-                    It is acknowledged by this specification that programming language support for
-                    numeric types vary. In particular, some programming languages, and their
-                    associated parsers, yield different internal representations for floating point
-                    numbers and integers, while others do not.
+                    This specification acknowledges the role of <xref target="RFC2616">HTTP</xref>
+                    as the dominant protocol in use on the Internet, and the wealth of
+                    official specifications related to it.
                 </t>
 
                 <t>
-                    As a consequence, for interoperability reasons, schema authors and instance
-                    providers SHOULD ensure that integer numeric values be written using their
-                    canonical mathematical representation.
+                    This specification uses a subset of these specifications to recommend a set of
+                    mechanisms, usable by this protocol, to associate JSON instances to one or more
+                    schemas.
+                </t>
+            </section>
+
+            <section title="JSON Schema and other protocols">
+                <t>
+                    JSON Schema does not define any semantics for the client-server interface for
+                    any other protocols than HTTP. These semantics are application dependent, or
+                    subject to agreement between the parties involved in the use of JSON Schema for
+                    their own needs.
+                </t>
+            </section>
+
+            <section title="Mathematical integers">
+                <t>
+                    It is acknowledged by this specification that some programming languages, and
+                    their associated parsers, use different internal representations for floating
+                    point numbers and integers, while others do not.
+                </t>
+
+                <t>
+                    As a consequence, for interoperability reasons, any JSON used in the context of
+                    JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
+                    that mathematical integers be represented as integers as defined by this
+                    specification.
                 </t>
             </section>
 
@@ -298,11 +326,9 @@
                     <list>
                         <t>"http://json-schema.org/schema#" (JSON Schema written
                         against the current version of the specification);</t>
-                        <t>"http://json-schema.org/schema#" (JSON Schema written
-                        against the current version of the specification);</t>
                         <t>"http://json-schema.org/draft-04/schema#" (JSON Schema written
-                        against JSON Schema, draft v4);</t>
-                        <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
+                        against the current version of the specification);</t>
+                        <t>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
                         written against JSON Schema, draft v4);</t>
                         <t>"http://json-schema.org/draft-03/schema#" (JSON Schema written
                         against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
@@ -315,10 +341,9 @@
 
             <section title="Customization">
                 <t>
-                    When extending JSON Schema with custom keywords, schema authors MAY define a
-                    custom URI and the associated resource, and SHOULD use the "$schema" keyword for
-                    any schema written with these custom keywords. The chosen URI MUST NOT be one of
-                    the predefined values.
+                    When extending JSON Schema with custom keywords, schema authors SHOULD define a
+                    custom URI to use for "$schema". This custom URI MUST NOT be one of the
+                    predefined values.
                 </t>
             </section>
         </section>
@@ -558,13 +583,14 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
             &RFC2119;
         </references>
         <references title="Informative References">
+            &RFC2616;
             &RFC3986;
             &RFC4627;
             &RFC5988;
             <reference anchor="json-reference"
                 target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
                 <front>
-                    <title>JSON Reference</title>
+                    <title>JSON Reference (work in progress)</title>
                     <author initials="P." surname="Bryan">
                         <organization>ForgeRock US, Inc.</organization>
                     </author>
@@ -575,9 +601,9 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
                 </front>
             </reference>
             <reference anchor="json-pointer"
-                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-04">
+                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-07">
                 <front>
-                    <title>JSON Pointer</title>
+                    <title>JSON Pointer (work in progress)</title>
                     <author initials="P." surname="Bryan">
                         <organization>ForgeRock US, Inc.</organization>
                     </author>
@@ -605,59 +631,6 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
         <section title="ChangeLog">
             <t>
                 <list style="hanging">
-                    <t hangText="draft-04">
-                        <list style="symbols">
-                            <t>Split draft: core definitions (this one), validation, hyper schema.</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-03">
-                        <list style="symbols">
-                            <t>Added example and verbiage to "extends" attribute.</t>
-                            <t>Defined slash-delimited to use a leading slash.</t>
-                            <t>Made "root" a relation instead of an attribute.</t>
-                            <t>Removed address values, and MIME media type from format to reduce
-                            confusion (mediaType already exists, so it can be used for MIME
-                            types).</t>
-                            <t>Added more explanation of nullability.</t>
-                            <t>Removed "alternate" attribute.</t>
-                            <t>Upper cased many normative usages of must, may, and should.</t>
-                            <t>Replaced the link submission "properties" attribute to "schema"
-                            attribute.</t>
-                            <t>Replaced "optional" attribute with "required" attribute.</t>
-                            <t>Replaced "maximumCanEqual" attribute with "exclusiveMaximum"
-                            attribute.</t>
-                            <t>Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
-                            attribute.</t>
-                            <t>Replaced "requires" attribute with "dependencies" attribute.</t>
-                            <t>Moved "contentEncoding" attribute to hyper schema.</t>
-                            <t>Added "additionalItems" attribute.</t>
-                            <t>Added "id" attribute.</t>
-                            <t>Switched self-referencing variable substitution from "-this" to "@"
-                            to align with reserved characters in URI template.</t>
-                            <t>Added "patternProperties" attribute.</t>
-                            <t>Schema URIs are now namespace versioned.</t>
-                            <t>Added "$ref" and "$schema" attributes.</t>
-                        </list>
-                    </t>
-
-                    <t hangText="draft-02">
-                        <list style="symbols">
-                            <t>Replaced "maxDecimal" attribute with "divisibleBy" attribute.</t>
-                            <t>Added slash-delimited fragment resolution protocol and made it the
-                            default.</t>
-                            <t>Added language about using links outside of schemas by referencing
-                            its normative URI.</t>
-                            <t>Added "uniqueItems" attribute.</t>
-                            <t>Added "targetSchema" attribute to link description object.</t>
-                        </list>
-                    </t>
-
-                    <t hangText="draft-01">
-                        <list style="symbols">
-                            <t>Fixed category and updates from template.</t>
-                        </list>
-                    </t>
-
                     <t hangText="draft-00">
                         <list style="symbols">
                             <t>Initial draft.</t>
