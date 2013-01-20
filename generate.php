@@ -3,7 +3,7 @@
 header("Content-Type: text/plain");
 
 $menu = array(
-	"about" => "index.html",
+	"about" => ".",
 	"docs" => "documentation.html",
 	"examples" => "examples.html",
 	"software" => "implementations.html"
@@ -19,6 +19,11 @@ $pages = array(
 		"content" => "content/implementations.html",
 		"menu" => "software",
 		"pageTitle" => "JSON Schema Software"
+	),
+	"examples.html" => array(
+		"content" => "content/examples.html",
+		"menu" => "examples",
+		"pageTitle" => "JSON Schema Software"
 	)
 );
 
@@ -31,6 +36,7 @@ foreach ($pages as $outputFile => $pageSpec) {
 	<head>
 		<title><?php echo $pageSpec['pageTitle']; ?></title>
 		<link href="style/css/green-theme.css" rel="stylesheet">
+		<link rel="stylesheet" href="style/css/json-highlight.css"></link>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
@@ -44,7 +50,6 @@ foreach ($pages as $outputFile => $pageSpec) {
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
-		<link rel="stylesheet" href="lib/json-highlight.css"></link>
 	</head>
 	<body>
 		<script src="style/js/jquery.js"></script>
