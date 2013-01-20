@@ -197,7 +197,7 @@
             
             <section title="links">
                 <t>
-                    The <tt>links</tt> property of schemas is used to associate Link Description Options with instances.  The value of this property MUST be an array, and the items in the array must be Link Description Objects, as defined below.
+                    The <tt>links</tt> property of schemas is used to associate Link Description Objects with instances.  The value of this property MUST be an array, and the items in the array must be Link Description Objects, as defined below.
                 </t>
 
                 <figure>
@@ -224,7 +224,7 @@
                         A single URI might have more than one role with relation to an instance.  This is not a problem - the same URI can be used in more than one Link Description Object.
                         <figure>
                             <preamble>
-                                For example, this schema describes a news post, accessed via HTTP.
+                                For example, this schema describes a format for news posts, accessed via HTTP.
                                 The links describe how to access the comments for a news post, how to search the comments, and how to submit new comments, all with the same URI:</preamble>
                             <artwork>
 <![CDATA[{
@@ -325,7 +325,7 @@
                     </t>
                     
                     <t>
-                        If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be considered to be UTF-8.
+                        If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be considered to be the character encoding of the JSON document itself (for which the default is UTF-8).
                     </t>
                 </section>
                 
@@ -366,7 +366,7 @@
             <section title="pathStart">
                 <t>
                     This property is a URI that defines what the instance's URI MUST start with in order to validate.
-                    The value of the "pathStart" property MUST be resolved as per <xref target="RFC3986">RFC 3986, Sec 5</xref>, and is relative to the instance's URI.
+                    The value of the "pathStart" property MUST be resolved relative to the closest URI Resolution Scope (as defined in the core specification [FIXME link]), using the rules from <xref target="RFC3986">RFC 3986, Sec 5</xref>.
                 </t>
 
                 <t>
@@ -379,12 +379,20 @@
 
         <section title="Link Description Object">
             <t>
-                A link description object is used to describe link relations.
+                A Link Description Object (LDO) is used to describe a single link relation.
                 In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
+                A Link Description Object (LDO) must be an object.
+            </t>
+            
+            <t>
                 The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
                 The URI of the normative link description schema is: <eref target="http://json-schema.org/links">http://json-schema.org/links</eref> (latest version) or <eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
             </t>
-
+            
+            <t>
+                "Form"-like functionality can be defined by use of the "schema" keyword, which supplies a schema describing the data to supply to the server.
+            </t>
+            
             <section title="href" anchor="href">
                 <t>
                     The value of the "href" link description property is a template used to determine the target URI of the related resource.
