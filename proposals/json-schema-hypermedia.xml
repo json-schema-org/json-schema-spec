@@ -427,7 +427,12 @@
                                 Before using "href" as a template, that section of the text MUST be replaced, according to the following rules:
                                 <list>
                                     <t>If the brackets contained no text (the empty string), then they MUST be replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
-                                    <t>Otherwise, the text should be replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this includes encoding characters such as "*" and "!")</t>
+                                    <t>Otherwise:
+                                        <list>
+                                            <t>the text MUST have all pairs of close-brackets "))" replaced with a single close bracket</t>
+                                            <t>the text MUST then be replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this includes encoding characters such as "*" and "!")</t>
+                                        </list>
+                                    </t>
                                 </list>
                             </t>
                         </section>
