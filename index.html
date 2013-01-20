@@ -1,145 +1,87 @@
+
 <html>
-<head>
-    <title>JSON Schema</title>
-    <link href="lib/bootstrap-min.css" rel="stylesheet">
-    <script type="text/javascript">
+	<head>
+		<title>JSON Schema and Hyper-Schema</title>
+		<link href="style/css/green-theme.css" rel="stylesheet">
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+			_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+			_gaq.push(['_setAccount', 'UA-37169005-1']);
+			_gaq.push(['_trackPageview']);
+			
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		<link rel="stylesheet" href="lib/json-highlight.css"></link>
+	</head>
+	<body>
+		<script src="style/js/jquery.js"></script>
+		<div class="page-container" align=center>
+			<div class="page-header">
+				<h1>json-schema.org</h1>
+				<div class="tagline">The home of JSON Schema</div>
+			</div>
+			
+			<div class="page-content">
+				<div class="page-menu">
+				<a class="selected" href="index.html">about</a> <a href="documentation.html">docs</a> <a href="examples.html">examples</a> <a href="implementations.html">software</a> 				</div>
 
-        var _gaq = _gaq || [];
-        var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
-        _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-        _gaq.push(['_setAccount', 'UA-37169005-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
-    <link rel="stylesheet" href="lib/json-highlight.css"></link>
-</head>
-<body>
-<div class="container">
-  <div class="row">
-     <div class="span8">
-  <div class="page-header">
-<h1>JSON Schema</h1>
-  </div>
-  </div>
-  </div>
-    <div class="row">
-     <div class="span8">
-
-<h2>What is JSON Schema</h2>
-
-<p>JSON Schema is a JSON based format for describing JSON data.</p>
-
-<p>JSON Schema is a proposed Internet draft defining a JSON media type (application/schema+json) with the following goals:</p>
-
-<dl class="dl-horizontal">
-<dt>Validation</dt> <dd>You can use JSON Schema to validate your JSON data.</dd>
-<dt>Documentation</dt> <dd>You can extract documentation information from a JSON
-Schema, match this documentation to your data, and use that information for user
-interaction.</dd>
-<dt>Hyperlinking</dt> <dd>You can pair your JSON data with the defining JSON
-Schema to build hyperlinks into parts of that JSON data.</dd>
-</dl>
-<h2>JSON Schema by example</h2>
-
-<p>Here is a basic example of a JSON Schema:
-
-<pre class="json-schema">
-{
-	"title": "Example Schema",
-	"type": "object",
-	"properties": {
-		"firstName": {
-			"type": "string"
-		},
-		"lastName": {
-			"type": "string"
-		},
-		"age": {
-			"description": "Age in years",
-			"type": "integer",
-			"minimum": 0
-		}
-	},
-	"required": ["firstName", "lastName"]
-}
-</pre>
-
-<p>The two examples below are step-by-step guides into building a schema:</p>
-
-<ul>
-<li><a href="example.html">this first example</a> is a simple example which covers a classical
-product catalog description;</li>
-<li><a href="example2.html">this second example</a> is more advanced, and uses JSON Schema to
-describe filesystem entries in a Unix-like <tt>/etc/fstab</tt> file.</li>
-</ul>
-
-<h2 id="definitions">JSON Schema standard draft</h2>
-
-<p>The latest IETF published draft is <a id="link-draft-zyp-json-schema-03"
-href="http://tools.ietf.org/html/draft-zyp-json-schema-03">v3</a>. While not yet published,
-<a id="link-github-json-schema"  href="https://github.com/json-schema/json-schema">v4</a>
- of the draft is being updated on github.</p>
-
-<p>JSON Schema also uses two other specifications:</p>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">JSON
-Reference</a></li>
-<li><a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-07">JSON
-Pointer</a></li>
-</ul>
-
-<h2>Implementations</h2>
-
-<p>A list of JSON Schema implementations can be found <a id="link-implementations" href="implementations.html">here</a>.</p>
-
-<h2>Discussion</h2>
-
-<p>Discussion about usage and development of JSON Schema can be found at the <a id="link-google-groups"
-href="https://groups.google.com/forum/#!forum/json-schema">json-schema google
-group</a>.</p>
-
-<h2>Contributing</h2>
-
-<p>JSON Schema as a whole (this site, the specifications, and related projects)
-can be found on <a id="link-github" href="https://github.com/json-schema/">GitHub</a>.
-Feature/pull requests are welcome.</p>
-
-<h2>Reference schemas</h2>
-
-<p>JSON Schema defines meta schemas. These are schemas which can be used to
-validate other schemas (including themselves). Those are:</p>
-
-<dl class="dl-horizontal span8">
-<dt><a id="link-schema-meta" href="schema">Core Meta-Schema</a> </dt><dd>Used for schemas written
-for pure validation.</dd>
-<dt><a id="link-schema-hyper" href="hyper-schema">Hyper Meta-Schema</a></dt><dd>Used for schemas
-written for validation and hyper linking.</dd>
-</dl>
-
-<h2>Sample schemas</h2>
-
-<p>These sample schemas describe simple data structures which can be expressed as JSON:</p>
-
-<dl class="dl-horizontal span8">
-<dt><a id="link-schema-geo" href="geo">Geographic Coordinate</a></dt><dd>&nbsp;</dd>
-<dt><a id="link-schema-card" href="card">Card</a> </dt><dd> A schema for microformat style
-representation of a person, company, organization, or place.</dd>
-<dt><a id="link-schema-calendar" href="calendar">Calendar</a> </dt><dd> A schema for microformat style
-representation of an event.</dd>
-<dt><a id="link-schema-address" href="address">Address</a> </dt><dd> A schema for microformat style
-representation of an address.</dd>
-</dl>
-</p>
-  </div>
-  </div>
+				<h2>What does it do?</h2>
+<div class="block">
+	<table class="key-value">
+		<tr>
+			<td class="key">JSON Schema</td>
+			<td class="value">describes your JSON data format</td>
+		</tr>
+		<tr>
+			<td class="key">JSON Hyper-Schema</td>
+			<td class="value">turns your JSON data into hyper-text</td>
+		</tr>
+	</table>
 </div>
-<script src="lib/json-highlight.js"></script>
-</body>
+
+<h2>Advantages</h2>
+<div class="block">
+	<h3>JSON Schema</h3>
+	<ul>
+		<li>describes your existing data format</li>
+		<li>clear, human- and machine-readable documentation</li>
+		<li>complete structural validation, useful for
+			<ul>
+				<li>automated testing</li>
+				<li>validating client-submitted data</li>
+			</ul>
+		</li>
+	</ul>
+	<h3>JSON Hyper-Schema</h3>
+	<ul>
+		<li>describes your existing API - no new structures required</li>
+		<li>links (including <a href="http://tools.ietf.org/html/rfc6570">URI Templates</a> for target URIs)</li>
+		<li>forms - specify a JSON Schema for the desired data</li>
+	</ul>
+</div>
+
+<h2>More</h2>
+<div class="block">
+	<p>Interested? Check out:
+	<ul>
+		<li>the <a href="documentation.html">specification</a></li>
+		<li>some <a href="examples.html">examples</a></li>
+		<li>the growing list of<a href="software.html">JSON (Hyper-)Schema software</a></li>
+	</ul>
+	<p>Questions?  Feeling helpful?  Get involved on:
+	<ul>
+		<li>the <a href="http://github.com/json-schema/json-schema">GitHub repo</a></li>
+		<li>the <a href="https://groups.google.com/forum/#!forum/json-schema">Google Group</a></li>
+	</ul>
+</div>
+			</div>
+		</div>
+		<script src="style/js/json-highlight.js"></script>
+		<script src="style/js/show-hide.js"></script>
+	</body>
 </html>
