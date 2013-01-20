@@ -23,7 +23,17 @@ $pages = array(
 	"examples.html" => array(
 		"content" => "content/examples.html",
 		"menu" => "examples",
-		"pageTitle" => "JSON Schema Software"
+		"pageTitle" => "JSON Schema Examples"
+	),
+	"example1.html" => array(
+		"content" => "content/example1.html",
+		"menu" => "examples",
+		"pageTitle" => "JSON Schema - Simple Example"
+	),
+	"example2.html" => array(
+		"content" => "content/example2.html",
+		"menu" => "examples",
+		"pageTitle" => "JSON Schema - Advanced Example"
 	)
 );
 

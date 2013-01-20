@@ -1,0 +1,309 @@
+
+<html>
+	<head>
+		<title>JSON Schema - Simple Example</title>
+		<link href="style/css/green-theme.css" rel="stylesheet">
+		<link rel="stylesheet" href="style/css/json-highlight.css"></link>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+			_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+			_gaq.push(['_setAccount', 'UA-37169005-1']);
+			_gaq.push(['_trackPageview']);
+			
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<script src="style/js/jquery.js"></script>
+		<div class="page-container" align=center>
+			<div class="page-header">
+				<h1>json-schema.org</h1>
+				<div class="tagline">The home of JSON Schema</div>
+			</div>
+			
+			<div class="page-content">
+				<div class="page-menu">
+				<a href=".">about</a> <a href="documentation.html">docs</a> <a class="selected" href="examples.html">examples</a> <a href="implementations.html">software</a> 				</div>
+
+				<h2>Example data</h2>
+<div class="block">
+    <p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a product which has an <em>id</em>, a <em>name</em>, a <em>price</em>, and an optional set of <em>tags</em>.</p>
+
+    <h3>Example JSON data for a product API</h3>
+    <p>An example product in this API is:</p>
+
+<pre class="json">
+{
+    "id": 1,
+    "name": "A green door",
+    "price": 12.50,
+    "tags": ["home", "green"]
+}
+</pre>
+
+    <p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
+
+    <ul>
+      <li>What is id?</li>
+      <li>Is name required?</li>
+      <li>Can price be 0?</li>
+      <li>Are all tags strings?</li>
+    </ul>
+
+    <p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
+</div>
+
+<h2>Starting the schema</h2>
+<div class="block">
+    <p>To start a schema definition, let's begin with a basic JSON schema:</p>
+
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object"
+}
+</pre>
+
+    <p>The above schema has four properties called <em>keywords</em>.
+
+    The <em>title</em> and <em>description</em> keywords are descriptive only, in that they do not add
+    constraints to the data being validated. The intent of the schema is stated with these two keywords
+    (that is, this schema describes a product).</p>
+
+    <p>The <em>type</em> keyword defines the first constraint on our JSON data: it has to be a JSON
+    Object.</p>
+
+    <p>Finally, the <em>$schema</em> keyword states that this schema is written according to the draft
+    v4 specification.</p>
+</div>
+
+<h2>Defining the properties</h2>
+<div class="block">
+    <p>Next let's answer our previous questions about this API, starting with id.</p>
+
+    <h3>What is id?</h3>
+    <p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
+
+    <p>In JSON Schema terms, we can update our schema to:</p>
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        }
+    },
+    "required": ["id"]
+}
+</pre>
+
+    <h3>Is name required?</h3>
+    <p><em>name</em> is a string value that describes a product. Since there isn't
+    much to a product without a name, it also is required. Adding this gives us the schema:</p>
+
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        }
+    },
+    "required": ["id", "name"]
+}
+</pre>
+
+    <h3>Can price be 0?</h3>
+    <p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum. By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
+
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        },
+        "price": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMinimum": true
+        }
+    },
+    "required": ["id", "name", "price"]
+}
+</pre>
+
+    <h3>Are all tags strings?</h3>
+    <p>Finally, we come to the <em>tags</em> property. Unlike the previous
+    properties, tags have many values, and is represented as a JSON array. According
+    to Acme's docs, all tags must be strings, but you aren't required to specify
+    tags. We simply leave <em>tags</em> out of the list of required properties.</p>
+
+    <p>However, Acme's docs add two constraints:</p>
+
+    <ul>
+    <li>there must be at least one tag,</li>
+    <li>all tags must be unique.</li>
+    </ul>
+
+    <p>The first constraint can be added with <em>minItems</em>, and the second one by
+    specifying <em>uniqueItems</em> as being true:</p>
+
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        },
+        "price": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMinimum": true
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": ["id", "name", "price"]
+}
+</pre>
+</div>
+
+<h2>Summary</h2>
+<div class="block">
+    <p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
+    <p>As a final example, here's a spec for an array of products, with the products having 2 new properties. The first is a <em>dimensions</em> property for the size of the product, and the second is a <em>warehouseLocation</em> field for where the warehouse that stores them is geographically located.</p>
+    <p>And also, since JSON Schema defines a reference schema for a geographic location, instead of coming up with our own, we'll reference the <a href="http://json-schema.org/geo">canonical one</a>.</p>
+
+    <h3>Set of products:</h3>
+<pre class="json">
+[
+    {
+        "id": 2,
+        "name": "An ice sculpture",
+        "price": 12.50,
+        "tags": ["cold", "ice"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 3,
+        "name": "A blue mouse",
+        "price": 25.50,
+            "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    }
+]
+</pre>
+
+    <h3>Set of products schema:</h3>
+<pre class="json-schema">
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product set",
+    "type": "array",
+    "items": {
+        "title": "Product",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "The unique identifier for a product",
+                "type": "number"
+            },
+            "name": {
+                "type": "string"
+            },
+            "price": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMinimum": true
+            },
+            "tags": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+            },
+            "dimensions": {
+                "type": "object",
+                "properties": {
+                    "length": {"type": "number"},
+                    "width": {"type": "number"},
+                    "height": {"type": "number"}
+                },
+                "required": ["length", "width", "height"]
+            },
+            "warehouseLocation": {
+                "description": "Coordinates of the warehouse with the product",
+                "$ref": "http://json-schema.org/geo"
+            }
+        },
+        "required": ["id", "name", "price"]
+    }
+}
+</pre>
+</div>
+
+			</div>
+		</div>
+		<script src="style/js/json-highlight.js"></script>
+		<script src="style/js/show-hide.js"></script>
+	</body>
+</html>
