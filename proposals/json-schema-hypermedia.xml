@@ -106,14 +106,14 @@
             </t>
             <t>
                 Just as with the core JSON schema keywords, all the properties described in the "Schema Keywords" section are optional.
-                However, some of the properties of Link Description Objects are not optional.
             </t>
             <figure>
-                <preamble>An example JSON Schema defining hyperlinks, and providing hypermedia interpretation for one of the properties is:</preamble>
+                <preamble>Here is an example JSON Schema defining hyperlinks, and providing a multimedia interpretation for the "imgData" property:</preamble>
                 <artwork>
 <![CDATA[
 {
     "title": "Written Article",
+    "type": "object",
     "properties": {
         "id": {
             "title": "Article Identifier",
@@ -150,7 +150,8 @@
 ]]>
                 </artwork>
                 <postamble>
-                    This example schema defines the properties of the instance, as well as a hypermedia interpretation for the "imgData" property, specifically that it should be base64-decoded and the resulting binary data treated as a PNG image.
+                    This example schema defines the properties of the instance.
+                    For the "imgData" property, it specifies that that it should be base64-decoded and the resulting binary data treated as a PNG image.
                     It also defines link relations for the instance, with URIs incorporating values from the instance.
                 </postamble>
             </figure>
