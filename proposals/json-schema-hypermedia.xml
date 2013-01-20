@@ -180,28 +180,13 @@
             </figure>
 
             <section title="Design Considerations">
-                <t>The main purpose of this document is to define keywords for the JSON Schema that allow JSON data to be understood as hyper-text.</t>
-                <t></t>
-                <section title="Describing interaction">
-                    <t>
-                        There are useful conventions when designing APIs, such as representational state transfer (REST), that make them flexible and easy to understand.
-                        They use appropriate methods of the protocol to perform actions (for instance, HTTP POST for creating new items), making large portions of the API guessable.
-                    </t>
-                    <t>
-                        However, if URIs for links are included in the data, the client still needs to know which parts of the data represent links, as opposed to content that merely happens to be in URI form.
-                        Also, for some actions (such as a search, or tagging a picture), the parameters that need to be supplied need to be explicitly described, so that clients can be written to supply the correct information.
-                    </t>
-                    <t>
-                        The hyper-schema keywords in this document provide a means of precisely documenting the parameters required, in a machine-readable (and fairly human-friendly) way.
-                        This could be used to generate documentation, or even used directly by the client to present interactive options to the user.
-                    </t>
-                </section>
-                <section title="Hypermedia interpretation">
-                    <t>
-                        This specification also provides a vocabulary to describe JSON data as rich documents containing more than one media type.
-                        For instance, an API may be using JSON as a container format, with binary data being transported using base-64 or some other encoding.
-                    </t>
-                </section>
+                <t>
+                    The purpose of this document is to define keywords for the JSON Schema that allow JSON data to be understood as hyper-text.
+                </t>
+                <t>
+                    JSON data on its own requires special knowledge from the client about the format in order to be interpretable as hyper-text.
+                    This document proposes a way to describe the hyper-text and hyper-media interpretation of such JSON formats, without defining reserved keywords or otherwise restricting the structure of the JSON data.
+                </t>
             </section>
         </section>
 
