@@ -1,28 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-    <link href="lib/bootstrap-min.css" rel="stylesheet">
-    <link rel="stylesheet" href="lib/json-highlight.css"></link>
-</head>
-<body>
-<div class="container">
-<div class="row">
-    <div class="span8">
-        <div class="page-header">
-            <h1>JSON Schema Examples</h1>
-        </div>
-    </div>
-</div>
-<div class="row">
-<div class="span8">
-<h2>JSON Schema by example</h2>
+<h2>Example data</h2>
+<div class="block">
+    <p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a product which has an <em>id</em>, a <em>name</em>, a <em>price</em>, and an optional set of <em>tags</em>.</p>
 
-<p>Let's pretend we're interacting with a JSON based product catalog. This catalog has a product which has an <em>id</em>, a <em>name</em>, a <em>price</em>, and an optional set of <em>tags</em>.
-</p>
-
-<h3>Example JSON data for a product API</h3>
-<p>An example product in this API is:</p>
+    <h3>Example JSON data for a product API</h3>
+    <p>An example product in this API is:</p>
 
 <pre class="json">
 {
@@ -33,18 +14,21 @@
 }
 </pre>
 
-<p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
+    <p>While generally straightforward, that example leaves some open questions. For example, one may ask:</p>
 
-<ul>
-  <li>What is id?</li>
-  <li>Is name required?</li>
-  <li>Can price be 0?</li>
-  <li>Are all tags strings?</li>
-</ul>
+    <ul>
+      <li>What is id?</li>
+      <li>Is name required?</li>
+      <li>Can price be 0?</li>
+      <li>Are all tags strings?</li>
+    </ul>
 
-<p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
-<h3>Example schema for the product API</h3>
-<p>To start a schema definition, let's begin with a basic JSON schema:</p>
+    <p>When you're talking about a data format, you want to have metadata about what fields mean, and what valid inputs for those fields are. JSON schema is a specification for standardizing how to answer those questions for JSON data.</p>
+</div>
+
+<h2>Starting the schema</h2>
+<div class="block">
+    <p>To start a schema definition, let's begin with a basic JSON schema:</p>
 
 <pre class="json-schema">
 {
@@ -55,24 +39,27 @@
 }
 </pre>
 
-<p>The above schema has four properties called <em>keywords</em>.
+    <p>The above schema has four properties called <em>keywords</em>.
 
-The <em>title</em> and <em>description</em> keywords are descriptive only, in that they do not add
-constraints to the data being validated. The intent of the schema is stated with these two keywords
-(that is, this schema describes a product).</p>
+    The <em>title</em> and <em>description</em> keywords are descriptive only, in that they do not add
+    constraints to the data being validated. The intent of the schema is stated with these two keywords
+    (that is, this schema describes a product).</p>
 
-<p>The <em>type</em> keyword defines the first constraint on our JSON data: it has to be a JSON
-Object.</p>
+    <p>The <em>type</em> keyword defines the first constraint on our JSON data: it has to be a JSON
+    Object.</p>
 
-<p>Finally, the <em>$schema</em> keyword states that this schema is written according to the draft
-v4 specification.</p>
+    <p>Finally, the <em>$schema</em> keyword states that this schema is written according to the draft
+    v4 specification.</p>
+</div>
 
-<p>Next let's answer our previous questions about this API, starting with id.</p>
+<h2>Defining the properties</h2>
+<div class="block">
+    <p>Next let's answer our previous questions about this API, starting with id.</p>
 
-<h4>What is id?</h4>
-<p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
+    <h3>What is id?</h3>
+    <p><em>id</em> is a numeric value that uniquely identifies a product. Since this is the canonical identifier for a product, it doesn't make sense to have a product without one, so it is required.</p>
 
-<p>In JSON Schema terms, we can update our schema to:</p>
+    <p>In JSON Schema terms, we can update our schema to:</p>
 <pre class="json-schema">
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -89,9 +76,9 @@ v4 specification.</p>
 }
 </pre>
 
-<h4>Is name required?</h4>
-<p><em>name</em> is a string value that describes a product. Since there isn't
-much to a product without a name, it also is required. Adding this gives us the schema:</p>
+    <h3>Is name required?</h3>
+    <p><em>name</em> is a string value that describes a product. Since there isn't
+    much to a product without a name, it also is required. Adding this gives us the schema:</p>
 
 <pre class="json-schema">
 {
@@ -113,8 +100,8 @@ much to a product without a name, it also is required. Adding this gives us the 
 }
 </pre>
 
-<h4>Can price be 0?</h4>
-<p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum. By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
+    <h3>Can price be 0?</h3>
+    <p>According to Acme's docs, there are no free products. In JSON schema a number can have a minimum. By default this minimum is inclusive, so we need to specify <em>exclusiveMinimum</em>. Therefore we can update our schema with <em>price</em>:</p>
 
 <pre class="json-schema">
 {
@@ -141,21 +128,21 @@ much to a product without a name, it also is required. Adding this gives us the 
 }
 </pre>
 
-<h4>Are all tags strings?</h4>
-<p>Finally, we come to the <em>tags</em> property. Unlike the previous
-properties, tags have many values, and is represented as a JSON array. According
-to Acme's docs, all tags must be strings, but you aren't required to specify
-tags. We simply leave <em>tags</em> out of the list of required properties.</p>
+    <h3>Are all tags strings?</h3>
+    <p>Finally, we come to the <em>tags</em> property. Unlike the previous
+    properties, tags have many values, and is represented as a JSON array. According
+    to Acme's docs, all tags must be strings, but you aren't required to specify
+    tags. We simply leave <em>tags</em> out of the list of required properties.</p>
 
-<p>However, Acme's docs add two constraints:</p>
+    <p>However, Acme's docs add two constraints:</p>
 
-<ul>
-<li>there must be at least one tag,</li>
-<li>all tags must be unique.</li>
-</ul>
+    <ul>
+    <li>there must be at least one tag,</li>
+    <li>all tags must be unique.</li>
+    </ul>
 
-<p>The first constraint can be added with <em>minItems</em>, and the second one by
-specifying <em>uniqueItems</em> as being true:</p>
+    <p>The first constraint can be added with <em>minItems</em>, and the second one by
+    specifying <em>uniqueItems</em> as being true:</p>
 
 <pre class="json-schema">
 {
@@ -189,15 +176,15 @@ specifying <em>uniqueItems</em> as being true:</p>
     "required": ["id", "name", "price"]
 }
 </pre>
+</div>
 
-<h3>Example summary</h3>
-<p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
+<h2>Summary</h2>
+<div class="block">
+    <p>The above example is by no means definitive of all the types of data JSON schema can define. For more definitive information see the <a href="#definitions">full standard draft</a>.</p>
+    <p>As a final example, here's a spec for an array of products, with the products having 2 new properties. The first is a <em>dimensions</em> property for the size of the product, and the second is a <em>warehouseLocation</em> field for where the warehouse that stores them is geographically located.</p>
+    <p>And also, since JSON Schema defines a reference schema for a geographic location, instead of coming up with our own, we'll reference the <a href="http://json-schema.org/geo">canonical one</a>.</p>
 
-<p>As a final example, here's a spec for an array of products, with the products having 2 new properties. The first is a <em>dimensions</em> property for the size of the product, and the second is a <em>warehouseLocation</em> field for where the warehouse that stores them is geographically located.</p>
-
-<p>And also, since JSON Schema defines a reference schema for a geographic location, instead of coming up with our own, we'll reference the <a href="http://json-schema.org/geo">canonical one</a>.</p>
-
-<h4>Set of products:</h4>
+    <h3>Set of products:</h3>
 <pre class="json">
 [
     {
@@ -232,8 +219,7 @@ specifying <em>uniqueItems</em> as being true:</p>
 ]
 </pre>
 
-<h4>Set of products schema:</h4>
-
+    <h3>Set of products schema:</h3>
 <pre class="json-schema">
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -281,11 +267,5 @@ specifying <em>uniqueItems</em> as being true:</p>
     }
 }
 </pre>
-
-</div>
-</div>
 </div>
 
-<script src="lib/json-highlight.js"></script>
-</body>
-</html>
