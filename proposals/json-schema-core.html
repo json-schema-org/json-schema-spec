@@ -1,0 +1,1050 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>JSON Schema: core definitions and terminology</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="JSON Schema: core definitions and terminology">
+<meta name="keywords" content="JSON, Schema, Hyper Schema, Hypermedia">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Internet Engineering Task Force</td><td class="header">fge. Galiegue</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">January 21, 2013</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: July 25, 2013</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />JSON Schema: core definitions and terminology<br />json-schema-core</h1>
+
+<h3>Abstract</h3>
+
+<p>
+                JSON Schema defines the media type "application/schema+json", a JSON based format
+                for defining the structure of JSON data. JSON Schema provides a contract for what
+                JSON data is required for a given application and how to interact with it. JSON
+                Schema is intended to define validation, documentation, hyperlink navigation, and
+                interaction control of JSON data.
+            
+</p>
+<h3>Status of This Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on July 25, 2013.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2013 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+<a href="#anchor2">2.</a>&nbsp;
+Conventions and Terminology<br />
+<a href="#anchor3">3.</a>&nbsp;
+Core terminology<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">3.1.</a>&nbsp;
+Property, item<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">3.2.</a>&nbsp;
+JSON Schema, keywords<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">3.3.</a>&nbsp;
+Empty schema<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">3.4.</a>&nbsp;
+Root schema, subschema<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">3.5.</a>&nbsp;
+JSON Schema primitive types<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">3.6.</a>&nbsp;
+JSON value equality<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">3.7.</a>&nbsp;
+Instance<br />
+<a href="#anchor11">4.</a>&nbsp;
+Overview<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">4.1.</a>&nbsp;
+Validation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor13">4.2.</a>&nbsp;
+Hypermedia and linking<br />
+<a href="#anchor14">5.</a>&nbsp;
+General considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">5.1.</a>&nbsp;
+Applicability to all JSON values<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">5.2.</a>&nbsp;
+Programming language independence<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.3.</a>&nbsp;
+JSON Schema and HTTP<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.4.</a>&nbsp;
+JSON Schema and other protocols<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.5.</a>&nbsp;
+Mathematical integers<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">5.6.</a>&nbsp;
+Extending JSON Schema<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">5.7.</a>&nbsp;
+Security considerations<br />
+<a href="#anchor22">6.</a>&nbsp;
+The "$schema" keyword<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor23">6.1.</a>&nbsp;
+Purpose<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor24">6.2.</a>&nbsp;
+Customization<br />
+<a href="#anchor25">7.</a>&nbsp;
+URI resolution scopes and dereferencing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor26">7.1.</a>&nbsp;
+Definition<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">7.2.</a>&nbsp;
+URI resolution scope alteration with the "id" keyword<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">7.2.1.</a>&nbsp;
+Valid values<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">7.2.2.</a>&nbsp;
+Usage<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">7.2.3.</a>&nbsp;
+Canonical dereferencing and inline dereferencing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">7.2.4.</a>&nbsp;
+Inline dereferencing and fragments<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">7.3.</a>&nbsp;
+Security considerations<br />
+<a href="#anchor33">8.</a>&nbsp;
+Recommended correlation mechanisms for use with the HTTP protocol<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor34">8.1.</a>&nbsp;
+Correlation by means of the "Content-Type" header<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">8.2.</a>&nbsp;
+Correlation by means of the "Link" header<br />
+<a href="#anchor36">9.</a>&nbsp;
+IANA Considerations<br />
+<a href="#rfc.references1">10.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">10.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">10.2.</a>&nbsp;
+Informative References<br />
+<a href="#anchor39">Appendix&nbsp;A.</a>&nbsp;
+ChangeLog<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>
+                JSON Schema is a JSON media type for defining the structure of JSON data. JSON
+                Schema provides a contract for what JSON data is required for a given application
+                and how to interact with it. JSON Schema is intended to define validation,
+                documentation, hyperlink navigation, and interaction control of JSON data.
+            
+</p>
+<p>
+                This specification defines JSON Schema core terminology and mechanisms; related
+                specifications build upon this specification and define different applications of
+                JSON Schema.
+            
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Conventions and Terminology</h3>
+
+<p>
+                
+
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <a class='info' href='#RFC2119'>RFC 2119<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a> [RFC2119].
+            
+</p>
+<p>
+                The terms "JSON", "JSON text", "JSON value", "member", "element", "object", "array",
+                "number", "string", "boolean", "true", "false", and "null" in this document are to
+                be interpreted as defined in <a class='info' href='#RFC4627'>RFC 4627<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627].
+            
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Core terminology</h3>
+
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+Property, item</h3>
+
+<p>
+                    When refering to a JSON Object, as defined by <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a>, the
+                    terms "member" and "property" may be used interchangeably.
+                
+</p>
+<p>
+                    When refering to a JSON Array, as defined by <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a>, the terms
+                    "element" and "item" may be used interchangeably.
+                
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+JSON Schema, keywords</h3>
+
+<p>
+                    A JSON Schema is a JSON document, and that document MUST be an object. Object
+                    members (or properties) defined by JSON Schema (this specification, or related
+                    specifcations) are called keywords, or schema keywords.
+                
+</p>
+<p>
+                    A JSON Schema MAY contain properties which are not schema keywords.
+                
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
+Empty schema</h3>
+
+<p>
+                    An empty schema is a JSON Schema with no properties, or with properties which
+                    are not schema keywords.
+                
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
+Root schema, subschema</h3>
+
+<p>
+                    This example of a JSON Schema has no subschemas:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "title": "root"
+}
+
+</pre></div>
+<p>
+                    JSON Schemas can also be nested, as in this example:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "title": "root",
+    "otherSchema": {
+        "title": "nested",
+        "anotherSchema": {
+            "title": "alsoNested"
+        }
+    }
+}
+
+</pre></div>
+<p>
+                    In this example, "nested" and "alsoNested" are subschemas, and "root" is a root
+                    schema.
+                
+</p>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
+JSON Schema primitive types</h3>
+
+<p>
+                    JSON Schema defines seven primitive types for JSON values:
+                    </p>
+<blockquote class="text"><dl>
+<dt>array</dt>
+<dd>A JSON array.
+</dd>
+<dt>boolean</dt>
+<dd>A JSON boolean.
+</dd>
+<dt>integer</dt>
+<dd>A JSON number without a fraction or exponent part.
+</dd>
+<dt>number</dt>
+<dd>Any JSON number. Number includes integer.
+</dd>
+<dt>null</dt>
+<dd>The JSON null value.
+</dd>
+<dt>object</dt>
+<dd>A JSON object.
+</dd>
+<dt>string</dt>
+<dd>A JSON string.
+</dd>
+</dl></blockquote><p>
+                
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.6"></a><h3>3.6.&nbsp;
+JSON value equality</h3>
+
+<p>
+                    Two JSON values are said to be equal if and only if:
+
+                    </p>
+<blockquote class="text">
+<p>both are nulls; or
+</p>
+<p>both are booleans, and have the same value; or
+</p>
+<p>both are strings, and have the same value; or
+</p>
+<p>both are numbers, and have the same mathematical value; or
+</p>
+<p>both are arrays, and:
+                            </p>
+<blockquote class="text">
+<p>have the same number of items; and
+</p>
+<p>items at the same index are equal according to this definition;
+                                or
+</p>
+</blockquote>
+                        
+
+<p>both are objects, and:
+                            </p>
+<blockquote class="text">
+<p>have the same set of property names; and
+</p>
+<p>values for a same property name are equal according to this
+                                definition.
+</p>
+</blockquote>
+                        
+
+</blockquote><p>
+                
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.7"></a><h3>3.7.&nbsp;
+Instance</h3>
+
+<p>
+                    An instance is any JSON value. An instance may be described by one or more
+                    schemas.
+                
+</p>
+<p>
+                    An instance may also be referred to as "JSON instance", or "JSON data".
+                
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Overview</h3>
+
+<p>
+                This document proposes a new media type "application/schema+json" to identify JSON
+                Schema for describing JSON data. JSON Schemas are themselves written in JSON.  This,
+                and related specifications, define keywords allowing to describe this data in terms
+                of allowable values, textual descriptions and interpreting relations with other
+                resources. The following sections are a summary of features defined by related
+                specifications.
+            
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Validation</h3>
+
+<p>
+                    JSON Schema allows applications to validate instances, either non interactively
+                    or interactively. For instance, an application may collect JSON data and check
+                    that this data matches a given set of constraints; another application may use a
+                    JSON Schema to build an interactve interface in order to collect user input
+                    according to constraints described by JSON Schema.
+                
+</p>
+<a name="anchor13"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+Hypermedia and linking</h3>
+
+<p>
+                    JSON Schema provides a method for extracting link relations from instances to
+                    other resources, as well as describing interpretations of instances as
+                    multimedia data. This allows JSON data to be interpreted as rich hypermedia
+                    documents, placed in the context of a larger set of related resources.
+                
+</p>
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+General considerations</h3>
+
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+Applicability to all JSON values</h3>
+
+<p>
+                    It is acknowledged that an instance may be any valid JSON value as defined
+                    by <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a>. As such, JSON Schema does not mandate that an
+                    instance be of a particular type: JSON Schema can describe any JSON value,
+                    including null.
+                
+</p>
+<a name="anchor16"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Programming language independence</h3>
+
+<p>
+                    JSON Schema is programming language agnostic. The only limitations are the ones
+                    expressed by <a class='info' href='#RFC4627'>[RFC4627]<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> and those of the host programming
+                    language.
+                
+</p>
+<a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+JSON Schema and HTTP</h3>
+
+<p>
+                    This specification acknowledges the role of <a class='info' href='#RFC2616'>HTTP<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616]
+                    as the dominant protocol in use on the Internet, and the wealth of
+                    official specifications related to it.
+                
+</p>
+<p>
+                    This specification uses a subset of these specifications to recommend a set of
+                    mechanisms, usable by this protocol, to associate JSON instances to one or more
+                    schemas.
+                
+</p>
+<a name="anchor18"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+JSON Schema and other protocols</h3>
+
+<p>
+                    JSON Schema does not define any semantics for the client-server interface for
+                    any other protocols than HTTP. These semantics are application dependent, or
+                    subject to agreement between the parties involved in the use of JSON Schema for
+                    their own needs.
+                
+</p>
+<a name="anchor19"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
+Mathematical integers</h3>
+
+<p>
+                    It is acknowledged by this specification that some programming languages, and
+                    their associated parsers, use different internal representations for floating
+                    point numbers and integers, while others do not.
+                
+</p>
+<p>
+                    As a consequence, for interoperability reasons, any JSON used in the context of
+                    JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
+                    that mathematical integers be represented as integers as defined by this
+                    specification.
+                
+</p>
+<a name="anchor20"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
+Extending JSON Schema</h3>
+
+<p>
+                    Implementations MAY choose to define additional keywords to JSON Schema. Save
+                    for explicit agreement, schema authors SHALL NOT expect these additional
+                    keywords to be supported by peer implementations. Implementations SHOULD ignore
+                    keywords they do not support.
+                
+</p>
+<a name="anchor21"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
+Security considerations</h3>
+
+<p>
+                    Both schemas and instances are JSON values. As such, all security considerations
+                    defined in <a class='info' href='#RFC4627'>RFC 4627<span> (</span><span class='info'>Crockford, D., &ldquo;The application/json Media Type for JavaScript Object Notation (JSON),&rdquo; July&nbsp;2006.</span><span>)</span></a> [RFC4627] apply.
+                
+</p>
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+The "$schema" keyword</h3>
+
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+Purpose</h3>
+
+<p>
+                    The "$schema" keyword is both used as a JSON Schema version identifier and the
+                    location of a resource which is itself a JSON Schema, which describes any schema
+                    written for this particular version.
+                
+</p>
+<p>
+                    This keyword MUST be located at the root of a JSON Schema. The value of this
+                    keyword MUST be a <a class='info' href='#RFC3986'>URI<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986], and this URI MUST be both
+                    absolute and normalized. The resource located at this URI MUST successfully
+                    describe itself. It is RECOMMENDED that schema authors include this keyword in
+                    their schemas.
+                
+</p>
+<p>
+                    The following values are predefined:
+
+                    </p>
+<blockquote class="text">
+<p>"http://json-schema.org/schema#" (JSON Schema written
+                        against the current version of the specification);
+</p>
+<p>"http://json-schema.org/hyper-schema#" (JSON Schema written
+                        against the current version of the specification);
+</p>
+<p>"http://json-schema.org/draft-04/schema#" (JSON Schema written
+                        against against JSON Schema, draft v4 -- this version);
+</p>
+<p>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
+                        written against JSON Schema, draft v4 -- this version);
+</p>
+<p>"http://json-schema.org/draft-03/schema#" (JSON Schema written
+                        against <a class='info' href='#json-schema-03'>JSON Schema, draft v3<span> (</span><span class='info'>Court, G. and K. Zyp, &ldquo;JSON Schema, draft 3,&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;schema&#8209;03]);
+</p>
+<p>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
+                        written against <a class='info' href='#json-schema-03'>JSON Schema, draft
+                        v3<span> (</span><span class='info'>Court, G. and K. Zyp, &ldquo;JSON Schema, draft 3,&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;schema&#8209;03]).
+</p>
+</blockquote><p>
+                
+</p>
+<a name="anchor24"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
+Customization</h3>
+
+<p>
+                    When extending JSON Schema with custom keywords, schema authors SHOULD define a
+                    custom URI for "$schema". This custom URI MUST NOT be one of the predefined
+                    values.
+                
+</p>
+<a name="anchor25"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+URI resolution scopes and dereferencing</h3>
+
+<a name="anchor26"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+Definition</h3>
+
+<p>
+                    JSON Schema uses <a class='info' href='#json-reference'>JSON Reference<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Reference (work in progress),&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;reference] as a
+                    general addressing mechanism. It extends this specification in two ways:
+                    
+                    </p>
+<blockquote class="text">
+<p>JSON Schema offers facilities to alter the base URI against which a
+                        reference must resolve by the means of the "id" keyword;
+</p>
+<p>it defines a specific dereferencing mechanism extending JSON Reference to
+                        accept arbitrary fragment parts.
+</p>
+</blockquote><p>
+                
+</p>
+<p>
+                    Altering the URI within a schema is called defining a new resolution scope. The
+                    initial resolution scope of a schema is the URI of the schema itself, if any, or
+                    the empty URI if the schema was not loaded from a URI.
+                
+</p>
+<a name="anchor27"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2"></a><h3>7.2.&nbsp;
+URI resolution scope alteration with the "id" keyword</h3>
+
+<a name="anchor28"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2.1"></a><h3>7.2.1.&nbsp;
+Valid values</h3>
+
+<p>
+                        The value for this keyword MUST be a string, and MUST be a valid URI. This
+                        URI MUST be normalized, and MUST NOT be an empty fragment (#) or the empty
+                        URI.
+                    
+</p>
+<a name="anchor29"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2.2"></a><h3>7.2.2.&nbsp;
+Usage</h3>
+
+<p>
+                        The "id" keyword (or "id", for short) is used to alter the resolution scope.
+                        When an id is encountered, an implementation MUST resolve this id against
+                        the most immediate parent scope. The resolved URI will be the new resolution
+                        scope for this subschema and all its children, until another id is
+                        encountered.
+                    
+</p>
+<p>
+                        When using "id" to alter resolution scopes, schema authors SHOULD ensure
+                        that resolution scopes are unique within the schema.
+                    
+</p>
+<p>
+                        This schema will be taken as an example:
+                    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "id": "http://x.y.z/rootschema.json#",
+    "schema1": {
+        "id": "#foo"
+    },
+    "schema2": {
+        "id": "otherschema.json",
+        "nested": {
+            "id": "#bar"
+        },
+        "alsonested": {
+            "id": "t/inner.json#a"
+        }
+    },
+    "schema3": {
+        "id": "some://where.else/completely#"
+    }
+}
+
+</pre></div>
+<p>
+                        Subschemas at the following URI-encoded <a class='info' href='#json-pointer'>JSON
+                        Pointer<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Pointer (work in progress),&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;pointer]s (starting from the root schema) define the following
+                        resolution scopes:
+    
+                        </p>
+<blockquote class="text"><dl>
+<dt># (document root)</dt>
+<dd>http://x.y.z/rootschema.json#
+</dd>
+<dt>#/schema1</dt>
+<dd>http://x.y.z/rootschema.json#foo
+</dd>
+<dt>#/schema2</dt>
+<dd>http://x.y.z/otherschema.json#
+</dd>
+<dt>#/schema2/nested</dt>
+<dd>http://x.y.z/rootschema.json#bar
+</dd>
+<dt>#/schema2/alsonested</dt>
+<dd>http://x.y.z/t/inner.json#a
+</dd>
+<dt>#/schema3</dt>
+<dd>some://where.else/completely#
+</dd>
+</dl></blockquote><p>
+                    
+</p>
+<a name="anchor30"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2.3"></a><h3>7.2.3.&nbsp;
+Canonical dereferencing and inline dereferencing</h3>
+
+<p>
+                        When resolving a URI against a resolution scope, an implementation may
+                        choose two modes of operation:
+
+                        </p>
+<blockquote class="text"><dl>
+<dt>canonical dereferencing</dt>
+<dd>The implementation dereferences
+                            all resolved URIs.
+</dd>
+<dt>inline dereferencing</dt>
+<dd>The implementation chooses to
+                            dereference URIs within the schema.
+</dd>
+</dl></blockquote><p>
+                    
+</p>
+<p>
+                        Implementations MUST support canonical dereferencing, and MAY support inline
+                        dereferencing.
+                    
+</p>
+<p>
+                        For example, consider this schema:
+                    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "id": "http://my.site/myschema#",
+    "definitions": {
+        "schema1": {
+            "id": "schema1",
+            "type": "integer"
+        },
+        "schema2", {
+            "type": "array",
+            "items": { "$ref": "schema1" }
+        }
+    }
+}
+
+</pre></div>
+<p>
+                        When an implementation encounters the "schema1" reference, it resolves it
+                        against the most immediate parent scope, leading to URI
+                        "http://my.site/myschema/schema1#". The way to process this URI will differ
+                        according to the chosen dereferencing mode:
+
+                        </p>
+<blockquote class="text">
+<p>if canonical dereferencing is used, the implementation will
+                            dereference this URI, and fetch the content at this URI;
+</p>
+<p>if inline dereferencing is used, the implementation will notice that
+                            URI scope "http://my.site/myschema/schema1#" is already defined within
+                            the schema, and choose to use the appropriate subschema.
+</p>
+</blockquote><p>
+                    
+</p>
+<a name="anchor31"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2.4"></a><h3>7.2.4.&nbsp;
+Inline dereferencing and fragments</h3>
+
+<p>
+                        When using inline dereferencing, a resolution scope may lead to a URI which
+                        has a non empty fragment part which is not a JSON Pointer, as in this
+                        example:
+                    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "id": "http://some.site/schema#",
+    "not": { "$ref": "#inner" },
+    "definitions": {
+        "schema1": {
+            "id": "#inner",
+            "type": "boolean"
+        }
+    }
+}
+
+</pre></div>
+<p>
+                        An implementation choosing to support inline dereferencing SHOULD be able to
+                        use this kind of references. Implementations choosing to use canonical
+                        dereferencing, however, are not required to support it.
+                    
+</p>
+<a name="anchor32"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.3"></a><h3>7.3.&nbsp;
+Security considerations</h3>
+
+<p>
+                    Inline dereferencing can produce canonical URIs which differ from the canonical URI
+                    of the root schema. Schema authors SHOULD ensure that implementations using
+                    canonical dereferencing obtain the same content as implementations using inline
+                    dereferencing.
+                
+</p>
+<p>
+                    Extended JSON References using fragments which are not JSON Pointers are not
+                    dereferenceable by implementations choosing not to support inline dereferencing.
+                    This addressing mechanism is defined for backwards compatibility, and SHOULD NOT
+                    be used in new schemas.
+                
+</p>
+<a name="anchor33"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Recommended correlation mechanisms for use with the HTTP protocol</h3>
+
+<p>
+                It is acknowledged by this specification that the majority of interactive JSON
+                Schema processing will be over HTTP. This section therefore gives recommendations
+                for materializing an instance/schema correlation using mechanisms currently
+                available for this protocol. An instance is said to be described by one (or more)
+                schema(s).
+            
+</p>
+<a name="anchor34"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
+Correlation by means of the "Content-Type" header</h3>
+
+<p>
+                    It is RECOMMENDED that a MIME type parameter by the name of "profile" be
+                    appended to the "Content-Type" header of the instance being processed. If
+                    present, the value of this parameter MUST be a valid URI, and this URI SHOULD
+                    resolve to a valid JSON Schema. The MIME type MUST be "application/json", or any
+                    other subtype.
+                
+</p>
+<p>
+                    An example of such a header would be:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+Content-Type: application/my-media-type+json;
+          profile=http://example.com/my-hyper-schema#
+
+</pre></div>
+<a name="anchor35"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
+Correlation by means of the "Link" header</h3>
+
+<p>
+                    When using the "Link" header, the relation type used MUST be "describedBy", as
+                    defined by <a class='info' href='#RFC5988'>RFC 5988, section 5.3<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> [RFC5988]. The target URI
+                    of the "Link" header MUST be a valid JSON Schema.
+                
+</p>
+<p>
+                    An example of such a header would be:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+Link: &lt;http://example.com/my-hyper-schema#&gt;; rel="describedBy"
+
+</pre></div>
+<a name="anchor36"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
+IANA Considerations</h3>
+
+<p>
+                The proposed MIME media type for JSON Schema is defined as follows:
+
+                </p>
+<blockquote class="text">
+<p>type name: application;
+</p>
+<p>subtype name: schema+json.
+</p>
+</blockquote><p>
+            
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.10"></a><h3>10.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>10.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>10.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
+<td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4627">[RFC4627]</a></td>
+<td class="author-text">Crockford, D., &ldquo;<a href="http://tools.ietf.org/html/rfc4627">The application/json Media Type for JavaScript Object Notation (JSON)</a>,&rdquo; RFC&nbsp;4627, July&nbsp;2006 (<a href="http://www.rfc-editor.org/rfc/rfc4627.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5988">[RFC5988]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5988.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="json-reference">[json-reference]</a></td>
+<td class="author-text">Bryan, P. and K. Zyp, &ldquo;<a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">JSON Reference (work in progress)</a>,&rdquo; September&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="json-pointer">[json-pointer]</a></td>
+<td class="author-text">Bryan, P. and K. Zyp, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-07">JSON Pointer (work in progress)</a>,&rdquo; September&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="json-schema-03">[json-schema-03]</a></td>
+<td class="author-text">Court, G. and K. Zyp, &ldquo;<a href="http://tools.ietf.org/html/draft-zyp-json-schema-03">JSON Schema, draft 3</a>,&rdquo; September&nbsp;2012.</td></tr>
+</table>
+
+<a name="anchor39"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+ChangeLog</h3>
+
+<p>
+                </p>
+<blockquote class="text"><dl>
+<dt>draft-00</dt>
+<dd>
+                        
+<ul class="text">
+<li>Initial draft.
+</li>
+</ul>
+                    
+</dd>
+</dl></blockquote><p>
+            
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Francis Galiegue</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:fgaliegue@gmail.com">fgaliegue@gmail.com</a></td></tr>
+</table>
+</body></html>

@@ -2,9 +2,9 @@
 
 
 Internet Engineering Task Force                            fge. Galiegue
-Internet-Draft                                          January 12, 2013
+Internet-Draft                                          January 21, 2013
 Intended status: Informational
-Expires: July 16, 2013
+Expires: July 25, 2013
 
 
              JSON Schema: core definitions and terminology
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 16, 2013.
+   This Internet-Draft will expire on July 25, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 1]
+Galiegue                  Expires July 25, 2013                 [Page 1]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -85,30 +85,30 @@ Table of Contents
    6.  The "$schema" keyword  . . . . . . . . . . . . . . . . . . . .  7
      6.1.  Purpose  . . . . . . . . . . . . . . . . . . . . . . . . .  7
      6.2.  Customization  . . . . . . . . . . . . . . . . . . . . . .  8
-   7.  Schema addressing  . . . . . . . . . . . . . . . . . . . . . .  8
-     7.1.  Addressing mechanisms  . . . . . . . . . . . . . . . . . .  8
-     7.2.  URI of a root schema . . . . . . . . . . . . . . . . . . .  8
-     7.3.  Canonical addressing . . . . . . . . . . . . . . . . . . .  8
-     7.4.  Inline addressing  . . . . . . . . . . . . . . . . . . . .  9
-       7.4.1.  JSON Reference extension . . . . . . . . . . . . . . . 10
-     7.5.  Security considerations  . . . . . . . . . . . . . . . . . 10
-   8.  Schema/Instance Association  . . . . . . . . . . . . . . . . . 10
-     8.1.  Purpose of this section  . . . . . . . . . . . . . . . . . 10
-     8.2.  Recommended correlation mechanisms for use with the
-           HTTP protocol  . . . . . . . . . . . . . . . . . . . . . . 11
-       8.2.1.  Correlation by means of the "Content-Type" header  . . 11
-       8.2.2.  Correlation by means of the "Link" header  . . . . . . 11
-   9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 11
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 11
-     10.1. Normative References . . . . . . . . . . . . . . . . . . . 11
+   7.  URI resolution scopes and dereferencing  . . . . . . . . . . .  8
+     7.1.  Definition . . . . . . . . . . . . . . . . . . . . . . . .  8
+     7.2.  URI resolution scope alteration with the "id" keyword  . .  8
+       7.2.1.  Valid values . . . . . . . . . . . . . . . . . . . . .  8
+       7.2.2.  Usage  . . . . . . . . . . . . . . . . . . . . . . . .  9
+       7.2.3.  Canonical dereferencing and inline dereferencing . . . 10
+       7.2.4.  Inline dereferencing and fragments . . . . . . . . . . 11
+     7.3.  Security considerations  . . . . . . . . . . . . . . . . . 11
+   8.  Recommended correlation mechanisms for use with the HTTP
+       protocol . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+     8.1.  Correlation by means of the "Content-Type" header  . . . . 11
+     8.2.  Correlation by means of the "Link" header  . . . . . . . . 12
+   9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 12
+   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+     10.1. Normative References . . . . . . . . . . . . . . . . . . . 12
      10.2. Informative References . . . . . . . . . . . . . . . . . . 12
-   Appendix A.  ChangeLog . . . . . . . . . . . . . . . . . . . . . . 12
+   Appendix A.  ChangeLog . . . . . . . . . . . . . . . . . . . . . . 13
 
 
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 2]
+
+Galiegue                  Expires July 25, 2013                 [Page 2]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -164,7 +164,7 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 3]
+Galiegue                  Expires July 25, 2013                 [Page 3]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -220,7 +220,7 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 4]
+Galiegue                  Expires July 25, 2013                 [Page 4]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -276,7 +276,7 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 5]
+Galiegue                  Expires July 25, 2013                 [Page 5]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -332,7 +332,7 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 6]
+Galiegue                  Expires July 25, 2013                 [Page 6]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -371,30 +371,34 @@ Internet-Draft                 JSON Schema                  January 2013
    version.
 
    This keyword MUST be located at the root of a JSON Schema.  The value
-   of this keyword MUST be a URI, and this URI MUST be both absolute and
-   normalized.  The resource located at this URI MUST successfully
-   describe itself.  It is RECOMMENDED that schema authors include this
-   keyword in their schemas.
+   of this keyword MUST be a URI [RFC3986], and this URI MUST be both
+   absolute and normalized.  The resource located at this URI MUST
+   successfully describe itself.  It is RECOMMENDED that schema authors
+   include this keyword in their schemas.
 
    The following values are predefined:
 
       "http://json-schema.org/schema#" (JSON Schema written against the
       current version of the specification);
 
-      "http://json-schema.org/draft-04/schema#" (JSON Schema written
+      "http://json-schema.org/hyper-schema#" (JSON Schema written
       against the current version of the specification);
 
 
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 7]
+Galiegue                  Expires July 25, 2013                 [Page 7]
 
 Internet-Draft                 JSON Schema                  January 2013
 
 
+      "http://json-schema.org/draft-04/schema#" (JSON Schema written
+      against against JSON Schema, draft v4 -- this version);
+
       "http://json-schema.org/draft-04/hyper-schema#" (JSON Schema
-      hyperschema written against JSON Schema, draft v4);
+      hyperschema written against JSON Schema, draft v4 -- this
+      version);
 
       "http://json-schema.org/draft-03/schema#" (JSON Schema written
       against JSON Schema, draft v3 [json-schema-03]);
@@ -406,59 +410,55 @@ Internet-Draft                 JSON Schema                  January 2013
 6.2.  Customization
 
    When extending JSON Schema with custom keywords, schema authors
-   SHOULD define a custom URI to use for "$schema".  This custom URI
-   MUST NOT be one of the predefined values.
+   SHOULD define a custom URI for "$schema".  This custom URI MUST NOT
+   be one of the predefined values.
 
-7.  Schema addressing
+7.  URI resolution scopes and dereferencing
 
-7.1.  Addressing mechanisms
+7.1.  Definition
 
-   JSON Schema addressing is done using URIs [RFC3986].  Two addressing
-   mechanisms are defined: canonical addressing and inline addressing.
-   Implementations MUST support canonical addressing, and MAY support
-   inline addressing.
+   JSON Schema uses JSON Reference [json-reference] as a general
+   addressing mechanism.  It extends this specification in two ways:
 
-   Inline addressing is done by the means of the "id" keyword.  When
-   present, the value of this keyword MUST be a string; this string MUST
-   be a valid URI, and SHOULD be normalized.
+      JSON Schema offers facilities to alter the base URI against which
+      a reference must resolve by the means of the "id" keyword;
 
-7.2.  URI of a root schema
+      it defines a specific dereferencing mechanism extending JSON
+      Reference to accept arbitrary fragment parts.
 
-   When a schema is loaded via a URI, the loading URI SHALL be
-   considered to be the URI for this schema.  If a schema is loaded
-   without a URI:
+   Altering the URI within a schema is called defining a new resolution
+   scope.  The initial resolution scope of a schema is the URI of the
+   schema itself, if any, or the empty URI if the schema was not loaded
+   from a URI.
 
-      if "id" is present in the root schema, its value MAY be considered
-      to be the schema URI;
+7.2.  URI resolution scope alteration with the "id" keyword
 
-      otherwise, it is RECOMMENDED that implementations consider that
-      the URI of the schema is either the empty URI, or a URN.
+7.2.1.  Valid values
 
-7.3.  Canonical addressing
-
-   Canonical addressing in JSON Schema is done using JSON Reference
-   [json-reference].  JSON References, when encountered, MUST be
-   resolved against the URI of the current root schema.
+   The value for this keyword MUST be a string, and MUST be a valid URI.
+   This URI MUST be normalized, and MUST NOT be an empty fragment (#) or
+   the empty URI.
 
 
 
 
 
-Galiegue                  Expires July 16, 2013                 [Page 8]
+
+Galiegue                  Expires July 25, 2013                 [Page 8]
 
 Internet-Draft                 JSON Schema                  January 2013
 
 
-7.4.  Inline addressing
+7.2.2.  Usage
 
-   When "id" is encountered in a subschema, implementations MAY resolve
-   this URI against the URI of a root schema, and consider that the
-   canonical URI of this subschema is the calculated URI.  This is
-   called inline addressing.
+   The "id" keyword (or "id", for short) is used to alter the resolution
+   scope.  When an id is encountered, an implementation MUST resolve
+   this id against the most immediate parent scope.  The resolved URI
+   will be the new resolution scope for this subschema and all its
+   children, until another id is encountered.
 
-   There SHOULD NOT be two identical "id" values in the same root schema
-   which resolve to the same URI.  If this is the case, subschema lookup
-   using inline addressing is undefined.
+   When using "id" to alter resolution scopes, schema authors SHOULD
+   ensure that resolution scopes are unique within the schema.
 
    This schema will be taken as an example:
 
@@ -484,7 +484,8 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
    Subschemas at the following URI-encoded JSON Pointer [json-pointer]s
-   (starting from the root schema) have the following URIs:
+   (starting from the root schema) define the following resolution
+   scopes:
 
    # (document root)  http://x.y.z/rootschema.json#
 
@@ -499,8 +500,7 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-
-Galiegue                  Expires July 16, 2013                 [Page 9]
+Galiegue                  Expires July 25, 2013                 [Page 9]
 
 Internet-Draft                 JSON Schema                  January 2013
 
@@ -509,84 +509,129 @@ Internet-Draft                 JSON Schema                  January 2013
 
    #/schema3  some://where.else/completely#
 
-7.4.1.  JSON Reference extension
+7.2.3.  Canonical dereferencing and inline dereferencing
 
-   The JSON Reference specification mandates that the fragment part of a
-   reference, if any, be a JSON Pointer.  However, this would prevent
-   some of the URIs in the example above from being addressable.  Schema
-   authors MAY use an extended form of a JSON Reference for inline
-   addressing, such as in this example:
+   When resolving a URI against a resolution scope, an implementation
+   may choose two modes of operation:
+
+   canonical dereferencing  The implementation dereferences all resolved
+      URIs.
+
+   inline dereferencing  The implementation chooses to dereference URIs
+      within the schema.
+
+   Implementations MUST support canonical dereferencing, and MAY support
+   inline dereferencing.
+
+   For example, consider this schema:
 
 
    {
-       "$ref": "http://x.y.z/t/inner.json#a
+       "id": "http://my.site/myschema#",
+       "definitions": {
+           "schema1": {
+               "id": "schema1",
+               "type": "integer"
+           },
+           "schema2", {
+               "type": "array",
+               "items": { "$ref": "schema1" }
+           }
+       }
    }
 
 
-   An implementation choosing to support inline addressing SHOULD
-   support this extension to JSON Reference.
+   When an implementation encounters the "schema1" reference, it
+   resolves it against the most immediate parent scope, leading to URI
+   "http://my.site/myschema/schema1#".  The way to process this URI will
+   differ according to the chosen dereferencing mode:
 
-7.5.  Security considerations
+      if canonical dereferencing is used, the implementation will
+      dereference this URI, and fetch the content at this URI;
 
-   Inline addressing can produce canonical URIs which differ from the
-   canonical URI of the root schema.  Implementations MAY choose, for
-   security reasons, to ignore inline addressing in such a situation,
-   and fall back to canonical addressing.
-
-   Dereferencing URIs MAY fail to complete, or MAY procude content which
-   is not a JSON Schema (another type of JSON value, or not a JSON
-   value).  It is RECOMMENDED that JSON Schema processing be considered
-   a failure in such a situation.
-
-8.  Schema/Instance Association
-
-8.1.  Purpose of this section
-
-   A JSON instance MAY be correlated to one, or even several, JSON
-   Schemas.  This correlation MAY be embodied within existing protocol
-   headers.
-
-   In addition, if the protocol also carries media type information (by
-   means, for instance, of a "Content-Type" header), an instance MUST be
-   one of "application/json" or any other subtype.
-
-   Should the scenario above be inapplicable, due either to the absence
-   of, or restrictions on, protocol headers, such a correlation is out
-   of the normative scope of this specification.
+      if inline dereferencing is used, the implementation will notice
+      that URI scope "http://my.site/myschema/schema1#" is already
+      defined within the schema, and choose to use the appropriate
+      subschema.
 
 
 
-Galiegue                  Expires July 16, 2013                [Page 10]
+Galiegue                  Expires July 25, 2013                [Page 10]
 
 Internet-Draft                 JSON Schema                  January 2013
 
 
-8.2.  Recommended correlation mechanisms for use with the HTTP protocol
+7.2.4.  Inline dereferencing and fragments
+
+   When using inline dereferencing, a resolution scope may lead to a URI
+   which has a non empty fragment part which is not a JSON Pointer, as
+   in this example:
+
+
+   {
+       "id": "http://some.site/schema#",
+       "not": { "$ref": "#inner" },
+       "definitions": {
+           "schema1": {
+               "id": "#inner",
+               "type": "boolean"
+           }
+       }
+   }
+
+
+   An implementation choosing to support inline dereferencing SHOULD be
+   able to use this kind of references.  Implementations choosing to use
+   canonical dereferencing, however, are not required to support it.
+
+7.3.  Security considerations
+
+   Inline dereferencing can produce canonical URIs which differ from the
+   canonical URI of the root schema.  Schema authors SHOULD ensure that
+   implementations using canonical dereferencing obtain the same content
+   as implementations using inline dereferencing.
+
+   Extended JSON References using fragments which are not JSON Pointers
+   are not dereferenceable by implementations choosing not to support
+   inline dereferencing.  This addressing mechanism is defined for
+   backwards compatibility, and SHOULD NOT be used in new schemas.
+
+8.  Recommended correlation mechanisms for use with the HTTP protocol
 
    It is acknowledged by this specification that the majority of
    interactive JSON Schema processing will be over HTTP.  This section
    therefore gives recommendations for materializing an instance/schema
    correlation using mechanisms currently available for this protocol.
+   An instance is said to be described by one (or more) schema(s).
 
-8.2.1.  Correlation by means of the "Content-Type" header
+8.1.  Correlation by means of the "Content-Type" header
 
    It is RECOMMENDED that a MIME type parameter by the name of "profile"
    be appended to the "Content-Type" header of the instance being
    processed.  If present, the value of this parameter MUST be a valid
-   URI, and this URI SHOULD resolve to a valid JSON Schema.
+
+
+
+Galiegue                  Expires July 25, 2013                [Page 11]
+
+Internet-Draft                 JSON Schema                  January 2013
+
+
+   URI, and this URI SHOULD resolve to a valid JSON Schema.  The MIME
+   type MUST be "application/json", or any other subtype.
 
    An example of such a header would be:
 
 
    Content-Type: application/my-media-type+json;
-                 profile=http://example.com/my-hyper-schema
+             profile=http://example.com/my-hyper-schema#
 
 
-8.2.2.  Correlation by means of the "Link" header
+8.2.  Correlation by means of the "Link" header
 
    When using the "Link" header, the relation type used MUST be
    "describedBy", as defined by RFC 5988, section 5.3 [RFC5988].  The
-   target URI of the "Link" header SHOULD be a valid JSON Schema.
+   target URI of the "Link" header MUST be a valid JSON Schema.
 
    An example of such a header would be:
 
@@ -609,14 +654,6 @@ Internet-Draft                 JSON Schema                  January 2013
    [RFC2119]         Bradner, S., "Key words for use in RFCs to Indicate
                      Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-
-
-
-Galiegue                  Expires July 16, 2013                [Page 11]
-
-Internet-Draft                 JSON Schema                  January 2013
-
-
 10.2.  Informative References
 
    [RFC2616]         Fielding, R., Gettys, J., Mogul, J., Frystyk, H.,
@@ -627,6 +664,14 @@ Internet-Draft                 JSON Schema                  January 2013
    [RFC3986]         Berners-Lee, T., Fielding, R., and L. Masinter,
                      "Uniform Resource Identifier (URI): Generic
                      Syntax", STD 66, RFC 3986, January 2005.
+
+
+
+
+Galiegue                  Expires July 25, 2013                [Page 12]
+
+Internet-Draft                 JSON Schema                  January 2013
+
 
    [RFC4627]         Crockford, D., "The application/json Media Type for
                      JavaScript Object Notation (JSON)", RFC 4627,
@@ -668,5 +713,16 @@ Author's Address
 
 
 
-Galiegue                  Expires July 16, 2013                [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+Galiegue                  Expires July 25, 2013                [Page 13]
 

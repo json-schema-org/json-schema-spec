@@ -315,9 +315,10 @@
 
                 <t>
                     This keyword MUST be located at the root of a JSON Schema. The value of this
-                    keyword MUST be a URI, and this URI MUST be both absolute and normalized. The
-                    resource located at this URI MUST successfully describe itself. It is
-                    RECOMMENDED that schema authors include this keyword in their schemas.
+                    keyword MUST be a <xref target="RFC3986">URI</xref>, and this URI MUST be both
+                    absolute and normalized. The resource located at this URI MUST successfully
+                    describe itself. It is RECOMMENDED that schema authors include this keyword in
+                    their schemas.
                 </t>
 
                 <t>
@@ -326,10 +327,12 @@
                     <list>
                         <t>"http://json-schema.org/schema#" (JSON Schema written
                         against the current version of the specification);</t>
-                        <t>"http://json-schema.org/draft-04/schema#" (JSON Schema written
+                        <t>"http://json-schema.org/hyper-schema#" (JSON Schema written
                         against the current version of the specification);</t>
+                        <t>"http://json-schema.org/draft-04/schema#" (JSON Schema written
+                        against against JSON Schema, draft v4 -- this version);</t>
                         <t>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
-                        written against JSON Schema, draft v4);</t>
+                        written against JSON Schema, draft v4 -- this version);</t>
                         <t>"http://json-schema.org/draft-03/schema#" (JSON Schema written
                         against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
                         <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
@@ -342,73 +345,67 @@
             <section title="Customization">
                 <t>
                     When extending JSON Schema with custom keywords, schema authors SHOULD define a
-                    custom URI to use for "$schema". This custom URI MUST NOT be one of the
-                    predefined values.
+                    custom URI for "$schema". This custom URI MUST NOT be one of the predefined
+                    values.
                 </t>
             </section>
         </section>
 
-        <section title="Schema addressing">
-
-            <section title="Addressing mechanisms">
+        <section title="URI resolution scopes and dereferencing">
+            <section title="Definition">
                 <t>
-                    JSON Schema addressing is done using <xref target="RFC3986">URIs</xref>. Two
-                    addressing mechanisms are defined: canonical addressing and inline addressing.
-                    Implementations MUST support canonical addressing, and MAY support inline
-                    addressing.
-                </t>
-
-                <t>
-                    Inline addressing is done by the means of the "id" keyword. When present, the
-                    value of this keyword MUST be a string; this string MUST be a valid URI, and
-                    SHOULD be normalized.
-                </t>
-            </section>
-
-            <section title="URI of a root schema">
-                <t>
-                    When a schema is loaded via a URI, the loading URI SHALL be considered to be the
-                    URI for this schema. If a schema is loaded without a URI:
-
+                    JSON Schema uses <xref target="json-reference">JSON Reference</xref> as a
+                    general addressing mechanism. It extends this specification in two ways:
+                    
                     <list>
-                        <t>if "id" is present in the root schema, its value MAY be considered to be
-                        the schema URI;</t>
-                        <t>otherwise, it is RECOMMENDED that implementations consider that the URI
-                        of the schema is either the empty URI, or a URN.</t>
+                        <t>JSON Schema offers facilities to alter the base URI against which a
+                        reference must resolve by the means of the "id" keyword;</t>
+                        <t>it defines a specific dereferencing mechanism extending JSON Reference to
+                        accept arbitrary fragment parts.</t>
                     </list>
                 </t>
-            </section>
-
-            <section title="Canonical addressing">
+                
                 <t>
-                    Canonical addressing in JSON Schema is done using <xref
-                    target="json-reference">JSON Reference</xref>. JSON References, when
-                    encountered, MUST be resolved against the URI of the current root schema.
+                    Altering the URI within a schema is called defining a new resolution scope. The
+                    initial resolution scope of a schema is the URI of the schema itself, if any, or
+                    the empty URI if the schema was not loaded from a URI.
                 </t>
             </section>
 
-            <section title="Inline addressing">
-                <t>
-                    When "id" is encountered in a subschema, implementations MAY resolve this URI
-                    against the URI of a root schema, and consider that the canonical URI of this
-                    subschema is the calculated URI. This is called inline addressing.
-                </t>
+            <section title='URI resolution scope alteration with the "id" keyword'>
+                
+                <section title="Valid values">
+                    <t>
+                        The value for this keyword MUST be a string, and MUST be a valid URI. This
+                        URI MUST be normalized, and MUST NOT be an empty fragment (#) or the empty
+                        URI.
+                    </t>
+                 </section>
 
-                <t>
-                    There SHOULD NOT be two identical "id" values in the same root schema which
-                    resolve to the same URI. If this is the case, subschema lookup using inline
-                    addressing is undefined.
-                </t>
+                <section title="Usage">
+                    <t>
+                        The "id" keyword (or "id", for short) is used to alter the resolution scope.
+                        When an id is encountered, an implementation MUST resolve this id against
+                        the most immediate parent scope. The resolved URI will be the new resolution
+                        scope for this subschema and all its children, until another id is
+                        encountered.
+                    </t>
 
-                <t>
-                    This schema will be taken as an example:
-                </t>
+                    <t>
+                        When using "id" to alter resolution scopes, schema authors SHOULD ensure
+                        that resolution scopes are unique within the schema.
+                    </t>
 
-                <!--
-                    FIXME: http again as a scheme, maybe another one? It can be any scheme after all
-                -->
-                <figure>
-                    <artwork>
+                    <t>
+                        This schema will be taken as an example:
+                    </t>
+
+                    <!--
+                        FIXME: http again as a scheme, maybe another one? It can be any scheme after
+                        all
+                    -->
+                    <figure>
+                        <artwork>
 <![CDATA[
 {
     "id": "http://x.y.z/rootschema.json#",
@@ -429,29 +426,89 @@
     }
 }
 ]]>
-                    </artwork>
-                </figure>
+                        </artwork>
+                    </figure>
 
-                <t>
-                    Subschemas at the following URI-encoded <xref target="json-pointer">JSON
-                    Pointer</xref>s (starting from the root schema) have the following URIs:
-
-                    <list style="hanging">
-                        <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
-                        <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
-                        <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
-                        <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
-                        <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
-                        <t hangText="#/schema3">some://where.else/completely#</t>
-                    </list>
-                </t>
-
-                <section title="JSON Reference extension">
                     <t>
-                        The JSON Reference specification mandates that the fragment part of a
-                        reference, if any, be a JSON Pointer. However, this would prevent some of
-                        the URIs in the example above from being addressable. Schema authors MAY use
-                        an extended form of a JSON Reference for inline addressing, such as in this
+                        Subschemas at the following URI-encoded <xref target="json-pointer">JSON
+                        Pointer</xref>s (starting from the root schema) define the following
+                        resolution scopes:
+    
+                        <list style="hanging">
+                            <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
+                            <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
+                            <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
+                            <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
+                            <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
+                            <t hangText="#/schema3">some://where.else/completely#</t>
+                        </list>
+                    </t>
+    
+                </section>
+
+                <section title="Canonical dereferencing and inline dereferencing">
+                    <t>
+                        When resolving a URI against a resolution scope, an implementation may
+                        choose two modes of operation:
+
+                        <list style="hanging">
+                            <t hangText="canonical dereferencing">The implementation dereferences
+                            all resolved URIs.</t>
+                            <t hangText="inline dereferencing">The implementation chooses to
+                            dereference URIs within the schema.</t>
+                        </list>
+                    </t>
+
+                    <t>
+                        Implementations MUST support canonical dereferencing, and MAY support inline
+                        dereferencing.
+                    </t>
+
+                    <t>
+                        For example, consider this schema:
+                    </t>
+
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "id": "http://my.site/myschema#",
+    "definitions": {
+        "schema1": {
+            "id": "schema1",
+            "type": "integer"
+        },
+        "schema2", {
+            "type": "array",
+            "items": { "$ref": "schema1" }
+        }
+    }
+}
+]]>
+                        </artwork>
+                    </figure>
+
+                    <t>
+                        When an implementation encounters the "schema1" reference, it resolves it
+                        against the most immediate parent scope, leading to URI
+                        "http://my.site/myschema/schema1#". The way to process this URI will differ
+                        according to the chosen dereferencing mode:
+
+                        <list>
+                            <t>if canonical dereferencing is used, the implementation will
+                            dereference this URI, and fetch the content at this URI;</t>
+                            <t>if inline dereferencing is used, the implementation will notice that
+                            URI scope "http://my.site/myschema/schema1#" is already defined within
+                            the schema, and choose to use the appropriate subschema.</t>
+                        </list>
+                    </t>
+                                
+                </section>
+
+                <section title="Inline dereferencing and fragments">
+                    <t>
+                        When using inline dereferencing, a resolution scope may lead to a URI which
+                        has a non empty fragment part which is not a JSON Pointer, as in this
                         example:
                     </t>
 
@@ -459,109 +516,99 @@
                         <artwork>
 <![CDATA[
 {
-    "$ref": "http://x.y.z/t/inner.json#a
+    "id": "http://some.site/schema#",
+    "not": { "$ref": "#inner" },
+    "definitions": {
+        "schema1": {
+            "id": "#inner",
+            "type": "boolean"
+        }
+    }
 }
 ]]>
                         </artwork>
                     </figure>
 
                     <t>
-                        An implementation choosing to support inline addressing SHOULD support this
-                        extension to JSON Reference.
+                        An implementation choosing to support inline dereferencing SHOULD be able to
+                        use this kind of references. Implementations choosing to use canonical
+                        dereferencing, however, are not required to support it.
                     </t>
                 </section>
+                    
             </section>
 
             <section title="Security considerations">
                 <t>
-                    Inline addressing can produce canonical URIs which differ from the canonical URI
-                    of the root schema. Implementations MAY choose, for security reasons, to ignore
-                    inline addressing in such a situation, and fall back to canonical addressing.
+                    Inline dereferencing can produce canonical URIs which differ from the canonical URI
+                    of the root schema. Schema authors SHOULD ensure that implementations using
+                    canonical dereferencing obtain the same content as implementations using inline
+                    dereferencing.
                 </t>
 
                 <t>
-                    Dereferencing URIs MAY fail to complete, or MAY procude content which is not a
-                    JSON Schema (another type of JSON value, or not a JSON value). It is RECOMMENDED
-                    that JSON Schema processing be considered a failure in such a situation.
+                    Extended JSON References using fragments which are not JSON Pointers are not
+                    dereferenceable by implementations choosing not to support inline dereferencing.
+                    This addressing mechanism is defined for backwards compatibility, and SHOULD NOT
+                    be used in new schemas.
                 </t>
             </section>
         </section>
 
-        <section title="Schema/Instance Association">
+        <section title="Recommended correlation mechanisms for use with the HTTP protocol">
 
-            <section title="Purpose of this section">
+            <t>
+                It is acknowledged by this specification that the majority of interactive JSON
+                Schema processing will be over HTTP. This section therefore gives recommendations
+                for materializing an instance/schema correlation using mechanisms currently
+                available for this protocol. An instance is said to be described by one (or more)
+                schema(s).
+            </t>
+
+            <section title='Correlation by means of the "Content-Type" header'>
                 <t>
-                    A JSON instance MAY be correlated to one, or even several, JSON Schemas. This
-                    correlation MAY be embodied within existing protocol headers.
+                    It is RECOMMENDED that a MIME type parameter by the name of "profile" be
+                    appended to the "Content-Type" header of the instance being processed. If
+                    present, the value of this parameter MUST be a valid URI, and this URI SHOULD
+                    resolve to a valid JSON Schema. The MIME type MUST be "application/json", or any
+                    other subtype.
                 </t>
 
                 <t>
-                    In addition, if the protocol also carries media type information (by means, for
-                    instance, of a "Content-Type" header), an instance MUST be one of
-                    "application/json" or any other subtype.
+                    An example of such a header would be:
                 </t>
 
-                <t>
-                    Should the scenario above be inapplicable, due either to the absence of, or
-                    restrictions on, protocol headers, such a correlation is out of the normative
-                    scope of this specification.
-                </t>
-            </section>
-
-            <section title="Recommended correlation mechanisms for use with the HTTP protocol">
-
-                <t>
-                    It is acknowledged by this specification that the majority of interactive JSON
-                    Schema processing will be over HTTP. This section therefore gives
-                    recommendations for materializing an instance/schema correlation using
-                    mechanisms currently available for this protocol.
-                </t>
-
-                <section title='Correlation by means of the "Content-Type" header'>
-                    <t>
-                        It is RECOMMENDED that a MIME type parameter by the name of "profile" be
-                        appended to the "Content-Type" header of the instance being processed. If
-                        present, the value of this parameter MUST be a valid URI, and this URI
-                        SHOULD resolve to a valid JSON Schema.
-                    </t>
-
-                    <t>
-                        An example of such a header would be:
-                    </t>
-
-                    <figure>
-                        <artwork>
+                <figure>
+                    <artwork>
 <![CDATA[
 Content-Type: application/my-media-type+json;
-              profile=http://example.com/my-hyper-schema
+          profile=http://example.com/my-hyper-schema#
 ]]>
-                        </artwork>
-                    </figure>
+                    </artwork>
+                </figure>
 
-                </section>
+            </section>
 
-                <section title='Correlation by means of the "Link" header'>
-                    <t>
-                        When using the "Link" header, the relation type used MUST be "describedBy",
-                        as defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>. The
-                        target URI of the "Link" header SHOULD be a valid JSON Schema.
-                    </t>
+            <section title='Correlation by means of the "Link" header'>
+                <t>
+                    When using the "Link" header, the relation type used MUST be "describedBy", as
+                    defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>. The target URI
+                    of the "Link" header MUST be a valid JSON Schema.
+                </t>
 
-                    <t>
-                        An example of such a header would be:
-                    </t>
+                <t>
+                    An example of such a header would be:
+                </t>
 
-                    <figure>
-                        <artwork>
+                <figure>
+                    <artwork>
 <![CDATA[
 Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
 ]]>
-                        </artwork>
-                    </figure>
+                    </artwork>
+                </figure>
 
-                </section>
             </section>
-
         </section>
 
         <section title="IANA Considerations">
