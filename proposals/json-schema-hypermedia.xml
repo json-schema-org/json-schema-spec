@@ -399,6 +399,15 @@
                     The value of the instance property SHOULD be resolved as a URI-Reference per <xref target="RFC3986">RFC 3986</xref> and MAY be a relative reference to a URI.
                     The base URI to be used for relative URI resolution SHOULD be the URI used to retrieve the instance object (not the schema).
                 </t>
+
+                <t>
+                    The base URI to be used for relative URI resolution SHOULD is defined as follows:
+                    <list>
+                        <t>if the data has a link defined, with a relation of "self", then the \"href\" value of that link is used</t>
+                        <t>if no such link exists, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document</t>
+                        <t>if no such links exist (the data and all its parents in the tree do not have a "self" link), the URI used to fetch the document should be used.</t>
+                    </list>
+                </t>
                 
                 <t>This property is not optional.</t>
                 
