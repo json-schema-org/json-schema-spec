@@ -15,6 +15,11 @@ $pages = array(
 		"menu" => "about",
 		"pageTitle" => "JSON Schema and Hyper-Schema"
 	),
+	"documentation.html" => array(
+		"content" => "content/documentation.html",
+		"menu" => "docs",
+		"pageTitle" => "JSON Schema - Documentation"
+	),
 	"implementations.html" => array(
 		"content" => "content/implementations.html",
 		"menu" => "software",
