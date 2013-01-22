@@ -325,12 +325,12 @@
 
                     <section title="type">
                         <t>
-                            The value of this property must be a media type <xref target="RFC2046">RFC 2046</xref>.
+                            The value of this property must be a media type, as defined by <xref target="RFC2046">RFC 2046</xref>.
                             This property defines the media type of instances which this schema defines.
                         </t>
                         
                         <t>
-                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be considered to be the character encoding of the JSON document itself (for which the default is UTF-8).
+                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be the character set of the JSON string value (for which the default is Unicode).
                         </t>
                     </section>
                 </section>
@@ -1014,18 +1014,6 @@ GET /foo/
         </section>
 
         <section title="IANA Considerations">
-            <t>The proposed MIME media type for JSON Schema is "application/schema+json".</t>
-            <t>Type name: application</t>
-            <t>Subtype name: schema+json</t>
-            <t>Required parameters: profile</t>
-            <t>
-                The value of the profile parameter SHOULD be a URI (relative or absolute) that refers to the schema used to define the structure of this structure (the meta-schema).
-                Normally the value would be http://json-schema.org/draft-04/hyper-schema, but it is allowable to use other schemas that extend the hyper schema's meta-schema.
-            </t>
-            <t>Optional parameters: pretty</t>
-            <t>The value of the pretty parameter MAY be true or false to indicate if additional
-            whitespace has been included to make the JSON representation easier to read.</t>
-
             <section title="Registry of Link Relations">
                 <t>
                     This registry is maintained by IANA per <xref target="RFC4287">RFC 4287</xref> and this specification adds four values: "full", "create", "instances", "root".
