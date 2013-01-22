@@ -549,12 +549,12 @@ binaryEncoding</h3>
 type</h3>
 
 <p>
-                            The value of this property must be a media type <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046].
+                            The value of this property must be a media type, as defined by <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046].
                             This property defines the media type of instances which this schema defines.
                         
 </p>
 <p>
-                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be considered to be the character encoding of the JSON document itself (for which the default is UTF-8).
+                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be the character set of the JSON string value (for which the default is Unicode).
                         
 </p>
 <a name="anchor14"></a><br /><hr />
@@ -1341,24 +1341,6 @@ schema</h3>
 <a name="rfc.section.6"></a><h3>6.&nbsp;
 IANA Considerations</h3>
 
-<p>The proposed MIME media type for JSON Schema is "application/schema+json".
-</p>
-<p>Type name: application
-</p>
-<p>Subtype name: schema+json
-</p>
-<p>Required parameters: profile
-</p>
-<p>
-                The value of the profile parameter SHOULD be a URI (relative or absolute) that refers to the schema used to define the structure of this structure (the meta-schema).
-                Normally the value would be http://json-schema.org/draft-04/hyper-schema, but it is allowable to use other schemas that extend the hyper schema's meta-schema.
-            
-</p>
-<p>Optional parameters: pretty
-</p>
-<p>The value of the pretty parameter MAY be true or false to indicate if additional
-            whitespace has been included to make the JSON representation easier to read.
-</p>
 <a name="anchor40"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.1"></a><h3>6.1.&nbsp;

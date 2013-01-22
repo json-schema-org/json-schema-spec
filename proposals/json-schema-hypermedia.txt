@@ -88,10 +88,10 @@ Table of Contents
        5.6.2.  encType  . . . . . . . . . . . . . . . . . . . . . . . 23
        5.6.3.  schema . . . . . . . . . . . . . . . . . . . . . . . . 24
    6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 24
-     6.1.  Registry of Link Relations . . . . . . . . . . . . . . . . 25
+     6.1.  Registry of Link Relations . . . . . . . . . . . . . . . . 24
    7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 25
      7.1.  Normative References . . . . . . . . . . . . . . . . . . . 25
-     7.2.  Informative References . . . . . . . . . . . . . . . . . . 26
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 25
    Appendix A.  Change Log  . . . . . . . . . . . . . . . . . . . . . 26
 
 
@@ -454,15 +454,14 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 4.3.1.2.  type
 
-   The value of this property must be a media type RFC 2046 [RFC2046].
-   This property defines the media type of instances which this schema
-   defines.
+   The value of this property must be a media type, as defined by RFC
+   2046 [RFC2046].  This property defines the media type of instances
+   which this schema defines.
 
    If the "binaryEncoding" property is not set, but the instance value
    is a string, then the value of this property SHOULD specify a text
-   document type, and the character set SHOULD be considered to be the
-   character encoding of the JSON document itself (for which the default
-   is UTF-8).
+   document type, and the character set SHOULD be the character set of
+   the JSON string value (for which the default is Unicode).
 
 4.3.2.  Example
 
@@ -494,6 +493,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
    Instances described by this schema should be strings containing HTML,
    using the UTF-8 character set.
+
 
 
 
@@ -1332,11 +1332,11 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 6.  IANA Considerations
 
-   The proposed MIME media type for JSON Schema is "application/
-   schema+json".
+6.1.  Registry of Link Relations
 
-   Type name: application
-
+   This registry is maintained by IANA per RFC 4287 [RFC4287] and this
+   specification adds four values: "full", "create", "instances",
+   "root".  New assignments are subject to IESG Approval, as outlined in
 
 
 
@@ -1345,27 +1345,6 @@ Luff, et al.              Expires July 26, 2013                [Page 24]
 Internet-Draft           JSON Schema Media Type             January 2013
 
 
-   Subtype name: schema+json
-
-   Required parameters: profile
-
-   The value of the profile parameter SHOULD be a URI (relative or
-   absolute) that refers to the schema used to define the structure of
-   this structure (the meta-schema).  Normally the value would be
-   http://json-schema.org/draft-04/hyper-schema, but it is allowable to
-   use other schemas that extend the hyper schema's meta-schema.
-
-   Optional parameters: pretty
-
-   The value of the pretty parameter MAY be true or false to indicate if
-   additional whitespace has been included to make the JSON
-   representation easier to read.
-
-6.1.  Registry of Link Relations
-
-   This registry is maintained by IANA per RFC 4287 [RFC4287] and this
-   specification adds four values: "full", "create", "instances",
-   "root".  New assignments are subject to IESG Approval, as outlined in
    RFC 5226 [RFC5226].  Requests should be made by email to IANA, which
    will then forward the request to the IESG, requesting approval.
 
@@ -1393,14 +1372,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
                                       Ed., "The Atom Syndication
                                       Format", RFC 4287, December 2005.
 
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 25]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    [RFC6570]                          Gregorio, J., Fielding, R.,
                                       Hadley, M., Nottingham, M., and D.
                                       Orchard, "URI Template", RFC 6570,
@@ -1422,6 +1393,14 @@ Internet-Draft           JSON Schema Media Type             January 2013
    [RFC4627]                          Crockford, D., "The application/
                                       json Media Type for JavaScript
                                       Object Notation (JSON)", RFC 4627,
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 25]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
+
                                       July 2006.
 
    [RFC5226]                          Narten, T. and H. Alvestrand,
@@ -1447,16 +1426,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 Appendix A.  Change Log
 
-
-
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 26]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    draft-04
 
       *  Split hyper-schema definition out from main schema.
@@ -1476,6 +1445,17 @@ Internet-Draft           JSON Schema Media Type             January 2013
       *  Added "template" LDO attribute.
 
       *  Improved wording of sections.
+
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 26]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    draft-03
 
@@ -1506,13 +1486,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
       *  Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
          attribute.
 
-
-
-Luff, et al.              Expires July 26, 2013                [Page 27]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
       *  Replaced "requires" attribute with "dependencies" attribute.
 
       *  Moved "contentEncoding" attribute to hyper schema.
@@ -1529,6 +1502,16 @@ Internet-Draft           JSON Schema Media Type             January 2013
       *  Schema URIs are now namespace versioned.
 
       *  Added "$ref" and "$schema" attributes.
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 27]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    draft-02
 
@@ -1561,14 +1544,6 @@ Authors' Addresses
    EMail: luffgd@gmail.com
 
 
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 28]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    Kris Zyp
    SitePen (USA)
    530 Lytton Avenue
@@ -1589,36 +1564,5 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 29]
+Luff, et al.              Expires July 26, 2013                [Page 28]
 
