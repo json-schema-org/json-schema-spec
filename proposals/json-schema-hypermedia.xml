@@ -5,16 +5,13 @@
 <!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
 <!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
-<!ENTITY rfc3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
 <!ENTITY rfc2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
 <!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY rfc2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
 <!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
-<!ENTITY iddiscovery SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hammer-discovery.xml">
 <!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
 <!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
-<!ENTITY css21 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-CSS21-20070719.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -84,6 +81,9 @@
             <t>
                 JSON Schema is a JSON based format for defining the structure of JSON data.
                 This document specifies hyperlink- and hypermedia-related keywords for the JSON Schema format.
+            </t>
+            <t>
+                The term JSON Hyper-Schema is used to refer to a JSON Schema that uses these keywords.
             </t>
         </section>
 
@@ -197,7 +197,7 @@
             
             <section title="links">
                 <t>
-                    The <tt>links</tt> property of schemas is used to associate Link Description Objects with instances.  The value of this property MUST be an array, and the items in the array must be Link Description Objects, as defined below.
+                    The "links" property of schemas is used to associate Link Description Objects with instances.  The value of this property MUST be an array, and the items in the array must be Link Description Objects, as defined below.
                 </t>
 
                 <figure>
@@ -222,11 +222,12 @@
                 <section title="Multiple links per URI">
                     <t>
                         A single URI might have more than one role with relation to an instance.  This is not a problem - the same URI can be used in more than one Link Description Object.
-                        <figure>
-                            <preamble>
-                                For example, this schema describes a format for news posts, accessed via HTTP.
-                                The links describe how to access the comments for a news post, how to search the comments, and how to submit new comments, all with the same URI:</preamble>
-                            <artwork>
+                    </t>
+                    <figure>
+                        <preamble>
+                            For example, this schema describes a format for news posts, accessed via HTTP.
+                            The links describe how to access the comments for a news post, how to search the comments, and how to submit new comments, all with the same URI:</preamble>
+                        <artwork>
 <![CDATA[{
     "title": "News post",
     ...
@@ -270,13 +271,12 @@
         }
     ]
 }]]>
-                            </artwork>
-                        </figure>
-                        <t>
-                            If the client follows the first link, the URI might be expanded to "/15/comments".
-                            For the second link, the method is "GET" (the default for HTTP) so the parameters are added to the URL to produce something like: "/15/comments?searchTerm=JSON&itemsPerPage=50".
-                            The third link might have a URI of "/15/comments", but the text content of the new comment is posted as JSON.
-                        </t>
+                        </artwork>
+                    </figure>
+                    <t>
+                        If the client follows the first link, the URI might be expanded to "/15/comments".
+                        For the second link, the method is "GET" (the default for HTTP) so the parameters are added to the URL to produce something like: "/15/comments?searchTerm=JSON&itemsPerPage=50".
+                        The third link might have a URI of "/15/comments", but the text content of the new comment is posted as JSON.
                     </t>
                 </section>
             </section>
@@ -294,7 +294,7 @@
                 </t>
 
                 <t>
-                    Note that if the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the HTTP Link header, then all fragment resolution should be resolved relative to the target of the root link.
+                    Note that if the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>, then all fragment resolution should be resolved relative to the target of the root link.
                     The only exception to this is the resolution of "root" links themselves.
                 </t>
 
@@ -307,31 +307,37 @@
 
             <section title="media">
                 <t>
-                    The value of this properties MUST be an object.  It MAY contain any of the following properties:
+                    The value of this properties MUST be an object.
                 </t>
                 
-                <section title="binaryEncoding">
+                <section title="Properties of &quot;media&quot;">
                     <t>
-                        The value of this property SHOULD be ignored for any instance that is not a string.
-                        If the instance value is a string, this property defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
-                        <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible values for this property.
-                    </t>
-                </section>
-
-                <section title="type">
-                    <t>
-                        The value of this property must be a media type <xref target="RFC2046">RFC 2046</xref>.
-                        This property defines the media type of instances which this schema defines.
+                        The value of the "media" keyword MAY contain any of the following properties:
                     </t>
                     
-                    <t>
-                        If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be considered to be the character encoding of the JSON document itself (for which the default is UTF-8).
-                    </t>
+                    <section title="binaryEncoding">
+                        <t>
+                            The value of this property SHOULD be ignored for any instance that is not a string.
+                            If the instance value is a string, this property defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
+                            <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible values for this property.
+                        </t>
+                    </section>
+
+                    <section title="type">
+                        <t>
+                            The value of this property must be a media type <xref target="RFC2046">RFC 2046</xref>.
+                            This property defines the media type of instances which this schema defines.
+                        </t>
+                        
+                        <t>
+                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be considered to be the character encoding of the JSON document itself (for which the default is UTF-8).
+                        </t>
+                    </section>
                 </section>
                 
-                <t>
+                <section title="Example">
                     <figure>
-                        <preamble>For example:</preamble>
+                        <preamble>Here is an example schema, illustrating the use of "media":</preamble>
                         <artwork>
 <![CDATA[
 {
@@ -360,7 +366,7 @@
                         </artwork>
                         <postamble>Instances described by this schema should be strings containing HTML, using the UTF-8 character set.</postamble>
                     </figure>
-                </t>
+                </section>
             </section>
 
             <section title="pathStart">
@@ -403,7 +409,7 @@
                 <t>
                     The base URI to be used for relative URI resolution SHOULD is defined as follows:
                     <list>
-                        <t>if the data has a link defined, with a relation of "self", then the \"href\" value of that link is used</t>
+                        <t>if the data has a link defined, with a relation of "self", then the "href" value of that link is used</t>
                         <t>if no such link exists, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document</t>
                         <t>if no such links exist (the data and all its parents in the tree do not have a "self" link), the URI used to fetch the document should be used.</t>
                     </list>
@@ -418,28 +424,41 @@
                     
                     <section title="Pre-processing">
                         <t>
-                            The <xref target="RFC6570">URI Template specification</xref> has a very restrictive set of characters available for variable names.
-                            Property names in JSON, however, can be any UTF-8 string.  As such, the following pre-processing rules apply:
+                            The <xref target="RFC6570">URI Template specification</xref> restricts the set of characters available for variable names.
+                            Property names in JSON, however, can be any UTF-8 string.
+                        </t>
+                        
+                        <t>
+                            To allow the use of any JSON property name in the template, before using the value of "href" as a URI Template, the following pre-processing rules MUST be applied, in order:
                         </t>
                         
                         <section title="Bracket escaping">
                             <t>
-                                For any text that is:
+                                The purpose of this step is to allow the use of brackets to percent-encode variable names inside curly brackets.
+                                Variable names to be escaped are enclosed within rounded brackets, with the close-rounded-bracket character ")" being escaped as a pair of close-rounded-brackets "))".
+                                Since the empty string is not a valid variable name in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
+                            </t>
+                            
+                            <t>
+                                The rules are as follows:
+                            </t>
+                            
+                            <t>
+                                Find the largest possible sections of the text such that:
                                 <list>
-                                    <t>Surrounded by a pair of rounded brackets: ( )</t>
-                                    <t>The closing rounded bracket is not immediately followed by another closing bracket</t>
-                                    <t>The closing rounded bracket is not immediately preceded by an odd number of closing brackets</t>
-                                    <t>The surrounding rounded brackets are themselves contained within a pair of curly brackets: { }</t>
+                                    <t>do not contain an odd number of close-rounded-bracket characters ")" in sequence in that section of the text</t>
+                                    <t>are surrounded by a pair of rounded brackets: ( ), where</t>
+                                    <t>the surrounding rounded brackets are themselves contained within a pair of curly brackets: { }</t>
                                 </list>
                             </t>
                             <t>
-                                Before using "href" as a template, that section of the text MUST be replaced, according to the following rules:
+                                Each of these sections of the text (including the surrounding rounded brackets) MUST be replaced, according to the following rules:
                                 <list>
-                                    <t>If the brackets contained no text (the empty string), then they MUST be replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
-                                    <t>Otherwise:
+                                    <t>If the brackets contained no text (the empty string), then they are replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
+                                    <t>Otherwise, the enclosing brackets are removed, and the inner text used after the following modifications
                                         <list>
-                                            <t>the text MUST have all pairs of close-brackets "))" replaced with a single close bracket</t>
-                                            <t>the text MUST then be replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this includes encoding characters such as "*" and "!")</t>
+                                            <t>all pairs of close-brackets "))" are replaced with a single close bracket</t>
+                                            <t>after that, the text is replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this requires encoding characters such as "*" and "!")</t>
                                         </list>
                                     </t>
                                 </list>
@@ -450,7 +469,17 @@
                             <t>
                                 After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
                             </t>
+                            <t>
+                                The purpose of this stage is to allow the use of the instance value itself (not any properties) in the URI Template, by the special value "%73elf".
+                            </t>
                         </section>
+                        
+                        <section title="Choice of special-case values">
+                            <t>
+                                The special-case values of "%73elf" and "%65mpty" were chosen because they are unlikely to be accidentally generated by either a human or automated escaping.
+                            </t>
+                        </section>
+                        
                         <section title="Examples">
                             <t>
                                 <figure>
@@ -466,6 +495,7 @@ Input                    Output
 "{(escape*asterisk)}"    "{escape%2Aasterisk}"
 "{(escape(bracket)}"     "{escape%28bracket}"
 "{(escape))bracket)}"    "{escape%29bracket}"
+"{(a))b)}"             "{a%29b}
 "{(a (b)))}"             "{a%20%28b%29}
 "{()}"                   "{%65mpty}
 "{+$*}"                   "{+%73elf*}
@@ -482,12 +512,16 @@ Input                    Output
                     
                     <section title="Values for substitution">
                         <t>
-                            After pre-processing, the template is filled out using data from the instance.
-                            For a given variable name, the value to use is determined as follows:
+                            After pre-processing, the URI Template is filled out using data from the instance.
+                            To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
+                        </t>
+                            
+                        <t>
+                            For a given variable name in the URI Template, the value to use is determined as follows:
                             <list>
                                 <t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
                                 <t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
-                                <t>If the instance is an array, and the variable name is a representation of a positive integer, then the value at the corresponding array index MUST be used (if it exists).</t>
+                                <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
                                 <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t> 
                             </list>
                         </t>
@@ -578,10 +612,9 @@ Input                    Output
                     Links defined in the schema using these relation values SHOULD not require parameterization with data from the instance, as they describe a link for the schema, not the instances.
                 </t>
 
-                <t>
-                    <figure>
-                        <preamble>For example, if a schema is defined:</preamble>
-                        <artwork>
+                <figure>
+                    <preamble>For example, if a schema is defined:</preamble>
+                    <artwork>
 <![CDATA[{
     "links": [{
         "rel": "self",
@@ -594,12 +627,12 @@ Input                    Output
         "href": "?upId={id}"
     }]
 }]]>
-                        </artwork>
-                    </figure>
+                    </artwork>
+                </figure>
 
-                    <figure>
-                        <preamble>And if a collection of instance resources were retrieved with JSON representation:</preamble>
-                        <artwork>
+                <figure>
+                    <preamble>And if a collection of instance resources were retrieved with JSON representation:</preamble>
+                    <artwork>
 <![CDATA[GET /Resource/
 
 [{
@@ -609,15 +642,16 @@ Input                    Output
     "id": "thing2",
     "upId": "parent"
 }]]]>
-                        </artwork>
-                    </figure>
-
+                    </artwork>
                     <postamble>
                         This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
                         The "children" collection would be located at "/Resource/?upId=thing".
                     </postamble>
+                </figure>
+
+                <t>
+                    Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.
                 </t>
-                <t>Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.</t>
 
                 <section title="Fragment resolution with &quot;root&quot; links">
                     <t>
@@ -763,6 +797,17 @@ GET /foo/
                 </section>
             </section>
 
+            <section title="title">
+                <t>
+                    This property defines a title for the link.
+                    The value must be a string.
+                </t>
+                
+                <t>
+                    User agents MAY use this title when presenting the link to the user.
+                </t>
+            </section>
+
             <section title="targetSchema">
                 <t>
                     This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
@@ -831,7 +876,7 @@ GET /foo/
                 </t>
                 
                 <t>
-                    This property is analogous to the "type" property of <tt>&lt;a</tt> elements in HTML 4.01 (advisory content type), or the "type" parameter in the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.
+                    This property is analogous to the "type" property of &lt;a&gt; elements in HTML (advisory content type), or the "type" parameter in the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.
                     User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
                     When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
                 </t>
@@ -844,10 +889,9 @@ GET /foo/
                     If this property's value is not specified, then the value should be taken to be "application/json".
                 </t>
 
-                <t>
-                    <figure>
-                        <preamble>For example, if a schema is defined:</preamble>
-                        <artwork>
+                <figure>
+                    <preamble>For example, if a schema is defined:</preamble>
+                    <artwork>
 <![CDATA[
 {
     "links": [{
@@ -868,16 +912,14 @@ GET /foo/
     }]
 }
 ]]>
-                        </artwork>
-                    </figure>
-                    
+                    </artwork>
                     <postamble>
                         A suitable instance described by this schema would have four links defined.
                         The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
                         The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
                         The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
                     </postamble>
-                </t>
+                </figure>
                 
                 <t>
                     A visual user agent displaying the item from the above example might present a button representing an RSS feed, which when pressed passes the target URI (calculated "href" value) to an view more suited to displaying it, such as a news feed aggregator tab.
@@ -999,7 +1041,6 @@ GET /foo/
         <references title="Normative References">
             &rfc2045;
             &rfc2119;
-            &rfc3339;
             &rfc3986;
             &rfc4287;
             &rfc6570;
@@ -1021,10 +1062,8 @@ GET /foo/
             &rfc4627;
             &rfc5226;
             &rfc2046;
-            &iddiscovery;
             &linkheader;
             &html401;
-            &css21;
         </references>
 
         <section title="Change Log">
