@@ -4,9 +4,9 @@
 Internet Engineering Task Force                             G. Luff, Ed.
 Internet-Draft
 Intended status: Informational                                    K. Zyp
-Expires: July 24, 2013                                     SitePen (USA)
+Expires: July 26, 2013                                     SitePen (USA)
                                                                 G. Court
-                                                        January 20, 2013
+                                                        January 22, 2013
 
 
                   Hyperlinks and media for JSON Schema
@@ -33,7 +33,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 24, 2013.
+   This Internet-Draft will expire on July 26, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Luff, et al.              Expires July 24, 2013                 [Page 1]
+Luff, et al.              Expires July 26, 2013                 [Page 1]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -69,29 +69,30 @@ Table of Contents
      4.2.  fragmentResolution . . . . . . . . . . . . . . . . . . . .  8
        4.2.1.  json-pointer fragment resolution . . . . . . . . . . .  8
      4.3.  media  . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-       4.3.1.  binaryEncoding . . . . . . . . . . . . . . . . . . . .  8
-       4.3.2.  type . . . . . . . . . . . . . . . . . . . . . . . . .  9
-     4.4.  pathStart  . . . . . . . . . . . . . . . . . . . . . . . .  9
+       4.3.1.  Properties of "media"  . . . . . . . . . . . . . . . .  8
+       4.3.2.  Example  . . . . . . . . . . . . . . . . . . . . . . .  9
+     4.4.  pathStart  . . . . . . . . . . . . . . . . . . . . . . . . 10
    5.  Link Description Object  . . . . . . . . . . . . . . . . . . . 10
      5.1.  href . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
        5.1.1.  URI Templating . . . . . . . . . . . . . . . . . . . . 11
-     5.2.  rel  . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
-       5.2.1.  Fragment resolution with "root" links  . . . . . . . . 15
-       5.2.2.  Security Considerations for "self" links . . . . . . . 17
-     5.3.  targetSchema . . . . . . . . . . . . . . . . . . . . . . . 18
-       5.3.1.  Security Considerations for "targetSchema" . . . . . . 18
-     5.4.  mediaType  . . . . . . . . . . . . . . . . . . . . . . . . 19
-       5.4.1.  Security concerns for "mediaType"  . . . . . . . . . . 21
-     5.5.  Submission Link Properties . . . . . . . . . . . . . . . . 21
-       5.5.1.  method . . . . . . . . . . . . . . . . . . . . . . . . 21
-       5.5.2.  encType  . . . . . . . . . . . . . . . . . . . . . . . 22
-       5.5.3.  schema . . . . . . . . . . . . . . . . . . . . . . . . 22
-   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 23
-     6.1.  Registry of Link Relations . . . . . . . . . . . . . . . . 23
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 23
-     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 23
-     7.2.  Informative References . . . . . . . . . . . . . . . . . . 24
-   Appendix A.  Change Log  . . . . . . . . . . . . . . . . . . . . . 25
+     5.2.  rel  . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+       5.2.1.  Fragment resolution with "root" links  . . . . . . . . 16
+       5.2.2.  Security Considerations for "self" links . . . . . . . 18
+     5.3.  title  . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+     5.4.  targetSchema . . . . . . . . . . . . . . . . . . . . . . . 19
+       5.4.1.  Security Considerations for "targetSchema" . . . . . . 20
+     5.5.  mediaType  . . . . . . . . . . . . . . . . . . . . . . . . 21
+       5.5.1.  Security concerns for "mediaType"  . . . . . . . . . . 22
+     5.6.  Submission Link Properties . . . . . . . . . . . . . . . . 23
+       5.6.1.  method . . . . . . . . . . . . . . . . . . . . . . . . 23
+       5.6.2.  encType  . . . . . . . . . . . . . . . . . . . . . . . 23
+       5.6.3.  schema . . . . . . . . . . . . . . . . . . . . . . . . 24
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 24
+     6.1.  Registry of Link Relations . . . . . . . . . . . . . . . . 25
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 25
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 26
+   Appendix A.  Change Log  . . . . . . . . . . . . . . . . . . . . . 26
 
 
 
@@ -107,8 +108,7 @@ Table of Contents
 
 
 
-
-Luff, et al.              Expires July 24, 2013                 [Page 2]
+Luff, et al.              Expires July 26, 2013                 [Page 2]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -118,6 +118,9 @@ Internet-Draft           JSON Schema Media Type             January 2013
    JSON Schema is a JSON based format for defining the structure of JSON
    data.  This document specifies hyperlink- and hypermedia-related
    keywords for the JSON Schema format.
+
+   The term JSON Hyper-Schema is used to refer to a JSON Schema that
+   uses these keywords.
 
 2.  Conventions and Terminology
 
@@ -161,10 +164,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-
-
-
-Luff, et al.              Expires July 24, 2013                 [Page 3]
+Luff, et al.              Expires July 26, 2013                 [Page 3]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -220,7 +220,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                 [Page 4]
+Luff, et al.              Expires July 26, 2013                 [Page 4]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -255,10 +255,10 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 4.1.  links
 
-   The property of schemas is used to associate Link Description Objects
-   with instances.  The value of this property MUST be an array, and the
-   items in the array must be Link Description Objects, as defined
-   below.
+   The "links" property of schemas is used to associate Link Description
+   Objects with instances.  The value of this property MUST be an array,
+   and the items in the array must be Link Description Objects, as
+   defined below.
 
 
 
@@ -276,7 +276,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                 [Page 5]
+Luff, et al.              Expires July 26, 2013                 [Page 5]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -332,7 +332,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                 [Page 6]
+Luff, et al.              Expires July 26, 2013                 [Page 6]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -388,7 +388,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                 [Page 7]
+Luff, et al.              Expires July 26, 2013                 [Page 7]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -416,9 +416,10 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
    Note that if the instance is described by a schema providing the a
    link with "root" relation, or such a link is provided in using the
-   HTTP Link header, then all fragment resolution should be resolved
-   relative to the target of the root link.  The only exception to this
-   is the resolution of "root" links themselves.
+   HTTP Link header [I-D.nottingham-http-link-header], then all fragment
+   resolution should be resolved relative to the target of the root
+   link.  The only exception to this is the resolution of "root" links
+   themselves.
 
 4.2.1.  json-pointer fragment resolution
 
@@ -428,28 +429,30 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 4.3.  media
 
-   The value of this properties MUST be an object.  It MAY contain any
-   of the following properties:
+   The value of this properties MUST be an object.
 
-4.3.1.  binaryEncoding
+4.3.1.  Properties of "media"
+
+   The value of the "media" keyword MAY contain any of the following
+   properties:
+
+4.3.1.1.  binaryEncoding
 
    The value of this property SHOULD be ignored for any instance that is
    not a string.  If the instance value is a string, this property
    defines that the string SHOULD be interpreted as binary data and
-   decoded using the encoding named by this property.  RFC 2045, Sec 6.1
-   [RFC2045] lists the possible values for this property.
 
 
 
-
-
-
-Luff, et al.              Expires July 24, 2013                 [Page 8]
+Luff, et al.              Expires July 26, 2013                 [Page 8]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
 
-4.3.2.  type
+   decoded using the encoding named by this property.  RFC 2045, Sec 6.1
+   [RFC2045] lists the possible values for this property.
+
+4.3.1.2.  type
 
    The value of this property must be a media type RFC 2046 [RFC2046].
    This property defines the media type of instances which this schema
@@ -461,7 +464,9 @@ Internet-Draft           JSON Schema Media Type             January 2013
    character encoding of the JSON document itself (for which the default
    is UTF-8).
 
-   For example:
+4.3.2.  Example
+
+   Here is an example schema, illustrating the use of "media":
 
 
    {
@@ -490,6 +495,16 @@ Internet-Draft           JSON Schema Media Type             January 2013
    Instances described by this schema should be strings containing HTML,
    using the UTF-8 character set.
 
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                 [Page 9]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
+
 4.4.  pathStart
 
    This property is a URI that defines what the instance's URI MUST
@@ -497,13 +512,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
    property MUST be resolved relative to the closest URI Resolution
    Scope (as defined in the core specification [FIXME link]), using the
    rules from RFC 3986, Sec 5 [RFC3986].
-
-
-
-Luff, et al.              Expires July 24, 2013                 [Page 9]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
 
    When multiple schemas have been referenced for an instance, the user
    agent can determine if this schema is applicable for a particular
@@ -545,21 +553,20 @@ Internet-Draft           JSON Schema Media Type             January 2013
    The base URI to be used for relative URI resolution SHOULD is defined
    as follows:
 
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 10]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
+
       if the data has a link defined, with a relation of "self", then
-      the \"href\" value of that link is used
+      the "href" value of that link is used
 
       if no such link exists, the URI should be resolved against the
       link with relation "self" belonging to the closest parent node in
       the JSON document
-
-
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 10]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
 
       if no such links exist (the data and all its parents in the tree
       do not have a "self" link), the URI used to fetch the document
@@ -574,49 +581,58 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 5.1.1.1.  Pre-processing
 
-   The URI Template specification [RFC6570] has a very restrictive set
-   of characters available for variable names.  Property names in JSON,
-   however, can be any UTF-8 string.  As such, the following pre-
-   processing rules apply:
+   The URI Template specification [RFC6570] restricts the set of
+   characters available for variable names.  Property names in JSON,
+   however, can be any UTF-8 string.
+
+   To allow the use of any JSON property name in the template, before
+   using the value of "href" as a URI Template, the following pre-
+   processing rules MUST be applied, in order:
 
 5.1.1.1.1.  Bracket escaping
 
-   For any text that is:
+   The purpose of this step is to allow the use of brackets to percent-
+   encode variable names inside curly brackets.  Variable names to be
+   escaped are enclosed within rounded brackets, with the close-rounded-
+   bracket character ")" being escaped as a pair of close-rounded-
+   brackets "))".  Since the empty string is not a valid variable name
+   in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
 
-      Surrounded by a pair of rounded brackets: ( )
+   The rules are as follows:
 
-      The closing rounded bracket is not immediately followed by another
-      closing bracket
+   Find the largest possible sections of the text such that:
 
-      The closing rounded bracket is not immediately preceded by an odd
-      number of closing brackets
+      do not contain an odd number of close-rounded-bracket characters
+      ")" in sequence in that section of the text
 
-      The surrounding rounded brackets are themselves contained within a
+      are surrounded by a pair of rounded brackets: ( ), where
+
+      the surrounding rounded brackets are themselves contained within a
       pair of curly brackets: { }
 
-   Before using "href" as a template, that section of the text MUST be
-   replaced, according to the following rules:
-
-      If the brackets contained no text (the empty string), then they
-      MUST be replaced with "%65mpty" (which is "empty" with a percent-
-      encoded "e")
-
-      Otherwise:
-
-         the text MUST have all pairs of close-brackets "))" replaced
-         with a single close bracket
-
-         the text MUST then be replaced with its percent-encoded
-         equivalent, such that the result is a valid RFC 6570 variable
-         name (note that this includes encoding characters such as "*"
 
 
-
-Luff, et al.              Expires July 24, 2013                [Page 11]
+Luff, et al.              Expires July 26, 2013                [Page 11]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
 
+   Each of these sections of the text (including the surrounding rounded
+   brackets) MUST be replaced, according to the following rules:
+
+      If the brackets contained no text (the empty string), then they
+      are replaced with "%65mpty" (which is "empty" with a percent-
+      encoded "e")
+
+      Otherwise, the enclosing brackets are removed, and the inner text
+      used after the following modifications
+
+         all pairs of close-brackets "))" are replaced with a single
+         close bracket
+
+         after that, the text is replaced with its percent-encoded
+         equivalent, such that the result is a valid RFC 6570 variable
+         name (note that this requires encoding characters such as "*"
          and "!")
 
 5.1.1.1.2.  Replacing $
@@ -625,7 +641,37 @@ Internet-Draft           JSON Schema Media Type             January 2013
    appears within a pair of curly brackets, then it MUST be replaced
    with the text "%73elf" (which is "self" with a percent-encoded "s").
 
-5.1.1.1.3.  Examples
+   The purpose of this stage is to allow the use of the instance value
+   itself (not any properties) in the URI Template, by the special value
+   "%73elf".
+
+5.1.1.1.3.  Choice of special-case values
+
+   The special-case values of "%73elf" and "%65mpty" were chosen because
+   they are unlikely to be accidentally generated by either a human or
+   automated escaping.
+
+5.1.1.1.4.  Examples
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 12]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    For example, here are some possible values for "href", followed by
    the results after pre-processing:
@@ -640,6 +686,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
    "{(escape*asterisk)}"    "{escape%2Aasterisk}"
    "{(escape(bracket)}"     "{escape%28bracket}"
    "{(escape))bracket)}"    "{escape%29bracket}"
+   "{(a))b)}"             "{a%29b}
    "{(a (b)))}"             "{a%20%28b%29}
    "{()}"                   "{%65mpty}
    "{+$*}"                   "{+%73elf*}
@@ -652,9 +699,13 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 5.1.1.2.  Values for substitution
 
-   After pre-processing, the template is filled out using data from the
-   instance.  For a given variable name, the value to use is determined
-   as follows:
+   After pre-processing, the URI Template is filled out using data from
+   the instance.  To allow the use of any object property (including the
+   empty string), array index, or the instance value itself, the
+   following rules are defined:
+
+   For a given variable name in the URI Template, the value to use is
+   determined as follows:
 
       If the variable name is "%73elf", then the instance value itself
       MUST be used.
@@ -663,18 +714,20 @@ Internet-Draft           JSON Schema Media Type             January 2013
       string ("") property MUST be used (if it exists).
 
       If the instance is an array, and the variable name is a
-      representation of a positive integer, then the value at the
+      representation of a non-negative integer, then the value at the
       corresponding array index MUST be used (if it exists).
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 12]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
 
       Otherwise, the variable name should be percent-decoded, and the
       corresponding object property MUST be used (if it exists).
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 13]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
 5.1.1.2.1.  Converting to strings
 
@@ -721,17 +774,16 @@ Internet-Draft           JSON Schema Media Type             January 2013
    Relationship definitions SHOULD NOT be media type dependent, and
    users are encouraged to utilize existing accepted relation
    definitions, including those in existing relation registries (see RFC
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 13]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    4287 [RFC4287]).  However, we define these relations here for clarity
    of normative interpretation within the context of JSON Schema defined
    relations:
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 14]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    self  If the relation value is "self", when this property is
       encountered in the instance object, the object represents a
@@ -780,7 +832,11 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 14]
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 15]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -836,7 +892,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 15]
+Luff, et al.              Expires July 26, 2013                [Page 16]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -892,7 +948,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 16]
+Luff, et al.              Expires July 26, 2013                [Page 17]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -948,7 +1004,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 17]
+Luff, et al.              Expires July 26, 2013                [Page 18]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -989,26 +1045,33 @@ Internet-Draft           JSON Schema Media Type             January 2013
           authoritative representation"
   }]
 
-5.3.  targetSchema
+5.3.  title
+
+   This property defines a title for the link.  The value must be a
+   string.
+
+   User agents MAY use this title when presenting the link to the user.
+
+5.4.  targetSchema
 
    This property value is advisory only, and is a schema that defines
    the expected structure of the JSON representation of the target of
    the link, if the target of the link is returned using JSON
-   representation.
-
-5.3.1.  Security Considerations for "targetSchema"
-
-   This property has similar security concerns to that of "mediaType".
-   Clients MUST NOT use the value of this property to aid in the
-   interpretation of the data received in response to following the
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 18]
+Luff, et al.              Expires July 26, 2013                [Page 19]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
 
+   representation.
+
+5.4.1.  Security Considerations for "targetSchema"
+
+   This property has similar security concerns to that of "mediaType".
+   Clients MUST NOT use the value of this property to aid in the
+   interpretation of the data received in response to following the
    link, as this leaves "safe" data open to re-interpretation.
 
    For example, suppose two programmers are having a discussion about
@@ -1050,27 +1113,27 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
    If the client used this "targetSchema" value when interpreting the
    above data, then it might display the contents of "message" as HTML.
-   At this point, the JavaScript embedded in the message might be
-   executed (in the context of the "forum.example.com" domain).
-
-5.4.  mediaType
-
-   The value of this property is advisory only, and represents the media
-   type RFC 2046 [RFC2046], that is expected to be returned when
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 19]
+Luff, et al.              Expires July 26, 2013                [Page 20]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
 
+   At this point, the JavaScript embedded in the message might be
+   executed (in the context of the "forum.example.com" domain).
+
+5.5.  mediaType
+
+   The value of this property is advisory only, and represents the media
+   type RFC 2046 [RFC2046], that is expected to be returned when
    fetching this resource.  This property value MAY be a media range
    instead, using the same pattern defined in RFC 2161, section 14.1 -
    HTTP "Accept" header [RFC2616].
 
-   This property is analogous to the "type" property of elements in HTML
-   4.01 (advisory content type), or the "type" parameter in the HTTP
+   This property is analogous to the "type" property of <a> elements in
+   HTML (advisory content type), or the "type" parameter in the HTTP
    Link header [I-D.nottingham-http-link-header].  User agents MAY use
    this information to inform the interface they present to the user
    before the link is followed, but this information MUST NOT use this
@@ -1087,6 +1150,32 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
    If this property's value is not specified, then the value should be
    taken to be "application/json".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 21]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    For example, if a schema is defined:
 
@@ -1113,14 +1202,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
    A suitable instance described by this schema would have four links
    defined.  The link with a "rel" value of "self" would have an
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 20]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    expected MIME type of "application/json" (the default).  The two
    links with a "rel" value of "alternate" specify the locations of HTML
    and RSS versions of the current item.  The link with a "rel" value of
@@ -1138,11 +1219,19 @@ Internet-Draft           JSON Schema Media Type             January 2013
    SHOULD reject any data that would not have also been interpreted as a
    news feed, had it been displayed in the main view.
 
-5.4.1.  Security concerns for "mediaType"
+5.5.1.  Security concerns for "mediaType"
 
    The "mediaType" property in link definitions defines the expected
    format of the link's target.  However, this is advisory only, and
    MUST NOT be considered authoritative.
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 22]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    When choosing how to interpret data, the type information provided by
    the server (or inferred from the filename, or any other usual method)
@@ -1157,30 +1246,22 @@ Internet-Draft           JSON Schema Media Type             January 2013
    This is to guard against re-interpretation of "safe" data, similar to
    the precautions for "targetSchema".
 
-5.5.  Submission Link Properties
+5.6.  Submission Link Properties
 
    The following properties also apply to link definition objects, and
    provide functionality analogous to HTML forms, in providing a means
    for submitting extra (often user supplied) information to send to a
    server.
 
-5.5.1.  method
+5.6.1.  method
 
    This property defines which method can be used to access the target
    resource.  In an HTTP environment, this could be "GET" or "POST"
    (other HTTP methods such as "PUT" and "DELETE" have semantics that
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 21]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    are clearly implied by accessed resources, and do not need to be
    defined here).  This defaults to "GET".
 
-5.5.2.  encType
+5.6.2.  encType
 
    If present, this property indicates a query media type format that
    the server supports for querying or posting to the collection of
@@ -1188,6 +1269,25 @@ Internet-Draft           JSON Schema Media Type             January 2013
    target URI to query the collection with property-based constraints on
    the resources that SHOULD be returned from the server or used to post
    data to the resource (depending on the method).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 23]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    For example, with the following schema:
 
@@ -1217,7 +1317,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
    by the href property is defined.  If the method is POST,
    "application/json" is the default media type.
 
-5.5.3.  schema
+5.6.3.  schema
 
    This property contains a schema which defines the acceptable
    structure of the submitted request.  For a GET request, this schema
@@ -1225,14 +1325,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
    request, this would define the body.
 
    Note that this is separate from the URI templating of "href" (which
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 22]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
    uses data from the instance, not submitted by the user).  It is also
    separate from the "targetSchema" property, which provides a schema
    for the data that the client should expect to be returned when they
@@ -1244,6 +1336,14 @@ Internet-Draft           JSON Schema Media Type             January 2013
    schema+json".
 
    Type name: application
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 24]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    Subtype name: schema+json
 
@@ -1281,20 +1381,8 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
    [RFC2119]                          Bradner, S., "Key words for use in
                                       RFCs to Indicate Requirement
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 23]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
                                       Levels", BCP 14, RFC 2119,
                                       March 1997.
-
-   [RFC3339]                          Klyne, G., Ed. and C. Newman,
-                                      "Date and Time on the Internet:
-                                      Timestamps", RFC 3339, July 2002.
 
    [RFC3986]                          Berners-Lee, T., Fielding, R., and
                                       L. Masinter, "Uniform Resource
@@ -1304,6 +1392,14 @@ Internet-Draft           JSON Schema Media Type             January 2013
    [RFC4287]                          Nottingham, M., Ed. and R. Sayre,
                                       Ed., "The Atom Syndication
                                       Format", RFC 4287, December 2005.
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 25]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    [RFC6570]                          Gregorio, J., Fielding, R.,
                                       Hadley, M., Nottingham, M., and D.
@@ -1338,19 +1434,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
                                       Extensions (MIME) Part Two: Media
                                       Types", RFC 2046, November 1996.
 
-
-
-Luff, et al.              Expires July 24, 2013                [Page 24]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
-   [I-D.hammer-discovery]             Hammer-Lahav, E., "LRDD: Link-
-                                      based Resource Descriptor
-                                      Discovery",
-                                      draft-hammer-discovery-06 (work in
-                                      progress), May 2010.
-
    [I-D.nottingham-http-link-header]  Nottingham, M., "Web Linking", dra
                                       ft-nottingham-http-link-header-10
                                       (work in progress), May 2010.
@@ -1362,16 +1445,17 @@ Internet-Draft           JSON Schema Media Type             January 2013
                                       December 1999, <http://www.w3.org/
                                       TR/1999/REC-html401-19991224>.
 
-   [W3C.CR-CSS21-20070719]            Hickson, I., Lie, H., Celik, T.,
-                                      and B. Bos, "Cascading Style
-                                      Sheets Level 2 Revision 1 (CSS
-                                      2.1) Specification", World Wide
-                                      Web Consortium CR CR-CSS21-
-                                      20070719, July 2007, <http://
-                                      www.w3.org/TR/2007/
-                                      CR-CSS21-20070719>.
-
 Appendix A.  Change Log
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 26]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
 
    draft-04
 
@@ -1392,14 +1476,6 @@ Appendix A.  Change Log
       *  Added "template" LDO attribute.
 
       *  Improved wording of sections.
-
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 25]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
 
    draft-03
 
@@ -1430,6 +1506,13 @@ Internet-Draft           JSON Schema Media Type             January 2013
       *  Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
          attribute.
 
+
+
+Luff, et al.              Expires July 26, 2013                [Page 27]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
+
       *  Replaced "requires" attribute with "dependencies" attribute.
 
       *  Moved "contentEncoding" attribute to hyper schema.
@@ -1446,16 +1529,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
       *  Schema URIs are now namespace versioned.
 
       *  Added "$ref" and "$schema" attributes.
-
-
-
-
-
-
-Luff, et al.              Expires July 24, 2013                [Page 26]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
 
    draft-02
 
@@ -1488,6 +1561,14 @@ Authors' Addresses
    EMail: luffgd@gmail.com
 
 
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 28]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
+
    Kris Zyp
    SitePen (USA)
    530 Lytton Avenue
@@ -1508,5 +1589,36 @@ Authors' Addresses
 
 
 
-Luff, et al.              Expires July 24, 2013                [Page 27]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 29]
 
