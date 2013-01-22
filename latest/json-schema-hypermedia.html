@@ -228,29 +228,29 @@ URI Templating<br />
 rel<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">5.2.1.</a>&nbsp;
 Fragment resolution with &quot;root&quot; links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">5.2.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">5.2.2.</a>&nbsp;
 Security Considerations for &quot;self&quot; links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">5.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">5.3.</a>&nbsp;
 title<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">5.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">5.4.</a>&nbsp;
 targetSchema<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">5.4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">5.4.1.</a>&nbsp;
 Security Considerations for &quot;targetSchema&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor33">5.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">5.5.</a>&nbsp;
 mediaType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor34">5.5.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor33">5.5.1.</a>&nbsp;
 Security concerns for &quot;mediaType&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">5.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor34">5.6.</a>&nbsp;
 Submission Link Properties<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor36">5.6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">5.6.1.</a>&nbsp;
 method<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor37">5.6.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor36">5.6.2.</a>&nbsp;
 encType<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor38">5.6.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor37">5.6.3.</a>&nbsp;
 schema<br />
-<a href="#anchor39">6.</a>&nbsp;
+<a href="#anchor38">6.</a>&nbsp;
 IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor40">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor39">6.1.</a>&nbsp;
 Registry of Link Relations<br />
 <a href="#rfc.references1">7.</a>&nbsp;
 References<br />
@@ -258,7 +258,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor43">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor42">Appendix&nbsp;A.</a>&nbsp;
 Change Log<br />
 </p>
 <br clear="all" />
@@ -640,11 +640,11 @@ href</h3>
                     The base URI to be used for relative URI resolution SHOULD is defined as follows:
                     </p>
 <blockquote class="text">
-<p>if the data has a link defined, with a relation of "self", then the "href" value of that link is used
+<p>if the data has a link defined, with a relation of "self", then the "href" value of that link is used, unless the relation of the link being resolved is also "self"
 </p>
-<p>if no such link exists, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document
+<p>otherwise, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document, if it exists
 </p>
-<p>if no such links exist (the data and all its parents in the tree do not have a "self" link), the URI used to fetch the document should be used.
+<p>otherwise, the URI used to fetch the document should be used.
 </p>
 </blockquote><p>
                 
@@ -880,8 +880,7 @@ rel</h3>
 <dd>
                             This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
                             All other properties of the instance objects can be regarded as meta-data descriptions for the data.
-                            The URI of this link MUST be a fragment, specifying a location within the instance.
-                            If it is not, this link should be ignored.
+                            The URI of this link MUST refer to a location within the instance document, otherwise the link MUST be ignored.
                         
 </dd>
 </dl></blockquote><p>
@@ -951,6 +950,12 @@ Fragment resolution with &quot;root&quot; links</h3>
 
 <p>
                         The presence of a link with relation "root" alters what the root of the document is considered to be.
+                        For fragment resolution methods (such as JSON Pointer fragments) that navigate through the document, the target of the "root" link should be the starting point for such methods.
+                    
+</p>
+<p>
+                        The only exception is "root" links themselves.
+                        When calculating the target of links with relation "root", existing "root" links MUST NOT be taken into consideration.
                     
 </p>
 <p>
@@ -996,55 +1001,6 @@ http://example.com/data/12345#/title        "Document title"
                     
 </p>
 <a name="anchor28"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.2.1.1"></a><h3>5.2.1.1.&nbsp;
-Preventing the URI resolution paradox</h3>
-
-<p>
-                            Because of the "root" link type's effect on URL resolution, it possible to create apparent paradoxes in URI resolution.  For example, consider this response from a server:
-                            </p>
-<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-
-Content-Type: application/json; profile=#/schema
-
-{
-    "myRootData": {
-        "title": "Document title"
-    },
-    "schema": {
-        "type": "object",
-        "properties": {
-            "root": {
-                "title": "Document",
-                "type": "object",
-                "properties": {
-                    "title": {"type": "string"}
-                }
-            }
-        },
-        "links": [
-            {
-                "rel": "root",
-                "href": "#/myRootData"
-            }
-        ]
-    }
-}
-
-</pre></div><p>
-
-<p>
-                                    The "profile" parameter in the "Content-Type" HTTP header defines the schema to be inside the data itself.
-                                    But the schema defines a "root" link, which changes the document root, which seems like it should change the target of "#/schema".
-                                
-</p>
-                        
-
-<p>
-                            To avoid this scenario, the following behaviour is defined: when resolving URIs for schemas, that schema MUST NOT be taken into account when calculating the document root.
-                        
-</p>
-<a name="anchor29"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2.2"></a><h3>5.2.2.&nbsp;
 Security Considerations for &quot;self&quot; links</h3>
@@ -1095,7 +1051,7 @@ Content-Type: application/json; profile=/schema-for-this-data
 </pre></div>
                     
 
-<a name="anchor30"></a><br /><hr />
+<a name="anchor29"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 title</h3>
@@ -1109,7 +1065,7 @@ title</h3>
                     User agents MAY use this title when presenting the link to the user.
                 
 </p>
-<a name="anchor31"></a><br /><hr />
+<a name="anchor30"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 targetSchema</h3>
@@ -1118,7 +1074,7 @@ targetSchema</h3>
                     This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
                 
 </p>
-<a name="anchor32"></a><br /><hr />
+<a name="anchor31"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.4.1"></a><h3>5.4.1.&nbsp;
 Security Considerations for &quot;targetSchema&quot;</h3>
@@ -1178,7 +1134,7 @@ Security Considerations for &quot;targetSchema&quot;</h3>
 </p>
                     
 
-<a name="anchor33"></a><br /><hr />
+<a name="anchor32"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
 mediaType</h3>
@@ -1241,7 +1197,7 @@ mediaType</h3>
                     The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
                 
 </p>
-<a name="anchor34"></a><br /><hr />
+<a name="anchor33"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.5.1"></a><h3>5.5.1.&nbsp;
 Security concerns for &quot;mediaType&quot;</h3>
@@ -1261,7 +1217,7 @@ Security concerns for &quot;mediaType&quot;</h3>
                         This is to guard against re-interpretation of "safe" data, similar to the precautions for "targetSchema".
                     
 </p>
-<a name="anchor35"></a><br /><hr />
+<a name="anchor34"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
 Submission Link Properties</h3>
@@ -1270,7 +1226,7 @@ Submission Link Properties</h3>
                     The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
                 
 </p>
-<a name="anchor36"></a><br /><hr />
+<a name="anchor35"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.6.1"></a><h3>5.6.1.&nbsp;
 method</h3>
@@ -1281,7 +1237,7 @@ method</h3>
                         This defaults to "GET".
                     
 </p>
-<a name="anchor37"></a><br /><hr />
+<a name="anchor36"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.6.2"></a><h3>5.6.2.&nbsp;
 encType</h3>
@@ -1321,7 +1277,7 @@ encType</h3>
                         If the method is POST, "application/json" is the default media type.
                     
 
-<a name="anchor38"></a><br /><hr />
+<a name="anchor37"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.6.3"></a><h3>5.6.3.&nbsp;
 schema</h3>
@@ -1336,12 +1292,12 @@ schema</h3>
                         It is also separate from the "targetSchema" property, which provides a schema for the data that the client should expect to be returned when they follow the link.
                     
 </p>
-<a name="anchor39"></a><br /><hr />
+<a name="anchor38"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6"></a><h3>6.&nbsp;
 IANA Considerations</h3>
 
-<a name="anchor40"></a><br /><hr />
+<a name="anchor39"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 Registry of Link Relations</h3>
@@ -1393,7 +1349,7 @@ References</h3>
 <td class="author-text">Hors, A., Raggett, D., and I. Jacobs, &ldquo;<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML 4.01 Specification</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-html401-19991224, December&nbsp;1999 (<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML</a>).</td></tr>
 </table>
 
-<a name="anchor43"></a><br /><hr />
+<a name="anchor42"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Change Log</h3>
@@ -1405,6 +1361,12 @@ Change Log</h3>
 <dd>
                         
 <ul class="text">
+<li>Resolution of link URIs ("href") is now affected by rel="self" links on the instance
+</li>
+<li>Define "title" for LDOs
+</li>
+<li>Use URI Templates for the "href" property
+</li>
 <li>Split hyper-schema definition out from main schema.
 </li>
 <li>Removed "readonly"
