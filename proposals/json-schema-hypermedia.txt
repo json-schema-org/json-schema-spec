@@ -77,22 +77,22 @@ Table of Contents
        5.1.1.  URI Templating . . . . . . . . . . . . . . . . . . . . 11
      5.2.  rel  . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
        5.2.1.  Fragment resolution with "root" links  . . . . . . . . 16
-       5.2.2.  Security Considerations for "self" links . . . . . . . 18
-     5.3.  title  . . . . . . . . . . . . . . . . . . . . . . . . . . 19
-     5.4.  targetSchema . . . . . . . . . . . . . . . . . . . . . . . 19
-       5.4.1.  Security Considerations for "targetSchema" . . . . . . 20
-     5.5.  mediaType  . . . . . . . . . . . . . . . . . . . . . . . . 21
-       5.5.1.  Security concerns for "mediaType"  . . . . . . . . . . 22
-     5.6.  Submission Link Properties . . . . . . . . . . . . . . . . 23
-       5.6.1.  method . . . . . . . . . . . . . . . . . . . . . . . . 23
-       5.6.2.  encType  . . . . . . . . . . . . . . . . . . . . . . . 23
-       5.6.3.  schema . . . . . . . . . . . . . . . . . . . . . . . . 24
-   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 24
-     6.1.  Registry of Link Relations . . . . . . . . . . . . . . . . 24
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 25
-     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 25
-     7.2.  Informative References . . . . . . . . . . . . . . . . . . 25
-   Appendix A.  Change Log  . . . . . . . . . . . . . . . . . . . . . 26
+       5.2.2.  Security Considerations for "self" links . . . . . . . 17
+     5.3.  title  . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+     5.4.  targetSchema . . . . . . . . . . . . . . . . . . . . . . . 18
+       5.4.1.  Security Considerations for "targetSchema" . . . . . . 19
+     5.5.  mediaType  . . . . . . . . . . . . . . . . . . . . . . . . 20
+       5.5.1.  Security concerns for "mediaType"  . . . . . . . . . . 21
+     5.6.  Submission Link Properties . . . . . . . . . . . . . . . . 22
+       5.6.1.  method . . . . . . . . . . . . . . . . . . . . . . . . 22
+       5.6.2.  encType  . . . . . . . . . . . . . . . . . . . . . . . 22
+       5.6.3.  schema . . . . . . . . . . . . . . . . . . . . . . . . 23
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 23
+     6.1.  Registry of Link Relations . . . . . . . . . . . . . . . . 23
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 24
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 24
+   Appendix A.  Change Log  . . . . . . . . . . . . . . . . . . . . . 25
 
 
 
@@ -804,9 +804,9 @@ Internet-Draft           JSON Schema Media Type             January 2013
       treated as the root or the body of the representation for the
       purposes of user agent interaction or fragment resolution.  All
       other properties of the instance objects can be regarded as meta-
-      data descriptions for the data.  The URI of this link MUST be a
-      fragment, specifying a location within the instance.  If it is
-      not, this link should be ignored.
+      data descriptions for the data.  The URI of this link MUST refer
+      to a location within the instance document.  If it is not, this
+      link should be ignored.
 
    The following relations are applicable for schemas (the schema as the
    "from" resource in the relation):
@@ -882,13 +882,13 @@ Internet-Draft           JSON Schema Media Type             January 2013
 5.2.1.  Fragment resolution with "root" links
 
    The presence of a link with relation "root" alters what the root of
-   the document is considered to be.
+   the document is considered to be.  For fragment resolution methods
+   (such as JSON Pointer fragments) that navigate through the document,
+   the target of the "root" link should be the starting point.
 
-
-
-
-
-
+   The only exception is "root" links themselves, which must always
+   refer to a location within the instance document.  When calculating
+   the target of "root" links, existing "root" links MUST not be taken
 
 
 
@@ -896,6 +896,8 @@ Luff, et al.              Expires July 26, 2013                [Page 16]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
+
+   into consideration.
 
    For example, say we have the following schema:
 
@@ -929,66 +931,6 @@ Internet-Draft           JSON Schema Media Type             January 2013
  http://example.com/data/12345#/title        "Document title"
 
 
-5.2.1.1.  Preventing the URI resolution paradox
-
-   Because of the "root" link type's effect on URL resolution, it
-   possible to create apparent paradoxes in URI resolution.  For
-   example, consider this response from a server:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 17]
-
-Internet-Draft           JSON Schema Media Type             January 2013
-
-
-   Content-Type: application/json; profile=#/schema
-
-   {
-       "myRootData": {
-           "title": "Document title"
-       },
-       "schema": {
-           "type": "object",
-           "properties": {
-               "root": {
-                   "title": "Document",
-                   "type": "object",
-                   "properties": {
-                       "title": {"type": "string"}
-                   }
-               }
-           },
-           "links": [
-               {
-                   "rel": "root",
-                   "href": "#/myRootData"
-               }
-           ]
-       }
-   }
-
-
-   The "profile" parameter in the "Content-Type" HTTP header defines the
-   schema to be inside the data itself.  But the schema defines a "root"
-   link, which changes the document root, which seems like it should
-   change the target of "#/schema".
-
-   To avoid this scenario, the following behaviour is defined: when
-   resolving URIs for schemas, that schema MUST NOT be taken into
-   account when calculating the document root.
-
 5.2.2.  Security Considerations for "self" links
 
    When link relation of "self" is used to denote a full representation
@@ -1004,7 +946,9 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 18]
+
+
+Luff, et al.              Expires July 26, 2013                [Page 17]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1060,7 +1004,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 19]
+Luff, et al.              Expires July 26, 2013                [Page 18]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1116,7 +1060,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 20]
+Luff, et al.              Expires July 26, 2013                [Page 19]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1172,7 +1116,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 21]
+Luff, et al.              Expires July 26, 2013                [Page 20]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1228,7 +1172,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 22]
+Luff, et al.              Expires July 26, 2013                [Page 21]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1284,7 +1228,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 23]
+Luff, et al.              Expires July 26, 2013                [Page 22]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1340,7 +1284,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 24]
+Luff, et al.              Expires July 26, 2013                [Page 23]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1396,7 +1340,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
 
-Luff, et al.              Expires July 26, 2013                [Page 25]
+Luff, et al.              Expires July 26, 2013                [Page 24]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
@@ -1428,6 +1372,13 @@ Appendix A.  Change Log
 
    draft-04
 
+      *  Resolution of link URIs ("href") is now affected by rel="self"
+         links on the instance
+
+      *  Define "title" for LDOs
+
+      *  Use URI Templates for the "href" property
+
       *  Split hyper-schema definition out from main schema.
 
       *  Removed "readonly"
@@ -1442,20 +1393,17 @@ Appendix A.  Change Log
       *  Replaced "slash-delimited" fragment resolution with "json-
          pointer".
 
-      *  Added "template" LDO attribute.
-
-      *  Improved wording of sections.
 
 
 
-
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 26]
+Luff, et al.              Expires July 26, 2013                [Page 25]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
+
+      *  Added "template" LDO attribute.
+
+      *  Improved wording of sections.
 
    draft-03
 
@@ -1501,17 +1449,15 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
       *  Schema URIs are now namespace versioned.
 
-      *  Added "$ref" and "$schema" attributes.
 
 
 
-
-
-
-Luff, et al.              Expires July 26, 2013                [Page 27]
+Luff, et al.              Expires July 26, 2013                [Page 26]
 
 Internet-Draft           JSON Schema Media Type             January 2013
 
+
+      *  Added "$ref" and "$schema" attributes.
 
    draft-02
 
@@ -1554,11 +1500,65 @@ Authors' Addresses
    EMail: kris@sitepen.com
 
 
+
+
+
+
+
+
+
+
+Luff, et al.              Expires July 26, 2013                [Page 27]
+
+Internet-Draft           JSON Schema Media Type             January 2013
+
+
    Gary Court
    Calgary, AB
    Canada
 
    EMail: gary.court@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -409,9 +409,9 @@
                 <t>
                     The base URI to be used for relative URI resolution SHOULD is defined as follows:
                     <list>
-                        <t>if the data has a link defined, with a relation of "self", then the "href" value of that link is used</t>
-                        <t>if no such link exists, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document</t>
-                        <t>if no such links exist (the data and all its parents in the tree do not have a "self" link), the URI used to fetch the document should be used.</t>
+                        <t>if the data has a link defined, with a relation of "self", then the "href" value of that link is used, unless the relation of the link being resolved is also "self"</t>
+                        <t>otherwise, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document, if it exists</t>
+                        <t>otherwise, the URI used to fetch the document should be used.</t>
                     </list>
                 </t>
                 
@@ -590,8 +590,7 @@ Input                    Output
                         <t hangText="root">
                             This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
                             All other properties of the instance objects can be regarded as meta-data descriptions for the data.
-                            The URI of this link MUST be a fragment, specifying a location within the instance.
-                            If it is not, this link should be ignored.
+                            The URI of this link MUST refer to a location within the instance document, otherwise the link MUST be ignored.
                         </t>
                     </list>
                 </t>
@@ -656,6 +655,11 @@ Input                    Output
                 <section title="Fragment resolution with &quot;root&quot; links">
                     <t>
                         The presence of a link with relation "root" alters what the root of the document is considered to be.
+                        For fragment resolution methods (such as JSON Pointer fragments) that navigate through the document, the target of the "root" link should be the starting point for such methods.
+                    </t>
+                    <t>
+                        The only exception is "root" links themselves.
+                        When calculating the target of links with relation "root", existing "root" links MUST NOT be taken into consideration.
                     </t>
                     <t>
                         <figure>
@@ -698,51 +702,6 @@ http://example.com/data/12345#/title        "Document title"
                             </artwork>
                         </figure>
                     </t>
-
-                    <section title="Preventing the URI resolution paradox">
-                        <t>
-                            Because of the "root" link type's effect on URL resolution, it possible to create apparent paradoxes in URI resolution.  For example, consider this response from a server:
-                            <figure>
-                                <artwork>
-<![CDATA[
-Content-Type: application/json; profile=#/schema
-
-{
-    "myRootData": {
-        "title": "Document title"
-    },
-    "schema": {
-        "type": "object",
-        "properties": {
-            "root": {
-                "title": "Document",
-                "type": "object",
-                "properties": {
-                    "title": {"type": "string"}
-                }
-            }
-        },
-        "links": [
-            {
-                "rel": "root",
-                "href": "#/myRootData"
-            }
-        ]
-    }
-}
-]]>
-                                </artwork>
-                                <postamble>
-                                    The "profile" parameter in the "Content-Type" HTTP header defines the schema to be inside the data itself.
-                                    But the schema defines a "root" link, which changes the document root, which seems like it should change the target of "#/schema".
-                                </postamble>
-                            </figure>
-                        </t>
-                        
-                        <t>
-                            To avoid this scenario, the following behaviour is defined: when resolving URIs for schemas, that schema MUST NOT be taken into account when calculating the document root.
-                        </t>
-                    </section>
                 </section>
                 
                 <section title="Security Considerations for &quot;self&quot; links">
@@ -1059,6 +1018,9 @@ GET /foo/
                 <list style="hanging">
                     <t hangText="draft-04">
                         <list style="symbols">
+                            <t>Resolution of link URIs ("href") is now affected by rel="self" links on the instance</t>
+                            <t>Define "title" for LDOs</t>
+                            <t>Use URI Templates for the "href" property</t>
                             <t>Split hyper-schema definition out from main schema.</t>
                             <t>Removed "readonly"</t>
                             <t>Capitalised the T in "encType"</t>
