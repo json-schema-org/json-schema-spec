@@ -640,11 +640,11 @@ href</h3>
                     The base URI to be used for relative URI resolution SHOULD is defined as follows:
                     </p>
 <blockquote class="text">
-<p>if the data has a link defined, with a relation of "self", then the "href" value of that link is used
+<p>if the data has a link defined, with a relation of "self", then the "href" value of that link is used, unless the relation of the link being resolved is also "self"
 </p>
-<p>if no such link exists, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document
+<p>otherwise, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document, if it exists
 </p>
-<p>if no such links exist (the data and all its parents in the tree do not have a "self" link), the URI used to fetch the document should be used.
+<p>otherwise, the URI used to fetch the document should be used.
 </p>
 </blockquote><p>
                 
@@ -880,8 +880,7 @@ rel</h3>
 <dd>
                             This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
                             All other properties of the instance objects can be regarded as meta-data descriptions for the data.
-                            The URI of this link MUST refer to a location within the instance document.
-                            If it is not, this link should be ignored.
+                            The URI of this link MUST refer to a location within the instance document, otherwise the link MUST be ignored.
                         
 </dd>
 </dl></blockquote><p>
@@ -951,12 +950,12 @@ Fragment resolution with &quot;root&quot; links</h3>
 
 <p>
                         The presence of a link with relation "root" alters what the root of the document is considered to be.
-                        For fragment resolution methods (such as JSON Pointer fragments) that navigate through the document, the target of the "root" link should be the starting point.
+                        For fragment resolution methods (such as JSON Pointer fragments) that navigate through the document, the target of the "root" link should be the starting point for such methods.
                     
 </p>
 <p>
-                        The only exception is "root" links themselves, which must always refer to a location within the instance document.
-                        When calculating the target of "root" links, existing "root" links MUST not be taken into consideration.
+                        The only exception is "root" links themselves.
+                        When calculating the target of links with relation "root", existing "root" links MUST NOT be taken into consideration.
                     
 </p>
 <p>

@@ -562,15 +562,14 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
 
       if the data has a link defined, with a relation of "self", then
-      the "href" value of that link is used
+      the "href" value of that link is used, unless the relation of the
+      link being resolved is also "self"
 
-      if no such link exists, the URI should be resolved against the
-      link with relation "self" belonging to the closest parent node in
-      the JSON document
+      otherwise, the URI should be resolved against the link with
+      relation "self" belonging to the closest parent node in the JSON
+      document, if it exists
 
-      if no such links exist (the data and all its parents in the tree
-      do not have a "self" link), the URI used to fetch the document
-      should be used.
+      otherwise, the URI used to fetch the document should be used.
 
    This property is not optional.
 
@@ -609,6 +608,7 @@ Internet-Draft           JSON Schema Media Type             January 2013
 
       the surrounding rounded brackets are themselves contained within a
       pair of curly brackets: { }
+
 
 
 
@@ -805,8 +805,8 @@ Internet-Draft           JSON Schema Media Type             January 2013
       purposes of user agent interaction or fragment resolution.  All
       other properties of the instance objects can be regarded as meta-
       data descriptions for the data.  The URI of this link MUST refer
-      to a location within the instance document.  If it is not, this
-      link should be ignored.
+      to a location within the instance document, otherwise the link
+      MUST be ignored.
 
    The following relations are applicable for schemas (the schema as the
    "from" resource in the relation):
@@ -884,11 +884,11 @@ Internet-Draft           JSON Schema Media Type             January 2013
    The presence of a link with relation "root" alters what the root of
    the document is considered to be.  For fragment resolution methods
    (such as JSON Pointer fragments) that navigate through the document,
-   the target of the "root" link should be the starting point.
+   the target of the "root" link should be the starting point for such
+   methods.
 
-   The only exception is "root" links themselves, which must always
-   refer to a location within the instance document.  When calculating
-   the target of "root" links, existing "root" links MUST not be taken
+   The only exception is "root" links themselves.  When calculating the
+   target of links with relation "root", existing "root" links MUST NOT
 
 
 
@@ -897,7 +897,7 @@ Luff, et al.              Expires July 26, 2013                [Page 16]
 Internet-Draft           JSON Schema Media Type             January 2013
 
 
-   into consideration.
+   be taken into consideration.
 
    For example, say we have the following schema:
 
