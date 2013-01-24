@@ -91,7 +91,7 @@
                 <t>
                     A JSON Schema is a JSON document, and that document MUST be an object. Object
                     members (or properties) defined by JSON Schema (this specification, or related
-                    specifcations) are called keywords, or schema keywords.
+                    specifications) are called keywords, or schema keywords.
                 </t>
 
                 <t>
@@ -215,7 +215,7 @@
                     JSON Schema allows applications to validate instances, either non interactively
                     or interactively. For instance, an application may collect JSON data and check
                     that this data matches a given set of constraints; another application may use a
-                    JSON Schema to build an interactve interface in order to collect user input
+                    JSON Schema to build an interactive interface in order to collect user input
                     according to constraints described by JSON Schema.
                 </t>
             </section>
@@ -330,7 +330,7 @@
                         <t>"http://json-schema.org/hyper-schema#" (JSON Schema written
                         against the current version of the specification);</t>
                         <t>"http://json-schema.org/draft-04/schema#" (JSON Schema written
-                        against against JSON Schema, draft v4 -- this version);</t>
+                        against JSON Schema, draft v4 -- this version);</t>
                         <t>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
                         written against JSON Schema, draft v4 -- this version);</t>
                         <t>"http://json-schema.org/draft-03/schema#" (JSON Schema written
@@ -438,7 +438,7 @@
                             <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
                             <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
                             <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
-                            <t hangText="#/schema2/nested">http://x.y.z/rootschema.json#bar</t>
+                            <t hangText="#/schema2/nested">http://x.y.z/otherschema.json#bar</t>
                             <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
                             <t hangText="#/schema3">some://where.else/completely#</t>
                         </list>
@@ -549,8 +549,8 @@
                 <t>
                     Extended JSON References using fragments which are not JSON Pointers are not
                     dereferenceable by implementations choosing not to support inline dereferencing.
-                    This addressing mechanism is defined for backwards compatibility, and SHOULD NOT
-                    be used in new schemas.
+                    This kind of reference is defined for backwards compatibility, and SHOULD NOT be
+                    used in new schemas.
                 </t>
             </section>
         </section>
