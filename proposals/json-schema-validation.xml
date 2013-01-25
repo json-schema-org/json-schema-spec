@@ -375,7 +375,7 @@
                         <t>
                             A string instance is considered valid if the regular
                             expression matches the instance successfully. Recall: regular
-                            expressions are not anchored.
+                            expressions are not implicitly anchored.
                         </t>
 
                     </section>
@@ -748,7 +748,7 @@
                         </t>
 
                         <t>
-                            The set still contains two elements, "" and "fiddle". Validation
+                            The set "s" still contains two elements, "" and "fiddle". Validation
                             therefore fails.
                         </t>
                     </section>
@@ -1051,14 +1051,19 @@
 
             <section title="Implementation requirements">
                 <t>
-                    Implementations MAY support the "format" keyword. If they choose to support this
-                    keyword, they MUST implement validation for attributes defined below. They MAY
-                    add custom format attributes.
+                    Implementations MAY support the "format" keyword. Should they choose to do so:
+                    
+                    <list>
+                        <t>they SHOULD implement validation for attributes defined below;</t>
+                        <t>they SHOULD offer an option to disable validation for this keyword.</t>
+                    </list>
+                    
                 </t>
 
                 <t>
-                    Save for agreement between parties, schema authors SHALL NOT expect a peer
-                    implementation to support this keyword and/or custom format attributes.
+                    Implementations MAY add custom format attributes. Save for agreement between
+                    parties, schema authors SHALL NOT expect a peer implementation to support this
+                    keyword and/or custom format attributes.
                 </t>
             </section>
 

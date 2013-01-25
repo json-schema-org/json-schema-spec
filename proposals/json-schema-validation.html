@@ -143,9 +143,9 @@
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">fge. Galiegue</td></tr>
-<tr><td class="header">Internet-Draft</td><td class="header">January 21, 2013</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">January 25, 2013</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: July 25, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: July 29, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />JSON Schema: interactive and non interactive validation<br />json-schema-validation</h1>
 
@@ -175,7 +175,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 25, 2013.</p>
+This Internet-Draft will expire on July 29, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -758,7 +758,7 @@ Conditions for successful validation</h3>
 <p>
                             A string instance is considered valid if the regular
                             expression matches the instance successfully. Recall: regular
-                            expressions are not anchored.
+                            expressions are not implicitly anchored.
                         
 </p>
 <a name="anchor36"></a><br /><hr />
@@ -1234,7 +1234,7 @@ Example</h3>
                         
 </p>
 <p>
-                            The set still contains two elements, "" and "fiddle". Validation
+                            The set "s" still contains two elements, "" and "fiddle". Validation
                             therefore fails.
                         
 </p>
@@ -1620,14 +1620,22 @@ Foreword</h3>
 Implementation requirements</h3>
 
 <p>
-                    Implementations MAY support the "format" keyword. If they choose to support this
-                    keyword, they MUST implement validation for attributes defined below. They MAY
-                    add custom format attributes.
+                    Implementations MAY support the "format" keyword. Should they choose to do so:
+                    
+                    </p>
+<blockquote class="text">
+<p>they SHOULD implement validation for attributes defined below;
+</p>
+<p>they SHOULD offer an option to disable validation for this keyword.
+</p>
+</blockquote><p>
+                    
                 
 </p>
 <p>
-                    Save for agreement between parties, schema authors SHALL NOT expect a peer
-                    implementation to support this keyword and/or custom format attributes.
+                    Implementations MAY add custom format attributes. Save for agreement between
+                    parties, schema authors SHALL NOT expect a peer implementation to support this
+                    keyword and/or custom format attributes.
                 
 </p>
 <a name="anchor107"></a><br /><hr />
