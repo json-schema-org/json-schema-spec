@@ -143,9 +143,9 @@
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">fge. Galiegue</td></tr>
-<tr><td class="header">Internet-Draft</td><td class="header">January 21, 2013</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">January 25, 2013</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: July 25, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: July 29, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />JSON Schema: core definitions and terminology<br />json-schema-core</h1>
 
@@ -174,7 +174,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 25, 2013.</p>
+This Internet-Draft will expire on July 29, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -341,7 +341,7 @@ JSON Schema, keywords</h3>
 <p>
                     A JSON Schema is a JSON document, and that document MUST be an object. Object
                     members (or properties) defined by JSON Schema (this specification, or related
-                    specifcations) are called keywords, or schema keywords.
+                    specifications) are called keywords, or schema keywords.
                 
 </p>
 <p>
@@ -507,7 +507,7 @@ Validation</h3>
                     JSON Schema allows applications to validate instances, either non interactively
                     or interactively. For instance, an application may collect JSON data and check
                     that this data matches a given set of constraints; another application may use a
-                    JSON Schema to build an interactve interface in order to collect user input
+                    JSON Schema to build an interactive interface in order to collect user input
                     according to constraints described by JSON Schema.
                 
 </p>
@@ -656,7 +656,7 @@ Purpose</h3>
                         against the current version of the specification);
 </p>
 <p>"http://json-schema.org/draft-04/schema#" (JSON Schema written
-                        against against JSON Schema, draft v4 -- this version);
+                        against JSON Schema, draft v4 -- this version);
 </p>
 <p>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
                         written against JSON Schema, draft v4 -- this version);
@@ -789,7 +789,7 @@ Usage</h3>
 <dd>http://x.y.z/otherschema.json#
 </dd>
 <dt>#/schema2/nested</dt>
-<dd>http://x.y.z/rootschema.json#bar
+<dd>http://x.y.z/otherschema.json#bar
 </dd>
 <dt>#/schema2/alsonested</dt>
 <dd>http://x.y.z/t/inner.json#a
@@ -910,8 +910,8 @@ Security considerations</h3>
 <p>
                     Extended JSON References using fragments which are not JSON Pointers are not
                     dereferenceable by implementations choosing not to support inline dereferencing.
-                    This addressing mechanism is defined for backwards compatibility, and SHOULD NOT
-                    be used in new schemas.
+                    This kind of reference is defined for backwards compatibility, and SHOULD NOT be
+                    used in new schemas.
                 
 </p>
 <a name="anchor33"></a><br /><hr />
