@@ -22,6 +22,30 @@
             </address>
         </author>
 
+        <author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
+            <organization>SitePen (USA)</organization>
+            <address>
+                <postal>
+                    <street>530 Lytton Avenue</street>
+                    <city>Palo Alto, CA 94301</city>
+                    <country>USA</country>
+                </postal>
+                <phone>+1 650 968 8787</phone>
+                <email>kris@sitepen.com</email>
+            </address>
+        </author>
+
+        <author fullname="Gary Court" initials="G" surname="Court">
+            <address>
+                <postal>
+                    <street></street>
+                    <city>Calgary, AB</city>
+                    <country>Canada</country>
+                </postal>
+                <email>gary.court@gmail.com</email>
+            </address>
+        </author>
+
         <date year="2013"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
@@ -280,8 +304,8 @@
                 </t>
 
                 <t>
-                    As a consequence, for interoperability reasons, any JSON used in the context of
-                    JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
+                    As a consequence, for interoperability reasons, JSON values used in the context
+                    of JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
                     that mathematical integers be represented as integers as defined by this
                     specification.
                 </t>
@@ -315,29 +339,30 @@
 
                 <t>
                     This keyword MUST be located at the root of a JSON Schema. The value of this
-                    keyword MUST be a <xref target="RFC3986">URI</xref>, and this URI MUST be both
-                    absolute and normalized. The resource located at this URI MUST successfully
-                    describe itself. It is RECOMMENDED that schema authors include this keyword in
-                    their schemas.
+                    keyword MUST be a <xref target="RFC3986">URI</xref> and a valid <xref
+                    target="json-reference">JSON Reference</xref>; this URI MUST be both absolute
+                    and normalized. The resource located at this URI MUST successfully describe
+                    itself. It is RECOMMENDED that schema authors include this keyword in their
+                    schemas.
                 </t>
 
                 <t>
                     The following values are predefined:
 
-                    <list>
-                        <t>"http://json-schema.org/schema#" (JSON Schema written
-                        against the current version of the specification);</t>
-                        <t>"http://json-schema.org/hyper-schema#" (JSON Schema written
-                        against the current version of the specification);</t>
-                        <t>"http://json-schema.org/draft-04/schema#" (JSON Schema written
-                        against JSON Schema, draft v4 -- this version);</t>
-                        <t>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
-                        written against JSON Schema, draft v4 -- this version);</t>
-                        <t>"http://json-schema.org/draft-03/schema#" (JSON Schema written
-                        against <xref target="json-schema-03">JSON Schema, draft v3</xref>);</t>
-                        <t>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
+                    <list style="hanging">
+                        <t hangText="http://json-schema.org/schema#">JSON Schema written against
+                        the current version of the specification.</t>
+                        <t hangText="http://json-schema.org/hyper-schema#">JSON Schema written
+                        against the current version of the specification.</t>
+                        <t hangText="http://json-schema.org/draft-04/schema#">JSON Schema written
+                        against this version.</t>
+                        <t hangText="http://json-schema.org/draft-04/hyper-schema#">JSON Schema hyperschema
+                        written against this version.</t>
+                        <t hangText="http://json-schema.org/draft-03/schema#"> JSON Schema written
+                        against <xref target="json-schema-03">JSON Schema, draft v3</xref>.</t>
+                        <t hangText="http://json-schema.org/draft-03/hyper-schema#"> JSON Schema hyperschema
                         written against <xref target="json-schema-03">JSON Schema, draft
-                        v3</xref>).</t>
+                        v3</xref>.</t>
                     </list>
                 </t>
             </section>
@@ -355,7 +380,7 @@
             <section title="Definition">
                 <t>
                     JSON Schema uses <xref target="json-reference">JSON Reference</xref> as a
-                    general addressing mechanism. It extends this specification in two ways:
+                    mechanism for schema addressing. It extends this specification in two ways:
                     
                     <list>
                         <t>JSON Schema offers facilities to alter the base URI against which a
@@ -363,6 +388,7 @@
                         <t>it defines a specific dereferencing mechanism extending JSON Reference to
                         accept arbitrary fragment parts.</t>
                     </list>
+
                 </t>
                 
                 <t>
@@ -377,7 +403,7 @@
                 <section title="Valid values">
                     <t>
                         The value for this keyword MUST be a string, and MUST be a valid URI. This
-                        URI MUST be normalized, and MUST NOT be an empty fragment (#) or the empty
+                        URI MUST be normalized, and SHOULD NOT be an empty fragment (#) or the empty
                         URI.
                     </t>
                  </section>
@@ -491,15 +517,15 @@
                     <t>
                         When an implementation encounters the "schema1" reference, it resolves it
                         against the most immediate parent scope, leading to URI
-                        "http://my.site/myschema/schema1#". The way to process this URI will differ
+                        "http://my.site/schema1#". The way to process this URI will differ
                         according to the chosen dereferencing mode:
 
                         <list>
                             <t>if canonical dereferencing is used, the implementation will
                             dereference this URI, and fetch the content at this URI;</t>
                             <t>if inline dereferencing is used, the implementation will notice that
-                            URI scope "http://my.site/myschema/schema1#" is already defined within
-                            the schema, and choose to use the appropriate subschema.</t>
+                            URI scope "http://my.site/schema1#" is already defined within the
+                            schema, and choose to use the appropriate subschema.</t>
                         </list>
                     </t>
                                 
@@ -531,7 +557,7 @@
 
                     <t>
                         An implementation choosing to support inline dereferencing SHOULD be able to
-                        use this kind of references. Implementations choosing to use canonical
+                        use this kind of reference. Implementations choosing to use canonical
                         dereferencing, however, are not required to support it.
                     </t>
                 </section>
@@ -629,6 +655,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
         <references title="Normative References">
             &RFC2119;
         </references>
+
         <references title="Informative References">
             &RFC2616;
             &RFC3986;
@@ -681,6 +708,10 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
                     <t hangText="draft-00">
                         <list style="symbols">
                             <t>Initial draft.</t>
+                            <t>Salvaged from draft v3.</t>
+                            <t>Mandate the use of JSON Reference, JSON Pointer.</t>
+                            <t>Define the role of "id". Define URI resolution scope.</t>
+                            <t>Add interoperability considerations.</t>
                         </list>
                     </t>
                 </list>

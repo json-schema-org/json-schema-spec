@@ -25,6 +25,30 @@
             </address>
         </author>
 
+        <author fullname="Kris Zyp" initials="K" role="editor" surname="Zyp">
+            <organization>SitePen (USA)</organization>
+            <address>
+                <postal>
+                    <street>530 Lytton Avenue</street>
+                    <city>Palo Alto, CA 94301</city>
+                    <country>USA</country>
+                </postal>
+                <phone>+1 650 968 8787</phone>
+                <email>kris@sitepen.com</email>
+            </address>
+        </author>
+
+        <author fullname="Gary Court" initials="G" surname="Court">
+            <address>
+                <postal>
+                    <street></street>
+                    <city>Calgary, AB</city>
+                    <country>Canada</country>
+                </postal>
+                <email>gary.court@gmail.com</email>
+            </address>
+        </author>
+
         <date year="2013"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
@@ -820,8 +844,8 @@
 
                     <section title="Conditions for successful validation">
                         <t>
-                            An instance validates successfully against this keyword if
-                            its value is equal to one of the elements in this keyword's array value.
+                            An instance validates successfully against this keyword if its value is
+                            equal to one of the elements in this keyword's array value.
                         </t>
                     </section>
 
@@ -1318,6 +1342,7 @@
         <references title="Normative References">
             &RFC2119;
         </references>
+
         <references title="Informative References">
             &RFC1034;
             &RFC2373;
@@ -1336,5 +1361,32 @@
             </reference>
         </references>
 
+        <section title="ChangeLog">
+            <t>
+                <list style="hanging">
+                    <t hangText="draft-00">
+                        <list style="symbols">
+                            <t>Initial draft.</t>
+                            <t>Salvaged from draft v3.</t>
+                            <t>Redefine the "required" keyword.</t>
+                            <t>Remove "extends", "disallow"</t>
+                            <t>Add "anyOf", "allOf", "oneOf", "not", "definitions", "minProperties",
+                            "maxProperties".</t>
+                            <t>"dependencies" member values can no longer be single strings; at
+                            least one element is required in a property dependency array.</t>
+                            <t>Rename "divisibleBy" to "multipleOf".</t>
+                            <t>"type" arrays can no longer have schemas; remove "any" as a possible
+                            value.</t>
+                            <t>Rework the "format" section; make support optional.</t>
+                            <t>"format": remove attributes "phone", "style", "color"; rename
+                            "ip-address" to "ipv4"; add references for all attributes.</t>
+                            <t>Provide algorithms to calculate schema(s) for array/object
+                            instances.</t>
+                            <t>Add interoperability considerations.</t>
+                        </list>
+                    </t>
+                </list>
+            </t>
+        </section>
     </back>
 </rfc>
