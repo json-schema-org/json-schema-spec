@@ -143,9 +143,11 @@
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">fge. Galiegue</td></tr>
-<tr><td class="header">Internet-Draft</td><td class="header">January 25, 2013</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: July 29, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">K. Zyp, Ed.</td></tr>
+<tr><td class="header">Expires: August 3, 2013</td><td class="header">SitePen (USA)</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">G. Court</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">January 30, 2013</td></tr>
 </table></td></tr></table>
 <h1><br />JSON Schema: interactive and non interactive validation<br />json-schema-validation</h1>
 
@@ -175,7 +177,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 29, 2013.</p>
+This Internet-Draft will expire on August 3, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -334,6 +336,8 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">10.2.</a>&nbsp;
 Informative References<br />
+<a href="#anchor145">Appendix&nbsp;A.</a>&nbsp;
+ChangeLog<br />
 </p>
 <br clear="all" />
 
@@ -1326,8 +1330,8 @@ Valid values</h3>
 Conditions for successful validation</h3>
 
 <p>
-                            An instance validates successfully against this keyword if
-                            its value is equal to one of the elements in this keyword's array value.
+                            An instance validates successfully against this keyword if its value is
+                            equal to one of the elements in this keyword's array value.
                         
 </p>
 <a name="anchor79"></a><br /><hr />
@@ -2030,13 +2034,84 @@ References</h3>
 <td class="author-text">&ldquo;<a href="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">ECMA 262 specification</a>.&rdquo;</td></tr>
 </table>
 
+<a name="anchor145"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+ChangeLog</h3>
+
+<p>
+                </p>
+<blockquote class="text"><dl>
+<dt>draft-00</dt>
+<dd>
+                        
+<ul class="text">
+<li>Initial draft.
+</li>
+<li>Salvaged from draft v3.
+</li>
+<li>Redefine the "required" keyword.
+</li>
+<li>Remove "extends", "disallow"
+</li>
+<li>Add "anyOf", "allOf", "oneOf", "not", "definitions", "minProperties",
+                            "maxProperties".
+</li>
+<li>"dependencies" member values can no longer be single strings; at
+                            least one element is required in a property dependency array.
+</li>
+<li>Rename "divisibleBy" to "multipleOf".
+</li>
+<li>"type" arrays can no longer have schemas; remove "any" as a possible
+                            value.
+</li>
+<li>Rework the "format" section; make support optional.
+</li>
+<li>"format": remove attributes "phone", "style", "color"; rename
+                            "ip-address" to "ipv4"; add references for all attributes.
+</li>
+<li>Provide algorithms to calculate schema(s) for array/object
+                            instances.
+</li>
+<li>Add interoperability considerations.
+</li>
+</ul>
+                    
+</dd>
+</dl></blockquote><p>
+            
+</p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>Author's Address</h3>
+<h3>Authors' Addresses</h3>
 <table width="99%" border="0" cellpadding="0" cellspacing="0">
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Francis Galiegue</td></tr>
 <tr><td class="author" align="right">EMail:&nbsp;</td>
 <td class="author-text"><a href="mailto:fgaliegue@gmail.com">fgaliegue@gmail.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Kris Zyp (editor)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">SitePen (USA)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">530 Lytton Avenue</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Palo Alto, CA 94301</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">USA</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1 650 968 8787</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:kris@sitepen.com">kris@sitepen.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Gary Court</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Calgary, AB</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Canada</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:gary.court@gmail.com">gary.court@gmail.com</a></td></tr>
 </table>
 </body></html>
