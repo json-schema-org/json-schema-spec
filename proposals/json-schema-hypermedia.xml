@@ -291,18 +291,17 @@
 
             <section title="fragmentResolution">
                 <t>
-                    This property indicates the fragment resolution protocol to use for resolving fragment identifiers in URIs within the instance representations.
-                    This applies to the instance object URIs and all children of the instance object's URIs.
+                    When addressing a JSON document, the fragment part of the URI may be used to refer to a particular instance within the document, relative to the document root.
+                </t>
+
+                <t>
+                    This keyword indicates the method to use for finding the appropriate instance within a document, given the fragment part.
                     The default fragment resolution protocol is "json-pointer", which is defined below.
                     Other fragment resolution protocols MAY be used, but are not defined in this document.
                 </t>
 
                 <t>
-                    The fragment identifier is based on <xref target="RFC3986">RFC 3986, Sec 5</xref>, and defines the mechanism for resolving references to entities within a document.
-                </t>
-
-                <t>
-                    Note that if the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>, then all fragment resolution should be resolved relative to the target of the root link.
+                    If the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>, then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
                     The only exception to this is the resolution of "root" links themselves.
                 </t>
 
