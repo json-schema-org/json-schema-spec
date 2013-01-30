@@ -339,7 +339,7 @@
                         </t>
                         
                         <t>
-                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be the character set of the JSON string value (for which the default is Unicode).
+                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be the character set into which the JSON string value was decoded (for which the default is Unicode).
                         </t>
                     </section>
                 </section>
@@ -373,7 +373,7 @@
 }
 ]]>
                         </artwork>
-                        <postamble>Instances described by this schema should be strings containing HTML, using the UTF-8 character set.</postamble>
+                        <postamble>Instances described by this schema should be strings containing HTML, using whatever character set the JSON string was decoded into (default is Unicode).</postamble>
                     </figure>
                 </section>
             </section>
