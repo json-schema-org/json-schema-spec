@@ -10,7 +10,7 @@
 <!ENTITY rfc2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
 <!ENTITY rfc2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
-<!ENTITY linkheader SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-http-link-header.xml">
+<!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
 ]>
 <?rfc toc="yes"?>
@@ -296,7 +296,7 @@
                 </t>
 
                 <t>
-                    If the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>, then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
+                    If the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <xref target="RFC5988">HTTP Link header</xref>, then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
                     The only exception to this is the resolution of "root" links themselves.
                 </t>
 
@@ -653,7 +653,7 @@ Input                    Output
                 </figure>
 
                 <t>
-                    Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.
+                    Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="RFC5988">HTTP Link header</xref>.
                 </t>
 
                 <section title="Fragment resolution with &quot;root&quot; links">
@@ -839,7 +839,7 @@ GET /foo/
                 </t>
                 
                 <t>
-                    This property is analogous to the "type" property of &lt;a&gt; elements in HTML (advisory content type), or the "type" parameter in the <xref target="I-D.nottingham-http-link-header">HTTP Link header</xref>.
+                    This property is analogous to the "type" property of &lt;a&gt; elements in HTML (advisory content type), or the "type" parameter in the <xref target="RFC5988">HTTP Link header</xref>.
                     User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
                     When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
                 </t>
@@ -1017,7 +1017,7 @@ GET /foo/
             &rfc4627;
             &rfc5226;
             &rfc2046;
-            &linkheader;
+            &rfc5988;
             &html401;
         </references>
 
