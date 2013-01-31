@@ -143,9 +143,11 @@
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">fge. Galiegue</td></tr>
-<tr><td class="header">Internet-Draft</td><td class="header">January 21, 2013</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: July 25, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">K. Zyp, Ed.</td></tr>
+<tr><td class="header">Expires: August 3, 2013</td><td class="header">SitePen (USA)</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">G. Court</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">January 30, 2013</td></tr>
 </table></td></tr></table>
 <h1><br />JSON Schema: core definitions and terminology<br />json-schema-core</h1>
 
@@ -174,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 25, 2013.</p>
+This Internet-Draft will expire on August 3, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -341,7 +343,7 @@ JSON Schema, keywords</h3>
 <p>
                     A JSON Schema is a JSON document, and that document MUST be an object. Object
                     members (or properties) defined by JSON Schema (this specification, or related
-                    specifcations) are called keywords, or schema keywords.
+                    specifications) are called keywords, or schema keywords.
                 
 </p>
 <p>
@@ -507,7 +509,7 @@ Validation</h3>
                     JSON Schema allows applications to validate instances, either non interactively
                     or interactively. For instance, an application may collect JSON data and check
                     that this data matches a given set of constraints; another application may use a
-                    JSON Schema to build an interactve interface in order to collect user input
+                    JSON Schema to build an interactive interface in order to collect user input
                     according to constraints described by JSON Schema.
                 
 </p>
@@ -592,8 +594,8 @@ Mathematical integers</h3>
                 
 </p>
 <p>
-                    As a consequence, for interoperability reasons, any JSON used in the context of
-                    JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
+                    As a consequence, for interoperability reasons, JSON values used in the context
+                    of JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
                     that mathematical integers be represented as integers as defined by this
                     specification.
                 
@@ -638,37 +640,43 @@ Purpose</h3>
 </p>
 <p>
                     This keyword MUST be located at the root of a JSON Schema. The value of this
-                    keyword MUST be a <a class='info' href='#RFC3986'>URI<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986], and this URI MUST be both
-                    absolute and normalized. The resource located at this URI MUST successfully
-                    describe itself. It is RECOMMENDED that schema authors include this keyword in
-                    their schemas.
+                    keyword MUST be a <a class='info' href='#RFC3986'>URI<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986] and a valid <a class='info' href='#json-reference'>JSON Reference<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Reference (work in progress),&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;reference]; this URI MUST be both absolute
+                    and normalized. The resource located at this URI MUST successfully describe
+                    itself. It is RECOMMENDED that schema authors include this keyword in their
+                    schemas.
                 
 </p>
 <p>
                     The following values are predefined:
 
                     </p>
-<blockquote class="text">
-<p>"http://json-schema.org/schema#" (JSON Schema written
-                        against the current version of the specification);
-</p>
-<p>"http://json-schema.org/hyper-schema#" (JSON Schema written
-                        against the current version of the specification);
-</p>
-<p>"http://json-schema.org/draft-04/schema#" (JSON Schema written
-                        against against JSON Schema, draft v4 -- this version);
-</p>
-<p>"http://json-schema.org/draft-04/hyper-schema#" (JSON Schema hyperschema
-                        written against JSON Schema, draft v4 -- this version);
-</p>
-<p>"http://json-schema.org/draft-03/schema#" (JSON Schema written
-                        against <a class='info' href='#json-schema-03'>JSON Schema, draft v3<span> (</span><span class='info'>Court, G. and K. Zyp, &ldquo;JSON Schema, draft 3,&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;schema&#8209;03]);
-</p>
-<p>"http://json-schema.org/draft-03/hyper-schema#" (JSON Schema hyperschema
+<blockquote class="text"><dl>
+<dt>http://json-schema.org/schema#</dt>
+<dd>JSON Schema written against
+                        the current version of the specification.
+</dd>
+<dt>http://json-schema.org/hyper-schema#</dt>
+<dd>JSON Schema written
+                        against the current version of the specification.
+</dd>
+<dt>http://json-schema.org/draft-04/schema#</dt>
+<dd>JSON Schema written
+                        against this version.
+</dd>
+<dt>http://json-schema.org/draft-04/hyper-schema#</dt>
+<dd>JSON Schema hyperschema
+                        written against this version.
+</dd>
+<dt>http://json-schema.org/draft-03/schema#</dt>
+<dd> JSON Schema written
+                        against <a class='info' href='#json-schema-03'>JSON Schema, draft v3<span> (</span><span class='info'>Court, G. and K. Zyp, &ldquo;JSON Schema, draft 3,&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;schema&#8209;03].
+</dd>
+<dt>http://json-schema.org/draft-03/hyper-schema#</dt>
+<dd> JSON Schema hyperschema
                         written against <a class='info' href='#json-schema-03'>JSON Schema, draft
-                        v3<span> (</span><span class='info'>Court, G. and K. Zyp, &ldquo;JSON Schema, draft 3,&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;schema&#8209;03]).
-</p>
-</blockquote><p>
+                        v3<span> (</span><span class='info'>Court, G. and K. Zyp, &ldquo;JSON Schema, draft 3,&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;schema&#8209;03].
+</dd>
+</dl></blockquote><p>
                 
 </p>
 <a name="anchor24"></a><br /><hr />
@@ -694,7 +702,7 @@ Definition</h3>
 
 <p>
                     JSON Schema uses <a class='info' href='#json-reference'>JSON Reference<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Reference (work in progress),&rdquo; September&nbsp;2012.</span><span>)</span></a> [json&#8209;reference] as a
-                    general addressing mechanism. It extends this specification in two ways:
+                    mechanism for schema addressing. It extends this specification in two ways:
                     
                     </p>
 <blockquote class="text">
@@ -705,6 +713,7 @@ Definition</h3>
                         accept arbitrary fragment parts.
 </p>
 </blockquote><p>
+
                 
 </p>
 <p>
@@ -725,7 +734,7 @@ Valid values</h3>
 
 <p>
                         The value for this keyword MUST be a string, and MUST be a valid URI. This
-                        URI MUST be normalized, and MUST NOT be an empty fragment (#) or the empty
+                        URI MUST be normalized, and SHOULD NOT be an empty fragment (#) or the empty
                         URI.
                     
 </p>
@@ -789,7 +798,7 @@ Usage</h3>
 <dd>http://x.y.z/otherschema.json#
 </dd>
 <dt>#/schema2/nested</dt>
-<dd>http://x.y.z/rootschema.json#bar
+<dd>http://x.y.z/otherschema.json#bar
 </dd>
 <dt>#/schema2/alsonested</dt>
 <dd>http://x.y.z/t/inner.json#a
@@ -850,7 +859,7 @@ Canonical dereferencing and inline dereferencing</h3>
 <p>
                         When an implementation encounters the "schema1" reference, it resolves it
                         against the most immediate parent scope, leading to URI
-                        "http://my.site/myschema/schema1#". The way to process this URI will differ
+                        "http://my.site/schema1#". The way to process this URI will differ
                         according to the chosen dereferencing mode:
 
                         </p>
@@ -859,8 +868,8 @@ Canonical dereferencing and inline dereferencing</h3>
                             dereference this URI, and fetch the content at this URI;
 </p>
 <p>if inline dereferencing is used, the implementation will notice that
-                            URI scope "http://my.site/myschema/schema1#" is already defined within
-                            the schema, and choose to use the appropriate subschema.
+                            URI scope "http://my.site/schema1#" is already defined within the
+                            schema, and choose to use the appropriate subschema.
 </p>
 </blockquote><p>
                     
@@ -891,7 +900,7 @@ Inline dereferencing and fragments</h3>
 </pre></div>
 <p>
                         An implementation choosing to support inline dereferencing SHOULD be able to
-                        use this kind of references. Implementations choosing to use canonical
+                        use this kind of reference. Implementations choosing to use canonical
                         dereferencing, however, are not required to support it.
                     
 </p>
@@ -910,8 +919,8 @@ Security considerations</h3>
 <p>
                     Extended JSON References using fragments which are not JSON Pointers are not
                     dereferenceable by implementations choosing not to support inline dereferencing.
-                    This addressing mechanism is defined for backwards compatibility, and SHOULD NOT
-                    be used in new schemas.
+                    This kind of reference is defined for backwards compatibility, and SHOULD NOT be
+                    used in new schemas.
                 
 </p>
 <a name="anchor33"></a><br /><hr />
@@ -1032,6 +1041,14 @@ ChangeLog</h3>
 <ul class="text">
 <li>Initial draft.
 </li>
+<li>Salvaged from draft v3.
+</li>
+<li>Mandate the use of JSON Reference, JSON Pointer.
+</li>
+<li>Define the role of "id". Define URI resolution scope.
+</li>
+<li>Add interoperability considerations.
+</li>
 </ul>
                     
 </dd>
@@ -1040,11 +1057,35 @@ ChangeLog</h3>
 </p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>Author's Address</h3>
+<h3>Authors' Addresses</h3>
 <table width="99%" border="0" cellpadding="0" cellspacing="0">
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Francis Galiegue</td></tr>
 <tr><td class="author" align="right">EMail:&nbsp;</td>
 <td class="author-text"><a href="mailto:fgaliegue@gmail.com">fgaliegue@gmail.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Kris Zyp (editor)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">SitePen (USA)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">530 Lytton Avenue</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Palo Alto, CA 94301</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">USA</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1 650 968 8787</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:kris@sitepen.com">kris@sitepen.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Gary Court</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Calgary, AB</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Canada</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:gary.court@gmail.com">gary.court@gmail.com</a></td></tr>
 </table>
 </body></html>
