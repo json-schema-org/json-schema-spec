@@ -149,7 +149,7 @@
 <tr><td class="header">&nbsp;</td><td class="header">G. Court</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">January 31, 2013</td></tr>
 </table></td></tr></table>
-<h1><br />JSON Hyper-Schema: Hypertext definitions for JSON Schema<br />json-schema-hypermedia</h1>
+<h1><br />JSON Hyper-Schema: Hypertext definitions for JSON Schema<br />draft-luff-json-hyper-schema-00</h1>
 
 <h3>Abstract</h3>
 
@@ -280,8 +280,8 @@ Introduction</h3>
             
 </p>
 <p>
-                This specification will use the terminology defined by the JSON Schema core
-                specification. It is advised that readers have a copy of this specification.
+                This specification will use the terminology defined by the <a class='info' href='#json-schema-core'>JSON Schema core
+                specification<span> (</span><span class='info'>Galiegue, F., Zyp, K., and G. Court, &ldquo;JSON Schema: core definitions and terminology,&rdquo; 2013.</span><span>)</span></a> [json&#8209;schema&#8209;core]. It is advised that readers have a copy of this specification.
             
 </p>
 <a name="anchor2"></a><br /><hr />
@@ -512,7 +512,7 @@ fragmentResolution</h3>
 json-pointer fragment resolution</h3>
 
 <p>
-                        The "json-pointer" fragment resolution protocol uses a <a class='info' href='#json-pointer'>JSON Pointer<span> (</span><span class='info'>Bryan, P. and K. Zyp, &ldquo;JSON Pointer,&rdquo; October&nbsp;2011.</span><span>)</span></a> [json&#8209;pointer] to resolve fragment identifiers in URIs within instance representations.
+                        The "json-pointer" fragment resolution protocol uses a <a class='info' href='#json-pointer'>JSON Pointer<span> (</span><span class='info'>Bryan, P., Zyp, K., and M. Nottingham, &ldquo;JSON Pointer,&rdquo; August&nbsp;2012.</span><span>)</span></a> [json&#8209;pointer] to resolve fragment identifiers in URIs within instance representations.
                     
 </p>
 <a name="anchor10"></a><br /><hr />
@@ -905,7 +905,7 @@ rel</h3>
                 
 </p>
 <p>
-                    The following relations are applicable for schemas (the schema as the "from" resource in the relation):
+                    The following relations are applicable for schemas (the schema as the "from" resource in the relation) if they require no parameterization with data from the instance:
 
                     </p>
 <blockquote class="text"><dl>
@@ -921,8 +921,6 @@ rel</h3>
                         
 </dd>
 </dl></blockquote><p>
-                    
-                    Links defined in the schema using these relation values SHOULD not require parameterization with data from the instance, as they describe a link for the schema, not the instances.
                 
 </p>
 <p>For example, if a schema is defined:
@@ -1120,9 +1118,14 @@ Security Considerations for &quot;targetSchema&quot;</h3>
         "name": "Jason",
         "id": 8
     },
-    "message": "It's easy, you just add some HTML like this: &lt;script&gt;doSomethingEvil()&lt;/script&gt;"
+    "message": "It's easy, you just add some HTML like
+                  this: &lt;script&gt;doSomethingEvil()&lt;/script&gt;"
 }
 </pre></div>
+<p>
+                                The message string was split over two lines for readability.
+                            
+</p>
                     
 
 <p>
@@ -1351,7 +1354,9 @@ References</h3>
 <tr><td class="author-text" valign="top"><a name="RFC6570">[RFC6570]</a></td>
 <td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="json-pointer">[json-pointer]</a></td>
-<td class="author-text">Bryan, P. and K. Zyp, &ldquo;<a href="http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer-02">JSON Pointer</a>,&rdquo; October&nbsp;2011.</td></tr>
+<td class="author-text">Bryan, P., Zyp, K., and M. Nottingham, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">JSON Pointer</a>,&rdquo; August&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="json-schema-core">[json-schema-core]</a></td>
+<td class="author-text">Galiegue, F., Zyp, K., and G. Court, &ldquo;<a href="http://tools.ietf.org/html/draft-zyp-json-schema-04">JSON Schema: core definitions and terminology</a>,&rdquo; 2013.</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
@@ -1360,8 +1365,6 @@ References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC4627">[RFC4627]</a></td>
-<td class="author-text">Crockford, D., &ldquo;<a href="http://tools.ietf.org/html/rfc4627">The application/json Media Type for JavaScript Object Notation (JSON)</a>,&rdquo; RFC&nbsp;4627, July&nbsp;2006 (<a href="http://www.rfc-editor.org/rfc/rfc4627.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5226">[RFC5226]</a></td>
 <td class="author-text">Narten, T. and H. Alvestrand, &ldquo;<a href="http://tools.ietf.org/html/rfc5226">Guidelines for Writing an IANA Considerations Section in RFCs</a>,&rdquo; BCP&nbsp;26, RFC&nbsp;5226, May&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5226.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC2046">[RFC2046]</a></td>
@@ -1392,16 +1395,13 @@ Change Log</h3>
 </li>
 <li>Split hyper-schema definition out from main schema.
 </li>
-<li>Removed "readonly"
-</li>
-<li>Capitalised the T in "encType"
+<li>Capitalised the T in "encType", and the O in "readOnly"
 </li>
 <li>Moved "mediaType" and "contentEncoding" to the new "media" property (renamed "type" and "binaryEncoding")
 </li>
 <li>Added "mediaType" property to LDOs
 </li>
-<li>Replaced "slash-delimited" fragment resolution with
-                            "json-pointer".
+<li>Replaced "slash-delimited" fragment resolution with "json-pointer".
 </li>
 <li>Added "template" LDO attribute.
 </li>

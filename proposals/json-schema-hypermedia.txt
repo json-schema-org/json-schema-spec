@@ -10,7 +10,7 @@ Expires: August 4, 2013                                    SitePen (USA)
 
 
         JSON Hyper-Schema: Hypertext definitions for JSON Schema
-                         json-schema-hypermedia
+                    draft-luff-json-hyper-schema-00
 
 Abstract
 
@@ -123,8 +123,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    uses these keywords.
 
    This specification will use the terminology defined by the JSON
-   Schema core specification.  It is advised that readers have a copy of
-   this specification.
+   Schema core specification [json-schema-core].  It is advised that
+   readers have a copy of this specification.
 
 2.  Conventions and Terminology
 
@@ -819,7 +819,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
       the instance document, otherwise the link MUST be ignored.
 
    The following relations are applicable for schemas (the schema as the
-   "from" resource in the relation):
+   "from" resource in the relation) if they require no parameterization
+   with data from the instance:
 
    instances  This indicates the target resource that represents a
       collection of instances of a schema.
@@ -828,9 +829,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
       a schema.  This link definition SHOULD be a submission link with a
       non-safe method (like POST).
 
-   Links defined in the schema using these relation values SHOULD not
-   require parameterization with data from the instance, as they
-   describe a link for the schema, not the instances.
+
+
 
 
 
@@ -1023,22 +1023,47 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    that conversation, with a URI of:
    http://forum.example.com/topics/152/comments/13
 
-{
-    "topicId": 152,
-    "commentId": 13,
-    "from": {
-        "name": "Jane",
-        "id": 5
-    },
-    "to": {
-        "name": "Jason",
-        "id": 8
-    },
-    "message": "It's easy, you just add some HTML like this: <script>doSomethingEvil()</script>"
-}
+   {
+       "topicId": 152,
+       "commentId": 13,
+       "from": {
+           "name": "Jane",
+           "id": 5
+       },
+       "to": {
+           "name": "Jason",
+           "id": 8
+       },
+       "message": "It's easy, you just add some HTML like
+                     this: <script>doSomethingEvil()</script>"
+   }
+
+   The message string was split over two lines for readability.
 
    A third party might then write provide the following Link Description
    Object at another location:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Luff, et al.             Expires August 4, 2013                [Page 19]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
 
  {
      "rel": "evil-attack",
@@ -1057,14 +1082,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
    If the client used this "targetSchema" value when interpreting the
    above data, then it might display the contents of "message" as HTML.
-
-
-
-Luff, et al.             Expires August 4, 2013                [Page 19]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
    At this point, the JavaScript embedded in the message might be
    executed (in the context of the "forum.example.com" domain).
 
@@ -1094,23 +1111,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
    If this property's value is not specified, then the value should be
    taken to be "application/json".
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1318,9 +1318,16 @@ Internet-Draft              JSON Hyper-Schema               January 2013
                                Nottingham, M., and D. Orchard, "URI
                                Template", RFC 6570, March 2012.
 
-   [json-pointer]              Bryan, P. and K. Zyp, "JSON Pointer",
-                               October 2011, <http://tools.ietf.org/
-                               html/draft-pbryan-zyp-json-pointer-02>.
+   [json-pointer]              Bryan, P., Zyp, K., and M. Nottingham,
+                               "JSON Pointer", August 2012, <http://
+                               tools.ietf.org/html/
+                               draft-ietf-appsawg-json-pointer-03>.
+
+   [json-schema-core]          Galiegue, F., Zyp, K., and G. Court,
+                               "JSON Schema: core definitions and
+                               terminology", 2013, <http://
+                               tools.ietf.org/html/
+                               draft-zyp-json-schema-04>.
 
 7.2.  Informative References
 
@@ -1330,13 +1337,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
                                Protocol -- HTTP/1.1", RFC 2616,
                                June 1999.
 
-   [RFC4627]                   Crockford, D., "The application/json
-                               Media Type for JavaScript Object Notation
-                               (JSON)", RFC 4627, July 2006.
-
-   [RFC5226]                   Narten, T. and H. Alvestrand, "Guidelines
-                               for Writing an IANA Considerations
-                               Section in RFCs", BCP 26, RFC 5226,
 
 
 
@@ -1345,6 +1345,9 @@ Luff, et al.             Expires August 4, 2013                [Page 24]
 Internet-Draft              JSON Hyper-Schema               January 2013
 
 
+   [RFC5226]                   Narten, T. and H. Alvestrand, "Guidelines
+                               for Writing an IANA Considerations
+                               Section in RFCs", BCP 26, RFC 5226,
                                May 2008.
 
    [RFC2046]                   Freed, N. and N. Borenstein,
@@ -1374,9 +1377,7 @@ Appendix A.  Change Log
 
       *  Split hyper-schema definition out from main schema.
 
-      *  Removed "readonly"
-
-      *  Capitalised the T in "encType"
+      *  Capitalised the T in "encType", and the O in "readOnly"
 
       *  Moved "mediaType" and "contentEncoding" to the new "media"
          property (renamed "type" and "binaryEncoding")
@@ -1389,7 +1390,6 @@ Appendix A.  Change Log
       *  Added "template" LDO attribute.
 
       *  Improved wording of sections.
-
 
 
 
