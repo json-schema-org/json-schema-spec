@@ -4,9 +4,9 @@
 Internet Engineering Task Force                             G. Luff, Ed.
 Internet-Draft
 Intended status: Informational                                    K. Zyp
-Expires: July 27, 2013                                     SitePen (USA)
+Expires: August 4, 2013                                    SitePen (USA)
                                                                 G. Court
-                                                        January 23, 2013
+                                                        January 31, 2013
 
 
         JSON Hyper-Schema: Hypertext definitions for JSON Schema
@@ -16,7 +16,7 @@ Abstract
 
    JSON Schema is a JSON based format for defining the structure of JSON
    data.  This document specifies hyperlink- and hypermedia-related
-   keywords for the JSON Schema format.
+   keywords of JSON Schema.
 
 Status of This Memo
 
@@ -33,7 +33,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 27, 2013.
+   This Internet-Draft will expire on August 4, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Luff, et al.              Expires July 27, 2013                 [Page 1]
+Luff, et al.             Expires August 4, 2013                 [Page 1]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -69,11 +69,12 @@ Table of Contents
      4.2.  fragmentResolution . . . . . . . . . . . . . . . . . . . .  8
        4.2.1.  json-pointer fragment resolution . . . . . . . . . . .  8
      4.3.  media  . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-       4.3.1.  Properties of "media"  . . . . . . . . . . . . . . . .  8
+       4.3.1.  Properties of "media"  . . . . . . . . . . . . . . . .  9
        4.3.2.  Example  . . . . . . . . . . . . . . . . . . . . . . .  9
-     4.4.  pathStart  . . . . . . . . . . . . . . . . . . . . . . . . 10
+     4.4.  readOnly . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     4.5.  pathStart  . . . . . . . . . . . . . . . . . . . . . . . . 10
    5.  Link Description Object  . . . . . . . . . . . . . . . . . . . 10
-     5.1.  href . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     5.1.  href . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
        5.1.1.  URI Templating . . . . . . . . . . . . . . . . . . . . 11
      5.2.  rel  . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
        5.2.1.  Fragment resolution with "root" links  . . . . . . . . 16
@@ -107,8 +108,7 @@ Table of Contents
 
 
 
-
-Luff, et al.              Expires July 27, 2013                 [Page 2]
+Luff, et al.             Expires August 4, 2013                 [Page 2]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -117,21 +117,20 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
    JSON Schema is a JSON based format for defining the structure of JSON
    data.  This document specifies hyperlink- and hypermedia-related
-   keywords for the JSON Schema format.
+   keywords of JSON Schema.
 
    The term JSON Hyper-Schema is used to refer to a JSON Schema that
    uses these keywords.
+
+   This specification will use the terminology defined by the JSON
+   Schema core specification.  It is advised that readers have a copy of
+   this specification.
 
 2.  Conventions and Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in RFC 2119 [RFC2119].
-
-   The terms "JSON", "JSON text", "JSON value", "member", "element",
-   "object", "array", "number", "string", "boolean", "true", "false",
-   and "null" in this document are to be interpreted as defined in RFC
-   4627 [RFC4627].
 
    The terms "schema", "instance", "property" and "item" are to be
    interpreted as defined in the JSON Schema core definition
@@ -144,7 +143,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    additional information required to interpret JSON data as rich
    multimedia documents.
 
-   Just as with the core JSON schema keywords, all the properties
+   Just as with the core JSON schema keywords, all the keywords
    described in the "Schema Keywords" section are optional.
 
 
@@ -164,7 +163,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                 [Page 3]
+
+Luff, et al.             Expires August 4, 2013                 [Page 3]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -220,12 +220,12 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                 [Page 4]
+Luff, et al.             Expires August 4, 2013                 [Page 4]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
 
-   An example of data following the above schema might be:
+   An example of a JSON instance described by the above schema might be:
 
 
    {
@@ -251,8 +251,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 4.  Schema keywords
 
-   The following properties are defined for JSON Schema objects:
-
 4.1.  links
 
    The "links" property of schemas is used to associate Link Description
@@ -260,28 +258,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    and the items in the array must be Link Description Objects, as
    defined below.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 27, 2013                 [Page 5]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
-   An example schema using the "links" keywords could be:
+   An example schema using the "links" keyword could be:
 
    {
        "title": "Schema defining links",
@@ -296,6 +273,13 @@ Internet-Draft              JSON Hyper-Schema               January 2013
            }
        ]
    }
+
+
+
+Luff, et al.             Expires August 4, 2013                 [Page 5]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
 
 4.1.1.  Multiple links per URI
 
@@ -332,13 +316,29 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Luff, et al.             Expires August 4, 2013                 [Page 6]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
 
-   For example, this schema describes a format for news posts, accessed
-   via HTTP.  The links describe how to access the comments for a news
+   For example, this schema describes a format for blog posts, accessed
+   via HTTP.  The links describe how to access the comments for the
    post, how to search the comments, and how to submit new comments, all
    with the same URI:
 
@@ -370,7 +370,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
                }
            },
            {
-               "rel": "post-comment",
+               "title": "Post a comment",
+               "rel": "create",
                "href": "/{id}/comments",
                "method": "POST",
                "schema": {
@@ -384,42 +385,47 @@ Internet-Draft              JSON Hyper-Schema               January 2013
                }
            }
        ]
-   }
 
 
 
-Luff, et al.              Expires July 27, 2013                 [Page 7]
+Luff, et al.             Expires August 4, 2013                 [Page 7]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
 
+   }
+
    If the client follows the first link, the URI might be expanded to
    "/15/comments".  For the second link, the method is "GET" (the
-   default for HTTP) so the parameters are added to the URL to produce
-   something like: "/15/comments?searchTerm=JSON&itemsPerPage=50".  The
-   third link might have a URI of "/15/comments", but the text content
-   of the new comment is posted as JSON.
+   default for HTTP) so a client following this link would add the
+   parameters to the URL to produce something like: "/15/
+   comments?searchTerm=JSON&itemsPerPage=50".  The third link defines a
+   possible interaction where a client would POST to a URI (such as
+   "/15/comments"), where the post-data was a JSON representation of the
+   new comment, for example:
+
+   {
+       "message": "This is an example comment"
+   }
 
 4.2.  fragmentResolution
 
-   This property indicates the fragment resolution protocol to use for
-   resolving fragment identifiers in URIs within the instance
-   representations.  This applies to the instance object URIs and all
-   children of the instance object's URIs.  The default fragment
-   resolution protocol is "json-pointer", which is defined below.  Other
-   fragment resolution protocols MAY be used, but are not defined in
-   this document.
+   When addressing a JSON document, the fragment part of the URI may be
+   used to refer to a particular instance within the document.
 
-   The fragment identifier is based on RFC 3986, Sec 5 [RFC3986], and
-   defines the mechanism for resolving references to entities within a
-   document.
+   This keyword indicates the method to use for finding the appropriate
+   instance within a document, given the fragment part.  The default
+   fragment resolution protocol is "json-pointer", which is defined
+   below.  Other fragment resolution protocols MAY be used, but are not
+   defined in this document.
 
-   Note that if the instance is described by a schema providing the a
-   link with "root" relation, or such a link is provided in using the
-   HTTP Link header [I-D.nottingham-http-link-header], then all fragment
-   resolution should be resolved relative to the target of the root
-   link.  The only exception to this is the resolution of "root" links
-   themselves.
+   If the instance is described by a schema providing the a link with
+   "root" relation, or such a link is provided in using the HTTP Link
+   header [RFC5988], then the target of the "root" link should be
+   considered the document root for the purposes of all fragment
+   resolution methods that use the document structure (such as "json-
+   pointer").  The only exception to this is the resolution of "root"
+   links themselves.
 
 4.2.1.  json-pointer fragment resolution
 
@@ -429,7 +435,19 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 4.3.  media
 
-   The value of this properties MUST be an object.
+   The "media" property indicates that this instance contains non-JSON
+   data encoded in a JSON string.  It describes the type of content and
+   how it is encoded.
+
+   The value of this property MUST be an object, and SHOULD be ignored
+   for any instance that is not a string.
+
+
+
+Luff, et al.             Expires August 4, 2013                 [Page 8]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
 
 4.3.1.  Properties of "media"
 
@@ -438,19 +456,10 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 4.3.1.1.  binaryEncoding
 
-   The value of this property SHOULD be ignored for any instance that is
-   not a string.  If the instance value is a string, this property
-   defines that the string SHOULD be interpreted as binary data and
-
-
-
-Luff, et al.              Expires July 27, 2013                 [Page 8]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
-   decoded using the encoding named by this property.  RFC 2045, Sec 6.1
-   [RFC2045] lists the possible values for this property.
+   If the instance value is a string, this property defines that the
+   string SHOULD be interpreted as binary data and decoded using the
+   encoding named by this property.  RFC 2045, Sec 6.1 [RFC2045] lists
+   the possible values for this property.
 
 4.3.1.2.  type
 
@@ -460,8 +469,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
    If the "binaryEncoding" property is not set, but the instance value
    is a string, then the value of this property SHOULD specify a text
-   document type, and the character set SHOULD be the character set of
-   the JSON string value (for which the default is Unicode).
+   document type, and the character set SHOULD be the character set into
+   which the JSON string value was decoded (for which the default is
+   Unicode).
 
 4.3.2.  Example
 
@@ -480,6 +490,21 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    Instances described by this schema should be strings, and their
    values should be interpretable as base64-encoded PNG images.
 
+
+
+
+
+
+
+
+
+
+
+Luff, et al.             Expires August 4, 2013                 [Page 9]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
+
    Another example:
 
 
@@ -492,20 +517,20 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
    Instances described by this schema should be strings containing HTML,
-   using the UTF-8 character set.
+   using whatever character set the JSON string was decoded into
+   (default is Unicode).
 
+4.4.  readOnly
 
+   If it has a value of boolean true, this keyword indicates that the
+   instance property SHOULD NOT be changed, and attempts by a user agent
+   to modify the value of this property are expected to be rejected by a
+   server.
 
+   The value of this keyword MUST be a boolean.  The default value is
+   false.
 
-
-
-
-Luff, et al.              Expires July 27, 2013                 [Page 9]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
-4.4.  pathStart
+4.5.  pathStart
 
    This property is a URI that defines what the instance's URI MUST
    start with in order to validate.  The value of the "pathStart"
@@ -528,6 +553,14 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    A Link Description Object (LDO) is used to describe a single link
    relation.  In the context of a schema, it defines the link relations
    of the instances of the schema, and can be parameterized by the
+
+
+
+Luff, et al.             Expires August 4, 2013                [Page 10]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
+
    instance values.  A Link Description Object (LDO) must be an object.
 
    The link description format can be used without JSON Schema, and use
@@ -553,14 +586,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    The base URI to be used for relative URI resolution SHOULD is defined
    as follows:
 
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 10]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
       if the data has a link defined, with a relation of "self", then
       the "href" value of that link is used, unless the relation of the
       link being resolved is also "self"
@@ -583,6 +608,14 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    The URI Template specification [RFC6570] restricts the set of
    characters available for variable names.  Property names in JSON,
    however, can be any UTF-8 string.
+
+
+
+
+Luff, et al.             Expires August 4, 2013                [Page 11]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
 
    To allow the use of any JSON property name in the template, before
    using the value of "href" as a URI Template, the following pre-
@@ -609,14 +642,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
       the surrounding rounded brackets are themselves contained within a
       pair of curly brackets: { }
 
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 11]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
    Each of these sections of the text (including the surrounding rounded
    brackets) MUST be replaced, according to the following rules:
 
@@ -641,9 +666,16 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    appears within a pair of curly brackets, then it MUST be replaced
    with the text "%73elf" (which is "self" with a percent-encoded "s").
 
+
+
+Luff, et al.             Expires August 4, 2013                [Page 12]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
+
    The purpose of this stage is to allow the use of the instance value
-   itself (not any properties) in the URI Template, by the special value
-   "%73elf".
+   itself (instead of its object properties or array items) in the URI
+   Template, by the special value "%73elf".
 
 5.1.1.1.3.  Choice of special-case values
 
@@ -652,26 +684,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    automated escaping.
 
 5.1.1.1.4.  Examples
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 12]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
 
    For example, here are some possible values for "href", followed by
    the results after pre-processing:
@@ -710,6 +722,13 @@ Internet-Draft              JSON Hyper-Schema               January 2013
       If the variable name is "%73elf", then the instance value itself
       MUST be used.
 
+
+
+Luff, et al.             Expires August 4, 2013                [Page 13]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
+
       If the variable name is "%65mpty", then the instances's empty-
       string ("") property MUST be used (if it exists).
 
@@ -719,15 +738,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
       Otherwise, the variable name should be percent-decoded, and the
       corresponding object property MUST be used (if it exists).
-
-
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 13]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
 
 5.1.1.2.1.  Converting to strings
 
@@ -767,6 +777,14 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    The relation to the target SHOULD be interpreted as specifically from
    the instance object that the schema (or sub-schema) applies to, not
    just the top level resource that contains the object within its
+
+
+
+Luff, et al.             Expires August 4, 2013                [Page 14]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
+
    hierarchy.  A link relation from the top level resource to a target
    MUST be indicated with the schema describing the top level JSON
    representation.
@@ -777,13 +795,6 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    4287 [RFC4287]).  However, we define these relations here for clarity
    of normative interpretation within the context of JSON Schema defined
    relations:
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 14]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
 
    self  If the relation value is "self", when this property is
       encountered in the instance object, the object represents a
@@ -803,10 +814,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    root  This relation indicates that the target of the link SHOULD be
       treated as the root or the body of the representation for the
       purposes of user agent interaction or fragment resolution.  All
-      other properties of the instance objects can be regarded as meta-
-      data descriptions for the data.  The URI of this link MUST refer
-      to a location within the instance document, otherwise the link
-      MUST be ignored.
+      other data in the document can be regarded as meta-data for the
+      document.  The URI of this link MUST refer to a location within
+      the instance document, otherwise the link MUST be ignored.
 
    The following relations are applicable for schemas (the schema as the
    "from" resource in the relation):
@@ -826,17 +836,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 15]
+Luff, et al.             Expires August 4, 2013                [Page 15]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -876,8 +876,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    "/Resource/?upId=thing".
 
    Note that these relationship values are case-insensitive, consistent
-   with their use in HTML and the HTTP Link header
-   [I-D.nottingham-http-link-header].
+   with their use in HTML and the HTTP Link header [RFC5988].
 
 5.2.1.  Fragment resolution with "root" links
 
@@ -889,15 +888,14 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
    The only exception is "root" links themselves.  When calculating the
    target of links with relation "root", existing "root" links MUST NOT
+   be taken into consideration.
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 16]
+Luff, et al.             Expires August 4, 2013                [Page 16]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
-
-   be taken into consideration.
 
    For example, say we have the following schema:
 
@@ -948,7 +946,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 17]
+
+
+Luff, et al.             Expires August 4, 2013                [Page 17]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1004,7 +1004,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 18]
+Luff, et al.             Expires August 4, 2013                [Page 18]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1060,7 +1060,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 19]
+Luff, et al.             Expires August 4, 2013                [Page 19]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1078,13 +1078,13 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
    This property is analogous to the "type" property of <a> elements in
    HTML (advisory content type), or the "type" parameter in the HTTP
-   Link header [I-D.nottingham-http-link-header].  User agents MAY use
-   this information to inform the interface they present to the user
-   before the link is followed, but this information MUST NOT use this
-   information in the interpretation of the resulting data.  When
-   deciding how to interpret data obtained through following this link,
-   the behaviour of user agents MUST be identical regardless of the
-   value of the this property.
+   Link header [RFC5988].  User agents MAY use this information to
+   inform the interface they present to the user before the link is
+   followed, but this information MUST NOT use this information in the
+   interpretation of the resulting data.  When deciding how to interpret
+   data obtained through following this link, the behaviour of user
+   agents MUST be identical regardless of the value of the this
+   property.
 
    If this property's value is specified, and the link's target is to be
    obtained using any protocol that supports the HTTP/1.1 "Accept"
@@ -1116,7 +1116,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 20]
+Luff, et al.             Expires August 4, 2013                [Page 20]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1172,7 +1172,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 21]
+Luff, et al.             Expires August 4, 2013                [Page 21]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1192,7 +1192,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 5.6.  Submission Link Properties
 
-   The following properties also apply to link definition objects, and
+   The following properties also apply to Link Description Objects, and
    provide functionality analogous to HTML forms, in providing a means
    for submitting extra (often user supplied) information to send to a
    server.
@@ -1200,10 +1200,14 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 5.6.1.  method
 
    This property defines which method can be used to access the target
-   resource.  In an HTTP environment, this could be "GET" or "POST"
-   (other HTTP methods such as "PUT" and "DELETE" have semantics that
-   are clearly implied by accessed resources, and do not need to be
-   defined here).  This defaults to "GET".
+   resource.  In an HTTP environment, this might be "GET" or "POST" (or
+   other HTTP methods).
+
+   Some link relation values imply a set of appropriate HTTP methods to
+   be used for the link.  For example, a client might assume that a link
+   with a relation of "edit" can be used in conjuction with the "PUT"
+   HTTP method.  If the client does not know which methods might be
+   appropriate, then this SHOULD default to "GET".
 
 5.6.2.  encType
 
@@ -1224,11 +1228,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 22]
+Luff, et al.             Expires August 4, 2013                [Page 22]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1284,7 +1284,7 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 23]
+Luff, et al.             Expires August 4, 2013                [Page 23]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
@@ -1296,77 +1296,70 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 7.1.  Normative References
 
-   [RFC2045]                          Freed, N. and N. Borenstein,
-                                      "Multipurpose Internet Mail
-                                      Extensions (MIME) Part One: Format
-                                      of Internet Message Bodies",
-                                      RFC 2045, November 1996.
+   [RFC2045]                   Freed, N. and N. Borenstein,
+                               "Multipurpose Internet Mail Extensions
+                               (MIME) Part One: Format of Internet
+                               Message Bodies", RFC 2045, November 1996.
 
-   [RFC2119]                          Bradner, S., "Key words for use in
-                                      RFCs to Indicate Requirement
-                                      Levels", BCP 14, RFC 2119,
-                                      March 1997.
+   [RFC2119]                   Bradner, S., "Key words for use in RFCs
+                               to Indicate Requirement Levels", BCP 14,
+                               RFC 2119, March 1997.
 
-   [RFC3986]                          Berners-Lee, T., Fielding, R., and
-                                      L. Masinter, "Uniform Resource
-                                      Identifier (URI): Generic Syntax",
-                                      STD 66, RFC 3986, January 2005.
+   [RFC3986]                   Berners-Lee, T., Fielding, R., and L.
+                               Masinter, "Uniform Resource Identifier
+                               (URI): Generic Syntax", STD 66, RFC 3986,
+                               January 2005.
 
-   [RFC4287]                          Nottingham, M., Ed. and R. Sayre,
-                                      Ed., "The Atom Syndication
-                                      Format", RFC 4287, December 2005.
+   [RFC4287]                   Nottingham, M., Ed. and R. Sayre, Ed.,
+                               "The Atom Syndication Format", RFC 4287,
+                               December 2005.
 
-   [RFC6570]                          Gregorio, J., Fielding, R.,
-                                      Hadley, M., Nottingham, M., and D.
-                                      Orchard, "URI Template", RFC 6570,
-                                      March 2012.
+   [RFC6570]                   Gregorio, J., Fielding, R., Hadley, M.,
+                               Nottingham, M., and D. Orchard, "URI
+                               Template", RFC 6570, March 2012.
 
-   [json-pointer]                     Bryan, P. and K. Zyp, "JSON
-                                      Pointer", October 2011, <http://
-                                      tools.ietf.org/html/
-                                      draft-pbryan-zyp-json-pointer-02>.
+   [json-pointer]              Bryan, P. and K. Zyp, "JSON Pointer",
+                               October 2011, <http://tools.ietf.org/
+                               html/draft-pbryan-zyp-json-pointer-02>.
 
 7.2.  Informative References
 
-   [RFC2616]                          Fielding, R., Gettys, J., Mogul,
-                                      J., Frystyk, H., Masinter, L.,
-                                      Leach, P., and T. Berners-Lee,
-                                      "Hypertext Transfer Protocol --
-                                      HTTP/1.1", RFC 2616, June 1999.
+   [RFC2616]                   Fielding, R., Gettys, J., Mogul, J.,
+                               Frystyk, H., Masinter, L., Leach, P., and
+                               T. Berners-Lee, "Hypertext Transfer
+                               Protocol -- HTTP/1.1", RFC 2616,
+                               June 1999.
 
-   [RFC4627]                          Crockford, D., "The application/
-                                      json Media Type for JavaScript
-                                      Object Notation (JSON)", RFC 4627,
+   [RFC4627]                   Crockford, D., "The application/json
+                               Media Type for JavaScript Object Notation
+                               (JSON)", RFC 4627, July 2006.
+
+   [RFC5226]                   Narten, T. and H. Alvestrand, "Guidelines
+                               for Writing an IANA Considerations
+                               Section in RFCs", BCP 26, RFC 5226,
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 24]
+Luff, et al.             Expires August 4, 2013                [Page 24]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
 
-                                      July 2006.
+                               May 2008.
 
-   [RFC5226]                          Narten, T. and H. Alvestrand,
-                                      "Guidelines for Writing an IANA
-                                      Considerations Section in RFCs",
-                                      BCP 26, RFC 5226, May 2008.
+   [RFC2046]                   Freed, N. and N. Borenstein,
+                               "Multipurpose Internet Mail Extensions
+                               (MIME) Part Two: Media Types", RFC 2046,
+                               November 1996.
 
-   [RFC2046]                          Freed, N. and N. Borenstein,
-                                      "Multipurpose Internet Mail
-                                      Extensions (MIME) Part Two: Media
-                                      Types", RFC 2046, November 1996.
+   [RFC5988]                   Nottingham, M., "Web Linking", RFC 5988,
+                               October 2010.
 
-   [I-D.nottingham-http-link-header]  Nottingham, M., "Web Linking", dra
-                                      ft-nottingham-http-link-header-10
-                                      (work in progress), May 2010.
-
-   [W3C.REC-html401-19991224]         Hors, A., Raggett, D., and I.
-                                      Jacobs, "HTML 4.01 Specification",
-                                      World Wide Web Consortium Recommen
-                                      dation REC-html401-19991224,
-                                      December 1999, <http://www.w3.org/
-                                      TR/1999/REC-html401-19991224>.
+   [W3C.REC-html401-19991224]  Hors, A., Raggett, D., and I. Jacobs,
+                               "HTML 4.01 Specification", World Wide Web
+                               Consortium Recommendation REC-html401-
+                               19991224, December 1999, <http://
+                               www.w3.org/TR/1999/REC-html401-19991224>.
 
 Appendix A.  Change Log
 
@@ -1393,17 +1386,20 @@ Appendix A.  Change Log
       *  Replaced "slash-delimited" fragment resolution with "json-
          pointer".
 
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 25]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
       *  Added "template" LDO attribute.
 
       *  Improved wording of sections.
+
+
+
+
+
+
+
+Luff, et al.             Expires August 4, 2013                [Page 25]
+
+Internet-Draft              JSON Hyper-Schema               January 2013
+
 
    draft-03
 
@@ -1449,15 +1445,17 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
       *  Schema URIs are now namespace versioned.
 
+      *  Added "$ref" and "$schema" attributes.
 
 
 
-Luff, et al.              Expires July 27, 2013                [Page 26]
+
+
+
+Luff, et al.             Expires August 4, 2013                [Page 26]
 
 Internet-Draft              JSON Hyper-Schema               January 2013
 
-
-      *  Added "$ref" and "$schema" attributes.
 
    draft-02
 
@@ -1500,19 +1498,6 @@ Authors' Addresses
    EMail: kris@sitepen.com
 
 
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 27]
-
-Internet-Draft              JSON Hyper-Schema               January 2013
-
-
    Gary Court
    Calgary, AB
    Canada
@@ -1523,46 +1508,5 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Luff, et al.              Expires July 27, 2013                [Page 28]
+Luff, et al.             Expires August 4, 2013                [Page 27]
 
