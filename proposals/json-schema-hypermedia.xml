@@ -112,7 +112,7 @@
                 This document describes how JSON Schema can be used to define hyperlinks on instance data.  It also defines how to provide additional information required to interpret JSON data as rich multimedia documents.
             </t>
             <t>
-                Just as with the core JSON schema keywords, all the properties described in the "Schema Keywords" section are optional.
+                Just as with the core JSON schema keywords, all the keywords described in the "Schema Keywords" section are optional.
             </t>
             <figure>
                 <preamble>Here is an example JSON Schema defining hyperlinks, and providing a multimedia interpretation for the "imgData" property:</preamble>
@@ -196,7 +196,7 @@
                 </t>
 
                 <figure>
-                    <preamble>An example schema using the "links" keywords could be:</preamble>
+                    <preamble>An example schema using the "links" keyword could be:</preamble>
                     <artwork>
 <![CDATA[{
     "title": "Schema defining links",
@@ -474,7 +474,7 @@
                                 After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
                             </t>
                             <t>
-                                The purpose of this stage is to allow the use of the instance value itself (not any properties) in the URI Template, by the special value "%73elf".
+                                The purpose of this stage is to allow the use of the instance value itself (instead of its object properties or array items) in the URI Template, by the special value "%73elf".
                             </t>
                         </section>
                         
@@ -593,7 +593,7 @@ Input                    Output
 
                         <t hangText="root">
                             This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
-                            All other properties of the instance objects can be regarded as meta-data descriptions for the data.
+                            All other data in the document can be regarded as meta-data for the document.
                             The URI of this link MUST refer to a location within the instance document, otherwise the link MUST be ignored.
                         </t>
                     </list>
@@ -913,14 +913,18 @@ GET /foo/
 
             <section title="Submission Link Properties">
                 <t>
-                    The following properties also apply to link definition objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
+                    The following properties also apply to Link Description Objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
                 </t>
 
                 <section title="method">
                     <t>
                         This property defines which method can be used to access the target resource.
-                        In an HTTP environment, this could be "GET" or "POST" (other HTTP methods such as "PUT" and "DELETE" have semantics that are clearly implied by accessed resources, and do not need to be defined here).
-                        This defaults to "GET".
+                        In an HTTP environment, this might be "GET" or "POST" (or other HTTP methods).
+                    </t>
+                    <t>
+                        Some link relation values imply a set of appropriate HTTP methods to be used for the link.
+                        For example, a client might assume that a link with a relation of "edit" can be used in conjuction with the "PUT" HTTP method.
+                        If the client does not know which methods might be appropriate, then this SHOULD default to "GET".
                     </t>
                 </section>
 
