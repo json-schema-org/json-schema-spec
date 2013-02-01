@@ -4,9 +4,9 @@
 Internet Engineering Task Force                             G. Luff, Ed.
 Internet-Draft
 Intended status: Informational                                    K. Zyp
-Expires: August 4, 2013                                    SitePen (USA)
+Expires: August 5, 2013                                    SitePen (USA)
                                                                 G. Court
-                                                        January 31, 2013
+                                                        February 1, 2013
 
 
         JSON Hyper-Schema: Hypertext definitions for JSON Schema
@@ -33,7 +33,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 4, 2013.
+   This Internet-Draft will expire on August 5, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 1]
+Luff, et al.             Expires August 5, 2013                 [Page 1]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
 Table of Contents
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 2]
+Luff, et al.             Expires August 5, 2013                 [Page 2]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
 1.  Introduction
@@ -133,8 +133,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    document are to be interpreted as described in RFC 2119 [RFC2119].
 
    The terms "schema", "instance", "property" and "item" are to be
-   interpreted as defined in the JSON Schema core definition
-   [FIXME_LINK].
+   interpreted as defined in the JSON Schema core specification
+   [json-schema-core].
 
 3.  Overview
 
@@ -164,9 +164,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 3]
+Luff, et al.             Expires August 5, 2013                 [Page 3]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    Here is an example JSON Schema defining hyperlinks, and providing a
@@ -220,9 +220,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 4]
+Luff, et al.             Expires August 5, 2013                 [Page 4]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    An example of a JSON instance described by the above schema might be:
@@ -276,9 +276,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 5]
+Luff, et al.             Expires August 5, 2013                 [Page 5]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
 4.1.1.  Multiple links per URI
@@ -332,9 +332,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 6]
+Luff, et al.             Expires August 5, 2013                 [Page 6]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    For example, this schema describes a format for blog posts, accessed
@@ -388,9 +388,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 7]
+Luff, et al.             Expires August 5, 2013                 [Page 7]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    }
@@ -444,9 +444,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 8]
+Luff, et al.             Expires August 5, 2013                 [Page 8]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
 4.3.1.  Properties of "media"
@@ -500,9 +500,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                 [Page 9]
+Luff, et al.             Expires August 5, 2013                 [Page 9]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    Another example:
@@ -535,8 +535,8 @@ Internet-Draft              JSON Hyper-Schema               January 2013
    This property is a URI that defines what the instance's URI MUST
    start with in order to validate.  The value of the "pathStart"
    property MUST be resolved relative to the closest URI Resolution
-   Scope (as defined in the core specification [FIXME link]), using the
-   rules from RFC 3986, Sec 5 [RFC3986].
+   Scope (as defined in the JSON Schema core specification
+   [json-schema-core]), using the rules from RFC 3986, Sec 5 [RFC3986].
 
    When multiple schemas have been referenced for an instance, the user
    agent can determine if this schema is applicable for a particular
@@ -556,9 +556,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 10]
+Luff, et al.             Expires August 5, 2013                [Page 10]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    instance values.  A Link Description Object (LDO) must be an object.
@@ -612,9 +612,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 11]
+Luff, et al.             Expires August 5, 2013                [Page 11]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    To allow the use of any JSON property name in the template, before
@@ -668,9 +668,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 12]
+Luff, et al.             Expires August 5, 2013                [Page 12]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    The purpose of this stage is to allow the use of the instance value
@@ -724,9 +724,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 13]
+Luff, et al.             Expires August 5, 2013                [Page 13]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
       If the variable name is "%65mpty", then the instances's empty-
@@ -780,9 +780,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 14]
+Luff, et al.             Expires August 5, 2013                [Page 14]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    hierarchy.  A link relation from the top level resource to a target
@@ -836,9 +836,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 15]
+Luff, et al.             Expires August 5, 2013                [Page 15]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    For example, if a schema is defined:
@@ -892,9 +892,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 16]
+Luff, et al.             Expires August 5, 2013                [Page 16]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    For example, say we have the following schema:
@@ -948,9 +948,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 17]
+Luff, et al.             Expires August 5, 2013                [Page 17]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    For example, if a hyper schema was defined:
@@ -1004,9 +1004,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 18]
+Luff, et al.             Expires August 5, 2013                [Page 18]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    representation.
@@ -1060,9 +1060,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 19]
+Luff, et al.             Expires August 5, 2013                [Page 19]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
  {
@@ -1116,9 +1116,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 20]
+Luff, et al.             Expires August 5, 2013                [Page 20]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    For example, if a schema is defined:
@@ -1172,9 +1172,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 21]
+Luff, et al.             Expires August 5, 2013                [Page 21]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    When choosing how to interpret data, the type information provided by
@@ -1228,9 +1228,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 22]
+Luff, et al.             Expires August 5, 2013                [Page 22]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    For example, with the following schema:
@@ -1284,9 +1284,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 23]
+Luff, et al.             Expires August 5, 2013                [Page 23]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    RFC 5226 [RFC5226].  Requests should be made by email to IANA, which
@@ -1340,9 +1340,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 24]
+Luff, et al.             Expires August 5, 2013                [Page 24]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    [RFC5226]                   Narten, T. and H. Alvestrand, "Guidelines
@@ -1396,9 +1396,9 @@ Appendix A.  Change Log
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 25]
+Luff, et al.             Expires August 5, 2013                [Page 25]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    draft-03
@@ -1452,9 +1452,9 @@ Internet-Draft              JSON Hyper-Schema               January 2013
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 26]
+Luff, et al.             Expires August 5, 2013                [Page 26]
 
-Internet-Draft              JSON Hyper-Schema               January 2013
+Internet-Draft              JSON Hyper-Schema              February 2013
 
 
    draft-02
@@ -1508,5 +1508,5 @@ Authors' Addresses
 
 
 
-Luff, et al.             Expires August 4, 2013                [Page 27]
+Luff, et al.             Expires August 5, 2013                [Page 27]
 
