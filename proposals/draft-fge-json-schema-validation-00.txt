@@ -4,9 +4,9 @@
 Internet Engineering Task Force                       fge. Galiegue, Ed.
 Internet-Draft
 Intended status: Informational                                    K. Zyp
-Expires: August 4, 2013                                    SitePen (USA)
+Expires: August 5, 2013                                    SitePen (USA)
                                                                 G. Court
-                                                        January 31, 2013
+                                                        February 1, 2013
 
 
         JSON Schema: interactive and non interactive validation
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 4, 2013.
+   This Internet-Draft will expire on August 5, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 1]
+Galiegue, et al.         Expires August 5, 2013                 [Page 1]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
    to this document.  Code Components extracted from this document must
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 2]
+Galiegue, et al.         Expires August 5, 2013                 [Page 2]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
    6.  Metadata keywords  . . . . . . . . . . . . . . . . . . . . . . 17
@@ -164,9 +164,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 3]
+Galiegue, et al.         Expires August 5, 2013                 [Page 3]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 1.  Introduction
@@ -220,9 +220,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 4]
+Galiegue, et al.         Expires August 5, 2013                 [Page 4]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 3.3.  Regular expressions
@@ -276,9 +276,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 5]
+Galiegue, et al.         Expires August 5, 2013                 [Page 5]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 4.2.  Inter-dependent keywords
@@ -332,9 +332,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 6]
+Galiegue, et al.         Expires August 5, 2013                 [Page 6]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
    If "exclusiveMaximum" is present, "maximum" MUST also be present.
@@ -388,9 +388,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 7]
+Galiegue, et al.         Expires August 5, 2013                 [Page 7]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.2.  Validation keywords for strings
@@ -444,9 +444,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 8]
+Galiegue, et al.         Expires August 5, 2013                 [Page 8]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.2.3.2.  Conditions for successful validation
@@ -500,9 +500,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                 [Page 9]
+Galiegue, et al.         Expires August 5, 2013                 [Page 9]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
    }
@@ -556,9 +556,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 10]
+Galiegue, et al.         Expires August 5, 2013                [Page 10]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.3.3.3.  Default value
@@ -612,9 +612,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 11]
+Galiegue, et al.         Expires August 5, 2013                [Page 11]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.4.2.3.  Default value
@@ -668,9 +668,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 12]
+Galiegue, et al.         Expires August 5, 2013                [Page 12]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.4.4.3.  Default values
@@ -718,15 +718,15 @@ Internet-Draft                 JSON Schema                  January 2013
        "patternProperties": {
            "p": {},
            "[0-9]": {}
-       }
+       },
+       "additionalProperties": false
    }
 
 
 
-
-Galiegue, et al.         Expires August 4, 2013                [Page 13]
+Galiegue, et al.         Expires August 5, 2013                [Page 13]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
    This is the instance to validate:
@@ -780,9 +780,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 14]
+Galiegue, et al.         Expires August 5, 2013                [Page 14]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.4.5.2.  Conditions for successful validation
@@ -836,9 +836,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 15]
+Galiegue, et al.         Expires August 5, 2013                [Page 15]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.5.3.  allOf
@@ -892,9 +892,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 16]
+Galiegue, et al.         Expires August 5, 2013                [Page 16]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 5.5.6.  not
@@ -948,9 +948,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 17]
+Galiegue, et al.         Expires August 5, 2013                [Page 17]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 6.1.  "title" and "description"
@@ -1004,9 +1004,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 18]
+Galiegue, et al.         Expires August 5, 2013                [Page 18]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 7.2.  Implementation requirements
@@ -1060,9 +1060,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 19]
+Galiegue, et al.         Expires August 5, 2013                [Page 19]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 7.3.3.2.  Validation
@@ -1116,9 +1116,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 20]
+Galiegue, et al.         Expires August 5, 2013                [Page 20]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
       the container instance type;
@@ -1172,9 +1172,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 21]
+Galiegue, et al.         Expires August 5, 2013                [Page 21]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 8.3.  Object members
@@ -1228,9 +1228,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 22]
+Galiegue, et al.         Expires August 5, 2013                [Page 22]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 9.  Security considerations
@@ -1284,9 +1284,9 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 23]
+Galiegue, et al.         Expires August 5, 2013                [Page 23]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
 Appendix A.  ChangeLog
@@ -1340,9 +1340,9 @@ Authors' Addresses
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 24]
+Galiegue, et al.         Expires August 5, 2013                [Page 24]
 
-Internet-Draft                 JSON Schema                  January 2013
+Internet-Draft                 JSON Schema                 February 2013
 
 
    Kris Zyp
@@ -1396,5 +1396,5 @@ Internet-Draft                 JSON Schema                  January 2013
 
 
 
-Galiegue, et al.         Expires August 4, 2013                [Page 25]
+Galiegue, et al.         Expires August 5, 2013                [Page 25]
 
