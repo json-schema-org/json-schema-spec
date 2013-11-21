@@ -1,0 +1,1542 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>JSON Hyper-Schema: Hypertext definitions for JSON Schema</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="JSON Hyper-Schema: Hypertext definitions for JSON Schema">
+<meta name="keywords" content="JSON, Schema, JavaScript, Object, Notation, Hyper Schema, Hypermedia">
+<meta name="generator" content="xml2rfc v1.35dev (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Internet Engineering Task Force</td><td class="header">G. Luff, Ed.</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">K. Zyp</td></tr>
+<tr><td class="header">Expires: May 25, 2014</td><td class="header">SitePen (USA)</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">G. Court</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">November 21, 2013</td></tr>
+</table></td></tr></table>
+<h1><br />JSON Hyper-Schema: Hypertext definitions for JSON Schema<br />draft-luff-json-hyper-schema-00</h1>
+
+<h3>Abstract</h3>
+
+<p>
+                JSON Schema is a JSON based format for defining the structure of JSON data.
+                This document specifies hyperlink- and hypermedia-related keywords of JSON Schema.
+            
+</p>
+<h3>Status of This Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on May 25, 2014.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2013 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+<a href="#anchor2">2.</a>&nbsp;
+Conventions and Terminology<br />
+<a href="#anchor3">3.</a>&nbsp;
+Overview<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">3.1.</a>&nbsp;
+Design Considerations<br />
+<a href="#anchor5">4.</a>&nbsp;
+Schema keywords<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">4.1.</a>&nbsp;
+links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">4.1.1.</a>&nbsp;
+Multiple links per URI<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">4.2.</a>&nbsp;
+fragmentResolution<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">4.2.1.</a>&nbsp;
+json-pointer fragment resolution<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">4.3.</a>&nbsp;
+media<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">4.3.1.</a>&nbsp;
+Properties of &quot;media&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">4.3.2.</a>&nbsp;
+Example<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">4.4.</a>&nbsp;
+readOnly<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">4.5.</a>&nbsp;
+pathStart<br />
+<a href="#anchor17">5.</a>&nbsp;
+Link Description Object<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#href">5.1.</a>&nbsp;
+href<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.1.1.</a>&nbsp;
+URI Templating<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor27">5.2.</a>&nbsp;
+rel<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor28">5.2.1.</a>&nbsp;
+Fragment resolution with &quot;root&quot; links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor29">5.2.2.</a>&nbsp;
+Security Considerations for &quot;self&quot; links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor30">5.3.</a>&nbsp;
+title<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor31">5.4.</a>&nbsp;
+targetSchema<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor32">5.4.1.</a>&nbsp;
+Security Considerations for &quot;targetSchema&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor33">5.5.</a>&nbsp;
+mediaType<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor34">5.5.1.</a>&nbsp;
+Security concerns for &quot;mediaType&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor35">5.6.</a>&nbsp;
+Submission Link Properties<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor36">5.6.1.</a>&nbsp;
+method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor37">5.6.2.</a>&nbsp;
+encType<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor38">5.6.3.</a>&nbsp;
+schema<br />
+<a href="#anchor39">6.</a>&nbsp;
+IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor40">6.1.</a>&nbsp;
+Registry of Link Relations<br />
+<a href="#rfc.references1">7.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
+Informative References<br />
+<a href="#anchor43">Appendix&nbsp;A.</a>&nbsp;
+Change Log<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>
+                JSON Schema is a JSON based format for defining the structure of JSON data.
+                This document specifies hyperlink- and hypermedia-related keywords of JSON Schema.
+            
+</p>
+<p>
+                The term JSON Hyper-Schema is used to refer to a JSON Schema that uses these keywords.
+            
+</p>
+<p>
+                This specification will use the terminology defined by the <a class='info' href='#json-schema-core'>JSON Schema core
+                specification<span> (</span><span class='info'>Galiegue, F., Zyp, K., and G. Court, &ldquo;JSON Schema: core definitions and terminology,&rdquo; 2013.</span><span>)</span></a> [json&#8209;schema&#8209;core]. It is advised that readers have a copy of this specification.
+            
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Conventions and Terminology</h3>
+
+<p>
+                
+
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <a class='info' href='#RFC2119'>RFC 2119<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a> [RFC2119].
+            
+</p>
+<p>
+                The terms "schema", "instance", "property" and "item" are to be interpreted as defined in the <a class='info' href='#json-schema-core'>JSON Schema core
+                specification<span> (</span><span class='info'>Galiegue, F., Zyp, K., and G. Court, &ldquo;JSON Schema: core definitions and terminology,&rdquo; 2013.</span><span>)</span></a> [json&#8209;schema&#8209;core].
+            
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Overview</h3>
+
+<p>
+                This document describes how JSON Schema can be used to define hyperlinks on instance data.  It also defines how to provide additional information required to interpret JSON data as rich multimedia documents.
+            
+</p>
+<p>
+                Just as with the core JSON schema keywords, all the keywords described in the "Schema Keywords" section are optional.
+            
+</p>
+<p>Here is an example JSON Schema defining hyperlinks, and providing a multimedia interpretation for the "imgData" property:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "title": "Written Article",
+    "type": "object",
+    "properties": {
+        "id": {
+            "title": "Article Identifier",
+            "type": "number"
+        },
+        "title": {
+            "title": "Article Title",
+            "type": "string"
+        },
+        "authorId": {
+            "type": "integer"
+        },
+        "imgData": {
+            "title": "Article Illustration (small)",
+            "type": "string",
+            "media": {
+                "binaryEncoding": "base64",
+                "type": "image/png"
+            }
+        }
+    },
+    "required" : ["id", "title", "authorId"],
+    "links": [
+        {
+            "rel": "full",
+            "href": "{id}"
+        },
+        {
+            "rel": "author",
+            "href": "/user?id={authorId}"
+        }
+    ]
+}
+
+</pre></div>
+<p>
+                    This example schema defines the properties of the instance.
+                    For the "imgData" property, it specifies that that it should be base64-decoded and the resulting binary data treated as a PNG image.
+                    It also defines link relations for the instance, with URIs incorporating values from the instance.
+                
+</p>
+<p>An example of a JSON instance described by the above schema might be:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "id": 15,
+    "title": "Example data",
+    "authorId": 105,
+    "imgData": "iVBORw...kJggg=="
+}
+
+</pre></div>
+<p>The base-64 data has been abbreviated for readability.
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+Design Considerations</h3>
+
+<p>
+                    The purpose of this document is to define keywords for the JSON Schema that allow JSON data to be understood as hyper-text.
+                
+</p>
+<p>
+                    JSON data on its own requires special knowledge from the client about the format in order to be interpretable as hyper-text.
+                    This document proposes a way to describe the hyper-text and hyper-media interpretation of such JSON formats, without defining reserved keywords or otherwise restricting the structure of the JSON data.
+                
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Schema keywords</h3>
+
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+links</h3>
+
+<p>
+                    The "links" property of schemas is used to associate Link Description Objects with instances.  The value of this property MUST be an array, and the items in the array must be Link Description Objects, as defined below.
+                
+</p>
+<p>An example schema using the "links" keyword could be:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "title": "Schema defining links",
+    "links": [
+        {
+            "rel": "full",
+            "href": "{id}"
+        },
+        {
+            "rel": "parent",
+            "href": "{parent}"
+        }
+    ]
+}
+</pre></div>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.1"></a><h3>4.1.1.&nbsp;
+Multiple links per URI</h3>
+
+<p>
+                        A single URI might have more than one role with relation to an instance.  This is not a problem - the same URI can be used in more than one Link Description Object.
+                    
+</p>
+<p>
+                            For example, this schema describes a format for blog posts, accessed via HTTP.
+                            The links describe how to access the comments for the post, how to search the comments, and how to submit new comments, all with the same URI:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "title": "News post",
+    ...
+    "links": [
+        {
+            "rel": "comments",
+            "href": "/{id}/comments"
+        },
+        {
+            "rel": "search",
+            "href": "/{id}/comments",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "searchTerm": {
+                        "type": "string"
+                    },
+                    "itemsPerPage": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "multipleOf": 10,
+                        "default": 20
+                    }
+                },
+                "required": ["searchTerm"]
+            }
+        },
+        {
+            "title": "Post a comment",
+            "rel": "create",
+            "href": "/{id}/comments",
+            "method": "POST",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": ["message"]
+            }
+        }
+    ]
+}
+</pre></div>
+<p>
+                        If the client follows the first link, the URI might be expanded to "/15/comments".
+                        For the second link, the method is "GET" (the default for HTTP) so a client following this link would add the parameters to the URL to produce something like: "/15/comments?searchTerm=JSON&amp;itemsPerPage=50".
+                        The third link defines a possible interaction where a client would POST to a URI (such as "/15/comments"), where the post-data was a JSON representation of the new comment, for example:
+                    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "message": "This is an example comment"
+}
+</pre></div>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+fragmentResolution</h3>
+
+<p>
+                    When addressing a JSON document, the fragment part of the URI may be used to refer to a particular instance within the document.
+                
+</p>
+<p>
+                    This keyword indicates the method to use for finding the appropriate instance within a document, given the fragment part.
+                    The default fragment resolution protocol is "json-pointer", which is defined below.
+                    Other fragment resolution protocols MAY be used, but are not defined in this document.
+                
+</p>
+<p>
+                    If the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <a class='info' href='#RFC5988'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> [RFC5988], then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
+                    The only exception to this is the resolution of "root" links themselves.
+                
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2.1"></a><h3>4.2.1.&nbsp;
+json-pointer fragment resolution</h3>
+
+<p>
+                        The "json-pointer" fragment resolution protocol uses a <a class='info' href='#json-pointer'>JSON Pointer<span> (</span><span class='info'>Bryan, P., Zyp, K., and M. Nottingham, &ldquo;JSON Pointer,&rdquo; August&nbsp;2012.</span><span>)</span></a> [json&#8209;pointer] to resolve fragment identifiers in URIs within instance representations.
+                    
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+media</h3>
+
+<p>
+                    The "media" property indicates that this instance contains non-JSON data encoded in a JSON string.  It describes the type of content and how it is encoded.
+                
+</p>
+<p>
+                    The value of this property MUST be an object, and SHOULD be ignored for any instance that is not a string.
+                
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3.1"></a><h3>4.3.1.&nbsp;
+Properties of &quot;media&quot;</h3>
+
+<p>
+                        The value of the "media" keyword MAY contain any of the following properties:
+                    
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3.1.1"></a><h3>4.3.1.1.&nbsp;
+binaryEncoding</h3>
+
+<p>
+                            If the instance value is a string, this property defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
+                            <a class='info' href='#RFC2045'>RFC 2045, Sec 6.1<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2045] lists the possible values for this property.
+                        
+</p>
+<a name="anchor13"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3.1.2"></a><h3>4.3.1.2.&nbsp;
+type</h3>
+
+<p>
+                            The value of this property must be a media type, as defined by <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046].
+                            This property defines the media type of instances which this schema defines.
+                        
+</p>
+<p>
+                            If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be the character set into which the JSON string value was decoded (for which the default is Unicode).
+                        
+</p>
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3.2"></a><h3>4.3.2.&nbsp;
+Example</h3>
+
+<p>Here is an example schema, illustrating the use of "media":
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "type": "string",
+    "media": {
+        "binaryEncoding": "base64",
+        "type": "image/png"
+    }
+}
+
+</pre></div>
+<p>Instances described by this schema should be strings, and their values should be interpretable as base64-encoded PNG images.
+</p>
+<p>Another example:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "type": "string",
+    "media": {
+        "mediaType": "text/html"
+    }
+}
+
+</pre></div>
+<p>Instances described by this schema should be strings containing HTML, using whatever character set the JSON string was decoded into (default is Unicode).
+</p>
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
+readOnly</h3>
+
+<p>
+                    If it has a value of boolean true, this keyword indicates that the instance property SHOULD NOT be changed, and attempts by a user agent to modify the value of this property are expected to be rejected by a server.
+                
+</p>
+<p>
+                    The value of this keyword MUST be a boolean.
+                    The default value is false.
+                
+</p>
+<a name="anchor16"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.5"></a><h3>4.5.&nbsp;
+pathStart</h3>
+
+<p>
+                    This property is a URI that defines what the instance's URI MUST start with in order to validate.
+                    The value of the "pathStart" property MUST be resolved relative to the closest URI Resolution Scope (as defined in the <a class='info' href='#json-schema-core'>JSON Schema core specification<span> (</span><span class='info'>Galiegue, F., Zyp, K., and G. Court, &ldquo;JSON Schema: core definitions and terminology,&rdquo; 2013.</span><span>)</span></a> [json&#8209;schema&#8209;core]), using the rules from <a class='info' href='#RFC3986'>RFC 3986, Sec 5<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986].
+                
+</p>
+<p>
+                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" property.
+                    If the URI of the instance does not start with this URI, or if another schema specifies a starting URI that is longer and also matches the instance, this schema SHOULD NOT be considered to describe the instance.
+                    Any schema that does not have a pathStart property SHOULD be considered applicable to all the instances for which it is referenced.
+                
+</p>
+<a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Link Description Object</h3>
+
+<p>
+                A Link Description Object (LDO) is used to describe a single link relation.
+                In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
+                A Link Description Object (LDO) must be an object.
+            
+</p>
+<p>
+                The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
+                The URI of the normative link description schema is: <a href='http://json-schema.org/links'>http://json-schema.org/links</a> (latest version) or <a href='http://json-schema.org/draft-04/links'>http://json-schema.org/draft-04/links</a> (draft-04 version).
+            
+</p>
+<p>
+                "Form"-like functionality can be defined by use of the "schema" keyword, which supplies a schema describing the data to supply to the server.
+            
+</p>
+<a name="href"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+href</h3>
+
+<p>
+                    The value of the "href" link description property is a template used to determine the target URI of the related resource.
+                    The value of the instance property SHOULD be resolved as a URI-Reference per <a class='info' href='#RFC3986'>RFC 3986<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> [RFC3986] and MAY be a relative reference to a URI.
+                    The base URI to be used for relative URI resolution SHOULD be the URI used to retrieve the instance object (not the schema).
+                
+</p>
+<p>
+                    The base URI to be used for relative URI resolution SHOULD is defined as follows:
+                    </p>
+<blockquote class="text">
+<p>if the data has a link defined, with a relation of "self", then the "href" value of that link is used, unless the relation of the link being resolved is also "self"
+</p>
+<p>otherwise, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document, if it exists
+</p>
+<p>otherwise, the URI used to fetch the document should be used.
+</p>
+</blockquote><p>
+                
+</p>
+<p>This property is not optional.
+</p>
+<a name="anchor18"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
+URI Templating</h3>
+
+<p>
+                        The value of "href" is to be used as a URI Template, as defined in <a class='info' href='#RFC6570'>RFC 6570<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a> [RFC6570].  However, some special considerations apply:
+                    
+</p>
+<a name="anchor19"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1"></a><h3>5.1.1.1.&nbsp;
+Pre-processing</h3>
+
+<p>
+                            The <a class='info' href='#RFC6570'>URI Template specification<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a> [RFC6570] restricts the set of characters available for variable names.
+                            Property names in JSON, however, can be any UTF-8 string.
+                        
+</p>
+<p>
+                            To allow the use of any JSON property name in the template, before using the value of "href" as a URI Template, the following pre-processing rules MUST be applied, in order:
+                        
+</p>
+<a name="anchor20"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.1"></a><h3>5.1.1.1.1.&nbsp;
+Bracket escaping</h3>
+
+<p>
+                                The purpose of this step is to allow the use of brackets to percent-encode variable names inside curly brackets.
+                                Variable names to be escaped are enclosed within rounded brackets, with the close-rounded-bracket character ")" being escaped as a pair of close-rounded-brackets "))".
+                                Since the empty string is not a valid variable name in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
+                            
+</p>
+<p>
+                                The rules are as follows:
+                            
+</p>
+<p>
+                                Find the largest possible sections of the text such that:
+                                </p>
+<blockquote class="text">
+<p>do not contain an odd number of close-rounded-bracket characters ")" in sequence in that section of the text
+</p>
+<p>are surrounded by a pair of rounded brackets: ( ), where
+</p>
+<p>the surrounding rounded brackets are themselves contained within a pair of curly brackets: { }
+</p>
+</blockquote><p>
+                            
+</p>
+<p>
+                                Each of these sections of the text (including the surrounding rounded brackets) MUST be replaced, according to the following rules:
+                                </p>
+<blockquote class="text">
+<p>If the brackets contained no text (the empty string), then they are replaced with "%65mpty" (which is "empty" with a percent-encoded "e")
+</p>
+<p>Otherwise, the enclosing brackets are removed, and the inner text used after the following modifications
+                                        </p>
+<blockquote class="text">
+<p>all pairs of close-brackets "))" are replaced with a single close bracket
+</p>
+<p>after that, the text is replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this requires encoding characters such as "*" and "!")
+</p>
+</blockquote>
+                                    
+
+</blockquote><p>
+                            
+</p>
+<a name="anchor21"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.2"></a><h3>5.1.1.1.2.&nbsp;
+Replacing $</h3>
+
+<p>
+                                After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
+                            
+</p>
+<p>
+                                The purpose of this stage is to allow the use of the instance value itself (instead of its object properties or array items) in the URI Template, by the special value "%73elf".
+                            
+</p>
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.3"></a><h3>5.1.1.1.3.&nbsp;
+Choice of special-case values</h3>
+
+<p>
+                                The special-case values of "%73elf" and "%65mpty" were chosen because they are unlikely to be accidentally generated by either a human or automated escaping.
+                            
+</p>
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.1.4"></a><h3>5.1.1.1.4.&nbsp;
+Examples</h3>
+
+<p>
+                                
+<p>For example, here are some possible values for "href", followed by the results after pre-processing:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+Input                    Output
+-----------------------------------------
+"no change"              "no change"
+"(no change)"            "(no change)"
+"{(escape space)}"       "{escape%20space}"
+"{(escape+plus)}"        "{escape%2Bplus}"
+"{(escape*asterisk)}"    "{escape%2Aasterisk}"
+"{(escape(bracket)}"     "{escape%28bracket}"
+"{(escape))bracket)}"    "{escape%29bracket}"
+"{(a))b)}"             "{a%29b}
+"{(a (b)))}"             "{a%20%28b%29}
+"{()}"                   "{%65mpty}
+"{+$*}"                   "{+%73elf*}
+"{+($)*}"                 "{+%24*}
+
+</pre></div>
+<p>
+                                        Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
+                                    
+</p>
+                            
+
+<a name="anchor24"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.2"></a><h3>5.1.1.2.&nbsp;
+Values for substitution</h3>
+
+<p>
+                            After pre-processing, the URI Template is filled out using data from the instance.
+                            To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
+                        
+</p>
+<p>
+                            For a given variable name in the URI Template, the value to use is determined as follows:
+                            </p>
+<blockquote class="text">
+<p>If the variable name is "%73elf", then the instance value itself MUST be used.
+</p>
+<p>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).
+</p>
+<p>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).
+</p>
+<p>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).
+</p>
+</blockquote><p>
+                        
+</p>
+<a name="anchor25"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.2.1"></a><h3>5.1.1.2.1.&nbsp;
+Converting to strings</h3>
+
+<p>
+                                When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
+                                </p>
+<blockquote class="text">
+<p>null values SHOULD be replaced by the text "null"
+</p>
+<p>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"
+</p>
+<p>numbers SHOULD be replaced with their original JSON representation.
+</p>
+</blockquote><p>
+                            
+</p>
+<p>
+                                In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
+                                Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
+                            
+</p>
+<a name="anchor26"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1.3"></a><h3>5.1.1.3.&nbsp;
+Missing values</h3>
+
+<p>
+                            Sometimes, the appropriate values will not be available.
+                            For example, the template might specify the use of object properties, but the instance is an array or a string.
+                        
+</p>
+<p>
+                            If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
+                            Otherwise, the link definition SHOULD be considered not to apply to the instance.
+                        
+</p>
+<a name="anchor27"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+rel</h3>
+
+<p>
+                    The value of the "rel" property indicates the name of the relation to the target resource.
+                    This property is not optional.
+                
+</p>
+<p>
+                    The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy.
+                    A link relation from the top level resource to a target MUST be indicated with the schema describing the top level JSON representation.
+                
+</p>
+<p>
+                    Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <a class='info' href='#RFC4287'>RFC 4287<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> [RFC4287]).
+                    However, we define these relations here for clarity of normative interpretation within the context of JSON Schema defined relations:
+
+                    </p>
+<blockquote class="text"><dl>
+<dt>self</dt>
+<dd>
+                            If the relation value is "self", when this property is encountered in the instance object, the object represents a resource and the instance object is treated as a full representation of the target resource identified by the specified URI.
+                        
+</dd>
+<dt>full</dt>
+<dd>
+                            This indicates that the target of the link is the full representation for the instance object.
+                            The instance that contains this link may not be the full representation.
+                        
+</dd>
+<dt>describedBy</dt>
+<dd>
+                            This indicates the target of the link is a schema describing the instance object.
+                            This MAY be used to specifically denote the schemas of objects within a JSON object hierarchy, facilitating polymorphic type data structures.
+                        
+</dd>
+<dt>root</dt>
+<dd>
+                            This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
+                            All other data in the document can be regarded as meta-data for the document.
+                            The URI of this link MUST refer to a location within the instance document, otherwise the link MUST be ignored.
+                        
+</dd>
+</dl></blockquote><p>
+                
+</p>
+<p>
+                    The following relations are applicable for schemas (the schema as the "from" resource in the relation) if they require no parameterization with data from the instance:
+
+                    </p>
+<blockquote class="text"><dl>
+<dt>instances</dt>
+<dd>
+                            This indicates the target resource that represents a collection of instances of a schema.
+                        
+</dd>
+<dt>create</dt>
+<dd>
+                            This indicates a target to use for creating new instances of a schema.
+                            This link definition SHOULD be a submission link with a non-safe method (like POST).
+                        
+</dd>
+</dl></blockquote><p>
+                
+</p>
+<p>For example, if a schema is defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "links": [{
+        "rel": "self",
+        "href": "{id}"
+    }, {
+        "rel": "up",
+        "href": "{upId}"
+    }, {
+        "rel": "children",
+        "href": "?upId={id}"
+    }]
+}
+</pre></div>
+<p>And if a collection of instance resources were retrieved with JSON representation:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+GET /Resource/
+
+[{
+    "id": "thing",
+    "upId": "parent"
+}, {
+    "id": "thing2",
+    "upId": "parent"
+}]
+</pre></div>
+<p>
+                        This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
+                        The "children" collection would be located at "/Resource/?upId=thing".
+                    
+</p>
+<p>
+                    Note that these relationship values are case-insensitive, consistent with their use in HTML and the <a class='info' href='#RFC5988'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> [RFC5988].
+                
+</p>
+<a name="anchor28"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2.1"></a><h3>5.2.1.&nbsp;
+Fragment resolution with &quot;root&quot; links</h3>
+
+<p>
+                        The presence of a link with relation "root" alters what the root of the document is considered to be.
+                        For fragment resolution methods (such as JSON Pointer fragments) that navigate through the document, the target of the "root" link should be the starting point for such methods.
+                    
+</p>
+<p>
+                        The only exception is "root" links themselves.
+                        When calculating the target of links with relation "root", existing "root" links MUST NOT be taken into consideration.
+                    
+</p>
+<p>
+                        
+<p>For example, say we have the following schema:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "links": [{
+        "rel": "root",
+        "href": "#/myRootData"
+    }]
+}
+</pre></div>
+                    
+
+<p>
+                        
+<p>And the following data, returned from the URI: "http://example.com/data/12345":
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "myRootData": {
+        "title": "Document title"
+    },
+    "metaData": {
+        ...
+    }
+}
+</pre></div>
+                    
+
+<p>
+                        To correctly resolve the URL "http://example.com/data/12345", we must take the "root" link into account.  Here are some example URIs, along with the data they would resolve to:
+                        </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+URI                                         Data
+-----------------------------------------------------------------------
+http://example.com/data/12345               {"title": "Document title"}
+http://example.com/data/12345#/title        "Document title"
+
+</pre></div><p>
+
+                    
+</p>
+<a name="anchor29"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2.2"></a><h3>5.2.2.&nbsp;
+Security Considerations for &quot;self&quot; links</h3>
+
+<p>
+                        When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
+        
+                        
+<p>For example, if a hyper schema was defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "links": [{
+        "rel": "self",
+        "href": "{id}"
+    }]
+}
+</pre></div>
+        
+                        
+<p>And a resource was requested from somesite.com:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+GET /foo/
+
+</pre></div>
+        
+                        
+<p>With a response of:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+Content-Type: application/json; profile=/schema-for-this-data
+
+[{
+    "id": "bar",
+    "name": "This representation can be safely treated \
+        as authoritative "
+}, {
+    "id": "/baz",
+    "name": "This representation should not be treated as \
+        authoritative the user agent should make request the resource\
+        from '/baz' to ensure it has the authoritative representation"
+}, {
+    "id": "http://othersite.com/something",
+    "name": "This representation\
+        should also not be treated as authoritative and the target\
+        resource representation should be retrieved for the\
+        authoritative representation"
+}]
+</pre></div>
+                    
+
+<a name="anchor30"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+title</h3>
+
+<p>
+                    This property defines a title for the link.
+                    The value must be a string.
+                
+</p>
+<p>
+                    User agents MAY use this title when presenting the link to the user.
+                
+</p>
+<a name="anchor31"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+targetSchema</h3>
+
+<p>
+                    This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
+                
+</p>
+<a name="anchor32"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4.1"></a><h3>5.4.1.&nbsp;
+Security Considerations for &quot;targetSchema&quot;</h3>
+
+<p>
+                        This property has similar security concerns to that of "mediaType".
+                        Clients MUST NOT use the value of this property to aid in the interpretation of the data received in response to following the link, as this leaves "safe" data open to re-interpretation.
+                    
+</p>
+<p>
+                        
+<p>
+                                For example, suppose two programmers are having a discussion about web security using a text-only message board.
+                                Here is some data from that conversation, with a URI of: http://forum.example.com/topics/152/comments/13
+                            
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "topicId": 152,
+    "commentId": 13,
+    "from": {
+        "name": "Jane",
+        "id": 5
+    },
+    "to": {
+        "name": "Jason",
+        "id": 8
+    },
+    "message": "It's easy, you just add some HTML like
+                  this: &lt;script&gt;doSomethingEvil()&lt;/script&gt;"
+}
+</pre></div>
+<p>
+                                The message string was split over two lines for readability.
+                            
+</p>
+                    
+
+<p>
+                        A third party might then write provide the following Link Description Object at another location:
+                        </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "rel": "evil-attack",
+    "href": "http://forum.example.com/topics/152/comments/13",
+    "targetSchema": {
+        "properties": {
+            "message": {
+                "description": "Re-interpret the message text as HTML",
+                "media": {
+                    "type": "text/html"
+                }
+            }
+        }
+    }
+}
+</pre></div><p>
+
+<p>
+                                If the client used this "targetSchema" value when interpreting the above data, then it might display the contents of "message" as HTML.
+                                At this point, the JavaScript embedded in the message might be executed (in the context of the "forum.example.com" domain).
+                            
+</p>
+                    
+
+<a name="anchor33"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
+mediaType</h3>
+
+<p>
+                    The value of this property is advisory only, and represents the media type <a class='info' href='#RFC2046'>RFC 2046<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> [RFC2046], that is expected to be returned when fetching this resource.
+                    This property value MAY be a media range instead, using the same pattern defined in <a class='info' href='#RFC2616'>RFC 2161, section 14.1 - HTTP "Accept" header<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616].
+                
+</p>
+<p>
+                    This property is analogous to the "type" property of &lt;a&gt; elements in HTML (advisory content type), or the "type" parameter in the <a class='info' href='#RFC5988'>HTTP Link header<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> [RFC5988].
+                    User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
+                    When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
+                
+</p>
+<p>
+                    If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <a class='info' href='#RFC2616'>RFC 2616, section 14.1<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> [RFC2616], then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
+                
+</p>
+<p>
+                    If this property's value is not specified, then the value should be taken to be "application/json".
+                
+</p>
+<p>For example, if a schema is defined:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+{
+    "links": [{
+        "rel": "self",
+        "href": "/{id}/json"
+    }, {
+        "rel": "alternate",
+        "href": "/{id}/html",
+        "mediaType": "text/html"
+    }, {
+        "rel": "alternate",
+        "href": "/{id}/rss",
+        "mediaType": "application/rss+xml"
+    }, {
+        "rel": "icon",
+        "href": "{id}/icon",
+        "mediaType": "image/*"
+    }]
+}
+
+</pre></div>
+<p>
+                        A suitable instance described by this schema would have four links defined.
+                        The link with a "rel" value of "self" would have an expected MIME type of "application/json" (the default).
+                        The two links with a "rel" value of "alternate" specify the locations of HTML and RSS versions of the current item.
+                        The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
+                    
+</p>
+<p>
+                    A visual user agent displaying the item from the above example might present a button representing an RSS feed, which when pressed passes the target URI (calculated "href" value) to an view more suited to displaying it, such as a news feed aggregator tab.
+                
+</p>
+<p>
+                    Note that presenting the link in the above manner, or passing the URI to a news feed aggregator view does not constitute interpretation of the data, but an interpretation of the link.
+                    The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
+                
+</p>
+<a name="anchor34"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.5.1"></a><h3>5.5.1.&nbsp;
+Security concerns for &quot;mediaType&quot;</h3>
+
+<p>
+                        The "mediaType" property in link definitions defines the expected format of the link's target.
+                        However, this is advisory only, and MUST NOT be considered authoritative.
+                    
+</p>
+<p>
+                        When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mediaType" property of the link MUST NOT be used.
+                        User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
+                        If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
+                    
+</p>
+<p>
+                        This is to guard against re-interpretation of "safe" data, similar to the precautions for "targetSchema".
+                    
+</p>
+<a name="anchor35"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
+Submission Link Properties</h3>
+
+<p>
+                    The following properties also apply to Link Description Objects, and provide functionality analogous to HTML forms, in providing a means for submitting extra (often user supplied) information to send to a server.
+                
+</p>
+<a name="anchor36"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.6.1"></a><h3>5.6.1.&nbsp;
+method</h3>
+
+<p>
+                        This property defines which method can be used to access the target resource.
+                        In an HTTP environment, this might be "GET" or "POST" (or other HTTP methods).
+                    
+</p>
+<p>
+                        Some link relation values imply a set of appropriate HTTP methods to be used for the link.
+                        For example, a client might assume that a link with a relation of "edit" can be used in conjuction with the "PUT" HTTP method.
+                        If the client does not know which methods might be appropriate, then this SHOULD default to "GET".
+                    
+</p>
+<a name="anchor37"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.6.2"></a><h3>5.6.2.&nbsp;
+encType</h3>
+
+<p>
+                        If present, this property indicates a query media type format that the server supports for querying or posting to the collection of instances at the target resource.
+                        The query can be suffixed to the target URI to query the collection with property-based constraints on the resources that SHOULD be returned from the server or used to post data to the resource (depending on the method).
+
+                        
+<p>For example, with the following schema:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+    "links": [{
+        "encType": "application/x-www-form-urlencoded",
+        "method": "GET",
+        "href": "/Product/",
+        "properties": {
+            "name": {
+                "description": "name of the product"
+            }
+        }
+    }]
+}
+</pre></div>
+<p>This indicates that the client can query the server for instances that have a specific name.
+</p>
+
+                        
+<p>For example:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+
+/Product/?name=Slinky
+
+</pre></div>
+
+                        If no encType or method is specified, only the single URI specified by the href property is defined.
+                        If the method is POST, "application/json" is the default media type.
+                    
+
+<a name="anchor38"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.6.3"></a><h3>5.6.3.&nbsp;
+schema</h3>
+
+<p>
+                        This property contains a schema which defines the acceptable structure of the submitted request.
+                        For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
+                    
+</p>
+<p>
+                        Note that this is separate from the URI templating of "href" (which uses data from the instance, not submitted by the user).
+                        It is also separate from the "targetSchema" property, which provides a schema for the data that the client should expect to be returned when they follow the link.
+                    
+</p>
+<a name="anchor39"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+IANA Considerations</h3>
+
+<a name="anchor40"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+Registry of Link Relations</h3>
+
+<p>
+                    This registry is maintained by IANA per <a class='info' href='#RFC4287'>RFC 4287<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> [RFC4287] and this specification adds four values: "full", "create", "instances", "root".
+                    New assignments are subject to IESG Approval, as outlined in <a class='info' href='#RFC5226'>RFC 5226<span> (</span><span class='info'>Narten, T. and H. Alvestrand, &ldquo;Guidelines for Writing an IANA Considerations Section in RFCs,&rdquo; May&nbsp;2008.</span><span>)</span></a> [RFC5226].
+                    Requests should be made by email to IANA, which will then forward the request to the IESG, requesting approval.
+                
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2045">[RFC2045]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996 (<a href="http://www.rfc-editor.org/rfc/rfc2045.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4287">[RFC4287]</a></td>
+<td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6570">[RFC6570]</a></td>
+<td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="json-pointer">[json-pointer]</a></td>
+<td class="author-text">Bryan, P., Zyp, K., and M. Nottingham, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">JSON Pointer</a>,&rdquo; August&nbsp;2012.</td></tr>
+<tr><td class="author-text" valign="top"><a name="json-schema-core">[json-schema-core]</a></td>
+<td class="author-text">Galiegue, F., Zyp, K., and G. Court, &ldquo;<a href="http://tools.ietf.org/html/draft-zyp-json-schema-04">JSON Schema: core definitions and terminology</a>,&rdquo; 2013.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
+<td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5226">[RFC5226]</a></td>
+<td class="author-text">Narten, T. and H. Alvestrand, &ldquo;<a href="http://tools.ietf.org/html/rfc5226">Guidelines for Writing an IANA Considerations Section in RFCs</a>,&rdquo; BCP&nbsp;26, RFC&nbsp;5226, May&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5226.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2046">[RFC2046]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>,&rdquo; RFC&nbsp;2046, November&nbsp;1996 (<a href="http://www.rfc-editor.org/rfc/rfc2046.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5988">[RFC5988]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5988.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.REC-html401-19991224">[W3C.REC-html401-19991224]</a></td>
+<td class="author-text">Hors, A., Raggett, D., and I. Jacobs, &ldquo;<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML 4.01 Specification</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-html401-19991224, December&nbsp;1999 (<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML</a>).</td></tr>
+</table>
+
+<a name="anchor43"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Change Log</h3>
+
+<p>
+                </p>
+<blockquote class="text"><dl>
+<dt>draft-04</dt>
+<dd>
+                        
+<ul class="text">
+<li>Resolution of link URIs ("href") is now affected by rel="self" links on the instance
+</li>
+<li>Define "title" for LDOs
+</li>
+<li>Use URI Templates for the "href" property
+</li>
+<li>Split hyper-schema definition out from main schema.
+</li>
+<li>Capitalised the T in "encType", and the O in "readOnly"
+</li>
+<li>Moved "mediaType" and "contentEncoding" to the new "media" property (renamed "type" and "binaryEncoding")
+</li>
+<li>Added "mediaType" property to LDOs
+</li>
+<li>Replaced "slash-delimited" fragment resolution with "json-pointer".
+</li>
+<li>Added "template" LDO attribute.
+</li>
+<li>Improved wording of sections.
+</li>
+</ul>
+                    
+</dd>
+<dt>draft-03</dt>
+<dd>
+                        
+<ul class="text">
+<li>Added example and verbiage to "extends" attribute.
+</li>
+<li>Defined slash-delimited to use a leading slash.
+</li>
+<li>Made "root" a relation instead of an attribute.
+</li>
+<li>Removed address values, and MIME media type from format to reduce
+                            confusion (mediaType already exists, so it can be used for MIME
+                            types).
+</li>
+<li>Added more explanation of nullability.
+</li>
+<li>Removed "alternate" attribute.
+</li>
+<li>Upper cased many normative usages of must, may, and should.
+</li>
+<li>Replaced the link submission "properties" attribute to "schema"
+                            attribute.
+</li>
+<li>Replaced "optional" attribute with "required" attribute.
+</li>
+<li>Replaced "maximumCanEqual" attribute with "exclusiveMaximum"
+                            attribute.
+</li>
+<li>Replaced "minimumCanEqual" attribute with "exclusiveMinimum"
+                            attribute.
+</li>
+<li>Replaced "requires" attribute with "dependencies" attribute.
+</li>
+<li>Moved "contentEncoding" attribute to hyper schema.
+</li>
+<li>Added "additionalItems" attribute.
+</li>
+<li>Added "id" attribute.
+</li>
+<li>Switched self-referencing variable substitution from "-this" to "@"
+                            to align with reserved characters in URI template.
+</li>
+<li>Added "patternProperties" attribute.
+</li>
+<li>Schema URIs are now namespace versioned.
+</li>
+<li>Added "$ref" and "$schema" attributes.
+</li>
+</ul>
+                    
+</dd>
+<dt>draft-02</dt>
+<dd>
+                        
+<ul class="text">
+<li>Replaced "maxDecimal" attribute with "divisibleBy" attribute.
+</li>
+<li>Added slash-delimited fragment resolution protocol and made it the
+                            default.
+</li>
+<li>Added language about using links outside of schemas by referencing
+                            its normative URI.
+</li>
+<li>Added "uniqueItems" attribute.
+</li>
+<li>Added "targetSchema" attribute to link description object.
+</li>
+</ul>
+                    
+</dd>
+<dt>draft-01</dt>
+<dd>
+                        
+<ul class="text">
+<li>Fixed category and updates from template.
+</li>
+</ul>
+                    
+</dd>
+<dt>draft-00</dt>
+<dd>
+                        
+<ul class="text">
+<li>Initial draft.
+</li>
+</ul>
+                    
+</dd>
+</dl></blockquote><p>
+            
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Authors' Addresses</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Geraint Luff (editor)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Cambridge</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">UK</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:luffgd@gmail.com">luffgd@gmail.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Kris Zyp</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">SitePen (USA)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">530 Lytton Avenue</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Palo Alto, CA 94301</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">USA</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1 650 968 8787</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:kris@sitepen.com">kris@sitepen.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Gary Court</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Calgary, AB</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Canada</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:gary.court@gmail.com">gary.court@gmail.com</a></td></tr>
+</table>
+</body></html>
