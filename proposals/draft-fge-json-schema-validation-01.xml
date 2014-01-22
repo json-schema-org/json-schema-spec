@@ -19,7 +19,13 @@
     <front>
         <title abbrev="JSON Schema">JSON Schema: interactive and non interactive validation</title>
 
-        <author fullname="Francis Galiegue" initials="fge" surname="Galiegue" role="editor">
+        <author fullname="Geraint Luff" initials="G" surname="Luff" role="editor">
+            <address>
+                <email>luffgd@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname="Francis Galiegue" initials="fge" surname="Galiegue">
             <address>
                 <email>fgaliegue@gmail.com</email>
             </address>
@@ -238,94 +244,53 @@
 
                 <section title="multipleOf">
 
-                    <section title="Valid values">
                         <t>
-                            The value of "multipleOf" MUST be a JSON number. This number MUST be
-                            strictly greater than 0.
+                            The value of "multipleOf" MUST be a number, strictly greater than 0.
                         </t>
-                    </section>
-
-                    <section title="Conditions for successful validation">
                         <t>
-                            A numeric instance is valid against "multipleOf" if the
-                            result of the division of the instance by this keyword's value is
-                            an integer.
+                            A numeric instance is only valid if division by this keyword's value results in an integer.
                         </t>
-                    </section>
 
                 </section>
 
-                <section title="maximum and exclusiveMaximum">
-
-                    <section title="Valid values">
-                        <t>
-                            The value of "maximum" MUST be a JSON number. The value of
-                            "exclusiveMaximum" MUST be a boolean.
-                        </t>
-
-                        <t>
-                            If "exclusiveMaximum" is present, "maximum" MUST also be present.
-                        </t>
-                    </section>
-
-                    <section title="Conditions for successful validation">
-                        <t>
-                            Successful validation depends on the presence and value of
-                            "exclusiveMaximum":
-
-                            <list>
-                                <t>if "exclusiveMaximum" is not present, or has boolean value false,
-                                then the instance is valid if it is lower than, or equal to, the
-                                value of "maximum";</t>
-                                <t>if "exclusiveMaximum" has boolean value true, the instance is
-                                valid if it is strictly lower than the value of "maximum".</t>
-                            </list>
-                        </t>
-                    </section>
-
-                    <section title="Default value">
-                        <t>
-                            "exclusiveMaximum", if absent, may be considered as being present with
-                            boolean value false.
-                        </t>
-                    </section>
+                <section title="maximum">
+                    <t>
+                        The value of "maximum" MUST be a number, representing an upper limit for a numeric instance.
+                    </t>
+                    <t>
+                        A numeric instance described by this keyword MUST either be less than this value or possibly equal to it (see "exclusiveMaximum").
+                    </t>
                 </section>
+                
+                <section title="exclusiveMaximum">
+                    <t>
+                        The value of "exclusiveMaximum" MUST be a boolean, representing whether the limit in "maximum" is exclusive or not.  It defaults to false.
+                    </t>
+                    <t>
+                        If "exclusiveMaximum" is true, then a numeric instance MUST NOT be equal to the value specified in "maximum".
+                        If "exclusiveMaximum" is false (or not specified), then a numeric instance MAY be equal to the value of "maximum".
+                    </t>
 
-                <section title="minimum and exclusiveMinimum">
+                </section>
+                
+                <section title="minimum">
+                    <t>
+                        The value of "minimum" MUST be a number, representing a lower limit for a numeric instance.
+                    </t>
+                    <t>
+                        A numeric instance described by this keyword MUST either be more than this value or possibly equal to it (see "exclusiveMinimum").
+                    </t>
+                </section>
+                
+                <section title="exclusiveMinimum">
+                    <t>
+                        The value of "exclusiveMinimum" MUST be a boolean, representing whether the limit in "minimum" is exclusive or not.  It defaults to false.
+                    </t>
+                    <t>
+                        If "exclusiveMinimum" is true, then a numeric instance MUST NOT be equal to the value specified in "minimum".
+                        If "exclusiveMinimum" is false (or not specified), then a numeric instance MAY be equal to the value of "minimum".
+                    </t>
 
-                    <section title="Valid values">
-                        <t>
-                            The value of "minimum" MUST be a JSON number. The value of
-                            "exclusiveMinimum" MUST be a boolean.
-                        </t>
-
-                        <t>
-                            If "exclusiveMinimum" is present, "minimum" MUST also be present.
-                        </t>
-                    </section>
-
-                    <section title="Conditions for successful validation">
-                        <t>
-                            Successful validation depends on the presence and value of
-                            "exclusiveMinimum":
-
-                            <list>
-                                <t>if "exclusiveMinimum" is not present, or has boolean value false,
-                                then the instance is valid if it is greater than, or equal to, the
-                                value of "minimum";</t>
-                                <t>if "exclusiveMinimum" is present and has boolean value true, the
-                                instance is valid if it is strictly greater than the value of
-                                "minimum".</t>
-                            </list>
-                        </t>
-                    </section>
-
-                    <section title="Default value">
-                        <t>
-                            "exclusiveMinimum", if absent, may be considered as being present with
-                            boolean value false.
-                        </t>
-                    </section>
                 </section>
 
             </section>
@@ -333,6 +298,8 @@
             <section title="Validation keywords for strings">
 
                 <section title="maxLength">
+                    <t>The value of this keyword MUST be a non-negative integer.<p>
+                    <t>A string instance MUST
 
                     <section title="Valid values">
                         <t>

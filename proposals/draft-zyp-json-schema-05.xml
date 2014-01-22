@@ -119,6 +119,10 @@
                 </t>
 
                 <t>
+                    If an instance is described by a schema, and a keyword is defined in the schema, then within this document that instance is informally said to be "described by" the keyword as well.
+                </t>
+
+                <t>
                     A JSON Schema MAY contain properties which are not schema keywords.
                 </t>
             </section>
@@ -213,8 +217,7 @@
 
             <section title="Instance">
                 <t>
-                    An instance is any JSON value. An instance may be described by one or more
-                    schemas.
+                    An instance is any JSON value. An instance may be described by one or more schemas.
                 </t>
 
                 <t>
@@ -236,21 +239,16 @@
 
             <section title="Validation">
                 <t>
-                    JSON Schema allows applications to validate instances, either non interactively
-                    or interactively. For instance, an application may collect JSON data and check
-                    that this data matches a given set of constraints; another application may use a
-                    JSON Schema to build an interactive interface in order to collect user input
-                    according to constraints described by JSON Schema.
+                    JSON Schema describes the structure of a JSON document (for instance, required properties and array length constraints).
+                    Applications can use this information to validate instances (check that constraints are met), or inform interfaces to collect user input such that the constraints are satisfied.
                 </t>
                 <t>Validation behaviour and keywords are specified in <xref target="json-schema-validation">a separate document</xref>.</t>
             </section>
 
             <section title="Hypermedia and linking">
                 <t>
-                    JSON Schema provides a method for extracting link relations from instances to
-                    other resources, as well as describing interpretations of instances as
-                    multimedia data. This allows JSON data to be interpreted as rich hypermedia
-                    documents, placed in the context of a larger set of related resources.
+                    JSON Hyper-Schema describes the hypertext structure of a JSON document.
+                    This includes link relations from the instance to other resources, interpretation of instances as multimedia data, and specification of access method (e.g. HTTP GET/POST) and submission data required to use an API.
                 </t>
                 <t>Hyper-schema behaviour and keywords are specified in <xref target="json-hyper-schema">a separate document</xref>.</t>
             </section>
@@ -260,10 +258,8 @@
 
             <section title="Applicability to all JSON values">
                 <t>
-                    It is acknowledged that an instance may be any valid JSON value as defined
-                    by <xref target="RFC4627"/>. As such, JSON Schema does not mandate that an
-                    instance be of a particular type: JSON Schema can describe any JSON value,
-                    including null.
+                    It is acknowledged that an instance may be any valid JSON value as defined by <xref target="RFC4627"/>.
+                    As such, JSON Schema does not mandate that an instance be of a particular type: JSON Schema can describe any JSON value, including null.
                 </t>
             </section>
 
@@ -320,6 +316,10 @@
                     keywords to be supported by peer implementations. Implementations SHOULD ignore
                     keywords they do not support.
                 </t>
+                <t>
+                    Authors of extensions to JSON Schema are encouraged to write their own meta-schemas, which extend the existing meta-schemas using "allOf".
+                    This extended meta-schema SHOULD be referenced using the "$schema" keyword, to allow tools to follow the correct behaviour.
+                </t>
             </section>
 
             <section title="Security considerations">
@@ -340,7 +340,7 @@
                 </t>
 
                 <t>
-                    This keyword MUST be located at the root of a JSON Schema. The value of this
+                    This keyword SHOULD be located at the root of a JSON Schema. The value of this
                     keyword MUST be a <xref target="RFC3986">URI</xref> and a valid <xref
                     target="json-reference">JSON Reference</xref>; this URI MUST be both absolute
                     and normalized. The resource located at this URI MUST successfully describe
@@ -373,13 +373,6 @@
                 </t>
             </section>
 
-            <section title="Customization">
-                <t>
-                    When extending JSON Schema with custom keywords, schema authors SHOULD define a
-                    custom URI for "$schema". This custom URI MUST NOT be one of the predefined
-                    values.
-                </t>
-            </section>
         </section>
 
         <section title="URI resolution scopes and dereferencing">
@@ -391,16 +384,14 @@
                     <list>
                         <t>JSON Schema offers facilities to alter the base URI against which a
                         reference must resolve by the means of the "id" keyword;</t>
-                        <t>it defines a specific dereferencing mechanism extending JSON Reference to
-                        accept arbitrary fragment parts.</t>
+                        <t>it offers schemas a mechanism to declare their own URIs, placing no limits on the structure of the URI</t>
                     </list>
 
                 </t>
                 
                 <t>
-                    Altering the URI within a schema is called defining a new resolution scope. The
-                    initial resolution scope of a schema is the URI of the schema itself, if any, or
-                    the empty URI if the schema was not loaded from a URI.
+                    Altering the URI within a schema is called defining a new resolution scope.
+                    The initial resolution scope of a schema is the URI of the schema itself, or a suitable substitute URI if none is known.
                 </t>
             </section>
 
@@ -408,18 +399,17 @@
                 
                 <section title="Valid values">
                     <t>
-                        The value for this keyword MUST be a string, and MUST be a valid URI. This
-                        URI MUST be normalized, and SHOULD NOT be an empty fragment (#) or the empty
-                        URI.
+                        The value for this keyword MUST be a string, and MUST be a valid URI (relative or absolute).
+                        This URI SHOULD be normalized, and SHOULD NOT be an empty fragment (#) or the empty string.
                     </t>
                  </section>
 
                 <section title="Usage">
                     <t>
-                        The "id" keyword (or "id", for short) is used to alter the resolution scope.
+                        The "id" keyword is used to alter the resolution scope.
                         When an id is encountered, an implementation MUST resolve this id against
                         the most immediate parent scope. The resolved URI will be the new resolution
-                        scope for this subschema and all its children, until another id is
+                        scope for this subschema and all its children, until another "id" is
                         encountered.
                     </t>
 
@@ -478,22 +468,14 @@
     
                 </section>
 
-                <section title="Canonical dereferencing and inline dereferencing">
+                <section title="Methods for dereferencing">
                     <t>
-                        When resolving a URI against a resolution scope, an implementation may
-                        choose two modes of operation:
-
-                        <list style="hanging">
-                            <t hangText="canonical dereferencing">The implementation dereferences
-                            all resolved URIs.</t>
-                            <t hangText="inline dereferencing">The implementation chooses to
-                            dereference URIs within the schema.</t>
-                        </list>
-                    </t>
-
-                    <t>
-                        Implementations MUST support canonical dereferencing, and MAY support inline
-                        dereferencing.
+                        When resolving a URI to obtain a schema, tools MUST support the lookup of documents based on this URI, and the use of JSON Pointer fragments to locate particular locations within a schema document.
+                        This is known as "canonical referencing".
+                     </t>
+                     <t>
+                         Tools MAY also take note of the URIs schemas provide for themselves using "id", and use these values for schema dereferencing as well. 
+                         This is known as "inline referencing".
                     </t>
 
                     <t>
@@ -529,7 +511,7 @@
                         <list>
                             <t>if canonical dereferencing is used, the implementation will
                             dereference this URI, and fetch the content at this URI;</t>
-                            <t>if inline dereferencing is used, the implementation will notice that
+                            <t>if inline dereferencing is used, the implementation MAY notice that
                             URI scope "http://my.site/schema1#" is already defined within the
                             schema, and choose to use the appropriate subschema.</t>
                         </list>
@@ -562,9 +544,7 @@
                     </figure>
 
                     <t>
-                        An implementation choosing to support inline dereferencing SHOULD be able to
-                        use this kind of reference. Implementations choosing to use canonical
-                        dereferencing, however, are not required to support it.
+                        An implementation choosing to support inline dereferencing SHOULD be able to use this kind of reference.
                     </t>
                 </section>
                     
@@ -579,10 +559,8 @@
                 </t>
 
                 <t>
-                    Extended JSON References using fragments which are not JSON Pointers are not
-                    dereferenceable by implementations choosing not to support inline dereferencing.
-                    This kind of reference is defined for backwards compatibility, and SHOULD NOT be
-                    used in new schemas.
+                    Extended JSON References using fragments which are not JSON Pointers are not dereferenceable by implementations that do not support inline dereferencing.
+                    Schema authors should bear in mind that this support is optional before using it.
                 </t>
             </section>
         </section>
@@ -597,13 +575,29 @@
                 schema(s).
             </t>
 
+            <section title='Correlation by means of the "Link" header'>
+                <t>
+                    It is RECOMMENDED that instances be associated with JSON Schemas using the link relation "describedby", as defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>.
+                </t>
+
+                <t>
+                    In HTTP, such links can be declared in a format-independent way using the Link header.  An example of such a header would be:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
+]]>
+                    </artwork>
+                </figure>
+
+            </section>
+            
             <section title='Correlation by means of the "Content-Type" header'>
                 <t>
-                    It is RECOMMENDED that a MIME type parameter by the name of "profile" be
-                    appended to the "Content-Type" header of the instance being processed. If
-                    present, the value of this parameter MUST be a valid URI, and this URI SHOULD
-                    resolve to a valid JSON Schema. The MIME type MUST be "application/json", or any
-                    other subtype.
+                    Instances may also specify a schema using the "profile" MIME type parameter in the Content-Type header, when the MIME type MUST be "application/json", or any other subtype.
+                    An instance associated with a JSON Schema using this "profile" parameter is considered to be described by that schema.
                 </t>
 
                 <t>
@@ -621,26 +615,6 @@ Content-Type: application/my-media-type+json;
 
             </section>
 
-            <section title='Correlation by means of the "Link" header'>
-                <t>
-                    When using the "Link" header, the relation type used MUST be "describedBy", as
-                    defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>. The target URI
-                    of the "Link" header MUST be a valid JSON Schema.
-                </t>
-
-                <t>
-                    An example of such a header would be:
-                </t>
-
-                <figure>
-                    <artwork>
-<![CDATA[
-Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
-]]>
-                    </artwork>
-                </figure>
-
-            </section>
         </section>
 
         <section title="IANA Considerations">
@@ -667,6 +641,38 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
             &RFC3986;
             &RFC4627;
             &RFC5988;
+           <reference anchor="json-schema-validation"
+                target="http://tools.ietf.org/html/draft-fge-json-schema-validation-01">
+                <front>
+                    <title>JSON Schema: interactive and non interactive validation</title>
+                    <author initials="F." surname="Galiegue">
+                        <organization/>
+                    </author>
+                    <author initials="G." surname="Court">
+                        <organization/>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2013" month="January"/>
+                </front>
+            </reference>
+           <reference anchor="json-hyper-schema"
+                target="http://tools.ietf.org/html/draft-luff-json-hyper-schema-01">
+                <front>
+                    <title>JSON Hyper-Schema: Hypertext definitions for JSON Schema</title>
+                    <author initials="G." surname="Luff">
+                        <organization/>
+                    </author>
+                    <author initials="G." surname="Court">
+                        <organization/>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2013" month="January"/>
+                </front>
+            </reference>
             <reference anchor="json-reference"
                 target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
                 <front>
@@ -710,38 +716,6 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
                 target="http://tools.ietf.org/html/draft-zyp-json-schema-04">
                 <front>
                     <title>JSON Schema, draft 3</title>
-                    <author initials="G." surname="Court">
-                        <organization/>
-                    </author>
-                    <author initials="K." surname="Zyp">
-                        <organization>SitePen (USA)</organization>
-                    </author>
-                    <date year="2013" month="January"/>
-                </front>
-            </reference>
-           <reference anchor="json-schema-validation"
-                target="http://tools.ietf.org/html/draft-fge-json-schema-validation-01">
-                <front>
-                    <title>JSON Schema: interactive and non interactive validation</title>
-                    <author initials="F." surname="Galiegue">
-                        <organization/>
-                    </author>
-                    <author initials="G." surname="Court">
-                        <organization/>
-                    </author>
-                    <author initials="K." surname="Zyp">
-                        <organization>SitePen (USA)</organization>
-                    </author>
-                    <date year="2013" month="January"/>
-                </front>
-            </reference>
-           <reference anchor="json-hyper-schema"
-                target="http://tools.ietf.org/html/draft-luff-json-hyper-schema-01">
-                <front>
-                    <title>JSON Hyper-Schema: Hypertext definitions for JSON Schema</title>
-                    <author initials="G." surname="Luff">
-                        <organization/>
-                    </author>
                     <author initials="G." surname="Court">
                         <organization/>
                     </author>
