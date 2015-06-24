@@ -3,52 +3,86 @@
     "id": "http://json-schema.org/draft-04/hyper-schema#",
     "title": "JSON Hyper-Schema",
     "allOf": [
-        {"$ref": "http://json-schema.org/draft-04/schema#"}
+        {
+            "$ref": "http://json-schema.org/draft-04/schema#"
+        }
     ],
     "properties": {
         "additionalItems": {
             "anyOf": [
-                {"type": "boolean"},
-                {"$ref": "#"}
+                {
+                    "type": "boolean"
+                },
+                {
+                    "$ref": "#"
+                }
             ]
         },
         "additionalProperties": {
             "anyOf": [
-                {"type": "boolean"},
-                {"$ref": "#"}
+                {
+                    "type": "boolean"
+                },
+                {
+                    "$ref": "#"
+                }
             ]
         },
         "dependencies": {
             "additionalProperties": {
                 "anyOf": [
-                    {"$ref": "#"},
-                    {"type": "array"}
+                    {
+                        "$ref": "#"
+                    },
+                    {
+                        "type": "array"
+                    }
                 ]
             }
         },
         "items": {
             "anyOf": [
-                {"$ref": "#"},
-                {"$ref": "#/definitions/schemaArray"}
+                {
+                    "$ref": "#"
+                },
+                {
+                    "$ref": "#/definitions/schemaArray"
+                }
             ]
         },
         "definitions": {
-            "additionalProperties": {"$ref": "#"}
+            "additionalProperties": {
+                "$ref": "#"
+            }
         },
         "patternProperties": {
-            "additionalProperties": {"$ref": "#"}
+            "additionalProperties": {
+                "$ref": "#"
+            }
         },
         "properties": {
-            "additionalProperties": {"$ref": "#"}
+            "additionalProperties": {
+                "$ref": "#"
+            }
         },
-        "allOf": {"$ref": "#/definitions/schemaArray"},
-        "anyOf": {"$ref": "#/definitions/schemaArray"},
-        "oneOf": {"$ref": "#/definitions/schemaArray"},
-        "not": { "$ref": "#" },
+        "allOf": {
+            "$ref": "#/definitions/schemaArray"
+        },
+        "anyOf": {
+            "$ref": "#/definitions/schemaArray"
+        },
+        "oneOf": {
+            "$ref": "#/definitions/schemaArray"
+        },
+        "not": {
+            "$ref": "#"
+        },
 
         "links": {
             "type": "array",
-            "items": {"$ref": "#/definitions/linkDescription"}
+            "items": {
+                "$ref": "#/definitions/linkDescription"
+            }
         },
         "fragmentResolution": {
             "type": "string"
@@ -75,12 +109,14 @@
     "definitions": {
         "schemaArray": {
             "type": "array",
-            "items": {"$ref": "#"}
+            "items": {
+                "$ref": "#"
+            }
         },
         "linkDescription": {
             "title": "Link Description Object",
             "type": "object",
-            "required": ["href", "rel"],
+            "required": [ "href", "rel" ],
             "properties": {
                 "href": {
                     "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
@@ -129,3 +165,4 @@
         }
     ]
 }
+
