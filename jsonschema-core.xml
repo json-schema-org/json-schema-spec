@@ -176,6 +176,7 @@
             <section title="JSON Schema primitive types">
                 <t>
                     JSON Schema defines seven primitive types for JSON values:
+                    <!-- TODO integer and number are both the same syntax, integer is just a subset -->
                     <list style="hanging">
                         <t hangText="array">A JSON array.</t>
                         <t hangText="boolean">A JSON boolean.</t>
@@ -221,7 +222,7 @@
                 </t>
 
                 <t>
-                    An instance may also be referred to as "JSON instance", or "JSON data".
+                    An instance may also be referred to as a "JSON instance", "JSON data", or "JSON document".
                 </t>
             </section>
 
@@ -333,6 +334,7 @@
 
         <section title='The "$schema" keyword'>
             <section title="Purpose">
+                <!-- TODO a custom $schema keyword might also be used to enforce minimum required functionality of a validator -->
                 <t>
                     The "$schema" keyword is both used as a JSON Schema version identifier and the
                     location of a resource which is itself a JSON Schema, which describes any schema
@@ -342,9 +344,9 @@
                 <t>
                     This keyword SHOULD be located at the root of a JSON Schema. The value of this
                     keyword MUST be a <xref target="RFC3986">URI</xref> and a valid <xref
-                    target="json-reference">JSON Reference</xref>; this URI MUST be both absolute
-                    and normalized. The resource located at this URI MUST successfully describe
-                    itself. It is RECOMMENDED that schema authors include this keyword in their
+                    target="json-reference">JSON Reference</xref>; this URI MUST be normalized.
+                    The resource identified by this URI MUST successfully describe the current
+                    schema document. It is RECOMMENDED that schema authors include this keyword in their
                     schemas.
                 </t>
 
@@ -375,7 +377,7 @@
 
         </section>
 
-        <section title="URI resolution scopes and dereferencing">
+        <section title="Base URI and dereferencing">
             <section title="Definition">
                 <t>
                     JSON Schema uses <xref target="json-reference">JSON Reference</xref> as a
@@ -383,39 +385,38 @@
                     
                     <list>
                         <t>JSON Schema offers facilities to alter the base URI against which a
-                        reference must resolve by the means of the "id" keyword;</t>
+                        URI reference must resolve by the means of the "id" keyword;</t>
                         <t>it offers schemas a mechanism to declare their own URIs, placing no limits on the structure of the URI</t>
                     </list>
 
                 </t>
                 
                 <t>
-                    Altering the URI within a schema is called defining a new resolution scope.
-                    The initial resolution scope of a schema is the URI of the schema itself, or a suitable substitute URI if none is known.
+                    <!-- TODO: RFC3986 defines exactly how to do this -->
+                    The initial base URI of a schema is the URI of the schema itself, or a suitable substitute URI if none is known.
                 </t>
             </section>
 
-            <section title='URI resolution scope alteration with the "id" keyword'>
+            <section title='Base URI alteration with the "id" keyword'>
                 
                 <section title="Valid values">
                     <t>
-                        The value for this keyword MUST be a string, and MUST be a valid URI (relative or absolute).
+                        The value for this keyword MUST be a string, and MUST be a valid URI reference.
                         This URI SHOULD be normalized, and SHOULD NOT be an empty fragment (#) or the empty string.
                     </t>
                  </section>
 
                 <section title="Usage">
                     <t>
-                        The "id" keyword is used to alter the resolution scope.
+                        The "id" keyword is used to give the document a URI and set its base URI for resolving URI references against.
                         When an id is encountered, an implementation MUST resolve this id against
-                        the most immediate parent scope. The resolved URI will be the new resolution
-                        scope for this subschema and all its children, until another "id" is
-                        encountered.
+                        the parent environment base URI. The resolved URI will be the new base URI for
+                        the rest of the schema and all child schemas, until another "id" is encountered.
                     </t>
 
                     <t>
-                        When using "id" to alter resolution scopes, schema authors SHOULD ensure
-                        that resolution scopes are unique within the schema.
+                        When using "id" to alter the base URI, schema authors SHOULD ensure
+                        that the URI is unique within the schema.
                     </t>
 
                     <t>
@@ -454,7 +455,7 @@
                     <t>
                         Subschemas at the following URI-encoded <xref target="json-pointer">JSON
                         Pointer</xref>s (starting from the root schema) define the following
-                        resolution scopes:
+                        base URIs:
     
                         <list style="hanging">
                             <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
@@ -504,7 +505,7 @@
 
                     <t>
                         When an implementation encounters the "schema1" reference, it resolves it
-                        against the most immediate parent scope, leading to URI
+                        against the current base URI, leading to URI
                         "http://my.site/schema1#". The way to process this URI will differ
                         according to the chosen dereferencing mode:
 
@@ -512,7 +513,7 @@
                             <t>if canonical dereferencing is used, the implementation will
                             dereference this URI, and fetch the content at this URI;</t>
                             <t>if inline dereferencing is used, the implementation MAY notice that
-                            URI scope "http://my.site/schema1#" is already defined within the
+                            the base URI "http://my.site/schema1#" is already defined within the
                             schema, and choose to use the appropriate subschema.</t>
                         </list>
                     </t>
@@ -521,7 +522,7 @@
 
                 <section title="Inline dereferencing and fragments">
                     <t>
-                        When using inline dereferencing, a resolution scope may lead to a URI which
+                        When using inline dereferencing, a base URI may lead to a URI which
                         has a non empty fragment part which is not a JSON Pointer, as in this
                         example:
                     </t>
@@ -576,6 +577,7 @@
             </t>
 
             <section title='Correlation by means of the "Link" header'>
+                <!-- HTTP linking is referenced by specs that have nothing to do with HTTP, so this isn't always the case -->
                 <t>
                     It is RECOMMENDED that instances be associated with JSON Schemas using the link relation "describedby", as defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>.
                 </t>
