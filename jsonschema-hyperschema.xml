@@ -162,7 +162,7 @@
                     It also defines link relations for the instance, with URIs incorporating values from the instance.
                 </postamble>
             </figure>
-            
+
             <figure>
                 <preamble>An example of a JSON instance described by the above schema might be:</preamble>
                 <artwork>
@@ -213,7 +213,7 @@
 }]]>
                     </artwork>
                 </figure>
-                
+
                 <section title="Multiple links per URI">
                     <t>
                         A single URI might have more than one role with relation to an instance.  This is not a problem - the same URI can be used in more than one Link Description Object.
@@ -314,12 +314,12 @@
                 <t>
                     The value of this property MUST be an object, and SHOULD be ignored for any instance that is not a string.
                 </t>
-                
+
                 <section title="Properties of &quot;media&quot;">
                     <t>
                         The value of the "media" keyword MAY contain any of the following properties:
                     </t>
-                    
+
                     <section title="binaryEncoding">
                         <t>
                             If the instance value is a string, this property defines that the string SHOULD be interpreted as binary data and decoded using the encoding named by this property.
@@ -332,13 +332,13 @@
                             The value of this property must be a media type, as defined by <xref target="RFC2046">RFC 2046</xref>.
                             This property defines the media type of instances which this schema defines.
                         </t>
-                        
+
                         <t>
                             If the "binaryEncoding" property is not set, but the instance value is a string, then the value of this property SHOULD specify a text document type, and the character set SHOULD be the character set into which the JSON string value was decoded (for which the default is Unicode).
                         </t>
                     </section>
                 </section>
-                
+
                 <section title="Example">
                     <figure>
                         <preamble>Here is an example schema, illustrating the use of "media":</preamble>
@@ -355,7 +355,7 @@
                         </artwork>
                         <postamble>Instances described by this schema should be strings, and their values should be interpretable as base64-encoded PNG images.</postamble>
                     </figure>
-                    
+
                     <figure>
                         <preamble>Another example:</preamble>
                         <artwork>
@@ -403,16 +403,16 @@
                 In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
                 A Link Description Object (LDO) must be an object.
             </t>
-            
+
             <t>
                 The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
                 The URI of the normative link description schema is: <eref target="http://json-schema.org/links">http://json-schema.org/links</eref> (latest version) or <eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
             </t>
-            
+
             <t>
                 "Form"-like functionality can be defined by use of the "schema" keyword, which supplies a schema describing the data to supply to the server.
             </t>
-            
+
             <section title="href" anchor="href">
                 <t>
                     The value of the "href" link description property is a template used to determine the target URI of the related resource.
@@ -428,35 +428,35 @@
                         <t>otherwise, the URI used to fetch the document should be used.</t>
                     </list>
                 </t>
-                
+
                 <t>This property is not optional.</t>
-                
+
                 <section title="URI Templating">
                     <t>
                         The value of "href" is to be used as a URI Template, as defined in <xref target="RFC6570">RFC 6570</xref>.  However, some special considerations apply:
                     </t>
-                    
+
                     <section title="Pre-processing">
                         <t>
                             The <xref target="RFC6570">URI Template specification</xref> restricts the set of characters available for variable names.
                             Property names in JSON, however, can be any UTF-8 string.
                         </t>
-                        
+
                         <t>
                             To allow the use of any JSON property name in the template, before using the value of "href" as a URI Template, the following pre-processing rules MUST be applied, in order:
                         </t>
-                        
+
                         <section title="Bracket escaping">
                             <t>
                                 The purpose of this step is to allow the use of brackets to percent-encode variable names inside curly brackets.
                                 Variable names to be escaped are enclosed within rounded brackets, with the close-rounded-bracket character ")" being escaped as a pair of close-rounded-brackets "))".
                                 Since the empty string is not a valid variable name in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
                             </t>
-                            
+
                             <t>
                                 The rules are as follows:
                             </t>
-                            
+
                             <t>
                                 Find the largest possible sections of the text such that:
                                 <list>
@@ -478,7 +478,7 @@
                                 </list>
                             </t>
                         </section>
-                        
+
                         <section title="Replacing $">
                             <t>
                                 After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
@@ -487,13 +487,13 @@
                                 The purpose of this stage is to allow the use of the instance value itself (instead of its object properties or array items) in the URI Template, by the special value "%73elf".
                             </t>
                         </section>
-                        
+
                         <section title="Choice of special-case values">
                             <t>
                                 The special-case values of "%73elf" and "%65mpty" were chosen because they are unlikely to be accidentally generated by either a human or automated escaping.
                             </t>
                         </section>
-                        
+
                         <section title="Examples">
                             <t>
                                 <figure>
@@ -523,23 +523,23 @@ Input                    Output
                             </t>
                         </section>
                     </section>
-                    
+
                     <section title="Values for substitution">
                         <t>
                             After pre-processing, the URI Template is filled out using data from the instance.
                             To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
                         </t>
-                            
+
                         <t>
                             For a given variable name in the URI Template, the value to use is determined as follows:
                             <list>
                                 <t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
                                 <t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
                                 <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
-                                <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t> 
+                                <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t>
                             </list>
                         </t>
-                        
+
                         <section title="Converting to strings">
                             <t>
                                 When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
@@ -555,13 +555,13 @@ Input                    Output
                             </t>
                         </section>
                     </section>
-                    
+
                     <section title="Missing values">
                         <t>
                             Sometimes, the appropriate values will not be available.
                             For example, the template might specify the use of object properties, but the instance is an array or a string.
                         </t>
-                        
+
                         <t>
                             If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
                             Otherwise, the link definition SHOULD be considered not to apply to the instance.
@@ -576,7 +576,7 @@ Input                    Output
                     The value of the "rel" property indicates the name of the relation to the target resource.
                     This property is not optional.
                 </t>
-                
+
                 <t>
                     The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy.
                     A link relation from the top level resource to a target MUST be indicated with the schema describing the top level JSON representation.
@@ -715,11 +715,11 @@ http://example.com/data/12345#/title        "Document title"
                         </figure>
                     </t>
                 </section>
-                
+
                 <section title="Security Considerations for &quot;self&quot; links">
                     <t>
                         When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
-        
+
                         <figure>
                             <preamble>For example, if a hyper schema was defined:</preamble>
                             <artwork>
@@ -731,7 +731,7 @@ http://example.com/data/12345#/title        "Document title"
 }]]>
                             </artwork>
                         </figure>
-        
+
                         <figure>
                             <preamble>And a resource was requested from somesite.com:</preamble>
                             <artwork>
@@ -740,11 +740,11 @@ GET /foo/
 ]]>
                             </artwork>
                         </figure>
-        
+
                         <figure>
                             <preamble>With a response of:</preamble>
                             <artwork>
-<![CDATA[Content-Type: application/json; profile=/schema-for-this-data
+<![CDATA[Content-Type: application/json; profile="/schema-for-this-data"
 
 [{
     "id": "bar",
@@ -773,7 +773,7 @@ GET /foo/
                     This property defines a title for the link.
                     The value must be a string.
                 </t>
-                
+
                 <t>
                     User agents MAY use this title when presenting the link to the user.
                 </t>
@@ -843,23 +843,23 @@ GET /foo/
                     </t>
                 </section>
             </section>
-            
+
             <section title="mediaType">
                 <t>
                     The value of this property is advisory only, and represents the media type <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when fetching this resource.
                     This property value MAY be a media range instead, using the same pattern defined in <xref target="RFC2616">RFC 2161, section 14.1 - HTTP "Accept" header</xref>.
                 </t>
-                
+
                 <t>
                     This property is analogous to the "type" property of &lt;a&gt; elements in HTML (advisory content type), or the "type" parameter in the <xref target="RFC5988">HTTP Link header</xref>.
                     User agents MAY use this information to inform the interface they present to the user before the link is followed, but this information MUST NOT use this information in the interpretation of the resulting data.
                     When deciding how to interpret data obtained through following this link, the behaviour of user agents MUST be identical regardless of the value of the this property.
                 </t>
-                
+
                 <t>
                     If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <xref target="RFC2616">RFC 2616, section 14.1</xref>, then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
                 </t>
-                
+
                 <t>
                     If this property's value is not specified, then the value should be taken to be "application/json".
                 </t>
@@ -895,28 +895,28 @@ GET /foo/
                         The link with a "rel" value of "icon" links to an image, but does not specify the exact format.
                     </postamble>
                 </figure>
-                
+
                 <t>
                     A visual user agent displaying the item from the above example might present a button representing an RSS feed, which when pressed passes the target URI (calculated "href" value) to an view more suited to displaying it, such as a news feed aggregator tab.
                 </t>
-                
+
                 <t>
                     Note that presenting the link in the above manner, or passing the URI to a news feed aggregator view does not constitute interpretation of the data, but an interpretation of the link.
                     The interpretation of the data itself is performed by the news feed aggregator, which SHOULD reject any data that would not have also been interpreted as a news feed, had it been displayed in the main view.
                 </t>
 
-                <section title="Security concerns for &quot;mediaType&quot;">                
+                <section title="Security concerns for &quot;mediaType&quot;">
                     <t>
                         The "mediaType" property in link definitions defines the expected format of the link's target.
                         However, this is advisory only, and MUST NOT be considered authoritative.
                     </t>
-                
+
                     <t>
                         When choosing how to interpret data, the type information provided by the server (or inferred from the filename, or any other usual method) MUST be the only consideration, and the "mediaType" property of the link MUST NOT be used.
                         User agents MAY use this information to determine how they represent the link or where to display it (for example hover-text, opening in a new tab).
                         If user agents decide to pass the link to an external program, they SHOULD first verify that the data is of a type that would normally be passed to that external program.
                     </t>
-                    
+
                     <t>
                         This is to guard against re-interpretation of "safe" data, similar to the precautions for "targetSchema".
                     </t>
@@ -983,7 +983,7 @@ GET /foo/
                         This property contains a schema which defines the acceptable structure of the submitted request.
                         For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
                     </t>
-                    
+
                     <t>
                         Note that this is separate from the URI templating of "href" (which uses data from the instance, not submitted by the user).
                         It is also separate from the "targetSchema" property, which provides a schema for the data that the client should expect to be returned when they follow the link.
