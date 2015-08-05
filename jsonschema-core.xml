@@ -380,7 +380,7 @@
                 <t>
                     JSON Schema uses <xref target="json-reference">JSON Reference</xref> as a
                     mechanism for schema addressing. It extends this specification in two ways:
-                    
+
                     <list>
                         <t>JSON Schema offers facilities to alter the base URI against which a
                         reference must resolve by the means of the "id" keyword;</t>
@@ -388,7 +388,7 @@
                     </list>
 
                 </t>
-                
+
                 <t>
                     Altering the URI within a schema is called defining a new resolution scope.
                     The initial resolution scope of a schema is the URI of the schema itself, or a suitable substitute URI if none is known.
@@ -396,7 +396,7 @@
             </section>
 
             <section title='URI resolution scope alteration with the "id" keyword'>
-                
+
                 <section title="Valid values">
                     <t>
                         The value for this keyword MUST be a string, and MUST be a valid URI (relative or absolute).
@@ -455,7 +455,7 @@
                         Subschemas at the following URI-encoded <xref target="json-pointer">JSON
                         Pointer</xref>s (starting from the root schema) define the following
                         resolution scopes:
-    
+
                         <list style="hanging">
                             <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
                             <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
@@ -465,7 +465,7 @@
                             <t hangText="#/schema3">some://where.else/completely#</t>
                         </list>
                     </t>
-    
+
                 </section>
 
                 <section title="Methods for dereferencing">
@@ -474,7 +474,7 @@
                         This is known as "canonical referencing".
                      </t>
                      <t>
-                         Tools MAY also take note of the URIs schemas provide for themselves using "id", and use these values for schema dereferencing as well. 
+                         Tools MAY also take note of the URIs schemas provide for themselves using "id", and use these values for schema dereferencing as well.
                          This is known as "inline referencing".
                     </t>
 
@@ -516,7 +516,7 @@
                             schema, and choose to use the appropriate subschema.</t>
                         </list>
                     </t>
-                                
+
                 </section>
 
                 <section title="Inline dereferencing and fragments">
@@ -547,7 +547,7 @@
                         An implementation choosing to support inline dereferencing SHOULD be able to use this kind of reference.
                     </t>
                 </section>
-                    
+
             </section>
 
             <section title="Interoperability considerations">
@@ -593,7 +593,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
                 </figure>
 
             </section>
-            
+
             <section title='Correlation by means of the "Content-Type" header'>
                 <t>
                     Instances may also specify a schema using the "profile" MIME type parameter in the Content-Type header, when the MIME type MUST be "application/json", or any other subtype.
@@ -608,7 +608,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
                     <artwork>
 <![CDATA[
 Content-Type: application/my-media-type+json;
-          profile=http://example.com/my-hyper-schema#
+          profile="http://example.com/my-hyper-schema#"
 ]]>
                     </artwork>
                 </figure>
