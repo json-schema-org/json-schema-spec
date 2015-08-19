@@ -401,37 +401,29 @@
                 
                 <section title="Valid values">
                     <t>
-                        The value for this keyword MUST be a string, and MUST be a valid URI reference.
+                        The value for this keyword MUST be a string, and MUST be a valid URI-reference [RFC3986].
                         This URI SHOULD be normalized, and SHOULD NOT be an empty fragment (#) or the empty string.
                     </t>
                  </section>
 
                 <section title="Usage">
                     <t>
-                        The "id" keyword is used to give the document a URI and set its base URI for resolving URI references against.
-                        When an id is encountered, an implementation MUST resolve this id against
-                        the parent environment base URI. The resolved URI will be the new base URI for
-                        the rest of the schema and all child schemas, until another "id" is encountered.
+                        The "id" keyword defines the URI of the schema and the base URI that other URI references within
+                        the schema are resolved against. The "id" keyword itself is resolved against a base URI as
+                        specified in [RFC3986].
                     </t>
-
                     <t>
-                        When using "id" to alter the base URI, schema authors SHOULD ensure
-                        that the URI is unique within the schema.
+                        The outermost schema of a JSON Schema document SHOULD be an absolute-URI (containing a scheme, but no fragment)
+                        or an absolute-URI with an empty fragment.
                     </t>
-
                     <t>
-                        This schema will be taken as an example:
+                        For example:
                     </t>
-
-                    <!--
-                        FIXME: http again as a scheme, maybe another one? It can be any scheme after
-                        all
-                    -->
                     <figure>
                         <artwork>
 <![CDATA[
 {
-    "id": "http://x.y.z/rootschema.json#",
+    "id": "http://example.com/rootschema.json#",
     "schema1": {
         "id": "#foo"
     },
@@ -445,7 +437,7 @@
         }
     },
     "schema3": {
-        "id": "some://where.else/completely#"
+        "id": "urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f"
     }
 }
 ]]>
@@ -458,12 +450,12 @@
                         base URIs:
     
                         <list style="hanging">
-                            <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
-                            <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
-                            <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
-                            <t hangText="#/schema2/nested">http://x.y.z/otherschema.json#bar</t>
-                            <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
-                            <t hangText="#/schema3">some://where.else/completely#</t>
+                            <t hangText="# (document root)">http://example.com/rootschema.json#</t>
+                            <t hangText="#/schema1">http://example.com/rootschema.json#foo</t>
+                            <t hangText="#/schema2">http://example.com/otherschema.json#</t>
+                            <t hangText="#/schema2/nested">http://example.com/otherschema.json#bar</t>
+                            <t hangText="#/schema2/alsonested">http://example.com/t/inner.json#a</t>
+                            <t hangText="#/schema3">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                         </list>
                     </t>
     
