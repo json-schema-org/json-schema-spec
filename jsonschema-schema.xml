@@ -8,6 +8,7 @@
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
+<!ENTITY RFC5646 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5646.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -997,6 +998,52 @@
 
             </section>
 
+            <section title='"defaultLocale", "locales", and "localeKey"'>
+
+                <section title="Valid values">
+                    <t>
+                        The value of "defaultLocale" MUST be a valid <xref target="RFC5646">RFC 5646</xref>
+                        language tag or it will default to "en". Its value (including the case
+                        where the default "en" is assumed) MAY also be present as a property on the
+                        "locales" object or otherwise, it will be assumed to be indicating the language
+                        used on keywords such as "title" directly present on a schema object.
+                        "localeKey" MUST be a string and MUST also be present as a property on the
+                        language tag subobject indicated by "defaultLocale" on the "locales" object.
+                        "locales" MUST be an object whose property names are valid
+                        <xref target="RFC5646">RFC 5646</xref> language tags and whose value is an
+                        object, and these language tag subobjects MUST have properties whose names are
+                        any string and whose value is an object which MAY contain any of the
+                        following properties: "title" and "description", whose values must be valid
+                        values for the JSON Schema keywords of the same name.
+                    </t>
+                </section>
+
+                <section title="Purpose">
+                    <t>
+                        These keywords are used for internationalization (i18n). When "localeKey"
+                        is present on a schema, a locale lookup SHOULD be made by the application
+                        unless the "defaultLocale" value matches the application-determined user locale,
+                        in which case, the normal treatment of keywords such as "title" MUST occur.
+                        If a locale lookup is made, the application-determined user locale MUST match
+                        a property of "locales", and one of these subobject properties SHOULD
+                        be matched by the value of "localeKey". Upon finding a match, the application
+                        MUST override the normal behavior of the following keywords (whether already
+                        present as keywords or not) with the corresponding properties on the
+                        "localeKey"-matched object: "title" and "description". If no match is found,
+                        the "defaultLocale" MUST be used to find a match from a locale lookup,
+                        similarly overriding behaviors upon any match while reporting a failure
+                        to the application if no match is found. When "localeKey" is not present,
+                        the keywords, if present, will retain their normal behaviors.
+                    </t>
+
+                    <t>
+                         "defaultLocale" and "locales" MAY be used in root schemas while "localeKey"
+                         MAY be used on root schemas and in any subschemas.
+                    </t>
+                </section>
+
+            </section>
+
             <section title='"default"'>
 
                 <section title="Valid values">
@@ -1325,6 +1372,7 @@
             &RFC3986;
             &RFC4627;
             &RFC5322;
+            &RFC5646;
             <reference anchor="ecma262"
             target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
                 <front>
