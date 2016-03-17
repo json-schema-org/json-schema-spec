@@ -41,6 +41,29 @@
         "description": {
             "type": "string"
         },
+        "defaultLocale": {
+            "type": "string"
+        },
+        "locales": {
+            "type": "object",
+            "patternProperties": {
+                ".{2,}": {
+                    "type": "object",
+                    "patternProperties": {
+                        ".*": {
+                            "type": "object",
+                            "properties": {
+                                "title": { "$ref": "#/properties/title" },
+                                "description": { "$ref": "#/properties/description" }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "localeKey": {
+            "type": "string"
+        },
         "default": {},
         "multipleOf": {
             "type": "number",
