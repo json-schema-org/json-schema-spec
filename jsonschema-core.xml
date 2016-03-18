@@ -2,9 +2,9 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
-<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -93,7 +93,7 @@
             <t>
                 The terms "JSON", "JSON text", "JSON value", "member", "element", "object", "array",
                 "number", "string", "boolean", "true", "false", and "null" in this document are to
-                be interpreted as defined in <xref target="RFC4627">RFC 4627</xref>.
+                be interpreted as defined in <xref target="RFC7159">RFC 7159</xref>.
             </t>
         </section>
 
@@ -101,12 +101,12 @@
 
             <section title="Property, item">
                 <t>
-                    When refering to a JSON Object, as defined by <xref target="RFC4627"/>, the
+                    When refering to a JSON Object, as defined by <xref target="RFC7159"/>, the
                     terms "member" and "property" may be used interchangeably.
                 </t>
 
                 <t>
-                    When refering to a JSON Array, as defined by <xref target="RFC4627"/>, the terms
+                    When refering to a JSON Array, as defined by <xref target="RFC7159"/>, the terms
                     "element" and "item" may be used interchangeably.
                 </t>
             </section>
@@ -259,7 +259,7 @@
 
             <section title="Applicability to all JSON values">
                 <t>
-                    It is acknowledged that an instance may be any valid JSON value as defined by <xref target="RFC4627"/>.
+                    It is acknowledged that an instance may be any valid JSON value as defined by <xref target="RFC7159"/>.
                     As such, JSON Schema does not mandate that an instance be of a particular type: JSON Schema can describe any JSON value, including null.
                 </t>
             </section>
@@ -267,7 +267,7 @@
             <section title="Programming language independence">
                 <t>
                     JSON Schema is programming language agnostic. The only limitations are the ones
-                    expressed by <xref target="RFC4627"/> and those of the host programming
+                    expressed by <xref target="RFC7159"/> and those of the host programming
                     language.
                 </t>
             </section>
@@ -326,7 +326,7 @@
             <section title="Security considerations">
                 <t>
                     Both schemas and instances are JSON values. As such, all security considerations
-                    defined in <xref target="RFC4627">RFC 4627</xref> apply.
+                    defined in <xref target="RFC7159">RFC 7159</xref> apply.
                 </t>
             </section>
 
@@ -628,10 +628,10 @@ Content-Type: application/my-media-type+json;
         <references title="Normative References">
             &RFC2119;
             &RFC3986;
+            &RFC7159;
         </references>
 
         <references title="Informative References">
-            &RFC4627;
             &RFC5988;
             &RFC7231;
            <reference anchor="json-schema-validation"
