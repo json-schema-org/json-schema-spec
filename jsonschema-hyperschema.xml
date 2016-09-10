@@ -7,6 +7,7 @@
 <!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
 <!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+<!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
@@ -301,7 +302,7 @@
 
                 <section title="json-pointer fragment resolution">
                     <t>
-                        The "json-pointer" fragment resolution protocol uses a <xref target="json-pointer">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.
+                        The "json-pointer" fragment resolution protocol uses a <xref target="RFC6901">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.
                     </t>
                 </section>
             </section>
@@ -1010,21 +1011,7 @@ GET /foo/
             &rfc3986;
             &rfc4287;
             &rfc6570;
-            <reference anchor="json-pointer" target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03">
-                <front>
-                    <title>JSON Pointer</title>
-                    <author initials="P." surname="Bryan">
-                        <organization>ForgeRock US, Inc.</organization>
-                    </author>
-                    <author initials="K." surname="Zyp">
-                        <organization>SitePen (USA)</organization>
-                    </author>
-                    <author initials="M." surname="Nottingham">
-                        <organization>Rackspace</organization>
-                    </author>
-                    <date year="2012" month="August" />
-                </front>
-            </reference>
+            &rfc6901;
             <reference anchor="json-schema-core" target="http://tools.ietf.org/html/draft-zyp-json-schema-04">
                 <front>
                     <title>JSON Schema: core definitions and terminology</title>
