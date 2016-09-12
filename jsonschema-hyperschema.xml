@@ -296,7 +296,7 @@
                 </t>
 
                 <t>
-                    If the instance is described by a schema providing the a link with "root" relation, or such a link is provided in using the <xref target="RFC5988">HTTP Link header</xref>, then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
+                    If the instance is described by a schema providing a link with "root" relation, or such a link is provided in using the <xref target="RFC5988">HTTP Link header</xref>, then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
                     The only exception to this is the resolution of "root" links themselves.
                 </t>
 
@@ -421,7 +421,7 @@
                 </t>
 
                 <t>
-                    The base URI to be used for relative URI resolution SHOULD is defined as follows:
+                    The base URI to be used for relative URI resolution is defined as follows:
                     <list>
                         <t>if the data has a link defined, with a relation of "self", then the "href" value of that link is used, unless the relation of the link being resolved is also "self"</t>
                         <t>otherwise, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document, if it exists</t>
