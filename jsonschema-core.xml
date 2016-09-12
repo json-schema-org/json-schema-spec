@@ -4,6 +4,7 @@
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
+<!ENTITY RFC6906 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6906.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
@@ -558,51 +559,78 @@
             </section>
         </section>
 
-        <section title="Recommended correlation mechanisms for use with the HTTP protocol">
+        <section title="Recommended correlation mechanisms for hypermedia">
 
             <t>
-                It is acknowledged by this specification that the majority of interactive JSON
-                Schema processing will be over HTTP. This section therefore gives recommendations
-                for materializing an instance/schema correlation using mechanisms currently
-                available for this protocol. An instance is said to be described by one (or more)
-                schema(s).
+                One of the largest adoptors of JSON has been HTTP servers for automated APIs and robots.
+                This section describes how to enhance processing of JSON documents in a more RESTful manner
+                when used with protocols that support media types and <xref target="RFC5988">Web linking</xref>.
             </t>
 
-            <section title='Correlation by means of the "Link" header'>
-                <!-- HTTP linking is referenced by specs that have nothing to do with HTTP, so this isn't always the case -->
+            <section title='Linking to a schema'>
                 <t>
-                    It is RECOMMENDED that instances be associated with JSON Schemas using the link relation "describedby", as defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>.
+                    It is RECOMMENDED that instances link to a downloadable JSON Schema using the link relation "describedby", as defined by <xref target="W3C.REC-ldp-20150226">Linked Data Protocol 1.0, section 8.1</xref>.
                 </t>
 
                 <t>
-                    In HTTP, such links can be declared in a format-independent way using the Link header.  An example of such a header would be:
+                    In HTTP, such links can be attached to any response using the <xref target="RFC5988">Link header</xref>. An example of such a header would be:
                 </t>
 
                 <figure>
                     <artwork>
 <![CDATA[
-Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
+Link: <http://example.com/my-hyper-schema#>; rel="describedby"
 ]]>
                     </artwork>
                 </figure>
 
             </section>
 
-            <section title='Correlation by means of the "Content-Type" header'>
+
+            <section title='Describing a profile of JSON'>
                 <t>
-                    Instances may also specify a schema using the "profile" MIME type parameter in the Content-Type header, when the MIME type MUST be "application/json", or any other subtype.
-                    An instance associated with a JSON Schema using this "profile" parameter is considered to be described by that schema.
+                    Instances MAY specify a "profile" as described in <xref target="RFC6906">The 'profile' Link Relation</xref>.
+                    When used as a media-type parameter, HTTP servers gain the ability to perform Content-Type Negotiation based on profile. The media-type paramater MUST be a whitespace-separated list of URIs (i.e. relative references are invalid).
+                </t>
+                <t>
+                    The profile URI is opaque and SHOULD NOT automatically be dereferenced. If the implementation does not understand the semantics of the provided profile, the implementation can instead follow the "describedby" links, if any, which may provide information on how to handle the profile.
+                    For simplicity, schema authors are suggested to provide both a profile and "describedby" link that point to the same URI.
                 </t>
 
                 <t>
-                    An example of such a header would be:
+                    In HTTP, the media-type parameter would be sent inside the Content-Type header:
                 </t>
 
                 <figure>
                     <artwork>
 <![CDATA[
-Content-Type: application/my-media-type+json;
+Content-Type: application/json;
           profile="http://example.com/my-hyper-schema#"
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    Multiple profiles are whitespace seperated:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Content-Type: application/json;
+          profile="http://example.com/a http://example.com/b"
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    HTTP can also send the "profile" in a Link, though this may impact media-type semantics and Content-Type negotiation:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Link: <http://example.com/my-hyper-schema#>; rel="profile"
 ]]>
                     </artwork>
                 </figure>
@@ -630,11 +658,27 @@ Content-Type: application/my-media-type+json;
             &RFC2119;
             &RFC3986;
             &RFC7159;
+            <reference anchor='W3C.REC-ldp-20150226' target='https://www.w3.org/TR/2015/REC-ldp-20150226/#link-relation-describedby'>
+                <front>
+                    <title>Linked Data Platform 1.0</title>
+                    <author initials='S' surname='Speicher' fullname='Steve Speicher'>
+                        <organization>IBM Corporation</organization>
+                    </author>
+                    <author initials='J' surname='Arwe' fullname='John Arwe'>
+                        <organization>IBM Corporation</organization>
+                    </author>
+                    <author initials='A' surname='Malhotra' fullname='Ashok Malhotra'>
+                        <organization>Oracle Corporation</organization>
+                    </author>
+                    <date month='Feburary' year='2015' />
+                </front>
+            </reference>
         </references>
 
         <references title="Informative References">
             &RFC5988;
             &RFC6901;
+            &RFC6906;
             &RFC7231;
            <reference anchor="json-schema-validation"
                 target="http://tools.ietf.org/html/draft-fge-json-schema-validation-01">
