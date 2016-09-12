@@ -3,6 +3,7 @@
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+<!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
@@ -444,7 +445,7 @@
                     </figure>
 
                     <t>
-                        Subschemas at the following URI-encoded <xref target="json-pointer">JSON
+                        Subschemas at the following URI-encoded <xref target="RFC6901">JSON
                         Pointer</xref>s (starting from the root schema) define the following
                         base URIs:
     
@@ -633,6 +634,7 @@ Content-Type: application/my-media-type+json;
 
         <references title="Informative References">
             &RFC5988;
+            &RFC6901;
             &RFC7231;
            <reference anchor="json-schema-validation"
                 target="http://tools.ietf.org/html/draft-fge-json-schema-validation-01">
@@ -670,19 +672,6 @@ Content-Type: application/my-media-type+json;
                 target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
                 <front>
                     <title>JSON Reference (work in progress)</title>
-                    <author initials="P." surname="Bryan">
-                        <organization>ForgeRock US, Inc.</organization>
-                    </author>
-                    <author initials="K." surname="Zyp">
-                        <organization>SitePen (USA)</organization>
-                    </author>
-                    <date year="2012" month="September"/>
-                </front>
-            </reference>
-            <reference anchor="json-pointer"
-                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-07">
-                <front>
-                    <title>JSON Pointer (work in progress)</title>
                     <author initials="P." surname="Bryan">
                         <organization>ForgeRock US, Inc.</organization>
                     </author>
