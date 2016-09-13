@@ -184,42 +184,26 @@
         <section title="General validation considerations">
 
             <section title="Keywords and instance primitive types">
-
                 <t>
                     Some validation keywords only apply to one or more primitive types. When the
                     primitive type of the instance cannot be validated by a given keyword,
                     validation for this keyword and instance SHOULD succeed.
                 </t>
-
                 <t>
                     This specification groups keywords in different sections, according to the
                     primitive type, or types, these keywords validate. Note that some keywords
                     validate all instance types.
                 </t>
-
-            </section>
-
-            <section title="Inter-dependent keywords">
-
-                <t>
-                    In order to validate an instance, some keywords are influenced by the presence
-                    (or absence) of other keywords. In this case, all these keywords will be grouped
-                    in the same section.
-                </t>
-
             </section>
 
             <section title="Default values for missing keywords">
-
                 <t>
                     Some keywords, if absent, MAY be regarded by implementations as having
                     a default value. In this case, the default value will be mentioned.
                 </t>
-
             </section>
 
             <section title="Validation of container instances">
-
                 <t>
                     Keywords with the possibility to validate container instances (arrays or
                     objects) only validate the instances themselves and not their children (array
@@ -228,7 +212,6 @@
                     valid against. The algorithms to calculate a child instance's relevant schema(s)
                     are explained in a separate section.
                 </t>
-
                 <t>
                     It should be noted that while an array element will only have to validate
                     against one schema, object member values may have to validate against more than
@@ -239,6 +222,9 @@
         </section>
 
         <section title="Validation keywords">
+            <t>
+                Validation keywords in a schema impose requirements for successfully validating an instance.
+            </t>
 
             <section title="multipleOf">
                 <t>
