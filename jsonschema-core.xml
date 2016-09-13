@@ -594,7 +594,8 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
                 </t>
                 <t>
                     The profile URI is opaque and SHOULD NOT automatically be dereferenced. If the implementation does not understand the semantics of the provided profile, the implementation can instead follow the "describedby" links, if any, which may provide information on how to handle the profile.
-                    For simplicity, schema authors are suggested to provide both a profile and "describedby" link that point to the same URI.
+                    Since "profile" doesn't necessarily point to a network location, the "describedby" relation is used for linking to a downloadable schema.
+                    However, for simplicity, schema authors should make these URIs point to the same resource when possible.
                 </t>
 
                 <t>
