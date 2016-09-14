@@ -2,7 +2,7 @@ XML2RFC=xml2rfc
 
 OUT = \
 	jsonschema-core.html jsonschema-core.txt \
-	jsonschema-schema.html jsonschema-schema.txt \
+	jsonschema-validation.html jsonschema-validation.txt \
 	jsonschema-hyperschema.html jsonschema-hyperschema.txt
 	
 
