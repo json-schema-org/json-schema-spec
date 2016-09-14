@@ -58,10 +58,9 @@
         <abstract>
             <t>
                 JSON Schema defines the media type "application/schema+json", a JSON based format
-                for defining the structure of JSON data. JSON Schema provides a contract for what
-                JSON data is required for a given application and how to interact with it. JSON
-                Schema is intended to define validation, documentation, hyperlink navigation, and
-                interaction control of JSON data.
+                for defining the structure of JSON data. JSON Schema asserts what a JSON document
+                must look like and how to interact with it, ideal for annotating existing JSON APIs
+                that would not hypermedia controls or otherwise be machine-accessible.
             </t>
         </abstract>
     </front>
@@ -69,16 +68,18 @@
     <middle>
         <section title="Introduction">
             <t>
-                JSON Schema is a JSON media type for defining the structure of JSON data. JSON
-                Schema provides a contract for what JSON data is required for a given application
-                and how to interact with it. JSON Schema is intended to define validation,
-                documentation, hyperlink navigation, and interaction control of JSON data.
+                JSON Schema is a JSON media type for defining the structure of JSON data. JSON Schema
+                is intended to define validation, documentation, hyperlink navigation, and interaction
+                control of JSON data.
             </t>
-
             <t>
-                This specification defines JSON Schema core terminology and mechanisms; related
-                specifications build upon this specification and define different applications of
-                JSON Schema.
+                This specification defines JSON Schema core terminology and mechanisms, including how to
+                dereference a JSON Schema, pointing to another JSON Schema by reference, setting the
+                vocabulary being used and asserting the minimum vocabulary that must be supported.
+            </t>
+            <t>
+                Other specifications define the vocabularies that perform assertions about validation,
+                linking, annotation, navigation, and interaction.
             </t>
         </section>
 
@@ -177,16 +178,14 @@
 
             <section title="JSON Schema primitive types">
                 <t>
-                    JSON Schema defines seven primitive types for JSON values:
-                    <!-- TODO integer and number are both the same syntax, integer is just a subset -->
+                    JSON Schema defines six primitive types for JSON values:
                     <list style="hanging">
-                        <t hangText="array">A JSON array.</t>
-                        <t hangText="boolean">A JSON boolean.</t>
-                        <t hangText="integer">A JSON number without a fraction or exponent part.</t>
-                        <t hangText="number">Any JSON number. Number includes integer.</t>
-                        <t hangText="null">The JSON null value.</t>
-                        <t hangText="object">A JSON object.</t>
-                        <t hangText="string">A JSON string.</t>
+                        <t hangText="object">A JSON "object" production.</t>
+                        <t hangText="array">A JSON "array" production</t>
+                        <t hangText="boolean">A JSON "true" or "false" production</t>
+                        <t hangText="number">A JSON "number" production</t>
+                        <t hangText="null">A JSON "null" production</t>
+                        <t hangText="string">A JSON "string" production</t>
                     </list>
                 </t>
             </section>
@@ -196,35 +195,23 @@
                     Two JSON values are said to be equal if and only if:
 
                     <list>
-                        <t>both are nulls; or</t>
-                        <t>both are booleans, and have the same value; or</t>
-                        <t>both are strings, and have the same value; or</t>
+                        <t>both are null; or</t>
+                        <t>both are true; or</t>
+                        <t>both are false; or</t>
+                        <t>both are strings, and are the same codepoint-for-codepoint; or</t>
                         <t>both are numbers, and have the same mathematical value; or</t>
-                        <t>both are arrays, and:
-                            <list>
-                                <t>have the same number of items; and</t>
-                                <t>items at the same index are equal according to this definition;
-                                or</t>
-                            </list>
-                        </t>
-                        <t>both are objects, and:
-                            <list>
-                                <t>have the same set of property names; and</t>
-                                <t>values for a same property name are equal according to this
-                                definition.</t>
-                            </list>
-                        </t>
+                        <t>both are arrays, and have an equal value item-for-item; or</t>
+                        <t>both are objects, and each property in one has exactly one property with an equal key the other, and that other property has an equal value.</t>
                     </list>
                 </t>
             </section>
 
             <section title="Instance">
                 <t>
-                    An instance is any JSON value. An instance may be described by one or more schemas.
+                    An instance is any JSON value being described by a schema.
                 </t>
-
                 <t>
-                    An instance may also be referred to as a "JSON instance", "JSON data", or "JSON document".
+                    An instance may also be referred to as a "JSON instance", "JSON data", "JSON-text", or "JSON document".
                 </t>
             </section>
 
@@ -251,7 +238,7 @@
             <section title="Hypermedia and linking">
                 <t>
                     JSON Hyper-Schema describes the hypertext structure of a JSON document.
-                    This includes link relations from the instance to other resources, interpretation of instances as multimedia data, and specification of access method (e.g. HTTP GET/POST) and submission data required to use an API.
+                    This includes link relations from the instance to other resources, interpretation of instances as multimedia data, and submission data required to use an API.
                 </t>
                 <t>Hyper-schema behaviour and keywords are specified in <xref target="json-hyper-schema">a separate document</xref>.</t>
             </section>
@@ -299,16 +286,12 @@
 
             <section title="Mathematical integers">
                 <t>
-                    It is acknowledged by this specification that some programming languages, and
-                    their associated parsers, use different internal representations for floating
-                    point numbers and integers, while others do not.
+                    Some programming languages and parsers use different internal representations for floating
+                    point numbers than they do for integers.
                 </t>
 
                 <t>
-                    As a consequence, for interoperability reasons, JSON values used in the context
-                    of JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
-                    that mathematical integers be represented as integers as defined by this
-                    specification.
+                    For constistency, integer JSON numbers SHOULD NOT be encoded with a fractional part.
                 </t>
             </section>
 
@@ -322,13 +305,6 @@
                 <t>
                     Authors of extensions to JSON Schema are encouraged to write their own meta-schemas, which extend the existing meta-schemas using "allOf".
                     This extended meta-schema SHOULD be referenced using the "$schema" keyword, to allow tools to follow the correct behaviour.
-                </t>
-            </section>
-
-            <section title="Security considerations">
-                <t>
-                    Both schemas and instances are JSON values. As such, all security considerations
-                    defined in <xref target="RFC7159">RFC 7159</xref> apply.
                 </t>
             </section>
 
@@ -638,6 +614,18 @@ Link: <http://example.com/my-hyper-schema#>; rel="profile"
 
             </section>
 
+        </section>
+
+        <section title="Security considerations">
+            <t>
+                Both schemas and instances are JSON values. As such, all security considerations
+                defined in <xref target="RFC7159">RFC 7159</xref> apply.
+            </t>
+            <t>
+                Instances and schemas are both frequently witten by untrusted third parties, to be deployed on public Internet servers.
+                Validators should take care that the parsing of schemas doesn't consume excessive system resources.
+                Validators MUST NOT fall into an infinite loop.
+            </t>
         </section>
 
         <section title="IANA Considerations">
