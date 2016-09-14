@@ -739,8 +739,13 @@
 
         <section title="Security considerations">
             <t>
-                JSON Schema validation does not have any additional security considerations than
-                those defined by the JSON Schema core specification.
+                JSON Schema validation defines a vocabulary for JSON Schema core and conserns all the security considerations listed there.
+            </t>
+            <t>
+                JSON Schema validation allows the use of Regular Expressions, which have numerous different (often incompatible) implementations.
+                Some implementations allow the embedding of arbritrary code, which is outside the scope of JSON Schema and MUST NOT be permitted.
+                Regular expressions can often also be crafted to be extremely expensive to compute (with so-called "catastrophic backtracking"),
+                resulting in a denial-of-service attack.
             </t>
         </section>
 
