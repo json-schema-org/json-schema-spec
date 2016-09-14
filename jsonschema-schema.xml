@@ -63,12 +63,9 @@
 
         <abstract>
             <t>
-                JSON Schema (application/schema+json) has several purposes, one of which is instance
-                validation. The validation process may be interactive or non-interactive. For
-                instance, applications may use JSON Schema to build a user interface enabling
-                interactive content generation in addition to user input checking, or validate data
-                retrieved from various sources. This specification describes schema keywords
-                dedicated to validation purposes.
+                JSON Schema (application/schema+json) has several purposes, one of which is JSON instance
+                validation. This document specifies a vocabulary for JSON Schema to makes assertions about
+                valid instances.
             </t>
         </abstract>
     </front>
@@ -77,17 +74,14 @@
         <section title="Introduction">
             <t>
                 JSON Schema can be used to require that a given JSON document (an instance)
-                satisfies a certain number of criteria. These criteria are materialized by a set of
-                keywords which are described in this specification. In addition, a set of keywords
-                is defined to assist in interactive instance generation. Those are also described in
-                this specification.
+                satisfies a certain number of criteria. These criteria are asserted by using
+                keywords described in this specification. In addition, a set of keywords
+                is also defined to assist in interactive, user interface instance generation.
             </t>
-
             <t>
-                This specification will use the terminology defined by the JSON Schema core
-                specification. It is advised that readers have a copy of this specification.
+                This specification will use the terminology defined by the
+                <xref target="json-schema-core">JSON Schema core</xref> specification.
             </t>
-
         </section>
 
         <section title="Conventions and Terminology">
@@ -99,19 +93,16 @@
                 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
                 interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
             </t>
-
             <t>
                 This specification uses the term "container instance" to refer to both array and
                 object instances. It uses the term "children instances" to refer to array elements
                 or object member values.
             </t>
-
             <t>
                 This specification uses the term "property set" to refer to the set of an object's
                 member names; for instance, the property set of JSON Object { "a": 1, "b": 2 } is [
                 "a", "b" ].
             </t>
-
             <t>
                 Elements in an array value are said to be unique if no two elements of this array
                 are equal, as defined by the core specification.
@@ -121,36 +112,29 @@
         <section title="Interoperability considerations">
 
             <section title="Validation of string instances">
-
                 <t>
-                    It should be noted that the nul character (\x00) is valid in a JSON string. An
+                    It should be noted that the nul character (\u0000) is valid in a JSON string. An
                     instance to validate may contain a string value with this character, regardless
                     of the ability of the underlying programming language to deal with such data.
                 </t>
-
             </section>
 
             <section title="Validation of numeric instances">
-
                 <t>
-                    The JSON specification does not define any bounds to the scale or precision of
-                    numeric values. JSON Schema does not define any such bounds either. This means
-                    that numeric instances processed by JSON Schema can be arbitrarily large and/or
+                    The JSON specification allows numbers with arbritrary prevision, and JSON Schema does not add any such bounds.
+                    This means that numeric instances processed by JSON Schema can be arbitrarily large and/or
                     have an arbitrarily large decimal part, regardless of the ability of the
                     underlying programming language to deal with such data.
                 </t>
-
             </section>
 
             <section title="Regular expressions">
-
                 <t>
                     Two validation keywords, "pattern" and "patternProperties", use regular
                     expressions to express constraints. These regular expressions SHOULD
                     be valid according to the <xref target="ecma262">ECMA 262</xref> regular
                     expression dialect.
                 </t>
-
                 <t>
                     Furthermore, given the high disparity in regular expression constructs support,
                     schema authors SHOULD limit themselves to the following regular expression
@@ -170,13 +154,11 @@
                         <t>simple grouping ("(...)") and alternation ("|").</t>
                     </list>
                 </t>
-
                 <t>
                     Finally, implementations MUST NOT consider that regular expressions are
                     anchored, neither at the beginning nor at the end. This means, for instance,
                     that "es" matches "expression".
                 </t>
-
             </section>
 
         </section>
@@ -185,37 +167,21 @@
 
             <section title="Keywords and instance primitive types">
                 <t>
-                    Some validation keywords only apply to one or more primitive types. When the
-                    primitive type of the instance cannot be validated by a given keyword,
-                    validation for this keyword and instance SHOULD succeed.
+                    Most validation keywords only limit the range of values within a certain primitive type.
+                    When the primitive type of the instance is not of the type targeted by the keyword, the
+                    validation succeeds.
                 </t>
                 <t>
-                    This specification groups keywords in different sections, according to the
-                    primitive type, or types, these keywords validate. Note that some keywords
-                    validate all instance types.
+                    For example, the "maxLength" keyword will only restrict certain strings that are too long from being valid.
+                    If the instance is a number, boolean, null, array, or object, the keyword passes validation.
                 </t>
             </section>
 
             <section title="Default values for missing keywords">
                 <t>
-                    Some keywords, if absent, MAY be regarded by implementations as having
-                    a default value. In this case, the default value will be mentioned.
-                </t>
-            </section>
-
-            <section title="Validation of container instances">
-                <t>
-                    Keywords with the possibility to validate container instances (arrays or
-                    objects) only validate the instances themselves and not their children (array
-                    items or object properties). Some of these keywords do, however, contain
-                    information which is necessary for calculating which schema(s) a child must be
-                    valid against. The algorithms to calculate a child instance's relevant schema(s)
-                    are explained in a separate section.
-                </t>
-                <t>
-                    It should be noted that while an array element will only have to validate
-                    against one schema, object member values may have to validate against more than
-                    one schema.
+                    Validation keywords that are missing never restrict validation.
+                    In some cases, this behavior is identical to certain values that also are no-op.
+                    Since these values can be safely ignored or removed, they are noted where known.
                 </t>
             </section>
 
@@ -790,6 +756,13 @@
         <!-- References Section -->
         <references title="Normative References">
             &RFC2119;
+            <reference anchor="json-schema-core">
+                <front>
+                    <title>JSON Schema: core definitions and terminology</title>
+                    <author/>
+                    <date year="2016" month="September"/>
+                </front>
+            </reference>
         </references>
 
         <references title="Informative References">
