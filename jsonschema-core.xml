@@ -613,19 +613,19 @@ Content-Type: application/json;
                     <artwork>
 <![CDATA[
 Content-Type: application/json;
-          profile="http://example.com/a http://example.com/b"
+          profile="http://example.com/alice http://example.com/bob"
 ]]>
                     </artwork>
                 </figure>
 
                 <t>
-                    HTTP can also send the "profile" in a Link, though this may impact media-type semantics and Content-Type negotiation:
+                    HTTP can also send the "profile" in a Link, though this may impact media-type semantics and Content-Type negotiation if this replaces the media-type parameter:
                 </t>
 
                 <figure>
                     <artwork>
 <![CDATA[
-Link: <http://example.com/my-hyper-schema#>; rel="profile"
+Link: </alice>; rel="profile", </bob>; rel="profile"
 ]]>
                     </artwork>
                 </figure>
