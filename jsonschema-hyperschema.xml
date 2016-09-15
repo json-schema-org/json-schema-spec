@@ -706,10 +706,10 @@ Input                    Output
                         <figure>
                             <artwork>
 <![CDATA[
-URI                                         Data
------------------------------------------------------------------------
-http://example.com/data/12345               {"title": "Document title"}
-http://example.com/data/12345#/title        "Document title"
+URI                                      Data
+--------------------------------------------------------------------
+http://example.com/data/12345            {"title": "Document title"}
+http://example.com/data/12345#/title     "Document title"
 ]]>
                             </artwork>
                         </figure>
@@ -742,25 +742,25 @@ GET /foo/
                         </figure>
 
                         <figure>
-                            <preamble>With a response of:</preamble>
+                            <preamble>With a response of (with newlines and whitespace added):</preamble>
                             <artwork>
 <![CDATA[Content-Type: application/json; profile="/schema-for-this-data"
 
 [{
     "id": "bar",
-    "name": "This representation can be safely treated \
+    "name": "This representation can be safely treated
         as authoritative "
 }, {
     "id": "/baz",
-    "name": "This representation should not be treated as \
-        authoritative the user agent should make request the resource\
-        from '/baz' to ensure it has the authoritative representation"
+    "name": "This representation should not be treated as
+      authoritative the user agent should make request the resource
+      from '/baz' to ensure it has the authoritative representation"
 }, {
     "id": "http://othersite.com/something",
-    "name": "This representation\
-        should also not be treated as authoritative and the target\
-        resource representation should be retrieved for the\
-        authoritative representation"
+    "name": "This representation
+      should also not be treated as authoritative and the target
+      resource representation should be retrieved for the
+      authoritative representation"
 }]]]>
                             </artwork>
                         </figure>
@@ -807,8 +807,8 @@ GET /foo/
         "name": "Jason",
         "id": 8
     },
-    "message": "It's easy, you just add some HTML like
-                  this: <script>doSomethingEvil()</script>"
+    "message": "It's easy, just add some HTML like
+         this: <script>doSomethingEvil()</script>"
 }]]>
                             </artwork>
                             <postamble>
