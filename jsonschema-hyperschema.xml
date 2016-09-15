@@ -416,8 +416,8 @@
             <section title="href" anchor="href">
                 <t>
                     The value of the "href" link description property is a template used to determine the target URI of the related resource.
-                    The value of the instance property SHOULD be resolved as a URI-Reference per <xref target="RFC3986">RFC 3986</xref> and MAY be a URI reference.
-                    The base URI to be used for relative URI resolution SHOULD be the URI used to retrieve the instance object (not the schema).
+                    The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref>.
+                    The base URI to be used for relative URI resolution MUST be the URI of instance (not the schema).
                 </t>
 
                 <t>
