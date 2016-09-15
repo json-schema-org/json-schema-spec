@@ -127,56 +127,45 @@
 
                 <t>
                     A JSON Schema MAY contain properties which are not schema keywords.
+                    Unknown keywords SHOULD be ignored.
                 </t>
             </section>
 
             <section title="Empty schema">
                 <t>
-                    An empty schema is a JSON Schema with no properties, or with properties which
-                    are not schema keywords.
+                    An empty schema is a JSON Schema with no properties, or only unknown properties.
                 </t>
             </section>
 
-            <section title="Root schema, subschema">
+            <section title="Root schema and subschemas">
                 <t>
-                    This example of a JSON Schema has no subschemas:
+                    The root schema is the schema that comprises the entire JSON document in question.
                 </t>
-                <figure>
-                    <artwork>
-<![CDATA[
-{
-    "title": "root"
-}
-]]>
-                    </artwork>
-                </figure>
-
                 <t>
-                    JSON Schemas can also be nested, as in this example:
+                    Some keywords take schemas themselves, allowing JSON Schemas can be nested:
                 </t>
                 <figure>
                     <artwork>
 <![CDATA[
 {
     "title": "root",
-    "otherSchema": {
-        "title": "nested",
-        "anotherSchema": {
-            "title": "alsoNested"
-        }
+    "items": {
+        "title": "alsoNested"
     }
 }
 ]]>
                     </artwork>
                 </figure>
-
                 <t>
-                    In this example, "nested" and "alsoNested" are subschemas, and "root" is a root
-                    schema.
+                    In this example document, the schema titled "alsoNested" is a subschemas,
+                    and the schema titled "root" is the root schema.
                 </t>
             </section>
 
             <section title="JSON Schema primitive types">
+                <t>
+                    JSON Schema validates and interperts data according to a data model.
+                </t>
                 <t>
                     JSON Schema defines six primitive types for JSON values:
                     <list style="hanging">
@@ -187,6 +176,9 @@
                         <t hangText="null">A JSON "null" production</t>
                         <t hangText="string">A JSON "string" production</t>
                     </list>
+                </t>
+                <t>
+                    Whitespace and formatting conserns are thus outside the scope of JSON Schema.
                 </t>
             </section>
 
@@ -246,41 +238,18 @@
 
         <section title="General considerations">
 
-            <section title="Applicability to all JSON values">
+            <section title="Range of JSON values">
                 <t>
-                    It is acknowledged that an instance may be any valid JSON value as defined by <xref target="RFC7159"/>.
-                    As such, JSON Schema does not mandate that an instance be of a particular type: JSON Schema can describe any JSON value, including null.
+                    An instance may be any valid JSON value as defined by <xref target="RFC7159">JSON</xref>.
+                    JSON Schema imposes no restrictions on type: JSON Schema can describe any JSON value, including, for example, null.
                 </t>
             </section>
 
             <section title="Programming language independence">
                 <t>
-                    JSON Schema is programming language agnostic. The only limitations are the ones
-                    expressed by <xref target="RFC7159"/> and those of the host programming
-                    language.
-                </t>
-            </section>
-
-            <section title="JSON Schema and HTTP">
-                <t>
-                    This specification acknowledges the role of <xref target="RFC7231">HTTP</xref>
-                    as the dominant protocol in use on the Internet, and the wealth of
-                    official specifications related to it.
-                </t>
-
-                <t>
-                    This specification uses a subset of these specifications to recommend a set of
-                    mechanisms, usable by this protocol, to associate JSON instances to one or more
-                    schemas.
-                </t>
-            </section>
-
-            <section title="JSON Schema and other protocols">
-                <t>
-                    JSON Schema does not define any semantics for the client-server interface for
-                    any other protocols than HTTP. These semantics are application dependent, or
-                    subject to agreement between the parties involved in the use of JSON Schema for
-                    their own needs.
+                    JSON Schema is programming language agnostic, and supports the full range of values described in the data model.
+                    Be aware, however, that some languages and JSON parsers may not be able to represent in memory
+                    the full range of values describable by JSON.
                 </t>
             </section>
 
