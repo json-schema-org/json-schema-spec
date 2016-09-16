@@ -290,32 +290,16 @@
                     location of a resource which is itself a JSON Schema, which describes any schema
                     written for this particular version.
                 </t>
-
                 <t>
-                    The root of JSON Schema documents SHOULD use this keyword.
-                    The value of this keyword MUST be a <xref target="RFC3986">URI</xref>,
-                    a valid <xref target="RFC6901">JSON Pointer</xref>, and this URI MUST be normalized.
+                    The root schema of a JSON Schema document SHOULD use this keyword.
+                    The value of this keyword MUST be a <xref target="RFC3986">URI</xref> (an "absolute" URI),
+                    and this URI MUST be normalized.
                     The current schema MUST be valid against the meta-schema identified by this URI.
                 </t>
-
                 <t>
-                    The following values are predefined:
-
-                    <list style="hanging">
-                        <t hangText="http://json-schema.org/draft-05/schema#">JSON Schema written
-                        against this version.</t>
-                        <t hangText="http://json-schema.org/draft-05/hyper-schema#">JSON Schema hyperschema
-                        written against this version.</t>
-                        <t hangText="http://json-schema.org/draft-04/schema#"> JSON Schema written
-                        against <xref target="json-schema-04">JSON Schema, draft v4</xref>.</t>
-                        <t hangText="http://json-schema.org/draft-04/hyper-schema#"> JSON Schema hyperschema
-                        written against <xref target="json-schema-04">JSON Schema, draft v3</xref>.</t>
-                        <t hangText="http://json-schema.org/draft-03/schema#"> JSON Schema written
-                        against <xref target="json-schema-03">JSON Schema, draft v3</xref>.</t>
-                        <t hangText="http://json-schema.org/draft-03/hyper-schema#"> JSON Schema hyperschema
-                        written against <xref target="json-schema-03">JSON Schema, draft
-                        v3</xref>.</t>
-                    </list>
+                    Values for this property are defined in other documents and by other parties.
+                    JSON Schema implementations SHOULD implement support for current and previous published drafts
+                    of JSON Schema vocabularies as deemed reasonable.
                 </t>
             </section>
 
@@ -643,7 +627,7 @@ Link: </alice>; rel="profile", </bob>; rel="profile"
             &RFC6901;
             &RFC6906;
             &RFC7231;
-           <reference anchor="json-schema-validation"
+            <reference anchor="json-schema-validation"
                 target="http://tools.ietf.org/html/draft-fge-json-schema-validation-01">
                 <front>
                     <title>JSON Schema: interactive and non interactive validation</title>
@@ -666,32 +650,6 @@ Link: </alice>; rel="profile", </bob>; rel="profile"
                     <author initials="G." surname="Luff">
                         <organization/>
                     </author>
-                    <author initials="G." surname="Court">
-                        <organization/>
-                    </author>
-                    <author initials="K." surname="Zyp">
-                        <organization>SitePen (USA)</organization>
-                    </author>
-                    <date year="2013" month="January"/>
-                </front>
-            </reference>
-            <reference anchor="json-schema-03"
-                target="http://tools.ietf.org/html/draft-zyp-json-schema-03">
-                <front>
-                    <title>JSON Schema, draft 3</title>
-                    <author initials="G." surname="Court">
-                        <organization/>
-                    </author>
-                    <author initials="K." surname="Zyp">
-                        <organization>SitePen (USA)</organization>
-                    </author>
-                    <date year="2012" month="September"/>
-                </front>
-            </reference>
-            <reference anchor="json-schema-04"
-                target="http://tools.ietf.org/html/draft-zyp-json-schema-04">
-                <front>
-                    <title>JSON Schema, draft 3</title>
                     <author initials="G." surname="Court">
                         <organization/>
                     </author>
