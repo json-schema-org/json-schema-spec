@@ -351,11 +351,11 @@
                     specified in [RFC3986].
                 </t>
                 <t>
-                    The value for this keyword MUST be a string, and MUST be a valid <xref target="RFC3986">URI-reference</xref>.
-                    This URI SHOULD be normalized, and SHOULD NOT be an empty fragment (#) or the empty string.
+                    The value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
+                    This URI SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &gt;&lt;.
                 </t>
                 <t>
-                    The outermost schema of a JSON Schema document SHOULD be an absolute-URI (containing a scheme, but no fragment).
+                    The root schema of a JSON Schema document SHOULD specify an absolute-URI "id" (containing a scheme, but no fragment).
                 </t>
                 <t>
                     To identify a particular subschema in a document without needing a JSON Pointer,
@@ -404,16 +404,13 @@
                         <t hangText="#/definitions/schema3">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                     </list>
                 </t>
-                <section title="Methods for dereferencing">
+                <section title="Inline references">
                     <t>
                         Schemas can be identified by any URI that has been given to them, including a JSON Pointer or
                         their URI given directly by "id".
                     </t>
                     <t>
-                        When resolving a URI to obtain a schema, tools MUST support the lookup of documents based on this URI, and the use of JSON Pointer fragments to locate particular locations within a schema document.
-                    </t>
-                    <t>
-                        Tools MAY also take note of the URIs schemas provide for themselves using "id", and use these values for schema dereferencing as well.
+                        Tools SHOULD take note of the URIs that schemas, including subschemas, provide for themselves using "id".
                         This is known as "inline referencing".
                     </t>
 
@@ -441,12 +438,12 @@
                         </artwork>
                     </figure>
                     <t>
-                        When an implementation encounters the "schema1" schema, it resolves the "id" URI reference
+                        When an implementation encounters the &lt;schema1&gt; schema, it resolves the "id" URI reference
                         against the current base URI, resolving to &lt;http://example.net/schema1&gt;.
                     </t>
                     <t>
-                        When an implementation then looks inside the "schema2" schema, it encounters the "schema1" reference,
-                        and resolves this the URI &lt;http://example.net/schema1&gt; which is understood as a schema defined elsewhere in the document.
+                        When an implementation then looks inside the &lt;schema2&gt; schema, it encounters the &lt;schema1&gt; reference,
+                        and resolves this the URI &lt;http://example.net/schema1&gt; which is understood as the schema defined elsewhere in the same document.
                     </t>
                     <figure>
                         <preamble>
@@ -467,6 +464,22 @@
 ]]>
                         </artwork>
                     </figure>
+                </section>
+                <section title="External references">
+                    <t>
+                        To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
+                        As specified above, this does not necessarially mean anything is downloaded, but instead JSON Schema
+                        implementations SHOULD provide ways to import a schema so that other schemas can reference it.
+                    </t>
+                    <t>
+                        Implementations SHOULD be able to associate arbritrary URIs with an arbritrary schema and/or
+                        automatically associate a schema's "id"-given URI, depending on the trust that the the validator
+                        has in the schema.
+                    </t>
+                    <t>
+                        A schema may have multiple URIs, but a URI must identify not more than one schema.
+                        Validators that try to have multiple schemas associated to the same URI SHOULD raise an error condition.
+                    </t>
                 </section>
             </section>
         </section>
