@@ -336,17 +336,18 @@
                 </t>
                 <t>
                     The value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
-                    This URI SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &gt;&lt;.
+                    This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &lt;&gt;.
                 </t>
                 <t>
-                    The root schema of a JSON Schema document SHOULD specify an absolute-URI "id" (containing a scheme, but no fragment).
+                    The root schema of a JSON Schema document SHOULD have an "id" with a valid absolute-URI (containing a scheme, but no fragment).
                 </t>
                 <t>
-                    To identify a particular subschema in a document without needing a JSON Pointer,
-                    subschemas can give themselves ids that can be identified by a fragment-part.
-                    These "id" keywords with a fragment MUST begin with a letter ([A-Za-z]), to be followed by any number of
-                    letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").
-                    <!-- This restriction is the one defined by XML -->
+                    To facilitate the identification of subschemas in a JSON Schema document,
+                    subschemas can use "id" to give themselves a URI with a custom fragment-part.
+                    This form of "id" keyword MUST begin with a hash ("#") to identify it as a fragment URI reference,
+                    followed by a letter ([A-Za-z]), followed by any number of
+                    letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                    <!-- This restriction is the same one defined by XML -->
                 </t>
                 <t>
                     For example:
@@ -406,54 +407,35 @@
                         <artwork>
 <![CDATA[
 {
-    "id": "http://example.net/myschema#",
+    "id": "http://example.net/root.json#",
     "definitions": {
-        "schema1": {
+        "single": {
             "id": "schema1",
             "type": "integer"
         },
-        "schema2", {
-            "type": "array",
-            "items": { "$ref": "schema1" }
-        }
+    },
+    "items": {
+        "type": "array",
+        "items": { "$ref": "schema1" }
     }
 }
 ]]>
                         </artwork>
                     </figure>
                     <t>
-                        When an implementation encounters the &lt;schema1&gt; schema, it resolves the "id" URI reference
-                        against the current base URI, resolving to &lt;http://example.net/schema1&gt;.
+                        When an implementation encounters the &lt;#/definitions/single&gt; schema, it resolves the "id" URI reference
+                        against the current base URI to &lt;http://example.net/schema1&gt;.
                     </t>
                     <t>
-                        When an implementation then looks inside the &lt;schema2&gt; schema, it encounters the &lt;schema1&gt; reference,
-                        and resolves this the URI &lt;http://example.net/schema1&gt; which is understood as the schema defined elsewhere in the same document.
+                        When an implementation then looks inside the &lt;#/items&gt; schema, it encounters the &lt;schema1&gt; reference,
+                        and resolves this to &lt;http://example.net/schema1&gt; which is understood as the schema defined elsewhere in the same document.
                     </t>
-                    <figure>
-                        <preamble>
-                            An example with fragment "id" keywords:
-                        </preamble>
-                        <artwork>
-<![CDATA[
-{
-    "id": "http://some.site/schema#",
-    "not": { "$ref": "#inner" },
-    "definitions": {
-        "schema1": {
-            "id": "#inner",
-            "type": "boolean"
-        }
-    }
-}
-]]>
-                        </artwork>
-                    </figure>
                 </section>
                 <section title="External references">
                     <t>
                         To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
                         As specified above, this does not necessarially mean anything is downloaded, but instead JSON Schema
-                        implementations SHOULD provide ways to import a schema so that other schemas can reference it.
+                        implementations SHOULD provide ways to import a schema by URI so that other schemas can successfully reference it.
                     </t>
                     <t>
                         Implementations SHOULD be able to associate arbritrary URIs with an arbritrary schema and/or
@@ -461,7 +443,7 @@
                         has in the schema.
                     </t>
                     <t>
-                        A schema may have multiple URIs, but a URI must identify not more than one schema.
+                        A schema MAY (and likely will) have multiple URIs, but a URI has no way to identify more than one schema.
                         Validators that try to have multiple schemas associated to the same URI SHOULD raise an error condition.
                     </t>
                 </section>
