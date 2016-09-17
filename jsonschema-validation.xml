@@ -64,7 +64,7 @@
         <abstract>
             <t>
                 JSON Schema (application/schema+json) has several purposes, one of which is JSON instance
-                validation. This document specifies a vocabulary for JSON Schema to makes assertions about
+                validation. This document specifies a vocabulary for JSON Schema to make assertions about
                 valid instances.
             </t>
         </abstract>
@@ -100,12 +100,12 @@
             </t>
             <t>
                 This specification uses the term "property set" to refer to the set of an object's
-                member names; for instance, the property set of JSON Object { "a": 1, "b": 2 } is [
-                "a", "b" ].
+                member names; for instance, the property set of JSON Object { "a": 1, "b": 2 } is
+                [ "a", "b" ].
             </t>
             <t>
                 Elements in an array value are said to be unique if no two elements of this array
-                are equal, as defined by the core specification.
+                are <xref target="json-schema-core">equal</xref>.
             </t>
         </section>
 
@@ -121,7 +121,7 @@
 
             <section title="Validation of numeric instances">
                 <t>
-                    The JSON specification allows numbers with arbritrary prevision, and JSON Schema does not add any such bounds.
+                    The JSON specification allows numbers with arbitrary precision, and JSON Schema does not add any such bounds.
                     This means that numeric instances processed by JSON Schema can be arbitrarily large and/or
                     have an arbitrarily large decimal part, regardless of the ability of the
                     underlying programming language to deal with such data.
@@ -177,11 +177,11 @@
                 </t>
             </section>
 
-            <section title="Default values for missing keywords">
+            <section title="Missing keywords">
                 <t>
                     Validation keywords that are missing never restrict validation.
-                    In some cases, this behavior is identical to certain values that also are no-op.
-                    Since these values can be safely ignored or removed, they are noted where known.
+                    In some cases, this no-op behavior is identical to a keyword that exists with certain values,
+                    and these values are noted where known.
                 </t>
             </section>
 
@@ -206,13 +206,15 @@
                 The value of "maximum" MUST be a number, representing an upper limit for a numeric instance.
             </t>
             <t>
-                A numeric instance described by this keyword MUST either be less than this value or possibly equal to it (see "exclusiveMaximum").
+                If the instance is a number, then this keyword validates if "exclusiveMaximum" is true and instance is less than the provided value,
+                or else if the instance is less than or exactly equal to the provided value.
             </t>
             </section>
 
             <section title="exclusiveMaximum">
                 <t>
-                    The value of "exclusiveMaximum" MUST be a boolean, representing whether the limit in "maximum" is exclusive or not.  It defaults to false.
+                    The value of "exclusiveMaximum" MUST be a boolean, representing whether the limit in "maximum" is exclusive or not.
+                    An undefined value is the same as false.
                 </t>
                 <t>
                     If "exclusiveMaximum" is true, then a numeric instance MUST NOT be equal to the value specified in "maximum".
@@ -225,13 +227,15 @@
                     The value of "minimum" MUST be a number, representing a lower limit for a numeric instance.
                 </t>
                 <t>
-                    A numeric instance described by this keyword MUST either be more than this value or possibly equal to it (see "exclusiveMinimum").
+                    If the instance is a number, then this keyword validates if "exclusiveMinimum" is true and instance is greater than the provided value,
+                    or else if the instance is greater than or exactly equal to the provided value.
                 </t>
             </section>
 
             <section title="exclusiveMinimum">
                 <t>
-                    The value of "exclusiveMinimum" MUST be a boolean, representing whether the limit in "minimum" is exclusive or not.  It defaults to false.
+                    The value of "exclusiveMinimum" MUST be a boolean, representing whether the limit in "minimum" is exclusive or not.
+                    An undefined value is the same as false.
                 </t>
                 <t>
                     If "exclusiveMinimum" is true, then a numeric instance MUST NOT be equal to the value specified in "minimum".

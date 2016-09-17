@@ -416,8 +416,8 @@
             <section title="href" anchor="href">
                 <t>
                     The value of the "href" link description property is a template used to determine the target URI of the related resource.
-                    The value of the instance property SHOULD be resolved as a URI-Reference per <xref target="RFC3986">RFC 3986</xref> and MAY be a URI reference.
-                    The base URI to be used for relative URI resolution SHOULD be the URI used to retrieve the instance object (not the schema).
+                    The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref>.
+                    The base URI to be used for relative URI resolution MUST be the URI of instance (not the schema).
                 </t>
 
                 <t>
@@ -495,32 +495,26 @@
                         </section>
 
                         <section title="Examples">
-                            <t>
-                                <figure>
-                                    <preamble>For example, here are some possible values for "href", followed by the results after pre-processing:</preamble>
-                                    <artwork>
-<![CDATA[
-Input                    Output
------------------------------------------
-"no change"              "no change"
-"(no change)"            "(no change)"
-"{(escape space)}"       "{escape%20space}"
-"{(escape+plus)}"        "{escape%2Bplus}"
-"{(escape*asterisk)}"    "{escape%2Aasterisk}"
-"{(escape(bracket)}"     "{escape%28bracket}"
-"{(escape))bracket)}"    "{escape%29bracket}"
-"{(a))b)}"             "{a%29b}
-"{(a (b)))}"             "{a%20%28b%29}
-"{()}"                   "{%65mpty}
-"{+$*}"                   "{+%73elf*}
-"{+($)*}"                 "{+%24*}
-]]>
-                                    </artwork>
-                                    <postamble>
-                                        Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
-                                    </postamble>
-                                </figure>
-                            </t>
+                            <texttable>
+                                <preamble>For example, here are some possible values for "href", followed by the results after pre-processing:</preamble>
+                                <ttcol>Input</ttcol>
+                                <ttcol>Output</ttcol>
+                                <c>"no change"</c>           <c>"no change"</c>
+                                <c>"(no change)"</c>         <c>"(no change)"</c>
+                                <c>"{(escape space)}"</c>    <c>"{escape%20space}"</c>
+                                <c>"{(escape+plus)}"</c>     <c>"{escape%2Bplus}"</c>
+                                <c>"{(escape*asterisk)}"</c> <c>"{escape%2Aasterisk}"</c>
+                                <c>"{(escape(bracket)}"</c>  <c>"{escape%28bracket}"</c>
+                                <c>"{(escape))bracket)}"</c> <c>"{escape%29bracket}"</c>
+                                <c>"{(a))b)}"</c>            <c>"{a%29b}</c>
+                                <c>"{(a (b)))}"</c>          <c>"{a%20%28b%29}</c>
+                                <c>"{()}"</c>                <c>"{%65mpty}</c>
+                                <c>"{+$*}"</c>               <c>"{+%73elf*}</c>
+                                <c>"{+($)*}"</c>             <c>"{+%24*}</c>
+                                <postamble>
+                                    Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
+                                </postamble>
+                            </texttable>
                         </section>
                     </section>
 
@@ -692,7 +686,7 @@ Input                    Output
                             <artwork>
 <![CDATA[{
     "myRootData": {
-        "title": "Document title"
+        "title": "Breaking news"
     },
     "metaData": {
         ...
@@ -703,17 +697,13 @@ Input                    Output
                     </t>
                     <t>
                         To correctly resolve the URL "http://example.com/data/12345", we must take the "root" link into account.  Here are some example URIs, along with the data they would resolve to:
-                        <figure>
-                            <artwork>
-<![CDATA[
-URI                                         Data
------------------------------------------------------------------------
-http://example.com/data/12345               {"title": "Document title"}
-http://example.com/data/12345#/title        "Document title"
-]]>
-                            </artwork>
-                        </figure>
                     </t>
+                    <texttable>
+                        <ttcol>URI</ttcol>
+                        <ttcol>Data</ttcol>
+                        <c>http://example.com/data/12345</c>        <c>{"title": "Breaking news"}</c>
+                        <c>http://example.com/data/12345#/title</c> <c>"Breaking news"</c>
+                    </texttable>
                 </section>
 
                 <section title="Security Considerations for &quot;self&quot; links">
@@ -742,25 +732,26 @@ GET /foo/
                         </figure>
 
                         <figure>
-                            <preamble>With a response of:</preamble>
+                            <preamble>With a response of (with newlines and whitespace added):</preamble>
                             <artwork>
-<![CDATA[Content-Type: application/json; profile="/schema-for-this-data"
+<![CDATA[Content-Type: application/json; profile="http://example.com/alpha"
 
 [{
     "id": "bar",
-    "name": "This representation can be safely treated \
-        as authoritative "
+    "name": "This representation can be safely treated
+             as authoritative "
 }, {
     "id": "/baz",
-    "name": "This representation should not be treated as \
-        authoritative the user agent should make request the resource\
-        from '/baz' to ensure it has the authoritative representation"
+    "name": "This representation should not be treated as
+             authoritative the user agent should make request the
+             resource from '/baz' to ensure it has the authoritative
+             representation"
 }, {
     "id": "http://othersite.com/something",
-    "name": "This representation\
-        should also not be treated as authoritative and the target\
-        resource representation should be retrieved for the\
-        authoritative representation"
+    "name": "This representation
+             should also not be treated as authoritative and the
+             target resource representation should be retrieved
+             for the authoritative representation"
 }]]]>
                             </artwork>
                         </figure>
@@ -807,8 +798,8 @@ GET /foo/
         "name": "Jason",
         "id": 8
     },
-    "message": "It's easy, you just add some HTML like
-                  this: <script>doSomethingEvil()</script>"
+    "message": "It's easy, just add some HTML like
+         this: <script>doSomethingEvil()</script>"
 }]]>
                             </artwork>
                             <postamble>
@@ -826,7 +817,7 @@ GET /foo/
     "targetSchema": {
         "properties": {
             "message": {
-                "description": "Re-interpret the message text as HTML",
+                "description": "Re-interpret `message` as HTML",
                 "media": {
                     "type": "text/html"
                 }
