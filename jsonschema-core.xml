@@ -102,36 +102,73 @@
 
         <section title="Core terminology">
 
-            <section title="Property, item">
+            <section title="JSON document">
                 <t>
-                    When referring to a JSON Object, as defined by <xref target="RFC7159"/>, the
-                    terms "member" and "property" may be used interchangeably.
+                    A JSON document is an information resource (series of octets) describable by the application/json media type.
                 </t>
-
                 <t>
-                    When referring to a JSON Array, as defined by <xref target="RFC7159"/>, the terms
-                    "element" and "item" may be used interchangeably.
+                    In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are interchangable because of the data model it defines.
                 </t>
             </section>
 
-            <section title="JSON Schema, keywords">
+            <section title="instance">
                 <t>
-                    A JSON Schema is a JSON document, and that document MUST be an object. Object
-                    members (or properties) defined by JSON Schema (this specification, or related
-                    specifications) are called keywords, or schema keywords.
+                    JSON Schema interperts JSON data according to a data model. A JSON value interperted according to this data model is called an "instance".
                 </t>
-
                 <t>
-                    If an instance is described by a schema, and a keyword is defined in the schema, then within this document that instance is informally said to be "described by" the keyword as well.
-                </t>
+                    An instance has one of six primitive types, and a range of possible values depending on the type:
 
+                    <list style="hanging">
+                        <t hangText="null">A JSON "null" production</t>
+                        <t hangText="boolean">A "true" or "false" value, from the JSON "true" or "false" productions</t>
+                        <t hangText="object">An unordered set of properties mapping a string to an instance, from the JSON "object" production</t>
+                        <t hangText="array">An ordered list of instances, from the JSON "array" production</t>
+                        <t hangText="number">An arbitrary-precision, base-10 decimal number value, from the JSON "number" production</t>
+                        <t hangText="string">A string of Unicode code points, from the JSON "string" production</t>
+                    </list>
+                </t>
+                <t>
+                    Whitespace and formatting conserns are thus outside the scope of JSON Schema.
+                </t>
+                <t>
+                    Since an object cannot have two properties with the same key, behavior for a JSON document that tries to define two properties (the "member" production) with the same key (the "string" production) in a single object is undefined.
+                </t>
+            </section>
+
+            <section title="instance equality">
+                <t>
+                    Two JSON instances are said to be equal if and only if they are of the same type and have the same value according to the data model. Specifically, this is if:
+
+                    <list>
+                        <t>both are null; or</t>
+                        <t>both are true; or</t>
+                        <t>both are false; or</t>
+                        <t>both are strings, and are the same codepoint-for-codepoint; or</t>
+                        <t>both are numbers, and have the same mathematical value; or</t>
+                        <t>both are arrays, and have an equal value item-for-item; or</t>
+                        <t>both are objects, and each property in one has exactly one property with an equal key the other, and that other property has an equal value.</t>
+                    </list>
+                </t>
+                <t>
+                    Implied in this definition is that arrays must be the same length, objects must have the same number of members, there is no way to define multiple properties with the same key, and mere formatting differences (indentation, placement of commas, trailing zeros) are insignificant.
+                </t>
+            </section>
+
+            <section title="JSON Schema document">
+                <t>
+                    A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
+                    A schema is itself interperted as an instance.A JSON schema MUST be an object.
+                </t>
+                <t>
+                    Properties that are used to describe the instance are called keywords, or schema keywords. The meaning of properties is specified by the vocabulary that the schema is using.
+                </t>
                 <t>
                     A JSON Schema MAY contain properties which are not schema keywords.
                     Unknown keywords SHOULD be ignored.
                 </t>
-            </section>
-
-            <section title="Empty schema">
+                <t>
+                    A schema that itself describes a schema is called a meta-schema. Meta-schemas are used to specify validate JSON Schemas and specify which vocabulary it is using.
+                </t>
                 <t>
                     An empty schema is a JSON Schema with no properties, or only unknown properties.
                 </t>
@@ -159,51 +196,6 @@
                 <t>
                     In this example document, the schema titled "alsoNested" is a subschema,
                     and the schema titled "root" is the root schema.
-                </t>
-            </section>
-
-            <section title="JSON Schema primitive types">
-                <t>
-                    JSON Schema validates and interperts data according to a data model.
-                </t>
-                <t>
-                    JSON Schema defines six primitive types for JSON values:
-                    <list style="hanging">
-                        <t hangText="object">A JSON "object" production</t>
-                        <t hangText="array">A JSON "array" production</t>
-                        <t hangText="boolean">A JSON "true" or "false" production</t>
-                        <t hangText="number">A JSON "number" production</t>
-                        <t hangText="null">A JSON "null" production</t>
-                        <t hangText="string">A JSON "string" production</t>
-                    </list>
-                </t>
-                <t>
-                    Whitespace and formatting conserns are thus outside the scope of JSON Schema.
-                </t>
-            </section>
-
-            <section title="JSON value equality">
-                <t>
-                    Two JSON values are said to be equal if and only if:
-
-                    <list>
-                        <t>both are null; or</t>
-                        <t>both are true; or</t>
-                        <t>both are false; or</t>
-                        <t>both are strings, and are the same codepoint-for-codepoint; or</t>
-                        <t>both are numbers, and have the same mathematical value; or</t>
-                        <t>both are arrays, and have an equal value item-for-item; or</t>
-                        <t>both are objects, and each property in one has exactly one property with an equal key the other, and that other property has an equal value. No way is provided for a key to be used multiple times.</t>
-                    </list>
-                </t>
-            </section>
-
-            <section title="Instance">
-                <t>
-                    An instance is any JSON value being described by a schema.
-                </t>
-                <t>
-                    An instance may also be referred to as a "JSON instance", "JSON data", "JSON-text", or "JSON document".
                 </t>
             </section>
 
