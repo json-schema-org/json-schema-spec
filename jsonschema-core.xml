@@ -495,7 +495,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
             <section title='Describing a profile of JSON'>
                 <t>
                     Instances MAY specify a "profile" as described in <xref target="RFC6906">The 'profile' Link Relation</xref>.
-                    When used as a media-type parameter, HTTP servers gain the ability to perform Content-Type Negotiation based on profile. The media-type paramater MUST be a whitespace-separated list of URIs (i.e. relative references are invalid).
+                    When used as a media-type parameter, HTTP servers gain the ability to perform Content-Type Negotiation based on profile. The media-type parameter MUST be a whitespace-separated list of URIs (i.e. relative references are invalid).
                 </t>
                 <t>
                     The profile URI is opaque and SHOULD NOT automatically be dereferenced. If the implementation does not understand the semantics of the provided profile, the implementation can instead follow the "describedby" links, if any, which may provide information on how to handle the profile.
