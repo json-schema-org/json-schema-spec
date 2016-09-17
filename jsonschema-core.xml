@@ -526,7 +526,9 @@ Link: </alice>; rel="profile", </bob>; rel="profile"
                     When used for hypermedia systems over a network, <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for distributing schemas. Misbehaved clients can pose problems for server maintainers if they pull a schema over the network more frequently than necessary, when it's instead possible to cache a schema for a long period of time.
                 </t>
                 <t>
-                    HTTP servers SHOULD set long-lived caching headers on JSON Schemas. HTTP clients SHOULD observe caching headers and not re-request documents within their freshness period.
+                    HTTP servers SHOULD set long-lived caching headers on JSON Schemas.
+                    HTTP clients SHOULD observe caching headers and not re-request documents within their freshness period.
+                    Distributed systems SHOULD make use of a shared cache and/or caching proxy.
                 </t>
                 <t>
                     Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema implementation or software product. Since symbols are listed in decreasing order of significance, the JSON Schema library name/version goes first, then the more generic HTTP library name (if any). For example:
