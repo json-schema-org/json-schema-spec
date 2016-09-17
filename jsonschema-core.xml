@@ -442,29 +442,7 @@
             </section>
         </section>
 
-        <section title="Usage over HTTP">
-            <t>
-                When used for hypermedia systems over a network, <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for distributing schemas. Misbehaved clients can pose problems for server maintainers if they pull a schema over the network more frequently than necessary, when it's instead possible to cache a schema for a long period of time.
-            </t>
-            <t>
-                HTTP servers SHOULD set long-lived caching headers on JSON Schemas. HTTP clients SHOULD observe caching headers and not re-request documents within their freshness period.
-            </t>
-            <t>
-                Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema implementation or software product. Since symbols are listed in decreasing order of significance, the JSON Schema library name/version goes first, then the more generic HTTP library name (if any). For example:
-                <figure>
-                    <artwork>
-<![CDATA[
-User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
-]]>
-                    </artwork>
-                </figure>
-            </t>
-            <t>
-                Clients SHOULD be able to make requests with a "From" header so that server operators can contact the owner of a potentially misbehaving script.
-            </t>
-        </section>
-
-        <section title="Recommended correlation mechanisms for hypermedia">
+        <section title="Usage for hypermedia">
 
             <t>
                 One of the largest adoptors of JSON has been HTTP servers for automated APIs and robots.
@@ -543,7 +521,29 @@ Link: </alice>; rel="profile", </bob>; rel="profile"
 
             </section>
 
-        </section>
+             <section title="Usage over HTTP">
+                <t>
+                    When used for hypermedia systems over a network, <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for distributing schemas. Misbehaved clients can pose problems for server maintainers if they pull a schema over the network more frequently than necessary, when it's instead possible to cache a schema for a long period of time.
+                </t>
+                <t>
+                    HTTP servers SHOULD set long-lived caching headers on JSON Schemas. HTTP clients SHOULD observe caching headers and not re-request documents within their freshness period.
+                </t>
+                <t>
+                    Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema implementation or software product. Since symbols are listed in decreasing order of significance, the JSON Schema library name/version goes first, then the more generic HTTP library name (if any). For example:
+                    <figure>
+                        <artwork>
+<![CDATA[
+User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
+]]>
+                        </artwork>
+                    </figure>
+                </t>
+                <t>
+                    Clients SHOULD be able to make requests with a "From" header so that server operators can contact the owner of a potentially misbehaving script.
+                </t>
+            </section>
+
+       </section>
 
         <section title="Security considerations">
             <t>
