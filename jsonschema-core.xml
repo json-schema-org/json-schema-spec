@@ -314,6 +314,11 @@
                 if it is a network-addressible URL, and implementations MUST NOT assume they should perform a network
                 operation when they encounter a network-addressible URI.
             </t>
+            <t>
+                A schema MUST NOT be run against an instance more than once. For example, if two schemas "#alice" and "#bob"
+                both have an "allOf" property that refers to the other, a naive validator might get stuck in an infinite recursive
+                loop trying to validate the instance.
+            </t>
         </section>
 
         <section title="Base URI and dereferencing">
@@ -561,6 +566,9 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
                 Instances and schemas are both frequently witten by untrusted third parties, to be deployed on public Internet servers.
                 Validators should take care that the parsing of schemas doesn't consume excessive system resources.
                 Validators MUST NOT fall into an infinite loop.
+            </t>
+            <t>
+                Servers need to take care that malicious parties can't change the functionality of existing schemas by uploading a schema with an pre-existing or very similar "id".
             </t>
             <t>
                 Individual JSON Schema vocabularies are liable to also have their own security considerations. Consult the respective specifications for more information.
