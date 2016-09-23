@@ -373,7 +373,7 @@
                 </t>
                 <t>
                     Subschemas at the following URI-encoded <xref target="RFC6901">JSON
-                    Pointers</xref> (starting from the root schema) have the following
+                    Pointers</xref> (relative to the root schema) have the following
                     base URIs, and are identifiable by either URI:
                 </t>
                 <t>
@@ -421,10 +421,10 @@
                     </figure>
                     <t>
                         When an implementation encounters the &lt;#/definitions/single&gt; schema, it resolves the "id" URI reference
-                        against the current base URI to &lt;http://example.net/root.json#item&gt;.
+                        against the current base URI to form &lt;http://example.net/root.json#item&gt;.
                     </t>
                     <t>
-                        When an implementation then looks inside the &lt;#/items&gt; schema, it encounters the &lt;schema1&gt; reference,
+                        When an implementation then looks inside the &lt;#/items&gt; schema, it encounters the &lt;#item&gt; reference,
                         and resolves this to &lt;http://example.net/root.json#item&gt; which is understood as the schema defined elsewhere in the same document.
                     </t>
                 </section>
@@ -432,7 +432,7 @@
                     <t>
                         To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
                         As specified above, this does not necessarially mean anything is downloaded, but instead JSON Schema
-                        implementations SHOULD provide ways to import a schema by URI so that other schemas can successfully reference it.
+                        implementations SHOULD already understand the schemas they will be using, including the URIs that identify them.
                     </t>
                     <t>
                         Implementations SHOULD be able to associate arbritrary URIs with an arbritrary schema and/or
@@ -440,8 +440,8 @@
                         has in the schema.
                     </t>
                     <t>
-                        A schema MAY (and likely will) have multiple URIs, but a URI has no way to identify more than one schema.
-                        Validators that try to have multiple schemas associated to the same URI SHOULD raise an error condition.
+                        A schema MAY (and likely will) have multiple URIs, but there is no way for a URI to identify more than one schema.
+                        When multiple schemas try to identify with the same URI, validators SHOULD raise an error condition.
                     </t>
                 </section>
             </section>
@@ -513,7 +513,7 @@ Content-Type: application/json;
                 </figure>
 
                 <t>
-                    HTTP can also send the "profile" in a Link, though this may impact media-type semantics and Content-Type negotiation if this replaces the media-type parameter:
+                    HTTP can also send the "profile" in a Link, though this may impact media-type semantics and Content-Type negotiation if this replaces the media-type parameter entirely:
                 </t>
 
                 <figure>
