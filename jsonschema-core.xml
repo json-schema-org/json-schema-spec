@@ -66,7 +66,7 @@
                 JSON Schema defines the media type "application/schema+json", a JSON based format
                 for defining the structure of JSON data. JSON Schema asserts what a JSON document
                 must look like and how to interact with it, ideal for annotating existing JSON APIs
-                that would not hypermedia controls or otherwise be machine-accessible.
+                that would not otherwise have hypermedia controls or machine-readable expectations.
             </t>
         </abstract>
     </front>
@@ -79,9 +79,11 @@
                 control of JSON data.
             </t>
             <t>
-                This specification defines JSON Schema core terminology and mechanisms, including how to
-                dereference a JSON Schema, pointing to another JSON Schema by reference, setting the
-                vocabulary being used and asserting the minimum vocabulary that must be supported.
+                This specification defines JSON Schema core terminology and mechanisms, including
+                pointing to another JSON Schema by reference,
+                dereferencing a JSON Schema reference,
+                specifying the vocabulary being used,
+                and asserting the minimum vocabulary that must be supported.
             </t>
             <t>
                 Other specifications define the vocabularies that perform assertions about validation,
@@ -156,24 +158,30 @@
                     </list>
                 </t>
                 <t>
-                    Implied in this definition is that arrays must be the same length, objects must have the same number of members, there is no way to define multiple properties with the same key, and mere formatting differences (indentation, placement of commas, trailing zeros) are insignificant.
+                    Implied in this definition is that arrays must be the same length,
+                    objects must have the same number of members,
+                    there is no way to define multiple properties with the same key,
+                    and that mere formatting differences (indentation, placement of commas, trailing zeros) are insignificant.
                 </t>
             </section>
 
             <section title="JSON Schema document">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
-                    A schema is itself interperted as an instance. A JSON schema MUST be an object.
+                    A schema is itself interperted as an instance.
+                    A JSON schema MUST be an object.
                 </t>
                 <t>
-                    Properties that are used to describe the instance are called keywords, or schema keywords. The meaning of properties is specified by the vocabulary that the schema is using.
+                    Properties that are used to describe the instance are called keywords, or schema keywords.
+                    The meaning of properties is specified by the vocabulary that the schema is using.
                 </t>
                 <t>
                     A JSON Schema MAY contain properties which are not schema keywords.
                     Unknown keywords SHOULD be ignored.
                 </t>
                 <t>
-                    A schema that itself describes a schema is called a meta-schema. Meta-schemas are used to validate JSON Schemas and specify which vocabulary it is using.
+                    A schema that itself describes a schema is called a meta-schema.
+                    Meta-schemas are used to validate JSON Schemas and specify which vocabulary it is using.
                 </t>
                 <t>
                     An empty schema is a JSON Schema with no properties, or only unknown properties.
@@ -359,15 +367,15 @@
 {
     "id": "http://example.com/root.json",
     "definitions": {
-        "schema1": { "id": "#foo" },
-        "schema2": {
-            "id": "other",
+        "A": { "id": "#foo" },
+        "B": {
+            "id": "other.json",
             "definitions": {
-                "a": { "id": "#bar" },
-                "b": { "id": "t/inner" }
+                "X": { "id": "#bar" },
+                "Y": { "id": "t/inner.json" }
             }
         },
-        "schema3": {
+        "C": {
             "id": "urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f"
         }
     }
@@ -377,18 +385,18 @@
                     </figure>
                 </t>
                 <t>
-                    Subschemas at the following URI-encoded <xref target="RFC6901">JSON
+                    The schemas at the following URI-encoded <xref target="RFC6901">JSON
                     Pointers</xref> (relative to the root schema) have the following
                     base URIs, and are identifiable by either URI:
                 </t>
                 <t>
                     <list style="hanging">
                         <t hangText="# (document root)">http://example.com/root.json#</t>
-                        <t hangText="#/definitions/schema1">http://example.com/root.json#foo</t>
-                        <t hangText="#/definitions/schema2">http://example.com/other</t>
-                        <t hangText="#/definitions/schema2/definitions/a">http://example.com/other#bar</t>
-                        <t hangText="#/definitions/schema2/definitions/b">http://example.com/t/inner</t>
-                        <t hangText="#/definitions/schema3">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
+                        <t hangText="#/definitions/A">http://example.com/root.json#foo</t>
+                        <t hangText="#/definitions/B">http://example.com/other.json</t>
+                        <t hangText="#/definitions/B/definitions/X">http://example.com/other.json#bar</t>
+                        <t hangText="#/definitions/B/definitions/Y">http://example.com/t/inner.json</t>
+                        <t hangText="#/definitions/C">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                     </list>
                 </t>
                 <section title="Internal references">
