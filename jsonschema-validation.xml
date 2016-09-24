@@ -191,6 +191,20 @@
                 </t>
             </section>
 
+            <section title="Linearity">
+                <!-- I call this "linear" in the same manner e.g. waves are linear, they don't interact with each other -->
+                <t>
+                    Validation keywords typically operate independent of each other, without affecting each other.
+                </t>
+                <t>
+                    For author convienence, there are some exceptions:
+                    <list>
+	                     <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties"; and</t>
+                        <t>"additionalItems", whose behavior is defined in terms of "items"</t>
+                    </list>
+                </t>
+            </section>
+
         </section>
 
         <section title="Validation keywords">
