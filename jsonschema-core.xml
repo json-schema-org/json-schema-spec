@@ -66,7 +66,7 @@
                 JSON Schema defines the media type "application/schema+json", a JSON based format
                 for defining the structure of JSON data. JSON Schema asserts what a JSON document
                 must look like and how to interact with it, ideal for annotating existing JSON APIs
-                that would not otherwise have hypermedia controls or machine-readable expectations.
+                that would not otherwise have hypermedia controls or be machine-readable.
             </t>
         </abstract>
     </front>
@@ -83,7 +83,7 @@
                 pointing to another JSON Schema by reference,
                 dereferencing a JSON Schema reference,
                 specifying the vocabulary being used,
-                and asserting the minimum vocabulary that must be supported.
+                and declaring the minimum functionality necessary for processing an instance against a schema.
             </t>
             <t>
                 Other specifications define the vocabularies that perform assertions about validation,
@@ -112,7 +112,7 @@
 
             <section title="JSON document">
                 <t>
-                    A JSON document is an information resource (series of octets) describable by the application/json media type.
+                    A JSON document is an information resource (series of octets) described by the application/json media type.
                 </t>
                 <t>
                     In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are interchangable because of the data model it defines.
@@ -121,7 +121,7 @@
 
             <section title="instance">
                 <t>
-                    JSON Schema interperts JSON data according to a data model. A JSON value interperted according to this data model is called an "instance".
+                    JSON Schema interperts documents according to a data model. A JSON value interperted according to this data model is called an "instance".
                 </t>
                 <t>
                     An instance has one of six primitive types, and a range of possible values depending on the type:
@@ -145,7 +145,7 @@
 
             <section title="instance equality">
                 <t>
-                    Two JSON instances are said to be equal if and only if they are of the same type and have the same value according to the data model. Specifically, this is if:
+                    Two JSON instances are said to be equal if and only if they are of the same type and have the same value according to the data model. Specifically, this means:
 
                     <list>
                         <t>both are null; or</t>
@@ -227,7 +227,7 @@
 
             <section title="Validation">
                 <t>
-                    JSON Schema describes the structure of a JSON document (for instance, required properties and array length constraints).
+                    JSON Schema describes the structure of a JSON document (for instance, required properties and length limitations).
                     Applications can use this information to validate instances (check that constraints are met), or inform interfaces to collect user input such that the constraints are satisfied.
                 </t>
                 <t>
@@ -275,7 +275,7 @@
 
             <section title="Extending JSON Schema">
                 <t>
-                    Implementations MAY choose to define additional keywords to JSON Schema. Save
+                    Implementations MAY define additional keywords to JSON Schema. Save
                     for explicit agreement, schema authors SHALL NOT expect these additional
                     keywords to be supported by peer implementations. Implementations SHOULD ignore
                     keywords they do not support.
@@ -314,8 +314,9 @@
         <section title="Schema references with $ref">
             <t>
                 Any time a subschema is expected, a schema may instead use an object containing a "$ref" property.
-                The value of the $ref is a URI Reference. Resolved against the current URI base, it identifies the
-                URI of a schema to use.
+                The value of the $ref is a URI Reference.
+                Resolved against the current URI base, it identifies the URI of a schema to use.
+                All other properties in a "$ref" object SHALL be ignored.
             </t>
             <t>
                 The URI is not a network locator, only an identifier. A schema need not be downloadable from the address
