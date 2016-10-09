@@ -390,19 +390,6 @@
                     The default value is false.
                 </t>
             </section>
-
-            <section title="pathStart">
-                <t>
-                    This property is a URI that defines what the instance's URI MUST start with in order to validate.
-                    The value of the "pathStart" property MUST be resolved relative to the current URI base (as defined in the <xref target="json-schema-core">JSON Schema core specification</xref>), using the rules from <xref target="RFC3986">RFC 3986, Sec 5</xref>.
-                </t>
-
-                <t>
-                    When multiple schemas have been referenced for an instance, the user agent can determine if this schema is applicable for a particular instance by determining if the URI of the instance begins with the the value of the "pathStart" property.
-                    If the URI of the instance does not start with this URI, or if another schema specifies a starting URI that is longer and also matches the instance, this schema SHOULD NOT be considered to describe the instance.
-                    Any schema that does not have a pathStart property SHOULD be considered applicable to all the instances for which it is referenced.
-                </t>
-            </section>
         </section>
 
         <section title="Link Description Object">
