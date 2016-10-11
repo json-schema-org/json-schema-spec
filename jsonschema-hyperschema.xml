@@ -301,7 +301,7 @@
                     The "media" property indicates that this instance contains non-JSON data encoded in a JSON string.  It describes the type of content and how it is encoded.
                 </t>
                 <t>
-                    The value of this property MUST be an object, and SHOULD be ignored for any instance that is not a string.
+                    The value of this property MUST be an object. The value of this property SHOULD be ignored if the instance described is not a string.
                 </t>
 
                 <section title="Properties of &quot;media&quot;">
@@ -364,7 +364,10 @@
 
             <section title="readOnly">
                 <t>
-                    If it has a value of boolean true, this keyword indicates that the instance property SHOULD NOT be changed, and attempts by a user agent to modify the value of this property are expected to be rejected by a server.
+                    If it has a value of boolean true, this keyword indicates that the value of the instance is managed exclusively by the server or the owning authority, and attempts by a user agent to modify the value of this property are expected to be ignored or rejected by a server.
+                </t>
+                <t>
+                    For example, this property would be used to mark a server-generated serial number as read-only.
                 </t>
                 <t>
                     The value of this keyword MUST be a boolean.
@@ -375,9 +378,8 @@
 
         <section title="Link Description Object">
             <t>
-                A Link Description Object (LDO) is used to describe a single link relation.
-                In the context of a schema, it defines the link relations of the instances of the schema, and can be parameterized by the instance values.
-                A Link Description Object (LDO) must be an object.
+                A Link Description Object (LDO) is used to describe a single link relation from the instance to another resource.
+                A Link Description Object must be an object.
             </t>
 
             <t>
