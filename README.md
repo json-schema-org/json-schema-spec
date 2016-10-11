@@ -13,13 +13,13 @@ reader, that you bring your contribution.
 
 ## Contents
 
-Makefile - scripts to build the Internet-Draft txt/html
-archive - files for other/older JSON Schema implementations
-hyper-schema.json - the JSON Hyper-schema meta-schema
-schema.json - the JSON Schema meta-schema
-jsonschema-core.xml - sources for "core" spec
-jsonschema-validation - sources for JSON Schema validation
-jsonschema-hyperschema.xml - sources for hyper-schema spec
+* Makefile - scripts to build the Internet-Draft txt/html
+* archive/ - files for other/older JSON Schema implementations
+* hyper-schema.json - the JSON Hyper-schema meta-schema
+* schema.json - the JSON Schema meta-schema
+* jsonschema-core.xml - sources for "core" spec
+* jsonschema-validation - sources for JSON Schema validation
+* jsonschema-hyperschema.xml - sources for hyper-schema spec
 
 Type "make" at a shell to build the .txt and .html spec files.
 
