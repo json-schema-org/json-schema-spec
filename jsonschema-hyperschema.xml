@@ -289,11 +289,6 @@
                     Other fragment resolution protocols MAY be used, but are not defined in this document.
                 </t>
 
-                <t>
-                    If the instance is described by a schema providing a link with "root" relation, or such a link is provided in using the <xref target="RFC5988">HTTP Link header</xref>, then the target of the "root" link should be considered the document root for the purposes of all fragment resolution methods that use the document structure (such as "json-pointer").
-                    The only exception to this is the resolution of "root" links themselves.
-                </t>
-
                 <section title="json-pointer fragment resolution">
                     <t>
                         The "json-pointer" fragment resolution protocol uses a <xref target="RFC6901">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.
@@ -601,54 +596,6 @@
                 <t>
                     Note that these relationship values are case-insensitive, consistent with their use in HTML and the <xref target="RFC5988">HTTP Link header</xref>.
                 </t>
-
-                <section title="Fragment resolution with &quot;root&quot; links">
-                    <t>
-                        The presence of a link with relation "root" alters what the root of the document is considered to be.
-                        For fragment resolution methods (such as JSON Pointer fragments) that navigate through the document, the target of the "root" link should be the starting point for such methods.
-                    </t>
-                    <t>
-                        The only exception is "root" links themselves.
-                        When calculating the target of links with relation "root", existing "root" links MUST NOT be taken into consideration.
-                    </t>
-                    <t>
-                        <figure>
-                            <preamble>For example, say we have the following schema:</preamble>
-                            <artwork>
-<![CDATA[{
-    "links": [{
-        "rel": "root",
-        "href": "#/myRootData"
-    }]
-}]]>
-                            </artwork>
-                        </figure>
-                    </t>
-                    <t>
-                        <figure>
-                            <preamble>And the following data, returned from the URI: "http://example.com/data/12345":</preamble>
-                            <artwork>
-<![CDATA[{
-    "myRootData": {
-        "title": "Breaking news"
-    },
-    "metaData": {
-        ...
-    }
-}]]>
-                            </artwork>
-                        </figure>
-                    </t>
-                    <t>
-                        To correctly resolve the URL "http://example.com/data/12345", we must take the "root" link into account.  Here are some example URIs, along with the data they would resolve to:
-                    </t>
-                    <texttable>
-                        <ttcol>URI</ttcol>
-                        <ttcol>Data</ttcol>
-                        <c>http://example.com/data/12345</c>        <c>{"title": "Breaking news"}</c>
-                        <c>http://example.com/data/12345#/title</c> <c>"Breaking news"</c>
-                    </texttable>
-                </section>
 
                 <section title="Security Considerations for &quot;self&quot; links">
                     <t>
