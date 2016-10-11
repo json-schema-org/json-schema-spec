@@ -10,8 +10,8 @@
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
-<!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml">
 ]>
+<!-- <!ENTITY html401 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html401-19991224.xml"> -->
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
 <?rfc compact="yes"?>
@@ -229,7 +229,8 @@
                     <figure>
                         <preamble>
                             For example, this schema describes a format for blog posts, accessed via HTTP.
-                            The links describe how to access the comments for the post, how to search the comments, and how to submit new comments, all with the same URI:</preamble>
+                            The links describe how to access the comments for the post,
+                            how to search the comments, all with the same URI:</preamble>
                         <artwork>
 <![CDATA[{
     "title": "News post",
@@ -256,21 +257,6 @@
                     }
                 },
                 "required": ["searchTerm"]
-            }
-        },
-        {
-            "title": "Post a comment",
-            "rel": "create",
-            "href": "/{id}/comments",
-            "method": "POST",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                },
-                "required": ["message"]
             }
         }
     ]
@@ -573,43 +559,6 @@
 
                 <t>
                     Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target="RFC4287">RFC 4287</xref>).
-                    However, we define these relations here for clarity of normative interpretation within the context of JSON Schema defined relations:
-
-                    <list style="hanging">
-                        <t hangText="self">
-                            If the relation value is "self", when this property is encountered in the instance object, the object represents a resource and the instance object is treated as a full representation of the target resource identified by the specified URI.
-                        </t>
-
-                        <t hangText="full">
-                            This indicates that the target of the link is the full representation for the instance object.
-                            The instance that contains this link may not be the full representation.
-                        </t>
-
-                        <t hangText="describedBy">
-                            This indicates the target of the link is a schema describing the instance object.
-                            This MAY be used to specifically denote the schemas of objects within a JSON object hierarchy, facilitating polymorphic type data structures.
-                        </t>
-
-                        <t hangText="root">
-                            This relation indicates that the target of the link SHOULD be treated as the root or the body of the representation for the purposes of user agent interaction or fragment resolution.
-                            All other data in the document can be regarded as meta-data for the document.
-                            The URI of this link MUST refer to a location within the instance document, otherwise the link MUST be ignored.
-                        </t>
-                    </list>
-                </t>
-
-                <t>
-                    The following relations are applicable for schemas (the schema as the "from" resource in the relation) if they require no parameterization with data from the instance:
-
-                    <list style="hanging">
-                        <t hangText="instances">
-                            This indicates the target resource that represents a collection of instances of a schema.
-                        </t>
-                        <t hangText="create">
-                            This indicates a target to use for creating new instances of a schema.
-                            This link definition SHOULD be a submission link with a non-safe method (like POST).
-                        </t>
-                    </list>
                 </t>
 
                 <figure>
@@ -979,13 +928,7 @@ GET /foo/
         </section>
 
         <section title="IANA Considerations">
-            <section title="Registry of Link Relations">
-                <t>
-                    This registry is maintained by IANA per <xref target="RFC4287">RFC 4287</xref> and this specification adds four values: "full", "create", "instances", "root".
-                    New assignments are subject to IESG Approval, as outlined in <xref target="RFC5226">RFC 5226</xref>.
-                    Requests should be made by email to IANA, which will then forward the request to the IESG, requesting approval.
-                </t>
-            </section>
+            <t>No considerations</t>
         </section>
     </middle>
 
@@ -1019,7 +962,7 @@ GET /foo/
             &rfc5226;
             &rfc5988;
             &rfc7231;
-            &html401;
+            <!--&html401;-->
         </references>
 
         <section title="Change Log">
