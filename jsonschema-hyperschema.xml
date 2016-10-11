@@ -394,20 +394,10 @@
             <section title="href" anchor="href">
                 <t>
                     The value of the "href" link description property is a template used to determine the target URI of the related resource.
-                    The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref>.
-                    The base URI to be used for relative URI resolution MUST be the URI of instance (not the schema).
+                    The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref> against the base URI of the instance.
                 </t>
 
-                <t>
-                    The base URI to be used for relative URI resolution is defined as follows:
-                    <list>
-                        <t>if the data has a link defined, with a relation of "self", then the "href" value of that link is used, unless the relation of the link being resolved is also "self"</t>
-                        <t>otherwise, the URI should be resolved against the link with relation "self" belonging to the closest parent node in the JSON document, if it exists</t>
-                        <t>otherwise, the URI used to fetch the document should be used.</t>
-                    </list>
-                </t>
-
-                <t>This property is not optional.</t>
+                <t>This property is REQUIRED.</t>
 
                 <section title="URI Templating">
                     <t>
