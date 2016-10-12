@@ -532,9 +532,6 @@
     }, {
         "rel": "up",
         "href": "{upId}"
-    }, {
-        "rel": "children",
-        "href": "?upId={id}"
     }]
 }]]>
                     </artwork>
@@ -555,7 +552,6 @@
                     </artwork>
                     <postamble>
                         This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
-                        The "children" collection would be located at "/Resource/?upId=thing".
                     </postamble>
                 </figure>
 
