@@ -359,7 +359,7 @@
             </t>
 
             <t>
-                "Form"-like functionality can be defined by use of the "schema" keyword, which supplies a schema describing the data to supply to the server.
+                "Form"-like functionality can be defined by use of the "method" and "schema" keywords, which supplies a schema describing the data to supply to the server.
             </t>
 
             <section title="href" anchor="href">
@@ -629,7 +629,7 @@ GET /foo/
 
             <section title="targetSchema">
                 <t>
-                    This property value is advisory only, and is a schema that defines the expected structure of the JSON representation of the target of the link, if the target of the link is returned using JSON representation.
+                    This property provides a schema that is expected to describe the link target, including what a client can expect if it makes an HTTP GET request, and what it should send if it replaces the resource in an HTTP PUT request. This property is advisory only.
                 </t>
 
                 <section title="Security Considerations for &quot;targetSchema&quot;">
@@ -771,9 +771,9 @@ GET /foo/
                 </section>
             </section>
 
-            <section title="Submission Link Properties">
+            <section title="Submission Form Properties">
                 <t>
-                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTMLforms</xref>, in providing a means for submitting extra (often user supplied) information to send to a server.
+                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTMLforms</xref>, by providing a means for making a request with client- or user-selected information.
                 </t>
 
                 <section title="method">
@@ -793,8 +793,9 @@ GET /foo/
 
                 <section title="encType">
                     <t>
-                        If present, this property indicates a query media type format that the server supports for querying or posting to the collection of instances at the target resource.
-                        The query can be suffixed to the target URI to query the collection with property-based constraints on the resources that SHOULD be returned from the server or used to post data to the resource (depending on the method).
+                        If present, this property indicates the media type format the client should use to encode a query parameter or send to the server. posting to the collection of instances at the target resource.
+                        If the method is "get", this will indicate how to encode the query-string that is appended to the "href" link target.
+                        If the method is "post", this indicates which media type to send to the server and how to encode it.
 
                         <figure>
                             <preamble>For example, with the following schema:</preamble>
@@ -802,7 +803,7 @@ GET /foo/
 <![CDATA[{
     "links": [{
         "encType": "application/x-www-form-urlencoded",
-        "method": "GET",
+        "method": "get",
         "href": "/Product/",
         "properties": {
             "name": {
@@ -824,20 +825,18 @@ GET /foo/
                             </artwork>
                         </figure>
 
-                        If no encType or method is specified, only the single URI specified by the href property is defined.
-                        If the method is POST, "application/json" is the default media type.
+                        If the method is "post", "application/json" is the default media type.
                     </t>
                 </section>
 
                 <section title="schema">
                     <t>
-                        This property contains a schema which defines the acceptable structure of the submitted request.
-                        For a GET request, this schema would define the properties for the query string and for a POST request, this would define the body.
+                        This property contains a schema which defines the acceptable structure of the document being encoded according to the "encType" property.
                     </t>
 
                     <t>
-                        Note that this is separate from the URI templating of "href" (which uses data from the instance, not submitted by the user).
-                        It is also separate from the "targetSchema" property, which provides a schema for the data that the client should expect to be returned when they follow the link.
+                        Note that this does not provide data for any URI templates.
+                        This is a separate concept from the "targetSchema" property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
                     </t>
                 </section>
             </section>
