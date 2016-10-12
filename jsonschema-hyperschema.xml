@@ -307,24 +307,6 @@
                 </section>
             </section>
 
-            <section title="fragmentResolution">
-                <t>
-                    When addressing a JSON document, the fragment part of the URI may be used to refer to a particular instance within the document.
-                </t>
-
-                <t>
-                    This keyword indicates the method to use for finding the appropriate instance within a document, given the fragment part.
-                    The default fragment resolution protocol is "json-pointer", which is defined below.
-                    Other fragment resolution protocols MAY be used, but are not defined in this document.
-                </t>
-
-                <section title="json-pointer fragment resolution">
-                    <t>
-                        The "json-pointer" fragment resolution protocol uses a <xref target="RFC6901">JSON Pointer</xref> to resolve fragment identifiers in URIs within instance representations.
-                    </t>
-                </section>
-            </section>
-
             <section title="media">
                 <t>
                     The "media" property indicates that this instance contains non-JSON data encoded in a JSON string.  It describes the type of content and how it is encoded.
@@ -969,6 +951,7 @@ GET /foo/
                             <t>Removed "instances" link relation</t>
                             <t>Removed special behavior for "describedBy" link relation</t>
                             <t>Removed "pathStart" keyword</t>
+                            <t>Removed "fragmentResolution" keyword</t>
                             <t>Updated references to JSON Pointer, HTML</t>
                             <t>Changed behavior of "method" property to align with hypermedia best current practices</t>
                         </list>
