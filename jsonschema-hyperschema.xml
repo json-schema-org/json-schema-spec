@@ -263,69 +263,16 @@
 }]]>
                     </artwork>
                 </figure>
-
-                <section title="Multiple links per URI">
-                    <t>
-                        A single URI might have more than one role with relation to an instance.  This is not a problem - the same URI can be used in more than one Link Description Object.
-                    </t>
-                    <figure>
-                        <preamble>
-                            For example, this schema describes a format for blog posts, accessed via HTTP.
-                            The links describe how to access the comments for the post,
-                            how to search the comments, all with the same URI:</preamble>
-                        <artwork>
-<![CDATA[{
-    "title": "News post",
-    ...
-    "links": [
-        {
-            "rel": "comments",
-            "href": "/{id}/comments"
-        },
-        {
-            "rel": "search",
-            "href": "/{id}/comments",
-            "method": "get",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "searchTerm": {
-                        "type": "string"
-                    },
-                    "itemsPerPage": {
-                        "type": "integer",
-                        "minimum": 10,
-                        "multipleOf": 10,
-                        "default": 20
-                    }
-                },
-                "required": ["searchTerm"]
-            }
-        }
-    ]
-}]]>
-                        </artwork>
-                    </figure>
-                    <t>
-                        If the client follows the first link, the URI might be expanded to "/15/comments".
-                        For the second link, the method is "GET" (the default for HTTP) so a client following this link would add the parameters to the URL to produce something like: "/15/comments?searchTerm=JSON&amp;itemsPerPage=50".
-                    </t>
-                    <figure>
-                        <artwork>
-<![CDATA[{
-    "message": "This is an example comment"
-}]]>
-                        </artwork>
-                    </figure>
-                </section>
             </section>
 
             <section title="media">
                 <t>
-                    The "media" property indicates that this instance contains non-JSON data encoded in a JSON string.  It describes the type of content and how it is encoded.
+                    The "media" property indicates that this instance contains non-JSON data encoded in a JSON string.
+                    It describes the type of content and how it is encoded.
                 </t>
                 <t>
-                    The value of this property MUST be an object. The value of this property SHOULD be ignored if the instance described is not a string.
+                    The value of this property MUST be an object.
+                    The value of this property SHOULD be ignored if the instance described is not a string.
                 </t>
 
                 <section title="Properties of &quot;media&quot;">
@@ -420,8 +367,9 @@
                     The value of the "href" link description property is a template used to determine the target URI of the related resource.
                     The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref> against the base URI of the instance.
                 </t>
-
-                <t>This property is REQUIRED.</t>
+                <t>
+                    This property is REQUIRED.
+                </t>
 
                 <section title="URI Templating">
                     <t>
