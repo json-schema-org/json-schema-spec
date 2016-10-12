@@ -109,7 +109,7 @@
                 It also defines how to provide additional information required to interpret JSON data as rich multimedia documents.
             </t>
             <t>
-                Just as with the core JSON schema keywords, all the keywords described in the "Schema Keywords" section are optional.
+                As with all JSON Schema keywords, all the keywords described in the "Schema Keywords" section are optional. The minimal valid JSON Hyper-schema is the blank object.
             </t>
             <figure>
                 <preamble>Here is an example JSON Schema defining hyperlinks, and providing a multimedia interpretation for the "imgData" property:</preamble>
@@ -121,7 +121,8 @@
     "properties": {
         "id": {
             "title": "Article Identifier",
-            "type": "number"
+            "type": "number",
+            "readOnly": true
         },
         "title": {
             "title": "Article Title",
@@ -130,8 +131,8 @@
         "authorId": {
             "type": "integer"
         },
-        "imgData": {
-            "title": "Article Illustration (small)",
+        "imgDataPng": {
+            "title": "Article Illustration (thumbnail)",
             "type": "string",
             "media": {
                 "binaryEncoding": "base64",
@@ -193,7 +194,7 @@
                     If present, it is the first URI Reference resolved, it is resolved against the current URI base, and it sets the new URI base for the entire current instance.
                 </t>
                 <t>
-                    The URI is computed from the provided URI template using the same process described for the "href" property of a Link Description Object.
+                    The URI is computed from the provided URI template using the same process described for the <xref target="href">"href"</xref> property of a Link Description Object.
                 </t>
                 <figure>
                     <preamble>An example of a JSON schema using "base":</preamble>
@@ -283,6 +284,7 @@
         {
             "rel": "search",
             "href": "/{id}/comments",
+            "method": "get",
             "schema": {
                 "type": "object",
                 "properties": {
@@ -306,7 +308,6 @@
                     <t>
                         If the client follows the first link, the URI might be expanded to "/15/comments".
                         For the second link, the method is "GET" (the default for HTTP) so a client following this link would add the parameters to the URL to produce something like: "/15/comments?searchTerm=JSON&amp;itemsPerPage=50".
-                        The third link defines a possible interaction where a client would POST to a URI (such as "/15/comments"), where the post-data was a JSON representation of the new comment, for example:
                     </t>
                     <figure>
                         <artwork>
