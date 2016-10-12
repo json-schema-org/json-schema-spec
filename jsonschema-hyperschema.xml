@@ -4,7 +4,7 @@
 <!ENTITY rfc2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
 <!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
-<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
+<!--<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">-->
 <!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
@@ -218,7 +218,7 @@
                     </artwork>
                 </figure>
                 <figure>
-                    <preamble>An example of a JSON instance using this schema to produce a rel="self" and rel="next" links</preamble>
+                    <preamble>An example of a JSON instance using this schema to produce rel="self" and rel="next" links</preamble>
                     <artwork>
 <![CDATA[
 {
@@ -510,16 +510,15 @@
 
             <section title="rel">
                 <t>
-                    The value of the "rel" property indicates the name of the relation to the target resource.
+                    The value of the "rel" property indicates the name of the relation to the target resource. The value MUST be a registered link relation from the <xref target="RFC5988">IANA Link Relation Type Registry established in RFC 5988</xref>, or a normalized URI following the <xref target="RFC3986">URI production of RFC 3986</xref>.
                 </t>
 
                 <t>
-                    The relation to the target SHOULD be interpreted as specifically from the instance object that the schema (or sub-schema) applies to, not just the top level resource that contains the object within its hierarchy.
-                    A link relation from the top level resource to a target MUST be indicated with the schema describing the top level JSON representation.
+                    The relation to the target is interpreted as from the instance that the schema (or sub-schema) applies to, not any larger document that the instance may have been found in.
                 </t>
 
                 <t>
-                    Relationship definitions SHOULD NOT be media type dependent, and users are encouraged to utilize existing accepted relation definitions, including those in existing relation registries (see <xref target="RFC4287">RFC 4287</xref>).
+                    Relationship definitions are not normally media type dependent, and users are encouraged to utilize existing accepted relation definitions.
                 </t>
 
                 <figure>
@@ -851,7 +850,7 @@ GET /foo/
             &rfc2045;
             &rfc2119;
             &rfc3986;
-            &rfc4287;
+            <!--&rfc4287;-->
             &rfc6570;
             <reference anchor="json-schema">
                 <front>
