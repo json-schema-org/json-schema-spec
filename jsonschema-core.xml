@@ -309,6 +309,7 @@
                 A schema MUST NOT be run into an infinite loop against a schema. For example, if two schemas "#alice" and "#bob"
                 both have an "allOf" property that refers to the other, a naive validator might get stuck in an infinite recursive
                 loop trying to validate the instance.
+                Schemas SHOULD NOT make use of infinite recursive nesting like this, the behavior is undefined.
             </t>
         </section>
 
