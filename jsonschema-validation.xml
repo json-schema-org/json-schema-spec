@@ -207,7 +207,7 @@
                     An undefined value is the same as false.
                 </t>
                 <t>
-                    If "exclusiveMaximum" is true, then a numeric instance MUST NOT be equal to the value specified in "maximum".
+                    If "exclusiveMaximum" is true, then a numeric instance SHOULD NOT be equal to the value specified in "maximum".
                     If "exclusiveMaximum" is false (or not specified), then a numeric instance MAY be equal to the value of "maximum".
                 </t>
             </section>
@@ -228,7 +228,7 @@
                     An undefined value is the same as false.
                 </t>
                 <t>
-                    If "exclusiveMinimum" is true, then a numeric instance MUST NOT be equal to the value specified in "minimum".
+                    If "exclusiveMinimum" is true, then a numeric instance SHOULD NOT be equal to the value specified in "minimum".
                     If "exclusiveMinimum" is false (or not specified), then a numeric instance MAY be equal to the value of "minimum".
                 </t>
             </section>
@@ -288,10 +288,7 @@
                     it is an object, this object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    The value of "items" MUST be either an object or an array. If it is an
-                    object, this object MUST be a valid JSON Schema. If it is an array,
-                    items of this array MUST be objects, and each of these objects MUST be a
-                    valid JSON Schema.
+                    The value of "items" MUST be either a schema or array of schemas.
                 </t>
                 <t>
                     Successful validation of an array instance with regards to these two
@@ -419,8 +416,7 @@
 
             <section title="additionalProperties">
                 <t>
-                    The value of "additionalProperties" MUST be a boolean or an object. If
-                    it is an object, it MUST also be a valid JSON Schema.
+                    The value of "additionalProperties" MUST be a boolean or a schema.
                 </t>
                 <t>
                     If "additionalProperties" is absent, it may be considered present with
@@ -464,8 +460,8 @@
 
             <section title="enum">
                 <t>
-                    The value of this keyword MUST be an array. This array MUST have at
-                    least one element. Elements in the array MUST be unique.
+                    The value of this keyword MUST be an array. This array SHOULD have at
+                    least one element. Elements in the array SHOULD be unique.
                 </t>
 
                 <t>
