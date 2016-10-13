@@ -183,8 +183,8 @@
         <section title="Schema keywords">
             <section title="base">
                 <t>
-                    This keyword is a URI Template used to give an instance a URI base for which URI References from "links" are resolved against.
-                    If present, it is the first URI Reference resolved, it is resolved against the current URI base, and it sets the new URI base for the entire current instance.
+                    If present, this keyword is resolved against the current URI base that the entire instance is found within, and sets the new URI base for URI references within the instance.
+                    It is therefore the first URI Reference resolved, regardless of which order it was found in.
                 </t>
                 <t>
                     The URI is computed from the provided URI template using the same process described for the <xref target="href">"href"</xref> property of a Link Description Object.
