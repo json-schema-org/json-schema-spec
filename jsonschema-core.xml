@@ -94,6 +94,37 @@
             </t>
         </section>
 
+        <section title="Overview">
+            <t>
+                This document proposes a new media type "application/schema+json" to identify JSON
+                Schema for describing JSON data. JSON Schemas are themselves written in JSON.  This,
+                and related specifications, define keywords allowing to describe this data in terms
+                of allowable values, textual descriptions and interpreting relations with other
+                resources. The following sections are a summary of features defined by related
+                specifications.
+            </t>
+
+            <section title="Validation">
+                <t>
+                    JSON Schema describes the structure of a JSON document (for instance, required properties and length limitations).
+                    Applications can use this information to validate instances (check that constraints are met), or inform interfaces to collect user input such that the constraints are satisfied.
+                </t>
+                <t>
+                    Validation behaviour and keywords are specified in <xref target="json-schema-validation">a separate document</xref>.
+                </t>
+            </section>
+
+            <section title="Hypermedia and linking">
+                <t>
+                    JSON Hyper-Schema describes the hypertext structure of a JSON document.
+                    This includes link relations from the instance to other resources, interpretation of instances as multimedia data, and submission data required to use an API.
+                </t>
+                <t>
+                    Hyper-schema behaviour and keywords are specified in <xref target="json-hyper-schema">a separate document</xref>.
+                </t>
+            </section>
+        </section>
+
         <section title="Core terminology">
 
             <section title="JSON document">
@@ -199,37 +230,6 @@
                 </t>
             </section>
 
-        </section>
-
-        <section title="Overview">
-            <t>
-                This document proposes a new media type "application/schema+json" to identify JSON
-                Schema for describing JSON data. JSON Schemas are themselves written in JSON.  This,
-                and related specifications, define keywords allowing to describe this data in terms
-                of allowable values, textual descriptions and interpreting relations with other
-                resources. The following sections are a summary of features defined by related
-                specifications.
-            </t>
-
-            <section title="Validation">
-                <t>
-                    JSON Schema describes the structure of a JSON document (for instance, required properties and length limitations).
-                    Applications can use this information to validate instances (check that constraints are met), or inform interfaces to collect user input such that the constraints are satisfied.
-                </t>
-                <t>
-                    Validation behaviour and keywords are specified in <xref target="json-schema-validation">a separate document</xref>.
-                </t>
-            </section>
-
-            <section title="Hypermedia and linking">
-                <t>
-                    JSON Hyper-Schema describes the hypertext structure of a JSON document.
-                    This includes link relations from the instance to other resources, interpretation of instances as multimedia data, and submission data required to use an API.
-                </t>
-                <t>
-                    Hyper-schema behaviour and keywords are specified in <xref target="json-hyper-schema">a separate document</xref>.
-                </t>
-            </section>
         </section>
 
         <section title="General considerations">
