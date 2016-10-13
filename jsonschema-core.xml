@@ -329,11 +329,12 @@
 
             <section title='The "id" keyword'>
                 <t>
-                    The "id" keyword defines a URI for the schema, and the base URI that other URI references within
-                    the schema are resolved against. The "id" keyword itself is resolved against a base URI.
+                    The "id" keyword defines a URI for the schema,
+                    and the base URI that other URI references within the schema are resolved against.
+                    The "id" keyword itself is resolved against the base URI that the object as a whole appears in.
                 </t>
                 <t>
-                    The value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
+                    If present, the value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
                     This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &lt;&gt;.
                 </t>
                 <t>
