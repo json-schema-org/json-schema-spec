@@ -144,8 +144,8 @@
     "required" : ["id", "title", "authorId"],
     "links": [
         {
-            "rel": "full",
-            "href": "{id}"
+            "rel": "self",
+            "href": "/article{?id}"
         },
         {
             "rel": "author",
@@ -159,6 +159,7 @@
                     This example schema defines the properties of the instance.
                     For the "imgData" property, it specifies that that it should be base64-decoded and the resulting binary data treated as a PNG image.
                     It also defines link relations for the instance, with URIs incorporating values from the instance.
+                    <cref>"id" probably should not normally be a required keyword, since new instances will have an unknown "id" property until is it assigned by the server. However, this property is used in a link, and without it, multiple different instances would be given the same rel=self URI!</cref>
                 </postamble>
             </figure>
 
@@ -252,7 +253,7 @@
     "title": "Schema defining links",
     "links": [
         {
-            "rel": "full",
+            "rel": "self",
             "href": "{id}"
         },
         {
