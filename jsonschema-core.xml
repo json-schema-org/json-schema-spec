@@ -179,7 +179,7 @@
                     The root schema is the schema that comprises the entire JSON document in question.
                 </t>
                 <t>
-                    Some keywords take schemas themselves, allowing JSON Schemas can be nested:
+                    Some keywords take schemas themselves, allowing JSON Schemas to be nested:
                 </t>
                 <figure>
                     <artwork>
@@ -187,14 +187,14 @@
 {
     "title": "root",
     "items": {
-        "title": "alsoNested"
+        "title": "array item"
     }
 }
 ]]>
                     </artwork>
                 </figure>
                 <t>
-                    In this example document, the schema titled "alsoNested" is a subschema,
+                    In this example document, the schema titled "array item" is a subschema,
                     and the schema titled "root" is the root schema.
                 </t>
             </section>
