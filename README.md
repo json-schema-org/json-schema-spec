@@ -23,7 +23,12 @@ reader, that you bring your contribution.
 
 Type "make" at a shell to build the .txt and .html spec files.
 
-A primer on the RFC XML format is at <https://xml2rfc.tools.ietf.org/authoring/draft-mrose-writing-rfcs.html>
+Descriptions of the xml2rfc, I-D documents, and RFC processes:
+
+* https://xml2rfc.tools.ietf.org/authoring/draft-mrose-writing-rfcs.html
+* https://www.ietf.org/tao.html
+* https://www.ietf.org/ietf-ftp/1id-guidelines.html
+* https://www.rfc-editor.org/rfc/rfc7322.txt
 
 
 ## The website
