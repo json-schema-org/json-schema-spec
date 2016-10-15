@@ -276,26 +276,23 @@
         </section>
 
         <section title='The "$schema" keyword'>
-            <section title="Purpose">
-                <!-- TODO a custom $schema keyword might also be used to enforce minimum required functionality of a validator -->
-                <t>
-                    The "$schema" keyword is both used as a JSON Schema version identifier and the
-                    location of a resource which is itself a JSON Schema, which describes any schema
-                    written for this particular version.
-                </t>
-                <t>
-                    The root schema of a JSON Schema document SHOULD use this keyword.
-                    The value of this keyword MUST be a <xref target="RFC3986">URI</xref> (an "absolute" URI),
-                    and this URI MUST be normalized.
-                    The current schema MUST be valid against the meta-schema identified by this URI.
-                </t>
-                <t>
-                    Values for this property are defined in other documents and by other parties.
-                    JSON Schema implementations SHOULD implement support for current and previous published drafts
-                    of JSON Schema vocabularies as deemed reasonable.
-                </t>
-            </section>
-
+            <!-- TODO a custom $schema keyword might also be used to enforce minimum required functionality of a validator -->
+            <t>
+                The "$schema" keyword is both used as a JSON Schema version identifier and the
+                location of a resource which is itself a JSON Schema, which describes any schema
+                written for this particular version.
+            </t>
+            <t>
+                The root schema of a JSON Schema document SHOULD use this keyword.
+                The value of this keyword MUST be a <xref target="RFC3986">URI</xref> (an "absolute" URI),
+                and this URI MUST be normalized.
+                The current schema MUST be valid against the meta-schema identified by this URI.
+            </t>
+            <t>
+                Values for this property are defined in other documents and by other parties.
+                JSON Schema implementations SHOULD implement support for current and previous published drafts
+                of JSON Schema vocabularies as deemed reasonable.
+            </t>
         </section>
 
         <section title="Schema references with $ref">
