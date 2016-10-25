@@ -297,31 +297,59 @@
                 </t>
             </section>
 
-            <section title="additionalItems and items">
+            <section title="items">
                 <t>
-                    The value of "additionalItems" MUST be either a boolean or an object. If
-                    it is an object, this object MUST be a valid JSON Schema.
+                    The value of "items" MUST be either an object or an array of objects.
+                    Each object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    The value of "items" MUST be either a schema or array of schemas.
+                    If absent, it can be considered present with an empty schema.
                 </t>
                 <t>
-                    Successful validation of an array instance with regards to these two
-                    keywords is determined as follows:
+                    Validation of this keyword against the instance always succeeds.
+                </t>
+                <t>
+                    If "items" is a schema, child validation succeeds if all elements
+                    in the array successfully validate against that schema.
+                </t>
+                <t>
+                    If "items" is an array of schemas, child validation succeeds if
+                    each element of the instance validates against the schema at the
+                    same position, if any.
+                </t>
+            </section>
 
-                    <list>
-                        <t>if "items" is not present, or its value is an object, validation
-                        of the instance always succeeds, regardless of the value of
-                        "additionalItems";</t>
-                        <t>if the value of "additionalItems" is boolean value true or an
-                        object, validation of the instance always succeeds;</t>
-                        <t>if the value of "additionalItems" is boolean value false and the
-                        value of "items" is an array, the instance is valid if
-                        its size is less than, or equal to, the size of "items".</t>
-                    </list>
+            <section title="additionalItems">
+                <t>
+                    The value of "additionalItems" MUST be a boolean or an object.
+                    If it is an object, the object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    If either keyword is absent, it may be considered present with an empty
+                    If absent, it can be considered present with an empty schema.
+                </t>
+                <t>
+                    If "additionalItems" is true or a schema, or if "items"
+                    is absent or a single schema, or if the instance is not
+                    an array, then validation of the instance always succeeds.
+                </t>
+                <t>
+                    If "additionalItems" is false, and "items" is an array
+                    of schemas, validation of the instance succeeds if
+                    the size of the instance is less than, or equal to,
+                    the size of "items".
+                </t>
+                <t>
+                    Child validation with respect to "additionalItems" only applies
+                    when "items" is an array of schemas, and only applies to
+                    instance elements at positions greater than the size of "items".
+                </t>
+                <t>
+                    If "additionalItems" is true, child validation always succeeds.
+                </t>
+                <t>
+                    If "additionalItems" is a schema, child validation succeeds
+                    if all instance elements at positions greater than the size
+                    of "items" successfully validate against the "additionalItems"
                     schema.
                 </t>
             </section>
@@ -415,6 +443,14 @@
                 <t>
                     If absent, it can be considered the same as an empty object.
                 </t>
+                <t>
+                    Validation of this keyword against the instance always succeeds.
+                </t>
+                <t>
+                    Child validation succeeds if, for each name that appears in both
+                    the instance and as a name within this keyword's value, the instance
+                    value successfully validates against the corresponding schema.
+                </t>
             </section>
 
             <section title="patternProperties">
@@ -427,27 +463,48 @@
                 <t>
                     If absent, it can be considered the same as an empty object.
                 </t>
+                <t>
+                    Validaton of this keyword against the instance always succeeds.
+                </t>
+                <t>
+                    Child validation succeeds if, for each instance name that matches any
+                    regular expressions that appear as a property name in this keyword's value,
+                    the child instance for that name successfully validates against each
+                    schema that corresponds to a matching regular expression.
+                </t>
             </section>
 
             <section title="additionalProperties">
                 <t>
-                    The value of "additionalProperties" MUST be a boolean or a schema.
+                    The value of "additionalProperties" MUST be a boolean or an
+                    object.  If it is an object, the object MUST be a valid JSON Schema.
                 </t>
                 <t>
                     If "additionalProperties" is absent, it may be considered present with
                     an empty schema as a value.
                 </t>
                 <t>
-                    If "additionalProperties" is true, validation always succeeds.
+                    If "additionalProperties" is either true or a schema, or if the instance
+                    is not an object, validation against the instance always succeeds.
                 </t>
                 <t>
-                    If "additionalProperties" is false, validation succeeds only if the instance
-                    is an object and all properties on the instance were covered by "properties"
-                    and/or "patternProperties".
+                    If "additionalProperties" is false and the instance is an object,
+                    validation against the instance succeeds only if all properties names
+                    in the instance match a name specified in "properties" and/or match
+                    at least one regular expression specified in "patternProperties".
                 </t>
                 <t>
-                    If "additionalProperties" is an object, validate the value as a schema to all
-                    of the properties that weren't validated by "properties" nor "patternProperties".
+                    Child validation with "additionalProperties" applies only to the child
+                    valuse of instance names that do not match any names in "properties",
+                    and do not match any regular expression in "patternProperties".
+                </t>
+                <t>
+                    If "additionalProperties" is true, child validation always succeeds.
+                </t>
+                <t>
+                    If "additionalProperties" is a schema, child validation succeeds if
+                    all child instances to which "additionalProperties" applies validate
+                    against that schema.
                 </t>
             </section>
 
