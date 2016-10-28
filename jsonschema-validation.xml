@@ -435,9 +435,8 @@
 
             <section title="required">
                 <t>
-                    The value of this keyword MUST be an array. This array MUST have at
-                    least one element. Elements of this array MUST be strings, and MUST be
-                    unique.
+                    The value of this keyword MUST be an array. Elements of this array,
+                    if any, MUST be strings, and MUST be unique.
                 </t>
                 <t>
                     An object instance is valid against this keyword if its
@@ -525,9 +524,9 @@
                     against the entire instance.
                 </t>
                 <t>
-                    If the dependency value is an array, it MUST have at least one element, each
-                    element MUST be a string, and elements in the array MUST be unique. If the
-                    dependency key is a property in the instance, each of the items in the dependency
+                    If the dependency value is an array, each element in the array,
+                    if any, MUST be a string, and MUST be unique. If the dependency key is
+                    a property in the instance, each of the items in the dependency
                     value must be a property that exists in the instance.
                 </t>
             </section>
