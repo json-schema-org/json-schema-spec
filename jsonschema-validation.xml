@@ -168,6 +168,20 @@
                 </t>
             </section>
 
+            <section title="Validation of primitive types and child values">
+                <t>
+                    Two of the primitive types, array and object, allow for child values.  The validation of
+                    the primitive type is considered separately from the validation of child instances.
+                </t>
+                <t>
+                    For arrays, primitive type validation consists of validating restrictions on length.
+                </t>
+                <t>
+                    For objects, primitive type validation consists of validating restrictions on the presence
+                    or absence of property names.
+                </t>
+            </section>
+
             <section title="Missing keywords">
                 <t>
                     Validation keywords that are missing never restrict validation.
@@ -306,7 +320,8 @@
                     If absent, it can be considered present with an empty schema.
                 </t>
                 <t>
-                    Validation of this keyword against the instance always succeeds.
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
                 </t>
                 <t>
                     If "items" is a schema, child validation succeeds if all elements
@@ -328,29 +343,13 @@
                     If absent, it can be considered present with an empty schema.
                 </t>
                 <t>
-                    If "additionalItems" is true or a schema, or if "items"
-                    is absent or a single schema, or if the instance is not
-                    an array, then validation of the instance always succeeds.
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
                 </t>
                 <t>
-                    If "additionalItems" is false, and "items" is an array
-                    of schemas, validation of the instance succeeds if
-                    the size of the instance is less than, or equal to,
-                    the size of "items".
-                </t>
-                <t>
-                    Child validation with respect to "additionalItems" only applies
-                    when "items" is an array of schemas, and only applies to
-                    instance elements at positions greater than the size of "items".
-                </t>
-                <t>
-                    If "additionalItems" is true, child validation always succeeds.
-                </t>
-                <t>
-                    If "additionalItems" is a schema, child validation succeeds
-                    if all instance elements at positions greater than the size
-                    of "items" successfully validate against the "additionalItems"
-                    schema.
+                    If "items" is an array of schemas, child validation succeeds
+                    if every instance element at a position greater than the size
+                    of "items" validates against "additionalItems".
                 </t>
             </section>
 
@@ -444,7 +443,8 @@
                     If absent, it can be considered the same as an empty object.
                 </t>
                 <t>
-                    Validation of this keyword against the instance always succeeds.
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
                 </t>
                 <t>
                     Child validation succeeds if, for each name that appears in both
@@ -464,7 +464,8 @@
                     If absent, it can be considered the same as an empty object.
                 </t>
                 <t>
-                    Validaton of this keyword against the instance always succeeds.
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
                 </t>
                 <t>
                     Child validation succeeds if, for each instance name that matches any
@@ -484,27 +485,17 @@
                     an empty schema as a value.
                 </t>
                 <t>
-                    If "additionalProperties" is either true or a schema, or if the instance
-                    is not an object, validation against the instance always succeeds.
-                </t>
-                <t>
-                    If "additionalProperties" is false and the instance is an object,
-                    validation against the instance succeeds only if all properties names
-                    in the instance match a name specified in "properties" and/or match
-                    at least one regular expression specified in "patternProperties".
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
                 </t>
                 <t>
                     Child validation with "additionalProperties" applies only to the child
-                    valuse of instance names that do not match any names in "properties",
+                    values of instance names that do not match any names in "properties",
                     and do not match any regular expression in "patternProperties".
                 </t>
                 <t>
-                    If "additionalProperties" is true, child validation always succeeds.
-                </t>
-                <t>
-                    If "additionalProperties" is a schema, child validation succeeds if
-                    all child instances to which "additionalProperties" applies validate
-                    against that schema.
+                    For all such properties, child validation succeeds if the child instance
+                    validates agains the "additionalProperties" schema.
                 </t>
             </section>
 
