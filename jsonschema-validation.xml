@@ -676,9 +676,6 @@
                     preferably be short, whereas a description will provide explanation about
                     the purpose of the instance described by this schema.
                 </t>
-                <t>
-                    Both of these keywords MAY be used in root schemas, and in any subschemas.
-                </t>
             </section>
 
             <section title='"default"'>
@@ -690,8 +687,22 @@
                     particular schema. It is RECOMMENDED that a default value be valid against
                     the associated schema.
                 </t>
+            </section>
+
+            <section title='"examples"'>
                 <t>
-                    This keyword MAY be used in root schemas, and in any subschemas.
+                    The value of this keyword MUST be an array.
+                    There are no restrictions placed on the values within the array.
+                </t>
+                <t>
+                    This keyword can be used to provide sample JSON values associated with a
+                    particular schema, for the purpose of illustrating usage.  It is
+                    RECOMMENDED that these values be valid against the associated schema.
+                </t>
+                <t>
+                    Implementations MAY use the value of "default", if present, as
+                    an additional example.  If "examples" is absent, "default"
+                    MAY still be used in this manner.
                 </t>
             </section>
 
