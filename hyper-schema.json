@@ -50,6 +50,11 @@
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
             "type": "string"
         },
+        "baseVars": {
+            "description": "a mapping from URI template names in \"base\" to relative JSON pointers to be applied to the instance to find the template variable's value",
+            "type": "object",
+            "additionalProperties": {"type": "string"}
+        },
         "links": {
             "type": "array",
             "items": {"$ref": "#/definitions/linkDescription"}
@@ -81,6 +86,11 @@
                 "href": {
                     "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
                     "type": "string"
+                },
+                "hrefVars": {
+                    "description": "a mapping from URI template names in \"href\" to relative JSON pointers to be applied to the instance to find the template variable's value",
+                    "type": "object",
+                    "additionalProperties": {"type": "string"}
                 },
                 "rel": {
                     "description": "relation to the target resource of the link",
