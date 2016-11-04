@@ -1,7 +1,7 @@
 {
-    "id": "http://json-schema.org/draft-04/schema#",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "Core schema meta-schema",
+    "id": "http://json-schema.org/draft-wright-00/schema#",
+    "$schema": "http://json-schema.org/draft-wright-00/schema#",
+    "description": "Core and validation schema meta-schema",
     "definitions": {
         "schemaArray": {
             "type": "array",
@@ -13,7 +13,10 @@
             "minimum": 0
         },
         "positiveIntegerDefault0": {
-            "allOf": [ { "$ref": "#/definitions/positiveInteger" }, { "default": 0 } ]
+            "allOf": [
+                { "$ref": "#/definitions/positiveInteger" },
+                { "default": 0 }
+            ]
         },
         "simpleTypes": {
             "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
@@ -29,7 +32,7 @@
     "properties": {
         "id": {
             "type": "string",
-            "format": "uri"
+            "format": "uriref"
         },
         "$schema": {
             "type": "string",
