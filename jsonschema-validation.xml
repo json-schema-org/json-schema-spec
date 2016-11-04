@@ -168,6 +168,20 @@
                 </t>
             </section>
 
+            <section title="Validation of primitive types and child values">
+                <t>
+                    Two of the primitive types, array and object, allow for child values.  The validation of
+                    the primitive type is considered separately from the validation of child instances.
+                </t>
+                <t>
+                    For arrays, primitive type validation consists of validating restrictions on length.
+                </t>
+                <t>
+                    For objects, primitive type validation consists of validating restrictions on the presence
+                    or absence of property names.
+                </t>
+            </section>
+
             <section title="Missing keywords">
                 <t>
                     Validation keywords that are missing never restrict validation.
@@ -297,32 +311,45 @@
                 </t>
             </section>
 
-            <section title="additionalItems and items">
+            <section title="items">
                 <t>
-                    The value of "additionalItems" MUST be either a boolean or an object. If
-                    it is an object, this object MUST be a valid JSON Schema.
+                    The value of "items" MUST be either an object or an array of objects.
+                    Each object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    The value of "items" MUST be either a schema or array of schemas.
+                    If absent, it can be considered present with an empty schema.
                 </t>
                 <t>
-                    Successful validation of an array instance with regards to these two
-                    keywords is determined as follows:
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
+                </t>
+                <t>
+                    If "items" is a schema, child validation succeeds if all elements
+                    in the array successfully validate against that schema.
+                </t>
+                <t>
+                    If "items" is an array of schemas, child validation succeeds if
+                    each element of the instance validates against the schema at the
+                    same position, if any.
+                </t>
+            </section>
 
-                    <list>
-                        <t>if "items" is not present, or its value is an object, validation
-                        of the instance always succeeds, regardless of the value of
-                        "additionalItems";</t>
-                        <t>if the value of "additionalItems" is boolean value true or an
-                        object, validation of the instance always succeeds;</t>
-                        <t>if the value of "additionalItems" is boolean value false and the
-                        value of "items" is an array, the instance is valid if
-                        its size is less than, or equal to, the size of "items".</t>
-                    </list>
+            <section title="additionalItems">
+                <t>
+                    The value of "additionalItems" MUST be a boolean or an object.
+                    If it is an object, the object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    If either keyword is absent, it may be considered present with an empty
-                    schema.
+                    If absent, it can be considered present with an empty schema.
+                </t>
+                <t>
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
+                </t>
+                <t>
+                    If "items" is an array of schemas, child validation succeeds
+                    if every instance element at a position greater than the size
+                    of "items" validates against "additionalItems".
                 </t>
             </section>
 
@@ -415,6 +442,15 @@
                 <t>
                     If absent, it can be considered the same as an empty object.
                 </t>
+                <t>
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
+                </t>
+                <t>
+                    Child validation succeeds if, for each name that appears in both
+                    the instance and as a name within this keyword's value, the instance
+                    value successfully validates against the corresponding schema.
+                </t>
             </section>
 
             <section title="patternProperties">
@@ -427,27 +463,39 @@
                 <t>
                     If absent, it can be considered the same as an empty object.
                 </t>
+                <t>
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
+                </t>
+                <t>
+                    Child validation succeeds if, for each instance name that matches any
+                    regular expressions that appear as a property name in this keyword's value,
+                    the child instance for that name successfully validates against each
+                    schema that corresponds to a matching regular expression.
+                </t>
             </section>
 
             <section title="additionalProperties">
                 <t>
-                    The value of "additionalProperties" MUST be a boolean or a schema.
+                    The value of "additionalProperties" MUST be a boolean or an
+                    object.  If it is an object, the object MUST be a valid JSON Schema.
                 </t>
                 <t>
                     If "additionalProperties" is absent, it may be considered present with
                     an empty schema as a value.
                 </t>
                 <t>
-                    If "additionalProperties" is true, validation always succeeds.
+                    This keyword controls child instance validation.  Validation of the
+                    primitive instance type against this keyword always succeeds.
                 </t>
                 <t>
-                    If "additionalProperties" is false, validation succeeds only if the instance
-                    is an object and all properties on the instance were covered by "properties"
-                    and/or "patternProperties".
+                    Child validation with "additionalProperties" applies only to the child
+                    values of instance names that do not match any names in "properties",
+                    and do not match any regular expression in "patternProperties".
                 </t>
                 <t>
-                    If "additionalProperties" is an object, validate the value as a schema to all
-                    of the properties that weren't validated by "properties" nor "patternProperties".
+                    For all such properties, child validation succeeds if the child instance
+                    validates agains the "additionalProperties" schema.
                 </t>
             </section>
 
