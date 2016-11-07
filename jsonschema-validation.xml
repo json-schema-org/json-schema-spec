@@ -394,6 +394,17 @@
                 </t>
             </section>
 
+            <section title="contains">
+                <t>
+                    The value of this keyword MUST be an object.  This object MUST be
+                    a valid JSON Schema.
+                </t>
+                <t>
+                    An array instance is valid against "contains" if at least one of
+                    its elements is valid against the given schema.
+                </t>
+            </section>
+
             <section title="maxProperties">
                 <t>
                     The value of this keyword MUST be an integer. This integer MUST be
