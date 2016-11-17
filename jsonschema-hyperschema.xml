@@ -514,16 +514,19 @@
                 </t>
 
                 <figure>
-                    <preamble>For example, if a schema is defined:</preamble>
+                    <preamble>For example, if a hyper-schema is defined:</preamble>
                     <artwork>
 <![CDATA[{
-    "links": [{
-        "rel": "self",
-        "href": "{id}"
-    }, {
-        "rel": "up",
-        "href": "{upId}"
-    }]
+    "type": "array",
+    "items": {
+        "links": [{
+            "rel": "item",
+            "href": "{id}"
+        }, {
+            "rel": "up",
+            "href": "{upId}"
+        }]
+    }
 }]]>
                     </artwork>
                 </figure>
@@ -542,7 +545,7 @@
 }]]]>
                     </artwork>
                     <postamble>
-                        This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
+                        This would indicate that for the first item in the collection, its URI as its own resource would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
                     </postamble>
                 </figure>
 
@@ -552,10 +555,10 @@
 
                 <section title="Security Considerations for &quot;self&quot; links">
                     <t>
-                        When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
+                        When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the URI used to request the resource representation which contains the target URI with the "self" link.
 
                         <figure>
-                            <preamble>For example, if a hyper schema was defined:</preamble>
+                            <preamble>For example, if a hyper-schema was defined:</preamble>
                             <artwork>
 <![CDATA[{
     "links": [{
