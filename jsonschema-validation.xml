@@ -505,7 +505,7 @@
                 </t>
                 <t>
                     For all such properties, child validation succeeds if the child instance
-                    validates agains the "additionalProperties" schema.
+                    validates against the "additionalProperties" schema.
                 </t>
             </section>
 
@@ -663,7 +663,7 @@
                 <t>
                     Both of these keywords can be used to decorate a user interface with
                     information about the data produced by this user interface. A title will
-                    preferrably be short, whereas a description will provide explanation about
+                    preferably be short, whereas a description will provide explanation about
                     the purpose of the instance described by this schema.
                 </t>
                 <t>
@@ -812,22 +812,23 @@
 
         <section title="Security considerations">
             <t>
-                JSON Schema validation defines a vocabulary for JSON Schema core and conserns all the security considerations listed there.
+                JSON Schema validation defines a vocabulary for JSON Schema core and concerns all the security considerations listed there.
             </t>
             <t>
                 JSON Schema validation allows the use of Regular Expressions, which have numerous different (often incompatible) implementations.
-                Some implementations allow the embedding of arbritrary code, which is outside the scope of JSON Schema and MUST NOT be permitted.
+                Some implementations allow the embedding of arbitrary code, which is outside the scope of JSON Schema and MUST NOT be permitted.
                 Regular expressions can often also be crafted to be extremely expensive to compute (with so-called "catastrophic backtracking"),
                 resulting in a denial-of-service attack.
             </t>
         </section>
 
+        <!--
         <section title="IANA Considerations">
             <t>
                 This specification does not have any influence with regards to IANA.
             </t>
-
         </section>
+        -->
     </middle>
 
     <back>
