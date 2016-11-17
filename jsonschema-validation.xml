@@ -552,12 +552,12 @@
                     an array, elements of the array MUST be strings and MUST be unique.
                 </t>
                 <t>
-                    String values MUST be one of the seven primitive types defined by
-                    the core specification.
+                    String values MUST be one of the six primitive types
+                    ("number", "string", "boolean", "true", "false", or "null"),
+                    or "integer" which matches any number with a zero fractional part.
                 </t>
                 <t>
-                    An instance matches successfully if its primitive type is one of the
-                    types defined by keyword. Recall: "number" includes "integer".
+                    An instance validates if and only if the instance is in any of the sets listed for this keyword.
                 </t>
             </section>
 
