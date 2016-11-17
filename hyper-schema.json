@@ -46,12 +46,13 @@
         "oneOf": {"$ref": "#/definitions/schemaArray"},
         "not": { "$ref": "#" },
 
+        "base": {
+            "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
+            "type": "string"
+        },
         "links": {
             "type": "array",
             "items": {"$ref": "#/definitions/linkDescription"}
-        },
-        "fragmentResolution": {
-            "type": "string"
         },
         "media": {
             "type": "object",
@@ -65,11 +66,6 @@
                     "type": "string"
                 }
             }
-        },
-        "pathStart": {
-            "description": "Instances' URIs must start with this value for this schema to apply to them",
-            "type": "string",
-            "format": "uri"
         }
     },
     "definitions": {
@@ -80,7 +76,7 @@
         "linkDescription": {
             "title": "Link Description Object",
             "type": "object",
-            "required": ["href", "rel"],
+            "required": ["href"],
             "properties": {
                 "href": {
                     "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
@@ -103,7 +99,7 @@
                     "type": "string"
                 },
                 "method": {
-                    "description": "method for requesting the target of the link (e.g. for HTTP this might be \"GET\" or \"DELETE\")",
+                    "description": "specifies that the client can construct a templated query (\"get\") or non-idempotent request (\"post\") to a resource.",
                     "type": "string"
                 },
                 "encType": {

@@ -13,7 +13,10 @@
             "minimum": 0
         },
         "positiveIntegerDefault0": {
-            "allOf": [ { "$ref": "#/definitions/positiveInteger" }, { "default": 0 } ]
+            "allOf": [
+                { "$ref": "#/definitions/positiveInteger" },
+                { "default": 0 }
+            ]
         },
         "simpleTypes": {
             "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
@@ -28,7 +31,7 @@
     "properties": {
         "id": {
             "type": "string",
-            "format": "uri"
+            "format": "uriref"
         },
         "$schema": {
             "type": "string",
