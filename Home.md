@@ -17,3 +17,10 @@ Pull requests should be made to master.
 For the sake of quick iteration, modifications to draft-5 will be limited to bugfixes and other things that might impact the development of new features, or other problems.
 
 New features should be tagged draft-6
+
+## I-D publish process
+
+1. If a new meta-schema URI is required, change the "id"
+2. Perform a "make json-schema.tar.gz" and publish a release to GitHub, tagging with the expected name of json-schema-core if it has any updates, or if not, the name of the document being updated.
+3. Publish the new draft through the IETF Datatracker I-D submission page
+4. Update the HTML versions on the website
