@@ -132,13 +132,13 @@
                     A JSON document is an information resource (series of octets) described by the application/json media type.
                 </t>
                 <t>
-                    In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are interchangable because of the data model it defines.
+                    In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are interchangeable because of the data model it defines.
                 </t>
             </section>
 
             <section title="instance">
                 <t>
-                    JSON Schema interperts documents according to a data model. A JSON value interperted according to this data model is called an "instance".
+                    JSON Schema interprets documents according to a data model. A JSON value interpreted according to this data model is called an "instance".
                 </t>
                 <t>
                     An instance has one of six primitive types, and a range of possible values depending on the type:
@@ -186,7 +186,7 @@
             <section title="JSON Schema document">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
-                    A schema is itself interperted as an instance.
+                    A schema is itself interpreted as an instance.
                     A JSON schema MUST be an object.
                 </t>
                 <t>
@@ -256,7 +256,7 @@
                     point numbers than they do for integers.
                 </t>
                 <t>
-                    For constistency, integer JSON numbers SHOULD NOT be encoded with a fractional part.
+                    For consistency, integer JSON numbers SHOULD NOT be encoded with a fractional part.
                 </t>
             </section>
 
@@ -431,11 +431,11 @@
                 <section title="External references">
                     <t>
                         To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
-                        As specified above, this does not necessarially mean anything is downloaded, but instead JSON Schema
+                        As specified above, this does not necessarily mean anything is downloaded, but instead JSON Schema
                         implementations SHOULD already understand the schemas they will be using, including the URIs that identify them.
                     </t>
                     <t>
-                        Implementations SHOULD be able to associate arbritrary URIs with an arbritrary schema and/or
+                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary schema and/or
                         automatically associate a schema's "id"-given URI, depending on the trust that the the validator
                         has in the schema.
                     </t>
@@ -450,7 +450,7 @@
         <section title="Usage for hypermedia">
 
             <t>
-                One of the largest adoptors of JSON has been HTTP servers for automated APIs and robots.
+                One of the largest adopters of JSON has been HTTP servers for automated APIs and robots.
                 This section describes how to enhance processing of JSON documents in a more RESTful manner
                 when used with protocols that support media types and <xref target="RFC5988">Web linking</xref>.
             </t>
@@ -502,7 +502,7 @@ Content-Type: application/json;
                 </figure>
 
                 <t>
-                    Multiple profiles are whitespace seperated:
+                    Multiple profiles are whitespace separated:
                 </t>
 
                 <figure>
@@ -560,7 +560,7 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
                 defined in <xref target="RFC7159">RFC 7159</xref> apply.
             </t>
             <t>
-                Instances and schemas are both frequently witten by untrusted third parties, to be deployed on public Internet servers.
+                Instances and schemas are both frequently written by untrusted third parties, to be deployed on public Internet servers.
                 Validators should take care that the parsing of schemas doesn't consume excessive system resources.
                 Validators MUST NOT fall into an infinite loop.
             </t>
