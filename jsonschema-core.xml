@@ -5,6 +5,7 @@
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC6906 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6906.xml">
+<!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
@@ -131,6 +132,9 @@
                 </t>
                 <t>
                     In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are interchangeable because of the data model it defines.
+                </t>
+                <t>
+                    JSON Schema is only defined over JSON documents. However, any document or memory structure that can be parsed into or processed according to the JSON Schema data model can be interperted against a JSON Schema, including media types like <xref target="RFC7049">CBOR</xref>.
                 </t>
             </section>
 
@@ -596,6 +600,7 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
             &RFC5988;
             &RFC6901;
             &RFC6906;
+            &RFC7049;
             &RFC7231;
             <reference anchor="json-schema-validation">
                 <front>
