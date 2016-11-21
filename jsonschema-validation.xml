@@ -216,49 +216,47 @@
                     The value of "multipleOf" MUST be a number, strictly greater than 0.
                 </t>
                 <t>
-                    A numeric instance is only valid if division by this keyword's value results in an integer.
+                    A numeric instance is valid only if division by this keyword's value results in an integer.
                 </t>
             </section>
 
             <section title="maximum">
-            <t>
-                The value of "maximum" MUST be a number, representing an upper limit for a numeric instance.
-            </t>
-            <t>
-                If the instance is a number, then this keyword validates if "exclusiveMaximum" is true and instance is less than the provided value,
-                or else if the instance is less than or exactly equal to the provided value.
-            </t>
+                <t>
+                    The value of "maximum" MUST be a number, representing an inclusive upper limit for a numeric instance.
+                </t>
+                <t>
+                    If "exclusiveMaximum" is true, see the validation rules for that keyword instead.
+                    Else if the instance is a number, then this keyword validates only if the instance is less than or exactly equal to "maximum".
+                </t>
             </section>
 
             <section title="exclusiveMaximum">
                 <t>
-                    The value of "exclusiveMaximum" MUST be a boolean, representing whether the limit in "maximum" is exclusive or not.
-                    An undefined value is the same as false.
+                    The value of "exclusiveMaximum" MUST be number, representing an exclusive upper limit for a numeric instance, or a boolean. Schemas SHOULD NOT use the boolean form.
                 </t>
                 <t>
-                    If "exclusiveMaximum" is true, then a numeric instance SHOULD NOT be equal to the value specified in "maximum".
-                    If "exclusiveMaximum" is false (or not specified), then a numeric instance MAY be equal to the value of "maximum".
+                    If "exclusiveMaximum" is true, "maximum" is a number, and the instance is a number, then the instance is valid only if it has a value strictly less than (not equal to) "maximum".
+                    Else if "exclusiveMaximum" is a number and the instance is a number, then the instance is valid only if it has a value strictly less than (not equal to) "exclusiveMaximum".
                 </t>
             </section>
 
             <section title="minimum">
                 <t>
-                    The value of "minimum" MUST be a number, representing a lower limit for a numeric instance.
+                    The value of "minimum" MUST be a number, representing an inclusive upper limit for a numeric instance.
                 </t>
                 <t>
-                    If the instance is a number, then this keyword validates if "exclusiveMinimum" is true and instance is greater than the provided value,
-                    or else if the instance is greater than or exactly equal to the provided value.
+                    If "exclusiveMinimum" is true, see the validation rules for that keyword instead.
+                    Else if the instance is a number, then this keyword validates only if the instance is greater than or exactly equal to "minimum".
                 </t>
             </section>
 
             <section title="exclusiveMinimum">
                 <t>
-                    The value of "exclusiveMinimum" MUST be a boolean, representing whether the limit in "minimum" is exclusive or not.
-                    An undefined value is the same as false.
+                    The value of "exclusiveMinimum" MUST be number, representing an exclusive upper limit for a numeric instance, or a boolean. Schemas SHOULD NOT use the boolean form.
                 </t>
                 <t>
-                    If "exclusiveMinimum" is true, then a numeric instance SHOULD NOT be equal to the value specified in "minimum".
-                    If "exclusiveMinimum" is false (or not specified), then a numeric instance MAY be equal to the value of "minimum".
+                    If "exclusiveMinimum" is true, "minimum" is a number, and the instance is a number, then the instance is valid only if it has a value strictly greater than (not equal to) "minimum".
+                    Else if "exclusiveMinimum" is a number and the instance is a number, then the instance is valid only if it has a value strictly greater than (not equal to) "exclusiveMinimum".
                 </t>
             </section>
 
