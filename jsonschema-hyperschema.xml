@@ -224,7 +224,7 @@
                     If the document URI is &lt;http://example.com/?id=41&gt;, then the new URI base becomes &lt;http://example.com/object/41&gt;
                 </t>
                 <t>
-                    Resolving the two Link Description Objects against this URI base creates two links exactly equivelant to these absolute-form HTTP Link headers:
+                    Resolving the two Link Description Objects against this URI base creates two links exactly equivalent to these absolute-form HTTP Link headers:
                     <list style="symbols">
                         <t>Link: &lt;http://example.com/object/41&gt;;rel=self</t>
                         <t>Link: &lt;http://example.com/object/42&gt;;rel=next</t>
@@ -763,7 +763,7 @@ GET /foo/
 
             <section title="Submission Form Properties">
                 <t>
-                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTMLforms</xref>, by providing a means for making a request with client- or user-selected information.
+                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTML forms</xref>, by providing a means for making a request with client- or user-selected information.
                 </t>
 
                 <section title="method">
@@ -771,7 +771,7 @@ GET /foo/
                         This property specifies that the client can construct a templated query or non-idempotent request to a resource.
                     </t>
                     <t>
-                        If "method" is "get", the link identifies how a user can compute the URI of an arbritrary resource. For example, how compute a link to a page of search results relating to the instance, for a user-selected query term. Despite being named after GET, there is no constraint on the method or protocol used to interact with the remote resource.
+                        If "method" is "get", the link identifies how a user can compute the URI of an arbitrary resource. For example, how compute a link to a page of search results relating to the instance, for a user-selected query term. Despite being named after GET, there is no constraint on the method or protocol used to interact with the remote resource.
                     </t>
                     <t>
                         If "method" is "post", the link specifies how a user can construct a document to submit to the link target for evaluation.
