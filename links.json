@@ -7,7 +7,12 @@
     "properties": {
         "href": {
             "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
-            "type": "string"
+            "type": "string",
+            "format": "uritemplate"
+        },
+        "hrefSchema": {
+            "description": "a schema for validating user input to the URI template, where the input is in the form of a JSON object with property names matching variable names in \"href\"",
+            "allOf": [ {"$ref": "#"} ]
         },
         "rel": {
             "description": "relation to the target resource of the link",
@@ -23,10 +28,6 @@
         },
         "mediaType": {
             "description": "media type (as defined by RFC 2046) describing the link target",
-            "type": "string"
-        },
-        "method": {
-                    "description": "specifies that the client can construct a templated query (\"get\") or non-idempotent request (\"post\") to a resource.",
             "type": "string"
         },
         "encType": {

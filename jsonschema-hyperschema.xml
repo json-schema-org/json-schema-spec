@@ -9,6 +9,7 @@
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY rfc7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
 <!ENTITY html5 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-html5-20140731.xml">
 ]>
 <?rfc toc="yes"?>
@@ -371,151 +372,182 @@
             </t>
 
 	         <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
-
-            <section title="href" anchor="href">
-                <t>
-                    The value of the "href" link description property is a template used to determine the target URI of the related resource.
-                    The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref> against the base URI of the instance.
-                </t>
-                <t>
-                    This property is REQUIRED.
-                </t>
-
-                <section title="URI Templating">
+            <section title="URI Templating">
+                <section title="href" anchor="href">
                     <t>
-                        The value of "href" is to be used as a URI Template, as defined in <xref target="RFC6570">RFC 6570</xref>.  However, some special considerations apply:
+                        The value of the "href" link description property is a template
+                        used to determine the target URI of the related resource.
                     </t>
-
-                    <section title="Pre-processing">
+                    <t>
+                        The value of "href" is to be used as a URI Template, as defined in
+                        <xref target="RFC6570">RFC 6570</xref>.  Template variables are
+                        filled out using data from the identically named property of the
+                        instance, or with user input conforming to schema defined by the
+                        <xref target="href-schema">"hrefSchema"</xref> keyword.
+                    </t>
+                    <t>
+                        After the template is filled out, the resulting value MUST be
+                        resolved as a <xref target="RFC3986">URI-reference</xref> against
+                        the base URI of the instance.
+                    </t>
+                    <t>
+                        This property is REQUIRED.
+                    </t>
+                </section>
+                <section title="hrefSchema" anchor="href-schema">
+                    <t>
+                        The value of the "hrefSchema" link description property MUST be
+                        a valid JSON Schema.  This schema is used to validate user input
+                        for filling out the URI Template in "href".
+                    </t>
+                    <t>
+                        To validate user input, the supplied data MUST be considered
+                        as a JSON object where the property names are the template
+                        variables for which user input has been supplied, and the
+                        values are the user-supplied values.
+                    </t>
+                    <t>
+                        Setting the entire "hrefSchema" schema to "false" prevents
+                        any user input from being accepted.
+                    </t>
+                    <t>
+                        Implementations MUST NOT attempt to validate values resolved from
+                        instance data with "hrefSchema".  This allows for different
+                        validation rules for user input, such as supporting spelled-out
+                        months for date-time input but using the standard date-time
+                        format for storage.
+                    </t>
+                    <figure>
+                        <preamble>
+                            For example, this defines a schema for each of the query string
+                            parameters in the URI template:
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "href": "/foos{?condition,count,query}",
+    "hrefSchema": {
+        "properties": {
+            "condition": {
+                "type": "boolean",
+                "default": true
+            },
+            "count": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0
+            },
+            "query": {
+                "type": "string"
+            }
+        }
+    }
+}]]>
+                        </artwork>
+                    </figure>
+                    <figure>
+                        <preamble>
+                            In this example, the schema for "extra" is given as a reference
+                            to keep the user input validation constraints identical to the
+                            instance validation constraints for the corresponding property,
+                            while "id" is given a false schema to prevent user input for
+                            that variable.
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "definitions": {
+        "extra": {
+            "type": "string",
+            "maxLength": 32
+        }
+    },
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "minimum": 1,
+            "readOnly": true
+        },
+        "extra": {"$ref": "#/definitions/extra"}
+    },
+    "links": [{
+        "rel": "self",
+        "href": "/things/{id}{?extra}",
+        "hrefSchema": {
+            "properties": {
+                "id": false,
+                "extra": {"$ref": "#/definitions/extra"}
+            }
+        }
+    }]
+}]]>
+                        </artwork>
+                    </figure>
+                </section>
+                <section title="Values for substitution">
+                    <t>
+                        For each variable in the URI Template, if no user input was
+                        provided, the variable MUST be filled out using the value of
+                        the corresponding instance property (if it exists).
+                    </t>
+                    <section title="Converting to strings">
                         <t>
-                            <cref>This pre-processing section is subject to significant change in upcoming drafts.</cref>
-                        </t>
-                        <t>
-                            The <xref target="RFC6570">URI Template specification</xref> restricts the set of characters available for variable names.
-                            Property names in JSON, however, can be any UTF-8 string.
-                        </t>
-
-                        <t>
-                            To allow the use of any JSON property name in the template, before using the value of "href" as a URI Template, the following pre-processing rules MUST be applied, in order:
-                        </t>
-
-                        <section title="Bracket escaping">
-                            <t>
-                                The purpose of this step is to allow the use of brackets to percent-encode variable names inside curly brackets.
-                                Variable names to be escaped are enclosed within rounded brackets, with the close-rounded-bracket character ")" being escaped as a pair of close-rounded-brackets "))".
-                                Since the empty string is not a valid variable name in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
-                            </t>
-
-                            <t>
-                                The rules are as follows:
-                            </t>
-
-                            <t>
-                                Find the largest possible sections of the text such that:
-                                <list>
-                                    <t>do not contain an odd number of close-rounded-bracket characters ")" in sequence in that section of the text</t>
-                                    <t>are surrounded by a pair of rounded brackets: ( ), where</t>
-                                    <t>the surrounding rounded brackets are themselves contained within a pair of curly brackets: { }</t>
-                                </list>
-                            </t>
-                            <t>
-                                Each of these sections of the text (including the surrounding rounded brackets) MUST be replaced, according to the following rules:
-                                <list>
-                                    <t>If the brackets contained no text (the empty string), then they are replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
-                                    <t>Otherwise, the enclosing brackets are removed, and the inner text used after the following modifications
-                                        <list>
-                                            <t>all pairs of close-brackets "))" are replaced with a single close bracket</t>
-                                            <t>after that, the text is replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this requires encoding characters such as "*" and "!")</t>
-                                        </list>
-                                    </t>
-                                </list>
-                            </t>
-                        </section>
-
-                        <section title="Replacing $">
-                            <t>
-                                After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
-                            </t>
-                            <t>
-                                The purpose of this stage is to allow the use of the instance value itself (instead of its object properties or array items) in the URI Template, by the special value "%73elf".
-                            </t>
-                        </section>
-
-                        <section title="Choice of special-case values">
-                            <t>
-                                The special-case values of "%73elf" and "%65mpty" were chosen because they are unlikely to be accidentally generated by either a human or automated escaping.
-                            </t>
-                        </section>
-
-                        <section title="Examples">
-                            <texttable>
-                                <preamble>For example, here are some possible values for "href", followed by the results after pre-processing:</preamble>
-                                <ttcol>Input</ttcol>
-                                <ttcol>Output</ttcol>
-                                <c>"no change"</c>           <c>"no change"</c>
-                                <c>"(no change)"</c>         <c>"(no change)"</c>
-                                <c>"{(escape space)}"</c>    <c>"{escape%20space}"</c>
-                                <c>"{(escape+plus)}"</c>     <c>"{escape%2Bplus}"</c>
-                                <c>"{(escape*asterisk)}"</c> <c>"{escape%2Aasterisk}"</c>
-                                <c>"{(escape(bracket)}"</c>  <c>"{escape%28bracket}"</c>
-                                <c>"{(escape))bracket)}"</c> <c>"{escape%29bracket}"</c>
-                                <c>"{(a))b)}"</c>            <c>"{a%29b}</c>
-                                <c>"{(a (b)))}"</c>          <c>"{a%20%28b%29}</c>
-                                <c>"{()}"</c>                <c>"{%65mpty}</c>
-                                <c>"{+$*}"</c>               <c>"{+%73elf*}</c>
-                                <c>"{+($)*}"</c>             <c>"{+%24*}</c>
-                                <postamble>
-                                    Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
-                                </postamble>
-                            </texttable>
-                        </section>
-                    </section>
-
-                    <section title="Values for substitution">
-                        <t>
-                            After pre-processing, the URI Template is filled out using data from the instance.
-                            To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
-                        </t>
-
-                        <t>
-                            For a given variable name in the URI Template, the value to use is determined as follows:
+                            When any value provided for a URI template variable is null,
+                            a boolean or a number, then it should first be converted into
+                            a string as follows:
                             <list>
-                                <t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
-                                <t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
-                                <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
-                                <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t>
+                                <t>null values SHOULD be replaced by the text "null"</t>
+                                <t>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"</t>
+                                <t>numbers SHOULD be replaced with their original JSON representation.</t>
                             </list>
                         </t>
-
-                        <section title="Converting to strings">
-                            <t>
-                                When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
-                                <list>
-                                    <t>null values SHOULD be replaced by the text "null"</t>
-                                    <t>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"</t>
-                                    <t>numbers SHOULD be replaced with their original JSON representation.</t>
-                                </list>
-                            </t>
-                            <t>
-                                In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
-                                Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
-                            </t>
-                        </section>
+                        <t>
+                            In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
+                            Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
+                        </t>
                     </section>
 
                     <section title="Missing values">
                         <t>
-                            Sometimes, the appropriate values will not be available.
+                            Sometimes, the appropriate values will not be available and no
+                            user input will have been provided.
                             For example, the template might specify the use of object properties, but the instance is an array or a string.
                         </t>
 
                         <t>
-                            If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
-                            Otherwise, the link definition SHOULD be considered not to apply to the instance.
+                            In such cases, the link definition SHOULD be considered not to apply to the instance.
                         </t>
                     </section>
                 </section>
 
+                <section title="Limitations">
+                    <t><cref>
+                        It is intended that these limitations will be removed in a future
+                        draft.  While some were previously handled by URI Template
+                        pre-processing, many were not.  The pre-processing rules were
+                        a significant implementation burden and do not seem to have been
+                        adopted broadly if at all, so they have been removed.
+                    </cref></t>
+                    <t>
+                        The <xref target="RFC6570">URI Template specification</xref>
+                        restricts the set of characters available for variable names.
+                        Property names in JSON, however, can be any UTF-8 string.
+                        Currently, such properties cannot be used with URI Templates.
+                    </t>
+                    <t>
+                        Additionally, JSON instances can be of types other than objects
+                        or arrays, can have complex child instances, and can be contained
+                        within an object or an array.  Instance data other than immediate
+                        object properties and array elements cannot currently be used
+                        with URI Templates.
+                    </t>
+                    <t>
+                        In particular, a dot-separated URI template variable name
+                        MUST NOT be considered to reference nested properties.
+                        Dot-separated names cannot access all possible instance data
+                        locations, so a different mechanism may be chosen for this
+                        functionality in a future draft.
+                    </t>
+                </section>
             </section>
 
             <section title="rel">
@@ -779,69 +811,57 @@ GET /foo/
                 </section>
             </section>
 
-            <section title="Submission Form Properties">
+            <section title="Submission Properties">
                 <t>
-                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTML forms</xref>, by providing a means for making a request with client- or user-selected information.
+                    The following properties also apply to Link Description Objects, and provide functionality analogous to sending an <xref target="W3C.CR-html5-20140731">HTML forms</xref> in a request body, by providing a means for making a request with client- or user-selected information.
                 </t>
-
-                <section title="method">
-                    <t>
-                        This property specifies that the client can construct a templated query or non-idempotent request to a resource.
-                    </t>
-                    <t>
-                        If "method" is "get", the link identifies how a user can compute the URI of an arbitrary resource. For example, how compute a link to a page of search results relating to the instance, for a user-selected query term. Despite being named after GET, there is no constraint on the method or protocol used to interact with the remote resource.
-                    </t>
-                    <t>
-                        If "method" is "post", the link specifies how a user can construct a document to submit to the link target for evaluation.
-                    </t>
-                    <t>
-                        Values for this property SHOULD be lowercase, and SHOULD be compared case-insensitive. Use of other values not defined here SHOULD be ignored.
-                    </t>
-                </section>
+                <t>
+                    For an analogue to encoding HTML forms in the request URI, see
+                    <xref target="href-schema">"hrefSchema"</xref>.
+                </t>
 
                 <section title="encType">
                     <t>
-                        If present, this property indicates the media type format the client should use to encode a query parameter or send to the server. posting to the collection of instances at the target resource.
-                        If the method is "get", this will indicate how to encode the query-string that is appended to the "href" link target.
-                        If the method is "post", this indicates which media type to send to the server and how to encode it.
-
+                        If present, this property indicates the media type format the client should use to encode a document to send to the server in the request body.
                         <figure>
                             <preamble>For example, with the following schema:</preamble>
                             <artwork>
 <![CDATA[{
     "links": [{
-        "encType": "application/x-www-form-urlencoded",
-        "method": "get",
+        "encType": "application/cbor",
         "href": "/Product/",
         "schema": {
             "properties": {
                 "name": {
-                    "description": "name of the product"
+                    "description": "name of the product",
+                    "type": "string"
+                },
+                "features": {
+                    "description": "features supported by the product",
+                    "type": "array",
+                    "items": {
+                        "$ref": "http://example.com/schema#feature"
+                    }
                 }
             }
         }
     }]
 }]]>
                             </artwork>
-                            <postamble>This indicates that the client can query the server for instances that have a specific name.</postamble>
+                            <postamble>
+                                This indicates that the client can submit a name and a list
+                                of features to a product resource, which should be encoded
+                                as <xref target="RFC7049">CBOR</xref>.
+                            </postamble>
                         </figure>
-
-                        <figure>
-                            <preamble>For example:</preamble>
-                            <artwork>
-<![CDATA[
-/Product/?name=Slinky
-]]>
-                            </artwork>
-                        </figure>
-
-                        If the method is "post", "application/json" is the default media type.
                     </t>
                 </section>
 
                 <section title="schema">
                     <t>
-                        This property contains a schema which defines the acceptable structure of the document being encoded according to the "encType" property.
+                        This property contains a schema which defines the acceptable
+                        structure of the document being encoded according to the "encType"
+                        property for submission in the request body.
                     </t>
 
                     <t>
@@ -882,6 +902,7 @@ GET /foo/
             &rfc2046;
             <!--&rfc5226;-->
             &rfc5988;
+            &rfc7049;
             &rfc7231;
             &html5;
         </references>
@@ -916,6 +937,8 @@ GET /foo/
                     <t hangText="draft-wright-json-schema-hyperschema-01">
                         <list style="symbols">
                             <t>Fixed examples</t>
+                            <t>Added "hrefSchema" keyword for URI input</t>
+                            <t>Removed "method" and reserved "schema" and "encType" for request bodies</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-hyperschema-00">
