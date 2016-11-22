@@ -350,6 +350,11 @@
                     if every instance element at a position greater than the size
                     of "items" validates against "additionalItems".
                 </t>
+                <t>
+                    Otherwise, "additionalItems" MUST be ignored, as the "items"
+                    schema (possibly the default value of an empty schema) is
+                    applied to all elements.
+                </t>
             </section>
 
             <section title="maxItems">
