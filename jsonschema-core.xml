@@ -189,7 +189,7 @@
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
                     A schema is itself interpreted as an instance.
-                    A JSON schema MUST be an object.
+                    A JSON Schema document MUST consist of an object, known as the root schema.
                 </t>
                 <t>
                     Properties that are used to describe the instance are called keywords, or schema keywords.
@@ -231,6 +231,31 @@
                     In this example document, the schema titled "array item" is a subschema,
                     and the schema titled "root" is the root schema.
                 </t>
+                <t>
+                    A subschema MUST be an object or a boolean, where boolean values are equivalent to object schemas as follows:
+                </t>
+                <t>
+                    true:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    false:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "not": {}
+}
+]]>
+                    </artwork>
+                </figure>
             </section>
 
         </section>
@@ -323,7 +348,7 @@
                     <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the default base URI of a document.
                 </t>
                 <t>
-                    Informatively, the initial base URI of a schema is the URI it was found at, or a suitable substitute URI if none is known.
+                    Informatively, the initial base URI of a schema is the URI at which it was found, or a suitable substitute URI if none is known.
                 </t>
             </section>
 
