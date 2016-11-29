@@ -327,8 +327,7 @@
 
             <section title="items">
                 <t>
-                    The value of "items" MUST be either an object or an array of objects.
-                    Each object MUST be a valid JSON Schema.
+                    The value of "items" MUST be either a valid JSON Schema or an array of valid JSON Schemas.
                 </t>
                 <t>
                     If absent, it can be considered present with an empty schema.
@@ -350,8 +349,7 @@
 
             <section title="additionalItems">
                 <t>
-                    The value of "additionalItems" MUST be a boolean or an object.
-                    If it is an object, the object MUST be a valid JSON Schema.
+                    The value of "additionalItems" MUST be a valid JSON Schema.
                 </t>
                 <t>
                     If absent, it can be considered present with an empty schema.
@@ -466,7 +464,7 @@
             <section title="properties">
                 <t>
                     The value of "properties" MUST be an object. Each value of this object
-                    MUST be an object, and each object MUST be a valid JSON Schema.
+                    MUST be a valid JSON Schema.
                 </t>
                 <t>
                     If absent, it can be considered the same as an empty object.
@@ -487,7 +485,7 @@
                     The value of "patternProperties" MUST be an object. Each property name
                     of this object SHOULD be a valid regular expression, according to the
                     ECMA 262 regular expression dialect. Each property value of this object
-                    MUST be an object, and each object MUST be a valid JSON Schema.
+                    MUST be a valid JSON Schema.
                 </t>
                 <t>
                     If absent, it can be considered the same as an empty object.
@@ -506,8 +504,7 @@
 
             <section title="additionalProperties">
                 <t>
-                    The value of "additionalProperties" MUST be a boolean or an
-                    object.  If it is an object, the object MUST be a valid JSON Schema.
+                    The value of "additionalProperties" MUST be a valid JSON Schema.
                 </t>
                 <t>
                     If "additionalProperties" is absent, it may be considered present with
@@ -535,12 +532,11 @@
                 </t>
                 <t>
                     This keyword's value MUST be an object. Each property specifies a dependency.
-                    Each dependency value MUST be an object or an array.
+                    Each dependency value MUST be an array or a valid JSON Schema.
                 </t>
                 <t>
-                    If the dependency value is an object, it MUST be a valid JSON Schema. If the
-                    dependency key is a property in the instance, the dependency value must validate
-                    against the entire instance.
+                    If the dependency value is a subschema, and the dependency key is a property
+                    in the instance, the entire instance must validate against the dependency value.
                 </t>
                 <t>
                     If the dependency value is an array, each element in the array,
