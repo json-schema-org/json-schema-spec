@@ -189,30 +189,15 @@
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
                     A schema is itself interpreted as an instance.
-                    A JSON Schema MUST be an object or a boolean, where boolean values are equivalent to object schemas as follows.
+                    A JSON Schema MUST be an object or a boolean.
                 </t>
-                <figure>
-                    <preamble>
-                        true:
-                    </preamble>
-                    <artwork>
-<![CDATA[
-{}
-]]>
-                    </artwork>
-                </figure>
-                <figure>
-                    <preamble>
-                        false:
-                    </preamble>
-                    <artwork>
-<![CDATA[
-{
-    "not": {}
-}
-]]>
-                    </artwork>
-                </figure>
+                <t>
+                    Boolean values are equivalent to the following behaviors:
+                    <list style="hanging">
+                        <t hangText="true">Always passes validation, as if the empty schema {}</t>
+                        <t hangText="false">Always fails validation, as if the schema { "not":{} }</t>
+                    </list>
+                </t>
                 <t>
                     Properties that are used to describe the instance are called keywords, or schema keywords.
                     The meaning of properties is specified by the vocabulary that the schema is using.
@@ -254,7 +239,7 @@
                     and the schema titled "root" is the root schema.
                 </t>
                 <t>
-                    As with the root schema, a subschema MUST be an object or a boolean.
+                    As with the root schema, a subschema is either an object or a boolean.
                 </t>
             </section>
 
@@ -324,9 +309,11 @@
 
         <section title="Schema references with $ref">
             <t>
-                In addition to a boolean value or an object using schema kewyords defined
-                in the meta-schema, a schema may be represnted by an object containing a "$ref" property.
-                The value of the $ref is a URI Reference.
+                The "$ref" keyword is used to reference a schema, and provides the ability to validate recursive structures through self-reference.
+            </t>
+            <t>
+                An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
+                The value of the "$ref" property MUST be a URI Reference.
                 Resolved against the current URI base, it identifies the URI of a schema to use.
                 All other properties in a "$ref" object MUST be ignored.
             </t>
