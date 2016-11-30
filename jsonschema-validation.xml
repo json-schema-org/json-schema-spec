@@ -331,7 +331,7 @@
                     Each object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    If absent, it can be considered present with an empty schema.
+                    A missing keyword is the same as an empty schema.
                 </t>
                 <t>
                     This keyword controls child instance validation.  Validation of the
@@ -354,9 +354,6 @@
                     If it is an object, the object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    If absent, it can be considered present with an empty schema.
-                </t>
-                <t>
                     This keyword controls child instance validation.  Validation of the
                     primitive instance type against this keyword always succeeds.
                 </t>
@@ -369,6 +366,9 @@
                     Otherwise, "additionalItems" MUST be ignored, as the "items"
                     schema (possibly the default value of an empty schema) is
                     applied to all elements.
+                </t>
+                <t>
+                    A missing keyword is the same as an empty schema.
                 </t>
             </section>
 
@@ -393,7 +393,7 @@
                     greater than, or equal to, the value of this keyword.
                 </t>
                 <t>
-                    If this keyword is not present, it may be considered present with a
+                    A missing keyword is the same as a
                     value of 0.
                 </t>
             </section>
@@ -408,7 +408,7 @@
                     successfully if all of its elements are unique.
                 </t>
                 <t>
-                    If not present, this keyword may be considered present with boolean
+                    A missing keyword is the same as the
                     value false.
                 </t>
             </section>
@@ -447,7 +447,7 @@
                     keyword.
                 </t>
                 <t>
-                    If this keyword is not present, it may be considered present with a
+                    A mising keyword is the same as a
                     value of 0.
                 </t>
             </section>
@@ -460,6 +460,9 @@
                 <t>
                     An object instance is valid against this keyword if its
                     property set contains all elements in this keyword's array value.
+                </t>
+                <t>
+                    A missing keyword is the same as an empty array.
                 </t>
             </section>
 
@@ -510,7 +513,7 @@
                     object.  If it is an object, the object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    If "additionalProperties" is absent, it may be considered present with
+                    A missing keyword is the same as
                     an empty schema as a value.
                 </t>
                 <t>
