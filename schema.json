@@ -20,7 +20,6 @@
         },
         "schemaArray": {
             "type": "array",
-            "minItems": 1,
             "items": { "$ref": "#/definitions/subSchema" }
         },
         "positiveInteger": {
@@ -47,7 +46,8 @@
         "stringArray": {
             "type": "array",
             "items": { "type": "string" },
-            "uniqueItems": true
+            "uniqueItems": true,
+            "default": []
         },
         "subSchema": {
             "oneOf": [
@@ -80,22 +80,13 @@
         "default": {},
         "multipleOf": {
             "type": "number",
-            "minimum": 0,
-            "exclusiveMinimum": true
+            "exclusiveMinimum": 0
         },
         "maximum": {
             "type": "number"
         },
-        "exclusiveMaximum": {
-            "type": "boolean",
-            "default": false
-        },
         "minimum": {
             "type": "number"
-        },
-        "exclusiveMinimum": {
-            "type": "boolean",
-            "default": false
         },
         "maxLength": { "$ref": "#/definitions/positiveInteger" },
         "minLength": { "$ref": "#/definitions/positiveIntegerDefault0" },
@@ -181,9 +172,39 @@
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#/definitions/subSchema" }
     },
-    "dependencies": {
-        "exclusiveMaximum": [ "maximum" ],
-        "exclusiveMinimum": [ "minimum" ]
-    },
+    "allOf": [
+        {
+            "oneOf": [
+                {
+                    "exclusiveMaximum": { "type": "number" }
+                },
+                {
+                    "exclusiveMaximum": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "dependencies": {
+                        "exclusiveMaximum": [ "maximum" ]
+                    }
+                }
+            ]
+        },
+        {
+            "oneOf": [
+                {
+                    "exclusiveMinimum": { "type": "number" }
+                },
+                {
+                    "exclusiveMinimum": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "dependencies": {
+                        "exclusiveMinimum": [ "minimum" ]
+                    }
+                }
+            ]
+        }
+    ],
     "default": {}
 }
