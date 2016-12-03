@@ -3,11 +3,11 @@
     "id": "http://json-schema.org/draft/hyper-schema#",
     "title": "JSON Hyper-Schema",
     "definitions": {
-        "schemaArray": [
+        "schemaArray": {
             "allOf": [
-                { "$ref": "http://json-schema.org/drafts/schema" }
+                { "$ref": "http://json-schema.org/drafts/schema" },
                 {
-                    "items": { "$ref": "#" }
+                    "items": { "$ref": "#/definitions/subSchema" }
                 }
             ]
         },
@@ -30,7 +30,7 @@
                 },
                 "targetSchema": {
                     "description": "JSON Schema describing the link target",
-                    "allOf": [ { "$ref": "#" } ]
+                    "allOf": [ { "$ref": "#/definitions/subSchema" } ]
                 },
                 "mediaType": {
                     "description": "media type (as defined by RFC 2046) describing the link target",
@@ -47,52 +47,64 @@
                 },
                 "schema": {
                     "description": "Schema describing the data to submit along with the request",
-                    "allOf": [ { "$ref": "#" } ]
+                    "allOf": [ { "$ref": "#/definitions/subSchema" } ]
                 }
             }
+        },
+        "subSchema": {
+            "oneOf": [
+                {
+                    "allOf": [
+                        { "$ref": "#" },
+                        { "$ref": "http://json-schema.org/draft/schema#/definitions/notJsonReference" }
+                    ]
+                },
+                { "$ref": "http://json-schema.org/draft/schema#/definitions/jsonReference" }
+            ]
         }
     },
+
     "allOf": [ { "$ref": "http://json-schema.org/draft/schema#" } ],
     "properties": {
         "additionalItems": {
             "anyOf": [
                 { "type": "boolean" },
-                { "$ref": "#" }
+                { "$ref": "#/definitions/subSchema" }
             ]
         },
         "additionalProperties": {
             "anyOf": [
                 { "type": "boolean" },
-                { "$ref": "#" }
+                { "$ref": "#/definitions/subSchema" }
             ]
         },
         "dependencies": {
             "additionalProperties": {
                 "anyOf": [
-                    { "$ref": "#" },
+                    { "$ref": "#/definitions/subSchema" },
                     { "type": "array" }
                 ]
             }
         },
         "items": {
             "anyOf": [
-                { "$ref": "#" },
+                { "$ref": "#/definitions/subSchema" },
                 { "$ref": "#/definitions/schemaArray" }
             ]
         },
         "definitions": {
-            "additionalProperties": { "$ref": "#" }
+            "additionalProperties": { "$ref": "#/definitions/subSchema" }
         },
         "patternProperties": {
-            "additionalProperties": { "$ref": "#" }
+            "additionalProperties": { "$ref": "#/definitions/subSchema" }
         },
         "properties": {
-            "additionalProperties": { "$ref": "#" }
+            "additionalProperties": { "$ref": "#/definitions/subSchema" }
         },
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" },
+        "not": { "$ref": "#/definitions/subSchema" },
 
         "base": {
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
