@@ -2,48 +2,46 @@
     "$schema": "http://json-schema.org/draft/hyper-schema#",
     "id": "http://json-schema.org/draft/hyper-schema#",
     "title": "JSON Hyper-Schema",
-    "allOf": [
-        {"$ref": "http://json-schema.org/draft-04/schema#"}
-    ],
+    "allOf": [ { "$ref": "http://json-schema.org/draft/schema#" } ],
     "properties": {
         "additionalItems": {
             "anyOf": [
-                {"type": "boolean"},
-                {"$ref": "#"}
+                { "type": "boolean" },
+                { "$ref": "#" }
             ]
         },
         "additionalProperties": {
             "anyOf": [
-                {"type": "boolean"},
-                {"$ref": "#"}
+                { "type": "boolean" },
+                { "$ref": "#" }
             ]
         },
         "dependencies": {
             "additionalProperties": {
                 "anyOf": [
-                    {"$ref": "#"},
-                    {"type": "array"}
+                    { "$ref": "#" },
+                    { "type": "array" }
                 ]
             }
         },
         "items": {
             "anyOf": [
-                {"$ref": "#"},
-                {"$ref": "#/definitions/schemaArray"}
+                { "$ref": "#" },
+                { "$ref": "#/definitions/schemaArray" }
             ]
         },
         "definitions": {
-            "additionalProperties": {"$ref": "#"}
+            "additionalProperties": { "$ref": "#" }
         },
         "patternProperties": {
-            "additionalProperties": {"$ref": "#"}
+            "additionalProperties": { "$ref": "#" }
         },
         "properties": {
-            "additionalProperties": {"$ref": "#"}
+            "additionalProperties": { "$ref": "#" }
         },
-        "allOf": {"$ref": "#/definitions/schemaArray"},
-        "anyOf": {"$ref": "#/definitions/schemaArray"},
-        "oneOf": {"$ref": "#/definitions/schemaArray"},
+        "allOf": { "$ref": "#/definitions/schemaArray" },
+        "anyOf": { "$ref": "#/definitions/schemaArray" },
+        "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" },
 
         "base": {
@@ -52,7 +50,7 @@
         },
         "links": {
             "type": "array",
-            "items": {"$ref": "#/definitions/linkDescription"}
+            "items": { "$ref": "#/definitions/linkDescription" }
         },
         "media": {
             "type": "object",
@@ -66,17 +64,26 @@
                     "type": "string"
                 }
             }
+        },
+        "readOnly": {
+            "description": "If true, indicates that the value of this property is controlled by the server.",
+            "type": "boolean",
+            "default": "false"
         }
     },
     "definitions": {
-        "schemaArray": {
-            "type": "array",
-            "items": {"$ref": "#"}
+        "schemaArray": [
+            "allOf": [
+                { "$ref": "http://json-schema.org/drafts/schema" }
+                {
+                    "items": { "$ref": "#" }
+                }
+            ]
         },
         "linkDescription": {
             "title": "Link Description Object",
             "type": "object",
-            "required": ["href"],
+            "required": [ "href" ],
             "properties": {
                 "href": {
                     "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
@@ -92,7 +99,7 @@
                 },
                 "targetSchema": {
                     "description": "JSON Schema describing the link target",
-                    "$ref": "#"
+                    "allOf": [ { "$ref": "#" } ]
                 },
                 "mediaType": {
                     "description": "media type (as defined by RFC 2046) describing the link target",
@@ -109,7 +116,7 @@
                 },
                 "schema": {
                     "description": "Schema describing the data to submit along with the request",
-                    "$ref": "#"
+                    "allOf": [ { "$ref": "#" } ]
                 }
             }
         }
@@ -118,10 +125,6 @@
         {
             "rel": "self",
             "href": "{+id}"
-        },
-        {
-            "rel": "full",
-            "href": "{+($ref)}"
         }
     ]
 }
