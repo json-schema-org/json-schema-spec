@@ -297,6 +297,127 @@
             </t>
         </section>
 
+        <section title="Applying subschemas to child instances">
+            <t>
+                The keywords in this section are used to control which subschemas
+                apply to child instances.  They are independent of any specific
+                schema vocabulary.  Vocabulary specifications SHOULD define any
+                vocabulary-specific effects of applying subschemas.
+            </t>
+            <section title="$items">
+                <t>
+                    The value of "$items" MUST be either an object or an array of objects.
+                    Each object MUST be a valid subschema.
+                </t>
+                <t>
+                    If absent, it can be considered present with an empty schema.
+                </t>
+                <t>
+                    This keyword applies only to array instances.
+                </t>
+                <t>
+                    If "$items" is a schema, that subschema applies to all elements
+                    in the instance array.
+                </t>
+                <t>
+                    If "$items" is an array of schemas, each subschema applies to
+                    the child instance element at the same position, if any.
+                </t>
+            </section>
+
+            <section title="$additionalItems">
+                <t>
+                    The value of "$additionalItems" MUST be valid subschema.
+                </t>
+                <t>
+                    If absent, it can be considered present with an empty schema.
+                </t>
+                <t>
+                    This keyword applies only to array instances.
+                </t>
+                <t>
+                    If "$items" is an array of schemas, the "$additionalItems"
+                    schema applies to every element of the instance array at
+                    a position greater than the size of "$items".
+                </t>
+                <t>
+                    Otherwise, "$additionalItems" MUST be ignored, as the "$items"
+                    schema (possibly the default value of an empty schema) is
+                    applied to all instance array elements.
+                </t>
+            </section>
+
+            <section title="$properties">
+                <t>
+                    The value of "$properties" MUST be an object. Each value of this object
+                    MUST be a a valid subschema.
+                </t>
+                <t>
+                    If absent, it can be considered the same as an empty object.
+                </t>
+                <t>
+                    This keyword applies only to object instances.
+                </t>
+                <t>
+                    For each property name that appears in both the "$properties" value
+                    and the instance object, the subschema given for that property
+                    name is applied to the value of that property in the instance object.
+                </t>
+            </section>
+
+            <section title="$patternProperties">
+                <t>
+                    The value of "$patternProperties" MUST be an object. Each property name
+                    of this object SHOULD be a valid regular expression, according to the
+                    ECMA 262 regular expression dialect. Each property value of this object
+                    MUST be a valid subschema.
+                </t>
+                <t>
+                    If absent, it can be considered the same as an empty object.
+                </t>
+                <t>
+                    This keyword applies only to object instances.
+                </t>
+                <t>
+                    For each instance object property name that matches any
+                    regular expressions that appear as a property name in this keyword's
+                    value, the subschemas associated with each matching pattern
+                    are applied to the value of that instance property.
+                </t>
+            </section>
+
+            <section title="$additionalProperties">
+                <t>
+                    The value of "$additionalProperties" MUST be a valid subschema.
+                </t>
+                <t>
+                    If "$additionalProperties" is absent, it may be considered present with
+                    an empty schema as a value.
+                </t>
+                <t>
+                    This keyword applies only to object instances.
+                </t>
+                <t>
+                    The keyword's subschema is applied only to the instance object
+                    property values whose property names neither appear in "$properties"
+                    nor match any regular expression in "$patternProperties".
+                </t>
+            </section>
+
+            <section title="Compatibility with earlier drafts">
+                <t>
+                    Implementations MAY support "items", "additionalItems", "properties",
+                    "patternProperties", and "additionalProperties" as synonyms for their
+                    dollar sign-prefixed equivalents for aiding in migrating from earlier
+                    drafts.  An implementation that supports any of these keywords
+                    SHOULD support all of them.
+                </t>
+                <t>
+                    Schema authors SHOULD NOT use these forms of the keywords.
+                </t>
+            </section>
+        </section>
+
         <section title="Schema references with $ref">
             <t>
                 Any time a subschema is expected, a schema may instead use an object containing a "$ref" property.
