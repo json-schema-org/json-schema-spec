@@ -185,11 +185,18 @@
                 </t>
             </section>
 
-            <section title="JSON Schema document">
+            <section title="JSON Schema documents">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
                     A schema is itself interpreted as an instance.
-                    A JSON schema MUST be an object.
+                    A JSON Schema MUST be an object or a boolean.
+                </t>
+                <t>
+                    Boolean values are equivalent to the following behaviors:
+                    <list style="hanging">
+                        <t hangText="true">Always passes validation, as if the empty schema {}</t>
+                        <t hangText="false">Always fails validation, as if the schema { "not":{} }</t>
+                    </list>
                 </t>
                 <t>
                     Properties that are used to describe the instance are called keywords, or schema keywords.
@@ -230,6 +237,9 @@
                 <t>
                     In this example document, the schema titled "array item" is a subschema,
                     and the schema titled "root" is the root schema.
+                </t>
+                <t>
+                    As with the root schema, a subschema is either an object or a boolean.
                 </t>
             </section>
 
@@ -299,8 +309,11 @@
 
         <section title="Schema references with $ref">
             <t>
-                Any time a subschema is expected, a schema may instead use an object containing a "$ref" property.
-                The value of the $ref is a URI Reference.
+                The "$ref" keyword is used to reference a schema, and provides the ability to validate recursive structures through self-reference.
+            </t>
+            <t>
+                An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
+                The value of the "$ref" property MUST be a URI Reference.
                 Resolved against the current URI base, it identifies the URI of a schema to use.
                 All other properties in a "$ref" object MUST be ignored.
             </t>
@@ -323,7 +336,7 @@
                     <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the default base URI of a document.
                 </t>
                 <t>
-                    Informatively, the initial base URI of a schema is the URI it was found at, or a suitable substitute URI if none is known.
+                    Informatively, the initial base URI of a schema is the URI at which it was found, or a suitable substitute URI if none is known.
                 </t>
             </section>
 
@@ -660,6 +673,7 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
                     <t hangText="draft-wright-json-schema-01">
                         <list style="symbols">
                             <t>Updated intro</t>
+                            <t>Allowed for any schema to be a boolean</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-00">
