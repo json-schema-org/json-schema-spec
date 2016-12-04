@@ -7,6 +7,8 @@
 <!ENTITY RFC3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
+<!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
+<!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 ]>
 <?rfc toc="yes"?>
@@ -843,6 +845,25 @@
                     </t>
                 </section>
 
+                <section title="uritemplate">
+                    <t>
+                        This attribute applies to string instances.
+                    </t>
+                    <t>
+                        A string instance is valid against this attribute if it is a valid URI Template
+                        (of any level), according to <xref target="RFC6570"/>.
+                    </t>
+                </section>
+
+                <section title="jsonpointer">
+                    <t>
+                        This attribute applies to string instances.
+                    </t>
+                    <t>
+                        A string instance is valid against this attribute if it is a valid JSON Pointer,
+                        according to <xref target="RFC6901"/>
+                    </t>
+                </section>
             </section>
         </section>
 
@@ -887,6 +908,8 @@
             &RFC2673;
             &RFC3339;
             &RFC3986;
+            &RFC6570;
+            &RFC6901;
             &RFC7159;
             &RFC5322;
             <reference anchor="ecma262"
