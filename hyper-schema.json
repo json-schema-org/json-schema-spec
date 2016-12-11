@@ -3,7 +3,7 @@
     "id": "http://json-schema.org/draft/hyper-schema#",
     "title": "JSON Hyper-Schema",
     "allOf": [
-        {"$ref": "http://json-schema.org/draft-04/schema#"}
+        {"$ref": "http://json-schema.org/draft/schema#"}
     ],
     "properties": {
         "additionalItems": {
@@ -48,7 +48,8 @@
 
         "base": {
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
-            "type": "string"
+            "type": "string",
+            "format": "uritemplate"
         },
         "links": {
             "type": "array",
@@ -80,7 +81,13 @@
             "properties": {
                 "href": {
                     "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
-                    "type": "string"
+                    "type": "string",
+                    "format": "uritemplate"
+                },
+                "hrefVars": {
+                    "description": "an object where each property is a variable name from \"href\" and the value is a schema describing the data needed to fill in the variable.",
+                    "type": "object",
+                    "additionalProperties": {"$ref": "#"}
                 },
                 "rel": {
                     "description": "relation to the target resource of the link",
@@ -92,24 +99,20 @@
                 },
                 "targetSchema": {
                     "description": "JSON Schema describing the link target",
-                    "$ref": "#"
+                    "allOf": [{"$ref": "#"}]
                 },
                 "mediaType": {
                     "description": "media type (as defined by RFC 2046) describing the link target",
                     "type": "string"
                 },
-                "method": {
-                    "description": "specifies that the client can construct a templated query (\"get\") or non-idempotent request (\"post\") to a resource.",
-                    "type": "string"
-                },
                 "encType": {
-                    "description": "The media type in which to submit data along with the request",
+                    "description": "The media type in which to submit data in the request body",
                     "type": "string",
                     "default": "application/json"
                 },
                 "schema": {
-                    "description": "Schema describing the data to submit along with the request",
-                    "$ref": "#"
+                    "description": "Schema describing the data to submit in the request body"},
+                    "allOf": [{"$ref": "#"}]
                 }
             }
         }
