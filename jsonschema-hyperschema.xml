@@ -196,7 +196,11 @@
                     It is therefore the first URI Reference resolved, regardless of which order it was found in.
                 </t>
                 <t>
-                    The URI is computed from the provided URI template using the same process described for the <xref target="href">"href"</xref> property of a Link Description Object.
+                    The URI is computed from the provided URI template, along with
+                    <xref target="base-vars">"baseVars"</xref>, using the same
+                    process described for the <xref target="href">"href"</xref>
+                    and <xref target="href-vars">"hrefVars"</xref> properties of
+                    a Link Description Object.
                 </t>
                 <figure>
                     <preamble>An example of a JSON schema using "base":</preamble>
@@ -238,6 +242,27 @@
                         <t>Link: &lt;http://example.com/object/41&gt;;rel=self</t>
                         <t>Link: &lt;http://example.com/object/42&gt;;rel=next</t>
                     </list>
+                </t>
+            </section>
+
+            <section title="baseVars" anchor="base-vars">
+                <t>
+                    The value of this keyword MUST be an object.
+                    The property names in the object SHOULD each be identical to
+                    a template variable from the "base" value in this schema.
+                    The value of each property MUST be a
+                    <xref target="relative-json-pointer">Relative JSON Pointer</xref>.
+                </t>
+                <t>
+                    The "baseVars" object is used to resolve "base" template
+                    variable names that do not meet the restrictions of the
+                    <xref target="RFC6570">URI Template specification</xref>,
+                    or that need to resolve to values other than immediate
+                    properties of the instance.
+                </t>
+                <t>
+                    See the <xref target="href-vars">"hrefVars"</xref> link
+                    description keyword for the rules for using the mappings.
                 </t>
             </section>
 
@@ -364,151 +389,155 @@
             </t>
 
 	         <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
-
-            <section title="href" anchor="href">
-                <t>
-                    The value of the "href" link description property is a template used to determine the target URI of the related resource.
-                    The value of the instance property MUST be resolved as a <xref target="RFC3986">URI-reference</xref> against the base URI of the instance.
-                </t>
-                <t>
-                    This property is REQUIRED.
-                </t>
-
-                <section title="URI Templating">
+            <section title="URI Templating">
+                <section title="href" anchor="href">
                     <t>
-                        The value of "href" is to be used as a URI Template, as defined in <xref target="RFC6570">RFC 6570</xref>.  However, some special considerations apply:
+                        The value of the "href" link description property is a template
+                        used to determine the target URI of the related resource.
                     </t>
-
-                    <section title="Pre-processing">
+                    <t>
+                        The value of "href" is to be used as a URI Template, as defined in
+                        <xref target="RFC6570">RFC 6570</xref>.  Template variables are
+                        filled out using data from the identically named property of the instance.
+                        For JSON property names that are not allowed by the URI Template
+                        specification, or instance data other than a simple object, see the
+                        <xref target="href-vars">"hrefVars"</xref> keyword.
+                    </t>
+                    <t>
+                        After the template is filled out, the resulting value MUST be
+                        resolved as a <xref target="RFC3986">URI-reference</xref> against
+                        the base URI of the instance.
+                    </t>
+                    <t>
+                        This property is REQUIRED.
+                    </t>
+                </section>
+                <section title="hrefVars" anchor="href-vars">
+                    <t>
+                        The value of the "hrefVars" link description property MUST be an object.
+                        The property names in the object SHOULD each be identical to a template
+                        variable from the "href" value in the same link description.
+                        The value of each property MUST be a
+                        <xref target="relative-json-pointer">Relative JSON Pointer</xref>.
+                    </t>
+                    <t>
+                        The <xref target="RFC6570">URI Template specification</xref> restricts
+                        the set of characters available for variable names.  Property names in
+                        JSON, however, can be any UTF-8 string.  Additionally, JSON instances
+                        may have nested array or object values, or may be nested within an
+                        array or object, or may be of a type other than object.  The "hrefVars"
+                        keyword maps flat UTF-8 template variable names into any legal JSON
+                        name at any point in the instance.
+                    </t>
+                    <t>
+                        Template variables from "href" which do not appear as properties can be
+                        considered to be present with a relative JSON pointer to the identically
+                        named instance property at the current level.
+                    </t>
+                    <figure>
+                        <preamble>
+                            For example, if "href" has a single template variable "foo",
+                            and "hrefVars" is absent or an empty object, it can be considered
+                            to be present as follows:
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "href": "/foos/{foo}",
+    "hrefVars": {
+        "foo": "0/foo"
+    }
+}]]>
+                        </artwork>
+                    </figure>
+                    <t>
+                        To locate the instance data to fill out the variable named by
+                        a property in "hrefVars", apply the relative JSON pointer to the instance
+                        and use the resulting value.
+                    </t>
+                    <figure>
+                        <preamble>
+                            For example, if a schema is defined:
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "type": "object",
+    "properties": {
+        "": {"enum": ["x", "y"]}
+        "foos": {
+            "type": "array",
+            "items": {"type": "number"},
+        },
+        "bar": {
+            "type": "string"
+            "links": [{
+                "rel": "example1",
+                "href": "/{emptyKey}/{bar}",
+                "hrefVars": {
+                    "emptyKey": "1/",
+                    "bar": "0"
+                }
+            }]
+        },
+    },
+    "links": [{
+        "rel": "example2",
+        "href": "/stuff/{bar}/{firstFoo}",
+        "hrefVars": {
+            "firstFoo": "0/foos/0"
+        }
+    }]
+}]]>
+                        </artwork>
+                    </figure>
+                    <figure>
+                        <preamble>
+                            And if it is applied to an instance:
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "foos": [99, 98, 97],
+    "": "x",
+    "bar": "buzz"
+}]]>
+                        </artwork>
+                        <postamble>
+                            It produces URI References of "/x/buzz" for the example1 link, and
+                            "/stuff/buzz/99" for the example2 link.
+                        </postamble>
+                    </figure>
+                </section>
+                <section title="Values for substitution">
+                    <t>
+                        After applying "hrefVars", each variable in the URI Template in "href"
+                        MUST be filled out using the resulting value (if it exists).
+                    </t>
+                    <section title="Converting to strings">
                         <t>
-                            <cref>This pre-processing section is subject to significant change in upcoming drafts.</cref>
-                        </t>
-                        <t>
-                            The <xref target="RFC6570">URI Template specification</xref> restricts the set of characters available for variable names.
-                            Property names in JSON, however, can be any UTF-8 string.
-                        </t>
-
-                        <t>
-                            To allow the use of any JSON property name in the template, before using the value of "href" as a URI Template, the following pre-processing rules MUST be applied, in order:
-                        </t>
-
-                        <section title="Bracket escaping">
-                            <t>
-                                The purpose of this step is to allow the use of brackets to percent-encode variable names inside curly brackets.
-                                Variable names to be escaped are enclosed within rounded brackets, with the close-rounded-bracket character ")" being escaped as a pair of close-rounded-brackets "))".
-                                Since the empty string is not a valid variable name in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
-                            </t>
-
-                            <t>
-                                The rules are as follows:
-                            </t>
-
-                            <t>
-                                Find the largest possible sections of the text such that:
-                                <list>
-                                    <t>do not contain an odd number of close-rounded-bracket characters ")" in sequence in that section of the text</t>
-                                    <t>are surrounded by a pair of rounded brackets: ( ), where</t>
-                                    <t>the surrounding rounded brackets are themselves contained within a pair of curly brackets: { }</t>
-                                </list>
-                            </t>
-                            <t>
-                                Each of these sections of the text (including the surrounding rounded brackets) MUST be replaced, according to the following rules:
-                                <list>
-                                    <t>If the brackets contained no text (the empty string), then they are replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
-                                    <t>Otherwise, the enclosing brackets are removed, and the inner text used after the following modifications
-                                        <list>
-                                            <t>all pairs of close-brackets "))" are replaced with a single close bracket</t>
-                                            <t>after that, the text is replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this requires encoding characters such as "*" and "!")</t>
-                                        </list>
-                                    </t>
-                                </list>
-                            </t>
-                        </section>
-
-                        <section title="Replacing $">
-                            <t>
-                                After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
-                            </t>
-                            <t>
-                                The purpose of this stage is to allow the use of the instance value itself (instead of its object properties or array items) in the URI Template, by the special value "%73elf".
-                            </t>
-                        </section>
-
-                        <section title="Choice of special-case values">
-                            <t>
-                                The special-case values of "%73elf" and "%65mpty" were chosen because they are unlikely to be accidentally generated by either a human or automated escaping.
-                            </t>
-                        </section>
-
-                        <section title="Examples">
-                            <texttable>
-                                <preamble>For example, here are some possible values for "href", followed by the results after pre-processing:</preamble>
-                                <ttcol>Input</ttcol>
-                                <ttcol>Output</ttcol>
-                                <c>"no change"</c>           <c>"no change"</c>
-                                <c>"(no change)"</c>         <c>"(no change)"</c>
-                                <c>"{(escape space)}"</c>    <c>"{escape%20space}"</c>
-                                <c>"{(escape+plus)}"</c>     <c>"{escape%2Bplus}"</c>
-                                <c>"{(escape*asterisk)}"</c> <c>"{escape%2Aasterisk}"</c>
-                                <c>"{(escape(bracket)}"</c>  <c>"{escape%28bracket}"</c>
-                                <c>"{(escape))bracket)}"</c> <c>"{escape%29bracket}"</c>
-                                <c>"{(a))b)}"</c>            <c>"{a%29b}</c>
-                                <c>"{(a (b)))}"</c>          <c>"{a%20%28b%29}</c>
-                                <c>"{()}"</c>                <c>"{%65mpty}</c>
-                                <c>"{+$*}"</c>               <c>"{+%73elf*}</c>
-                                <c>"{+($)*}"</c>             <c>"{+%24*}</c>
-                                <postamble>
-                                    Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
-                                </postamble>
-                            </texttable>
-                        </section>
-                    </section>
-
-                    <section title="Values for substitution">
-                        <t>
-                            After pre-processing, the URI Template is filled out using data from the instance.
-                            To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
-                        </t>
-
-                        <t>
-                            For a given variable name in the URI Template, the value to use is determined as follows:
+                            When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
                             <list>
-                                <t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
-                                <t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
-                                <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
-                                <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t>
+                                <t>null values SHOULD be replaced by the text "null"</t>
+                                <t>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"</t>
+                                <t>numbers SHOULD be replaced with their original JSON representation.</t>
                             </list>
                         </t>
-
-                        <section title="Converting to strings">
-                            <t>
-                                When any value referenced by the URI template is null, a boolean or a number, then it should first be converted into a string as follows:
-                                <list>
-                                    <t>null values SHOULD be replaced by the text "null"</t>
-                                    <t>boolean values SHOULD be replaced by their lower-case equivalents: "true" or "false"</t>
-                                    <t>numbers SHOULD be replaced with their original JSON representation.</t>
-                                </list>
-                            </t>
-                            <t>
-                                In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
-                                Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
-                            </t>
-                        </section>
-                    </section>
-
-                    <section title="Missing values">
                         <t>
-                            Sometimes, the appropriate values will not be available.
-                            For example, the template might specify the use of object properties, but the instance is an array or a string.
-                        </t>
-
-                        <t>
-                            If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
-                            Otherwise, the link definition SHOULD be considered not to apply to the instance.
+                            In some software environments the original JSON representation of a number will not be available (there is no way to tell the difference between 1.0 and 1), so any reasonable representation should be used.
+                            Schema and API authors should bear this in mind, and use other types (such as string or boolean) if the exact representation is important.
                         </t>
                     </section>
                 </section>
 
+                <section title="Missing values">
+                    <t>
+                        Sometimes, the appropriate values will not be available.
+                        For example, the template might specify the use of object properties, but the instance is an array or a string.
+                    </t>
+
+                    <t>
+                        If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
+                        Otherwise, the link definition SHOULD be considered not to apply to the instance.
+                    </t>
+                </section>
             </section>
 
             <section title="rel">
@@ -867,6 +896,15 @@ GET /foo/
                     <date year="2016" month="October"/>
                 </front>
                 <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-00" />
+            </reference>
+            <reference anchor="relative-json-pointer"
+                target="http://tools.ietf.org/html/draft-luff-relative-json-pointer-00">
+                <front>
+                    <title>Relative JSON Pointers (work in progress)</title>
+                    <author initials="G." surname="Luff"></author>
+                    <date year="2013" month="July"/>
+                </front>
+                <seriesInfo name="Internet-Draft" value="draft-luff-relative-json-pointer-00" />
             </reference>
         </references>
         <references title="Informative References">
