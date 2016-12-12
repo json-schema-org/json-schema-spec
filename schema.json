@@ -1,7 +1,7 @@
 {
-    "id": "http://json-schema.org/draft/schema#",
     "$schema": "http://json-schema.org/draft/schema#",
-    "description": "Core schema meta-schema",
+    "id": "http://json-schema.org/draft/schema#",
+    "title": "Core schema meta-schema",
     "definitions": {
         "schemaArray": {
             "type": "array",
@@ -19,7 +19,15 @@
             ]
         },
         "simpleTypes": {
-            "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
+            "enum": [
+                "array",
+                "boolean",
+                "integer",
+                "null",
+                "number",
+                "object",
+                "string"
+            ]
         },
         "stringArray": {
             "type": "array",
