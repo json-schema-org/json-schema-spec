@@ -461,6 +461,10 @@
                     An object instance is valid against this keyword if its
                     property set contains all elements in this keyword's array value.
                 </t>
+                <t>
+                    If this keyword is not present, it may be considered present
+                    as an empty array.
+                </t>
             </section>
 
             <section title="properties">
@@ -604,7 +608,7 @@
             </section>
 
             <section title="anyOf">
-                    <t>
+                <t>
                     This keyword's value MUST be an array. This array MUST have at least one
                     element.
                 </t>
