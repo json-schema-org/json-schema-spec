@@ -258,6 +258,9 @@
                     The value of "exclusiveMaximum" MUST be number, representing an exclusive upper limit for a numeric instance, or a boolean. Schemas SHOULD NOT use the boolean form.
                 </t>
                 <t>
+                    If "exclusiveMaximum" is a boolean, then "maximum" MUST be present, and "exclusiveMinimum" (if present) MUST also be a boolean.
+                </t>
+                <t>
                     <cref>The boolean form of "exclusiveMaximum" is expected to be removed in the future.</cref>
                 </t>
                 <t>
@@ -279,6 +282,9 @@
             <section title="exclusiveMinimum">
                 <t>
                     The value of "exclusiveMinimum" MUST be number, representing an exclusive upper limit for a numeric instance, or a boolean. Schemas SHOULD NOT use the boolean form.
+                </t>
+                <t>
+                    If "exclusiveMinimum" is a boolean, then "minimum" MUST be present, and "exclusiveMaximum" (if present) MUST also be a boolean.
                 </t>
                 <t>
                     <cref>The boolean form of "exclusiveMinimum" is expected to be removed in the future.</cref>
