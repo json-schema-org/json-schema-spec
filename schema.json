@@ -35,7 +35,7 @@
             "uniqueItems": true
         }
     },
-    "type": "object",
+    "type": ["object", "boolean"],
     "properties": {
         "id": {
             "type": "string",
@@ -77,13 +77,7 @@
             "type": "string",
             "format": "regex"
         },
-        "additionalItems": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ],
-            "default": {}
-        },
+        "additionalItems": { "$ref": "#" },
         "items": {
             "anyOf": [
                 { "$ref": "#" },
@@ -101,13 +95,7 @@
         "maxProperties": { "$ref": "#/definitions/positiveInteger" },
         "minProperties": { "$ref": "#/definitions/positiveIntegerDefault0" },
         "required": { "$ref": "#/definitions/stringArray" },
-        "additionalProperties": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ],
-            "default": {}
-        },
+        "additionalProperties": { "$ref": "#" },
         "definitions": {
             "type": "object",
             "additionalProperties": { "$ref": "#" },
