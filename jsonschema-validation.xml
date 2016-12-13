@@ -548,6 +548,17 @@
                 </t>
             </section>
 
+            <section title="propertyNames">
+                <t>
+                    The value of "propertyNames" MUST be a valid JSON Schema.
+                </t>
+                <t>
+                    If the instance is an object, this keyword validates if every property name in the instance
+                    validates against the provided schema.
+                    Note the property name that the schema is testing will always be a string.
+                </t>
+            </section>
+
             <section title="enum">
                 <t>
                     The value of this keyword MUST be an array. This array SHOULD have at
