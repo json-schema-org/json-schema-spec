@@ -30,3 +30,11 @@ The "master" branch should always be Internet-Draft ready. The document editor i
 2. Perform a `make json-schema.tar.gz` and publish a release to GitHub, tagging with the expected name of json-schema-core if it has any updates, or if not, the name of the document being updated.
 3. Publish the new draft through the IETF Datatracker I-D submission page
 4. Update the HTML versions on the website
+
+## Meta-schema publish process
+
+1. Create a new directory in archive/ with an incremented number
+1. Copy the meta-schemas to archive/
+1. Edit the meta-schema URIs
+1. Issue a PR to the website to publish the meta-schema
+1. Issue a PR to <https://github.com/awwright/json-metaschema> to update the meta-schemas
