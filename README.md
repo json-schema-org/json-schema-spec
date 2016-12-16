@@ -10,15 +10,6 @@ Specifications are starting to get written. Reviews, comments and suggestions
 are of paramount importance to JSON Schema. It is humbly asked to you, dear
 reader, that you bring your contribution.
 
-## Status
-For the current status of issues and pull requests, please see the following labels
-
-[![Available](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Status:%20Available.svg?style=flat)](https://github.com/json-schema-org/json-schema-spec/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Available%22) [![In Progress](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Status:%20In%20Progress.svg?style=flat)](https://github.com/json-schema-org/json-schema-spec/labels/Status:%20In%20Progress) [![Review Needed](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Status:%20Review%20Needed.svg?style=flat)](https://github.com/json-schema-org/json-schema-spec/labels/Status%3A%20Review%20Needed)
-
-[![Critical](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Priority:%20Critical.svg?style=flat
-)](https://github.com/json-schema-org/json-schema-spec/labels/Priority%3A%20Critical) [![High](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Priority:%20High.svg?style=flat)](https://github.com/json-schema-org/json-schema-spec/labels/Priority%3A%20High) [![Medium](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Priority:%20Medium.svg?style=flat)](https://github.com/json-schema-org/json-schema-spec/labels/Priority%3A%20Medium) [![Low](https://img.shields.io/waffle/label/json-schema-org/json-schema-spec/Priority:%20Low.svg?style=flat)](https://github.com/json-schema-org/json-schema-spec/labels/Priority%3A%20Low) 
-
-Labels are assigned based on [Sensible Github Labels](https://github.com/Relequestual/sensible-github-labels).
 
 ## Contents
 
