@@ -165,6 +165,58 @@
 
         <section title="General validation considerations">
 
+            <section title="Constraints and missing keywords">
+                <t>
+                    Each JSON Schema validation keyword adds constraints that
+                    an instance must satisfy in order to successfully validate.
+                </t>
+                <t>
+                    Validation keywords that are missing never restrict validation.
+                    In some cases, this no-op behavior is identical to a keyword that
+                    exists with certain values, and these values are noted where relevant.
+                </t>
+                <figure>
+                    <preamble>
+                        From this principle, it follows that all JSON values
+                        successfully validate against the empty schema:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{}
+]]>
+                    </artwork>
+                </figure>
+                <figure>
+                    <preamble>
+                        Similarly, it follows that no JSON value successfully
+                        validates against the empty schema's negation:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "not": {}
+}
+]]>
+                    </artwork>
+                </figure>
+            </section>
+
+            <section title="Keyword independence">
+                <t>
+                    Validation keywords typically operate independently, without
+                    affecting each other's outcomes.
+                </t>
+                <t>
+                    For schema author convenience, there are some exceptions:
+                    <list>
+	                    <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties"</t>
+                        <t>"additionalItems", whose behavior is defined in terms of "items"</t>
+                        <t>"minimum" and "maximum", whose behavior may change for a special value of "exclusiveMinimum" and "exclusiveMaximum", respectively</t>
+                    </list>
+                    </list>
+                </t>
+            </section>
+
             <section title="Keywords and instance primitive types">
                 <t>
                     Most validation keywords only limit the range of values within a certain primitive type.
@@ -176,44 +228,6 @@
                     If the instance is a number, boolean, null, array, or object, the keyword passes validation.
                 </t>
             </section>
-
-            <section title="Validation of primitive types and child values">
-                <t>
-                    Two of the primitive types, array and object, allow for child values.  The validation of
-                    the primitive type is considered separately from the validation of child instances.
-                </t>
-                <t>
-                    For arrays, primitive type validation consists of validating restrictions on length.
-                </t>
-                <t>
-                    For objects, primitive type validation consists of validating restrictions on the presence
-                    or absence of property names.
-                </t>
-            </section>
-
-            <section title="Missing keywords">
-                <t>
-                    Validation keywords that are missing never restrict validation.
-                    In some cases, this no-op behavior is identical to a keyword that exists with certain values,
-                    and these values are noted where known.
-                </t>
-            </section>
-
-            <section title="Linearity">
-                <!-- I call this "linear" in the same manner e.g. waves are linear, they don't interact with each other -->
-                <t>
-                    Validation keywords typically operate independent of each other, without affecting each other.
-                </t>
-                <t>
-                    For author convenience, there are some exceptions:
-                    <list>
-                        <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties";</t>
-                        <t>"additionalItems", whose behavior is defined in terms of "items"; and</t>
-                        <t>"minimum" and "maximum", whose behavior may change for a special value of "exclusiveMinimum" and "exclusiveMaximum", respectively.</t>
-                    </list>
-                </t>
-            </section>
-
         </section>
 
         <section title="Meta-schema">
