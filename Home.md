@@ -2,13 +2,15 @@ Welcome to the json-schema-spec wiki!
 
 ## Issues
 
-Issues should idenfify an problem, enhancement, or use case; and propose some course of action for the draft. 
+Issues should identify an problem, enhancement, or use case; and propose some course of action for the draft. For alternate support channels, [see the json-schema.org website](http://json-schema.org/).
 
 Issues waiting for user feedback will be tagged "Feedback". Up to two weeks will be given for feedback to be provided.
 
 If there seems to be consensus around an issue, the issue will be taken up (and tagged with a milestone) or closed.
 
 ## Pull requests
+
+We welcome pull requests, both for editorial suggestions and to resolve open issues.
 
 If the pull request would solve a particular issue, reference the issue in the pull request description.
 
