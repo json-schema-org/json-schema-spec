@@ -1,4 +1,4 @@
-Welcome to the json-schema-spec wiki!
+# JSON Schema
 
 ## Issues
 
@@ -25,6 +25,10 @@ An Internet-Draft publication replaces previous documents in their entirety. Beh
 The meta-schema URI is used to differentiate between different vocabularies (Validation and Hyper-schema). The authority on JSON Schema behavior is the respective specification document, not the JSON meta-schema; the JSON version of the meta-schema is maintained in an informative capacity only. However, the meta-schema URI referred to in the document should desginate a fixed JSON document, and updates to this document should be publised at a new URI. Updates should be made to the meta-schema and published at a time when it becomes desirable for new behaviors and features to be described in this fashion.
 
 The "master" branch should always be Internet-Draft ready. The document editor is responsible for ensuring that the writing meets best practices for an I-D. An I-D will be published from "master" branch when wider review is desired, at the editor's discretion.
+
+## Conduct
+
+All official channels including the mailing list, GitHub organization, and Freenode channel, follow the IETF Guidelines for Conduct as specified in [RFC7154](https://tools.ietf.org/html/rfc7154).
 
 ## I-D publish process
 
