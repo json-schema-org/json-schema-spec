@@ -191,7 +191,11 @@
                 </t>
             </section>
 
-            <section title="Missing keywords">
+            <section title="Constraints and missing keywords">
+                <t>
+                    Each JSON Schema validation keyword adds constraints that
+                    an instance must satisfy in order to successfully validate.
+                </t>
                 <t>
                     Validation keywords that are missing never restrict validation.
                     In some cases, this no-op behavior is identical to a keyword that exists with certain values,
@@ -199,13 +203,13 @@
                 </t>
             </section>
 
-            <section title="Linearity">
-                <!-- I call this "linear" in the same manner e.g. waves are linear, they don't interact with each other -->
+            <section title="Keyword independence">
                 <t>
-                    Validation keywords typically operate independent of each other, without affecting each other.
+                    Validation keywords typically operate independently, without
+                    affecting each other's outcomes.
                 </t>
                 <t>
-                    For author convenience, there are some exceptions:
+                    For schema author convenience, there are some exceptions:
                     <list>
                         <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties";</t>
                         <t>"additionalItems", whose behavior is defined in terms of "items"; and</t>
