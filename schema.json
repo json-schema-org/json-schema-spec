@@ -54,22 +54,19 @@
         "default": {},
         "multipleOf": {
             "type": "number",
-            "minimum": 0,
-            "exclusiveMinimum": true
+            "exclusiveMinimum": 0
         },
         "maximum": {
             "type": "number"
         },
         "exclusiveMaximum": {
-            "type": "boolean",
-            "default": false
+            "type": ["number", "boolean"]
         },
         "minimum": {
             "type": "number"
         },
         "exclusiveMinimum": {
-            "type": "boolean",
-            "default": false
+            "type": ["number", "boolean"]
         },
         "maxLength": { "$ref": "#/definitions/positiveInteger" },
         "minLength": { "$ref": "#/definitions/positiveIntegerDefault0" },
@@ -143,10 +140,6 @@
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" }
-    },
-    "dependencies": {
-        "exclusiveMaximum": [ "maximum" ],
-        "exclusiveMinimum": [ "minimum" ]
     },
     "default": {}
 }
