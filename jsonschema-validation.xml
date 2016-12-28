@@ -213,7 +213,6 @@
                     <list>
                         <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties";</t>
                         <t>"additionalItems", whose behavior is defined in terms of "items"; and</t>
-                        <t>"minimum" and "maximum", whose behavior may change for a special value of "exclusiveMinimum" and "exclusiveMaximum", respectively.</t>
                     </list>
                 </t>
             </section>
@@ -248,21 +247,16 @@
                     The value of "maximum" MUST be a number, representing an inclusive upper limit for a numeric instance.
                 </t>
                 <t>
-                    If "exclusiveMaximum" is true, see the validation rules for that keyword instead.
-                    Else if the instance is a number, then this keyword validates only if the instance is less than or exactly equal to "maximum".
+                    If the instance is a number, then this keyword validates only if the instance is less than or exactly equal to "maximum".
                 </t>
             </section>
 
             <section title="exclusiveMaximum">
                 <t>
-                    The value of "exclusiveMaximum" MUST be number, representing an exclusive upper limit for a numeric instance, or a boolean. Schemas SHOULD NOT use the boolean form.
+                    The value of "exclusiveMaximum" MUST be number, representing an exclusive upper limit for a numeric instance.
                 </t>
                 <t>
-                    <cref>The boolean form of "exclusiveMaximum" is expected to be removed in the future.</cref>
-                </t>
-                <t>
-                    If "exclusiveMaximum" is true, "maximum" is a number, and the instance is a number, then the instance is valid only if it has a value strictly less than (not equal to) "maximum".
-                    Else if "exclusiveMaximum" is a number and the instance is a number, then the instance is valid only if it has a value strictly less than (not equal to) "exclusiveMaximum".
+                    If the instance is a number, then the instance is valid only if it has a value strictly less than (not equal to) "exclusiveMaximum".
                 </t>
             </section>
 
@@ -271,21 +265,16 @@
                     The value of "minimum" MUST be a number, representing an inclusive upper limit for a numeric instance.
                 </t>
                 <t>
-                    If "exclusiveMinimum" is true, see the validation rules for that keyword instead.
-                    Else if the instance is a number, then this keyword validates only if the instance is greater than or exactly equal to "minimum".
+                    If the instance is a number, then this keyword validates only if the instance is greater than or exactly equal to "minimum".
                 </t>
             </section>
 
             <section title="exclusiveMinimum">
                 <t>
-                    The value of "exclusiveMinimum" MUST be number, representing an exclusive upper limit for a numeric instance, or a boolean. Schemas SHOULD NOT use the boolean form.
+                    The value of "exclusiveMinimum" MUST be number, representing an exclusive upper limit for a numeric instance.
                 </t>
                 <t>
-                    <cref>The boolean form of "exclusiveMinimum" is expected to be removed in the future.</cref>
-                </t>
-                <t>
-                    If "exclusiveMinimum" is true, "minimum" is a number, and the instance is a number, then the instance is valid only if it has a value strictly greater than (not equal to) "minimum".
-                    Else if "exclusiveMinimum" is a number and the instance is a number, then the instance is valid only if it has a value strictly greater than (not equal to) "exclusiveMinimum".
+                    If the instance is a number, then the instance is valid only if it has a value strictly greater than (not equal to) "exclusiveMinimum".
                 </t>
             </section>
 
@@ -691,8 +680,7 @@
     "definitions": {
         "positiveInteger": {
             "type": "integer",
-            "minimum": 0,
-            "exclusiveMinimum": true
+            "exclusiveMinimum": 0,
         }
     }
 }
