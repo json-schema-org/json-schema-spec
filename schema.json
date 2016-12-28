@@ -54,23 +54,38 @@
         "default": {},
         "multipleOf": {
             "type": "number",
-            "minimum": 0,
-            "exclusiveMinimum": true
+            "exclusiveMinimum": 0
         },
         "maximum": {
             "type": "number"
         },
-        "exclusiveMaximum": {
-            "type": "boolean",
-            "default": false
-        },
         "minimum": {
             "type": "number"
         },
-        "exclusiveMinimum": {
-            "type": "boolean",
-            "default": false
-        },
+        "oneOf": [
+            {
+                "exclusiveMaximum": {
+                    "type": "number"
+                },
+                "exclusiveMinimum": {
+                    "type": "number"
+                }
+            },
+            {
+                "exclusiveMaximum": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "exclusiveMinimum": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "dependencies": {
+                    "exclusiveMaximum": [ "maximum" ],
+                    "exclusiveMinimum": [ "minimum" ]
+                }
+            }
+        ],
         "maxLength": { "$ref": "#/definitions/positiveInteger" },
         "minLength": { "$ref": "#/definitions/positiveIntegerDefault0" },
         "pattern": {
@@ -143,10 +158,6 @@
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" }
-    },
-    "dependencies": {
-        "exclusiveMaximum": [ "maximum" ],
-        "exclusiveMinimum": [ "minimum" ]
     },
     "default": {}
 }
