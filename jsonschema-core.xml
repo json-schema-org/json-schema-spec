@@ -347,24 +347,27 @@
                 </t>
             </section>
 
-            <section title='The "id" keyword'>
+            <section title='The "$base" keyword'>
                 <t>
-                    The "id" keyword defines a URI for the schema,
-                    and the base URI that other URI references within the schema are resolved against.
-                    The "id" keyword itself is resolved against the base URI that the object as a whole appears in.
+                    The "$base" keyword defines the base URI against which
+                    other URI references within the schema are resolved.
+                    The "$base" keyword itself is resolved against the base URI
+                    in which the object as a whole appears.
                 </t>
                 <t>
                     If present, the value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
-                    This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &lt;&gt;.
+                    This value SHOULD be normalized, and SHOULD NOT contain a fragment or be an empty string.  Fragments cannot affect the base URI, and MUST be ignored.  To provide a fragment identifier for a schema, use <xref target="anchor">"$anchor"</xref>.
                 </t>
                 <t>
                     The root schema of a JSON Schema document SHOULD contain an "id" keyword with an absolute-URI (containing a scheme, but no fragment).
                 </t>
+            </section>
+
+            <section title='The "$anchor" keyword' anchor="anchor">
                 <t>
                     To name subschemas in a JSON Schema document,
-                    subschemas can use "id" to give themselves a document-local identifier.
-                    This form of "id" keyword MUST begin with a hash ("#") to identify it as a fragment URI reference,
-                    followed by a letter ([A-Za-z]), followed by any number of
+                    subschemas can use "$anchor" to give themselves a document-local identifier for use as a plain name URI fragment.
+                    This identifier MUST start with a letter ([A-Za-z]), followed by any number of
                     letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
                     <!-- This restriction is the same one defined by XML -->
                 </t>
@@ -374,18 +377,18 @@
                         <artwork>
 <![CDATA[
 {
-    "id": "http://example.com/root.json",
+    "$base": "http://example.com/root.json",
     "definitions": {
-        "A": { "id": "#foo" },
+        "A": { "$anchor": "foo" },
         "B": {
-            "id": "other.json",
+            "$base": "other.json",
             "definitions": {
-                "X": { "id": "#bar" },
-                "Y": { "id": "t/inner.json" }
+                "X": { "$anchor": "bar" },
+                "Y": { "$base": "t/inner.json" }
             }
         },
         "C": {
-            "id": "urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f"
+            "$base": "urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f"
         }
     }
 }
@@ -408,64 +411,65 @@
                         <t hangText="#/definitions/C">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                     </list>
                 </t>
-                <section title="Internal references">
-                    <t>
-                        Schemas can be identified by any URI that has been given to them, including a JSON Pointer or
-                        their URI given directly by "id".
-                    </t>
-                    <t>
-                        Tools SHOULD take note of the URIs that schemas, including subschemas, provide for themselves using "id".
-                        This is known as "Internal referencing".
-                    </t>
+            </section>
 
-                    <t>
-                        For example, consider this schema:
-                    </t>
+            <section title="Internal references">
+                <t>
+                    Schemas can be identified by any URI that has been given to them, including URIs using either
+                    a JSON Pointer fragment or the plain name fragment given directly by "$anchor".
+                </t>
+                <t>
+                    Tools SHOULD take note of the URIs that schemas, including subschemas, provide for themselves using "$base" and/or "$anchor".
+                    This is known as "Internal referencing".
+                </t>
 
-                    <figure>
-                        <artwork>
+                <t>
+                    For example, consider this schema:
+                </t>
+
+                <figure>
+                    <artwork>
 <![CDATA[
 {
-    "id": "http://example.net/root.json",
-    "items": {
-        "type": "array",
-        "items": { "$ref": "#item" }
+"$base": "http://example.net/root.json",
+"items": {
+    "type": "array",
+    "items": { "$ref": "#item" }
+},
+"definitions": {
+    "single": {
+        "$anchor": "item",
+        "type": "integer"
     },
-    "definitions": {
-        "single": {
-            "id": "#item",
-            "type": "integer"
-        },
-    }
+}
 }
 ]]>
-                        </artwork>
-                    </figure>
-                    <t>
-                        When an implementation encounters the &lt;#/definitions/single&gt; schema, it resolves the "id" URI reference
-                        against the current base URI to form &lt;http://example.net/root.json#item&gt;.
-                    </t>
-                    <t>
-                        When an implementation then looks inside the &lt;#/items&gt; schema, it encounters the &lt;#item&gt; reference,
-                        and resolves this to &lt;http://example.net/root.json#item&gt; which is understood as the schema defined elsewhere in the same document.
-                    </t>
-                </section>
-                <section title="External references">
-                    <t>
-                        To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
-                        As specified above, this does not necessarily mean anything is downloaded, but instead JSON Schema
-                        implementations SHOULD already understand the schemas they will be using, including the URIs that identify them.
-                    </t>
-                    <t>
-                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary schema and/or
-                        automatically associate a schema's "id"-given URI, depending on the trust that the the validator
-                        has in the schema.
-                    </t>
-                    <t>
-                        A schema MAY (and likely will) have multiple URIs, but there is no way for a URI to identify more than one schema.
-                        When multiple schemas try to identify with the same URI, validators SHOULD raise an error condition.
-                    </t>
-                </section>
+                    </artwork>
+                </figure>
+                <t>
+                    When an implementation encounters the &lt;#/definitions/single&gt; schema, it notices the anchor which is used with
+                    the current base URI to form &lt;http://example.net/root.json#item&gt;.
+                </t>
+                <t>
+                    When an implementation then looks inside the &lt;#/items&gt; schema, it encounters the &lt;#item&gt; reference,
+                    and resolves this to &lt;http://example.net/root.json#item&gt; which is understood as the schema defined elsewhere in the same document.
+                </t>
+            </section>
+            <section title="External references">
+                <t>
+                    To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
+                    As specified above, this does not necessarily mean anything is downloaded, but instead JSON Schema
+                    implementations SHOULD already understand the schemas they will be using, including the URIs that identify them.
+                </t>
+                <t>
+                    Implementations SHOULD be able to associate arbitrary URIs with an arbitrary schema and/or
+                    automatically associate a schema's "$base"- and "$anchor"-given URI, depending on the trust that the the validator
+                    has in the schema.
+                </t>
+                <t>
+                    A schema MAY (and likely will) have multiple URIs, but there is no way for a URI to identify more than one schema.
+                    When multiple schemas try to identify with the same URI, validators SHOULD raise an error condition.
+                </t>
             </section>
         </section>
 
