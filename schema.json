@@ -3,10 +3,25 @@
     "id": "http://json-schema.org/draft/schema#",
     "title": "Core schema meta-schema",
     "definitions": {
+        "jsonReference": {
+            "type": "object",
+            "properties": {
+                "$ref": {
+                    "type": "string",
+                    "format": "uriref"
+                }
+            },
+            "required": [ "$ref" ]
+        },
+        "notJsonReference": {
+            "not": {
+                "required": [ "$ref" ]
+            }
+        },
         "schemaArray": {
             "type": "array",
             "minItems": 1,
-            "items": { "$ref": "#" }
+            "items": { "$ref": "#/definitions/subSchema" }
         },
         "positiveInteger": {
             "type": "integer",
@@ -33,6 +48,17 @@
             "type": "array",
             "items": { "type": "string" },
             "uniqueItems": true
+        },
+        "subSchema": {
+            "oneOf": [
+                {
+                    "allOf": [
+                        { "$ref": "#" },
+                        { "$ref": "#/definitions/notJsonReference" }
+                    ]
+                },
+                { "$ref": "#/definitions/jsonReference" }
+            ]
         }
     },
     "type": ["object", "boolean"],
@@ -74,10 +100,10 @@
             "type": "string",
             "format": "regex"
         },
-        "additionalItems": { "$ref": "#" },
+        "additionalItems": { "$ref": "#/definitions/subSchema" },
         "items": {
             "anyOf": [
-                { "$ref": "#" },
+                { "$ref": "#/definitions/subSchema" },
                 { "$ref": "#/definitions/schemaArray" }
             ],
             "default": {}
@@ -92,27 +118,27 @@
         "maxProperties": { "$ref": "#/definitions/positiveInteger" },
         "minProperties": { "$ref": "#/definitions/positiveIntegerDefault0" },
         "required": { "$ref": "#/definitions/stringArray" },
-        "additionalProperties": { "$ref": "#" },
+        "additionalProperties": { "$ref": "#/definitions/subSchema" },
         "definitions": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$ref": "#/definitions/subSchema" },
             "default": {}
         },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$ref": "#/definitions/subSchema" },
             "default": {}
         },
         "patternProperties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$ref": "#/definitions/subSchema" },
             "default": {}
         },
         "dependencies": {
             "type": "object",
             "additionalProperties": {
                 "anyOf": [
-                    { "$ref": "#" },
+                    { "$ref": "#/definitions/subSchema" },
                     { "$ref": "#/definitions/stringArray" }
                 ]
             }
@@ -139,7 +165,7 @@
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" }
+        "not": { "$ref": "#/definitions/subSchema" }
     },
     "default": {}
 }
