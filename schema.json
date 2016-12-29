@@ -37,7 +37,12 @@
     },
     "type": ["object", "boolean"],
     "properties": {
+        "$id": {
+            "type": "string",
+            "format": "uriref"
+        },
         "id": {
+            "description": "This keyword has been deprecated in favor of \"$id\"",
             "type": "string",
             "format": "uriref"
         },
