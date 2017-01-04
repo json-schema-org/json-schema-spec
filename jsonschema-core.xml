@@ -347,23 +347,23 @@
                 </t>
             </section>
 
-            <section title='The "id" keyword'>
+            <section title='The "$id" keyword'>
                 <t>
-                    The "id" keyword defines a URI for the schema,
+                    The "$id" keyword defines a URI for the schema,
                     and the base URI that other URI references within the schema are resolved against.
-                    The "id" keyword itself is resolved against the base URI that the object as a whole appears in.
+                    The "$id" keyword itself is resolved against the base URI that the object as a whole appears in.
                 </t>
                 <t>
                     If present, the value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
                     This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &lt;&gt;.
                 </t>
                 <t>
-                    The root schema of a JSON Schema document SHOULD contain an "id" keyword with an absolute-URI (containing a scheme, but no fragment).
+                    The root schema of a JSON Schema document SHOULD contain an "$id" keyword with an absolute-URI (containing a scheme, but no fragment).
                 </t>
                 <t>
                     To name subschemas in a JSON Schema document,
-                    subschemas can use "id" to give themselves a document-local identifier.
-                    This form of "id" keyword MUST begin with a hash ("#") to identify it as a fragment URI reference,
+                    subschemas can use "$id" to give themselves a document-local identifier.
+                    This form of "$id" keyword MUST begin with a hash ("#") to identify it as a fragment URI reference,
                     followed by a letter ([A-Za-z]), followed by any number of
                     letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
                     <!-- This restriction is the same one defined by XML -->
@@ -374,18 +374,18 @@
                         <artwork>
 <![CDATA[
 {
-    "id": "http://example.com/root.json",
+    "$id": "http://example.com/root.json",
     "definitions": {
-        "A": { "id": "#foo" },
+        "A": { "$id": "#foo" },
         "B": {
-            "id": "other.json",
+            "$id": "other.json",
             "definitions": {
-                "X": { "id": "#bar" },
-                "Y": { "id": "t/inner.json" }
+                "X": { "$id": "#bar" },
+                "Y": { "$id": "t/inner.json" }
             }
         },
         "C": {
-            "id": "urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f"
+            "$id": "urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f"
         }
     }
 }
@@ -411,10 +411,10 @@
                 <section title="Internal references">
                     <t>
                         Schemas can be identified by any URI that has been given to them, including a JSON Pointer or
-                        their URI given directly by "id".
+                        their URI given directly by "$id".
                     </t>
                     <t>
-                        Tools SHOULD take note of the URIs that schemas, including subschemas, provide for themselves using "id".
+                        Tools SHOULD take note of the URIs that schemas, including subschemas, provide for themselves using "$id".
                         This is known as "Internal referencing".
                     </t>
 
@@ -426,14 +426,14 @@
                         <artwork>
 <![CDATA[
 {
-    "id": "http://example.net/root.json",
+    "$id": "http://example.net/root.json",
     "items": {
         "type": "array",
         "items": { "$ref": "#item" }
     },
     "definitions": {
         "single": {
-            "id": "#item",
+            "$id": "#item",
             "type": "integer"
         },
     }
@@ -442,7 +442,7 @@
                         </artwork>
                     </figure>
                     <t>
-                        When an implementation encounters the &lt;#/definitions/single&gt; schema, it resolves the "id" URI reference
+                        When an implementation encounters the &lt;#/definitions/single&gt; schema, it resolves the "$id" URI reference
                         against the current base URI to form &lt;http://example.net/root.json#item&gt;.
                     </t>
                     <t>
@@ -458,7 +458,7 @@
                     </t>
                     <t>
                         Implementations SHOULD be able to associate arbitrary URIs with an arbitrary schema and/or
-                        automatically associate a schema's "id"-given URI, depending on the trust that the the validator
+                        automatically associate a schema's "$id"-given URI, depending on the trust that the the validator
                         has in the schema.
                     </t>
                     <t>
@@ -587,7 +587,7 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
                 Validators MUST NOT fall into an infinite loop.
             </t>
             <t>
-                Servers need to take care that malicious parties can't change the functionality of existing schemas by uploading a schema with an pre-existing or very similar "id".
+                Servers need to take care that malicious parties can't change the functionality of existing schemas by uploading a schema with an pre-existing or very similar "$id".
             </t>
             <t>
                 Individual JSON Schema vocabularies are liable to also have their own security considerations. Consult the respective specifications for more information.
@@ -681,6 +681,7 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
                         <list style="symbols">
                             <t>Updated intro</t>
                             <t>Allowed for any schema to be a boolean</t>
+                            <t>Changed "id" to "$id"; all core keywords prefixed with "$"</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-00">
