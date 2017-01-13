@@ -473,7 +473,8 @@
 
                     <section title="Values for substitution">
                         <t>
-                            After pre-processing, the URI Template is filled out using data from the instance.
+                            After pre-processing, the URI Template is filled out using data from some combination of user input and the instance.
+
                             To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
                         </t>
 
@@ -485,6 +486,14 @@
                                 <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
                                 <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t>
                             </list>
+                        </t>
+
+                        <t>
+                            If <xref target="hrefSchema">"hrefSchema"</xref> is present and
+                            user input is provided, the input MUST be valid according to the value of "hrefSchema".
+                            Template variables, after the process listed above, MUST first
+                            be resolved from the user input instance.  Any variables left
+                            unresolved MUST be resolved from the resource instance.
                         </t>
 
                         <section title="Converting to strings">
@@ -506,16 +515,101 @@
                     <section title="Missing values">
                         <t>
                             Sometimes, the appropriate values will not be available.
-                            For example, the template might specify the use of object properties, but the instance is an array or a string.
+                            For example, the template might specify the use of object properties, but no such input was provide (or "hrefSchema" is not present), and the instance is an array or a string.
                         </t>
 
                         <t>
-                            If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
+                            If any of the values required for the template are present in neither the user input (if relevant) or the JSON instance, then substitute values MAY be provided from another source (such as default values).
                             Otherwise, the link definition SHOULD be considered not to apply to the instance.
                         </t>
                     </section>
                 </section>
 
+            </section>
+
+            <section title="hrefSchema" anchor="hrefSchema">
+                <t>
+                    The value of the "hrefSchema" link description property MUST be
+                    a valid JSON Schema.  This schema is used to validate user input
+                    for filling out the URI Template in
+                    <xref target="href">"href"</xref>, as described in that section.
+                </t>
+                <t>
+                    Omitting "hrefSchema" or setting the entire schema to "false" prevents
+                    any user input from being accepted.
+                </t>
+                <t>
+                    Implementations MUST NOT attempt to validate values resolved from
+                    instance data with "hrefSchema".  This allows for different
+                    validation rules for user input, such as supporting spelled-out
+                    months for date-time input but using the standard date-time
+                    format for storage.
+                </t>
+                <figure>
+                    <preamble>
+                        For example, this defines a schema for each of the query string
+                        parameters in the URI template:
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "href": "/foos{?condition,count,query}",
+    "hrefSchema": {
+        "properties": {
+            "condition": {
+                "type": "boolean",
+                "default": true
+            },
+            "count": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0
+            },
+            "query": {
+                "type": "string"
+            }
+        }
+    }
+}]]>
+                    </artwork>
+                </figure>
+                <figure>
+                    <preamble>
+                        In this example, the schema for "extra" is given as a reference
+                        to keep the user input validation constraints identical to the
+                        instance validation constraints for the corresponding property,
+                        while "id" is given a false schema to prevent user input for
+                        that variable.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "definitions": {
+        "extra": {
+            "type": "string",
+            "maxLength": 32
+        }
+    },
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "minimum": 1,
+            "readOnly": true
+        },
+        "extra": {"$ref": "#/definitions/extra"}
+    },
+    "links": [{
+        "rel": "self",
+        "href": "/things/{id}{?extra}",
+        "hrefSchema": {
+            "properties": {
+                "id": false,
+                "extra": {"$ref": "#/definitions/extra"}
+            }
+        }
+    }]
+}]]>
+                    </artwork>
+                </figure>
             </section>
 
             <section title="rel">
@@ -845,7 +939,10 @@ GET /foo/
                     </t>
 
                     <t>
-                        Note that this does not provide data for any URI templates.
+                        Note that this does not provide data for any URI templates.  That is handed by <xref target="hrefSchema">"hrefSchema"</xref>.  If the method is "get" and the resolved URI Template has a query string, the query string produced by input validated agaisnt "schema" replaces the existing query string.
+                    </t>
+
+                    <t>
                         This is a separate concept from the "targetSchema" property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
                     </t>
                 </section>
@@ -916,6 +1013,7 @@ GET /foo/
                     <t hangText="draft-wright-json-schema-hyperschema-01">
                         <list style="symbols">
                             <t>Fixed examples</t>
+                            <t>Added "hrefSchema" for user input to "href" URI Templates</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-hyperschema-00">
