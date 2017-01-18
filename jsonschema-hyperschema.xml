@@ -366,9 +366,33 @@
                 The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
             </t>
 
-            <t>
-                "Form"-like functionality can be defined by use of the "method" and "schema" keywords, which supplies a schema describing the data to supply to the server.
-            </t>
+            <section title="Links and data">
+                <t>
+                    "Form"-like functionality can be defined by use of the <xref target="method">"method"</xref> and <xref target="schema">"schema"</xref> keywords, which supplies a schema describing the data to supply to the server.
+                    Functionality equivalent to dynamic URI generation is available through the <xref target="href">"href"</xref> template and <xref target="hrefSchema">"hrefSchema"</xref>.
+                </t>
+                <t>
+                    The simplest kind of link has an "href" with no template variables, and no "schema".  This does not
+                    allow for any variance in the link URI, nor does it allow for a request document.
+                </t>
+                <t>
+                    An "href" with at least one template variable, but no "hrefSchema" or "schema", allows resolving
+                    the template variable from the instance, but does not allow resolving it
+                    from external data, nor does it allow a request document.
+                </t>
+                <t>
+                    An "href" with at least one template variable and with an "hrefSchema" allows using external
+                    data to resolve the template, and falls back to resolving any remaining variables from the instance.
+                </t>
+                <t>
+                    A link with a "schema" allows submitting external data either as a request body (if "method" is "post"),
+                    or as a URI query string (if "method" is "get").  Such a query string replaces any query string
+                    present after the "href" template is resolved.
+                </t>
+                <t>
+                    See the individual keyword descriptions below for details related to each of these cases.
+                </t>
+            </section>
 
 	         <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
 
@@ -473,7 +497,9 @@
 
                     <section title="Values for substitution">
                         <t>
-                            After pre-processing, the URI Template is filled out using data from some combination of user input and the instance.
+                            After pre-processing, the URI Template is filled out using data from some combination of an externa source and the instance.
+                            Where either instance data or external data may be used, this section will refer simply to "data" or to a "value".
+                            When the source is important, it is specified explicitly.
 
                             To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
                         </t>
@@ -481,19 +507,20 @@
                         <t>
                             For a given variable name in the URI Template, the value to use is determined as follows:
                             <list>
-                                <t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
-                                <t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
-                                <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
+                                <t>If the variable name is "%73elf", then the value itself MUST be used.</t>
+                                <t>If the variable name is "%65mpty", then the empty-string ("") property MUST be used (if it exists).</t>
+                                <t>If the data is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
                                 <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t>
                             </list>
                         </t>
 
                         <t>
                             If <xref target="hrefSchema">"hrefSchema"</xref> is present and
-                            user input is provided, the input MUST be valid according to the value of "hrefSchema".
+                            external input is provided, the input MUST be a valid instance according
+                            to the value of "hrefSchema".
                             Template variables, after the process listed above, MUST first
-                            be resolved from the user input instance.  Any variables left
-                            unresolved MUST be resolved from the resource instance.
+                            be resolved from the external data instance.  Any variables left
+                            unresolved MUST be resolved from the resource instance data.
                         </t>
 
                         <section title="Converting to strings">
@@ -531,16 +558,16 @@
                 <t>
                     The value of the "hrefSchema" link description property MUST be
                     a valid JSON Schema.  This schema is used to validate user input
-                    for filling out the URI Template in
+                    or other external data for filling out the URI Template in
                     <xref target="href">"href"</xref>, as described in that section.
                 </t>
                 <t>
                     Omitting "hrefSchema" or setting the entire schema to "false" prevents
-                    any user input from being accepted.
+                    any external data from being accepted.
                 </t>
                 <t>
                     Implementations MUST NOT attempt to validate values resolved from
-                    instance data with "hrefSchema".  This allows for different
+                    resource instance data with "hrefSchema".  This allows for different
                     validation rules for user input, such as supporting spelled-out
                     months for date-time input but using the standard date-time
                     format for storage.
@@ -575,9 +602,9 @@
                 <figure>
                     <preamble>
                         In this example, the schema for "extra" is given as a reference
-                        to keep the user input validation constraints identical to the
+                        to keep the external data validation constraints identical to the
                         instance validation constraints for the corresponding property,
-                        while "id" is given a false schema to prevent user input for
+                        while "id" is given a false schema to prevent external data for
                         that variable.
                     </preamble>
                     <artwork>
@@ -610,6 +637,12 @@
 }]]>
                     </artwork>
                 </figure>
+                <t>
+                    <cref>
+                        The above example simulates the behavior found in earlier drafts using only "hrefSchema",
+                        which would allow the concurrent use of "schema" on a "post" link.
+                    </cref>
+                </t>
             </section>
 
             <section title="rel">
@@ -878,7 +911,7 @@ GET /foo/
                     The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTML forms</xref>, by providing a means for making a request with client- or user-selected information.
                 </t>
 
-                <section title="method">
+                <section title="method" anchor="method">
                     <t>
                         This property specifies that the client can construct a templated query or non-idempotent request to a resource.
                     </t>
@@ -933,7 +966,7 @@ GET /foo/
                     </t>
                 </section>
 
-                <section title="schema">
+                <section title="schema" anchor="schema">
                     <t>
                         This property contains a schema which defines the acceptable structure of the document being encoded according to the "encType" property.
                     </t>
