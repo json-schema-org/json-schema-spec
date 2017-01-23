@@ -17,8 +17,9 @@
             "required": [ "href" ],
             "properties": {
                 "href": {
-                    "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
-                    "type": "string"
+                    "description": "a URI template, as defined by RFC 6570",
+                    "type": "string",
+                    "format": "uritemplate"
                 },
                 "hrefSchema": {
                     "description": "a schema for validating user input to the URI template, where the input is in the form of a JSON object with property names matching variable names in \"href\"",
