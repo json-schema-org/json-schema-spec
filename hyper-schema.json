@@ -20,6 +20,10 @@
                     "description": "a URI template, as defined by RFC 6570, with the addition of the $, ( and ) characters for pre-processing",
                     "type": "string"
                 },
+                "hrefSchema": {
+                    "description": "a schema for validating user input to the URI template, where the input is in the form of a JSON object with property names matching variable names in \"href\"",
+                    "allOf": [ {"$ref": "#"} ]
+                },
                 "rel": {
                     "description": "relation to the target resource of the link",
                     "type": "string"
