@@ -605,12 +605,8 @@
 
             <section title="allOf">
                 <t>
-                    This keyword's value MUST be an array.
-                    This array MUST have at least one element.
-                </t>
-                <t>
-                    Elements of the array MUST be objects. Each object MUST be a valid JSON
-                    Schema.
+                    This keyword's value MUST be a non-empty array.
+                    Each item of the array MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance validates successfully against this keyword if it validates
@@ -620,12 +616,8 @@
 
             <section title="anyOf">
                 <t>
-                    This keyword's value MUST be an array.
-                    This array MUST have at least one element.
-                </t>
-                <t>
-                    Elements of the array MUST be objects.
-                    Each object MUST be a valid JSON Schema.
+                    This keyword's value MUST be a non-empty array.
+                    Each item of the array MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance validates successfully against this keyword if it validates
@@ -635,12 +627,8 @@
 
             <section title="oneOf">
                 <t>
-                    This keyword's value MUST be an array.
-                    This array MUST have at least one element.
-                </t>
-                <t>
-                    Elements of the array MUST be objects.
-                    Each object MUST be a valid JSON Schema.
+                    This keyword's value MUST be a non-empty array.
+                    Each item of the array MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance validates successfully against this keyword if it validates
@@ -650,8 +638,7 @@
 
             <section title="not">
                 <t>
-                    This keyword's value MUST be an object.
-                    This object MUST be a valid JSON Schema.
+                    This keyword's value MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance is valid against this keyword if it fails to validate
