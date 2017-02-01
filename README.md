@@ -1,8 +1,8 @@
 ## Welcome to JSON Schema
 
-This repository contains the current, and historical, JSON Schema
-specifications.
+JSON Schema is a vocabulary that allows you to validate, annotate, and manipulate JSON documents.
 
+This repository contains the sources for current JSON Schema draft work.
 
 ## Call for reviews
 
