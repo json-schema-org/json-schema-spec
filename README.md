@@ -39,6 +39,9 @@ Descriptions of the xml2rfc, I-D documents, and RFC processes:
 * https://www.ietf.org/ietf-ftp/1id-guidelines.html
 * https://www.rfc-editor.org/rfc/rfc7322.txt
 
+## Previous versions
+
+For previous versions of the specification (like draft-4), please see the [Specification Links](https://github.com/json-schema-org/json-schema-spec/wiki/Specification-Links) page on our github wiki.
 
 ## The website
 
