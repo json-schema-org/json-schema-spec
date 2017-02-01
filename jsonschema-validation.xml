@@ -99,11 +99,6 @@
                 or object member values.
             </t>
             <t>
-                This specification uses the term "property set" to refer to the set of an object's
-                member names; for instance, the property set of JSON Object { "a": 1, "b": 2 } is
-                [ "a", "b" ].
-            </t>
-            <t>
                 Elements in an array value are said to be unique if no two elements of this array
                 are <xref target="json-schema">equal</xref>.
             </t>
@@ -167,8 +162,8 @@
 
             <section title="Keywords and instance primitive types">
                 <t>
-                    Most validation keywords only limit the range of values within a certain primitive type.
-                    When the primitive type of the instance is not of the type targeted by the keyword, the
+                    Most validation keywords only constrain values within a certain primitive type.
+                    When the type of the instance is not of the type targeted by the keyword, the
                     validation succeeds.
                 </t>
                 <t>
@@ -222,8 +217,8 @@
                 <t>
                     For schema author convenience, there are some exceptions:
                     <list>
-                        <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties";</t>
-                        <t>"additionalItems", whose behavior is defined in terms of "items"; and</t>
+                        <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties"; and</t>
+                        <t>"additionalItems", whose behavior is defined in terms of "items".</t>
                     </list>
                 </t>
             </section>
@@ -241,7 +236,7 @@
 
         <section title="Validation keywords">
             <t>
-                Validation keywords in a schema impose requirements for successfully validating an instance.
+                Validation keywords in a schema impose requirements for successful validation of an instance.
             </t>
 
             <section title="multipleOf">
@@ -290,11 +285,8 @@
             </section>
 
             <section title="maxLength">
-                <t>The value of this keyword MUST be a non-negative integer.</t>
                 <t>
-                    The value of this keyword MUST be an integer. This integer MUST be
-                    greater than, or equal to, 0.
-                </t>
+                    The value of this keyword MUST be a non-negative integer.</t>
                 <t>
                     A string instance is valid against this keyword if its
                     length is less than, or equal to, the value of this keyword.
@@ -307,6 +299,9 @@
 
             <section title="minLength">
                 <t>
+                    The value of this keyword MUST be a non-negative integer.
+                </t>
+                <t>
                     A string instance is valid against this keyword if its
                     length is greater than, or equal to, the value of this keyword.
                 </t>
@@ -316,12 +311,7 @@
                     characters as defined by <xref target="RFC7159">RFC 7159</xref>.
                 </t>
                 <t>
-                    The value of this keyword MUST be an integer. This integer MUST be
-                    greater than, or equal to, 0.
-                </t>
-                <t>
-                    "minLength", if absent, may be considered as being present with integer
-                    value 0.
+                    Omitting this keyword has the same behavior as a value of 0.
                 </t>
             </section>
 
@@ -343,9 +333,6 @@
                     The value of "items" MUST be either a valid JSON Schema or an array of valid JSON Schemas.
                 </t>
                 <t>
-                    If absent, it can be considered present with an empty schema.
-                </t>
-                <t>
                     This keyword determines how child instances validate for arrays,
                     and does not directly validate the immediate instance itself.
                 </t>
@@ -358,14 +345,14 @@
                     each element of the instance validates against the schema at the
                     same position, if any.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty schema.
+                </t>
             </section>
 
             <section title="additionalItems">
                 <t>
                     The value of "additionalItems" MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    If absent, it can be considered present with an empty schema.
                 </t>
                 <t>
                     This keyword determines how child instances validate for arrays,
@@ -381,12 +368,14 @@
                     schema (possibly the default value of an empty schema) is
                     applied to all elements.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty schema.
+                </t>
             </section>
 
             <section title="maxItems">
                 <t>
-                    The value of this keyword MUST be an integer. This integer MUST be
-                    greater than, or equal to, 0.
+                    The value of this keyword MUST be a non-negative integer.
                 </t>
                 <t>
                     An array instance is valid against "maxItems" if its size is
@@ -396,16 +385,14 @@
 
             <section title="minItems">
                 <t>
-                    The value of this keyword MUST be an integer. This integer MUST be
-                    greater than, or equal to, 0.
+                    The value of this keyword MUST be a non-negative integer.
                 </t>
                 <t>
                     An array instance is valid against "minItems" if its size is
                     greater than, or equal to, the value of this keyword.
                 </t>
                 <t>
-                    If this keyword is not present, it may be considered present with a
-                    value of 0.
+                    Omitting this keyword has the same behavior as a value of 0.
                 </t>
             </section>
 
@@ -419,8 +406,7 @@
                     successfully if all of its elements are unique.
                 </t>
                 <t>
-                    If not present, this keyword may be considered present with boolean
-                    value false.
+                    Omitting this keyword has the same behavior as a value of false.
                 </t>
             </section>
 
@@ -437,8 +423,7 @@
 
             <section title="maxProperties">
                 <t>
-                    The value of this keyword MUST be an integer. This integer MUST be
-                    greater than, or equal to, 0.
+                    The value of this keyword MUST be a non-negative integer.
                 </t>
                 <t>
                     An object instance is valid against "maxProperties" if its
@@ -449,8 +434,7 @@
 
             <section title="minProperties">
                 <t>
-                    The value of this keyword MUST be an integer. This integer MUST be
-                    greater than, or equal to, 0.
+                    The value of this keyword MUST be a non-negative integer.
                 </t>
                 <t>
                     An object instance is valid against "minProperties" if its
@@ -458,33 +442,28 @@
                     keyword.
                 </t>
                 <t>
-                    If this keyword is not present, it may be considered present with a
-                    value of 0.
+                    Omitting this keyword has the same behavior as a value of 0.
                 </t>
             </section>
 
             <section title="required">
                 <t>
-                    The value of this keyword MUST be an array. Elements of this array,
-                    if any, MUST be strings, and MUST be unique.
+                    The value of this keyword MUST be an array.
+                    Elements of this array, if any, MUST be strings, and MUST be unique.
                 </t>
                 <t>
-                    An object instance is valid against this keyword if its
-                    property set contains all elements in this keyword's array value.
+                    An object instance is valid against this keyword if every item in the array is
+                    the name of a property in the instance.
                 </t>
                 <t>
-                    If this keyword is not present, it may be considered present
-                    as an empty array.
+                    Omitting this keyword has the same behavior as an empty array.
                 </t>
             </section>
 
             <section title="properties">
                 <t>
-                    The value of "properties" MUST be an object. Each value of this object
-                    MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    If absent, it can be considered the same as an empty schema.
+                    The value of "properties" MUST be an object.
+                    Each value of this object MUST be a valid JSON Schema.
                 </t>
                 <t>
                     This keyword determines how child instances validate for objects,
@@ -496,6 +475,9 @@
                     instance for that name successfully validates against the
                     corresponding schema.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty object.
+                </t>
             </section>
 
             <section title="patternProperties">
@@ -504,9 +486,6 @@
                     of this object SHOULD be a valid regular expression, according to the
                     ECMA 262 regular expression dialect. Each property value of this object
                     MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    If absent, it can be considered the same as an empty schema.
                 </t>
                 <t>
                     This keyword determines how child instances validate for objects,
@@ -520,15 +499,14 @@
                     the child instance for that name successfully validates against each
                     schema that corresponds to a matching regular expression.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty object.
+                </t>
             </section>
 
             <section title="additionalProperties">
                 <t>
                     The value of "additionalProperties" MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    If "additionalProperties" is absent, it may be considered present with
-                    an empty schema as a value.
                 </t>
                 <t>
                     This keyword determines how child instances validate for objects,
@@ -542,6 +520,9 @@
                 <t>
                     For all such properties, child validation succeeds if the child instance
                     validates against the "additionalProperties" schema.
+                </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty schema.
                 </t>
             </section>
 
@@ -564,6 +545,9 @@
                     a property in the instance, each of the items in the dependency
                     value must be a property that exists in the instance.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty object.
+                </t>
             </section>
 
             <section title="propertyNames">
@@ -575,6 +559,9 @@
                     validates against the provided schema.
                     Note the property name that the schema is testing will always be a string.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as an empty schema.
+                </t>
             </section>
 
             <section title="enum">
@@ -582,13 +569,12 @@
                     The value of this keyword MUST be an array. This array SHOULD have at
                     least one element. Elements in the array SHOULD be unique.
                 </t>
-
-                <t>
-                    Elements in the array MAY be of any type, including null.
-                </t>
                 <t>
                     An instance validates successfully against this keyword if its value is
                     equal to one of the elements in this keyword's array value.
+                </t>
+                <t>
+                    Elements in the array might be of any value, including null.
                 </t>
             </section>
 
@@ -619,12 +605,8 @@
 
             <section title="allOf">
                 <t>
-                    This keyword's value MUST be an array. This array MUST have at least one
-                    element.
-                </t>
-                <t>
-                    Elements of the array MUST be objects. Each object MUST be a valid JSON
-                    Schema.
+                    This keyword's value MUST be a non-empty array.
+                    Each item of the array MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance validates successfully against this keyword if it validates
@@ -634,12 +616,8 @@
 
             <section title="anyOf">
                 <t>
-                    This keyword's value MUST be an array. This array MUST have at least one
-                    element.
-                </t>
-                <t>
-                    Elements of the array MUST be objects. Each object MUST be a valid JSON
-                    Schema.
+                    This keyword's value MUST be a non-empty array.
+                    Each item of the array MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance validates successfully against this keyword if it validates
@@ -649,12 +627,8 @@
 
             <section title="oneOf">
                 <t>
-                    This keyword's value MUST be an array. This array MUST have at least one
-                    element.
-                </t>
-                <t>
-                    Elements of the array MUST be objects. Each object MUST be a valid JSON
-                    Schema.
+                    This keyword's value MUST be a non-empty array.
+                    Each item of the array MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance validates successfully against this keyword if it validates
@@ -664,19 +638,20 @@
 
             <section title="not">
                 <t>
-                    This keyword's value MUST be an object. This object MUST be a valid JSON
-                    Schema.
+                    This keyword's value MUST be a valid JSON Schema.
                 </t>
                 <t>
                     An instance is valid against this keyword if it fails to validate
                     successfully against the schema defined by this keyword.
                 </t>
             </section>
+        </section>
 
+        <section title="Metadata keywords">
             <section title="definitions">
                 <t>
-                    This keyword's value MUST be an object. Each member value of this object
-                    MUST be a valid JSON Schema.
+                    This keyword's value MUST be an object.
+                    Each member value of this object MUST be a valid JSON Schema.
                 </t>
                 <t>
                     This keyword plays no role in validation per se. Its role is to provide
@@ -707,9 +682,6 @@
                     </figure>
                 </t>
             </section>
-        </section>
-
-        <section title="Metadata keywords">
 
             <section title='"title" and "description"'>
                 <t>
