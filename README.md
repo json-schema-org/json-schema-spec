@@ -27,7 +27,7 @@ Labels are assigned based on [Sensible Github Labels](https://github.com/Releque
 * hyper-schema.json - the JSON Hyper-schema meta-schema
 * schema.json - the JSON Schema meta-schema
 * jsonschema-core.xml - sources for "core" spec
-* jsonschema-validation - sources for JSON Schema validation
+* jsonschema-validation.xml - sources for JSON Schema validation
 * jsonschema-hyperschema.xml - sources for hyper-schema spec
 
 Type "make" at a shell to build the .txt and .html spec files.
