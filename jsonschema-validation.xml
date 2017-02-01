@@ -333,9 +333,6 @@
                     The value of "items" MUST be either a valid JSON Schema or an array of valid JSON Schemas.
                 </t>
                 <t>
-                    If absent, it can be considered present with an empty schema.
-                </t>
-                <t>
                     This keyword determines how child instances validate for arrays,
                     and does not directly validate the immediate instance itself.
                 </t>
@@ -347,6 +344,9 @@
                     If "items" is an array of schemas, child validation succeeds if
                     each element of the instance validates against the schema at the
                     same position, if any.
+                </t>
+                <t>
+                    A missing keyword has the same behavior as an empty schema.
                 </t>
             </section>
 
