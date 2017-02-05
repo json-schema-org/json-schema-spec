@@ -429,6 +429,10 @@
 
             <section title="properties">
                 <t>
+                    The "properties" keyword defines schemas to be validated against certain values in an object,
+                    based on an exact match to the property name.
+                </t>
+                <t>
                     The value of "properties" MUST be an object.
                     Each value of this object MUST be a valid JSON Schema.
                 </t>
@@ -443,6 +447,10 @@
             </section>
 
             <section title="patternProperties">
+                <t>
+                    The "patternProperties" keyword defines schemas to be validated against certain values in an object,
+                    based on a regular expression match to the property name.
+                </t>
                 <t>
                     The value of "patternProperties" MUST be an object.
                     Each property name of this object SHOULD be a valid regular expression,
