@@ -301,10 +301,16 @@
                 written for this particular version.
             </t>
             <t>
-                The root schema of a JSON Schema document SHOULD use this keyword.
                 The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
                 (containing a scheme) and this URI MUST be normalized.
                 The current schema MUST be valid against the meta-schema identified by this URI.
+            </t>
+            <t>
+                The "$schema" keyword SHOULD be used in a root schema.
+                It MUST NOT appear in subschemas.
+            </t>
+            <t>
+                <cref>While this pattern is likely to remain best practice for schema authoring, implementation behavior is subject to be revised or liberalized in future drafts.</cref>
             </t>
             <t>
                 Values for this property are defined in other documents and by other parties.
