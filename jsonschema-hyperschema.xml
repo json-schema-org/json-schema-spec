@@ -185,6 +185,27 @@
                 <postamble>The base-64 data has been abbreviated for readability.</postamble>
             </figure>
 
+            <section title="Interaction with validation">
+                <t>
+                    Hyper-schemas MUST NOT be applied to an instance if the instance fails
+                    to validate against the validation keywords within or containing the hyper-schema.
+                    Hyper-schema keywords in branches of an "anyOf" or "oneOf" that do not
+                    validate, or in a "dependencies" subschema that is not relevant
+                    to the instance, MUST be ignored.
+                </t>
+                <t>
+                    Hyper-schema keywords in a subschema contained within
+                    a "not", at any depth, including any number of intervening
+                    additional "not" subschemas, MUST be ignored.
+                </t>
+                <t>
+                    If the subschema for a "contains" keyword contains hyper-schema
+                    keywords they MUST be applied to all array elements that validate
+                    against the schema.  While finding a single validating element
+                    is sufficient to determine the validation outcome, when hyper-schema
+                    keywords are present, the subschema MUST be evaluated against all array elements.
+                </t>
+            </section>
         </section>
 
         <section title="Meta-schema">
