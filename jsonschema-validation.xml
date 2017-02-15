@@ -347,17 +347,6 @@
                         Omitting this keyword has the same behavior as a value of false.
                     </t>
                 </section>
-
-                <section title="contains">
-                    <t>
-                        The value of this keyword MUST be an object.  This object MUST be
-                        a valid JSON Schema.
-                    </t>
-                    <t>
-                        An array instance is valid against "contains" if at least one of
-                        its elements is valid against the given schema.
-                    </t>
-                </section>
             </section>
 
             <section title="Validating array elements with subschemas">
@@ -403,6 +392,17 @@
                         Omitting this keyword has the same behavior as an empty schema.
                     </t>
                 </section>
+
+                <section title="contains">
+                    <t>
+                        The value of this keyword MUST be an object.  This object MUST be
+                        a valid JSON Schema.
+                    </t>
+                    <t>
+                        An array instance is valid against "contains" if at least one of
+                        its elements is valid against the given schema.
+                    </t>
+                </section>
             </section>
 
             <section title="Validation keywords for objects">
@@ -436,20 +436,6 @@
                     </t>
                 </section>
 
-                <section title="propertyNames">
-                    <t>
-                        The value of "propertyNames" MUST be a valid JSON Schema.
-                    </t>
-                    <t>
-                        If the instance is an object, this keyword validates if every property name in the instance
-                        validates against the provided schema.
-                        Note the property name that the schema is testing will always be a string.
-                    </t>
-                    <t>
-                        Omitting this keyword has the same behavior as an empty schema.
-                    </t>
-                </section>
-
                 <section title="required">
                     <t>
                         The value of this keyword MUST be an array.
@@ -465,7 +451,7 @@
                 </section>
             </section>
 
-            <section title="Validating object properties with subschemas">
+            <section title="Validating objects with subschemas">
                 <t>
                     These keywords determine which subschemas apply to each property of an object.
                     Validation of other instance types against these keywords always succeeds.
@@ -520,9 +506,21 @@
                         Omitting this keyword has the same behavior as an empty schema.
                     </t>
                 </section>
-            </section>
 
-            <section title="Conditional validation based on object properties">
+                <section title="propertyNames">
+                    <t>
+                        The value of "propertyNames" MUST be a valid JSON Schema.
+                    </t>
+                    <t>
+                        If the instance is an object, this keyword validates if every property name in the instance
+                        validates against the provided schema.
+                        Note the property name that the schema is testing will always be a string.
+                    </t>
+                    <t>
+                        Omitting this keyword has the same behavior as an empty schema.
+                    </t>
+                </section>
+
                 <section title="dependencies">
                     <t>
                         This keyword specifies rules that are evaluated if the instance is an object and
@@ -591,7 +589,13 @@
                         An instance validates if and only if the instance is in any of the sets listed for this keyword.
                     </t>
                 </section>
+            </section>
 
+            <section title="Applying subschemas with boolean logic">
+                <t>
+                    These keywords combine or modify the validation results
+                    of their subschema(s) with boolean operations.
+                </t>
                 <section title="allOf">
                     <t>
                         This keyword's value MUST be a non-empty array.
