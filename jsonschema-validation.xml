@@ -337,11 +337,11 @@
                     and does not directly validate the immediate instance itself.
                 </t>
                 <t>
-                    If "items" is a schema, child validation succeeds if all elements
+                    If "items" is a schema, validation succeeds if all elements
                     in the array successfully validate against that schema.
                 </t>
                 <t>
-                    If "items" is an array of schemas, child validation succeeds if
+                    If "items" is an array of schemas, validation succeeds if
                     each element of the instance validates against the schema at the
                     same position, if any.
                 </t>
@@ -359,7 +359,7 @@
                     and does not directly validate the immediate instance itself.
                 </t>
                 <t>
-                    If "items" is an array of schemas, child validation succeeds
+                    If "items" is an array of schemas, validation succeeds
                     if every instance element at a position greater than the size
                     of "items" validates against "additionalItems".
                 </t>
@@ -470,7 +470,7 @@
                     and does not directly validate the immediate instance itself.
                 </t>
                 <t>
-                    Child validation succeeds if, for each name that appears in both
+                    Validation succeeds if, for each name that appears in both
                     the instance and as a name within this keyword's value, the child
                     instance for that name successfully validates against the
                     corresponding schema.
@@ -494,7 +494,7 @@
                     always succeeds.
                 </t>
                 <t>
-                    Child validation succeeds if, for each instance name that matches any
+                    Validation succeeds if, for each instance name that matches any
                     regular expressions that appear as a property name in this keyword's value,
                     the child instance for that name successfully validates against each
                     schema that corresponds to a matching regular expression.
@@ -513,12 +513,12 @@
                     and does not directly validate the immediate instance itself.
                 </t>
                 <t>
-                    Child validation with "additionalProperties" applies only to the child
+                    Validation with "additionalProperties" applies only to the child
                     values of instance names that do not match any names in "properties",
                     and do not match any regular expression in "patternProperties".
                 </t>
                 <t>
-                    For all such properties, child validation succeeds if the child instance
+                    For all such properties, validation succeeds if the child instance
                     validates against the "additionalProperties" schema.
                 </t>
                 <t>
