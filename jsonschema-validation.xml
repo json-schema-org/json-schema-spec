@@ -172,31 +172,6 @@
                 </t>
             </section>
 
-            <section title="Validation of primitive types and child values">
-                <t>
-                    Two of the primitive types, array and object, allow for child values.
-                    The validation of the primitive type is considered separately from
-                    the validation of child instances.
-                </t>
-                <t>
-                    For arrays, primitive type validation consists of validating
-                    restrictions on length with "minItems" and "maxItems", while
-                    "items" and "additionalItems" determine which subschemas apply
-                    to which elements of the array.  In addition, "uniqueItems"
-                    and "contains" validate array contents as a whole.
-                </t>
-                <t>
-                    For objects, primitive type validation consists of validating
-                    restrictions on which and how many properties appear with
-                    "required", "minProperties", "maxProperties", "propertyNames",
-                    and the string array form of "dependencies", while "properties",
-                    "patternProperties", and "additionalProperties" determine which
-                    subschemas apply to which object property values.
-                    In addition, the schema form of "dependencies" validates the
-                    object as a whole based on the presence of specific property names.
-                </t>
-            </section>
-
             <section title="Constraints and missing keywords">
                 <t>
                     Each JSON Schema validation keyword adds constraints that
@@ -333,15 +308,11 @@
                     The value of "items" MUST be either a valid JSON Schema or an array of valid JSON Schemas.
                 </t>
                 <t>
-                    This keyword determines how child instances validate for arrays,
-                    and does not directly validate the immediate instance itself.
-                </t>
-                <t>
-                    If "items" is a schema, child validation succeeds if all elements
+                    If "items" is a schema, validation succeeds if all elements
                     in the array successfully validate against that schema.
                 </t>
                 <t>
-                    If "items" is an array of schemas, child validation succeeds if
+                    If "items" is an array of schemas, validation succeeds if
                     each element of the instance validates against the schema at the
                     same position, if any.
                 </t>
@@ -355,12 +326,8 @@
                     The value of "additionalItems" MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    This keyword determines how child instances validate for arrays,
-                    and does not directly validate the immediate instance itself.
-                </t>
-                <t>
-                    If "items" is an array of schemas, child validation succeeds
-                    if every instance element at a position greater than the size
+                    If "items" is an array of schemas, validation succeeds if
+                    every instance element at a position greater than the size
                     of "items" validates against "additionalItems".
                 </t>
                 <t>
@@ -462,18 +429,17 @@
 
             <section title="properties">
                 <t>
+                    The "properties" keyword defines schemas to be validated against certain values in an object,
+                    based on an exact match to the property name.
+                </t>
+                <t>
                     The value of "properties" MUST be an object.
                     Each value of this object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    This keyword determines how child instances validate for objects,
-                    and does not directly validate the immediate instance itself.
-                </t>
-                <t>
-                    Child validation succeeds if, for each name that appears in both
-                    the instance and as a name within this keyword's value, the child
-                    instance for that name successfully validates against the
-                    corresponding schema.
+                    For each property in the keyword, the schema is applied to the value of
+                    any property in the instance with an exactly matching name.
+                    Validation fails only if any application fails to validate.
                 </t>
                 <t>
                     Omitting this keyword has the same behavior as an empty object.
@@ -482,22 +448,19 @@
 
             <section title="patternProperties">
                 <t>
-                    The value of "patternProperties" MUST be an object. Each property name
-                    of this object SHOULD be a valid regular expression, according to the
-                    ECMA 262 regular expression dialect. Each property value of this object
-                    MUST be a valid JSON Schema.
+                    The "patternProperties" keyword defines schemas to be validated against certain values in an object,
+                    based on a regular expression match to the property name.
                 </t>
                 <t>
-                    This keyword determines how child instances validate for objects,
-                    and does not directly validate the immediate instance itself.
-                    Validation of the primitive instance type against this keyword
-                    always succeeds.
+                    The value of "patternProperties" MUST be an object.
+                    Each property name of this object SHOULD be a valid regular expression,
+                    according to the ECMA 262 regular expression dialect.
+                    Each property value of this object MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    Child validation succeeds if, for each instance name that matches any
-                    regular expressions that appear as a property name in this keyword's value,
-                    the child instance for that name successfully validates against each
-                    schema that corresponds to a matching regular expression.
+                    For each property in the keyword, the schema is applied to the value of
+                    any property in the instance with a name matching the regular expression.
+                    Validation fails only if any application fails to validate.
                 </t>
                 <t>
                     Omitting this keyword has the same behavior as an empty object.
@@ -509,16 +472,12 @@
                     The value of "additionalProperties" MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    This keyword determines how child instances validate for objects,
-                    and does not directly validate the immediate instance itself.
-                </t>
-                <t>
-                    Child validation with "additionalProperties" applies only to the child
-                    values of instance names that do not match any names in "properties",
+                    Validation with "additionalProperties" applies only to the
+                    values of properties that do not match any names in "properties",
                     and do not match any regular expression in "patternProperties".
                 </t>
                 <t>
-                    For all such properties, child validation succeeds if the child instance
+                    For all such properties, validation succeeds if the property value
                     validates against the "additionalProperties" schema.
                 </t>
                 <t>
