@@ -3,12 +3,14 @@
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+<!ENTITY RFC6839 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6839.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC6906 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6906.xml">
 <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
+<!ENTITY fragid-best-practices SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.WD-fragid-best-practices-20121025.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -251,6 +253,39 @@
 
         </section>
 
+        <section title="Fragment identifiers" anchor="fragments">
+            <t>
+                In accordance with section 3.1 of <xref target="RFC6839"></xref>,
+                the syntax and semantics of fragment identifiers specified for
+                any +json media type SHOULD be as specified for "application/json".
+                (At publication of this document, there is no fragment identification
+                syntax defined for "application/json".)
+            </t>
+            <t>
+                Additionally, the "application/schema+json" media type supports two
+                fragment identifier structures: plain names and JSON Pointers.
+                The use of JSON Pointers as URI fragment identifiers is described in
+                <xref target="RFC6901">RFC 6901</xref>.
+                Fragment identifiers matching the JSON Pointer syntax, including
+                the empty string, MUST be interpreted as JSON Pointer fragment
+                identifiers.
+            </t>
+            <t>
+                Per the W3C's
+                <xref target="W3C.WD-fragid-best-practices-20121025">best practices for fragment identifiers</xref>,
+                plain name fragment identifiers are reserved for referencing
+                locally named schemas.  All fragment identifiers that do
+                not match the JSON Pointer syntax MUST be interpreted as
+                plain name fragment identifiers.
+            </t>
+            <t>
+                Defining and referencing a plain name fragment identifier
+                in the <xref target="id-keyword">"$id" keyword</xref> section.
+            </t>
+            <t>
+            </t>
+        </section>
+
         <section title="General considerations">
 
             <section title="Range of JSON values">
@@ -260,7 +295,7 @@
                 </t>
             </section>
 
-            <section title="Programming language independence">
+            <section title="Programming language independence" anchor="language">
                 <t>
                     JSON Schema is programming language agnostic, and supports the full range of values described in the data model.
                     Be aware, however, that some languages and JSON parsers may not be able to represent in memory
@@ -268,7 +303,7 @@
                 </t>
             </section>
 
-            <section title="Mathematical integers">
+            <section title="Mathematical integers" anchor="integers">
                 <t>
                     Some programming languages and parsers use different internal representations for floating
                     point numbers than they do for integers.
@@ -352,7 +387,7 @@
                 </t>
             </section>
 
-            <section title='The "$id" keyword'>
+            <section title='The "$id" keyword' anchor="id-keyword">
                 <t>
                     The "$id" keyword defines a URI for the schema,
                     and the base URI that other URI references within the schema are resolved against.
@@ -363,15 +398,26 @@
                     This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &lt;&gt;.
                 </t>
                 <t>
-                    The root schema of a JSON Schema document SHOULD contain an "$id" keyword with an absolute-URI (containing a scheme, but no fragment).
+                    The root schema of a JSON Schema document SHOULD contain an "$id" keyword with 
+                    a URI (containing a scheme).  This URI SHOULD either not have a fragment, or
+                    have one that is an empty string.
+                    <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
+                    <cref>
+                        How should an "$id" URI reference containing a fragement with other components
+                        be interpreted?  There are two cases:  when the other components match
+                        the current base URI and when they change the base URI.
+                    </cref>
                 </t>
                 <t>
                     To name subschemas in a JSON Schema document,
                     subschemas can use "$id" to give themselves a document-local identifier.
-                    This form of "$id" keyword MUST begin with a hash ("#") to identify it as a fragment URI reference,
-                    followed by a letter ([A-Za-z]), followed by any number of
-                    letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
-                    <!-- This restriction is the same one defined by XML -->
+                    This is done by setting "$id" to a URI reference consisting only of a fragment.
+                    The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
+                    any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                </t>
+                <t>
+                    The effect of defining an "$id" that neither matches the above
+                    requirements nor is a valid JSON pointer is not defined.
                 </t>
                 <t>
                     For example:
@@ -401,7 +447,8 @@
                 <t>
                     The schemas at the following URI-encoded <xref target="RFC6901">JSON
                     Pointers</xref> (relative to the root schema) have the following
-                    base URIs, and are identifiable by either URI:
+                    base URIs, and are identifiable by either URI in accordance with
+                    Section <xref target="fragments" format="counter"></xref> above:
                 </t>
                 <t>
                     <list style="hanging">
@@ -502,7 +549,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
             </section>
 
 
-            <section title='Describing a profile of JSON'>
+            <section title='Describing a profile of JSON' anchor="profile">
                 <t>
                     Instances MAY specify a "profile" as described in <xref target="RFC6906">The 'profile' Link Relation</xref>.
                     When used as a media-type parameter, HTTP servers gain the ability to perform Content-Type Negotiation based on profile.
@@ -581,7 +628,7 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
 
        </section>
 
-        <section title="Security considerations">
+        <section title="Security considerations" anchor="security">
             <t>
                 Both schemas and instances are JSON values. As such, all security considerations
                 defined in <xref target="RFC7159">RFC 7159</xref> apply.
@@ -604,8 +651,27 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
                 The proposed MIME media type for JSON Schema is defined as follows:
 
                 <list>
-                    <t>type name: application;</t>
-                    <t>subtype name: schema+json.</t>
+                    <t>Type name: application</t>
+                    <t>Subtype name: schema+json</t>
+                    <t>Required parameters: N/A</t>
+                    <t>
+                        Encoding considerations: Encoding considerations are
+                        identical to those specified for the "application/json"
+                        media type.  See <xref target="RFC7159">JSON</xref>.
+                    </t>
+                    <t>
+                        Security considerations: See Section
+                        <xref target="security" format="counter"></xref> above.
+                    </t>
+                    <t>
+                        Interoperability considerations: See Sections
+                        <xref target="language" format="counter"></xref> and
+                        <xref target="integers" format="counter"></xref> above.
+                    </t>
+                    <t>
+                        Fragment identifier considerations: See Section
+                        <xref target="fragments" format="counter"></xref>
+                    </t>
                 </list>
             </t>
 
@@ -617,16 +683,18 @@ User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
         <references title="Normative References">
             &RFC2119;
             &RFC3986;
+            &RFC6839;
+            &RFC6901;
             &RFC7159;
             &ldp;
         </references>
 
         <references title="Informative References">
             &RFC5988;
-            &RFC6901;
             &RFC6906;
             &RFC7049;
             &RFC7231;
+            &fragid-best-practices;
             <reference anchor="json-schema-validation">
                 <front>
                     <title>JSON Schema Validation: A Vocabulary for Structural Validation of JSON</title>
