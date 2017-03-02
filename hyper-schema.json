@@ -1,11 +1,11 @@
 {
-    "$schema": "http://json-schema.org/draft/hyper-schema#",
-    "$id": "http://json-schema.org/draft/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-06/hyper-schema#",
+    "$id": "http://json-schema.org/draft-06/hyper-schema#",
     "title": "JSON Hyper-Schema",
     "definitions": {
         "schemaArray": {
             "allOf": [
-                { "$ref": "http://json-schema.org/drafts/schema" },
+                { "$ref": "http://json-schema.org/draft-06/schema#/definitions/schemaArray" },
                 {
                     "items": { "$ref": "#" }
                 }
@@ -57,7 +57,7 @@
             }
         }
     },
-    "allOf": [ { "$ref": "http://json-schema.org/draft/schema#" } ],
+    "allOf": [ { "$ref": "http://json-schema.org/draft-06/schema#" } ],
     "properties": {
         "additionalItems": {
             "anyOf": [
