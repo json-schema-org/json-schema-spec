@@ -428,6 +428,11 @@
 
                 <section title="URI Templating">
                     <t>
+                        <cref>
+                            The pre-processing rules present in earlier drafts have been removed due to their complexity and inability to address all limitations with URI templating.  This section is subject to significant change in upcoming drafts to replace the old pre-processing with a comprehensive solution.
+                        </cref>
+                    </t>
+                    <t>
                         The value of "href" is to be used as a URI Template, as defined in <xref target="RFC6570">RFC 6570</xref>.  However, some special considerations apply:
                     </t>
 
@@ -437,7 +442,7 @@
                             Where either instance data or external data may be used, this section will refer simply to "data" or to a "value".
                             When the source is important, it is specified explicitly.
 
-                            To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
+                            To allow the use of any object property (including the empty string) or array index, the following rules are defined:
                         </t>
 
                         <t>
