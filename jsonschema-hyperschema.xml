@@ -769,7 +769,7 @@ GET /foo/
             <section title="mediaType">
                 <t>
                     The value of this property is advisory only, and represents the media type <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when fetching this resource.
-                    This property value MAY be a media range instead, using the same pattern defined in <xref target="RFC7231">RFC 7231, section 5.3.1 - HTTP "Accept" header</xref>.
+                    This property value MAY be a media range instead, using the same pattern defined in <xref target="RFC7231">RFC 7231, section 5.3.2 - HTTP "Accept" header</xref>.
                 </t>
 
                 <t>
@@ -779,7 +779,7 @@ GET /foo/
                 </t>
 
                 <t>
-                    If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <xref target="RFC7231">RFC 7231, section 5.3.1</xref>, then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
+                    If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <xref target="RFC7231">RFC 7231, section 5.3.2</xref>, then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
                 </t>
 
                 <t>
@@ -973,7 +973,8 @@ GET /foo/
                 Evgeny Poberezkin,
                 Brad Bowman,
                 Gowry Sankar,
-                and Donald Pipowitch
+                Donald Pipowitch,
+                and Dave Finlay
                 for their submissions and patches to the document.
             </t>
         </section>
