@@ -702,7 +702,7 @@ GET /foo/
                 </t>
             </section>
 
-            <section title="targetSchema">
+            <section title="targetSchema" anchor="targetSchema">
                 <t>
                     This property provides a schema that is expected to describe
                     the link target's representation.  Depending on the protocol,
@@ -873,17 +873,36 @@ GET /foo/
                         This property specifies that the client can construct a templated query or non-idempotent request to a resource.
                     </t>
                     <t>
-                        If "method" is "get", the link identifies how a user can compute the URI of an arbitrary resource. For example, how to compute a link to a page of search results relating to the instance, for a user-selected query term. Despite being named after GET, there is no constraint on the method or protocol used to interact with the remote resource.
+                        If "method" is "get", the link identifies how a client can compute the URI of an arbitrary resource.
+                        For example, how to compute a link to a page of search results relating to the instance, for a user-selected query term.
                     </t>
                     <t>
-                        If "method" is "post", the link specifies how a user can construct a document to submit to the link target for evaluation.
+                        If "method" is "post", the link specifies how a client can construct
+                        a document to submit to the link target for evaluation.
+                        This option is most useful for requests requiring a payload that is not described
+                        in terms of the target representation, since the target
+                        representation is described by <xref target="targetSchema">"targetSchema"</xref>.
+                    </t>
+                    <t>
+                        Despite being named after HTTP's GET and POST, the presence,
+                        absence, or value of this keyword does not directly impose any constraints
+                        on either the protocol or method used to interact with the remote resource.
+                        In particular, the same Link Description Object may be used
+                        for multiple protocol methods.
+                    </t>
+                    <t>
+                        If "method" is "post" then <xref target="schema">"schema"</xref>
+                        and <xref target="encType">"encType"</xref>, if present, 
+                        MUST be used to construct any request payload.  This indirectly
+                        constrains the available protocol methods to those semantically
+                        compatible with this restriction.
                     </t>
                     <t>
                         Values for this property SHOULD be lowercase, and SHOULD be compared case-insensitive. Use of other values not defined here SHOULD be ignored.
                     </t>
                 </section>
 
-                <section title="encType">
+                <section title="encType" anchor="encType">
                     <t>
                         If present, this property indicates the media type format the client should use to encode a query parameter or send to the server.
                         If the method is "get", this will indicate how to encode the query-string that is appended to the "href" link target.
@@ -933,7 +952,9 @@ GET /foo/
                     </t>
 
                     <t>
-                        This is a separate concept from the "targetSchema" property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
+                        This is a separate concept from the <xref target="targetSchema">"targetSchema"</xref> property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
+                        "schema" is intended for use with requests that have payloads that are not
+                        defined in terms of the target representation.
                     </t>
                 </section>
             </section>
