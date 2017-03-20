@@ -703,7 +703,7 @@ GET /foo/
 
             <section title="targetSchema">
                 <t>
-                    This property provides a schema that is expected to describe the link target, including what a client can expect if it makes an HTTP GET request, and what it should send if it replaces the resource in an HTTP PUT request. This property is advisory only.
+                    This property provides a schema that is expected to describe the link target, including what a client can expect if it makes an HTTP GET request, and what it should send if it replaces the resource in an HTTP PUT request. The request structure for HTTP PATCH is described by the combination of this schema and the media type of the PATCH request payload. This property is advisory only.
                 </t>
 
                 <section title="Security Considerations for &quot;targetSchema&quot;">
