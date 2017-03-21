@@ -6,6 +6,7 @@
 <!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!--<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">-->
 <!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
+<!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
@@ -703,9 +704,26 @@ GET /foo/
 
             <section title="targetSchema">
                 <t>
-                    This property provides a schema that is expected to describe the link target, including what a client can expect if it makes an HTTP GET request, and what it should send if it replaces the resource in an HTTP PUT request. The request structure for HTTP PATCH is described by the combination of this schema and the media type of the PATCH request payload. This property is advisory only.
+                    This property provides a schema that is expected to describe
+                    the link target's representation.  Depending on the protocol,
+                    the schema may or may not describe the response to any particular
+                    request sent to the link.  This property is advisory only.
                 </t>
-
+                <section title="&quot;targetSchema&quot; and HTTP">
+                    <t>
+                        The relationship between a resource's representation and
+                        HTTP requests and responses is determined by
+                        <xref target="RFC7231">RFC 7231, section 4.3.1 - "GET", section 4.3.4 "PUT", and section 3.1.4.2, "Content-Location"</xref>.
+                        In particular, "targetSchema" suggests what a client can expect
+                        for the response to an HTTP GET or any response for which
+                        the "Content-Location" header is equal to the request URI,
+                        and what a client should send if it replaces the resource
+                        in an HTTP PUT request.
+                        Per <xref target="RFC5789">RFC 5789</xref>, the request structure
+                        for an HTTP PATCH is determined by the combination of "targetSchema"
+                        and the request media type.
+                    </t>
+                </section>
                 <section title="Security Considerations for &quot;targetSchema&quot;">
                     <t>
                         This property has similar security concerns to that of "mediaType".
@@ -950,6 +968,7 @@ GET /foo/
         <references title="Informative References">
             &rfc2046;
             <!--&rfc5226;-->
+            &rfc5789;
             &rfc5988;
             &rfc7231;
             &html5;
