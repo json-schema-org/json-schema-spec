@@ -847,6 +847,23 @@ GET /foo/
 
             <section title="Submission Form Properties">
                 <t>
+                    <cref>
+                        While this section curently draws explicit analogies to HTML forms,
+                        we expect significant changes to this analogy in future drafts.
+                        In particular, "hrefSchema" removes the need for "schema" to
+                        do double duty of either describing URL query parameters or
+                        request body structure, but not both.  HTML forms are designed to
+                        abstract the encoding and submission mechanisms away from the
+                        human end user.  JSON Hyper-Schema allows for more flexibility,
+                        and assumes that client libraries or programs can choose the
+                        level of abstraction that is suitable for their audiences.
+                        The current transitional state of this specification is intended
+                        to allow experimentation and feedback on the more explicit
+                        approach, while still offeriing some level of compatibility
+                        with the previous two drafts.
+                    </cref>
+                </t>
+                <t>
                     The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTML forms</xref>, by providing a means for making a request with client- or user-selected information.
                 </t>
 
