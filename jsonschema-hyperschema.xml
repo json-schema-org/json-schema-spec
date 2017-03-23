@@ -918,8 +918,53 @@ GET /foo/
 ]]>
                             </artwork>
                         </figure>
-
+                    </t>
+                    <t>
                         If the method is "post", "application/json" is the default media type.
+                    </t>
+                    <t>
+                        As noted under <xref target="method">method</xref>, these fields
+                        are not restricted to HTTP URIs.
+
+                        <figure>
+                            <preamble>
+                                For example, this link indicates that if you want to
+                                send an email to the author of the context resource,
+                                your client needs to ask for both a plain text
+                                and an HTML representation.
+                            </preamble>
+                            <artwork>
+<![CDATA[{
+    "links": [{
+        "encType": "multipart/alternative; boundary=abc123",
+        "method": "post",
+        "rel": "author",
+        "href": "mailto:someone@example.com{?subject}",
+        "hrefSchema": {
+            "type": "object",
+            "properties": {
+                "subject": { "type": "string" }
+            },
+            "required": ["subject"]
+        },
+        "schema": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "string",
+                    "media": { "type": "text/plain; charset=utf8" }
+                },
+                {
+                    "type": "string",
+                    "media": { "type": "text/html" }
+                }
+            ],
+            "minItems": 2
+        }
+    }]
+}]]>
+                            </artwork>
+                        </figure>
                     </t>
                 </section>
 
