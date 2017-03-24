@@ -9,6 +9,7 @@
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
+<!ENTITY rfc6573 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6573.xml">
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY rfc7240 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7240.xml">
@@ -879,6 +880,87 @@
                     Note that these relationship values are case-insensitive, consistent with their
                     use in HTML and the <xref target="RFC5988">HTTP Link header</xref>.
                 </t>
+                <section title="&quot;collection&quot; and &quot;item&quot; links">
+                    <t>
+                        <xref target="RFC6573">RFC 6573</xref> defines and registers
+                        the "item" and "collection" link relations.  A well-known design pattern
+                        in hypermedia is to use a collection resource to create a member of the
+                        collection and give it a server-assigned URI.  When using HTTP, or a protocol
+                        such as CoAP that is explicitly analogous to HTTP, this is done by POST-ing
+                        a representation of the individual resource to be created to the collection
+                        resource.
+                    </t>
+                    <t>
+                        Resources that are the target of a "collection" link using HTTP or an analogous
+                        protocol in JSON Hyper-Schema MUST NOT assign semantics other than resource
+                        creation to POST (or the analogous method in non-HTTP protocols).
+                    </t>
+                    <t>
+                        The <xref target="submissionSchema">"submissionSchema"</xref> field for the
+                        link SHOULD be identical to the schema of the representations of the
+                        collection's items, as indicated by the "item" link.  RFC 6573 identifies
+                        the "collection" and "item" link relation types as reciprocal, so the
+                        context resource of an "item" link MAY be treated as a collection, even if
+                        no explicit "collection" link is defined.
+                    </t>
+                    <figure>
+                        <preamble>
+                            The first of these hyper-schemas describes an individual "thing",
+                            while the second describes a collection of "things".  Note that the
+                            "targetSchema" of the individual thing's "self" link is the same
+                            as the "submissionSchema" of its "collection" link.
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "$id": "http://example.com/schemas/thing",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "readOnly": true
+        }
+    },
+    "links": [{
+        "rel": "self",
+        "href": "/things/{id}",
+        "targetSchema": {"$ref": "#"}
+    }, {
+        "rel": "collection",
+        "href": "/things"
+        "targetSchema": {"$ref": "thing-collection"}
+        "submissionSchema": {"$ref": "#"}
+    }]
+}]]>
+
+<![CDATA[{
+    "$id": "http://example.com/schemas/thing-collection",
+    "type": "array",
+    "items": {
+        "allOf": [{"$ref": "thing"}]
+        "links": [{
+            "anchorPointer": "",
+            "rel": "item",
+            "href": "/things/{id}",
+            "targetSchema": {"$ref": "thing"}
+        }]
+    },
+    "links": [{
+        "rel": "self",
+        "href": "/things",
+        "targetSchema": {"$ref": "#"},
+        "submissionSchema": {"$ref": "thing"}
+    }]
+}]]>
+                        </artwork>
+                        <postamble>
+                            In the hyper-schema for the collection, the "item" link also demonstrates
+                            the usage of "anchorPointer", as the context of that link must be the
+                            entire collection, rather than the individual array element to which the
+                            link is attached.  The collection's self link also supports a
+                            "submissionSchema" matching that of its "item" link's "targetSchema".
+                        </postamble>
+                    </figure>
+                </section>
 
                 <section title="Security Considerations for &quot;self&quot; links">
                     <t>
@@ -1584,6 +1666,7 @@ GET /foo/
             &rfc4151;
             &rfc5789;
             &rfc5988;
+            &rfc6573;
             &rfc7231;
             &rfc7240;
         </references>
