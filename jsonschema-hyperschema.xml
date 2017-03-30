@@ -10,7 +10,7 @@
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
-<!ENTITY html5 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-html5-20140731.xml">
+<!ENTITY html5 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-html5-20141028.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -388,35 +388,93 @@
                 The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
             </t>
 
-            <section title="Links and data">
+            <section title="Links, operations, and data">
                 <t>
-                    "Form"-like functionality can be defined by use of the <xref target="method">"method"</xref> and <xref target="schema">"schema"</xref> keywords, which supplies a schema describing the data to supply to the server.
-                    Functionality equivalent to dynamic URI generation is available through the <xref target="href">"href"</xref> template and <xref target="hrefSchema">"hrefSchema"</xref>.
+                    <cref>
+                        Note that while the current draft does not provide a way to explicity
+                        indicate HTTP method support, some way of providing a non-authoritative
+                        hint may be added in a future draft (see issue #73 in the GitHub repository).
+                    </cref>
                 </t>
                 <t>
-                    The simplest kind of link has an "href" with no template variables, and no "schema".  This does not
-                    allow for any variance in the link URI, nor does it allow for a request document.
+                    Link Description Objects do not directly indicate what operations, such
+                    as HTTP methods for links with "http(s)://" URI schemes, are supported by
+                    the target resource.  Instead, operations should be inferred primarily from
+                    link <xref target="rel">relation types</xref> and URI schemes.  Additionally,
+                    the presence of keywords related to data use often implies support for certain
+                    operations.  Note, however, that a resource may always decline an operation at
+                    runtime, for instance due to application state that controls the operation's
+                    availability.
                 </t>
                 <t>
-                    An "href" with at least one template variable, but no "hrefSchema" or "schema", allows resolving
-                    the template variable from the instance, but does not allow resolving it
-                    from external data, nor does it allow a request document.
+                    There are several ways that a client can use data can with a link:
+                    <list>
+                        <t> URI Template variables resolved from server-supplied instance data </t>
+                        <t> URI Template variables resolved from client input</t>
+                        <t> Replacing or modifying the target resource's representation </t>
+                        <t> Submitting data for processing, where the data has no
+                            inherent relation to the target resource's representation</t>
+                    </list>
                 </t>
                 <t>
-                    An "href" with at least one template variable and with an "hrefSchema" allows using external
-                    data to resolve the template, and falls back to resolving any remaining variables from the instance.
+                    In the human-oriented web, these cases are implemented through
+                    a combination of HTML and JavaScript.  The relatively rapid evolution
+                    and broad adoption of JavaScript reduced the need to include all
+                    features in HTML itself.
                 </t>
                 <t>
-                    A link with a "schema" allows submitting external data either as a request body (if "method" is "post"),
-                    or as a URI query string (if "method" is "get").  Such a query string replaces any query string
-                    present after the "href" template is resolved.
+                    Since JSON Hyper-Schema addresses all of these cases, and is consumed
+                    primarily by client code rather than human users, its mechanisms do not
+                    exactly match those of HTML.  Instead, three schema keywords describe
+                    the different kinds of input.  Unless otherwise specified, schema keywords
+                    are ignored when performing operations to which they are not semantically
+                    relevant.
                 </t>
-                <t>
-                    See the individual keyword descriptions below for details related to each of these cases.
-                </t>
+                <section title="Resolving templated URIs">
+                    <t>
+                        URI Template variables in <xref target="href">"href"</xref> resolve from
+                        server-supplied instance data by default.
+                        <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
+                        a schema for resolving template variables from client-supplied data.
+                        Regular JSON Schema validation features can be used to require resolution
+                        for client data, forbid it, or allow client data while falling back to
+                        server-supplied instance data if no client data is provided.
+                    </t>
+                    <t>
+                        This offers a superset of traditional HTML GET forms, and a subset of all
+                        possible URI construction that can be performed by JavaScript.  To simulate
+                        an HTML GET form, a link can require client input to all query string variables,
+                        and forbid client input for all other template variables.
+                    </t>
+                </section>
+                <section title="Manipulating the target resource representation">
+                    <t>
+                        HTML does not directly support target resource representation manipulation
+                        through forms.  Instead, JavaScript accomplishes this by intercepting the
+                        form submission and using the appropriate HTTP request with the form data.
+                        In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
+                        supplies a non-authoritative description of the target resource's representation.
+                        A client can use "targetSchema" to structure input, or (if it is absent or
+                        if the client prefers to only use authoritative information), interact with
+                        the target resource to confirm or discover its representation structure.
+                    </t>
+                </section>
+                <section title="Submitting data for processing">
+                    <t>
+                        The <xref target="submissionSchema">"submissionSchema"</xref> and
+                        <xref target="submissionEncType">"submissionEncType"</xref> keywords
+                        describe the domain of the processing function implemented by the target resource.
+                        This directly corresponds to HTML "method"="post" forms.
+                        The <xref target="form">"form"</xref>
+                        keyword can be used to enforce strict semantic compatibility with HTML "post"
+                        forms, limiting operations to those that make use of the submission data.
+                        Otherwise, as noted above, the submission schema and encoding are ignored
+                        for operations to which they are not relevant.
+                    </t>
+                </section>
             </section>
 
-	         <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
+            <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
 
             <section title="href" anchor="href">
                 <t>
@@ -512,6 +570,10 @@
                     months for date-time input but using the standard date-time
                     format for storage.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as a schema of false,
+                    which forbids all external data input.
+                </t>
                 <figure>
                     <preamble>
                         For example, this defines a schema for each of the query string
@@ -579,13 +641,13 @@
                 </figure>
                 <t>
                     <cref>
-                        The above example simulates the behavior found in earlier drafts using only "hrefSchema",
-                        which would allow the concurrent use of "schema" on a "post" link.
+                        The above example simulates the HTML GET form behavior found in earlier drafts
+                        using only "hrefSchema", which is necessary now that "method" has been removed.
                     </cref>
                 </t>
             </section>
 
-            <section title="rel">
+            <section title="rel" anchor="rel">
                 <t>
                     The value of the "rel" property indicates the name of the relation to the target resource. The value MUST be a registered link relation from the <xref target="RFC5988">IANA Link Relation Type Registry established in RFC 5988</xref>, or a normalized URI following the <xref target="RFC3986">URI production of RFC 3986</xref>.
                 </t>
@@ -702,7 +764,7 @@ GET /foo/
                 </t>
             </section>
 
-            <section title="targetSchema">
+            <section title="targetSchema" anchor="targetSchema">
                 <t>
                     This property provides a schema that is expected to describe
                     the link target's representation.  Depending on the protocol,
@@ -863,69 +925,54 @@ GET /foo/
                 </section>
             </section>
 
-            <section title="Submission Form Properties">
+            <section title="Data Submission Properties">
                 <t>
-                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTML forms</xref>, by providing a means for making a request with client- or user-selected information.
+                    The following properties also apply to Link Description Objects,
+                    and provide the ability to describe data for submission to the
+                    target resource for processing, independent of manipulating the
+                    target resource's representation.
                 </t>
 
-                <section title="method" anchor="method">
+                <section title="form" anchor="form">
                     <t>
-                        This property specifies that the client can construct a templated query or non-idempotent request to a resource.
+                        The value of this keyword is a boolean.
                     </t>
                     <t>
-                        If "method" is "get", the link identifies how a user can compute the URI of an arbitrary resource. For example, how to compute a link to a page of search results relating to the instance, for a user-selected query term. Despite being named after GET, there is no constraint on the method or protocol used to interact with the remote resource.
+                        Setting this keyword to true indicates that this link has
+                        semantics analogous to
+                        <xref target="W3C.REC-html5-20141028">HTML "method"="post" forms</xref>.
+                        This imposes additional constraints that are not present if
+                        the value of this keyword is false.
                     </t>
                     <t>
-                        If "method" is "post", the link specifies how a user can construct a document to submit to the link target for evaluation.
+                        In particular, if "form" is true, request payloads SHOULD conform
+                        to <xref target="submissionSchema">"submissionSchema"</xref>
+                        and <xref target="submissionEncType">"submissionEncType"</xref>,
+                        and the link MUST NOT be used with operations that are incompatible
+                        with those semantics.
                     </t>
                     <t>
-                        Values for this property SHOULD be lowercase, and SHOULD be compared case-insensitive. Use of other values not defined here SHOULD be ignored.
+                        Note that <xref target="hrefSchema">"hrefSchema"</xref> already offers a superset
+                        of the functionality of HTML GET forms, so there is no explicit
+                        analogue for that aspect of HTML.
+                    </t>
+                    <t>
+                        Omitting this keyword has the same behavior as a value of false.
                     </t>
                 </section>
 
-                <section title="encType">
+                <section title="submissionEncType" anchor="submissionEncType">
                     <t>
-                        If present, this property indicates the media type format the client should use to encode a query parameter or send to the server.
-                        If the method is "get", this will indicate how to encode the query-string that is appended to the "href" link target.
-                        If the method is "post", this indicates which media type to send to the server and how to encode it.
-
-                        <figure>
-                            <preamble>For example, with the following schema:</preamble>
-                            <artwork>
-<![CDATA[{
-    "links": [{
-        "encType": "application/x-www-form-urlencoded",
-        "method": "get",
-        "href": "/Product/",
-        "schema": {
-            "properties": {
-                "name": {
-                    "description": "name of the product"
-                }
-            }
-        }
-    }]
-}]]>
-                            </artwork>
-                            <postamble>This indicates that the client can query the server for instances that have a specific name.</postamble>
-                        </figure>
-
-                        <figure>
-                            <preamble>For example:</preamble>
-                            <artwork>
-<![CDATA[
-/Product/?name=Slinky
-]]>
-                            </artwork>
-                        </figure>
+                        If present, this property indicates which media type to use
+                        when sending data matching the
+                        <xref target="submissionSchema">"submissionSchema"</xref>
+                        to the target resource for processing, and how to encode it.
                     </t>
                     <t>
-                        If the method is "post", "application/json" is the default media type.
+                        Omitting this keyword has the same behavior as a value of
+                        "application/json".
                     </t>
                     <t>
-                        As noted under <xref target="method">method</xref>, these fields
-                        are not restricted to HTTP URIs.
-
                         <figure>
                             <preamble>
                                 For example, this link indicates that if you want to
@@ -936,8 +983,7 @@ GET /foo/
                             <artwork>
 <![CDATA[{
     "links": [{
-        "encType": "multipart/alternative; boundary=abc123",
-        "method": "post",
+        "submissionEncType": "multipart/alternative; boundary=ab12",
         "rel": "author",
         "href": "mailto:someone@example.com{?subject}",
         "hrefSchema": {
@@ -947,7 +993,7 @@ GET /foo/
             },
             "required": ["subject"]
         },
-        "schema": {
+        "submissionSchema": {
             "type": "array",
             "items": [
                 {
@@ -968,17 +1014,26 @@ GET /foo/
                     </t>
                 </section>
 
-                <section title="schema" anchor="schema">
+                <section title="submissionSchema" anchor="submissionSchema">
                     <t>
-                        This property contains a schema which defines the acceptable structure of the document being encoded according to the "encType" property.
+                        This property contains a schema which defines the
+                        acceptable structure of the document being submitted
+                        for processing by
+                        according to the "submissionEncType" property.
                     </t>
 
                     <t>
-                        Note that this does not define the structure for URI template variables.  That is handed by <xref target="hrefSchema">"hrefSchema"</xref>.  If the method is "get" and the resolved URI Template has a query string, the query string produced by input validated against "schema" replaces the existing query string.
+                        Note that this does not define the structure for URI template variables.  That is handed by <xref target="hrefSchema">"hrefSchema"</xref>.  If the method is "get" and the resolved URI Template has a query string, the query string produced by input validated against "submissionSchema" replaces the existing query string.
+                    </t>
+                    <t>
+                        This can be viewed as describing the domain of the processing
+                        function implemented by the target resource.
                     </t>
 
                     <t>
-                        This is a separate concept from the "targetSchema" property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
+                        This is a separate concept from the <xref target="targetSchema">"targetSchema"</xref> property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "submissionSchema" which describes the user-submitted request data to be evaluated by the resource.
+                        "submissionSchema" is intended for use with requests that have payloads that are not
+                        defined in terms of the target representation.
                     </t>
                 </section>
             </section>
@@ -1056,6 +1111,10 @@ GET /foo/
                             <t>Removed URI Template pre-processing</t>
                             <t>Clarified how links and data submission work</t>
                             <t>Clarified how validation keywords apply hyper-schema keywords and links</t>
+                            <t>Clarified HTTP use with "targetSchema"</t>
+                            <t>Renamed "schema" to "submissionSchema"</t>
+                            <t>Renamed "encType" to "submissionEncType"</t>
+                            <t>Removed "method", add "form" for HTML "post" form semantics</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-hyperschema-00">
