@@ -390,15 +390,15 @@
 
             <section title="Links and data">
                 <t>
-                    "Form"-like functionality can be defined by use of the <xref target="method">"method"</xref> and <xref target="schema">"schema"</xref> keywords, which supplies a schema describing the data to supply to the server.
+                    "Form"-like functionality can be defined by use of the <xref target="method">"method"</xref> and <xref target="submissionSchema">"submissionSchema"</xref> keywords, which supplies a schema describing the data to supply to the server.
                     Functionality equivalent to dynamic URI generation is available through the <xref target="href">"href"</xref> template and <xref target="hrefSchema">"hrefSchema"</xref>.
                 </t>
                 <t>
-                    The simplest kind of link has an "href" with no template variables, and no "schema".  This does not
+                    The simplest kind of link has an "href" with no template variables, and no "submissionSchema".  This does not
                     allow for any variance in the link URI, nor does it allow for a request document.
                 </t>
                 <t>
-                    An "href" with at least one template variable, but no "hrefSchema" or "schema", allows resolving
+                    An "href" with at least one template variable, but no "hrefSchema" or "submissionSchema", allows resolving
                     the template variable from the instance, but does not allow resolving it
                     from external data, nor does it allow a request document.
                 </t>
@@ -407,7 +407,7 @@
                     data to resolve the template, and falls back to resolving any remaining variables from the instance.
                 </t>
                 <t>
-                    A link with a "schema" allows submitting external data either as a request body (if "method" is "post"),
+                    A link with a "submissionSchema" allows submitting external data either as a request body (if "method" is "post"),
                     or as a URI query string (if "method" is "get").  Such a query string replaces any query string
                     present after the "href" template is resolved.
                 </t>
@@ -580,7 +580,7 @@
                 <t>
                     <cref>
                         The above example simulates the behavior found in earlier drafts using only "hrefSchema",
-                        which would allow the concurrent use of "schema" on a "post" link.
+                        which would allow the concurrent use of "submissionSchema" on a "post" link.
                     </cref>
                 </t>
             </section>
@@ -702,7 +702,7 @@ GET /foo/
                 </t>
             </section>
 
-            <section title="targetSchema">
+            <section title="targetSchema" anchor="targetSchema">
                 <t>
                     This property provides a schema that is expected to describe
                     the link target's representation.  Depending on the protocol,
@@ -883,7 +883,7 @@ GET /foo/
                     </t>
                 </section>
 
-                <section title="encType">
+                <section title="submissionEncType" anchor="submissionEncType">
                     <t>
                         If present, this property indicates the media type format the client should use to encode a query parameter or send to the server.
                         If the method is "get", this will indicate how to encode the query-string that is appended to the "href" link target.
@@ -894,10 +894,10 @@ GET /foo/
                             <artwork>
 <![CDATA[{
     "links": [{
-        "encType": "application/x-www-form-urlencoded",
+        "submissionEncType": "application/x-www-form-urlencoded",
         "method": "get",
         "href": "/Product/",
-        "schema": {
+        "submissionSchema": {
             "properties": {
                 "name": {
                     "description": "name of the product"
@@ -936,7 +936,7 @@ GET /foo/
                             <artwork>
 <![CDATA[{
     "links": [{
-        "encType": "multipart/alternative; boundary=abc123",
+        "submissionEncType": "multipart/alternative; boundary=ab12",
         "method": "post",
         "rel": "author",
         "href": "mailto:someone@example.com{?subject}",
@@ -947,7 +947,7 @@ GET /foo/
             },
             "required": ["subject"]
         },
-        "schema": {
+        "submissionSchema": {
             "type": "array",
             "items": [
                 {
@@ -968,17 +968,19 @@ GET /foo/
                     </t>
                 </section>
 
-                <section title="schema" anchor="schema">
+                <section title="submissionSchema" anchor="submissionSchema">
                     <t>
-                        This property contains a schema which defines the acceptable structure of the document being encoded according to the "encType" property.
+                        This property contains a schema which defines the acceptable structure of the document being encoded according to the "submissionEncType" property.
                     </t>
 
                     <t>
-                        Note that this does not define the structure for URI template variables.  That is handed by <xref target="hrefSchema">"hrefSchema"</xref>.  If the method is "get" and the resolved URI Template has a query string, the query string produced by input validated against "schema" replaces the existing query string.
+                        Note that this does not define the structure for URI template variables.  That is handed by <xref target="hrefSchema">"hrefSchema"</xref>.  If the method is "get" and the resolved URI Template has a query string, the query string produced by input validated against "submissionSchema" replaces the existing query string.
                     </t>
 
                     <t>
-                        This is a separate concept from the "targetSchema" property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
+                        This is a separate concept from the <xref target="targetSchema">"targetSchema"</xref> property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "submissionSchema" which describes the user-submitted request data to be evaluated by the resource.
+                        "submissionSchema" is intended for use with requests that have payloads that are not
+                        defined in terms of the target representation.
                     </t>
                 </section>
             </section>
@@ -1056,6 +1058,9 @@ GET /foo/
                             <t>Removed URI Template pre-processing</t>
                             <t>Clarified how links and data submission work</t>
                             <t>Clarified how validation keywords apply hyper-schema keywords and links</t>
+                            <t>Clarified HTTP use with "targetSchema"</t>
+                            <t>Renamed "schema" to "submissionSchema"</t>
+                            <t>Renamed "encType" to "submissionEncType"</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-hyperschema-00">
