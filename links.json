@@ -30,16 +30,12 @@
             "description": "media type (as defined by RFC 2046) describing the link target",
             "type": "string"
         },
-        "method": {
-                    "description": "specifies that the client can construct a templated query (\"get\") or non-idempotent request (\"post\") to a resource.",
-            "type": "string"
-        },
-        "encType": {
+        "submissionEncType": {
             "description": "The media type in which to submit data along with the request",
             "type": "string",
             "default": "application/json"
         },
-        "schema": {
+        "submissionSchema": {
             "description": "Schema describing the data to submit along with the request",
             "allOf": [ { "$ref": "hyper-schema#" } ]
         }
