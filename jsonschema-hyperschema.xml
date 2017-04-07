@@ -396,14 +396,6 @@
                     </cref>
                 </t>
                 <t>
-                    Link Description Objects do not directly indicate what operations, such
-                    as HTTP methods, are supported by the target resource.  Instead, operations
-                    should be inferred primarily from link <xref target="rel">relation types</xref>
-                    and URI schemes.  Note, however, that a resource may always decline an operation at
-                    runtime, for instance due to application state that controls the operation's
-                    availability.
-                </t>
-                <t>
                     There are several ways that a client can use data can with a link:
                     <list>
                         <t> URI Template variables resolved from server-supplied instance data </t>
@@ -415,6 +407,14 @@
                     The three ways to use client-supplied data are each addressed by a separate
                     schema keyword within the link description object.  Link operations
                     ignore schemas that are not relevant to their semantics.
+                </t>
+                <t>
+                    Link Description Objects do not directly indicate what operations, such
+                    as HTTP methods, are supported by the target resource.  Instead, operations
+                    should be inferred primarily from link <xref target="rel">relation types</xref>
+                    and URI schemes.  Note, however, that a resource may always decline an operation at
+                    runtime, for instance due to application state that controls the operation's
+                    availability.
                 </t>
                 <section title="Resolving templated URIs">
                     <t>
