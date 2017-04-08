@@ -399,7 +399,7 @@
                     There are several ways that a client can use data can with a link:
                     <list>
                         <t> URI Template variables resolved from server-supplied instance data </t>
-                        <t> URI Template variables resolved from client data </t>
+                        <t> URI Template variables resolved from user agent data </t>
                         <t> Replacing or modifying the target resource's representation </t>
                         <t> Submitting data for processing, where the data has no
                             inherent relation to the target resource's representation</t>
@@ -423,17 +423,17 @@
                         <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
                         a schema for resolving template variables from client-supplied data.
                         Regular JSON Schema validation features can be used to require resolution
-                        from client data, forbid it, or allow client data while falling back to
-                        server-supplied instance data if no client data is provided.
+                        from user agent data, forbid it, or allow user agent data while falling back to
+                        server-supplied instance data if no user agent data is provided.
                     </t>
                     <t>
                         The common pattern of resolving a templated path component with
-                        server-supplied instance data while accepting client data to build
+                        server-supplied instance data while accepting user agent data to build
                         a query string can be implemented by setting the "hrefSchema" subschemas
                         for the path template variables to false, while giving the query string
                         template variables names that do not appear in the instance.  This ensures
                         that the path variables can only be resolved from the instance, and the
-                        query string variables can only be resolved from client data.
+                        query string variables can only be resolved from user agent data.
                         See the "hrefSchema" section for an example of this approach.
                     </t>
                 </section>
@@ -491,7 +491,7 @@
                     <section title="Values for substitution">
                         <t>
                             The URI Template is filled out using data from some combination of an external source and the instance.
-                            Where either instance data or external data may be used, this section will refer simply to "data" or to a "value".
+                            Where either instance data or user agent data may be used, this section will refer simply to "data" or to a "value".
                             When the source is important, it is specified explicitly.
 
                             To allow the use of any object property (including the empty string) or array index, the following rules are defined:
@@ -507,10 +507,10 @@
 
                         <t>
                             If <xref target="hrefSchema">"hrefSchema"</xref> is present and
-                            external input is provided, the input MUST be a valid instance according
+                            user agent data is provided, the data MUST be a valid instance according
                             to the value of "hrefSchema".
                             Template variables, after the process listed above, MUST first
-                            be resolved from the external data instance.  Any variables left
+                            be resolved from the user agent data instance.  Any variables left
                             unresolved MUST be resolved from the resource instance data.
                         </t>
 
@@ -533,11 +533,11 @@
                     <section title="Missing values">
                         <t>
                             Sometimes, the appropriate values will not be available.
-                            For example, the template might specify the use of object properties, but no such input was provide (or "hrefSchema" is not present), and the instance is an array or a string.
+                            For example, the template might specify the use of object properties, but no such data was provided (or "hrefSchema" is not present), and the instance is an array or a string.
                         </t>
 
                         <t>
-                            If any of the values required for the template are present in neither the user input (if relevant) or the JSON instance, then substitute values MAY be provided from another source (such as default values).
+                            If any of the values required for the template are neither present in the user agent data (if relevant) nor the JSON instance, then substitute values MAY be provided from another source (such as default values).
                             Otherwise, the link definition SHOULD be considered not to apply to the instance.
                         </t>
                     </section>
@@ -549,17 +549,17 @@
                 <t>
                     The value of the "hrefSchema" link description property MUST be
                     a valid JSON Schema.  This schema is used to validate user input
-                    or other external data for filling out the URI Template in
+                    or other user agent data for filling out the URI Template in
                     <xref target="href">"href"</xref>, as described in that section.
                 </t>
                 <t>
                     Omitting "hrefSchema" or setting the entire schema to "false" prevents
-                    any external data from being accepted.
+                    any user agent data from being accepted.
                 </t>
                 <t>
                     Implementations MUST NOT attempt to validate values resolved from
                     resource instance data with "hrefSchema".  This allows for different
-                    validation rules for user input, such as supporting spelled-out
+                    validation rules for user agent data, such as supporting spelled-out
                     months for date-time input but using the standard date-time
                     format for storage.
                 </t>
@@ -593,9 +593,9 @@
                 <figure>
                     <preamble>
                         In this example, the schema for "extra" is given as a reference
-                        to keep the external data validation constraints identical to the
+                        to keep the user agent data validation constraints identical to the
                         instance validation constraints for the corresponding property,
-                        while "id" is given a false schema to prevent external data for
+                        while "id" is given a false schema to prevent user agent data for
                         that variable.
                     </preamble>
                     <artwork>
@@ -984,7 +984,7 @@ GET /foo/
                 </t>
                 <t>
                     Omitting "submissionSchema" or setting the entire schema to "false" prevents
-                    any external data from being accepted.
+                    any user agent data from being accepted.
                 </t>
             </section>
         </section>
