@@ -46,7 +46,7 @@
 
         <abstract>
             <t>
-                JSON Schema defines the media type "application/schema+json", a JSON based format
+                JSON Schema defines the media type "application/schema+json", a JSON-based format
                 for describing the structure of JSON data.
                 JSON Schema asserts what a JSON document must look like,
                 ways to extract information from it,
@@ -108,7 +108,7 @@
                 This document proposes a new media type "application/schema+json" to identify a JSON
                 Schema for describing JSON data.
                 JSON Schemas are themselves JSON documents.
-                This, and related specifications, define keywords allowing authors describe JSON data in several ways.
+                This, and related specifications, define keywords allowing authors to describe JSON data in several ways.
             </t>
 
             <section title="Validation">
@@ -373,7 +373,7 @@
                 A schema MUST NOT be run into an infinite loop against a schema. For example, if two schemas "#alice" and "#bob"
                 both have an "allOf" property that refers to the other, a naive validator might get stuck in an infinite recursive
                 loop trying to validate the instance.
-                Schemas SHOULD NOT make use of infinite recursive nesting like this, the behavior is undefined.
+                Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is undefined.
             </t>
         </section>
 
@@ -524,7 +524,7 @@
         <section title="Usage for hypermedia">
 
             <t>
-                One of the largest adopters of JSON has been HTTP servers for automated APIs and robots.
+                JSON has been adopted widely by HTTP servers for automated APIs and robots.
                 This section describes how to enhance processing of JSON documents in a more RESTful manner
                 when used with protocols that support media types and <xref target="RFC5988">Web linking</xref>.
             </t>
@@ -604,7 +604,7 @@ Link: </alice>;rel="profile", </bob>;rel="profile"
 
              <section title="Usage over HTTP">
                 <t>
-                    When used for hypermedia systems over a network, <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for distributing schemas. Misbehaved clients can pose problems for server maintainers if they pull a schema over the network more frequently than necessary, when it's instead possible to cache a schema for a long period of time.
+                    When used for hypermedia systems over a network, <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for distributing schemas. Misbehaving clients can pose problems for server maintainers if they pull a schema over the network more frequently than necessary, when it's instead possible to cache a schema for a long period of time.
                 </t>
                 <t>
                     HTTP servers SHOULD set long-lived caching headers on JSON Schemas.
