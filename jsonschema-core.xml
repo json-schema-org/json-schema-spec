@@ -612,11 +612,11 @@ Link: </alice>;rel="profile", </bob>;rel="profile"
                     Distributed systems SHOULD make use of a shared cache and/or caching proxy.
                 </t>
                 <t>
-                    Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema implementation or software product. Since symbols are listed in decreasing order of significance, the JSON Schema library name/version goes first, then the more generic HTTP library name (if any). For example:
+                    Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema implementation or software product. Since symbols are listed in decreasing order of significance, the JSON Schema library name/version should precede the more generic HTTP library name (if any). For example:
                     <figure>
                         <artwork>
 <![CDATA[
-User-Agent: so-cool-json-schema/1.0.2 curl/7.43.0
+User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
 ]]>
                         </artwork>
                     </figure>
