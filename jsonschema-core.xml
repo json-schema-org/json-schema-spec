@@ -51,18 +51,21 @@
                 JSON Schema asserts what a JSON document must look like,
                 ways to extract information from it,
                 and how to interact with it,
-                ideal for annotating existing JSON APIs that would not otherwise have hypermedia controls or be machine-readable.
+                ideal for annotating existing JSON APIs that would not otherwise have hypermedia
+                controls or be machine-readable.
             </t>
         </abstract>
         <note title="Note to Readers">
             <t>
-                The issues list for this draft can be found at <eref target="https://github.com/json-schema-org/json-schema-spec/issues"/>.
+                The issues list for this draft can be found at
+                <eref target="https://github.com/json-schema-org/json-schema-spec/issues"/>.
             </t>
             <t>
                 For additional information, see <eref target="http://json-schema.org/"/>.
             </t>
             <t>
-                To provide feedback, use this issue tracker, the communication methods listed on the homepage, or email the document editors.
+                To provide feedback, use this issue tracker, the communication methods listed on the
+                homepage, or email the document editors.
             </t>
         </note>
     </front>
@@ -108,26 +111,34 @@
                 This document proposes a new media type "application/schema+json" to identify a JSON
                 Schema for describing JSON data.
                 JSON Schemas are themselves JSON documents.
-                This, and related specifications, define keywords allowing authors to describe JSON data in several ways.
+                This, and related specifications, define keywords allowing authors to describe JSON
+                data in several ways.
             </t>
 
             <section title="Validation">
                 <t>
-                    JSON Schema describes the structure of a JSON document (for instance, required properties and length limitations).
-                    Applications can use this information to validate instances (check that constraints are met), or inform interfaces to collect user input such that the constraints are satisfied.
+                    JSON Schema describes the structure of a JSON document (for instance, required
+                    properties and length limitations).
+                    Applications can use this information to validate instances (check that
+                    constraints are met), or inform interfaces to collect user input such that the
+                    constraints are satisfied.
                 </t>
                 <t>
-                    Validation behaviour and keywords are specified in <xref target="json-schema-validation">a separate document</xref>.
+                    Validation behaviour and keywords are specified in
+                    <xref target="json-schema-validation">a separate document</xref>.
                 </t>
             </section>
 
             <section title="Hypermedia and Linking">
                 <t>
                     JSON Hyper-Schema describes the hypertext structure of a JSON document.
-                    This includes link relations from the instance to other resources, interpretation of instances as multimedia data, and submission data required to use an API.
+                    This includes link relations from the instance to other resources,
+                    interpretation of instances as multimedia data, and submission data required to
+                    use an API.
                 </t>
                 <t>
-                    Hyper-schema behaviour and keywords are specified in <xref target="json-hyper-schema">a separate document</xref>.
+                    Hyper-schema behaviour and keywords are specified in
+                    <xref target="json-hyper-schema">a separate document</xref>.
                 </t>
             </section>
         </section>
@@ -136,22 +147,29 @@
 
             <section title="JSON Document">
                 <t>
-                    A JSON document is an information resource (series of octets) described by the application/json media type.
+                    A JSON document is an information resource (series of octets) described by the
+                    application/json media type.
                 </t>
                 <t>
-                    In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are interchangeable because of the data model it defines.
+                    In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are
+                    interchangeable because of the data model it defines.
                 </t>
                 <t>
-                    JSON Schema is only defined over JSON documents. However, any document or memory structure that can be parsed into or processed according to the JSON Schema data model can be interpreted against a JSON Schema, including media types like <xref target="RFC7049">CBOR</xref>.
+                    JSON Schema is only defined over JSON documents. However, any document or memory
+                    structure that can be parsed into or processed according to the JSON Schema data
+                    model can be interpreted against a JSON Schema, including media types like
+                    <xref target="RFC7049">CBOR</xref>.
                 </t>
             </section>
 
             <section title="Instance">
                 <t>
-                    JSON Schema interprets documents according to a data model. A JSON value interpreted according to this data model is called an "instance".
+                    JSON Schema interprets documents according to a data model. A JSON value
+                    interpreted according to this data model is called an "instance".
                 </t>
                 <t>
-                    An instance has one of six primitive types, and a range of possible values depending on the type:
+                    An instance has one of six primitive types, and a range of possible values
+                    depending on the type:
 
                     <list style="hanging">
                         <t hangText="null">A JSON "null" production</t>
@@ -166,13 +184,16 @@
                     Whitespace and formatting concerns are thus outside the scope of JSON Schema.
                 </t>
                 <t>
-                    Since an object cannot have two properties with the same key, behavior for a JSON document that tries to define two properties (the "member" production) with the same key (the "string" production) in a single object is undefined.
+                    Since an object cannot have two properties with the same key, behavior for a
+                    JSON document that tries to define two properties (the "member" production) with
+                    the same key (the "string" production) in a single object is undefined.
                 </t>
             </section>
 
             <section title="Instance equality">
                 <t>
-                    Two JSON instances are said to be equal if and only if they are of the same type and have the same value according to the data model. Specifically, this means:
+                    Two JSON instances are said to be equal if and only if they are of the same type
+                    and have the same value according to the data model. Specifically, this means:
 
                     <list>
                         <t>both are null; or</t>
@@ -181,7 +202,9 @@
                         <t>both are strings, and are the same codepoint-for-codepoint; or</t>
                         <t>both are numbers, and have the same mathematical value; or</t>
                         <t>both are arrays, and have an equal value item-for-item; or</t>
-                        <t>both are objects, and each property in one has exactly one property with a key equal to the other's, and that other property has an equal value.</t>
+                        <t>both are objects, and each property in one has exactly one property with
+                            a key equal to the other's, and that other property has an equal
+                            value.</t>
                     </list>
                 </t>
                 <t>
@@ -189,13 +212,15 @@
                     objects must have the same number of members,
                     properties in objects are unordered,
                     there is no way to define multiple properties with the same key,
-                    and mere formatting differences (indentation, placement of commas, trailing zeros) are insignificant.
+                    and mere formatting differences (indentation, placement of commas, trailing
+                    zeros) are insignificant.
                 </t>
             </section>
 
             <section title="JSON Schema documents">
                 <t>
-                    A JSON Schema document, or simply a schema, is a JSON document used to describe an instance.
+                    A JSON Schema document, or simply a schema, is a JSON document used to describe
+                    an instance.
                     A schema is itself interpreted as an instance.
                     A JSON Schema MUST be an object or a boolean.
                 </t>
@@ -207,7 +232,8 @@
                     </list>
                 </t>
                 <t>
-                    Properties that are used to describe the instance are called keywords, or schema keywords.
+                    Properties that are used to describe the instance are called keywords, or schema
+                    keywords.
                     The meaning of properties is specified by the vocabulary that the schema is using.
                 </t>
                 <t>
@@ -216,7 +242,8 @@
                 </t>
                 <t>
                     A schema that itself describes a schema is called a meta-schema.
-                    Meta-schemas are used to validate JSON Schemas and specify which vocabulary it is using.
+                    Meta-schemas are used to validate JSON Schemas and specify which vocabulary it
+                    is using.
                 </t>
                 <t>
                     An empty schema is a JSON Schema with no properties, or only unknown properties.
@@ -291,25 +318,28 @@
             <section title="Range of JSON values">
                 <t>
                     An instance may be any valid JSON value as defined by <xref target="RFC7159">JSON</xref>.
-                    JSON Schema imposes no restrictions on type: JSON Schema can describe any JSON value, including, for example, null.
+                    JSON Schema imposes no restrictions on type: JSON Schema can describe any JSON
+                    value, including, for example, null.
                 </t>
             </section>
 
             <section title="Programming language independence" anchor="language">
                 <t>
-                    JSON Schema is programming language agnostic, and supports the full range of values described in the data model.
-                    Be aware, however, that some languages and JSON parsers may not be able to represent in memory
-                    the full range of values describable by JSON.
+                    JSON Schema is programming language agnostic, and supports the full range of
+                    values described in the data model.
+                    Be aware, however, that some languages and JSON parsers may not be able to
+                    represent in memory the full range of values describable by JSON.
                 </t>
             </section>
 
             <section title="Mathematical integers" anchor="integers">
                 <t>
-                    Some programming languages and parsers use different internal representations for floating
-                    point numbers than they do for integers.
+                    Some programming languages and parsers use different internal representations
+                    for floating point numbers than they do for integers.
                 </t>
                 <t>
-                    For consistency, integer JSON numbers SHOULD NOT be encoded with a fractional part.
+                    For consistency, integer JSON numbers SHOULD NOT be encoded with a fractional
+                    part.
                 </t>
             </section>
 
@@ -321,8 +351,10 @@
                     keywords they do not support.
                 </t>
                 <t>
-                    Authors of extensions to JSON Schema are encouraged to write their own meta-schemas, which extend the existing meta-schemas using "allOf".
-                    This extended meta-schema SHOULD be referenced using the "$schema" keyword, to allow tools to follow the correct behaviour.
+                    Authors of extensions to JSON Schema are encouraged to write their own
+                    meta-schemas, which extend the existing meta-schemas using "allOf".
+                    This extended meta-schema SHOULD be referenced using the "$schema" keyword, to
+                    allow tools to follow the correct behaviour.
                 </t>
             </section>
 
@@ -345,18 +377,23 @@
                 It MUST NOT appear in subschemas.
             </t>
             <t>
-                <cref>While this pattern is likely to remain best practice for schema authoring, implementation behavior is subject to be revised or liberalized in future drafts.</cref>
+                <cref>
+                    While this pattern is likely to remain best practice for schema authoring,
+                    implementation behavior is subject to be revised or liberalized in future
+                    drafts.
+                </cref>
             </t>
             <t>
                 Values for this property are defined in other documents and by other parties.
-                JSON Schema implementations SHOULD implement support for current and previous published drafts
-                of JSON Schema vocabularies as deemed reasonable.
+                JSON Schema implementations SHOULD implement support for current and previous
+                published drafts of JSON Schema vocabularies as deemed reasonable.
             </t>
         </section>
 
         <section title="Schema references with $ref">
             <t>
-                The "$ref" keyword is used to reference a schema, and provides the ability to validate recursive structures through self-reference.
+                The "$ref" keyword is used to reference a schema, and provides the ability to
+                validate recursive structures through self-reference.
             </t>
             <t>
                 An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
@@ -365,25 +402,30 @@
                 All other properties in a "$ref" object MUST be ignored.
             </t>
             <t>
-                The URI is not a network locator, only an identifier. A schema need not be downloadable from the address
-                if it is a network-addressable URL, and implementations SHOULD NOT assume they should perform a network
-                operation when they encounter a network-addressable URI.
+                The URI is not a network locator, only an identifier. A schema need not be
+                downloadable from the address if it is a network-addressable URL, and
+                implementations SHOULD NOT assume they should perform a network operation when they
+                encounter a network-addressable URI.
             </t>
             <t>
-                A schema MUST NOT be run into an infinite loop against a schema. For example, if two schemas "#alice" and "#bob"
-                both have an "allOf" property that refers to the other, a naive validator might get stuck in an infinite recursive
-                loop trying to validate the instance.
-                Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is undefined.
+                A schema MUST NOT be run into an infinite loop against a schema. For example, if two
+                schemas "#alice" and "#bob" both have an "allOf" property that refers to the other,
+                a naive validator might get stuck in an infinite recursive loop trying to validate
+                the instance.
+                Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is
+                undefined.
             </t>
         </section>
 
         <section title="Base URI and dereferencing">
             <section title="Initial base URI">
                 <t>
-                    <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the default base URI of a document.
+                    <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
+                    default base URI of a document.
                 </t>
                 <t>
-                    Informatively, the initial base URI of a schema is the URI at which it was found, or a suitable substitute URI if none is known.
+                    Informatively, the initial base URI of a schema is the URI at which it was
+                    found, or a suitable substitute URI if none is known.
                 </t>
             </section>
 
@@ -391,11 +433,14 @@
                 <t>
                     The "$id" keyword defines a URI for the schema,
                     and the base URI that other URI references within the schema are resolved against.
-                    The "$id" keyword itself is resolved against the base URI that the object as a whole appears in.
+                    The "$id" keyword itself is resolved against the base URI that the object as a
+                    whole appears in.
                 </t>
                 <t>
-                    If present, the value for this keyword MUST be a string, and MUST represent a valid <xref target="RFC3986">URI-reference</xref>.
-                    This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt; or an empty string &lt;&gt;.
+                    If present, the value for this keyword MUST be a string, and MUST represent a
+                    valid <xref target="RFC3986">URI-reference</xref>.
+                    This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt;
+                    or an empty string &lt;&gt;.
                 </t>
                 <t>
                     The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
@@ -413,7 +458,8 @@
                     subschemas can use "$id" to give themselves a document-local identifier.
                     This is done by setting "$id" to a URI reference consisting only of a fragment.
                     The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
-                    any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                    any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
+                    (":"), or periods (".").
                 </t>
                 <t>
                     The effect of defining an "$id" that neither matches the above
@@ -462,12 +508,12 @@
                 </t>
                 <section title="Internal references">
                     <t>
-                        Schemas can be identified by any URI that has been given to them, including a JSON Pointer or
-                        their URI given directly by "$id".
+                        Schemas can be identified by any URI that has been given to them, including
+                        a JSON Pointer or their URI given directly by "$id".
                     </t>
                     <t>
-                        Tools SHOULD take note of the URIs that schemas, including subschemas, provide for themselves using "$id".
-                        This is known as "Internal referencing".
+                        Tools SHOULD take note of the URIs that schemas, including subschemas,
+                        provide for themselves using "$id". This is known as "Internal referencing".
                     </t>
 
                     <t>
@@ -494,28 +540,34 @@
                         </artwork>
                     </figure>
                     <t>
-                        When an implementation encounters the &lt;#/definitions/single&gt; schema, it resolves the "$id" URI reference
-                        against the current base URI to form &lt;http://example.net/root.json#item&gt;.
+                        When an implementation encounters the &lt;#/definitions/single&gt; schema,
+                        it resolves the "$id" URI reference against the current base URI to form
+                        &lt;http://example.net/root.json#item&gt;.
                     </t>
                     <t>
-                        When an implementation then looks inside the &lt;#/items&gt; schema, it encounters the &lt;#item&gt; reference,
-                        and resolves this to &lt;http://example.net/root.json#item&gt; which is understood as the schema defined elsewhere in the same document.
+                        When an implementation then looks inside the &lt;#/items&gt; schema, it
+                        encounters the &lt;#item&gt; reference, and resolves this to
+                        &lt;http://example.net/root.json#item&gt; which is understood as the schema
+                        defined elsewhere in the same document.
                     </t>
                 </section>
                 <section title="External references">
                     <t>
-                        To differentiate schemas between each other in a vast ecosystem, schemas are identified by URI.
-                        As specified above, this does not necessarily mean anything is downloaded, but instead JSON Schema
-                        implementations SHOULD already understand the schemas they will be using, including the URIs that identify them.
+                        To differentiate schemas between each other in a vast ecosystem, schemas are
+                        identified by URI. As specified above, this does not necessarily mean
+                        anything is downloaded, but instead JSON Schema implementations SHOULD
+                        already understand the schemas they will be using, including the URIs that
+                        identify them.
                     </t>
                     <t>
-                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary schema and/or
-                        automatically associate a schema's "$id"-given URI, depending on the trust that the validator
-                        has in the schema.
+                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
+                        schema and/or automatically associate a schema's "$id"-given URI, depending
+                        on the trust that the validator has in the schema.
                     </t>
                     <t>
-                        A schema MAY (and likely will) have multiple URIs, but there is no way for a URI to identify more than one schema.
-                        When multiple schemas try to identify with the same URI, validators SHOULD raise an error condition.
+                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
+                        URI to identify more than one schema. When multiple schemas try to identify
+                        with the same URI, validators SHOULD raise an error condition.
                     </t>
                 </section>
             </section>
@@ -524,18 +576,22 @@
         <section title="Usage for hypermedia">
 
             <t>
-                JSON has been adopted widely by HTTP servers for automated APIs and robots.
-                This section describes how to enhance processing of JSON documents in a more RESTful manner
-                when used with protocols that support media types and <xref target="RFC5988">Web linking</xref>.
+                JSON has been adopted widely by HTTP servers for automated APIs and robots. This
+                section describes how to enhance processing of JSON documents in a more RESTful
+                manner when used with protocols that support media types and
+                <xref target="RFC5988">Web linking</xref>.
             </t>
 
             <section title='Linking to a schema'>
                 <t>
-                    It is RECOMMENDED that instances described by a schema/profile provide a link to a downloadable JSON Schema using the link relation "describedby", as defined by <xref target="W3C.REC-ldp-20150226">Linked Data Protocol 1.0, section 8.1</xref>.
+                    It is RECOMMENDED that instances described by a schema/profile provide a link to
+                    a downloadable JSON Schema using the link relation "describedby", as defined by
+                    <xref target="W3C.REC-ldp-20150226">Linked Data Protocol 1.0, section 8.1</xref>.
                 </t>
 
                 <t>
-                    In HTTP, such links can be attached to any response using the <xref target="RFC5988">Link header</xref>. An example of such a header would be:
+                    In HTTP, such links can be attached to any response using the
+                    <xref target="RFC5988">Link header</xref>. An example of such a header would be:
                 </t>
 
                 <figure>
@@ -551,15 +607,22 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
 
             <section title='Describing a profile of JSON' anchor="profile">
                 <t>
-                    Instances MAY specify a "profile" as described in <xref target="RFC6906">The 'profile' Link Relation</xref>.
-                    When used as a media-type parameter, HTTP servers gain the ability to perform Content-Type Negotiation based on profile.
-                    The media-type parameter MUST be a whitespace-separated list of URIs (i.e. relative references are invalid).
+                    Instances MAY specify a "profile" as described in
+                    <xref target="RFC6906">The 'profile' Link Relation</xref>.
+                    When used as a media-type parameter, HTTP servers gain the ability to perform
+                    Content-Type Negotiation based on profile.
+                    The media-type parameter MUST be a whitespace-separated list of URIs
+                    (i.e. relative references are invalid).
                 </t>
                 <t>
                     The profile URI is opaque and SHOULD NOT automatically be dereferenced.
-                    If the implementation does not understand the semantics of the provided profile, the implementation can instead follow the "describedby" links, if any, which may provide information on how to handle the profile.
-                    Since "profile" doesn't necessarily point to a network location, the "describedby" relation is used for linking to a downloadable schema.
-                    However, for simplicity, schema authors should make these URIs point to the same resource when possible.
+                    If the implementation does not understand the semantics of the provided profile,
+                    the implementation can instead follow the "describedby" links, if any, which may
+                    provide information on how to handle the profile.
+                    Since "profile" doesn't necessarily point to a network location, the
+                    "describedby" relation is used for linking to a downloadable schema.
+                    However, for simplicity, schema authors should make these URIs point to the same
+                    resource when possible.
                 </t>
 
                 <t>
@@ -589,7 +652,9 @@ Content-Type: application/json;
                 </figure>
 
                 <t>
-                    HTTP can also send the "profile" in a Link, though this may impact media-type semantics and Content-Type negotiation if this replaces the media-type parameter entirely:
+                    HTTP can also send the "profile" in a Link, though this may impact media-type
+                    semantics and Content-Type negotiation if this replaces the media-type parameter
+                    entirely:
                 </t>
 
                 <figure>
@@ -604,15 +669,24 @@ Link: </alice>;rel="profile", </bob>;rel="profile"
 
              <section title="Usage over HTTP">
                 <t>
-                    When used for hypermedia systems over a network, <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for distributing schemas. Misbehaving clients can pose problems for server maintainers if they pull a schema over the network more frequently than necessary, when it's instead possible to cache a schema for a long period of time.
+                    When used for hypermedia systems over a network,
+                    <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for
+                    distributing schemas. Misbehaving clients can pose problems for server
+                    maintainers if they pull a schema over the network more frequently than
+                    necessary, when it's instead possible to cache a schema for a long period of
+                    time.
                 </t>
                 <t>
                     HTTP servers SHOULD set long-lived caching headers on JSON Schemas.
-                    HTTP clients SHOULD observe caching headers and not re-request documents within their freshness period.
+                    HTTP clients SHOULD observe caching headers and not re-request documents within
+                    their freshness period.
                     Distributed systems SHOULD make use of a shared cache and/or caching proxy.
                 </t>
                 <t>
-                    Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema implementation or software product. Since symbols are listed in decreasing order of significance, the JSON Schema library name/version should precede the more generic HTTP library name (if any). For example:
+                    Clients SHOULD set or prepend a User-Agent header specific to the JSON Schema
+                    implementation or software product. Since symbols are listed in decreasing order
+                    of significance, the JSON Schema library name/version should precede the more
+                    generic HTTP library name (if any). For example:
                     <figure>
                         <artwork>
 <![CDATA[
@@ -622,7 +696,8 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     </figure>
                 </t>
                 <t>
-                    Clients SHOULD be able to make requests with a "From" header so that server operators can contact the owner of a potentially misbehaving script.
+                    Clients SHOULD be able to make requests with a "From" header so that server
+                    operators can contact the owner of a potentially misbehaving script.
                 </t>
             </section>
 
@@ -634,15 +709,19 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 defined in <xref target="RFC7159">RFC 7159</xref> apply.
             </t>
             <t>
-                Instances and schemas are both frequently written by untrusted third parties, to be deployed on public Internet servers.
-                Validators should take care that the parsing of schemas doesn't consume excessive system resources.
+                Instances and schemas are both frequently written by untrusted third parties, to be
+                deployed on public Internet servers.
+                Validators should take care that the parsing of schemas doesn't consume excessive
+                system resources.
                 Validators MUST NOT fall into an infinite loop.
             </t>
             <t>
-                Servers need to take care that malicious parties can't change the functionality of existing schemas by uploading a schema with an pre-existing or very similar "$id".
+                Servers need to take care that malicious parties can't change the functionality of
+                existing schemas by uploading a schema with an pre-existing or very similar "$id".
             </t>
             <t>
-                Individual JSON Schema vocabularies are liable to also have their own security considerations. Consult the respective specifications for more information.
+                Individual JSON Schema vocabularies are liable to also have their own security
+                considerations. Consult the respective specifications for more information.
             </t>
         </section>
 
