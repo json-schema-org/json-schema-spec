@@ -21,7 +21,9 @@
 <?rfc inline="yes" ?>
 <rfc category="info" docName="draft-wright-json-schema-validation-01" ipr="trust200902">
     <front>
-        <title abbrev="JSON Schema Validation">JSON Schema Validation: A Vocabulary for Structural Validation of JSON</title>
+        <title abbrev="JSON Schema Validation">
+            JSON Schema Validation: A Vocabulary for Structural Validation of JSON
+        </title>
 
         <author fullname="Austin Wright" initials="A" surname="Wright" role="editor">
             <address>
@@ -50,22 +52,25 @@
 
         <abstract>
             <t>
-                JSON Schema (application/schema+json) has several purposes, one of which is JSON instance validation.
-                This document specifies a vocabulary for JSON Schema to describe the meaning of JSON documents,
-                provide hints for user interfaces working with JSON data,
-                and to make assertions about what a valid document must look like.
+                JSON Schema (application/schema+json) has several purposes, one of which is JSON
+                instance validation.
+                This document specifies a vocabulary for JSON Schema to describe the meaning of JSON
+                documents, provide hints for user interfaces working with JSON data, and to make
+                assertions about what a valid document must look like.
             </t>
         </abstract>
 
         <note title="Note to Readers">
             <t>
-                The issues list for this draft can be found at <eref target="https://github.com/json-schema-org/json-schema-spec/issues"/>.
+                The issues list for this draft can be found at
+                <eref target="https://github.com/json-schema-org/json-schema-spec/issues"/>.
             </t>
             <t>
                 For additional information, see <eref target="http://json-schema.org/"/>.
             </t>
             <t>
-                To provide feedback, use this issue tracker, the communication methods listed on the homepage, or email the document editors.
+                To provide feedback, use this issue tracker, the communication methods listed on the
+                homepage, or email the document editors.
             </t>
         </note>
     </front>
@@ -116,7 +121,8 @@
 
             <section title="Validation of numeric instances">
                 <t>
-                    The JSON specification allows numbers with arbitrary precision, and JSON Schema does not add any such bounds.
+                    The JSON specification allows numbers with arbitrary precision, and JSON Schema
+                    does not add any such bounds.
                     This means that numeric instances processed by JSON Schema can be arbitrarily large and/or
                     have an arbitrarily long decimal part, regardless of the ability of the
                     underlying programming language to deal with such data.
@@ -167,8 +173,10 @@
                     validation succeeds.
                 </t>
                 <t>
-                    For example, the "maxLength" keyword will only restrict certain strings (that are too long) from being valid.
-                    If the instance is a number, boolean, null, array, or object, the keyword passes validation.
+                    For example, the "maxLength" keyword will only restrict certain strings (that
+                    are too long) from being valid.
+                    If the instance is a number, boolean, null, array, or object, the keyword passes
+                    validation.
                 </t>
             </section>
 
@@ -204,8 +212,8 @@
                 </t>
                 <t>
                     Validation keywords that are missing never restrict validation.
-                    In some cases, this no-op behavior is identical to a keyword that exists with certain values,
-                    and these values are noted where known.
+                    In some cases, this no-op behavior is identical to a keyword that exists with
+                    certain values, and these values are noted where known.
                 </t>
             </section>
 
@@ -217,8 +225,13 @@
                 <t>
                     For schema author convenience, there are some exceptions:
                     <list>
-                        <t>"additionalProperties", whose behavior is defined in terms of "properties" and "patternProperties"; and</t>
-                        <t>"additionalItems", whose behavior is defined in terms of "items".</t>
+                        <t>
+                            "additionalProperties", whose behavior is defined in terms of
+                            "properties" and "patternProperties"; and
+                        </t>
+                        <t>
+                            "additionalItems", whose behavior is defined in terms of "items".
+                        </t>
                     </list>
                 </t>
             </section>
@@ -227,13 +240,15 @@
 
         <section title="Meta-schema">
             <t>
-                The current URI for the JSON Schema Validation is &lt;http://json-schema.org/draft-06/schema#&gt;.
+                The current URI for the JSON Schema Validation is
+                &lt;http://json-schema.org/draft-06/schema#&gt;.
             </t>
         </section>
 
         <section title="Validation keywords">
             <t>
-                Validation keywords in a schema impose requirements for successful validation of an instance.
+                Validation keywords in a schema impose requirements for successful validation of an
+                instance.
             </t>
 
             <section title="multipleOf">
@@ -241,43 +256,52 @@
                     The value of "multipleOf" MUST be a number, strictly greater than 0.
                 </t>
                 <t>
-                    A numeric instance is valid only if division by this keyword's value results in an integer.
+                    A numeric instance is valid only if division by this keyword's value results in
+                    an integer.
                 </t>
             </section>
 
             <section title="maximum">
                 <t>
-                    The value of "maximum" MUST be a number, representing an inclusive upper limit for a numeric instance.
+                    The value of "maximum" MUST be a number, representing an inclusive upper limit
+                    for a numeric instance.
                 </t>
                 <t>
-                    If the instance is a number, then this keyword validates only if the instance is less than or exactly equal to "maximum".
+                    If the instance is a number, then this keyword validates only if the instance is
+                    less than or exactly equal to "maximum".
                 </t>
             </section>
 
             <section title="exclusiveMaximum">
                 <t>
-                    The value of "exclusiveMaximum" MUST be number, representing an exclusive upper limit for a numeric instance.
+                    The value of "exclusiveMaximum" MUST be number, representing an exclusive upper
+                    limit for a numeric instance.
                 </t>
                 <t>
-                    If the instance is a number, then the instance is valid only if it has a value strictly less than (not equal to) "exclusiveMaximum".
+                    If the instance is a number, then the instance is valid only if it has a value
+                    strictly less than (not equal to) "exclusiveMaximum".
                 </t>
             </section>
 
             <section title="minimum">
                 <t>
-                    The value of "minimum" MUST be a number, representing an inclusive upper limit for a numeric instance.
+                    The value of "minimum" MUST be a number, representing an inclusive upper limit
+                    for a numeric instance.
                 </t>
                 <t>
-                    If the instance is a number, then this keyword validates only if the instance is greater than or exactly equal to "minimum".
+                    If the instance is a number, then this keyword validates only if the instance is
+                    greater than or exactly equal to "minimum".
                 </t>
             </section>
 
             <section title="exclusiveMinimum">
                 <t>
-                    The value of "exclusiveMinimum" MUST be number, representing an exclusive upper limit for a numeric instance.
+                    The value of "exclusiveMinimum" MUST be number, representing an exclusive upper
+                    limit for a numeric instance.
                 </t>
                 <t>
-                    If the instance is a number, then the instance is valid only if it has a value strictly greater than (not equal to) "exclusiveMinimum".
+                    If the instance is a number, then the instance is valid only if it has a value
+                    strictly greater than (not equal to) "exclusiveMinimum".
                 </t>
             </section>
 
@@ -327,7 +351,8 @@
 
             <section title="items">
                 <t>
-                    The value of "items" MUST be either a valid JSON Schema or an array of valid JSON Schemas.
+                    The value of "items" MUST be either a valid JSON Schema or an array of valid
+                    JSON Schemas.
                 </t>
                 <t>
                     This keyword determines how child instances validate for arrays,
@@ -551,8 +576,8 @@
                     The value of "propertyNames" MUST be a valid JSON Schema.
                 </t>
                 <t>
-                    If the instance is an object, this keyword validates if every property name in the instance
-                    validates against the provided schema.
+                    If the instance is an object, this keyword validates if every property name in
+                    the instance validates against the provided schema.
                     Note the property name that the schema is testing will always be a string.
                 </t>
                 <t>
@@ -595,7 +620,8 @@
                     or "integer" which matches any number with a zero fractional part.
                 </t>
                 <t>
-                    An instance validates if and only if the instance is in any of the sets listed for this keyword.
+                    An instance validates if and only if the instance is in any of the sets listed
+                    for this keyword.
                 </t>
             </section>
 
@@ -831,7 +857,8 @@
                         This attribute applies to string instances.
                     </t>
                     <t>
-                        A string instance is valid against this attribute if it is a valid URI Reference (either a URI or a relative-reference),
+                        A string instance is valid against this attribute if it is a valid URI
+                        Reference (either a URI or a relative-reference),
                         according to <xref target="RFC3986"/>.
                     </t>
                 </section>
@@ -860,13 +887,17 @@
 
         <section title="Security considerations">
             <t>
-                JSON Schema validation defines a vocabulary for JSON Schema core and concerns all the security considerations listed there.
+                JSON Schema validation defines a vocabulary for JSON Schema core and concerns all
+                the security considerations listed there.
             </t>
             <t>
-                JSON Schema validation allows the use of Regular Expressions, which have numerous different (often incompatible) implementations.
-                Some implementations allow the embedding of arbitrary code, which is outside the scope of JSON Schema and MUST NOT be permitted.
-                Regular expressions can often also be crafted to be extremely expensive to compute (with so-called "catastrophic backtracking"),
-                resulting in a denial-of-service attack.
+                JSON Schema validation allows the use of Regular Expressions, which have numerous
+                different (often incompatible) implementations.
+                Some implementations allow the embedding of arbitrary code, which is outside the
+                scope of JSON Schema and MUST NOT be permitted.
+                Regular expressions can often also be crafted to be extremely expensive to compute
+                (with so-called "catastrophic backtracking"), resulting in a denial-of-service
+                attack.
             </t>
         </section>
 
