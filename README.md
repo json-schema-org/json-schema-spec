@@ -1,4 +1,6 @@
-## Welcome to JSON Schema
+# JSON Schema
+
+## Welcome
 
 JSON Schema is a vocabulary that allows you to validate, annotate, and manipulate JSON documents.
 
@@ -7,9 +9,9 @@ For released versions, please see the [Previous Versions](#previous-versions) se
 
 ## Call for reviews
 
-Specifications are starting to get written. Reviews, comments and suggestions
-are of paramount importance to JSON Schema. It is humbly asked to you, dear
-reader, that you bring your contribution.
+Specifications are starting to get written. Reviews, comments, and suggestions
+are of paramount importance to JSON Schema. It is humbly asked of you, dear
+reader, that you bring your contributions.
 
 ## Status
 For the current status of issues and pull requests, please see the following labels
@@ -46,11 +48,25 @@ For previous versions of the specification (like draft-4), please see the [Speci
 
 ## The website
 
-The JSON Schema web site is at http://json-schema.org/
+The JSON Schema web site is at <http://json-schema.org/>.
 
 The source for the website is maintained in a separate repository.
 
 
 ## License
 
-The source material in this repository is licensed under the AFL or BSD license.
+The source material in this repository is licensed under the AFL v3.0
+or BSD 3 revised license.
+
+## Development
+
+1.  [Download and install Python](https://www.python.org/downloads/), being
+    sure to add Python to the system path.
+
+2.  Follow the [install instructions for xml2rfc](https://pypi.python.org/pypi/xml2rfc/).
+    (It was problematic for me on Windows, so for me the simplest solution
+    was to downgrade Python to 2.7.11 and utilize the [lxml installer](https://pypi.python.org/pypi/lxml/3.5.0#downloads)
+    for 2.7, avoiding certain errors for the C++ compiler with this library
+    used by xml2rfc.)
+
+3.  Run `npm install`.

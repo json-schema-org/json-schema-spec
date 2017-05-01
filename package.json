@@ -1,0 +1,38 @@
+{
+  "name": "json-schema-spec",
+  "version": "0.4.0",
+  "description": "Current and historical JSON Schema specifications",
+  "main": "schema.json",
+  "scripts": {
+    "install": "npm run make",
+    "make": "npm run text && npm run html",
+    "text-core": "xml2rfc --text jsonschema-core.xml -o jsonschema-core.txt",
+    "text-schema": "xml2rfc --text jsonschema-schema.xml -o jsonschema-schema.txt",
+    "text-hyperschema": "xml2rfc --text jsonschema-hyperschema.xml -o jsonschema-hyperschema.txt",
+    "text": "npm run text-core && npm run text-schema && npm run text-hyperschema",
+    "html-core": "xml2rfc --html jsonschema-core.xml -o jsonschema-core.html",
+    "html-schema": "xml2rfc --html jsonschema-schema.xml -o jsonschema-schema.html",
+    "html-hyperschema": "xml2rfc --html jsonschema-hyperschema.xml -o jsonschema-hyperschema.html",
+    "html": "npm run html-core && npm run html-schema && npm run html-hyperschema",
+    "clean": "rm -f jsonschema-core.html jsonschema-core.txt jsonschema-schema.html jsonschema-schema.txt jsonschema-hyperschema.html jsonschema-hyperschema.txt",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/json-schema-org/json-schema-spec.git"
+  },
+  "keywords": [
+    "json",
+    "json",
+    "schema"
+  ],
+  "author": "",
+  "contributors": [],
+  "dependencies": {},
+  "engines": {},
+  "license": "(BSD-3-Clause OR AFL-3.0)",
+  "bugs": {
+    "url": "https://github.com/json-schema-org/json-schema-spec/issues"
+  },
+  "homepage": "https://github.com/json-schema-org/json-schema-spec#readme"
+}
