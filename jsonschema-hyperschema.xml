@@ -602,6 +602,15 @@
                             unresolved MUST be resolved from the resource instance data.
                         </t>
 
+                        <t>
+                            If a URI Template variable corresponds to both an instance value
+                            and a schema for external data, an application MAY choose to
+                            present the instance value to the user as a default value.
+                            This will ensure that, if the user takes no action to change
+                            the value, the effect of resolving from the client or instace
+                            data will be the same.
+                        </t>
+
                         <section title="Converting to strings">
                             <t>
                                 When any value referenced by the URI template is null, a boolean or
@@ -734,6 +743,12 @@
     }]
 }]]>
                     </artwork>
+                    <postamble>
+                        Note that this example is identical to a server pre-computing
+                        the path component of the URI (with "{id}") while the query
+                        string component is handled by client input as with an HTML
+                        "method"="get" form.
+                    </postamble>
                 </figure>
                 <t>
                     <cref>
