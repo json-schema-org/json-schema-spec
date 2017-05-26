@@ -1,13 +1,13 @@
-## Welcome to JSON Schema
+# Welcome to JSON Schema
 
 JSON Schema is a vocabulary that allows you to validate, annotate, and manipulate JSON documents.
 
 This repository contains the sources for the **work in progress** of the next JSON Schema IETF Internet Draft (I-D) document.
-For released versions, please see the [Previous Versions](#previous-versions) section.
+For released versions, please see the [Specification page](http://json-schema.org/documentation.html) on the website.
 
 ## Call for reviews
 
-Specifications are starting to get written. Reviews, comments and suggestions
+Reviews, comments and suggestions
 are of paramount importance to JSON Schema. It is humbly asked to you, dear
 reader, that you bring your contribution.
 
@@ -40,16 +40,11 @@ Descriptions of the xml2rfc, I-D documents, and RFC processes:
 * https://www.ietf.org/ietf-ftp/1id-guidelines.html
 * https://www.rfc-editor.org/rfc/rfc7322.txt
 
-## Previous versions
-
-For previous versions of the specification (like draft-4), please see the [Specification Links](https://github.com/json-schema-org/json-schema-spec/wiki/Specification-Links) page on our github wiki.
-
 ## The website
 
 The JSON Schema web site is at http://json-schema.org/
 
-The source for the website is maintained in a separate repository.
-
+The source for the website is [maintained in a separate repository](https://github.com/json-schema-org/json-schema-org.github.io).
 
 ## License
 
