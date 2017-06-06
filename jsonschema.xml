@@ -19,13 +19,9 @@
 <?rfc subcompact="no"?>
 <?rfc strict="no"?>
 <?rfc rfcedstyle="yes"?>
-<rfc category="info" docName="draft-zyp-json-schema-01" ipr="trust200811">
-
+<rfc category="info" docName="draft-zyp-json-schema-02" year="2010" ipr="trust200902">
   <front>
-    <!--
-[TODO] Enter the full document title and an abbreviated version
-  to use in the page header.
--->
+    
 
     <title abbrev="JSON Schema Media Type">A JSON Media Type for Describing the Structure and Meaning of JSON Documents</title>
 
@@ -49,7 +45,7 @@
       </address>
     </author>
 
-    <date year="2009" />
+    <date year="2010" />
 
     <workgroup>Internet Engineering Task Force</workgroup>
 
@@ -176,14 +172,21 @@ JSON documents.
 	for flexibly communicating how a JSON representation should be
 	interpreted and validated, such that user agents can properly understand
 	acceptable structures and extrapolate hyperlink information
-	with the JSON document. This specification does not define a protocol.
+	with the JSON document. It is acknowledged that JSON documents come
+	in a variety of structures, and JSON is unique in that the structure
+	of stored data structures often prescribes a non-ambiguous definite
+	JSON representation. Attempting to force a specific structure is generally
+	not viable, and therefore JSON Schema allows for great flexibility
+	in the structure of JSON data that it describes.
+	</t>
+	<t>This specification is protocol agnostic.
 	The underlying protocol (such as HTTP) should sufficiently define the
 	semantics of the client-server interface, the retrieval of resource
 	representations linked to by JSON representations, and modification of 
 	those resources. The goal of this
 	format is to sufficiently describe JSON structures such that one can
 	utilize existing information available in existing JSON
-	representations from a large variety of services that leverage a REST
+	representations from a large variety of services that leverage a representational state transfer
 	architecture using existing protocols.
 </t>
 	</section>
@@ -204,12 +207,12 @@ JSON documents.
 	instance data. Two approaches are recommended for declaring the
 	relation to the schema that describes the meaning of a JSON instance's (or collection 
 	of instances) structure. A MIME type parameter named
-	"describedby" or a Link header with a relation of "describedby" SHOULD be used:
+	"profile" or a Link header with a relation of "describedby" SHOULD be used:
       <figure>
         <artwork>
         <![CDATA[	
 Content-Type: application/json; 
-              describedby=http://json.com/my-hyper-schema
+              profile=http://json.com/my-hyper-schema
 ]]></artwork></figure>	
 	or if the content is being transferred by a protocol (such as HTTP) that
 	provides headers, a Link header can be used:
@@ -240,7 +243,7 @@ collection.
         <artwork>
         <![CDATA[	
 Content-Type: application/json; 
-              describedby=http://www.json-schema.org/hyper-schema
+              profile=http://www.json-schema.org/hyper-schema
 ]]></artwork></figure>
 	</t>
 	</section>
@@ -301,7 +304,7 @@ If the property is not defined or is not in this list, than any type of value is
 <t>This should be an object type definition, which is an object with property definitions that correspond to instance object properties. When the instance value is an object, the property values of the instance object must conform to the property definitions in this object. In this object, each property definition's value should be a schema, and the property's name should be the name of the instance property that it defines.</t>
 </section> 
 <section title="items">
-<t>This should be a schema or an array of schemas. When this is an object/schema and the instance value is an array, all the items in the array must conform to this schema. When this is an array of schemas and the instance value is an array, each position in the instance array must conform to the schema in the corresponding position for this array. This called tuple typing. When tuple typing is used, additional items are allowed, disallowed, or constrained by the additionalProperties attribute using the same rules as extra properties for objects..</t>
+<t>This should be a schema or an array of schemas. When this is an object/schema and the instance value is an array, all the items in the array must conform to this schema. When this is an array of schemas and the instance value is an array, each position in the instance array must conform to the schema in the corresponding position for this array. This called tuple typing. When tuple typing is used, additional items are allowed, disallowed, or constrained by the additionalProperties attribute using the same rules as extra properties for objects. The default value is an empty schema which allows any value for items in the instance array.</t>
 </section> 
 <section title="optional">
 <t>This indicates that the instance property in the instance object is optional. This is false by default.</t>
@@ -347,6 +350,9 @@ of this property may be a string, indicating the require property name. Or the v
 </section> 
 <section title="maxItems">
 <t>This indicates the maximum number of values in an array when an array is the instance value.</t>
+</section> 
+<section title="uniqueItems">
+<t>This indicates that all the items in an array must be unique (no two identical values) within that array when an array is the instance value.</t>
 </section> 
 <section title="pattern">
 <t>When the instance value is a string, this provides a regular expression that a instance string value should match in order to be valid. Regular expressions should follow the regular expression specification from ECMA 262/Perl 5</t></section>
@@ -395,8 +401,8 @@ If the instance property value is a string, this indicates that the string shoul
 <section title="default">
 <t>This indicates the default for the instance property.</t>
 </section> 
-<section title="maxDecimal">
-<t>This indicates the maximum number of decimal places in a floating point number. By default there is no maximum.</t>
+<section title="divisibleBy">
+<t>This indicates that the instance property value must be divisible by the given schema value when the instance property value is a number.</t>
 </section> 
 <section title="disallow">
 <t>This attribute may take the same values as the "type" attribute, however if the instance matches the type or if this value is an array and the instance matches any type or schema in the array, than this instance is not valid.</t>
@@ -423,8 +429,14 @@ relations of the instances.
 </t>
 <section title="Link Description Object">
 <t>
-A link description object is used to describe the link relations 
-of instances of a schema.
+A link description object is used to describe the link relations. In 
+the context of a schema, it defines the link relations of the 
+instances of the schema, and can be parameterized by the instance
+values. The link description format can be used on its own in
+regular (non-schema documents), and use of this format can
+be declared by referencing the normative link description
+schema as the the schema for the data structure that uses the 
+links. The URI of the normative link description schema is: http://json-schema.org/links.
 </t>
 <section title="href">
     <t>
@@ -432,7 +444,8 @@ of instances of a schema.
 indicates the target URI of the related resource. The value
 of the instance property should be resolved as a URI-Reference per [RFC3986]
 and may be a relative URI. The base URI to be used for relative resolution
-should be the URI used to retrieve the instance object (not the schema). 
+should be the URI used to retrieve the instance object (not the schema)
+when used in the context of a schema. 
 Also, the URI may be parametrized by the property values of the instance 
 object.
 </t>
@@ -541,6 +554,10 @@ This would indicate that for the first item in the collection, it's own
 relation should be resolved to the resource at "/Resource/parent".
 The "children" collection would be located at "/Resource/?upId=thing".
 </t>
+<section title="targetSchema">
+<t>This property value can be a schema that defines the expected 
+structure of the JSON representation of the target of the link.</t>
+</section>
 </section>
 <section title="Submission Link Properties">
 <t>
@@ -617,7 +634,7 @@ for the form action.
 resolving fragment identifiers in URIs within the instance
 representations. This applies to the instance object URIs and all
 children of the instance object's URIs. The default fragment resolution
-protocol is "dot-delimited", which is defined below. Other fragment
+protocol is "slash-delimited", which is defined below. Other fragment
 resolution protocols may be used, but are not defined in this
 document.
 
@@ -684,6 +701,11 @@ fragment identifier    resolution
 ]]></artwork>
 </figure>
 </t>
+</section>
+<section title="slash-delimited fragment resolution">
+<t>The slash-delimited fragment resolution protocol is exactly the same as 
+dot-delimited fragment resolution protocol except that the "/" character 
+(\x2F) is used as the delimiter between property names (instead of ".").</t>
 </section>
 
 
@@ -774,7 +796,7 @@ With a response of:
     <figure>
         <artwork>
         <![CDATA[
-Content-Type: application/json; describedby=/schema-for-this-data
+Content-Type: application/json; profile=/schema-for-this-data
 [
   {"id":"bar", "name":"This representation can be safely treated \
         as authoritative "},
@@ -801,10 +823,10 @@ Content-Type: application/json; describedby=/schema-for-this-data
    Subtype name: schema+json
 </t>
 <t>
-   Required parameters: describedby
+   Required parameters: profile
    </t>
    <t>
-   	The value of the describedby parameter should be a URI (relative or absolute) that 
+   	The value of the profile parameter should be a URI (relative or absolute) that 
    	refers to the schema used to define the structure of this structure (the 
    	meta-schema). Normally the value would be http://json-schema.org/hyper-schema,
    	but it is allowable to use other schemas that extend the hyper schema's meta-
@@ -863,6 +885,17 @@ instead of numbers</t>
 -->
 
     <section title="Change Log ">
+          <t>-02</t>
+          <t>
+            <list style="symbols">
+              <t>Replaced maxDecimal attribute with divisibleBy attribute</t>
+              <t>Added slash-delimited fragment resolution protocol and made it the default.</t>
+              <t>Added language about using links outside of schemas by referencing it's normative URI.</t>
+              <t>Added uniqueItems attribute</t>
+              <t>Added targetSchema attribute to link description object</t>
+              
+            </list>
+          </t>
           <t>-01</t>
           <t>
             <list style="symbols">
@@ -884,6 +917,7 @@ instead of numbers</t>
       <t>Should "root" be a MIME parameter instead of a schema attribute?</t>
       <t>Should "format" be renamed to "mediaType" or "contentType" to reflect the usage MIME media types that are allowed.</t>
       <t>I still do not like how dates are handled.</t>
+      <t>Should "slash-delimited" or "dot-delimited" be the default fragment resolution protocol?</t>
 
     </section>
 

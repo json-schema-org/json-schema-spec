@@ -1,6 +1,6 @@
 {
-	"$schema" : "http://json-schema.org/draft-01/hyper-schema#",
-	"id" : "http://json-schema.org/draft-01/schema#",
+	"$schema" : "http://json-schema.org/draft-02/hyper-schema#",
+	"id" : "http://json-schema.org/draft-02/schema#",
 	"type" : "object",
 	
 	"properties" : {
@@ -10,6 +10,7 @@
 				"type" : ["string", {"$ref" : "#"}]
 			},
 			"optional" : true,
+			"uniqueItems" : true,
 			"default" : "any"
 		},
 		
@@ -81,6 +82,12 @@
 			"minimum" : 0
 		},
 		
+		"uniqueItems" : {
+			"type" : "boolean",
+			"optional" : true,
+			"default" : false
+		},
+		
 		"pattern" : {
 			"type" : "string",
 			"optional" : true,
@@ -102,7 +109,8 @@
 		"enum" : {
 			"type" : "array",
 			"optional" : true,
-			"minItems" : 1
+			"minItems" : 1,
+			"uniqueItems" : true
 		},
 		
 		"title" : {
@@ -130,16 +138,19 @@
 			"optional" : true
 		},
 		
-		"maxDecimal" : {
-			"type" : "integer",
+		"divisibleBy" : {
+			"type" : "number",
+			"minimum" : 0,
+			"minimumCanEqual" : false,
 			"optional" : true,
-			"minimum" : 0
+			"default" : 1
 		},
 		
 		"disallow" : {
 			"type" : ["string", "array"],
 			"items" : {"type" : "string"},
-			"optional" : true
+			"optional" : true,
+			"uniqueItems" : true
 		},
 		
 		"extends" : {
