@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+]>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<rfc category="info" docName="draft-zyp-json-schema-04" ipr="trust200902">
+    <front>
+        <title abbrev="JSON Schema">JSON Schema: core definitions and terminology</title>
+
+        <author fullname="Francis Galiegue" initials="F" surname="Galiegue" role="editor">
+            <address>
+                <email>fgaliegue@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname="Kris Zyp" initials="K" surname="Zyp" role="editor">
+            <organization>SitePen (USA)</organization>
+            <address>
+                <postal>
+                    <street>530 Lytton Avenue</street>
+                    <city>Palo Alto, CA 94301</city>
+                    <country>USA</country>
+                </postal>
+                <phone>+1 650 968 8787</phone>
+                <email>kris@sitepen.com</email>
+            </address>
+        </author>
+
+        <author fullname="Gary Court" initials="G" surname="Court">
+            <address>
+                <postal>
+                    <street></street>
+                    <city>Calgary, AB</city>
+                    <country>Canada</country>
+                </postal>
+                <email>gary.court@gmail.com</email>
+            </address>
+        </author>
+
+        <date year="2013"/>
+        <workgroup>Internet Engineering Task Force</workgroup>
+        <keyword>JSON</keyword>
+        <keyword>Schema</keyword>
+        <keyword>Hyper Schema</keyword>
+        <keyword>Hypermedia</keyword>
+
+        <abstract>
+            <t>
+                JSON Schema defines the media type "application/schema+json", a JSON based format
+                for defining the structure of JSON data. JSON Schema provides a contract for what
+                JSON data is required for a given application and how to interact with it. JSON
+                Schema is intended to define validation, documentation, hyperlink navigation, and
+                interaction control of JSON data.
+            </t>
+        </abstract>
+    </front>
+
+    <middle>
+        <section title="Introduction">
+            <t>
+                JSON Schema is a JSON media type for defining the structure of JSON data. JSON
+                Schema provides a contract for what JSON data is required for a given application
+                and how to interact with it. JSON Schema is intended to define validation,
+                documentation, hyperlink navigation, and interaction control of JSON data.
+            </t>
+
+            <t>
+                This specification defines JSON Schema core terminology and mechanisms; related
+                specifications build upon this specification and define different applications of
+                JSON Schema.
+            </t>
+        </section>
+
+        <section title="Conventions and Terminology">
+            <t>
+                <!-- The text in this section has been copied from the official boilerplate,
+                and should not be modified.-->
+
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+            </t>
+
+            <t>
+                The terms "JSON", "JSON text", "JSON value", "member", "element", "object", "array",
+                "number", "string", "boolean", "true", "false", and "null" in this document are to
+                be interpreted as defined in <xref target="RFC4627">RFC 4627</xref>.
+            </t>
+        </section>
+
+        <section title="Core terminology">
+
+            <section title="Property, item">
+                <t>
+                    When refering to a JSON Object, as defined by <xref target="RFC4627"/>, the
+                    terms "member" and "property" may be used interchangeably.
+                </t>
+
+                <t>
+                    When refering to a JSON Array, as defined by <xref target="RFC4627"/>, the terms
+                    "element" and "item" may be used interchangeably.
+                </t>
+            </section>
+
+            <section title="JSON Schema, keywords">
+                <t>
+                    A JSON Schema is a JSON document, and that document MUST be an object. Object
+                    members (or properties) defined by JSON Schema (this specification, or related
+                    specifications) are called keywords, or schema keywords.
+                </t>
+
+                <t>
+                    A JSON Schema MAY contain properties which are not schema keywords.
+                </t>
+            </section>
+
+            <section title="Empty schema">
+                <t>
+                    An empty schema is a JSON Schema with no properties, or with properties which
+                    are not schema keywords.
+                </t>
+            </section>
+
+            <section title="Root schema, subschema">
+                <t>
+                    This example of a JSON Schema has no subschemas:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "title": "root"
+}
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    JSON Schemas can also be nested, as in this example:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "title": "root",
+    "otherSchema": {
+        "title": "nested",
+        "anotherSchema": {
+            "title": "alsoNested"
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    In this example, "nested" and "alsoNested" are subschemas, and "root" is a root
+                    schema.
+                </t>
+            </section>
+
+            <section title="JSON Schema primitive types">
+                <t>
+                    JSON Schema defines seven primitive types for JSON values:
+                    <list style="hanging">
+                        <t hangText="array">A JSON array.</t>
+                        <t hangText="boolean">A JSON boolean.</t>
+                        <t hangText="integer">A JSON number without a fraction or exponent part.</t>
+                        <t hangText="number">Any JSON number. Number includes integer.</t>
+                        <t hangText="null">The JSON null value.</t>
+                        <t hangText="object">A JSON object.</t>
+                        <t hangText="string">A JSON string.</t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="JSON value equality">
+                <t>
+                    Two JSON values are said to be equal if and only if:
+
+                    <list>
+                        <t>both are nulls; or</t>
+                        <t>both are booleans, and have the same value; or</t>
+                        <t>both are strings, and have the same value; or</t>
+                        <t>both are numbers, and have the same mathematical value; or</t>
+                        <t>both are arrays, and:
+                            <list>
+                                <t>have the same number of items; and</t>
+                                <t>items at the same index are equal according to this definition;
+                                or</t>
+                            </list>
+                        </t>
+                        <t>both are objects, and:
+                            <list>
+                                <t>have the same set of property names; and</t>
+                                <t>values for a same property name are equal according to this
+                                definition.</t>
+                            </list>
+                        </t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Instance">
+                <t>
+                    An instance is any JSON value. An instance may be described by one or more
+                    schemas.
+                </t>
+
+                <t>
+                    An instance may also be referred to as "JSON instance", or "JSON data".
+                </t>
+            </section>
+
+        </section>
+
+        <section title="Overview">
+            <t>
+                This document proposes a new media type "application/schema+json" to identify JSON
+                Schema for describing JSON data. JSON Schemas are themselves written in JSON.  This,
+                and related specifications, define keywords allowing to describe this data in terms
+                of allowable values, textual descriptions and interpreting relations with other
+                resources. The following sections are a summary of features defined by related
+                specifications.
+            </t>
+
+            <section title="Validation">
+                <t>
+                    JSON Schema allows applications to validate instances, either non interactively
+                    or interactively. For instance, an application may collect JSON data and check
+                    that this data matches a given set of constraints; another application may use a
+                    JSON Schema to build an interactive interface in order to collect user input
+                    according to constraints described by JSON Schema.
+                </t>
+            </section>
+
+            <section title="Hypermedia and linking">
+                <t>
+                    JSON Schema provides a method for extracting link relations from instances to
+                    other resources, as well as describing interpretations of instances as
+                    multimedia data. This allows JSON data to be interpreted as rich hypermedia
+                    documents, placed in the context of a larger set of related resources.
+                </t>
+            </section>
+        </section>
+
+        <section title="General considerations">
+
+            <section title="Applicability to all JSON values">
+                <t>
+                    It is acknowledged that an instance may be any valid JSON value as defined
+                    by <xref target="RFC4627"/>. As such, JSON Schema does not mandate that an
+                    instance be of a particular type: JSON Schema can describe any JSON value,
+                    including null.
+                </t>
+            </section>
+
+            <section title="Programming language independence">
+                <t>
+                    JSON Schema is programming language agnostic. The only limitations are the ones
+                    expressed by <xref target="RFC4627"/> and those of the host programming
+                    language.
+                </t>
+            </section>
+
+            <section title="JSON Schema and HTTP">
+                <t>
+                    This specification acknowledges the role of <xref target="RFC2616">HTTP</xref>
+                    as the dominant protocol in use on the Internet, and the wealth of
+                    official specifications related to it.
+                </t>
+
+                <t>
+                    This specification uses a subset of these specifications to recommend a set of
+                    mechanisms, usable by this protocol, to associate JSON instances to one or more
+                    schemas.
+                </t>
+            </section>
+
+            <section title="JSON Schema and other protocols">
+                <t>
+                    JSON Schema does not define any semantics for the client-server interface for
+                    any other protocols than HTTP. These semantics are application dependent, or
+                    subject to agreement between the parties involved in the use of JSON Schema for
+                    their own needs.
+                </t>
+            </section>
+
+            <section title="Mathematical integers">
+                <t>
+                    It is acknowledged by this specification that some programming languages, and
+                    their associated parsers, use different internal representations for floating
+                    point numbers and integers, while others do not.
+                </t>
+
+                <t>
+                    As a consequence, for interoperability reasons, JSON values used in the context
+                    of JSON Schema, whether that JSON be a JSON Schema or an instance, SHOULD ensure
+                    that mathematical integers be represented as integers as defined by this
+                    specification.
+                </t>
+            </section>
+
+            <section title="Extending JSON Schema">
+                <t>
+                    Implementations MAY choose to define additional keywords to JSON Schema. Save
+                    for explicit agreement, schema authors SHALL NOT expect these additional
+                    keywords to be supported by peer implementations. Implementations SHOULD ignore
+                    keywords they do not support.
+                </t>
+            </section>
+
+            <section title="Security considerations">
+                <t>
+                    Both schemas and instances are JSON values. As such, all security considerations
+                    defined in <xref target="RFC4627">RFC 4627</xref> apply.
+                </t>
+            </section>
+
+        </section>
+
+        <section title='The "$schema" keyword'>
+            <section title="Purpose">
+                <t>
+                    The "$schema" keyword is both used as a JSON Schema version identifier and the
+                    location of a resource which is itself a JSON Schema, which describes any schema
+                    written for this particular version.
+                </t>
+
+                <t>
+                    This keyword MUST be located at the root of a JSON Schema. The value of this
+                    keyword MUST be a <xref target="RFC3986">URI</xref> and a valid <xref
+                    target="json-reference">JSON Reference</xref>; this URI MUST be both absolute
+                    and normalized. The resource located at this URI MUST successfully describe
+                    itself. It is RECOMMENDED that schema authors include this keyword in their
+                    schemas.
+                </t>
+
+                <t>
+                    The following values are predefined:
+
+                    <list style="hanging">
+                        <t hangText="http://json-schema.org/schema#">JSON Schema written against
+                        the current version of the specification.</t>
+                        <t hangText="http://json-schema.org/hyper-schema#">JSON Schema written
+                        against the current version of the specification.</t>
+                        <t hangText="http://json-schema.org/draft-04/schema#">JSON Schema written
+                        against this version.</t>
+                        <t hangText="http://json-schema.org/draft-04/hyper-schema#">JSON Schema hyperschema
+                        written against this version.</t>
+                        <t hangText="http://json-schema.org/draft-03/schema#"> JSON Schema written
+                        against <xref target="json-schema-03">JSON Schema, draft v3</xref>.</t>
+                        <t hangText="http://json-schema.org/draft-03/hyper-schema#"> JSON Schema hyperschema
+                        written against <xref target="json-schema-03">JSON Schema, draft
+                        v3</xref>.</t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Customization">
+                <t>
+                    When extending JSON Schema with custom keywords, schema authors SHOULD define a
+                    custom URI for "$schema". This custom URI MUST NOT be one of the predefined
+                    values.
+                </t>
+            </section>
+        </section>
+
+        <section title="URI resolution scopes and dereferencing">
+            <section title="Definition">
+                <t>
+                    JSON Schema uses <xref target="json-reference">JSON Reference</xref> as a
+                    mechanism for schema addressing. It extends this specification in two ways:
+                    
+                    <list>
+                        <t>JSON Schema offers facilities to alter the base URI against which a
+                        reference must resolve by the means of the "id" keyword;</t>
+                        <t>it defines a specific dereferencing mechanism extending JSON Reference to
+                        accept arbitrary fragment parts.</t>
+                    </list>
+
+                </t>
+                
+                <t>
+                    Altering the URI within a schema is called defining a new resolution scope. The
+                    initial resolution scope of a schema is the URI of the schema itself, if any, or
+                    the empty URI if the schema was not loaded from a URI.
+                </t>
+            </section>
+
+            <section title='URI resolution scope alteration with the "id" keyword'>
+                
+                <section title="Valid values">
+                    <t>
+                        The value for this keyword MUST be a string, and MUST be a valid URI. This
+                        URI MUST be normalized, and SHOULD NOT be an empty fragment (#) or the empty
+                        URI.
+                    </t>
+                 </section>
+
+                <section title="Usage">
+                    <t>
+                        The "id" keyword (or "id", for short) is used to alter the resolution scope.
+                        When an id is encountered, an implementation MUST resolve this id against
+                        the most immediate parent scope. The resolved URI will be the new resolution
+                        scope for this subschema and all its children, until another id is
+                        encountered.
+                    </t>
+
+                    <t>
+                        When using "id" to alter resolution scopes, schema authors SHOULD ensure
+                        that resolution scopes are unique within the schema.
+                    </t>
+
+                    <t>
+                        This schema will be taken as an example:
+                    </t>
+
+                    <!--
+                        FIXME: http again as a scheme, maybe another one? It can be any scheme after
+                        all
+                    -->
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "id": "http://x.y.z/rootschema.json#",
+    "schema1": {
+        "id": "#foo"
+    },
+    "schema2": {
+        "id": "otherschema.json",
+        "nested": {
+            "id": "#bar"
+        },
+        "alsonested": {
+            "id": "t/inner.json#a"
+        }
+    },
+    "schema3": {
+        "id": "some://where.else/completely#"
+    }
+}
+]]>
+                        </artwork>
+                    </figure>
+
+                    <t>
+                        Subschemas at the following URI-encoded <xref target="json-pointer">JSON
+                        Pointer</xref>s (starting from the root schema) define the following
+                        resolution scopes:
+    
+                        <list style="hanging">
+                            <t hangText="# (document root)">http://x.y.z/rootschema.json#</t>
+                            <t hangText="#/schema1">http://x.y.z/rootschema.json#foo</t>
+                            <t hangText="#/schema2">http://x.y.z/otherschema.json#</t>
+                            <t hangText="#/schema2/nested">http://x.y.z/otherschema.json#bar</t>
+                            <t hangText="#/schema2/alsonested">http://x.y.z/t/inner.json#a</t>
+                            <t hangText="#/schema3">some://where.else/completely#</t>
+                        </list>
+                    </t>
+    
+                </section>
+
+                <section title="Canonical dereferencing and inline dereferencing">
+                    <t>
+                        When resolving a URI against a resolution scope, an implementation may
+                        choose two modes of operation:
+
+                        <list style="hanging">
+                            <t hangText="canonical dereferencing">The implementation dereferences
+                            all resolved URIs.</t>
+                            <t hangText="inline dereferencing">The implementation chooses to
+                            dereference URIs within the schema.</t>
+                        </list>
+                    </t>
+
+                    <t>
+                        Implementations MUST support canonical dereferencing, and MAY support inline
+                        dereferencing.
+                    </t>
+
+                    <t>
+                        For example, consider this schema:
+                    </t>
+
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "id": "http://my.site/myschema#",
+    "definitions": {
+        "schema1": {
+            "id": "schema1",
+            "type": "integer"
+        },
+        "schema2", {
+            "type": "array",
+            "items": { "$ref": "schema1" }
+        }
+    }
+}
+]]>
+                        </artwork>
+                    </figure>
+
+                    <t>
+                        When an implementation encounters the "schema1" reference, it resolves it
+                        against the most immediate parent scope, leading to URI
+                        "http://my.site/schema1#". The way to process this URI will differ
+                        according to the chosen dereferencing mode:
+
+                        <list>
+                            <t>if canonical dereferencing is used, the implementation will
+                            dereference this URI, and fetch the content at this URI;</t>
+                            <t>if inline dereferencing is used, the implementation will notice that
+                            URI scope "http://my.site/schema1#" is already defined within the
+                            schema, and choose to use the appropriate subschema.</t>
+                        </list>
+                    </t>
+                                
+                </section>
+
+                <section title="Inline dereferencing and fragments">
+                    <t>
+                        When using inline dereferencing, a resolution scope may lead to a URI which
+                        has a non empty fragment part which is not a JSON Pointer, as in this
+                        example:
+                    </t>
+
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "id": "http://some.site/schema#",
+    "not": { "$ref": "#inner" },
+    "definitions": {
+        "schema1": {
+            "id": "#inner",
+            "type": "boolean"
+        }
+    }
+}
+]]>
+                        </artwork>
+                    </figure>
+
+                    <t>
+                        An implementation choosing to support inline dereferencing SHOULD be able to
+                        use this kind of reference. Implementations choosing to use canonical
+                        dereferencing, however, are not required to support it.
+                    </t>
+                </section>
+                    
+            </section>
+
+            <section title="Interoperability considerations">
+                <t>
+                    Inline dereferencing can produce canonical URIs which differ from the canonical URI
+                    of the root schema. Schema authors SHOULD ensure that implementations using
+                    canonical dereferencing obtain the same content as implementations using inline
+                    dereferencing.
+                </t>
+
+                <t>
+                    Extended JSON References using fragments which are not JSON Pointers are not
+                    dereferenceable by implementations choosing not to support inline dereferencing.
+                    This kind of reference is defined for backwards compatibility, and SHOULD NOT be
+                    used in new schemas.
+                </t>
+            </section>
+        </section>
+
+        <section title="Recommended correlation mechanisms for use with the HTTP protocol">
+
+            <t>
+                It is acknowledged by this specification that the majority of interactive JSON
+                Schema processing will be over HTTP. This section therefore gives recommendations
+                for materializing an instance/schema correlation using mechanisms currently
+                available for this protocol. An instance is said to be described by one (or more)
+                schema(s).
+            </t>
+
+            <section title='Correlation by means of the "Content-Type" header'>
+                <t>
+                    It is RECOMMENDED that a MIME type parameter by the name of "profile" be
+                    appended to the "Content-Type" header of the instance being processed. If
+                    present, the value of this parameter MUST be a valid URI, and this URI SHOULD
+                    resolve to a valid JSON Schema. The MIME type MUST be "application/json", or any
+                    other subtype.
+                </t>
+
+                <t>
+                    An example of such a header would be:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Content-Type: application/my-media-type+json;
+          profile=http://example.com/my-hyper-schema#
+]]>
+                    </artwork>
+                </figure>
+
+            </section>
+
+            <section title='Correlation by means of the "Link" header'>
+                <t>
+                    When using the "Link" header, the relation type used MUST be "describedBy", as
+                    defined by <xref target="RFC5988">RFC 5988, section 5.3</xref>. The target URI
+                    of the "Link" header MUST be a valid JSON Schema.
+                </t>
+
+                <t>
+                    An example of such a header would be:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Link: <http://example.com/my-hyper-schema#>; rel="describedBy"
+]]>
+                    </artwork>
+                </figure>
+
+            </section>
+        </section>
+
+        <section title="IANA Considerations">
+            <t>
+                The proposed MIME media type for JSON Schema is defined as follows:
+
+                <list>
+                    <t>type name: application;</t>
+                    <t>subtype name: schema+json.</t>
+                </list>
+            </t>
+
+        </section>
+    </middle>
+
+    <back>
+        <!-- References Section -->
+        <references title="Normative References">
+            &RFC2119;
+        </references>
+
+        <references title="Informative References">
+            &RFC2616;
+            &RFC3986;
+            &RFC4627;
+            &RFC5988;
+            <reference anchor="json-reference"
+                target="http://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03">
+                <front>
+                    <title>JSON Reference (work in progress)</title>
+                    <author initials="P." surname="Bryan">
+                        <organization>ForgeRock US, Inc.</organization>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2012" month="September"/>
+                </front>
+            </reference>
+            <reference anchor="json-pointer"
+                target="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-07">
+                <front>
+                    <title>JSON Pointer (work in progress)</title>
+                    <author initials="P." surname="Bryan">
+                        <organization>ForgeRock US, Inc.</organization>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2012" month="September"/>
+                </front>
+            </reference>
+            <reference anchor="json-schema-03"
+                target="http://tools.ietf.org/html/draft-zyp-json-schema-03">
+                <front>
+                    <title>JSON Schema, draft 3</title>
+                    <author initials="G." surname="Court">
+                        <organization/>
+                    </author>
+                    <author initials="K." surname="Zyp">
+                        <organization>SitePen (USA)</organization>
+                    </author>
+                    <date year="2012" month="September"/>
+                </front>
+            </reference>
+        </references>
+
+        <section title="ChangeLog">
+            <t>
+                <list style="hanging">
+                    <t hangText="draft-00">
+                        <list style="symbols">
+                            <t>Initial draft.</t>
+                            <t>Salvaged from draft v3.</t>
+                            <t>Mandate the use of JSON Reference, JSON Pointer.</t>
+                            <t>Define the role of "id". Define URI resolution scope.</t>
+                            <t>Add interoperability considerations.</t>
+                        </list>
+                    </t>
+                </list>
+            </t>
+        </section>
+    </back>
+</rfc>
