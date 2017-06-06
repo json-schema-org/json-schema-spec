@@ -1,35 +1,35 @@
 {
-	"$schema" : "http://json-schema.org/draft-02/hyper-schema#",
-	"id" : "http://json-schema.org/draft-02/links#",
+	"$schema" : "http://json-schema.org/draft-03/hyper-schema#",
+	"id" : "http://json-schema.org/draft-03/links#",
 	"type" : "object",
 	
 	"properties" : {
 		"href" : {
-			"type" : "string"
+			"type" : "string",
+			"required" : true,
+			"format" : "link-description-object-template"
 		},
 		
 		"rel" : {
-			"type" : "string"
+			"type" : "string",
+			"required" : true
 		},
 		
-		"targetSchema" : {"$ref" : "http://json-schema.org/draft-02/hyper-schema#"},
+		"targetSchema" : {"$ref" : "http://json-schema.org/draft-03/hyper-schema#"},
 		
 		"method" : {
 			"type" : "string",
-			"default" : "GET",
-			"optional" : true
+			"default" : "GET"
 		},
 		
 		"enctype" : {
 			"type" : "string",
-			"requires" : "method",
-			"optional" : true
+			"requires" : "method"
 		},
 		
 		"properties" : {
 			"type" : "object",
-			"additionalProperties" : {"$ref" : "http://json-schema.org/draft-02/hyper-schema#"},
-			"optional" : true
+			"additionalProperties" : {"$ref" : "http://json-schema.org/draft-03/hyper-schema#"}
 		}
 	}
 }

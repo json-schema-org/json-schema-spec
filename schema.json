@@ -1,6 +1,6 @@
 {
-	"$schema" : "http://json-schema.org/draft-02/hyper-schema#",
-	"id" : "http://json-schema.org/draft-02/schema#",
+	"$schema" : "http://json-schema.org/draft-03/schema#",
+	"id" : "http://json-schema.org/draft-03/schema#",
 	"type" : "object",
 	
 	"properties" : {
@@ -9,7 +9,6 @@
 			"items" : {
 				"type" : ["string", {"$ref" : "#"}]
 			},
-			"optional" : true,
 			"uniqueItems" : true,
 			"default" : "any"
 		},
@@ -17,150 +16,159 @@
 		"properties" : {
 			"type" : "object",
 			"additionalProperties" : {"$ref" : "#"},
-			"optional" : true,
+			"default" : {}
+		},
+		
+		"patternProperties" : {
+			"type" : "object",
+			"additionalProperties" : {"$ref" : "#"},
+			"default" : {}
+		},
+		
+		"additionalProperties" : {
+			"type" : [{"$ref" : "#"}, "boolean"],
 			"default" : {}
 		},
 		
 		"items" : {
 			"type" : [{"$ref" : "#"}, "array"],
 			"items" : {"$ref" : "#"},
-			"optional" : true,
 			"default" : {}
 		},
 		
-		"optional" : {
+		"additionalItems" : {
+			"type" : [{"$ref" : "#"}, "boolean"],
+			"default" : {}
+		},
+		
+		"required" : {
 			"type" : "boolean",
-			"optional" : true,
 			"default" : false
 		},
 		
-		"additionalProperties" : {
-			"type" : [{"$ref" : "#"}, "boolean"],
-			"optional" : true,
+		"dependencies" : {
+			"type" : "object",
+			"additionalProperties" : {
+				"type" : ["string", "array", {"$ref" : "#"}],
+				"items" : {
+					"type" : "string"
+				}
+			},
 			"default" : {}
 		},
 		
-		"requires" : {
-			"type" : ["string", {"$ref" : "#"}],
-			"optional" : true
-		},
-		
 		"minimum" : {
-			"type" : "number",
-			"optional" : true
+			"type" : "number"
 		},
 		
 		"maximum" : {
-			"type" : "number",
-			"optional" : true
+			"type" : "number"
 		},
 		
-		"minimumCanEqual" : {
+		"exclusiveMinimum" : {
 			"type" : "boolean",
-			"optional" : true,
-			"requires" : "minimum",
-			"default" : true
+			"default" : false
 		},
 		
-		"maximumCanEqual" : {
+		"exclusiveMaximum" : {
 			"type" : "boolean",
-			"optional" : true,
-			"requires" : "maximum",
-			"default" : true
+			"default" : false
 		},
 		
 		"minItems" : {
 			"type" : "integer",
-			"optional" : true,
 			"minimum" : 0,
 			"default" : 0
 		},
 		
 		"maxItems" : {
 			"type" : "integer",
-			"optional" : true,
 			"minimum" : 0
 		},
 		
 		"uniqueItems" : {
 			"type" : "boolean",
-			"optional" : true,
 			"default" : false
 		},
 		
 		"pattern" : {
 			"type" : "string",
-			"optional" : true,
 			"format" : "regex"
 		},
 		
 		"minLength" : {
 			"type" : "integer",
-			"optional" : true,
 			"minimum" : 0,
 			"default" : 0
 		},
 		
 		"maxLength" : {
-			"type" : "integer",
-			"optional" : true
+			"type" : "integer"
 		},
 		
 		"enum" : {
 			"type" : "array",
-			"optional" : true,
 			"minItems" : 1,
 			"uniqueItems" : true
 		},
 		
+		"default" : {
+			"type" : "any"
+		},
+		
 		"title" : {
-			"type" : "string",
-			"optional" : true
+			"type" : "string"
 		},
 		
 		"description" : {
-			"type" : "string",
-			"optional" : true
+			"type" : "string"
 		},
 		
 		"format" : {
-			"type" : "string",
-			"optional" : true
-		},
-		
-		"contentEncoding" : {
-			"type" : "string",
-			"optional" : true
-		},
-		
-		"default" : {
-			"type" : "any",
-			"optional" : true
+			"type" : "string"
 		},
 		
 		"divisibleBy" : {
 			"type" : "number",
 			"minimum" : 0,
-			"minimumCanEqual" : false,
-			"optional" : true,
+			"exclusiveMinimum" : true,
 			"default" : 1
 		},
 		
 		"disallow" : {
 			"type" : ["string", "array"],
-			"items" : {"type" : "string"},
-			"optional" : true,
+			"items" : {
+				"type" : ["string", {"$ref" : "#"}]
+			},
 			"uniqueItems" : true
 		},
 		
 		"extends" : {
 			"type" : [{"$ref" : "#"}, "array"],
 			"items" : {"$ref" : "#"},
-			"optional" : true,
 			"default" : {}
+		},
+		
+		"id" : {
+			"type" : "string",
+			"format" : "uri"
+		},
+		
+		"$ref" : {
+			"type" : "string",
+			"format" : "uri"
+		},
+		
+		"$schema" : {
+			"type" : "string",
+			"format" : "uri"
 		}
 	},
 	
-	"optional" : true,
+	"dependencies" : {
+		"exclusiveMinimum" : "minimum",
+		"exclusiveMaximum" : "maximum"
+	},
+	
 	"default" : {}
 }
