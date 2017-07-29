@@ -3,6 +3,8 @@
 This repository contains the current, and historical, JSON Schema
 specifications.
 
+It should be noted that the master branch of this repo does not constitute a currently released version.
+For draft 3 or 4, please see <https://tools.ietf.org/html/draft-zyp-json-schema-03> and <https://tools.ietf.org/html/draft-zyp-json-schema-04> respectivly
 
 ## Call for reviews
 
