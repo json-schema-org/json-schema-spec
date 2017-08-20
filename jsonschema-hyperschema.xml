@@ -877,11 +877,26 @@ GET /foo/
             <section title="title">
                 <t>
                     This property defines a title for the link.
-                    The value must be a string.
+                    The value MUST be a string.
                 </t>
 
                 <t>
                     User agents MAY use this title when presenting the link to the user.
+                </t>
+            </section>
+
+            <section title="description">
+                <t>
+                    This property provides additional information beyond what
+                    is present in the title.  The value MUST be a string.
+                    While a title is preferably short, a description can be
+                    used to go into more detail about the purpose and usage
+                    of the link.
+                </t>
+
+                <t>
+                    User agents MAY use this description when presenting
+                    the link to the user.
                 </t>
             </section>
 
