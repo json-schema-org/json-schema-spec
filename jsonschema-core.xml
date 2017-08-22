@@ -583,8 +583,14 @@
                 editing this keyword.  The value of this keyword MAY be used in debug or error
                 output which is intended for developers making use of schemas.
 
+                Schema vocabularies SHOULD allow "$comment" within any object containing
+                vocabulary keywords.  Implementations MAY assume "$comment" is allowed
+                unless the vocabulary specifically forbids it.  Vocabularies MUST NOT
+                specify any effect of "$comment" beyond what is described in this
+                specification.
+
                 Tools that translate other media types or programming languages
-                to and from application/schema+json MAY choose convert that media type or
+                to and from application/schema+json MAY choose to convert that media type or
                 programming language's native comments to or from "$comment" values.
                 The behavior of such translation when both native comments and "$comment"
                 properties are present is implementation-dependent.
