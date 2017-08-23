@@ -95,9 +95,10 @@
             </t>
 
             <t>
-                This specification will use the terminology defined by the
-                <xref target="json-schema">JSON Schema core specification</xref>. It is advised that
-                readers have a copy of this specification.
+                This specification will use the concepts, syntax, and terminology defined by the
+                <xref target="json-schema">JSON Schema core</xref> and
+                <xref target="json-schema-validation">JSON Schema validation</xref> specifications.
+                It is advised that readers have a copy of these specifications.
             </t>
         </section>
 
@@ -234,7 +235,7 @@
 
         <section title="Meta-schema">
             <t>
-                The current URI for the JSON Schema Validation is
+                The current URI for the JSON Hyper-Schema meta-schema is
                 &lt;http://json-schema.org/draft-06/hyper-schema#&gt;.
             </t>
         </section>
@@ -464,7 +465,7 @@
                     </cref>
                 </t>
                 <t>
-                    There are several ways that a client can use data can with a link:
+                    There are several ways that a client can use data with a link:
                     <list>
                         <t> URI Template variables resolved from server-supplied instance data </t>
                         <t> URI Template variables resolved from user agent data </t>
@@ -1188,7 +1189,17 @@ GET /foo/
                     </author>
                     <date year="2016" month="October"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-00" />
+                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-validation-01" />
+            </reference>
+            <reference anchor="json-schema-validation">
+                <front>
+                    <title>JSON Schema Validation: A Vocabulary for Structural Validation of JSON</title>
+                    <author initials="A." surname="Wright">
+                        <organization/>
+                    </author>
+                    <date year="2016" month="October"/>
+                </front>
+                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-validation-01" />
             </reference>
         </references>
         <references title="Informative References">
