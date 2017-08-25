@@ -1,4 +1,4 @@
-# JSON Schema
+# Guidelines for contributing to the JSON Schema project
 
 ## Issues
 
