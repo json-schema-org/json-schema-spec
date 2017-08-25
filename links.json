@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-06/hyper-schema#",
+    "$id": "http://json-schema.org/draft-06/links#",
+    "title": "Link Description Object",
+    "type": "object",
+    "required": [ "href" ],
+    "properties": {
+        "href": {
+            "description": "a URI template, as defined by RFC 6570",
+            "type": "string",
+            "format": "uri-template"
+        },
+        "hrefSchema": {
+            "description": "a schema for validating user input to the URI template, where the input is in the form of a JSON object with property names matching variable names in \"href\"",
+            "allOf": [ {"$ref": "#"} ]
+        },
+        "rel": {
+            "description": "relation to the target resource of the link",
+            "type": "string"
+        },
+        "title": {
+            "description": "a title for the link",
+            "type": "string"
+        },
+        "targetSchema": {
+            "description": "JSON Schema describing the link target",
+            "allOf": [ { "$ref": "hyper-schema#" } ]
+        },
+        "mediaType": {
+            "description": "media type (as defined by RFC 2046) describing the link target",
+            "type": "string"
+        },
+        "submissionEncType": {
+            "description": "The media type in which to submit data along with the request",
+            "type": "string",
+            "default": "application/json"
+        },
+        "submissionSchema": {
+            "description": "Schema describing the data to submit along with the request",
+            "allOf": [ { "$ref": "hyper-schema#" } ]
+        }
+    }
+}

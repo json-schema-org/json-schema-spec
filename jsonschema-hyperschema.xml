@@ -6,10 +6,10 @@
 <!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!--<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">-->
 <!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
+<!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
-<!ENTITY html5 SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.CR-html5-20140731.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -19,13 +19,20 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-wright-json-schema-hyperschema-00" ipr="trust200902">
+<rfc category="info" docName="draft-wright-json-schema-hyperschema-01" ipr="trust200902">
     <front>
         <title abbrev="JSON Hyper-Schema">JSON Hyper-Schema: A Vocabulary for Hypermedia Annotation of JSON</title>
 
         <author fullname="Austin Wright" initials="A" surname="Wright" role="editor">
             <address>
                 <email>aaa@bzfx.net</email>
+            </address>
+        </author>
+
+        <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
+            <organization>Cloudflare, Inc.</organization>
+            <address>
+                <email>henry@cloudflare.com</email>
             </address>
         </author>
 
@@ -40,7 +47,7 @@
             </address>
         </author>
 
-        <date year="2016" />
+        <date year="2017" />
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -99,7 +106,7 @@
             </t>
 
             <t>
-                The terms "schema", "instance", "property" and "item" are to be interpreted as defined in the <xref target="json-schema">JSON Schema core
+                The terms "schema" and "instance" are to be interpreted as defined in the <xref target="json-schema">JSON Schema core
                 specification</xref>.
             </t>
         </section>
@@ -132,7 +139,7 @@
         "authorId": {
             "type": "integer"
         },
-        "imgDataPng": {
+        "imgData": {
             "title": "Article Illustration (thumbnail)",
             "type": "string",
             "media": {
@@ -178,6 +185,33 @@
                 <postamble>The base-64 data has been abbreviated for readability.</postamble>
             </figure>
 
+            <section title="Interaction with validation">
+                <t>
+                    Hyper-schemas MUST NOT be applied to an instance if the instance fails
+                    to validate against the validation keywords within or containing the hyper-schema.
+                    Hyper-schema keywords in branches of an "anyOf" or "oneOf" that do not
+                    validate, or in a "dependencies" subschema that is not relevant
+                    to the instance, MUST be ignored.
+                </t>
+                <t>
+                    Hyper-schema keywords in a subschema contained within
+                    a "not", at any depth, including any number of intervening
+                    additional "not" subschemas, MUST be ignored.
+                </t>
+                <t>
+                    If the subschema for a "contains" keyword contains hyper-schema
+                    keywords they MUST be applied to all array elements that validate
+                    against the schema.  While finding a single validating element
+                    is sufficient to determine the validation outcome, when hyper-schema
+                    keywords are present, the subschema MUST be evaluated against all array elements.
+                </t>
+            </section>
+        </section>
+
+        <section title="Meta-schema">
+            <t>
+                The current URI for the JSON Schema Validation is &lt;http://json-schema.org/draft-06/hyper-schema#&gt;.
+            </t>
         </section>
 
         <section title="Schema keywords">
@@ -202,7 +236,7 @@
         },
         {
             "rel": "next",
-            "href": "{next_id}"
+            "href": "{nextId}"
         }
     ]
 }
@@ -214,8 +248,8 @@
                     <artwork>
 <![CDATA[
 {
-    "id": "41",
-    "next_id": "42"
+    "id": 41,
+    "nextId": 42
 }
 ]]>
                     </artwork>
@@ -224,7 +258,7 @@
                     If the document URI is &lt;http://example.com/?id=41&gt;, then the new URI base becomes &lt;http://example.com/object/41&gt;
                 </t>
                 <t>
-                    Resolving the two Link Description Objects against this URI base creates two links exactly equivelant to these absolute-form HTTP Link headers:
+                    Resolving the two Link Description Objects against this URI base creates two links exactly equivalent to these absolute-form HTTP Link headers:
                     <list style="symbols">
                         <t>Link: &lt;http://example.com/object/41&gt;;rel=self</t>
                         <t>Link: &lt;http://example.com/object/42&gt;;rel=next</t>
@@ -315,7 +349,7 @@
 {
     "type": "string",
     "media": {
-        "mediaType": "text/html"
+        "type": "text/html"
     }
 }
 ]]>
@@ -347,12 +381,90 @@
 
             <t>
                 The link description format can be used without JSON Schema, and use of this format can be declared by referencing the normative link description schema as the schema for the data structure that uses the links.
-                The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-04/links">http://json-schema.org/draft-04/links</eref> (draft-04 version).
+                The URI of the normative link description schema is: <eref target="http://json-schema.org/draft-06/links">http://json-schema.org/draft-06/links</eref> (draft-06 version).
             </t>
 
-            <t>
-                "Form"-like functionality can be defined by use of the "method" and "schema" keywords, which supplies a schema describing the data to supply to the server.
-            </t>
+            <section title="Links, operations, and data">
+                <t>
+                    <cref>
+                        Note that while the current draft does not provide a way to explicity
+                        indicate HTTP method support, some way of providing a non-authoritative
+                        hint may be added in a future draft (see issue #73 in the GitHub repository).
+                    </cref>
+                </t>
+                <t>
+                    There are several ways that a client can use data can with a link:
+                    <list>
+                        <t> URI Template variables resolved from server-supplied instance data </t>
+                        <t> URI Template variables resolved from user agent data </t>
+                        <t> Replacing or modifying the target resource's representation </t>
+                        <t> Submitting data for processing, where the data has no
+                            inherent relation to the target resource's representation</t>
+                    </list>
+                    The three ways to use client-supplied data are each addressed by a separate
+                    schema keyword within the link description object.  Link operations
+                    ignore schemas that are not relevant to their semantics.
+                </t>
+                <t>
+                    Link Description Objects do not directly indicate what operations, such
+                    as HTTP methods, are supported by the target resource.  Instead, operations
+                    should be inferred primarily from link <xref target="rel">relation types</xref>
+                    and URI schemes.  Note, however, that a resource may always decline an operation at
+                    runtime, for instance due to application state that controls the operation's
+                    availability.
+                </t>
+                <section title="Resolving templated URIs">
+                    <t>
+                        URI Template variables in <xref target="href">"href"</xref> resolve from
+                        server-supplied instance data by default.
+                        <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
+                        a schema for resolving template variables from client-supplied data.
+                        Regular JSON Schema validation features can be used to require resolution
+                        from user agent data, forbid it, or allow user agent data while falling back to
+                        server-supplied instance data if no user agent data is provided.
+                    </t>
+                    <t>
+                        The common pattern of resolving a templated path component with
+                        server-supplied instance data while accepting user agent data to build
+                        a query string can be implemented by setting the "hrefSchema" subschemas
+                        for the path template variables to false, while giving the query string
+                        template variables names that do not appear in the instance.  This ensures
+                        that the path variables can only be resolved from the instance, and the
+                        query string variables can only be resolved from user agent data.
+                        See the "hrefSchema" section for an example of this approach.
+                    </t>
+                </section>
+                <section title="Manipulating the target resource representation">
+                    <t>
+                        In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
+                        supplies a non-authoritative description of the target resource's representation.
+                        A client can use "targetSchema" to structure input for replacing or
+                        modifying the representation.  Alternatively, if "targetSchema" is absent
+                        or if the client prefers to only use authoritative information, it can
+                        interact with the target resource to confirm or discover its representation
+                        structure.
+                    </t>
+                    <t>
+                        "targetSchema" is not intended to describe link operation responses,
+                        except when the response semantics indicate that it is a representation
+                        of the target resource.  In all cases, the schema indicated by the response
+                        itself is authoritative.  See the
+                        <xref target="targetHTTP" /> for guidance
+                        specific to each HTTP method when using "targetSchema" with HTTP URIs.
+                    </t>
+                </section>
+                <section title="Submitting data for processing">
+                    <t>
+                        The <xref target="submissionSchema">"submissionSchema"</xref> and
+                        <xref target="submissionEncType">"submissionEncType"</xref> keywords
+                        describe the domain of the processing function implemented by the target resource.
+                        Otherwise, as noted above, the submission schema and encoding are ignored
+                        for operations to which they are not relevant.
+                    </t>
+                </section>
+            </section>
+
+            <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
 
             <section title="href" anchor="href">
                 <t>
@@ -365,108 +477,38 @@
 
                 <section title="URI Templating">
                     <t>
+                        <cref>
+                            The pre-processing rules present in earlier drafts have been removed due to their complexity and inability to address all limitations with URI templating.  This section is subject to significant change in upcoming drafts to replace the old pre-processing with a comprehensive solution.
+                        </cref>
+                    </t>
+                    <t>
                         The value of "href" is to be used as a URI Template, as defined in <xref target="RFC6570">RFC 6570</xref>.  However, some special considerations apply:
                     </t>
 
-                    <section title="Pre-processing">
-                        <t>
-                            <cref>This pre-processing section is subject to significant change in upcoming drafts.</cref>
-                        </t>
-                        <t>
-                            The <xref target="RFC6570">URI Template specification</xref> restricts the set of characters available for variable names.
-                            Property names in JSON, however, can be any UTF-8 string.
-                        </t>
-
-                        <t>
-                            To allow the use of any JSON property name in the template, before using the value of "href" as a URI Template, the following pre-processing rules MUST be applied, in order:
-                        </t>
-
-                        <section title="Bracket escaping">
-                            <t>
-                                The purpose of this step is to allow the use of brackets to percent-encode variable names inside curly brackets.
-                                Variable names to be escaped are enclosed within rounded brackets, with the close-rounded-bracket character ")" being escaped as a pair of close-rounded-brackets "))".
-                                Since the empty string is not a valid variable name in RFC 6570, an empty pair of brackets is replaced with "%65mpty".
-                            </t>
-
-                            <t>
-                                The rules are as follows:
-                            </t>
-
-                            <t>
-                                Find the largest possible sections of the text such that:
-                                <list>
-                                    <t>do not contain an odd number of close-rounded-bracket characters ")" in sequence in that section of the text</t>
-                                    <t>are surrounded by a pair of rounded brackets: ( ), where</t>
-                                    <t>the surrounding rounded brackets are themselves contained within a pair of curly brackets: { }</t>
-                                </list>
-                            </t>
-                            <t>
-                                Each of these sections of the text (including the surrounding rounded brackets) MUST be replaced, according to the following rules:
-                                <list>
-                                    <t>If the brackets contained no text (the empty string), then they are replaced with "%65mpty" (which is "empty" with a percent-encoded "e")</t>
-                                    <t>Otherwise, the enclosing brackets are removed, and the inner text used after the following modifications
-                                        <list>
-                                            <t>all pairs of close-brackets "))" are replaced with a single close bracket</t>
-                                            <t>after that, the text is replaced with its percent-encoded equivalent, such that the result is a valid RFC 6570 variable name (note that this requires encoding characters such as "*" and "!")</t>
-                                        </list>
-                                    </t>
-                                </list>
-                            </t>
-                        </section>
-
-                        <section title="Replacing $">
-                            <t>
-                                After the above substitutions, if the character "$" (dollar sign) appears within a pair of curly brackets, then it MUST be replaced with the text "%73elf" (which is "self" with a percent-encoded "s").
-                            </t>
-                            <t>
-                                The purpose of this stage is to allow the use of the instance value itself (instead of its object properties or array items) in the URI Template, by the special value "%73elf".
-                            </t>
-                        </section>
-
-                        <section title="Choice of special-case values">
-                            <t>
-                                The special-case values of "%73elf" and "%65mpty" were chosen because they are unlikely to be accidentally generated by either a human or automated escaping.
-                            </t>
-                        </section>
-
-                        <section title="Examples">
-                            <texttable>
-                                <preamble>For example, here are some possible values for "href", followed by the results after pre-processing:</preamble>
-                                <ttcol>Input</ttcol>
-                                <ttcol>Output</ttcol>
-                                <c>"no change"</c>           <c>"no change"</c>
-                                <c>"(no change)"</c>         <c>"(no change)"</c>
-                                <c>"{(escape space)}"</c>    <c>"{escape%20space}"</c>
-                                <c>"{(escape+plus)}"</c>     <c>"{escape%2Bplus}"</c>
-                                <c>"{(escape*asterisk)}"</c> <c>"{escape%2Aasterisk}"</c>
-                                <c>"{(escape(bracket)}"</c>  <c>"{escape%28bracket}"</c>
-                                <c>"{(escape))bracket)}"</c> <c>"{escape%29bracket}"</c>
-                                <c>"{(a))b)}"</c>            <c>"{a%29b}</c>
-                                <c>"{(a (b)))}"</c>          <c>"{a%20%28b%29}</c>
-                                <c>"{()}"</c>                <c>"{%65mpty}</c>
-                                <c>"{+$*}"</c>               <c>"{+%73elf*}</c>
-                                <c>"{+($)*}"</c>             <c>"{+%24*}</c>
-                                <postamble>
-                                    Note that in the final example, because the "+" was outside the brackets, it remained unescaped, whereas in the fourth example the "+" was escaped.
-                                </postamble>
-                            </texttable>
-                        </section>
-                    </section>
-
                     <section title="Values for substitution">
                         <t>
-                            After pre-processing, the URI Template is filled out using data from the instance.
-                            To allow the use of any object property (including the empty string), array index, or the instance value itself, the following rules are defined:
+                            The URI Template is filled out using data from some combination of an external source and the instance.
+                            Where either instance data or user agent data may be used, this section will refer simply to "data" or to a "value".
+                            When the source is important, it is specified explicitly.
+
+                            To allow the use of any object property (including the empty string) or array index, the following rules are defined:
                         </t>
 
                         <t>
                             For a given variable name in the URI Template, the value to use is determined as follows:
                             <list>
-                                <t>If the variable name is "%73elf", then the instance value itself MUST be used.</t>
-                                <t>If the variable name is "%65mpty", then the instances's empty-string ("") property MUST be used (if it exists).</t>
-                                <t>If the instance is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
+                                <t>If the data is an array, and the variable name is a representation of a non-negative integer, then the value at the corresponding array index MUST be used (if it exists).</t>
                                 <t>Otherwise, the variable name should be percent-decoded, and the corresponding object property MUST be used (if it exists).</t>
                             </list>
+                        </t>
+
+                        <t>
+                            If <xref target="hrefSchema">"hrefSchema"</xref> is present and
+                            user agent data is provided, the data MUST be a valid instance according
+                            to the value of "hrefSchema".
+                            Template variables, after the process listed above, MUST first
+                            be resolved from the user agent data instance.  Any variables left
+                            unresolved MUST be resolved from the resource instance data.
                         </t>
 
                         <section title="Converting to strings">
@@ -488,11 +530,11 @@
                     <section title="Missing values">
                         <t>
                             Sometimes, the appropriate values will not be available.
-                            For example, the template might specify the use of object properties, but the instance is an array or a string.
+                            For example, the template might specify the use of object properties, but no such data was provided (or "hrefSchema" is not present), and the instance is an array or a string.
                         </t>
 
                         <t>
-                            If any of the values required for the template are not present in the JSON instance, then substitute values MAY be provided from another source (such as default values).
+                            If any of the values required for the template are neither present in the user agent data (if relevant) nor the JSON instance, then substitute values MAY be provided from another source (such as default values).
                             Otherwise, the link definition SHOULD be considered not to apply to the instance.
                         </t>
                     </section>
@@ -500,7 +542,98 @@
 
             </section>
 
-            <section title="rel">
+            <section title="hrefSchema" anchor="hrefSchema">
+                <t>
+                    The value of the "hrefSchema" link description property MUST be
+                    a valid JSON Schema.  This schema is used to validate user input
+                    or other user agent data for filling out the URI Template in
+                    <xref target="href">"href"</xref>, as described in that section.
+                </t>
+                <t>
+                    Omitting "hrefSchema" or setting the entire schema to "false" prevents
+                    any user agent data from being accepted.
+                </t>
+                <t>
+                    Implementations MUST NOT attempt to validate values resolved from
+                    resource instance data with "hrefSchema".  This allows for different
+                    validation rules for user agent data, such as supporting spelled-out
+                    months for date-time input but using the standard date-time
+                    format for storage.
+                </t>
+                <figure>
+                    <preamble>
+                        For example, this defines a schema for each of the query string
+                        parameters in the URI template:
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "href": "/foos{?condition,count,query}",
+    "hrefSchema": {
+        "properties": {
+            "condition": {
+                "type": "boolean",
+                "default": true
+            },
+            "count": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0
+            },
+            "query": {
+                "type": "string"
+            }
+        }
+    }
+}]]>
+                    </artwork>
+                </figure>
+                <figure>
+                    <preamble>
+                        In this example, the schema for "extra" is given as a reference
+                        to keep the user agent data validation constraints identical to the
+                        instance validation constraints for the corresponding property,
+                        while "id" is given a false schema to prevent user agent data for
+                        that variable.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "definitions": {
+        "extra": {
+            "type": "string",
+            "maxLength": 32
+        }
+    },
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "minimum": 1,
+            "readOnly": true
+        },
+        "extra": {"$ref": "#/definitions/extra"}
+    },
+    "links": [{
+        "rel": "self",
+        "href": "/things/{id}{?extra}",
+        "hrefSchema": {
+            "properties": {
+                "id": false,
+                "extra": {"$ref": "#/definitions/extra"}
+            }
+        }
+    }]
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    <cref>
+                        The above example simulates the behavior handled in earlier drafts
+                        with a "method" of "get" by using the new "hrefSchema" keyword.
+                    </cref>
+                </t>
+            </section>
+
+            <section title="rel" anchor="rel">
                 <t>
                     The value of the "rel" property indicates the name of the relation to the target resource. The value MUST be a registered link relation from the <xref target="RFC5988">IANA Link Relation Type Registry established in RFC 5988</xref>, or a normalized URI following the <xref target="RFC3986">URI production of RFC 3986</xref>.
                 </t>
@@ -514,16 +647,19 @@
                 </t>
 
                 <figure>
-                    <preamble>For example, if a schema is defined:</preamble>
+                    <preamble>For example, if a hyper-schema is defined:</preamble>
                     <artwork>
 <![CDATA[{
-    "links": [{
-        "rel": "self",
-        "href": "{id}"
-    }, {
-        "rel": "up",
-        "href": "{upId}"
-    }]
+    "type": "array",
+    "items": {
+        "links": [{
+            "rel": "item",
+            "href": "{id}"
+        }, {
+            "rel": "up",
+            "href": "{upId}"
+        }]
+    }
 }]]>
                     </artwork>
                 </figure>
@@ -542,7 +678,7 @@
 }]]]>
                     </artwork>
                     <postamble>
-                        This would indicate that for the first item in the collection, its own (self) URI would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
+                        This would indicate that for the first item in the collection, its URI as its own resource would resolve to "/Resource/thing" and the first item's "up" relation SHOULD be resolved to the resource at "/Resource/parent".
                     </postamble>
                 </figure>
 
@@ -552,10 +688,10 @@
 
                 <section title="Security Considerations for &quot;self&quot; links">
                     <t>
-                        When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the the URI used to request the resource representation which contains the target URI with the "self" link.
+                        When link relation of "self" is used to denote a full representation of an object, the user agent SHOULD NOT consider the representation to be the authoritative representation of the resource denoted by the target URI if the target URI is not equivalent to or a sub-path of the URI used to request the resource representation which contains the target URI with the "self" link.
 
                         <figure>
-                            <preamble>For example, if a hyper schema was defined:</preamble>
+                            <preamble>For example, if a hyper-schema was defined:</preamble>
                             <artwork>
 <![CDATA[{
     "links": [{
@@ -614,11 +750,28 @@ GET /foo/
                 </t>
             </section>
 
-            <section title="targetSchema">
+            <section title="targetSchema" anchor="targetSchema">
                 <t>
-                    This property provides a schema that is expected to describe the link target, including what a client can expect if it makes an HTTP GET request, and what it should send if it replaces the resource in an HTTP PUT request. This property is advisory only.
+                    This property provides a schema that is expected to describe
+                    the link target's representation.  Depending on the protocol,
+                    the schema may or may not describe the response to any particular
+                    request sent to the link.  This property is advisory only.
                 </t>
-
+                <section title="&quot;targetSchema&quot; and HTTP" anchor="targetHTTP">
+                    <t>
+                        The relationship between a resource's representation and
+                        HTTP requests and responses is determined by
+                        <xref target="RFC7231">RFC 7231, section 4.3.1 - "GET", section 4.3.4 "PUT", and section 3.1.4.2, "Content-Location"</xref>.
+                        In particular, "targetSchema" suggests what a client can expect
+                        for the response to an HTTP GET or any response for which
+                        the "Content-Location" header is equal to the request URI,
+                        and what a client should send if it replaces the resource
+                        in an HTTP PUT request.
+                        Per <xref target="RFC5789">RFC 5789</xref>, the request structure
+                        for an HTTP PATCH is determined by the combination of "targetSchema"
+                        and the request media type.
+                    </t>
+                </section>
                 <section title="Security Considerations for &quot;targetSchema&quot;">
                     <t>
                         This property has similar security concerns to that of "mediaType".
@@ -652,7 +805,7 @@ GET /foo/
                         </figure>
                     </t>
                     <t>
-                        A third party might then write provide the following Link Description Object at another location:
+                        A third party might then provide the following Link Description Object at another location:
                         <figure>
                             <artwork>
 <![CDATA[{
@@ -682,7 +835,7 @@ GET /foo/
             <section title="mediaType">
                 <t>
                     The value of this property is advisory only, and represents the media type <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when fetching this resource.
-                    This property value MAY be a media range instead, using the same pattern defined in <xref target="RFC7231">RFC 7231, section 5.3.1 - HTTP "Accept" header</xref>.
+                    This property value MAY be a media range instead, using the same pattern defined in <xref target="RFC7231">RFC 7231, section 5.3.2 - HTTP "Accept" header</xref>.
                 </t>
 
                 <t>
@@ -692,7 +845,7 @@ GET /foo/
                 </t>
 
                 <t>
-                    If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <xref target="RFC7231">RFC 7231, section 5.3.1</xref>, then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
+                    If this property's value is specified, and the link's target is to be obtained using any protocol that supports the HTTP/1.1 "Accept" header <xref target="RFC7231">RFC 7231, section 5.3.2</xref>, then user agents MAY use the value of this property to aid in the assembly of that header when making the request to the server.
                 </t>
 
                 <t>
@@ -758,74 +911,78 @@ GET /foo/
                 </section>
             </section>
 
-            <section title="Submission Form Properties">
+            <section title="submissionEncType" anchor="submissionEncType">
                 <t>
-                    The following properties also apply to Link Description Objects, and provide functionality analogous to <xref target="W3C.CR-html5-20140731">HTMLforms</xref>, by providing a means for making a request with client- or user-selected information.
+                    If present, this property indicates the media type format the
+                    client should use for the request payload described by
+                    <xref target="submissionSchema">"submissionSchema"</xref>.
                 </t>
+                <t>
+                    Omitting this keyword has the same behavior as a value of application/json.
+                </t>
+                <t>
+                    Note that "submissionEncType" and "submissionSchema"
+                    are not restricted to HTTP URIs.
 
-                <section title="method">
-                    <t>
-                        This property specifies that the client can construct a templated query or non-idempotent request to a resource.
-                    </t>
-                    <t>
-                        If "method" is "get", the link identifies how a user can compute the URI of an arbritrary resource. For example, how compute a link to a page of search results relating to the instance, for a user-selected query term. Despite being named after GET, there is no constraint on the method or protocol used to interact with the remote resource.
-                    </t>
-                    <t>
-                        If "method" is "post", the link specifies how a user can construct a document to submit to the link target for evaluation.
-                    </t>
-                    <t>
-                        Values for this property SHOULD be lowercase, and SHOULD be compared case-insensitive. Use of other values not defined here SHOULD be ignored.
-                    </t>
-                </section>
-
-                <section title="encType">
-                    <t>
-                        If present, this property indicates the media type format the client should use to encode a query parameter or send to the server. posting to the collection of instances at the target resource.
-                        If the method is "get", this will indicate how to encode the query-string that is appended to the "href" link target.
-                        If the method is "post", this indicates which media type to send to the server and how to encode it.
-
-                        <figure>
-                            <preamble>For example, with the following schema:</preamble>
-                            <artwork>
+                    <figure>
+                        <preamble>
+                            For example, this link indicates that if you want to
+                            send an email to the author of the context resource,
+                            your client needs to ask for both a plain text
+                            and an HTML representation.
+                        </preamble>
+                        <artwork>
 <![CDATA[{
     "links": [{
-        "encType": "application/x-www-form-urlencoded",
-        "method": "get",
-        "href": "/Product/",
-        "properties": {
-            "name": {
-                "description": "name of the product"
-            }
+        "submissionEncType": "multipart/alternative; boundary=ab12",
+        "rel": "author",
+        "href": "mailto:someone@example.com{?subject}",
+        "hrefSchema": {
+            "type": "object",
+            "properties": {
+                "subject": { "type": "string" }
+            },
+            "required": ["subject"]
+        },
+        "submissionSchema": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "string",
+                    "media": { "type": "text/plain; charset=utf8" }
+                },
+                {
+                    "type": "string",
+                    "media": { "type": "text/html" }
+                }
+            ],
+            "minItems": 2
         }
     }]
 }]]>
-                            </artwork>
-                            <postamble>This indicates that the client can query the server for instances that have a specific name.</postamble>
-                        </figure>
+                        </artwork>
+                    </figure>
+                </t>
+            </section>
 
-                        <figure>
-                            <preamble>For example:</preamble>
-                            <artwork>
-<![CDATA[
-/Product/?name=Slinky
-]]>
-                            </artwork>
-                        </figure>
+            <section title="submissionSchema" anchor="submissionSchema">
+                <t>
+                    This property contains a schema which defines the acceptable structure
+                    of the document to be encoded according to the "submissionEncType" property
+                    and sent to the target resource for processing.  This can be viewed as
+                    describing the domain of the processing function implemented by the
+                    target resource.
+                </t>
 
-                        If the method is "post", "application/json" is the default media type.
-                    </t>
-                </section>
-
-                <section title="schema">
-                    <t>
-                        This property contains a schema which defines the acceptable structure of the document being encoded according to the "encType" property.
-                    </t>
-
-                    <t>
-                        Note that this does not provide data for any URI templates.
-                        This is a separate concept from the "targetSchema" property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "schema" which describes the user-submitted request data to be evaluated by the resource.
-                    </t>
-                </section>
+                <t>
+                    This is a separate concept from the <xref target="targetSchema">"targetSchema"</xref> property, which is describing the target information resource (including for replacing the contents of the resource in a PUT request), unlike "submissionSchema" which describes the user-submitted request data to be evaluated by the resource.
+                    "submissionSchema" is intended for use with requests that have payloads that are not
+                    defined in terms of the target representation.
+                </t>
+                <t>
+                    Omitting "submissionSchema" or setting the entire schema to "false" prevents
+                    any user agent data from being accepted.
+                </t>
             </section>
         </section>
 
@@ -858,9 +1015,9 @@ GET /foo/
         <references title="Informative References">
             &rfc2046;
             <!--&rfc5226;-->
+            &rfc5789;
             &rfc5988;
             &rfc7231;
-            &html5;
         </references>
 
         <section title="Acknowledgments">
@@ -879,7 +1036,11 @@ GET /foo/
                 Erik Wilde,
                 Ben Hutton,
                 Evgeny Poberezkin,
-                and Henry H. Andrews
+                Brad Bowman,
+                Gowry Sankar,
+                Donald Pipowitch,
+                Dave Finlay,
+                and Denis Laxalde
                 for their submissions and patches to the document.
             </t>
         </section>
@@ -890,6 +1051,19 @@ GET /foo/
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-wright-json-schema-hyperschema-01">
+                        <list style="symbols">
+                            <t>Fixed examples</t>
+                            <t>Added "hrefSchema" for user input to "href" URI Templates</t>
+                            <t>Removed URI Template pre-processing</t>
+                            <t>Clarified how links and data submission work</t>
+                            <t>Clarified how validation keywords apply hyper-schema keywords and links</t>
+                            <t>Clarified HTTP use with "targetSchema"</t>
+                            <t>Renamed "schema" to "submissionSchema"</t>
+                            <t>Renamed "encType" to "submissionEncType"</t>
+                            <t>Removed "method"</t>
+                        </list>
+                    </t>
                     <t hangText="draft-wright-json-schema-hyperschema-00">
                         <list style="symbols">
                             <t>"rel" is now optional</t>
