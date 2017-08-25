@@ -212,6 +212,10 @@
 
             <section title="Interaction with validation">
                 <t>
+                    Hyper-schema keywords can be applied when the instance is valid against
+                    the schema that includes those keywords.
+                </t>
+                <t>
                     Hyper-schemas MUST NOT be applied to an instance if the instance fails to
                     validate against the validation keywords within or containing the hyper-schema.
                     Hyper-schema keywords in branches of an "anyOf" or "oneOf" that do not validate,
