@@ -8,6 +8,7 @@
 <!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+<!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-06.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 ]>
@@ -61,10 +62,12 @@
 
         <abstract>
             <t>
-                JSON Schema is a JSON based format for defining the structure of JSON data.
-                This document specifies hyperlink- and hypermedia-related keywords of JSON Schema
-                for annotating JSON documents with hyperlinks and instructions for processing and
-                manipulating remote JSON resources through hypermedia environments like HTTP.
+                JSON Schema is a JSON based format for working with the structure of JSON data.
+
+                This document builds on the JSON Schema description of a context resource
+                by adding a templated link serialization format, along with
+                mechanisms for annotating the context resource with such links and
+                other information required to interpret JSON data as rich multimedia documents.
             </t>
         </abstract>
         <note title="Note to Readers">
@@ -87,7 +90,9 @@
         <section title="Introduction">
             <t>
                 JSON Schema is a JSON based format for defining the structure of JSON data.
-                This document specifies hyperlink- and hypermedia-related keywords of JSON Schema.
+                This document specifies a serialization of the link model defined in
+                <xref target="I-D.nottingham-rfc5988bis"/>, as well as keywords to associate such
+                link serializations and other hypermedia concepts with JSON data.
             </t>
             <t>
                 The term JSON Hyper-Schema is used to refer to a JSON Schema that uses these
@@ -116,12 +121,20 @@
                 The terms "schema" and "instance" are to be interpreted as defined in the
                 <xref target="json-schema">JSON Schema core specification</xref>.
             </t>
+
+            <t>
+                This specification uses the terms "link context" and "link target" as
+                defined in <xref target="I-D.nottingham-rfc5988bis"/>.  These terms respectively
+                correspond with "Context IRI" and "Target IRI" as used in
+                <xref target="RFC5988">RFC 5988</xref>.
+                Although defined as IRIs, in common scenarios they are also URIs.
+            </t>
         </section>
 
         <section title="Overview">
             <t>
-                This document describes how JSON Schema can be used to define hyperlinks on instance
-                data.
+                This document describes how JSON Schema can be used to define hyperlinks on
+                the instance data of a context resource.
                 It also defines how to provide additional information required to interpret JSON
                 data as rich multimedia documents.
             </t>
@@ -211,6 +224,10 @@
             </figure>
 
             <section title="Interaction with validation">
+                <t>
+                    Hyper-schema keywords are applied based on the validation outcome
+                    of the link context, which is the instance resource.
+                </t>
                 <t>
                     Hyper-schemas MUST NOT be applied to an instance if the instance fails to
                     validate against the validation keywords within or containing the hyper-schema.
@@ -442,8 +459,17 @@
 
         <section title="Link Description Object">
             <t>
-                A Link Description Object (LDO) is used to describe a single link relation from the
-                instance to another resource.
+                A Link Description Object (LDO) is a serialization of the abstract model specified
+                in Section 2 of <xref target="I-D.nottingham-rfc5988bis"/>, defines a link as
+                consisting of a "link context", a "link relation type", a "link target",
+                and optional "target attributes".
+            </t>
+            <t>
+                Additionally, LDOs can be used to define schemas for the link target,
+                the target's URI Template, or other data intended for submission over
+                the link.
+            </t>
+            <t>
                 A Link Description Object must be an object.
             </t>
 
@@ -465,17 +491,23 @@
                     </cref>
                 </t>
                 <t>
+                    An operation is a specific use of a link described by an LDO, after any
+                    template variables have been resolve.
+                </t>
+                <t>
                     There are several ways that a client can use data with a link:
                     <list>
-                        <t> URI Template variables resolved from server-supplied instance data </t>
+                        <t> URI Template variables resolved from the link context instance data </t>
                         <t> URI Template variables resolved from user agent data </t>
                         <t> Replacing or modifying the target resource's representation </t>
                         <t> Submitting data for processing, where the data has no
-                            inherent relation to the target resource's representation</t>
+                            inherent relation to either the link context or the target resource's
+                            representation</t>
                     </list>
                     The three ways to use client-supplied data are each addressed by a separate
-                    schema keyword within the link description object.  Link operations
-                    ignore schemas that are not relevant to their semantics.
+                    schema keyword within the link description object.  When performing
+                    operations, clients SHOULD ignore schemas that are not relevant to that
+                    operation's semantics.
                 </t>
                 <t>
                     Link Description Objects do not directly indicate what operations, such
@@ -488,7 +520,7 @@
                 <section title="Resolving templated URIs">
                     <t>
                         URI Template variables in <xref target="href">"href"</xref> resolve from
-                        server-supplied instance data by default.
+                        the link context's instance data by default.
                         <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
                         a schema for resolving template variables from client-supplied data.
                         Regular JSON Schema validation features can be used to require resolution
@@ -496,8 +528,8 @@
                         to server-supplied instance data if no user agent data is provided.
                     </t>
                     <t>
-                        The common pattern of resolving a templated path component with
-                        server-supplied instance data while accepting user agent data to build
+                        The common pattern of resolving a templated path component with the
+                        link context's instance data while accepting user agent data to build
                         a query string can be implemented by setting the "hrefSchema" subschemas
                         for the path template variables to false, while giving the query string
                         template variables names that do not appear in the instance.  This ensures
@@ -509,7 +541,7 @@
                 <section title="Manipulating the target resource representation">
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
-                        supplies a non-authoritative description of the target resource's
+                        supplies a non-authoritative description of the link target resource's
                         representation. A client can use "targetSchema" to structure input for
                         replacing or modifying the representation.  Alternatively, if "targetSchema"
                         is absent or if the client prefers to only use authoritative information, it
@@ -519,19 +551,20 @@
                     <t>
                         "targetSchema" is not intended to describe link operation responses,
                         except when the response semantics indicate that it is a representation
-                        of the target resource.  In all cases, the schema indicated by the response
-                        itself is authoritative.  See the
-                        <xref target="targetHTTP" /> for guidance
-                        specific to each HTTP method when using "targetSchema" with HTTP URIs.
+                        of the link target resource.  In all cases, the schema indicated by
+                        the response itself is authoritative.  See the
+                        <xref target="targetHTTP" /> for guidance specific to each HTTP method
+                        when using "targetSchema" with HTTP URIs.
                     </t>
                 </section>
                 <section title="Submitting data for processing">
                     <t>
                         The <xref target="submissionSchema">"submissionSchema"</xref> and
                         <xref target="submissionEncType">"submissionEncType"</xref> keywords
-                        describe the domain of the processing function implemented by the target
-                        resource. Otherwise, as noted above, the submission schema and encoding are
-                        ignored for operations to which they are not relevant.
+                        describe the domain of the processing function implemented by the
+                        link target resource. Otherwise, as noted above, the submission schema
+                        and encoding SHOULD be ignored for operations to which they are
+                        not relevant.
                     </t>
                 </section>
             </section>
@@ -541,8 +574,8 @@
             <section title="href" anchor="href">
                 <t>
                     The value of the "href" link description property is a template used to
-                    determine the target URI of the related resource.
-                    The value of the instance property MUST be resolved as a
+                    determine the target URI of the link target resource.
+                    The value of this property MUST be resolved as a
                     <xref target="RFC3986">URI-reference</xref> against the base URI of the
                     instance.
                 </t>
@@ -569,7 +602,7 @@
                     <section title="Values for substitution">
                         <t>
                             The URI Template is filled out using data from some combination of an
-                            external source and the instance.
+                            external source and the link context instance.
                             Where either instance data or user agent data may be used, this section
                             will refer simply to "data" or to a "value".
                             When the source is important, it is specified explicitly.
@@ -600,7 +633,7 @@
                             to the value of "hrefSchema".
                             Template variables, after the process listed above, MUST first
                             be resolved from the user agent data instance.  Any variables left
-                            unresolved MUST be resolved from the resource instance data.
+                            unresolved MUST be resolved from the link context's instance data.
                         </t>
 
                         <section title="Converting to strings">
@@ -643,8 +676,9 @@
 
                         <t>
                             If any of the values required for the template are neither present in
-                            the user agent data (if relevant) nor the JSON instance, then substitute
-                            values MAY be provided from another source (such as default values).
+                            the user agent data (if relevant) nor the link context instance,
+                            then substitute values MAY be provided from another source
+                            (such as default values).
                             Otherwise, the link definition SHOULD be considered not to apply to the
                             instance.
                         </t>
@@ -666,7 +700,7 @@
                 </t>
                 <t>
                     Implementations MUST NOT attempt to validate values resolved from
-                    resource instance data with "hrefSchema".  This allows for different
+                    link context instance data with "hrefSchema".  This allows for different
                     validation rules for user agent data, such as supporting spelled-out
                     months for date-time input but using the standard date-time
                     format for storage.
@@ -746,14 +780,15 @@
 
             <section title="rel" anchor="rel">
                 <t>
-                    The value of the "rel" property indicates the name of the relation to the target
+                    The value of the "rel" property indicates the name of the relation type from
+                    the link's context resource to its target
                     resource. The value MUST be a registered link relation from the
                     <xref target="RFC5988">IANA Link Relation Type Registry established in RFC 5988</xref>,
                     or a normalized URI following the <xref target="RFC3986">URI production of RFC 3986</xref>.
                 </t>
 
                 <t>
-                    The relation to the target is interpreted as from the instance that the schema
+                    The link context is interpreted as from the instance that the schema
                     (or sub-schema) applies to, not any larger document that the instance may have
                     been found in.
                 </t>
@@ -978,7 +1013,7 @@ GET /foo/
                 <t>
                     The value of this property is advisory only, and represents the media type
                     <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when
-                    fetching this resource.
+                    fetching the link target resource.
                     This property value MAY be a media range instead, using the same pattern defined
                     in <xref target="RFC7231">RFC 7231, section 5.3.2 - HTTP "Accept" header</xref>.
                 </t>
@@ -1207,6 +1242,7 @@ GET /foo/
             <!--&rfc5226;-->
             &rfc5789;
             &rfc5988;
+            &I-D.nottingham-rfc5988bis;
             &rfc7231;
         </references>
 
