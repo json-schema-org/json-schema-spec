@@ -456,14 +456,21 @@
                 <t>
                     To name subschemas in a JSON Schema document,
                     subschemas can use "$id" to give themselves a document-local identifier.
-                    This is done by setting "$id" to a URI reference consisting only of a fragment.
+                    This is done by setting "$id" to a URI reference consisting
+                    only of a plain name fragment (not a JSON Pointer fragment).
                     The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
                     any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
                     (":"), or periods (".").
                 </t>
                 <t>
-                    The effect of defining an "$id" that neither matches the above
-                    requirements nor is a valid JSON pointer is not defined.
+                    Providing a plain name fragment enables a subschema to be
+                    relocated within a schema without requiring that JSON
+                    Pointer references are updated.
+                </t>
+                <t>
+                    The effect of defining a URI fragment "$id" that neither
+                    matches the above requirements nor is a valid JSON pointer
+                    is not defined.
                 </t>
                 <t>
                     For example:
@@ -548,7 +555,8 @@
                         When an implementation then looks inside the &lt;#/items&gt; schema, it
                         encounters the &lt;#item&gt; reference, and resolves this to
                         &lt;http://example.net/root.json#item&gt; which is understood as the schema
-                        defined elsewhere in the same document.
+                        defined elsewhere in the same document without needing to
+                        resolve the fragment against the base URI.
                     </t>
                 </section>
                 <section title="External references">
