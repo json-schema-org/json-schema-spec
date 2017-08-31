@@ -121,8 +121,6 @@
             <t>
                 This document describes how JSON Schema can be used to define hyperlinks on instance
                 data.
-                It also defines how to provide additional information required to interpret JSON
-                data as rich multimedia documents.
             </t>
             <t>
                 As with all JSON Schema keywords, all the keywords described in the "Schema
@@ -131,8 +129,7 @@
             </t>
             <figure>
                 <preamble>
-                    Here is an example JSON Schema defining hyperlinks, and providing a multimedia
-                    interpretation for the "imgData" property:
+                    Here is an example JSON Schema defining hyperlinks:
                 </preamble>
                 <artwork>
 <![CDATA[
@@ -151,14 +148,6 @@
         },
         "authorId": {
             "type": "integer"
-        },
-        "imgData": {
-            "title": "Article Illustration (thumbnail)",
-            "type": "string",
-            "media": {
-                "binaryEncoding": "base64",
-                "type": "image/png"
-            }
         }
     },
     "required" : ["id", "title", "authorId"],
@@ -176,36 +165,14 @@
 ]]>
                 </artwork>
                 <postamble>
-                    This example schema defines the properties of the instance. For the "imgData"
-                    property, it specifies that that it should be base64-decoded and the resulting
-                    binary data treated as a PNG image.
-                    It also defines link relations for the instance, with URIs incorporating values
-                    from the instance.
+                    This example schema defines the properties of the instance as well as link
+                    relations for the instance, with URIs incorporating values from the instance.
                     <cref>
                         "id" probably should not normally be a required keyword, since new instances
                         will have an unknown "id" property until is it assigned by the server.
                         However, this property is used in a link, and without it, multiple different
                         instances would be given the same rel=self URI!
                     </cref>
-                </postamble>
-            </figure>
-
-            <figure>
-                <preamble>
-                    An example of a JSON instance described by the above schema might be:
-                </preamble>
-                <artwork>
-<![CDATA[
-{
-    "id": 15,
-    "title": "Example data",
-    "authorId": 105,
-    "imgData": "iVBORw...kJggg=="
-}
-]]>
-                </artwork>
-                <postamble>
-                    The base-64 data has been abbreviated for readability.
                 </postamble>
             </figure>
 
