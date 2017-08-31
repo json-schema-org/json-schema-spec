@@ -212,6 +212,10 @@
 
             <section title="Interaction with validation">
                 <t>
+                    Hyper-schema keywords can be applied when the instance is valid against
+                    the schema that includes those keywords.
+                </t>
+                <t>
                     Hyper-schemas MUST NOT be applied to an instance if the instance fails to
                     validate against the validation keywords within or containing the hyper-schema.
                     Hyper-schema keywords in branches of an "anyOf" or "oneOf" that do not validate,
@@ -465,6 +469,10 @@
                     </cref>
                 </t>
                 <t>
+                    An operation is a specific use of a link described by an LDO, after any
+                    template variables have been resolved.
+                </t>
+                <t>
                     There are several ways that a client can use data with a link:
                     <list>
                         <t> URI Template variables resolved from server-supplied instance data </t>
@@ -474,8 +482,8 @@
                             inherent relation to the target resource's representation</t>
                     </list>
                     The three ways to use client-supplied data are each addressed by a separate
-                    schema keyword within the link description object.  Link operations
-                    ignore schemas that are not relevant to their semantics.
+                    schema keyword within the link description object.  When performing operations,
+                    clients SHOULD ignore schemas that are not relevant to their semantics.
                 </t>
                 <t>
                     Link Description Objects do not directly indicate what operations, such

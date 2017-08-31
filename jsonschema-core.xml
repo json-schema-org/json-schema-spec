@@ -431,10 +431,12 @@
 
             <section title='The "$id" keyword' anchor="id-keyword">
                 <t>
-                    The "$id" keyword defines a URI for the schema,
-                    and the base URI that other URI references within the schema are resolved against.
-                    The "$id" keyword itself is resolved against the base URI that the object as a
-                    whole appears in.
+                    The "$id" keyword defines a URI for the schema, and the base URI that
+                    other URI references within the schema are resolved against.
+                    A subschema's "$id" is resolved against the base URI of its parent schema.
+                    If no parent sets an explicit base with "$id", the base URI is that of the
+                    entire document, as determined per
+                    <xref target="RFC3986">RFC 3986 section 5</xref>.
                 </t>
                 <t>
                     If present, the value for this keyword MUST be a string, and MUST represent a
@@ -468,7 +470,7 @@
                     Pointer references are updated.
                 </t>
                 <t>
-                    The effect of defining a URI fragment "$id" that neither
+                    The effect of defining a fragment-only "$id" URI reference that neither
                     matches the above requirements nor is a valid JSON pointer
                     is not defined.
                 </t>
