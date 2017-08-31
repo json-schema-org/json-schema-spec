@@ -9,6 +9,7 @@
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 ]>
 <?rfc toc="yes"?>
@@ -358,7 +359,15 @@
                 <section title="Resolving templated URIs">
                     <t>
                         URI Template variables in <xref target="href">"href"</xref> resolve from
-                        server-supplied instance data by default.
+                        server-supplied instance data by default.  This data is drawn from the
+                        sub-instance that validated against the schema containing the LDO.
+                    </t>
+                    <t>
+                        <xref target="hrefPointers">"hrefPointers"</xref> allows adjusting
+                        the location from which instance data is resolved on a per-variable
+                        basis.
+                    </t>
+                    <t>
                         <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
                         a schema for resolving template variables from client-supplied data.
                         Regular JSON Schema validation features can be used to require resolution
@@ -546,6 +555,84 @@
                     </section>
                 </section>
 
+            </section>
+
+            <section title="hrefPointers" anchor="hrefPointers">
+                <t>
+                    The value of the "hrefPointers" link description property MUST be
+                    an object.  Each property value in the object MUST be a valid
+                    <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>,
+                    which is evaluated relative to the position in the instance from which
+                    <xref target="href">"href"</xref> template variable resolution would
+                    normolly begin.
+                </t>
+                <t>
+                    For each property name in the object that matches a variable name in the
+                    "href" URI Template, the value of that property adjusts the starting position
+                    of variable resolution for that variable.  Properties which do not match
+                    "href" template variable names MUST be ignored.
+                </t>
+                <figure>
+                    <preamble>
+                        Consider the following schema for an n-ary tree using the path expansion
+                        URI Template syntax:
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "type": "object",
+    "required": ["id"],
+    "properties": {
+        "id": {"type": "integer", "minimum": 0},
+        "children": {"type": "array", "items": {"$ref": "#"}}
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "/trees{/root,parent,id}"
+            "hrefPointers": {
+        }
+    ]
+}]]>
+                    </artwork>
+                    <postamble>
+                        The self links here should always include the root node id,
+                        followed by an immediate parent id if one exists, and always ending
+                        with the id of the node that is the context of the self link.
+                    </postamble>
+                </figure>
+                <figure>
+                    <preamble>
+                        Given the following instance:
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+  "id": 0,
+  "children": [ {
+    "id": 1,
+    "children": [ {
+      "id": 2,
+      "children": [ {
+        "id": 3
+} ] } ] } ] }]]>
+                    </artwork>
+                </figure>
+                <t>
+                    We get the following self links for each node in the instance as identifed
+                    by JSON Pointers:
+                    <list style="hanging">
+                        <t hangText='"" (the root node)'>/trees/0/0</t>
+                        <t hangText='"/children/0/children/0"'>/trees/0/0/1</t>
+                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/1/2</t>
+                        <t hangText='"/children/0/children/0/children/0/children/0"'>/trees/2/3</t>
+                    </list>
+                    omitted, giving us the desired URI with two components after "/trees".  The
+                    This shows the use of an absolute JSON Pointer to always resolve
+                    the root node from any depth, and a Relative JSON Pointer to always resolve
+                    the immediate parent, which cannot be identified with an absolute pointer.
+                    For the root node, there is no defined parent, so per URI Template resolution
+                    rules, that variable and the path component that it would produce are simply
+                    omitted, giving us the desired URI with two components after "/trees".
+                </t>
             </section>
 
             <section title="hrefSchema" anchor="hrefSchema">
@@ -1190,6 +1277,7 @@ GET /foo/
             &rfc3986;
             <!--&rfc4287;-->
             &rfc6570;
+            &I-D.luff-relative-json-pointer;
             &I-D.reschke-http-jfv;
             <reference anchor="json-schema">
                 <front>
