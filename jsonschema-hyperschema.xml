@@ -9,6 +9,7 @@
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 ]>
 <?rfc toc="yes"?>
@@ -793,6 +794,91 @@ GET /foo/
                 </t>
             </section>
 
+            <section title="anchorPointer" anchor="anchorPointer">
+                <t>
+                    This property changes the point within the instance that is considered
+                    to be the context resource of the link.  The value of the property is a
+                    <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>,
+                    starting from the default context (the part of the instance that validated
+                    against the schema containing the LDO).
+                </t>
+                <t>
+                    While an alternate context with a known URI is best set with the
+                    "anchor" keyword, the lack of a fragment identifier
+                    syntax for application/json means that it is usually not possible to
+                    change the context within a JSON instance.
+                </t>
+                <t>
+                    Even in "+json" media types that define JSON Pointer as a fragment identifier
+                    syntax, if the default context is nested within an array, it is not possible to
+                    obtain the index of the default context's position in that array in order
+                    to construct a pointer to another property in that same nested JSON object.
+                </t>
+
+                <figure>
+                    <preamble>
+                        For example, given this hyper-schema:
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "type": "object",
+    "properties": {
+        "theThing": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"}
+            }
+        },
+        "examples": {
+            "title": "The collection of example for the thing",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"}
+                },
+                "links": [{
+                    "rel": "item",
+                    "href": "/examples/{id}",
+                    "anchorPointer": "1"
+                }]
+            }
+        }
+    }
+}]]>
+                    </artwork>
+                    <postamble>
+                        The "item" relation indicates that each array entry can be used to construct
+                        a link from the collection embedded in this instance to a resource for that
+                        specific item.  The default context of this link is the individual array
+                        element.  But the context of an "item" relation should be the collection,
+                        which is the entire "examples" array.  The Relative JSON Pointer of "1"
+                        accomplishes this as follows:
+                    </postamble>
+                </figure>
+                <figure>
+                    <preamble>
+                        Given this instance of media type application/json:
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "theThing": {"name": "An actual thing"},
+    "examples": [{"id": 1234}, {"id": 5678}]
+}]]>
+                    </artwork>
+                    <postamble>
+                        The default context for the link to "/examples/1234" is the first
+                        array entry, and for the link to "/examples/5678" it is the second array
+                        entry.  But "anchorPointer" moves this up one instance level (the "1"
+                        Relative JSON Pointer) to be the array containing each entry.
+                    </postamble>
+                </figure>
+                <t>
+                    If both "anchor" and "anchorPointer" are defined, and do not resolve to
+                    the same link context, the resulting behavior is undefined.
+                </t>
+            </section>
+
             <section title="title">
                 <t>
                     This property defines a title for the link.
@@ -1190,6 +1276,7 @@ GET /foo/
             &rfc3986;
             <!--&rfc4287;-->
             &rfc6570;
+            &I-D.luff-relative-json-pointer;
             &I-D.reschke-http-jfv;
             <reference anchor="json-schema">
                 <front>
