@@ -564,7 +564,7 @@
                     <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>,
                     which is evaluated relative to the position in the instance from which
                     <xref target="href">"href"</xref> template variable resolution would
-                    normolly begin.
+                    normally begin.
                 </t>
                 <t>
                     For each property name in the object that matches a variable name in the
@@ -590,6 +590,9 @@
             "rel": "self",
             "href": "/trees{/root,parent,id}"
             "hrefPointers": {
+                "root": "/id",
+                "parent": "2/id"
+            }
         }
     ]
 }]]>
@@ -598,6 +601,11 @@
                         The self links here should always include the root node id,
                         followed by an immediate parent id if one exists, and always ending
                         with the id of the node that is the context of the self link.
+                        The context node's id resolves with the standard process and
+                        does not appear in "hrefPointers".  The root id is located
+                        using an absolute JSON Pointer, while the parent node
+                        uses a Relative JSON Pointer, going up two levels (one level up
+                        is the array of children, two levels up is the whole parent node).
                     </postamble>
                 </figure>
                 <figure>
@@ -623,9 +631,8 @@
                         <t hangText='"" (the root node)'>/trees/0/0</t>
                         <t hangText='"/children/0/children/0"'>/trees/0/0/1</t>
                         <t hangText='"/children/0/children/0/children/0"'>/trees/0/1/2</t>
-                        <t hangText='"/children/0/children/0/children/0/children/0"'>/trees/2/3</t>
+                        <t hangText='"/children/0/children/0/children/0/children/0"'>/trees/0/2/3</t>
                     </list>
-                    omitted, giving us the desired URI with two components after "/trees".  The
                     This shows the use of an absolute JSON Pointer to always resolve
                     the root node from any depth, and a Relative JSON Pointer to always resolve
                     the immediate parent, which cannot be identified with an absolute pointer.
