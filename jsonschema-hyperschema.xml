@@ -10,6 +10,7 @@
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc6906 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6906.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY rfc7240 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7240.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 ]>
@@ -1187,6 +1188,123 @@ GET /foo/
                 </section>
             </section>
 
+            <section title="headerSchema" anchor="headerSchema">
+                <t>
+                    <cref>
+                        As with "targetHints", this keyword is somewhat under-specified
+                        to encourage experiementation and feedback as we try to balance
+                        flexibility and clarity.
+                    </cref>
+                </t>
+                <t>
+                    If present, this property is a schema for protocol-specific request
+                    headers or analogous control and meta-data.  The value of this
+                    object MUST be a valid JSON Schema.
+                    The protocol is determined by the "href" URI scheme, although note that
+                    resources are not guaranteed to be accessible over such a protocol.
+                    The schema is advisory only; the target resource's behavior is not
+                    constrained by its presence.
+                </t>
+                <t>
+                    The purpose of this keyword is to advertise target resource interaction
+                    features, and indicate to clients what headers and header values are
+                    likely to be useful.  Clients MAY use the schema to validate relevant
+                    headers, but MUST NOT assume that missing headers or values are forbidden
+                    from use.  While schema authors MAY set "additionalProperties" to
+                    false, this is NOT RECOMMENDED and MUST NOT prevent clients or user agents
+                    from supplying additional headers when requests are made.
+                </t>
+                <t>
+                    The exact mapping of the JSON data model into the headers is
+                    protocol-dependent.  However, in most cases this schema SHOULD
+                    specify a type of "object", and the property names SHOULD be
+                    lower-cased forms of the control data field names.
+                </t>
+                <t>
+                    "headerSchema" is applicable to any request method or command that the
+                    protocol supports.  When generating a request, clients SHOULD ignore
+                    schemas for headers that are not relevant to that request.
+                </t>
+                <section title='"headerSchema" for HTTP'>
+                    <t>
+                        Schemas SHOULD be written to describe JSON serializations that
+                        follow guidelines established by the work in progress
+                        <xref target="I-D.reschke-http-jfv">"A JSON Encoding for HTTP Header Field Values"</xref>
+                        Approaches shown in that document's examples SHOULD be applied to
+                        other similarly structured headers wherever possible.
+                    </t>
+                    <t>
+                        The "Prefer" header defined in <xref target="RFC7240">RFC 7240</xref>
+                        is a good candidate for description in "headerSchema".  It defines
+                        several standard values and allows for extension values.
+                    </t>
+                    <figure>
+                        <preamble>
+                            This schema indicates that the target understands the
+                            "respond-async" preference, the "wait" preference which
+                            takes a number of seconds to wait, as well as "minimal" and
+                            "representation" for the "return" preference.
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "type": "object",
+    "properties": {
+        "prefer": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {"const": "respond-async"},
+                    {
+                        "type": "object",
+                        "minProperties": 1,
+                        "maxProperties": 1,
+                        "properties": {
+                            {
+                                "return": {
+                                    "enum": [
+                                        "representation",
+                                        "minimal"
+                                    ]
+                                },
+                                "wait": {
+                                    "type": "integer",
+                                    "minimum": 1
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "uniqueItems": true
+        }
+    }
+}]]>
+                        </artwork>
+                        <postamble>
+                            Each name/value preference pair is a single value of the
+                            header, so each object in the list can only have one such
+                            pair.  Simplifying the "response-async" value to a single string
+                            is based on the "Accept-Encoding" example in
+                            <xref target="I-D.reschke-http-jfv">appendix A.4 of the JSON encoding draft</xref>.
+                        </postamble>
+                    </figure>
+                    <t>
+                        The Prefer header also stretches the limits of existing recommendations
+                        for serializing HTTP headers in JSON.  It is possible for both the
+                        single string and name/value pair preferences to take additional
+                        name/value parameters.  While a single-string preference can accomodate
+                        such parameters following the "Accept-Encoding" example, there is
+                        no example to date of a name/value pair with parameters.
+                        <cref>
+                            We hope to get feedback from hyper-schema authors on what
+                            practical concerns arise, and from there decide how best to
+                            handle them.  The specification for this keyword is expected to
+                            become more well-defined in future drafts.
+                        </cref>
+                    </t>
+                </section>
+            </section>
+
             <section title="submissionEncType" anchor="submissionEncType">
                 <t>
                     If present, this property indicates the media type format the
@@ -1310,6 +1428,7 @@ GET /foo/
             &rfc5789;
             &rfc5988;
             &rfc7231;
+            &rfc7240;
         </references>
 
         <section title="Acknowledgments">
