@@ -655,7 +655,8 @@
                     resource is the instance to which the schema (or sub-schema)
                     applies, rather than any larger document in which the
                     instance may have been found.  The context may be changed
-                    with the <xref target="anchor">"anchor"</xref> property.
+                    with the <xref target="anchor">"anchor"</xref> or
+                    <xref target="anchorPointer">"anchorPointer"</xref> properties.
                 </t>
 
                 <t>
@@ -804,9 +805,9 @@ GET /foo/
                 </t>
                 <t>
                     While an alternate context with a known URI is best set with the
-                    "anchor" keyword, the lack of a fragment identifier
+                    <xref target="anchor">"anchor"</xref> keyword, the lack of a fragment identifier
                     syntax for application/json means that it is usually not possible to
-                    change the context within a JSON instance.
+                    change the context within a JSON instance using a URI.
                 </t>
                 <t>
                     Even in "+json" media types that define JSON Pointer as a fragment identifier
