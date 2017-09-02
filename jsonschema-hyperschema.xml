@@ -761,14 +761,28 @@
                 </t>
 
                 <t>
-                    The relation to the target is interpreted as from the instance that the schema
-                    (or sub-schema) applies to, not any larger document that the instance may have
-                    been found in.
+                    As defined by RFC 5988, a link connects a context resource
+                    to a target resource, where the nature of the connection
+                    is described by the link relation type.  The context
+                    resource is the instance to which the schema (or sub-schema)
+                    applies, rather than any larger document in which the
+                    instance may have been found.  The context may be changed
+                    with the <xref target="anchor">"anchor"</xref> property.
                 </t>
 
                 <t>
-                    Relationship definitions are not normally media type dependent, and users are
-                    encouraged to utilize existing accepted relation definitions.
+                    Depending on the media type of the instance, it may or may
+                    not be possible to assign a URI to the exact default context
+                    resource.  In particular, application/json does not define
+                    URI fragment resolution semantics, so properties or array
+                    elements within a plain JSON document cannot be identified
+                    by a URI.
+                </t>
+
+                <t>
+                    Relationship definitions are not normally media type
+                    dependent, and users are encouraged to utilize existing
+                    accepted relation definitions.
                 </t>
 
                 <figure>
@@ -881,6 +895,15 @@ GET /foo/
                         </figure>
                     </t>
                 </section>
+            </section>
+
+            <section title="anchor" anchor="anchor">
+                <t>
+                    This property sets the context URI of the link.
+                    The value of the property MUST be resolved as a
+                    <xref target="RFC3986">URI-reference</xref> against
+                    the base URI of the instance.
+                </t>
             </section>
 
             <section title="title">
