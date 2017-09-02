@@ -64,6 +64,20 @@
             "type": "array",
             "items": {}
         },
+        "deprecated": {
+            "type": "object",
+            "additionalProperties": {
+                "type": ["boolean", "string"],
+                "minLength": 1
+            }
+        },
+        "patternDeprecated": {
+            "type": "object",
+            "additionalProperties": {
+                "type": ["boolean", "string"],
+                "minLength": 1
+            }
+        },
         "multipleOf": {
             "type": "number",
             "exclusiveMinimum": 0
