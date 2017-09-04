@@ -588,7 +588,7 @@
     "links": [
         {
             "rel": "self",
-            "href": "/trees{/root,parent,id}"
+            "href": "/trees{/root,parent,id}",
             "hrefPointers": {
                 "root": "/id",
                 "parent": "2/id"
@@ -597,17 +597,27 @@
     ]
 }]]>
                     </artwork>
-                    <postamble>
-                        The self links here should always include the root node id,
-                        followed by an immediate parent id if one exists, and always ending
-                        with the id of the node that is the context of the self link.
-                        The context node's id resolves with the standard process and
-                        does not appear in "hrefPointers".  The root id is located
-                        using an absolute JSON Pointer, while the parent node
-                        uses a Relative JSON Pointer, going up two levels (one level up
-                        is the array of children, two levels up is the whole parent node).
-                    </postamble>
                 </figure>
+                <t>
+                    The self links here should always include the root node id,
+                    followed by an immediate parent id if one exists, and always ending
+                    with the id of the node that is the context of the self link.
+                </t>
+                <t>
+                    The context node's id resolves with the standard process and
+                    does not appear in "hrefPointers".  The root id is located
+                    using an absolute JSON Pointer, while the parent node
+                    uses a Relative JSON Pointer, going up two levels (one level up
+                    is the array of children, two levels up is the whole parent node).
+                </t>
+                <t>
+                    This design never has more than three ids in the URI.  Nodes
+                    along the path between the root and the immediate parent,
+                    if any, are omitted.  This illustrates a limitation of JSON Schema:
+                    Producing a variable-length path URI to any arbitrary depth is
+                    not possible without redesigning the representation to make an
+                    array of path ids available in each node.
+                </t>
                 <figure>
                     <preamble>
                         Given the following instance:
@@ -621,7 +631,10 @@
       "id": 2,
       "children": [ {
         "id": 3
-} ] } ] } ] }]]>
+      } ]
+    } ]
+  } ]
+}]]>
                     </artwork>
                 </figure>
                 <t>
@@ -629,13 +642,15 @@
                     by JSON Pointers:
                     <list style="hanging">
                         <t hangText='"" (the root node)'>/trees/0/0</t>
-                        <t hangText='"/children/0/children/0"'>/trees/0/0/1</t>
-                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/1/2</t>
-                        <t hangText='"/children/0/children/0/children/0/children/0"'>/trees/0/2/3</t>
+                        <t hangText='"/children/0"'>/trees/0/0/1</t>
+                        <t hangText='"/children/0/children/0"'>/trees/0/1/2</t>
+                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/2/3</t>
                     </list>
                     This shows the use of an absolute JSON Pointer to always resolve
                     the root node from any depth, and a Relative JSON Pointer to always resolve
                     the immediate parent, which cannot be identified with an absolute pointer.
+                </t>
+                <t>
                     For the root node, there is no defined parent, so per URI Template resolution
                     rules, that variable and the path component that it would produce are simply
                     omitted, giving us the desired URI with two components after "/trees".
