@@ -395,7 +395,7 @@
             </t>
         </section>
 
-        <section title="Schema references with $ref">
+        <section title='Schema references with "$ref"'>
             <t>
                 The "$ref" keyword is used to reference a schema, and provides the ability to
                 validate recursive structures through self-reference.
@@ -588,6 +588,38 @@
             </section>
         </section>
 
+        <section title='Comments with "$comment"'>
+            <t>
+                This keyword is reserved for comments from schema authors to readers or
+                maintainers of the schema.
+
+                The value of this keyword MUST be a string. Implementations MUST NOT present this
+                string to end users.  Tools for editing schemas SHOULD support displaying and
+                editing this keyword.  The value of this keyword MAY be used in debug or error
+                output which is intended for developers making use of schemas.
+
+                Schema vocabularies SHOULD allow "$comment" within any object containing
+                vocabulary keywords.  Implementations MAY assume "$comment" is allowed
+                unless the vocabulary specifically forbids it.  Vocabularies MUST NOT
+                specify any effect of "$comment" beyond what is described in this
+                specification.
+
+                Tools that translate other media types or programming languages
+                to and from application/schema+json MAY choose to convert that media type or
+                programming language's native comments to or from "$comment" values.
+                The behavior of such translation when both native comments and "$comment"
+                properties are present is implementation-dependent.
+
+                Implementations SHOULD treat "$comment" identically to an unknown extension
+                keyword.  They MAY strip "$comment" values at any point during processing.
+                In particular, this allows for shortening schemas when the size of deployed
+                schemas is a concern.
+
+                Implementations MUST NOT take any other action based on the presence, absence,
+                or contents of "$comment" properties.
+            </t>
+        </section>
+
         <section title="Usage for hypermedia">
 
             <t>
@@ -737,6 +769,16 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             <t>
                 Individual JSON Schema vocabularies are liable to also have their own security
                 considerations. Consult the respective specifications for more information.
+            </t>
+            <t>
+                Schema authors should take care with "$comment" contents, as a malicious
+                implementation can display them to end-users in violation of a spec, or
+                fail to strip them if such behavior is expected.
+            </t>
+            <t>
+                A malicous schema author could place executable code or other dangerous
+                material within a "$comment".  Implementations MUST NOT parse or otherwise
+                take action based on "$comment" contents.
             </t>
         </section>
 
