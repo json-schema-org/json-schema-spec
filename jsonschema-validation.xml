@@ -251,6 +251,48 @@
                 instance.
             </t>
 
+            <section title="Validation keywords for any instance type">
+                <section title="enum">
+                    <t>
+                        The value of this keyword MUST be an array. This array SHOULD have at
+                        least one element. Elements in the array SHOULD be unique.
+                    </t>
+                    <t>
+                        An instance validates successfully against this keyword if its value is
+                        equal to one of the elements in this keyword's array value.
+                    </t>
+                    <t>
+                        Elements in the array might be of any value, including null.
+                    </t>
+                </section>
+
+                <section title="const">
+                    <t>
+                        The value of this keyword MAY be of any type, including null.
+                    </t>
+                    <t>
+                        An instance validates successfully against this keyword if its value is
+                        equal to the value of the keyword.
+                    </t>
+                </section>
+
+                <section title="type">
+                    <t>
+                        The value of this keyword MUST be either a string or an array. If it is
+                        an array, elements of the array MUST be strings and MUST be unique.
+                    </t>
+                    <t>
+                        String values MUST be one of the six primitive types
+                        ("null", "boolean", "object", "array", "number", or "string"),
+                        or "integer" which matches any number with a zero fractional part.
+                    </t>
+                    <t>
+                        An instance validates if and only if the instance is in any of the sets listed
+                        for this keyword.
+                    </t>
+                </section>
+            </section>
+
             <section title="Validation keywords for numeric instances (number and integer)">
                 <section title="multipleOf">
                     <t>
@@ -589,48 +631,6 @@
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as an empty schema.
-                    </t>
-                </section>
-            </section>
-
-            <section title="Validation keywords for any instance type">
-                <section title="enum">
-                    <t>
-                        The value of this keyword MUST be an array. This array SHOULD have at
-                        least one element. Elements in the array SHOULD be unique.
-                    </t>
-                    <t>
-                        An instance validates successfully against this keyword if its value is
-                        equal to one of the elements in this keyword's array value.
-                    </t>
-                    <t>
-                        Elements in the array might be of any value, including null.
-                    </t>
-                </section>
-
-                <section title="const">
-                    <t>
-                        The value of this keyword MAY be of any type, including null.
-                    </t>
-                    <t>
-                        An instance validates successfully against this keyword if its value is
-                        equal to the value of the keyword.
-                    </t>
-                </section>
-
-                <section title="type">
-                    <t>
-                        The value of this keyword MUST be either a string or an array. If it is
-                        an array, elements of the array MUST be strings and MUST be unique.
-                    </t>
-                    <t>
-                        String values MUST be one of the six primitive types
-                        ("null", "boolean", "object", "array", "number", or "string"),
-                        or "integer" which matches any number with a zero fractional part.
-                    </t>
-                    <t>
-                        An instance validates if and only if the instance is in any of the sets listed
-                        for this keyword.
                     </t>
                 </section>
             </section>
