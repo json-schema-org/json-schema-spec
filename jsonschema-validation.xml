@@ -252,6 +252,22 @@
             </t>
 
             <section title="Validation keywords for any instance type">
+                <section title="type">
+                    <t>
+                        The value of this keyword MUST be either a string or an array. If it is
+                        an array, elements of the array MUST be strings and MUST be unique.
+                    </t>
+                    <t>
+                        String values MUST be one of the six primitive types
+                        ("null", "boolean", "object", "array", "number", or "string"),
+                        or "integer" which matches any number with a zero fractional part.
+                    </t>
+                    <t>
+                        An instance validates if and only if the instance is in any of the sets listed
+                        for this keyword.
+                    </t>
+                </section>
+
                 <section title="enum">
                     <t>
                         The value of this keyword MUST be an array. This array SHOULD have at
@@ -273,22 +289,6 @@
                     <t>
                         An instance validates successfully against this keyword if its value is
                         equal to the value of the keyword.
-                    </t>
-                </section>
-
-                <section title="type">
-                    <t>
-                        The value of this keyword MUST be either a string or an array. If it is
-                        an array, elements of the array MUST be strings and MUST be unique.
-                    </t>
-                    <t>
-                        String values MUST be one of the six primitive types
-                        ("null", "boolean", "object", "array", "number", or "string"),
-                        or "integer" which matches any number with a zero fractional part.
-                    </t>
-                    <t>
-                        An instance validates if and only if the instance is in any of the sets listed
-                        for this keyword.
                     </t>
                 </section>
             </section>
