@@ -504,14 +504,39 @@
                         to server-supplied instance data if no user agent data is provided.
                     </t>
                     <t>
-                        The common pattern of resolving a templated path component with
-                        server-supplied instance data while accepting user agent data to build
-                        a query string can be implemented by setting the "hrefSchema" subschemas
-                        for the path template variables to false, while giving the query string
-                        template variables names that do not appear in the instance.  This ensures
-                        that the path variables can only be resolved from the instance, and the
-                        query string variables can only be resolved from user agent data.
+                        To implement the common pattern of resolving a templated path component
+                        with server-supplied instance data while accepting user agent data to build
+                        a query string:
+                        <list style="symbols">
+                            <t>
+                                set the "hrefSchema" subschemas for the path template variables
+                                to false, to disallow user agent input
+                            </t>
+                            <t>
+                                give the query string template variables names that do not appear
+                                in the instance, to prevent resolving them from the instance
+                            </t>
+                        </list>
                         See the "hrefSchema" section for an example of this approach.
+                    </t>
+                    <t>
+                        To implement the equivalent of an input form pre-populated with
+                        pre-existing instance data:
+                        <list style="symbols">
+                            <t>
+                                ensure that each variable in the form resolves from the appropriate
+                                field in the instance, which provides the initial value that will
+                                continue to be used if the user agent takes no action to change it
+                            </t>
+                            <t> provide a validation schema for each of those fields in
+                                "hrefSchema", to describe what user agent input may be allowed
+                                to replace it
+                            </t>
+                        </list>
+                        This can be done with variables in any component of the URI template
+                        (path, query string, etc.)  While the word "form" is used here,
+                        JSON Hyper-Schema does not constraint the nature of this interaction, which
+                        may or may not involve rendering an interactive form.
                     </t>
                 </section>
                 <section title="Manipulating the target resource representation">
