@@ -3,14 +3,6 @@
     "$id": "http://json-schema.org/draft-06/hyper-schema#",
     "title": "JSON Hyper-Schema",
     "definitions": {
-        "schemaArray": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/schema#/definitions/schemaArray" },
-                {
-                    "items": { "$ref": "#" }
-                }
-            ]
-        },
         "linkDescription": {
             "title": "Link Description Object",
             "type": "object",
@@ -66,47 +58,14 @@
         }
     },
     "allOf": [ { "$ref": "http://json-schema.org/draft-06/schema#" } ],
+    "patternProperties": {
+        "^(additional(Propertie|Item)s|propertyNames|not|contains)$": { "$ref": "#" },
+        "^(any|all|one)Of$": { "items": { "$ref": "#" } },
+        "^(p(atternP)?ropertie|definition)s$": { "additionalProperties": { "$ref": "#" } },
+        "^items$": { "oneOf": [ { "$ref": "#" }, { "type": "array", "items": { "$ref": "#" } } ] },
+        "^dependencies$": { "additionalProperties": { "oneOf": [ { "type": "array" }, { "$ref": "#" } ] } }
+    },
     "properties": {
-        "additionalItems": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ]
-        },
-        "additionalProperties": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ]
-        },
-        "dependencies": {
-            "additionalProperties": {
-                "anyOf": [
-                    { "$ref": "#" },
-                    { "type": "array" }
-                ]
-            }
-        },
-        "items": {
-            "anyOf": [
-                { "$ref": "#" },
-                { "$ref": "#/definitions/schemaArray" }
-            ]
-        },
-        "definitions": {
-            "additionalProperties": { "$ref": "#" }
-        },
-        "patternProperties": {
-            "additionalProperties": { "$ref": "#" }
-        },
-        "properties": {
-            "additionalProperties": { "$ref": "#" }
-        },
-        "allOf": { "$ref": "#/definitions/schemaArray" },
-        "anyOf": { "$ref": "#/definitions/schemaArray" },
-        "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" },
-
         "base": {
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
             "type": "string"
