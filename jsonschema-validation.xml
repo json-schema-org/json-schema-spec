@@ -757,6 +757,41 @@
                 </t>
             </section>
 
+            <section title='"deprecated" and "patternDeprecated"'>
+                <t>
+                    The values of these keywords MUST be objects, and the values of those
+                    objects' properties MUST be either booleans or strings.  The property
+                    names for the value of "patternDeprecated" SHOULD be valid regular
+                    expressions, according to the ECMA 262 regular expression dialect.
+                    String values MUST be non-empty, to simplify handling both boolean
+                    and string values in languages where the empty string is considered false.
+                </t>
+                <t>
+                    These keywords can be used to indicate that certain properties indicated
+                    either by exact name ("deprecated") or regular expression ("patternDeprecated")
+                    are expected to be removed at some future point in time, or at some future
+                    identified version of the system in which this schema is used.
+                </t>
+                <t>
+                    The exact nature of the deprecation depends on the system.  A versioned API
+                    can advertise changes in a forthcoming version.  A schema for validating
+                    input to a publishing process can indicate that the publishing requirements
+                    will change at a future date.  A system without a clear way to be more
+                    specific about the deprecation process may use a boolean value of true.
+                </t>
+                <t>
+                    It is RECOMMENDED that string values of these objects be either dates
+                    according to the "full-date" or "date-time" productions from
+                    <xref target="RFC3339">RFC 3339</xref>, or version identifiers of a sort
+                    that will be recognizable to consumers of the system.
+                </t>
+                <t>
+                    Property names in "deprecated" or patterns in "patternDeprecated" are not
+                    required to match names in "properties" or "patternProperties", respectively.
+                    This may be used for situations such as deprecating a subset of the properties
+                    matched by a pattern in "patternProperties".
+                </t>
+            </section>
         </section>
 
         <section title='Semantic validation with "format"'>
