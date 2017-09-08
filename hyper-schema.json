@@ -4,8 +4,12 @@
     "title": "JSON Hyper-Schema",
     "definitions": {
         "schemaArray": {
-            "type": "array",
-            "items": { "$ref": "#" }
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/schema#/definitions/schemaArray" },
+                {
+                    "items": { "$ref": "#" }
+                }
+            ]
         },
         "linkDescription": {
             "title": "Link Description Object",
@@ -64,37 +68,37 @@
     "allOf": [ { "$ref": "http://json-schema.org/draft-06/schema#" } ],
     "properties": {
         "additionalItems": { "$ref": "#" },
-        "additionalProperties": { "$ref": "#" },		
-        "dependencies": {		
-            "additionalProperties": {		
-                "anyOf": [		
-                    { "$ref": "#" },		
-                    { "type": "array" }		
-                ]		
-            }		
+        "additionalProperties": { "$ref": "#"},
+        "dependencies": {
+            "additionalProperties": {
+                "anyOf": [
+                    { "$ref": "#" },
+                    { "type": "array" }
+                ]
+            }
         },
-        "items": {		
-            "anyOf": [		
-                { "$ref": "#" },		
+        "items": {
+            "anyOf": [
+                { "$ref": "#" },
                 { "$ref": "#/definitions/schemaArray" }
-            ]		
-        },		
-        "definitions": {		
-            "additionalProperties": { "$ref": "#" }		
-        },		
-        "patternProperties": {		
-            "additionalProperties": { "$ref": "#" }		
-        },		
-        "properties": {		
-            "additionalProperties": { "$ref": "#" }		
-        },		
-        "allOf": { "$ref": "#/definitions/schemaArray" },		
-        "anyOf": { "$ref": "#/definitions/schemaArray" },		
+            ]
+        },
+        "definitions": {
+            "additionalProperties": { "$ref": "#" }
+        },
+        "patternProperties": {
+            "additionalProperties": { "$ref": "#" }
+        },
+        "properties": {
+            "additionalProperties": { "$ref": "#" }
+        },
+        "allOf": { "$ref": "#/definitions/schemaArray" },
+        "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" },
-        "propertyNames": { "$ref": "#" },
         "contains": { "$ref": "#" },
-        
+        "propertyNames": { "$ref": "#" },
+
         "base": {
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
             "type": "string"
