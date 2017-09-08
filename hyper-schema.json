@@ -67,18 +67,8 @@
     },
     "allOf": [ { "$ref": "http://json-schema.org/draft-06/schema#" } ],
     "properties": {
-        "additionalItems": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ]
-        },
-        "additionalProperties": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ]
-        },
+        "additionalItems": { "$ref": "#" },
+        "additionalProperties": { "$ref": "#"},
         "dependencies": {
             "additionalProperties": {
                 "anyOf": [
@@ -106,6 +96,8 @@
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" },
+        "contains": { "$ref": "#" },
+        "propertyNames": { "$ref": "#" },
 
         "base": {
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
