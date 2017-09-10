@@ -812,6 +812,28 @@
                 </t>
             </section>
 
+            <section title='"readOnly"'>
+                <t>
+                    The value of this keyword MUST be a boolean.
+                </t>
+                <t>
+                    If it has a value of boolean true, this keyword indicates that the value of the
+                    instance is managed exclusively by the owning authority, and attempts by an
+                    application to modify the value of this property are expected to be ignored or
+                    rejected by that owning authority.
+                </t>
+                <t>
+                    For example, this property would be used to mark a database-generated serial
+                    number as read-only.
+                </t>
+                <t>
+                    This keyword can be used to assist in user interface instance generation.
+                </t>
+                <t>
+                    Omitting this keyword has the same behavior as a value of false.
+                </t>
+            </section>
+
             <section title='"examples"'>
                 <t>
                     The value of this keyword MUST be an array.
