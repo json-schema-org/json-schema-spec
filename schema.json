@@ -148,6 +148,9 @@
             ]
         },
         "format": { "type": "string" },
+        "if": {"$ref": "#"},
+        "then": {"$ref": "#"},
+        "else": {"$ref": "#"},
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },

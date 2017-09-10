@@ -218,9 +218,9 @@
                 <t>
                     Hyper-schemas MUST NOT be applied to an instance if the instance fails to
                     validate against the validation keywords within or containing the hyper-schema.
-                    Hyper-schema keywords in branches of an "anyOf" or "oneOf" that do not validate,
-                    or in a "dependencies" subschema that is not relevant to the instance, MUST be
-                    ignored.
+                    Hyper-schema keywords in branches of an "anyOf", "oneOf", or "if"/"then"/"else"
+                    that do not validate, or in a "dependencies" subschema that is not relevant
+                    to the instance, MUST be ignored.
                 </t>
                 <t>
                     Hyper-schema keywords in a subschema contained within a "not", at any depth,

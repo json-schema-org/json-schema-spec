@@ -635,6 +635,78 @@
                 </section>
             </section>
 
+            <section title="Keywords for applying subschemas conditionally">
+                <t>
+                    These keywords work together to implement conditional
+                    application of a subschema based on the outcome of
+                    another subschema.
+                </t>
+                <t>
+                    These keywords MUST NOT interact with each other across
+                    subschema boundaries.  In other words, an "if" in one
+                    branch of an "allOf" MUST NOT have an impact on a "then"
+                    or "else" in another branch.
+                </t>
+                <section title="if">
+                    <t>
+                        This keyword's value MUST be a valid JSON Schema.
+                    </t>
+                    <t>
+                        Instances that successfully validate against this
+                        keyword's subschema MUST also be valid against
+                        the subschema value of the "then" keyword, if
+                        present.
+                    </t>
+                    <t>
+                        Instances that fail to validate against this
+                        keyword's subschema MUST also be valid against
+                        the subschema value of the "else" keyword.
+                    </t>
+                    <t>
+                        Validation of the instance against this keyword
+                        on its own always succeeds, regardless of the
+                        validation outcome of against its subschema.
+                    </t>
+                </section>
+                <section title="then">
+                    <t>
+                        This keyword's value MUST be a valid JSON Schema.
+                    </t>
+                    <t>
+                        When present alongside of "if", the instance
+                        successfully validates against this keyword if
+                        it validates against both the "if"'s subschema
+                        and this keyword's subschema.
+                    </t>
+                    <t>
+                        When "if" is absent, or the instance fails to
+                        validate against its subschema, validation against
+                        this keyword always succeeds.  Implementations
+                        SHOULD avoid attempting to validate against
+                        the subschema in these cases.
+                    </t>
+                </section>
+                <section title="else">
+                    <t>
+                        This keyword's value MUST be a valid JSON Schema.
+                    </t>
+                    <t>
+                        When present alongside of "if", the instance
+                        successfully validates against this keyword if
+                        it fails to validate against the "if"'s
+                        subschema, and successfully validates against
+                        this keyword's subschema.
+                    </t>
+                    <t>
+                        When "if" is absent, or the instance successfully
+                        validates against its subschema, validation against
+                        this keyword always succeeds.  Implementations
+                        SHOULD avoid attempting to validate against
+                        the subschema in these cases.
+                    </t>
+                </section>
+            </section>
+
             <section title="Keywords for applying subschemas with boolean logic">
                 <section title="allOf">
                     <t>
