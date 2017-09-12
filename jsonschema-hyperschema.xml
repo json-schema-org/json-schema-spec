@@ -537,7 +537,7 @@
                         </section>
                     </section>
 
-                    <section title="Missing values">
+                    <section title="Missing values" anchor="missingValues">
                         <t>
                             Sometimes, the appropriate values will not be available.
                             For example, the template might specify the use of object properties,
@@ -574,8 +574,13 @@
                 </t>
                 <figure>
                     <preamble>
-                        Consider the following schema for an n-ary tree using the path expansion
-                        URI Template syntax:
+                        Recall that a Relative JSON Pointer which is not also a regular
+                        JSON Pointer begins with a number indicating how many levels
+                        up to move before applying the remainder of the pointer, if any, in the
+                        same manner as a regular JSON Pointer.  Consider the following schema
+                        for n-ary tree nodes, where a node is identified by its own id as well
+                        as the tree's root node id, and links are given for the IANA-registered
+                        "self" and "up" link relation types.
                     </preamble>
                     <artwork>
 <![CDATA[{
@@ -588,10 +593,17 @@
     "links": [
         {
             "rel": "self",
-            "href": "/trees{/root,parent,id}",
+            "href": "/trees/{rootId}/nodes/{id}",
             "hrefPointers": {
-                "root": "/id",
-                "parent": "2/id"
+                "rootId": "/id"
+            }
+        },
+        {
+            "rel": "up",
+            "href": "/trees/{rootId}/nodes/{parentId}",
+            "hrefPointers": {
+                "rootId": "/id",
+                "parentId": "2/id"
             }
         }
     ]
@@ -599,24 +611,12 @@
                     </artwork>
                 </figure>
                 <t>
-                    The self links here should always include the root node id,
-                    followed by an immediate parent id if one exists, and always ending
-                    with the id of the node that is the context of the self link.
-                </t>
-                <t>
                     The context node's id resolves with the standard process and
-                    does not appear in "hrefPointers".  The root id is located
+                    therefore does not appear in "hrefPointers".  The root id is located
                     using an absolute JSON Pointer, while the parent node
                     uses a Relative JSON Pointer, going up two levels (one level up
-                    is the array of children, two levels up is the whole parent node).
-                </t>
-                <t>
-                    This design never has more than three ids in the URI.  Nodes
-                    along the path between the root and the immediate parent,
-                    if any, are omitted.  This illustrates a limitation of JSON Schema:
-                    Producing a variable-length path URI to any arbitrary depth is
-                    not possible without redesigning the representation to make an
-                    array of path ids available in each node.
+                    is the array of children, two levels up is the whole parent node),
+                    and then looking at the "id" field from that point.
                 </t>
                 <figure>
                     <preamble>
@@ -638,22 +638,32 @@
                     </artwork>
                 </figure>
                 <t>
-                    We get the following self links for each node in the instance as identifed
-                    by JSON Pointers:
+                    For each node (as identified by JSON Pointers), we get these "self" links:
                     <list style="hanging">
-                        <t hangText='"" (the root node)'>/trees/0/0</t>
-                        <t hangText='"/children/0"'>/trees/0/0/1</t>
-                        <t hangText='"/children/0/children/0"'>/trees/0/1/2</t>
-                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/2/3</t>
+                        <t hangText='"" (the root node)'>/trees/0/nodes/0</t>
+                        <t hangText='"/children/0"'>/trees/0/nodes/1</t>
+                        <t hangText='"/children/0/children/0"'>/trees/0/nodes/2</t>
+                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/nodes/3</t>
                     </list>
-                    This shows the use of an absolute JSON Pointer to always resolve
-                    the root node from any depth, and a Relative JSON Pointer to always resolve
-                    the immediate parent, which cannot be identified with an absolute pointer.
                 </t>
                 <t>
-                    For the root node, there is no defined parent, so per URI Template resolution
-                    rules, that variable and the path component that it would produce are simply
-                    omitted, giving us the desired URI with two components after "/trees".
+                    and these "up" links:
+                    <list style="hanging">
+                        <t hangText='"/children/0"'>/trees/0/nodes/0</t>
+                        <t hangText='"/children/0/children/0"'>/trees/0/nodes/1</t>
+                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/nodes/2</t>
+                    </list>
+                </t>
+                <t>
+                    For the root node, the relative pointer for the parent doesn't point
+                    to anything.  As noted under
+                    <xref target="missingValues">missing values</xref>, such a link should
+                    simply be ignored.
+                    <cref>
+                        GitHub issue #49 tracks the question of distinguishing this situation
+                        of a missing required variable (common in path components) from
+                        missing optional variables (common in query string parameters).
+                    </cref>
                 </t>
             </section>
 
