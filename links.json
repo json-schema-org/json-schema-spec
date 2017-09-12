@@ -6,38 +6,46 @@
     "required": [ "href" ],
     "properties": {
         "href": {
-            "description": "a URI template, as defined by RFC 6570",
             "type": "string",
             "format": "uri-template"
         },
         "hrefSchema": {
-            "description": "a schema for validating user input to the URI template, where the input is in the form of a JSON object with property names matching variable names in \"href\"",
-            "allOf": [ {"$ref": "#"} ]
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "rel": {
-            "description": "relation to the target resource of the link",
             "type": "string"
         },
+        "anchor": {
+            "type": "string",
+            "format": "uri-reference"
+        },
         "title": {
-            "description": "a title for the link",
+            "type": "string"
+        },
+        "description": {
             "type": "string"
         },
         "targetSchema": {
-            "description": "JSON Schema describing the link target",
-            "allOf": [ { "$ref": "hyper-schema#" } ]
+            "allOf": [
+               { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "mediaType": {
-            "description": "media type (as defined by RFC 2046) describing the link target",
             "type": "string"
         },
         "submissionEncType": {
-            "description": "The media type in which to submit data along with the request",
             "type": "string",
             "default": "application/json"
         },
         "submissionSchema": {
-            "description": "Schema describing the data to submit along with the request",
-            "allOf": [ { "$ref": "hyper-schema#" } ]
+            "allOf": [
+               { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
+        },
+        "$comment": {
+            "type": "string"
         }
     }
 }
