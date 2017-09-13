@@ -43,6 +43,12 @@
         "mediaType": {
             "type": "string"
         },
+        "headerSchema": {
+            "description": "Schema for protocol-specific headers or analogous data, as signified by URI scheme",
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
+        },
         "submissionEncType": {
             "type": "string",
             "default": "application/json"
