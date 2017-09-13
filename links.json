@@ -17,7 +17,14 @@
         "rel": {
             "type": "string"
         },
+        "anchor": {
+            "type": "string",
+            "format": "uri-reference"
+        },
         "title": {
+            "type": "string"
+        },
+        "description": {
             "type": "string"
         },
         "targetSchema": {
@@ -36,6 +43,9 @@
             "allOf": [
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
             ]
+        },
+        "$comment": {
+            "type": "string"
         }
     }
 }
