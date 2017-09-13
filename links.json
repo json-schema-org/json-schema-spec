@@ -12,14 +12,23 @@
         },
         "hrefSchema": {
             "description": "a schema for validating user input to the URI template, where the input is in the form of a JSON object with property names matching variable names in \"href\"",
-            "allOf": [ {"$ref": "#"} ]
+            "allOf": [ {"$ref": "hyper-schema#"} ]
         },
         "rel": {
             "description": "relation to the target resource of the link",
             "type": "string"
         },
+        "anchor": {
+            "description": "the URI of the context resource",
+            "type": "string",
+            "format": "uri-reference"
+        },
         "title": {
             "description": "a title for the link",
+            "type": "string"
+        },
+        "description": {
+            "description": "additional information about the purpose or usage of the link",
             "type": "string"
         },
         "targetSchema": {
@@ -38,6 +47,9 @@
         "submissionSchema": {
             "description": "Schema describing the data to submit along with the request",
             "allOf": [ { "$ref": "hyper-schema#" } ]
+        },
+        "$comment": {
+            "type": "string"
         }
     }
 }
