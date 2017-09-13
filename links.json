@@ -10,7 +10,9 @@
             "format": "uri-template"
         },
         "hrefSchema": {
-            "allOf": [ {"$ref": "#"} ]
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "rel": {
             "type": "string"
@@ -19,7 +21,9 @@
             "type": "string"
         },
         "targetSchema": {
-            "allOf": [ { "$ref": "hyper-schema#" } ]
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "mediaType": {
             "type": "string"
@@ -29,7 +33,9 @@
             "default": "application/json"
         },
         "submissionSchema": {
-            "allOf": [ { "$ref": "hyper-schema#" } ]
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         }
     }
 }
