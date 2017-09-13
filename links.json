@@ -9,6 +9,9 @@
             "type": "string",
             "format": "uri-template"
         },
+        "hrefPointers": {
+            "description": "a map of variable names to relative instance JSON Pointers, which adjust the instance location from which template variable resolution begins"
+        },
         "hrefSchema": {
             "allOf": [
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
