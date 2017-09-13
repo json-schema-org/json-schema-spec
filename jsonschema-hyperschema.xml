@@ -611,12 +611,12 @@
                     </artwork>
                 </figure>
                 <t>
-                    The context node's id resolves with the standard process and
-                    therefore does not appear in "hrefPointers".  The root id is located
-                    using an absolute JSON Pointer, while the parent node
-                    uses a Relative JSON Pointer, going up two levels (one level up
-                    is the array of children, two levels up is the whole parent node),
-                    and then looking at the "id" field from that point.
+                    In "self" link, the context node's id resolves with the standard process and
+                    therefore does not appear in "hrefPointers".  In both "self" and "up" links,
+                    the root id is located using an absolute JSON Pointer. Finally, in "up" link,
+                    the parent node uses a Relative JSON Pointer, going up two levels (one level up
+                    is the array of children, two levels up is the whole parent node), and then
+                    looking at the "id" field from that point.
                 </t>
                 <figure>
                     <preamble>
