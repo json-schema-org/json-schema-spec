@@ -9,6 +9,7 @@
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -904,6 +905,84 @@ GET /foo/
                 </section>
             </section>
 
+            <section title="targetHints" anchor="targetHints">
+                <t>
+                    <cref>
+                        This section attempts to strike a balance between comprehensiveness
+                        and flexibility by deferring most of its structure to the protocol
+                        indicated by the URI scheme.  Note that a resource can be identified
+                        by a URI with a dereferenceable scheme, yet not be accessible over
+                        that protocol.  While currently very loose, this section is expected
+                        to become more well-defined based on draft feedback, and may change
+                        significantly in future drafts.
+                    </cref>
+                </t>
+                <t>
+                    The value of this property is advisory only.  It represents information that
+                    is expected to be discoverable through interacting with the target resource,
+                    typically in the form of protocol-specific control information or meta-data
+                    such as headers returned in response to an HTTP HEAD or OPTIONS request.
+                    The protocol is determined by the "href" URI scheme, although note that
+                    resources are not guaranteed to be accessible over such a protocol.
+                </t>
+                <t>
+                    The value of this property SHOULD be an object.  The keys to this object
+                    SHOULD be lower-cased forms of the control data field names.  Each value
+                    SHOULD be an array, in order to uniformly handle multi-valued fields.
+                    Multiple values MUST be presented as an array, and not as a single string.
+                </t>
+                <t>
+                    Protocols with control information not suitable for representation as
+                    a JSON object MAY be represented by another data type, such as an array.
+                </t>
+                <t>
+                    Values that cannot be understood as part of the indicated protocol MUST
+                    be ignored by a JSON Hyper-Schema implementation.  Applications MAY make
+                    use of such values, but MUST NOT assume interoperability with other
+                    implementations.
+                </t>
+                <t>
+                    Implementations MUST NOT assume that all discoverable information is
+                    accounted for in this object.  Clients MUST properly handle run-time responses
+                    that contradict this property's values.
+                </t>
+                <t>
+                    Clients MUST NOT assume that an implementation will automatically take any
+                    action based on the value of this property.
+                </t>
+                <section title='"targetHints" for HTTP'>
+                    <t>
+                        <cref>It would be good to also include a section with CoAP examples.</cref>
+                    </t>
+                    <t>
+                        JSON serializations of HTTP response header information SHOULD follow the
+                        guidelines established by the work in progress
+                        <xref target="I-D.reschke-http-jfv">"A JSON Encoding for HTTP Header Field Values"</xref>.
+                        Approaches shown in that document's examples SHOULD be applied to other
+                        similarly structured headers wherever possible.
+                    </t>
+                    <t>
+                        No distinction is made between headers that may appear in responses to
+                        different methods, such as HEAD vs OPTIONS.
+                    </t>
+                    <figure>
+                        <preamble>
+                            This examples shows several hints that are useful for clients
+                            when determining what requests to make and how to make them.
+                        </preamble>
+                        <artwork>
+<![CDATA[{
+    "targetHints": {
+        "allow": ["GET", "PUT"],
+        "accept-patch": ["application/merge-patch+json"],
+        "accept-ranges": ["none"]
+    }
+}]]>
+                        </artwork>
+                    </figure>
+                </section>
+            </section>
+
             <section title="mediaType">
                 <t>
                     The value of this property is advisory only, and represents the media type
@@ -935,7 +1014,8 @@ GET /foo/
 
                 <t>
                     If this property's value is not specified, then the value should be taken to be
-                    "application/json".
+                    "application/json".  Hyper-Schema authors SHOULD NOT use a protocol-specific
+                    value in <xref target="targetHints">"targetHints"</xref> for this purpose.
                 </t>
 
                 <figure>
@@ -1110,6 +1190,7 @@ GET /foo/
             &rfc3986;
             <!--&rfc4287;-->
             &rfc6570;
+            &I-D.reschke-http-jfv;
             <reference anchor="json-schema">
                 <front>
                     <title>JSON Schema: A Media Type for Describing JSON Documents</title>
