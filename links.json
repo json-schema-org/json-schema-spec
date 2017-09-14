@@ -21,6 +21,13 @@
             "type": "string",
             "format": "uri-reference"
         },
+        "anchorPointer": {
+            "type": "string",
+            "anyOf": [
+                { "format": "json-pointer" },
+                { "pattern": "^[0-9]" }
+            ]
+        },
         "title": {
             "type": "string"
         },
