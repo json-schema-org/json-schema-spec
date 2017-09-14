@@ -12,6 +12,7 @@
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC5891 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5891.xml">
+<!ENTITY RFC6531 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6531.xml">
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
@@ -953,14 +954,23 @@
                     </t>
                 </section>
 
-                <section title="email">
+                <section title="Email addresses">
                     <t>
-                        This attribute applies to string instances.
+                        These attributes apply to string instances.
                     </t>
                     <t>
-                        A string instance is valid against this attribute if it is a valid
-                        Internet email address as defined by <xref target="RFC5322">RFC 5322,
-                        section 3.4.1</xref>.
+                        A string instance is valid against these attributes if it is a valid
+                        Internet email address as follows:
+                        <list style="hanging">
+                            <t hangText="email">
+                                As defined by <xref target="RFC5322">RFC 5322, section 3.4.1</xref>.
+                            </t>
+                            <t hangText="idn-email">
+                                As defined by <xref target="RFC6531">RFC 6531</xref>
+                            </t>
+                        </list>
+                        Note that all strings valid against the "email" attribute are also
+                        valid against the "idn-email" attribute.
                     </t>
                 </section>
                 <section title="Host and domain names">
@@ -1241,6 +1251,7 @@
             &RFC5890;
             &RFC5891;
             &RFC6570;
+            &RFC6531;
             &RFC6901;
             &RFC7159;
             &RFC5322;
