@@ -10,7 +10,14 @@
             "format": "uri-template"
         },
         "hrefPointers": {
-            "description": "a map of variable names to relative instance JSON Pointers, which adjust the instance location from which template variable resolution begins"
+            "type": "object",
+            "additionalProperties": {
+                "type": "string",
+                "anyOf": [
+                    { "format": "json-pointer" },
+                    { "pattern": "^[0-9]" }
+                ]
+            }
         },
         "hrefSchema": {
             "allOf": [
