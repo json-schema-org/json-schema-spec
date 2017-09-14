@@ -25,7 +25,10 @@
             ]
         },
         "hrefRequired": {
-            "description": "an array of URI template variables names from \"href\" which must be filled out with some value, either from the instance or user input"
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
         "rel": {
             "type": "string"
