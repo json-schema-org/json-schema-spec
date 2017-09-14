@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY rfc2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
 <!ENTITY rfc2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
 <!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
@@ -123,8 +122,6 @@
             <t>
                 This document describes how JSON Schema can be used to define hyperlinks on instance
                 data.
-                It also defines how to provide additional information required to interpret JSON
-                data as rich multimedia documents.
             </t>
             <t>
                 As with all JSON Schema keywords, all the keywords described in the "Schema
@@ -133,8 +130,7 @@
             </t>
             <figure>
                 <preamble>
-                    Here is an example JSON Schema defining hyperlinks, and providing a multimedia
-                    interpretation for the "imgData" property:
+                    Here is an example JSON Schema defining hyperlinks:
                 </preamble>
                 <artwork>
 <![CDATA[
@@ -153,14 +149,6 @@
         },
         "authorId": {
             "type": "integer"
-        },
-        "imgData": {
-            "title": "Article Illustration (thumbnail)",
-            "type": "string",
-            "media": {
-                "binaryEncoding": "base64",
-                "type": "image/png"
-            }
         }
     },
     "required" : ["id", "title", "authorId"],
@@ -178,36 +166,14 @@
 ]]>
                 </artwork>
                 <postamble>
-                    This example schema defines the properties of the instance. For the "imgData"
-                    property, it specifies that that it should be base64-decoded and the resulting
-                    binary data treated as a PNG image.
-                    It also defines link relations for the instance, with URIs incorporating values
-                    from the instance.
+                    This example schema defines the properties of the instance as well as link
+                    relations for the instance, with URIs incorporating values from the instance.
                     <cref>
                         "id" probably should not normally be a required keyword, since new instances
                         will have an unknown "id" property until is it assigned by the server.
                         However, this property is used in a link, and without it, multiple different
                         instances would be given the same rel=self URI!
                     </cref>
-                </postamble>
-            </figure>
-
-            <figure>
-                <preamble>
-                    An example of a JSON instance described by the above schema might be:
-                </preamble>
-                <artwork>
-<![CDATA[
-{
-    "id": 15,
-    "title": "Example data",
-    "authorId": 105,
-    "imgData": "iVBORw...kJggg=="
-}
-]]>
-                </artwork>
-                <postamble>
-                    The base-64 data has been abbreviated for readability.
                 </postamble>
             </figure>
 
@@ -338,94 +304,6 @@
                 </figure>
             </section>
 
-            <section title="media">
-                <t>
-                    The "media" property indicates that this instance contains non-JSON data encoded
-                    in a JSON string.
-                    It describes the type of content and how it is encoded.
-                </t>
-                <t>
-                    The value of this property MUST be an object.
-                    The value of this property SHOULD be ignored if the instance described is not a
-                    string.
-                </t>
-
-                <section title="Properties of &quot;media&quot;">
-                    <t>
-                        The value of the "media" keyword MAY contain any of the following
-                        properties:
-                    </t>
-
-                    <section title="binaryEncoding">
-                        <t>
-                            If the instance value is a string, this property defines that the string
-                            SHOULD be interpreted as binary data and decoded using the encoding
-                            named by this property.
-                            <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible
-                            values for this property.
-                        </t>
-                    </section>
-
-                    <section title="type">
-                        <t>
-                            The value of this property must be a media type, as defined by
-                            <xref target="RFC2046">RFC 2046</xref>. This property defines the media
-                            type of instances which this schema defines.
-                        </t>
-
-                        <t>
-                            If the "binaryEncoding" property is not set, but the instance value is a
-                            string, then the value of this property SHOULD specify a text document
-                            type, and the character set SHOULD be the character set into which the
-                            JSON string value was decoded (for which the default is Unicode).
-                        </t>
-                    </section>
-                </section>
-
-                <section title="Example">
-                    <figure>
-                        <preamble>
-                            Here is an example schema, illustrating the use of "media":
-                        </preamble>
-                        <artwork>
-<![CDATA[
-{
-    "type": "string",
-    "media": {
-        "binaryEncoding": "base64",
-        "type": "image/png"
-    }
-}
-]]>
-                        </artwork>
-                        <postamble>
-                            Instances described by this schema should be strings, and their values
-                            should be interpretable as base64-encoded PNG images.
-                        </postamble>
-                    </figure>
-
-                    <figure>
-                        <preamble>
-                            Another example:
-                        </preamble>
-                        <artwork>
-<![CDATA[
-{
-    "type": "string",
-    "media": {
-        "type": "text/html"
-    }
-}
-]]>
-                        </artwork>
-                        <postamble>
-                            Instances described by this schema should be strings containing HTML,
-                            using whatever character set the JSON string was decoded into (default
-                            is Unicode).
-                        </postamble>
-                    </figure>
-                </section>
-            </section>
         </section>
 
         <section title="Link Description Object">
@@ -1010,9 +888,7 @@ GET /foo/
         "properties": {
             "message": {
                 "description": "Re-interpret `message` as HTML",
-                "media": {
-                    "type": "text/html"
-                }
+                "contentMediaType": "text/html"
             }
         }
     }
@@ -1310,7 +1186,6 @@ GET /foo/
     <back>
         <!-- References Section -->
         <references title="Normative References">
-            &rfc2045;
             &rfc2119;
             &rfc3986;
             <!--&rfc4287;-->
