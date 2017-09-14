@@ -7,6 +7,7 @@
 <!ENTITY RFC2673 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2673.xml">
 <!ENTITY RFC3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC3987 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3987.xml">
 <!ENTITY RFC4291 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4291.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
@@ -994,24 +995,33 @@
                     </t>
                 </section>
 
-                <section title="uri">
+                <section title="Resource identifiers">
                     <t>
-                        This attribute applies to string instances.
+                        These attributes apply to string instances.
                     </t>
                     <t>
-                        A string instance is valid against this attribute if it is a valid URI,
-                        according to <xref target="RFC3986"/>.
-                    </t>
-                </section>
-
-                <section title="uri-reference">
-                    <t>
-                        This attribute applies to string instances.
-                    </t>
-                    <t>
-                        A string instance is valid against this attribute if it is a valid URI
-                        Reference (either a URI or a relative-reference),
-                        according to <xref target="RFC3986"/>.
+                        <list style="hanging">
+                            <t hangText="uri">
+                                A string instance is valid against this attribute if it is
+                                a valid URI, according to <xref target="RFC3986"/>.
+                            </t>
+                            <t hangText="uri-reference">
+                                A string instance is valid against this attribute if it is a valid URI
+                                Reference (either a URI or a relative-reference),
+                                according to <xref target="RFC3986"/>.
+                            </t>
+                            <t hangText="iri">
+                                A string instance is valid against this attribute if it is
+                                a valid IRI, according to <xref target="RFC3987"/>.
+                            </t>
+                            <t hangText="iri-reference">
+                                A string instance is valid against this attribute if it is a valid IRI
+                                Reference (either an IRI or a relative-reference),
+                                according to <xref target="RFC3987"/>.
+                            </t>
+                        </list>
+                        Note that all valid URIs are valid IRIs, and all valid URI References are
+                        also valid IRI References.
                     </t>
                 </section>
 
@@ -1022,6 +1032,10 @@
                     <t>
                         A string instance is valid against this attribute if it is a valid URI Template
                         (of any level), according to <xref target="RFC6570"/>.
+                    </t>
+                    <t>
+                        Note that URI Templates may be used for IRIs; there is no separate
+                        IRI Template specification.
                     </t>
                 </section>
 
@@ -1209,6 +1223,7 @@
             &RFC2673;
             &RFC3339;
             &RFC3986;
+            &RFC3987;
             &RFC4291;
             &RFC6570;
             &RFC6901;
