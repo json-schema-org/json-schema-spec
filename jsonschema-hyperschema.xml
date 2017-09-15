@@ -435,7 +435,7 @@
                 <section title="Submitting data for processing">
                     <t>
                         The <xref target="submissionSchema">"submissionSchema"</xref> and
-                        <xref target="submissionEncType">"submissionEncType"</xref> keywords
+                        <xref target="submissionMediaType">"submissionMediaType"</xref> keywords
                         describe the domain of the processing function implemented by the target
                         resource. Otherwise, as noted above, the submission schema and encoding are
                         ignored for operations to which they are not relevant.
@@ -1064,7 +1064,7 @@ GET /foo/
                 </section>
                 <section title="Security Considerations for &quot;targetSchema&quot;">
                     <t>
-                        This property has similar security concerns to that of "mediaType".
+                        This property has similar security concerns to that of "targetMediaType".
                         Clients MUST NOT use the value of this property to aid in the interpretation
                         of the data received in response to following the link, as this leaves
                         "safe" data open to re-interpretation.
@@ -1205,7 +1205,7 @@ GET /foo/
                 </section>
             </section>
 
-            <section title="mediaType">
+            <section title="targetMediaType">
                 <t>
                     The value of this property is advisory only, and represents the media type
                     <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when
@@ -1253,15 +1253,15 @@ GET /foo/
     }, {
         "rel": "alternate",
         "href": "/{id}/html",
-        "mediaType": "text/html"
+        "targetMediaType": "text/html"
     }, {
         "rel": "alternate",
         "href": "/{id}/rss",
-        "mediaType": "application/rss+xml"
+        "targetMediaType": "application/rss+xml"
     }, {
         "rel": "icon",
         "href": "{id}/icon",
-        "mediaType": "image/*"
+        "targetMediaType": "image/*"
     }]
 }
 ]]>
@@ -1293,18 +1293,18 @@ GET /foo/
                     feed, had it been displayed in the main view.
                 </t>
 
-                <section title="Security concerns for &quot;mediaType&quot;">
+                <section title="Security concerns for &quot;targetMediaType&quot;">
                     <t>
-                        The "mediaType" property in link definitions defines the expected format of
-                        the link's target.
+                        The "targetMediaType" property in link definitions defines the expected
+                        format of the link's target.
                         However, this is advisory only, and MUST NOT be considered authoritative.
                     </t>
 
                     <t>
                         When choosing how to interpret data, the type information provided by the
                         server (or inferred from the filename, or any other usual method) MUST be
-                        the only consideration, and the "mediaType" property of the link MUST NOT be
-                        used.
+                        the only consideration, and the "targetMediaType" property of the link
+                        MUST NOT be used.
                         User agents MAY use this information to determine how they represent the
                         link or where to display it (for example hover-text, opening in a new tab).
                         If user agents decide to pass the link to an external program, they SHOULD
@@ -1436,7 +1436,7 @@ GET /foo/
                 </section>
             </section>
 
-            <section title="submissionEncType" anchor="submissionEncType">
+            <section title="submissionMediaType" anchor="submissionMediaType">
                 <t>
                     If present, this property indicates the media type format the
                     client should use for the request payload described by
@@ -1446,7 +1446,7 @@ GET /foo/
                     Omitting this keyword has the same behavior as a value of application/json.
                 </t>
                 <t>
-                    Note that "submissionEncType" and "submissionSchema"
+                    Note that "submissionMediaType" and "submissionSchema"
                     are not restricted to HTTP URIs.
 
                     <figure>
@@ -1459,7 +1459,7 @@ GET /foo/
                         <artwork>
 <![CDATA[{
     "links": [{
-        "submissionEncType": "multipart/alternative; boundary=ab12",
+        "submissionMediaType": "multipart/alternative; boundary=ab2",
         "rel": "author",
         "href": "mailto:someone@example.com{?subject}",
         "hrefSchema": {
@@ -1493,7 +1493,7 @@ GET /foo/
             <section title="submissionSchema" anchor="submissionSchema">
                 <t>
                     This property contains a schema which defines the acceptable structure
-                    of the document to be encoded according to the "submissionEncType" property
+                    of the document to be encoded according to the "submissionMediaType" property
                     and sent to the target resource for processing.  This can be viewed as
                     describing the domain of the processing function implemented by the
                     target resource.
