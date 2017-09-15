@@ -53,6 +53,11 @@
         "mediaType": {
             "type": "string"
         },
+        "headerSchema": {
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
+        },
         "submissionEncType": {
             "type": "string",
             "default": "application/json"
