@@ -10,6 +10,8 @@
 <!ENTITY RFC3987 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3987.xml">
 <!ENTITY RFC4291 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4291.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
+<!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
+<!ENTITY RFC5891 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5891.xml">
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
@@ -961,14 +963,25 @@
                         section 3.4.1</xref>.
                     </t>
                 </section>
-                <section title="hostname">
+                <section title="Host and domain names">
                     <t>
-                        This attribute applies to string instances.
+                        These attributes apply to string instances.
                     </t>
                     <t>
-                        A string instance is valid against this attribute if it is a valid
-                        representation for an Internet host name, as defined by <xref
-                        target="RFC1034">RFC 1034, section 3.1</xref>.
+                        A string instance is valid against these attributes if it is a valid
+                        representation for an Internet host name as follows:
+                        <list style="hanging">
+                            <t hangText="hostname">
+                                As defined by <xref target="RFC1034">RFC 1034, section 3.1</xref>,
+                                including host names produced using the Punycode algorithm
+                                specified in <xref target="RFC5891">RFC 5891, section 4.4</xref>.
+                            </t>
+                            <t hangText="idn">
+                                As defined by either RFC 1034 as for hostname, or an
+                                internationalized domain name as defined by
+                                <xref target="RFC5890">RFC 5890, section 2.3.2.3</xref>.
+                            </t>
+                        </list>
                     </t>
                 </section>
 
@@ -1225,6 +1238,8 @@
             &RFC3986;
             &RFC3987;
             &RFC4291;
+            &RFC5890;
+            &RFC5891;
             &RFC6570;
             &RFC6901;
             &RFC7159;
