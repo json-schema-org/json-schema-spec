@@ -9,6 +9,16 @@
             "type": "string",
             "format": "uri-template"
         },
+        "hrefPointers": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string",
+                "anyOf": [
+                    { "format": "json-pointer" },
+                    { "pattern": "^[0-9]" }
+                ]
+            }
+        },
         "hrefSchema": {
             "allOf": [
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
