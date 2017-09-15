@@ -995,26 +995,24 @@
                     </t>
                 </section>
 
-                <section title="ipv4">
+                <section title="IP addresses">
                     <t>
-                        This attribute applies to string instances.
+                        These attributes apply to string instances.
                     </t>
                     <t>
-                        A string instance is valid against this attribute if it is a valid
-                        representation of an IPv4 address according to the "dotted-quad" ABNF
-                        syntax as defined in <xref target="RFC2673">RFC 2673, section
-                        3.2</xref>.
-                    </t>
-                </section>
-
-                <section title="ipv6">
-                    <t>
-                        This attribute applies to string instances.
-                    </t>
-                    <t>
-                        A string instance is valid against this attribute if it is a valid
-                        representation of an IPv6 address as defined in
-                        <xref target="RFC4291">RFC 4291, section 2.2</xref>.
+                        A string instance is valid against these attributes if it is a valid
+                        representation of an IP address as follows:
+                        <list style="hanging">
+                            <t hangText="ipv4">
+                                An IPv4 address according to the "dotted-quad" ABNF
+                                syntax as defined in
+                                <xref target="RFC2673">RFC 2673, section 3.2</xref>.
+                            </t>
+                            <t hangText="ipv6">
+                                An IPv6 address as defined in
+                                <xref target="RFC4291">RFC 4291, section 2.2</xref>.
+                            </t>
+                        </list>
                     </t>
                 </section>
 
