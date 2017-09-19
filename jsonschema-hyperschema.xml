@@ -9,7 +9,7 @@
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
-<!ENTITY rfc6906 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6906.xml">
+<!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY rfc7240 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7240.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
@@ -564,7 +564,7 @@
                 <t>
                     The value of the "hrefPointers" link description property MUST be
                     an object.  Each property value in the object MUST be a valid
-                    <xref target="RFC6906">JSON Pointer</xref>, or a valid
+                    <xref target="RFC6901">JSON Pointer</xref>, or a valid
                     <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
                     which is evaluated relative to the position in the instance from which
                     <xref target="href">"href"</xref> template variable resolution would
@@ -932,7 +932,7 @@ GET /foo/
                 <t>
                     This property changes the point within the instance that is considered
                     to be the context resource of the link.  The value of the property MUST be a
-                    valid <xref target="RFC6906">JSON Pointer</xref>, or a valid 
+                    valid <xref target="RFC6901">JSON Pointer</xref>, or a valid 
                     <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
                     which is evaluated relative to the position in the instance from which
                     <xref target="href">"href"</xref> template variable resolution would
@@ -1529,7 +1529,7 @@ GET /foo/
             &rfc3986;
             <!--&rfc4287;-->
             &rfc6570;
-            &rfc6906;
+            &rfc6901;
             &I-D.luff-relative-json-pointer;
             &I-D.reschke-http-jfv;
             <reference anchor="json-schema">
