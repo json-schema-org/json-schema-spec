@@ -1184,6 +1184,19 @@ GET /foo/
                         similarly structured headers wherever possible.
                     </t>
                     <t>
+                        It is RECOMMENDED that schema authors provide hints for the values of
+                        the following types of HTTP headers whenever applicable:
+                        <list style="symbols">
+                            <t>Method allowance</t>
+                            <t>Method-specific request media types</t>
+                            <t>Authentication challenges</t>
+                        </list>
+                    </t>
+                    <t>
+                        In general, headers that are likely to have different values at different
+                        times SHOULD NOT be included in "targetHints".
+                    </t>
+                    <t>
                         No distinction is made between headers that may appear in responses to
                         different methods, such as HEAD vs OPTIONS.
                     </t>
