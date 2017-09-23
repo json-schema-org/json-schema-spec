@@ -353,60 +353,6 @@
                     at runtime, for instance due to application state that controls the operation's
                     availability.
                 </t>
-                <section title="Resolving templated URIs">
-                    <t>
-                        URI Template variables in <xref target="href">"href"</xref> resolve from
-                        server-supplied instance data by default.  This data is drawn from the
-                        sub-instance that validated against the schema containing the LDO.
-                    </t>
-                    <t>
-                        <xref target="templatePointers">"templatePointers"</xref> allows adjusting
-                        the location from which instance data is resolved on a per-variable
-                        basis.
-                    </t>
-                    <t>
-                        <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
-                        a schema for resolving template variables from client-supplied data.
-                        Regular JSON Schema validation features can be used to require resolution
-                        from user agent data, forbid it, or allow user agent data while falling back
-                        to server-supplied instance data if no user agent data is provided.
-                    </t>
-                    <t>
-                        To implement the common pattern of resolving a templated path component
-                        with server-supplied instance data while accepting user agent data to build
-                        a query string:
-                        <list style="symbols">
-                            <t>
-                                set the "hrefSchema" subschemas for the path template variables
-                                to false, to disallow user agent input
-                            </t>
-                            <t>
-                                give the query string template variables names that do not appear
-                                in the instance, to prevent resolving them from the instance
-                            </t>
-                        </list>
-                        See the "hrefSchema" section for an example of this approach.
-                    </t>
-                    <t>
-                        To implement the equivalent of an input form pre-populated with
-                        pre-existing instance data:
-                        <list style="symbols">
-                            <t>
-                                ensure that each variable in the form resolves from the appropriate
-                                field in the instance, which provides the initial value that will
-                                continue to be used if the user agent takes no action to change it
-                            </t>
-                            <t> provide a validation schema for each of those fields in
-                                "hrefSchema", to describe what user agent input may be allowed
-                                to replace it
-                            </t>
-                        </list>
-                        This can be done with variables in any component of the URI template
-                        (path, query string, etc.)  While the word "form" is used here,
-                        JSON Hyper-Schema does not constraint the nature of this interaction, which
-                        may or may not involve rendering an interactive form.
-                    </t>
-                </section>
                 <section title="Manipulating the target resource representation">
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
@@ -450,112 +396,6 @@
                 <t>
                     This property is REQUIRED.
                 </t>
-
-                <section title="URI Templating">
-                    <t>
-                        <cref>
-                            The pre-processing rules present in earlier drafts have been removed due
-                            to their complexity and inability to address all limitations with URI
-                            templating.
-                            This section is subject to significant change in upcoming drafts to
-                            replace the old pre-processing with a comprehensive solution.
-                        </cref>
-                    </t>
-                    <t>
-                        The value of "href" is to be used as a URI Template, as defined in
-                        <xref target="RFC6570">RFC 6570</xref>.
-                        However, some special considerations apply:
-                    </t>
-
-                    <section title="Values for substitution">
-                        <t>
-                            The URI Template is filled out using data from some combination of an
-                            external source and the instance.
-                            Where either instance data or user agent data may be used, this section
-                            will refer simply to "data" or to a "value".
-                            When the source is important, it is specified explicitly.
-
-                            To allow the use of any object property (including the empty string) or
-                            array index, the following rules are defined:
-                        </t>
-
-                        <t>
-                            For a given variable name in the URI Template, the value to use is
-                            determined as follows:
-                            <list>
-                                <t>
-                                    If the data is an array, and the variable name is a
-                                    representation of a non-negative integer, then the value at the
-                                    corresponding array index MUST be used (if it exists).
-                                </t>
-                                <t>
-                                    Otherwise, the variable name should be percent-decoded, and the
-                                    corresponding object property MUST be used (if it exists).
-                                </t>
-                            </list>
-                        </t>
-
-                        <t>
-                            If <xref target="hrefSchema">"hrefSchema"</xref> is present and
-                            user agent data is provided, the data MUST be a valid instance according
-                            to the value of "hrefSchema".
-                            Template variables, after the process listed above, MUST first
-                            be resolved from the user agent data instance.  Any variables left
-                            unresolved MUST be resolved from the resource instance data.
-                        </t>
-
-                        <section title="Converting to strings">
-                            <t>
-                                When any value referenced by the URI template is null, a boolean or
-                                a number, then it should first be converted into a string as
-                                follows:
-                                <list>
-                                    <t>
-                                        null values SHOULD be replaced by the text "null"
-                                    </t>
-                                    <t>
-                                        boolean values SHOULD be replaced by their lower-case
-                                        equivalents: "true" or "false"
-                                    </t>
-                                    <t>
-                                        numbers SHOULD be replaced with their original JSON
-                                        representation.
-                                    </t>
-                                </list>
-                            </t>
-                            <t>
-                                In some software environments the original JSON representation of a
-                                number will not be available (there is no way to tell the difference
-                                between 1.0 and 1), so any reasonable representation should be used.
-                                Schema and API authors should bear this in mind, and use other types
-                                (such as string or boolean) if the exact representation is
-                                important.
-                            </t>
-                        </section>
-                    </section>
-
-                    <section title="Missing values" anchor="missingValues">
-                        <t>
-                            Sometimes, the appropriate values will not be available.  In many
-                            cases, the URI Template behavior of simply removing variables that
-                            do not have a value will be appropriate.  An example of this is
-                            optional query parameters, the presence or absence of which does
-                            not change the nature of the link relation type.
-                        </t>
-
-                        <t>
-                            However, some variables, such as an identifier used in a path component,
-                            cannot meaningfully be omitted.  The resulting URI would be meaningless,
-                            or would require a different link relation type.  While "hrefSchema" can
-                            express a requirement for those variables that can be supplied via input,
-                            some variables must be resolved from instance data.  When that instance
-                            data is not required by the context schema, the
-                            <xref target="templateRequired">"templateRequired</xref> keyword may
-                            be used to indicate that when the instance data is not available, the
-                            link does not apply.
-                        </t>
-                    </section>
-                </section>
 
             </section>
 
@@ -676,11 +516,21 @@
                     any user agent data from being accepted.
                 </t>
                 <t>
-                    Implementations MUST NOT attempt to validate values resolved from
-                    resource instance data with "hrefSchema".  This allows for different
+                    Setting any subschema that applies to a particular variable to "false"
+                    prevents any user agent data from being accepted for that single variable.
+                </t>
+                <t>
+                    For template variables that can be resolved from the instance data,
+                    if the instance data is valid against all applicable subschemas
+                    in "hrefSchema", then it MUST be used to pre-populate the input
+                    data set for that variable.
+                </t>
+                <t>
+                    Note that even when data is pre-populated from the instance, the validation
+                    schema for that variable in "hrefSchema" need not be identical to the validation
+                    schema(s) that apply to the instance data's location.  This allows for different
                     validation rules for user agent data, such as supporting spelled-out
-                    months for date-time input but using the standard date-time
-                    format for storage.
+                    months for date-time input, but using the standard date-time format for storage.
                 </t>
                 <figure>
                     <preamble>
@@ -711,7 +561,7 @@
                 </figure>
                 <figure>
                     <preamble>
-                        In this example, the schema for "extra" is given as a reference
+                        In the following example, the schema for "extra" is given as a reference
                         to keep the user agent data validation constraints identical to the
                         instance validation constraints for the corresponding property,
                         while "id" is given a false schema to prevent user agent data for
@@ -957,7 +807,7 @@ GET /foo/
                 <t>
                     This property changes the point within the instance that is considered
                     to be the context resource of the link.  The value of the property MUST be a
-                    valid <xref target="RFC6901">JSON Pointer</xref>, or a valid 
+                    valid <xref target="RFC6901">JSON Pointer</xref>, or a valid
                     <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
                     which is evaluated relative to the position in the instance from which
                     <xref target="href">"href"</xref> template variable resolution would
@@ -1537,6 +1387,166 @@ GET /foo/
                     Omitting "submissionSchema" or setting the entire schema to "false" prevents
                     any user agent data from being accepted.
                 </t>
+            </section>
+        </section>
+        <section title="URI Templating">
+            <t>
+                Three hyper-schema keywords are <xref target="RFC6570">URI Templates</xref>:
+                "base", "anchor", and "href".  Each are resolved separately to URI-references,
+                and then the anchor or href URI-reference is resolved against the base (which
+                is itself resolved against earlier bases as needed, each of which was first
+                resolved from a URI Template to a URI-reference).
+            </t>
+            <t>
+                All three keywords share the same algorithm for resolving variables from
+                instance data, which makes use of the "templatePointers" and "templateRequired"
+                keywords.  When resolving "href", both it and any "base" templates
+                needed for resolution to an absolute URI, the algorithm is modfied to
+                optionally accept user input based on the "hrefSchema" keyword.
+            </t>
+            <t>
+                For each URI Template (T), the following pseudocode describes an algorithm for
+                resolving T into a URI-reference (R).  For the purpose of this algorithm:
+                <list style="symbols">
+                    <t>
+                        "ldo.templatePointers" is an empty object if the keyword was not
+                        present and "ldo.templateRequired" is likewise an empty array.
+                    </t>
+                    <t>
+                        "attachmentPointer" is the absolute JSON Pointer for the attachment
+                        location of the LDO.
+                    </t>
+                    <t>
+                        "getApplicableSchemas()" returns an iterable set of all (sub)schemas
+                        that apply to the attachment point in the instance.
+                    </t>
+                </list>
+            </t>
+            <t>
+                This algorithm should be applied first to either "href" or "anchor",
+                and then as needed to each successive "base".  The order is important,
+                as it is not always possible to tell whether a template will resolve
+                to a full URI or a URI-reference.
+            </t>
+            <figure>
+                <preamble>
+                    This is the high-level algorithm.  "T" comes from either "href"
+                    or "anchor" within the LDO, or from "base" in a containing schema.
+                    Pseudocode for each step follows.
+                </preamble>
+                <artwork>
+<![CDATA[
+templateData = populateDataFromInstance(T, ldo, instance)
+
+if resolving "href" and ldo.hrefSchema exists:
+    inputData = acceptInput(ldo, instance, templateData)
+    for varname in inputData:
+        templateData[varname] = inputData[varname]
+
+for varname in ldo.templateRequired:
+    if not exists templateData[varname]
+        fatal("Missing required variable(s)")
+
+templateData = stringEncode(templateData)
+R = rfc6570ResolutionAlgorithm(T, templateData)
+]]>
+                </artwork>
+            </figure>
+
+            <section title="Populating template data from the instance">
+                <figure>
+                    <artwork>
+<![CDATA[
+for varname in T:
+    varname = rfc3986PercentDecode(varname)
+    if varname in ldo.templatePointers:
+        valuePointer = templatePointers[varname]
+        if valuePointer is relative:
+            valuePointer = resolveRelative(attachmentPointer,
+                                           valuePointer)
+    else
+        valuePointer = attachmentPointer + "/" + varname
+
+    value = instance.valueAt(valuePointer)
+    if value is defined:
+        templateData[varname] = value
+]]>
+                    </artwork>
+                </figure>
+            </section>
+
+            <section title="Accepting input for template data">
+                <figure>
+                    <preamble>
+                        "InputForm" represents whatevers sort of input mechanism is appropriate.
+                        This may be a literal web form, or may be a more programmatic construct
+                        such as a callback funciton accepting specific fields and data types,
+                        with the given initial values, if any.
+                    </preamble>
+                    <artwork>
+<![CDATA[
+form = new InputForm()
+for varname in T:
+    useField = true
+    useInitialData = true
+    for schema in getApplicableSchemas(ldo.hrefSchema,
+                                       "/" + varname):
+        if schema is false:
+            useField = false
+            break
+
+        if varname in templateData and
+           not isValid(templateData[varname], schema)):
+            useInitialData = false
+            break
+
+    if useField:
+        if useInitialData:
+            form.addInputFieldFor(varname, ldo.hrefSchema,
+                                  templateData[varname])
+        else:
+            form.addInputFieldFor(varname, ldo.hrefSchema)
+
+inputData = form.acceptInput()
+
+if not isValid(inputData, hrefSchema):
+    fatal("Input invalid, link is not usable")
+
+return inputData:
+]]>
+                    </artwork>
+                </figure>
+            </section>
+
+            <section title="Encoding data as strings">
+                <figure>
+                    <artwork>
+<![CDATA[
+for varname in templateData:
+    value = templateData[varname]
+    if value is true:
+        templateData[varname] = "true"
+    else if value is false:
+        temlateData[varname] = "false"
+    else if value is null:
+        templateData[varname] = "null"
+    else if value is a number:
+        templateData[varname] =
+            bestEffortOriginalJsonString(value)
+    else:
+        templateData[varname] = rfc3986PercentEncode(value)
+]]>
+                    </artwork>
+                    <postamble>
+                        In some software environments the original JSON representation of a
+                        number will not be available (there is no way to tell the difference
+                        between 1.0 and 1), so any reasonable representation should be used.
+                        Schema and API authors should bear this in mind, and use other types
+                        (such as string or boolean) if the exact representation is
+                        important.  If the number was provide as input in the form of a
+                        string, the string used as input SHOULD be used.
+                    </postamble>
+                </figure>
             </section>
         </section>
 
