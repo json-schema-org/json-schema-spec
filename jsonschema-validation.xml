@@ -12,6 +12,7 @@
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -1025,15 +1026,24 @@
                     </t>
                 </section>
 
-                <section title="json-pointer">
+                <section title="JSON Pointers">
                     <t>
-                        This attribute applies to string instances.
+                        These attributes apply to string instances.
                     </t>
                     <t>
-                        A string instance is valid against this attribute if it
-                        is a valid JSON string representation of a JSON Pointer,
-                        according to
-                        <xref target="RFC6901">RFC 6901, section 5</xref>
+                        <list style="hanging">
+                            <t hangText="json-pointer">
+                                A string instance is valid against this attribute if it
+                                is a valid JSON string representation of a JSON Pointer,
+                                according to <xref target="RFC6901">RFC 6901, section 5</xref>.
+                            </t>
+                            <t hangText="relative-json-pointer">
+                                A string instance is valid against this attribute if it is a valid
+                                <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>.
+                            </t>
+                        </list>
+                        To allow for both absolute and relative JSON Pointers, use "anyOf" or
+                        "oneOf" to indicate support for either format.
                     </t>
                 </section>
                 <section title="regex">
@@ -1214,6 +1224,7 @@
             &RFC6901;
             &RFC7159;
             &RFC5322;
+            &I-D.luff-relative-json-pointer;
             <reference anchor="ecma262"
             target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
                 <front>
