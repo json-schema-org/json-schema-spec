@@ -1235,9 +1235,18 @@ GET /foo/
                 </t>
 
                 <t>
-                    If this property's value is not specified, then the value should be taken to be
-                    "application/json".  Hyper-Schema authors SHOULD NOT use a protocol-specific
-                    value in <xref target="targetHints">"targetHints"</xref> for this purpose.
+                    For protocols supporting content-negotiation, implementations MAY choose to
+                    describe possible target media types using protocol-specific information in
+                    <xref target="headerSchema">"headerSchema"</xref>.  If both protocol-specific
+                    information and "mediaType" are present, then the value of "mediaType" MUST
+                    be compatible with the protocol-specific information, and SHOULD indicate
+                    the media type that will be used in the absence of content negotiation.
+
+                </t>
+                <t>
+                    When no such protocol-specific information is available, or when the
+                    implementation does not recognize the protocol involved, then the value
+                    SHOULD be taken to be "application/json".
                 </t>
 
                 <figure>
