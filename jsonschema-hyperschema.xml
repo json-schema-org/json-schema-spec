@@ -1438,7 +1438,7 @@ GET /foo/
 <![CDATA[
 templateData = populateDataFromInstance(T, ldo, instance)
 
-if resolving "href" and ldo.hrefSchema exists:
+if resolving "href" or "base" for "href" and ldo.hrefSchema exists:
     inputData = acceptInput(ldo, instance, templateData)
     for varname in inputData:
         templateData[varname] = inputData[varname]
