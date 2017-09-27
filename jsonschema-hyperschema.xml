@@ -175,32 +175,6 @@
                     relations for the instance, with URIs incorporating values from the instance.
                 </postamble>
             </figure>
-
-            <section title="Interaction with validation">
-                <t>
-                    Hyper-schema keywords can be applied when the instance is valid against
-                    the schema that includes those keywords.
-                </t>
-                <t>
-                    Hyper-schemas MUST NOT be applied to an instance if the instance fails to
-                    validate against the validation keywords within or containing the hyper-schema.
-                    Hyper-schema keywords in branches of an "anyOf", "oneOf", or "if"/"then"/"else"
-                    that do not validate, or in a "dependencies" subschema that is not relevant
-                    to the instance, MUST be ignored.
-                </t>
-                <t>
-                    Hyper-schema keywords in a subschema contained within a "not", at any depth,
-                    including any number of intervening additional "not" subschemas, MUST be
-                    ignored.
-                </t>
-                <t>
-                    If the subschema for a "contains" keyword contains hyper-schema keywords they
-                    MUST be applied to all array elements that validate against the schema.  While
-                    finding a single validating element is sufficient to determine the validation
-                    outcome, when hyper-schema keywords are present, the subschema MUST be evaluated
-                    against all array elements.
-                </t>
-            </section>
         </section>
 
         <section title="Meta-schema">
@@ -211,6 +185,17 @@
         </section>
 
         <section title="Schema keywords">
+            <t>
+                Hyper-schema keywords can be applied when the instance is valid against
+                the schema that includes those keywords, as outlined in
+                <xref target="json-schema-validation">Section 10.1 of JSON Schema validation</xref>.
+            </t>
+            <t>
+                When multiple subschemas are applicable to a given sub-instance, all "link"
+                arrays MUST be concatenated, in any order, into a single array.  Each object
+                in the resulting array MUST retain its own list of applicable "base" values,
+                in resolution order, from the same schema and any parent schemas.
+            </t>
             <section title="base">
                 <t>
                     If present, this keyword is resolved against the current URI base that the

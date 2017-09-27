@@ -1135,6 +1135,66 @@
         </section>
 
         <section title="Schema annotations and extension vocabularies">
+            <t>
+                Schema validation is a useful mechanism for annotating instance data
+                with additional information.  This section describes the rules for
+                determining when and how annotations apply to an instance, and specifies
+                a small general-purpose annotation vocabulary.
+            </t>
+            <t>
+                Additional vocabularies SHOULD make use of this mechanism for applying
+                their keywords to instances.
+            </t>
+            <section title="Applicability and attachment">
+                <t>
+                    Annotations can be applied to an instance when it is valid against
+                    the schema that includes the annotation keywords.  For any given location
+                    in the instance (referred to as a sub-instance), each (sub)schema against
+                    which it successfully validates is considered to be <spanx>applicable</spanx>
+                    to that sub-instance.  The (sub)schema is said to be <spanx>attached</spanx>
+                    to each sub-instance to which it applies.
+                </t>
+                <t>
+                    A validation implementation MAY choose to implement determining subschema
+                    applicability and providing access to the value(s) of applicable annotation
+                    keywords.  Implementation of this feature MAY instead be done separately.
+                </t>
+                <t>
+                    Since many subschemas can be applicable to any single sub-isntance, each
+                    annotation keyword or vocabulary needs to specify how to handle multiple
+                    occurrences with different values.  In the absence of keyword-specific
+                    handling rules, an implementation MUST collect all values and make them
+                    available as a data structure in which order is not significant and items
+                    need not be unique.
+                </t>
+                <section title="Combinatoric and conditional schemas">
+                    <t>
+                        Annotations in branches of an "anyOf", "oneOf", or "if"/"then"/"else"
+                        that do not validate, or in a "dependencies" subschema that is not relevant
+                        to the instance, MUST be ignored.
+                    </t>
+                    <t>
+                        Annotations in a subschema contained within a "not", at any depth,
+                        including any number of intervening additional "not" subschemas, MUST be
+                        ignored.
+                    </t>
+                </section>
+                <section title="Annotations and short-circuit validation">
+                    <t>
+                        Schema keywords MUST be applied to all possible sub-instances when
+                        considering annotations, even if such application can be short-circuited
+                        when only the overall validation result is needed.
+                    </t>
+                    <t>
+                        An example of this is the "contains" keyword, which need only be evaluated
+                        against array elements until it produces at least one successful outcome
+                        in order to be implemented.  However, when annotations are considered,
+                        it must be checked against every array element, and the annotations MUST
+                        be applied to every element that successfully validates against the
+                        "contains" susbschema.
+                    </t>
+                </section>
+            </section>
 
             <section title='"title" and "description"'>
                 <t>
