@@ -1196,68 +1196,76 @@
                 </section>
             </section>
 
-            <section title='"title" and "description"'>
+            <section title="Basic annotation keywords">
                 <t>
-                    The value of both of these keywords MUST be a string.
+                    These general-purpose annotation keywords provide commonly used information
+                    for documentation and user interface display purposes.  They are not intended
+                    to form a comprehensive set of features.  Rather, additional vocabularies
+                    can be defined for more complex annotation-based applications.
                 </t>
-                <t>
-                    Both of these keywords can be used to decorate a user interface with
-                    information about the data produced by this user interface. A title will
-                    preferably be short, whereas a description will provide explanation about
-                    the purpose of the instance described by this schema.
-                </t>
-            </section>
+                <section title='"title" and "description"'>
+                    <t>
+                        The value of both of these keywords MUST be a string.
+                    </t>
+                    <t>
+                        Both of these keywords can be used to decorate a user interface with
+                        information about the data produced by this user interface. A title will
+                        preferably be short, whereas a description will provide explanation about
+                        the purpose of the instance described by this schema.
+                    </t>
+                </section>
 
-            <section title='"default"'>
-                <t>
-                    There are no restrictions placed on the value of this keyword.
-                </t>
-                <t>
-                    This keyword can be used to supply a default JSON value associated with a
-                    particular schema. It is RECOMMENDED that a default value be valid against
-                    the associated schema.
-                </t>
-            </section>
+                <section title='"default"'>
+                    <t>
+                        There are no restrictions placed on the value of this keyword.
+                    </t>
+                    <t>
+                        This keyword can be used to supply a default JSON value associated with a
+                        particular schema. It is RECOMMENDED that a default value be valid against
+                        the associated schema.
+                    </t>
+                </section>
 
-            <section title='"readOnly"'>
-                <t>
-                    The value of this keyword MUST be a boolean.
-                </t>
-                <t>
-                    If it has a value of boolean true, this keyword indicates that the value of the
-                    instance is managed exclusively by the owning authority, and attempts by an
-                    application to modify the value of this property are expected to be ignored or
-                    rejected by that owning authority.
-                </t>
-                <t>
-                    For example, this property would be used to mark a database-generated serial
-                    number as read-only.
-                </t>
-                <t>
-                    This keyword can be used to assist in user interface instance generation.
-                </t>
-                <t>
-                    Omitting this keyword has the same behavior as a value of false.
-                </t>
-            </section>
+                <section title='"readOnly"'>
+                    <t>
+                        The value of this keyword MUST be a boolean.
+                    </t>
+                    <t>
+                        If it has a value of boolean true, this keyword indicates that the value of the
+                        instance is managed exclusively by the owning authority, and attempts by an
+                        application to modify the value of this property are expected to be ignored or
+                        rejected by that owning authority.
+                    </t>
+                    <t>
+                        For example, this property would be used to mark a database-generated serial
+                        number as read-only.
+                    </t>
+                    <t>
+                        This keyword can be used to assist in user interface instance generation.
+                    </t>
+                    <t>
+                        Omitting this keyword has the same behavior as a value of false.
+                    </t>
+                </section>
 
-            <section title='"examples"'>
-                <t>
-                    The value of this keyword MUST be an array.
-                    There are no restrictions placed on the values within the array.
-                </t>
-                <t>
-                    This keyword can be used to provide sample JSON values associated with a
-                    particular schema, for the purpose of illustrating usage.  It is
-                    RECOMMENDED that these values be valid against the associated schema.
-                </t>
-                <t>
-                    Implementations MAY use the value of "default", if present, as
-                    an additional example.  If "examples" is absent, "default"
-                    MAY still be used in this manner.
-                </t>
-            </section>
+                <section title='"examples"'>
+                    <t>
+                        The value of this keyword MUST be an array.
+                        There are no restrictions placed on the values within the array.
+                    </t>
+                    <t>
+                        This keyword can be used to provide sample JSON values associated with a
+                        particular schema, for the purpose of illustrating usage.  It is
+                        RECOMMENDED that these values be valid against the associated schema.
+                    </t>
+                    <t>
+                        Implementations MAY use the value of "default", if present, as
+                        an additional example.  If "examples" is absent, "default"
+                        MAY still be used in this manner.
+                    </t>
+                </section>
 
+            </section>
         </section>
 
         <section title="Security considerations">
