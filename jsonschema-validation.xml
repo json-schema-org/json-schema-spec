@@ -1100,25 +1100,23 @@
 
         </section>
 
-        <section title="Metadata keywords">
-            <section title="definitions">
-                <t>
-                    This keyword's value MUST be an object.
-                    Each member value of this object MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    This keyword plays no role in validation per se. Its role is to provide
-                    a standardized location for schema authors to inline JSON Schemas into a
-                    more general schema.
-                </t>
+        <section title='Schema re-use with "definitions"'>
+            <t>
+                The "definitions" keywords provides a standardized location for schema
+                authors to inline re-usable JSON Schemas into a more general schema.
+                The keyword does not directly affect the validation result.
+            </t>
+            <t>
+                This keyword's value MUST be an object.
+                Each member value of this object MUST be a valid JSON Schema.
+            </t>
+            <t>
+                As an example, here is a schema describing an array of positive
+                integers, where the positive integer constraint is a subschema in
+                "definitions":
 
-                <t>
-                    As an example, here is a schema describing an array of positive
-                    integers, where the positive integer constraint is a subschema in
-                    "definitions":
-
-                    <figure>
-                        <artwork>
+                <figure>
+                    <artwork>
 <![CDATA[
 {
     "type": "array",
@@ -1131,10 +1129,12 @@
     }
 }
 ]]>
-                        </artwork>
-                    </figure>
-                </t>
-            </section>
+                    </artwork>
+                </figure>
+            </t>
+        </section>
+
+        <section title="Schema annotations and extension vocabularies">
 
             <section title='"title" and "description"'>
                 <t>
