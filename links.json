@@ -5,11 +5,25 @@
     "type": "object",
     "required": [ "href" ],
     "properties": {
+        "anchor": {
+            "type": "string",
+            "format": "uri-template"
+        },
+        "anchorPointer": {
+            "type": "string",
+            "anyOf": [
+                { "format": "json-pointer" },
+                { "pattern": "^[0-9]" }
+            ]
+        },
+        "rel": {
+            "type": "string"
+        },
         "href": {
             "type": "string",
             "format": "uri-template"
         },
-        "hrefPointers": {
+        "templatePointers": {
             "type": "object",
             "additionalProperties": {
                 "type": "string",
@@ -19,31 +33,11 @@
                 ]
             }
         },
-        "hrefSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
-        "hrefRequired": {
+        "templateRequired": {
             "type": "array",
             "items": {
                 "type": "string"
-            },
-            "uniqueItems": true
-        },
-        "rel": {
-            "type": "string"
-        },
-        "anchor": {
-            "type": "string",
-            "format": "uri-reference"
-        },
-        "anchorPointer": {
-            "type": "string",
-            "anyOf": [
-                { "format": "json-pointer" },
-                { "pattern": "^[0-9]" }
-            ]
+            }
         },
         "title": {
             "type": "string"
@@ -56,16 +50,21 @@
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
             ]
         },
-        "targetHints": { },
-        "mediaType": {
+        "targetMediaType": {
             "type": "string"
+        },
+        "targetHints": { },
+        "hrefSchema": {
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "headerSchema": {
             "allOf": [
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
             ]
         },
-        "submissionEncType": {
+        "submissionMediaType": {
             "type": "string",
             "default": "application/json"
         },

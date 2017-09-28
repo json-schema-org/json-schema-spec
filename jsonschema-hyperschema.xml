@@ -9,11 +9,14 @@
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
+<!ENTITY rfc6573 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6573.xml">
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
-<!ENTITY rfc7240 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7240.xml">
+<!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
+<!ENTITY I-D.kelly-json-hal SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-kelly-json-hal-08.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
+<!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -65,10 +68,10 @@
 
         <abstract>
             <t>
-                JSON Schema is a JSON based format for defining the structure of JSON data.
-                This document specifies hyperlink- and hypermedia-related keywords of JSON Schema
+                JSON Schema is a JSON based format for describing JSON data using various
+                vocabularies.  This document specifies a vocabulary
                 for annotating JSON documents with hyperlinks and instructions for processing and
-                manipulating remote JSON resources through hypermedia environments like HTTP.
+                manipulating remote JSON resources through hypermedia environments such as HTTP.
             </t>
         </abstract>
         <note title="Note to Readers">
@@ -90,12 +93,14 @@
     <middle>
         <section title="Introduction">
             <t>
-                JSON Schema is a JSON based format for defining the structure of JSON data.
-                This document specifies hyperlink- and hypermedia-related keywords of JSON Schema.
+                JSON Hyper-Schema is a JSON Schema vocabulary for annotating JSON documents
+                with hyperlinks and instructions for processing and
+                manipulating remote JSON resources through hypermedia environments such as HTTP.
             </t>
             <t>
                 The term JSON Hyper-Schema is used to refer to a JSON Schema that uses these
-                keywords.
+                keywords.  The term "hyper-schema" on its own refers to a JSON Hyper-Schema
+                within the scope of this specification.
             </t>
 
             <t>
@@ -124,152 +129,235 @@
 
         <section title="Overview">
             <t>
-                This document describes how JSON Schema can be used to define hyperlinks on instance
-                data.
+                JSON Hyper-Schema makes it possible to build hypermedia systems from JSON
+                documents by describing how to construct hyperlinks from instance data.
             </t>
             <t>
-                As with all JSON Schema keywords, all the keywords described in the "Schema
-                Keywords" section are optional. The minimal valid JSON Hyper-schema is the blank
-                object.
+                The combination of a JSON instance document and a valid application/schema+json
+                hyper-schema for that instance behaves as a single hypermedia representation.
+                By allowing this separation, hyper-schema-based systems can gracefully support
+                applications that expect plain JSON, while providing full hypermedia capabilities
+                for hyper-schema-aware applications and user agents.
             </t>
-            <figure>
-                <preamble>
-                    Here is an example JSON Schema defining hyperlinks:
-                </preamble>
-                <artwork>
-<![CDATA[
-{
-    "title": "Written Article",
-    "type": "object",
-    "properties": {
-        "id": {
-            "title": "Article Identifier",
-            "type": "number",
-            "readOnly": true
-        },
-        "title": {
-            "title": "Article Title",
-            "type": "string"
-        },
-        "authorId": {
-            "type": "integer"
-        }
-    },
-    "required" : ["id", "title", "authorId"],
-    "links": [
-        {
-            "rel": "self",
-            "href": "/article{?id}"
-        },
-        {
-            "rel": "author",
-            "href": "/user?id={authorId}"
-        }
-    ]
-}
-]]>
-                </artwork>
-                <postamble>
-                    This example schema defines the properties of the instance as well as link
-                    relations for the instance, with URIs incorporating values from the instance.
-                </postamble>
-            </figure>
-
-            <section title="Interaction with validation">
-                <t>
-                    Hyper-schema keywords can be applied when the instance is valid against
-                    the schema that includes those keywords.
-                </t>
-                <t>
-                    Hyper-schemas MUST NOT be applied to an instance if the instance fails to
-                    validate against the validation keywords within or containing the hyper-schema.
-                    Hyper-schema keywords in branches of an "anyOf", "oneOf", or "if"/"then"/"else"
-                    that do not validate, or in a "dependencies" subschema that is not relevant
-                    to the instance, MUST be ignored.
-                </t>
-                <t>
-                    Hyper-schema keywords in a subschema contained within a "not", at any depth,
-                    including any number of intervening additional "not" subschemas, MUST be
-                    ignored.
-                </t>
-                <t>
-                    If the subschema for a "contains" keyword contains hyper-schema keywords they
-                    MUST be applied to all array elements that validate against the schema.  While
-                    finding a single validating element is sufficient to determine the validation
-                    outcome, when hyper-schema keywords are present, the subschema MUST be evaluated
-                    against all array elements.
-                </t>
-            </section>
+            <t>
+                Client-side user agents can detect the presence of hyper-schema by looking for
+                the application/schema+json media type and a "$schema" value that indicates the
+                presence of the hyper-schema vocabulary.  A user agent can then use an
+                implementation of JSON Hyper-Schema to provide an interface to the
+                combination of the schema and instance documents as a single logical
+                representation of a resource, just as with any single-document hypermedia
+                representation format.
+            </t>
+            <t>
+                Hyper-schemas allow representations to take up fewer bytes on the wire, and
+                distribute the burden of link construction from the server to each client.
+                A user agent need not construct a link unless a client application requests
+                that link.
+            </t>
+            <t>
+                JSON Hyper-Schema can also be used on the server side to generate other
+                link serializations at runtime, such as HTTP Link headers or
+                <xref target="I-D.kelly-json-hal">JSON HAL</xref>.  Because hyper-schema offers
+                a superset of the features of many other systems, using it on the server
+                can make it easier to support multiple representation media types and
+                linking mechanisms.  It is even possible to support features such as JSON HAL's
+                embedded resources by automatically following links on the server and
+                inlining the results.
+            </t>
         </section>
 
         <section title="Meta-schema">
             <t>
                 The current URI for the JSON Hyper-Schema meta-schema is
-                &lt;http://json-schema.org/draft-06/hyper-schema#&gt;.
+                <eref target="http://json-schema.org/draft-06/hyper-schema#">
+                http://json-schema.org/draft-06/hyper-schema#</eref> (draft-06 version).
             </t>
         </section>
 
+        <section title="General implementation requirements">
+            <t>
+                A JSON Hyper-Schema implementation is able to take a hyper-schema, an
+                instance, and optionally an identification of a location within the instance
+                (such as a JSON Pointer or a URI fragment appropriate for the media type),
+                and produce information about any links that apply to that instance
+                or location.  This information is returned in the form of URIs and/or JSON Pointers.
+                Additionally, some fields are intended for direct use by user agents and
+                client applications.
+            </t>
+            <t>
+                At a high level, a conforming implementation will meet the following requirements.
+                Each of these requirements is covered in more detail in the individual keyword
+                sections and keyword group overviews.
+            </t>
+            <section title="Link discovery">
+                <t>
+                    Before links can be used, they must be discovered.  JSON Hyper-Schema provides
+                    for two ways to discover links: based on the location in the instance to which
+                    they are attached, and based on the link context.  While the link context is
+                    the traditional notion of the "source" end of the link, the attachment point
+                    is often more useful with JSON instances, as it associates the link with
+                    the JSON data to which it is most relevant.
+                </t>
+                <t>
+                    In both approaches, the relevant <xref target="base">"base"</xref>
+                    values MUST be included as described in that keyword's section.
+                </t>
+                <section title="By hyper-schema applicability">
+                    <t>
+                        An implementation MUST find and make the links in all applicable
+                        (sub)schemas available to clients.  Schema applicability is defined
+                        in <xref target="json-schema-validation">Section 10.1 of the JSON Schema
+                        validation specification</xref>.  Links that cannot fulfill
+                        their "templateRequired" keyword based on the instance and/or potential
+                        client input MUST be excluded.
+                    </t>
+                    <t>
+                        These links MUST all be presented as a single set, regardless
+                        of the number of subschemas involved.  The order of links in the set
+                        is not significant.
+                    </t>
+                </section>
+                <section title="By link context location">
+                    <t>
+                        Implementations MUST also make accessible the set of links for which
+                        a given instance location is the link's context.  All such links MUST
+                        be in at least one set of links produced by examining schema applicability.
+                    </t>
+                    <t>
+                        Link sets based on a context can include links attached to elements
+                        of an ordered array.  Implementations MUST preserve the order of
+                        such links with respect to each other.  Order is not otherwise significant.
+                    </t>
+                </section>
+            </section>
+            <section title="Link usage">
+                <t>
+                    Once discovered, a link is generally selected based on its link relation
+                    type, and used by communicating with the resource at the target URI.
+                    This means that the target URI must be correctly computed based on the
+                    instance data and optionally on input.  The context URI must similarly
+                    be calculated, although often only for use in context-based discovery
+                    as described above.  Finally, implementations need to recognize link
+                    relation types that have well-known semantics within JSON Hyper-Schema.
+                </t>
+                <section title="Target and context identification">
+                    <t>
+                        For a given link, an implementation MUST be able to identify the
+                        link's context.  The identifier MUST either be an IRI or URI
+                        that fully identifies the context, or an IRI or URI together
+                        with a JSON Pointer if the context is not an entire resource
+                        and the representation's media type does not allow constructing an
+                        appropriate fragment.
+                    </t>
+                    <t>
+                        For a given link, an implementation MUST be able to construct the
+                        target IRI or URI based on the instance and, if "hrefSchema" is present,
+                        client input.  When working with client input, the input data MUST be
+                        pre-populated from the instance when a template variable matches instance
+                        data and is present in "hrefSchema".
+                    </t>
+                    <t>
+                        For both context and target URIs, this requirement includes
+                        determining the correct base URI when the target is provided as
+                        a relative reference.
+                    </t>
+                    <t>
+                        In order to encourage treating context and target URIs as opaque
+                        identifiers, implementations MAY opt to hide those fields that
+                        are only used in URI construction ("href", "templatePointers",
+                        "templateRequired", "anchor", and "anchorPointer") when making
+                        the remainder of the LDO available to clients.  Implementations
+                        MAY offer a configuration option to enable or disable encapsulation.
+                    </t>
+                </section>
+                <section title="Recognizing standard link relation types">
+                    <t>
+                        Implementations MUST recognize a link with a "self" relation typd as
+                        describing the possible interactions with the resource represented by
+                        the instance data.  Collections MUST be recognized based on traversing
+                        a "collection" link, or on discovering an "item" link which has the
+                        instance or sub-instance as its context.
+                    </t>
+                </section>
+                <section title="Providing access to target attributes and input schemas">
+                    <t>
+                        For a given link, an implementation MUST make the values of all
+                        target attribute keywords directly available to the client.
+                        Implementations MAY provide additional interfaces for using this
+                        information, which is discussed in each keyword's section.
+                    </t>
+                    <t>
+                        For a given link, an implementation MUST make the value of each
+                        input schema keyword directly available to the client.
+                    </t>
+                </section>
+            </section>
+            <section title="Additional functionality">
+                <t>
+                    Implementations MAY provide additional functionality coordinating the use of
+                    JSON Hyper-Schema with other specifications, including but not limited to
+                    JSON Schema validation, serializing payloads based on media types, and
+                    communicating with resources via protocols as indicated by URI schemes.
+                    <cref>
+                        This is vague.  I'm trying to convey that most uses of Hyper-Schema
+                        would benefit from including integration with the media types, URI schemes,
+                        and protocols, such as automatically validating submission data against
+                        "submissionSchema", encoding it according to "submissionMediaType",
+                        examining the URI for the "http" or "https" scheme, validating JSON
+                        representations of headers against "headerSchema", serializing them
+                        into HTTP header format, and constructing the appropriate POST request.
+                        While many of those activities are technically outside of the scope of
+                        Hyper-Schema, coordinating all of them is specific to Hyper-Schema and
+                        beneficial to automate.
+                    </cref>
+                </t>
+            </section>
+            <section title="Streaming parsers">
+                <t>
+                    The requirements around discovering links based on their context, or
+                    using the context of links to identify collections, present unique
+                    challenges when used with streaming parsers.  It is not possible to
+                    authoritatively fulfill these requirments without processing the entire
+                    schema and instance documents.
+                </t>
+                <t>
+                    Such implementations MAY chooose to return non-authoritative answers
+                    based on data processed to date.  When offering this approach,
+                    implementations MUST be clear on the nature of the response, and MUST
+                    offer an option to block and wait until all data is processed and
+                    an authoritative answer can be returned.
+                </t>
+            </section>
+        </section>
         <section title="Schema keywords">
-            <section title="base">
+            <t>
+                Hyper-schema keywords from all schemas that are applicable to a position
+                in an instance, as defined by <xref target="json-schema-validation">Section
+                10.1 of JSON Schema validation</xref>, can be used with that instance.
+            </t>
+            <t>
+                When multiple subschemas are applicable to a given sub-instance, all "link"
+                arrays MUST be combined, in any order, into a single set.  Each object
+                in the resulting set MUST retain its own list of applicable "base" values,
+                in resolution order, from the same schema and any parent schemas.
+            </t>
+            <t>
+                As with all JSON Schema keywords, all keywords described in this section
+                are optional. The minimal valid JSON Hyper-schema is the blank object.
+            </t>
+
+            <section title="base" anchor="base">
                 <t>
-                    If present, this keyword is resolved against the current URI base that the
-                    entire instance is found within, and sets the new URI base for URI references
-                    within the instance.
-                    It is therefore the first URI Reference resolved, regardless of which order it
-                    was found in.
+                    If present, this keyword MUST be first <xref target="uriTemplating">resolved as
+                    a URI Template</xref>, and then MUST be resolved as a URI Reference against the
+                    current URI base of the instance.  The result MUST be set as the new URI
+                    base for the instance while processing the sub-schema containing "base"
+                    and all sub-schemas within it.
                 </t>
                 <t>
-                    The URI is computed from the provided URI template using the same process
-                    described for the <xref target="href">"href"</xref> property of a Link
-                    Description Object.
-                </t>
-                <figure>
-                    <preamble>
-                        An example of a JSON schema using "base":
-                    </preamble>
-                    <artwork>
-<![CDATA[
-{
-    "base": "/object/{id}",
-    "links": [
-        {
-            "rel": "self",
-            "href": ""
-        },
-        {
-            "rel": "next",
-            "href": "{nextId}"
-        }
-    ]
-}
-]]>
-                    </artwork>
-                </figure>
-                <figure>
-                    <preamble>
-                        An example of a JSON instance using this schema to produce rel="self" and
-                        rel="next" links:
-                    </preamble>
-                    <artwork>
-<![CDATA[
-{
-    "id": 41,
-    "nextId": 42
-}
-]]>
-                    </artwork>
-                </figure>
-                <t>
-                    If the document URI is &lt;http://example.com/?id=41&gt;, then the new URI base
-                    becomes &lt;http://example.com/object/41&gt;
-                </t>
-                <t>
-                    Resolving the two Link Description Objects against this URI base creates two
-                    links exactly equivalent to these absolute-form HTTP Link headers:
-                    <list style="symbols">
-                        <t>Link: &lt;http://example.com/object/41&gt;;rel=self</t>
-                        <t>Link: &lt;http://example.com/object/42&gt;;rel=next</t>
-                    </list>
+                    The process for resolving the "base" template can be different when being
+                    resolved for use with "anchor" than when being resolved for use with "href",
+                    which is explained in detail in the URI Templating section.
                 </t>
             </section>
 
@@ -279,153 +367,501 @@
                     with instances.  The value of this property MUST be an array, and the items in
                     the array must be Link Description Objects, as defined below.
                 </t>
-
-                <figure>
-                    <preamble>
-                        An example schema using the "links" keyword could be:
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "title": "Schema defining links",
-    "links": [
-        {
-            "rel": "self",
-            "href": "{id}"
-        },
-        {
-            "rel": "parent",
-            "href": "{parent}"
-        }
-    ]
-}]]>
-                    </artwork>
-                </figure>
             </section>
-
         </section>
 
         <section title="Link Description Object">
             <t>
-                A Link Description Object (LDO) is used to describe a single link relation from the
-                instance to another resource.
-                A Link Description Object must be an object.
+                <cref>
+                    This section references the work-in-progress RFC5988bis, with the expectation
+                    that it will reach RFC before this specification does.
+                </cref>
+                A Link Description Object (LDO) is a serialization of the abstract link model
+                defined in <xref target="I-D.nottingham-rfc5988bis">RFC 5988bis, section 2</xref>.
+                As described in that document, a link consists of a context, a relation type,
+                a target, and optionally target attributes.  JSON Hyper-Schema's LDO provides
+                all of these, along with additional features using JSON Schema to describe input
+                for use with the links in various ways.
             </t>
-
+            <t>
+                Due to the use of URI Templates to identify link contexts and targets, as well
+                as optional further use of client input when identifying targets, an LDO is
+                a link template that may resolve to multiple links when used with a JSON
+                instance document.
+            </t>
+            <t>
+                A specific use of an LDO, typically involving a request and response across
+                a protocol, is referred to as an operation.  For many protocols, multiple
+                operations are possible on any given link.  The protocol is indicated by
+                the target's URI scheme.  Note that not all URI schemes indicate a protocol
+                that can be used for communications, and even resources with URI schemes that
+                do indicate such protocols need not be available over that protocol.
+            </t>
+            <t>
+                A Link Description Object MUST be an object, and the
+                <xref target="href">"href"</xref> and <xref target="rel">"rel"</xref> properties
+                MUST be present.  Each keyword is covered briefly in this section, with additional
+                usage explanation and comprehensive examples given later in the document.
+            </t>
             <t>
                 The link description format can be used without JSON Schema, and use of this format
                 can be declared by referencing the normative link description schema as the schema
                 for the data structure that uses the links.
                 The URI of the normative link description schema is:
-                <eref target="http://json-schema.org/draft-06/links">http://json-schema.org/draft-06/links</eref>
-                (draft-06 version).
+                <eref target="http://json-schema.org/draft-06/links#">
+                http://json-schema.org/draft-06/links#</eref> (draft-06 version).
             </t>
 
-            <section title="Links, operations, and data">
+            <section title="Link context" anchor="context">
                 <t>
-                    <cref>
-                        Note that while the current draft does not provide a way to explicity
-                        indicate HTTP method support, some way of providing a non-authoritative
-                        hint may be added in a future draft (see issue #73 in the GitHub repository).
-                    </cref>
+                    In JSON Hyper-Schema, the link's context resource is, by default, the
+                    sub-instance to which it is attached (as defined by
+                    <xref target="json-schema-validation">Section 10.1 of the JSON Schema
+                    validation specification</xref>).  This is often not the entire instance
+                    document.  This default context can be changed using the keywords
+                    in this section.
                 </t>
                 <t>
-                    An operation is a specific use of a link described by an LDO, after any
-                    template variables have been resolved.
+                    Depending on the media type of the instance, it may or may not be possible
+                    to assign a URI to the exact default context resource.  In particular,
+                    application/json does not define a URI fragment resolution syntax, so
+                    properties or array elements within a plain JSON document cannot be fully
+                    identified by a URI.  When it is not possible to produce a complete URI,
+                    the position of the context SHOULD be conveyed by a the URI of the instance
+                    document, together with a separate plain-string JSON Pointer.
                 </t>
                 <t>
-                    There are several ways that a client can use data with a link:
-                    <list>
-                        <t> URI Template variables resolved from server-supplied instance data </t>
-                        <t> URI Template variables resolved from user agent data </t>
-                        <t> Replacing or modifying the target resource's representation </t>
-                        <t> Submitting data for processing, where the data has no
-                            inherent relation to the target resource's representation</t>
-                    </list>
-                    The three ways to use client-supplied data are each addressed by a separate
-                    schema keyword within the link description object.  When performing operations,
-                    clients SHOULD ignore schemas that are not relevant to their semantics.
+                    Implementations MUST be able to construct the link context's URI, and
+                    (if necessary for full identification), a JSON Pointer in string representation
+                    form as per <xref target="RFC6901">RFC 6901, section 5</xref> in place of
+                    a URI fragment.  The process for construcing a URI based on a URI template
+                    is given in the <xref target="uriTemplating">URI Templating</xref> section.
                 </t>
-                <t>
-                    Link Description Objects do not directly indicate what operations, such
-                    as HTTP methods, are supported by the target resource.  Instead, operations
-                    should be inferred primarily from link <xref target="rel">relation types</xref>
-                    and URI schemes.  Note, however, that a resource may always decline an operation
-                    at runtime, for instance due to application state that controls the operation's
-                    availability.
-                </t>
-                <section title="Resolving templated URIs">
+                <section title="anchor" anchor="anchor">
                     <t>
-                        URI Template variables in <xref target="href">"href"</xref> resolve from
-                        server-supplied instance data by default.  This data is drawn from the
-                        sub-instance that validated against the schema containing the LDO.
+                        This property sets the context URI of the link.
+                        The value of the property is a <xref target="RFC6570">URI Template</xref>,
+                        and the resulting <xref target="RFC3986">URI-reference</xref> MUST
+                        be resolved against the base URI of the instance.
                     </t>
                     <t>
-                        <xref target="hrefPointers">"hrefPointers"</xref> allows adjusting
-                        the location from which instance data is resolved on a per-variable
-                        basis.
-                    </t>
-                    <t>
-                        <xref target="hrefSchema">"hrefSchema"</xref> allows a link to specify
-                        a schema for resolving template variables from client-supplied data.
-                        Regular JSON Schema validation features can be used to require resolution
-                        from user agent data, forbid it, or allow user agent data while falling back
-                        to server-supplied instance data if no user agent data is provided.
-                    </t>
-                    <t>
-                        To implement the common pattern of resolving a templated path component
-                        with server-supplied instance data while accepting user agent data to build
-                        a query string:
-                        <list style="symbols">
-                            <t>
-                                set the "hrefSchema" subschemas for the path template variables
-                                to false, to disallow user agent input
-                            </t>
-                            <t>
-                                give the query string template variables names that do not appear
-                                in the instance, to prevent resolving them from the instance
-                            </t>
-                        </list>
-                        See the "hrefSchema" section for an example of this approach.
-                    </t>
-                    <t>
-                        To implement the equivalent of an input form pre-populated with
-                        pre-existing instance data:
-                        <list style="symbols">
-                            <t>
-                                ensure that each variable in the form resolves from the appropriate
-                                field in the instance, which provides the initial value that will
-                                continue to be used if the user agent takes no action to change it
-                            </t>
-                            <t> provide a validation schema for each of those fields in
-                                "hrefSchema", to describe what user agent input may be allowed
-                                to replace it
-                            </t>
-                        </list>
-                        This can be done with variables in any component of the URI template
-                        (path, query string, etc.)  While the word "form" is used here,
-                        JSON Hyper-Schema does not constraint the nature of this interaction, which
-                        may or may not involve rendering an interactive form.
+                        The URI is computed from the provided URI template using the same process
+                        described for the <xref target="href">"href"</xref> property, with the
+                        exception that <xref target="hrefSchema">"hrefSchema"</xref> MUST NOT
+                        be applied.  Unlike target URIs, context URIs do not accept user input.
                     </t>
                 </section>
+                <section title="anchorPointer" anchor="anchorPointer">
+                    <t>
+                        This property changes the point within the instance that is considered
+                        to be the context resource of the link.  The value of the property MUST
+                        be a valid JSON Pointer in JSON String representation form, or a valid
+                        <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
+                        which is evaluated relative to the default context.
+                    </t>
+                    <t>
+                        While an alternate context with a known URI is best set with the
+                        <xref target="anchor">"anchor"</xref> keyword, the lack of a fragment
+                        identifier syntax for application/json means that it is usually not
+                        possible to change the context within a JSON instance using a URI.
+                    </t>
+                    <t>
+                        Even in "+json" media types that define JSON Pointer as a fragment
+                        identifier syntax, if the default context is nested within an array,
+                        it is not possible to obtain the index of the default context's position
+                        in that array in order to construct a pointer to another property in that
+                        same nested JSON object.  This will be demonstrated in the examples.
+                    </t>
+                    <t>
+                        The result of processing this keyword SHOULD be a URI fragment if the
+                        media type of the instance allows for such a fragment.  Otherwise it
+                        MUST be a string-encoded JSON Pointer.
+                    </t>
+                </section>
+            </section>
+            <section title="Link relation type" anchor="relationType">
+                <t>
+                    The link's relation type identifies its semantics.  It is the primary
+                    means of conveying how an application can interact with a resource.
+                </t>
+                <t>
+                    Relationship definitions are not normally media type
+                    dependent, and users are encouraged to utilize the most
+                    suitable existing accepted relation definitions.
+                </t>
+                <section title="rel" anchor="rel">
+                    <t>
+                        The value of this property MUST be a string, and MUST be a single
+                        Link Relation Type as defined in RFC 5988bis, Section 2.1.
+                    </t>
+                    <t>
+                        This property is required.
+                    </t>
+                </section>
+                <section title='"self" links' anchor="self">
+                    <t>
+                        A hyper-schema implementation MUST recognize that a link with relation
+                        type "self" that is applicable to the entire instance document describes    
+                        how a user agent can interact with the resource represented by that
+                        instance document.  A "self" link MUST be resolvable from the instance,
+                        and therefore "hrefSchema" MUST NOT be present.
+                    </t>
+                    <t>
+                        Hyper-schema authors SHOULD use "templateRequired" to ensure that the
+                        "self" link has all instance data that is needed for use.
+                    </t>
+                </section>
+                <section title='"collection" and "item" links' anchor="collectionAndItem">
+                    <t>
+                        <xref target="RFC6573">RFC 6573</xref> defines and registers
+                        the "item" and "collection" link relation types.  JSON Hyper-Schema imposes
+                        additional semantics on collection resources indicated by these types.
+                    </t>
+                    <t>
+                        Implementations MUST recognize the target of a "collection" link and
+                        the context of an "item" link as collections.
+                    </t>
+                    <t>
+                        A well-known design pattern in hypermedia is to use a collection resource
+                        to create a member of the collection and give it a server-assigned URI.
+                        If the protocol indicated by the URI scheme defines a specific method
+                        that is suited to creating a resource with a server-assigned URI, then
+                        a collection resource, as identified by these link relation types,
+                        MUST NOT define semantics for that method that conflict with the semantics
+                        of creating a collection member.  Collection resources MAY implement
+                        item creation via such a protocol method.
+                    </t>
+                    <t>
+                        As such a method would correspond to JSON Hyper-Schema's data submission
+                        concept, the <xref target="submissionSchema">"submissionSchema"</xref>
+                        field for the link SHOULD be compatible with the schema of the
+                        representation of the collection's items, as indicated by the "item" link's
+                        target resource or the "self" link of the "collection" link's context
+                        resource.
+                    </t>
+                </section>
+                <section title="Using extension relation types" anchor="extensionRelationTypes">
+                    <t>
+                        When no registered relation (aside from "related") applies, users are
+                        encouraged to mint their own extension relation types, as described in
+                        <xref target="RFC5988">section 4.2 of RFC 5988</xref>.  The simplest
+                        approaches for choosing link relation type URIs are to either use
+                        a URI scheme that is already in use to identify the system's primary
+                        resources, or to use a human-readable, non-dereferenceable URI scheme
+                        such as <xref target="RFC4151">"tag", defined by RFC 4151</xref>.
+                    </t>
+                    <t>
+                        Extension relation type URIs need not be dereferenceable, even when
+                        using a scheme that allows it.
+                    </t>
+                </section>
+            </section>
+            <section title="Link target" anchor="target">
+                <t>
+                    The target URI template is used to identify the link's target, potentially
+                    making use of instance data.  Additionally, with
+                    <xref target="hrefSchema">"hrefSchema"</xref>, this template can identify
+                    a set of possible target resources to use based on client input.
+                    The full process of resolvling the URI template, with or without client
+                    input, is covered in the <xref target="uriTemplating">URI Templating</xref>
+                    section.
+                </t>
+                <section title="href" anchor="href">
+                    <t>
+                        The value of the "href" link description property is a template used to
+                        determine the target URI of the related resource.
+                        The value of the instance property MUST be resolved as a
+                        <xref target="RFC3986">URI-reference</xref> against the base URI of the
+                        instance.
+                    </t>
+                    <t>
+                        This property is REQUIRED.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Adjusting URI Template resolution">
+                <t>
+                    The keywords in this section are used when resolving all URI Tempaltes
+                    involved in hyper-schema: "base", "anchor", and "href".  See the
+                    <xref target="uriTemplating">URI Templating</xref> section for the complete
+                    template resolution algorithm.
+                </t>
+                <t>
+                    Note that when resolving a "base" template, the attachment point from
+                    which resolution begins is the attachment point of the "href" or "anchor"
+                    keyword being resolved which requires "base" templates to be resolved,
+                    not the attachment point of the "base" kewyord itself.
+                </t>
+                <section title="templatePointers" anchor="templatePointers">
+                    <t>
+                        The value of the "templatePointers" link description property MUST be
+                        an object.  Each property value in the object MUST be a valid
+                        <xref target="RFC6901">JSON Pointer</xref>, or a valid
+                        <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
+                        which is evaluated relative to the attachment point of the link
+                        for which the template is being resolved.
+                    </t>
+                    <t>
+                        For each property name in the object that matches a variable name in the
+                        template being resolved, the value of that property adjusts the starting
+                        position of variable resolution for that variable.  Properties which
+                        do not match template variable names in the template being resolved
+                        MUST be ignored.
+                    </t>
+                </section>
+                <section title="templateRequired" anchor="templateRequired">
+                    <t>
+                        The value of this keyword MUST be an array, and the elements MUST be unique.
+                        Each element SHOULD match a variable in the link's URI Template, without
+                        percent-encoding.  After completing the entire URI Template resolution
+                        process, if any variable that is present in this array does not have
+                        a value, the link MUST NOT be used.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Link target attributes">
+                <t>
+                    All properties in this section are advisory only.  While keywords such
+                    as "title" and "description" are used primarily to present the link
+                    to users, those keywords that predict the nature of a link interaction
+                    or response MUST NOT
+                </t>
+                <section title="title">
+                    <t>
+                        This property defines a title for the link.
+                        The value MUST be a string.
+                    </t>
+
+                    <t>
+                        User agents MAY use this title when presenting the link to the user.
+                    </t>
+                </section>
+
+                <section title="description">
+                    <t>
+                        This property provides additional information beyond what
+                        is present in the title.  The value MUST be a string.
+                        While a title is preferably short, a description can be
+                        used to go into more detail about the purpose and usage
+                        of the link.
+                    </t>
+
+                    <t>
+                        User agents MAY use this description when presenting
+                        the link to the user.
+                    </t>
+                </section>
+
+                <section title="targetMediaType">
+                    <t>
+                        The value of this property represents the media type
+                        <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned
+                        when fetching this resource.  This property value MAY be a media range
+                        instead, using the same pattern defined in
+                        <xref target="RFC7231">RFC 7231, section 5.3.2 -
+                        HTTP "Accept" header</xref>.
+                    </t>
+                    <t>
+                        This property is analogous to the "type" property of other link
+                        serialization formats.  User agents MAY use this information to inform
+                        the interface they present to the user before the link is followed,
+                        but MUST NOT use this information in the interpretation of the resulting
+                        data.  Instead, a client MUST use the media type given by the response for
+                        run-time interpretation.  See the section on
+                        <xref target="security">"Security Concerns"</xref> for a detailed
+                        examination of mis-use of "targetMediaType".
+                    </t>
+                    <t>
+                        For protocols supporting content-negotiation, implementations MAY choose to
+                        describe possible target media types using protocol-specific information in
+                        <xref target="headerSchema">"headerSchema"</xref>.  If both
+                        protocol-specific information and "targtMediaType" are present, then the
+                        value of "targetMediaType" MUST be compatible with the protocol-specific
+                        information, and SHOULD indicate the media type that will be returned in the
+                        absence of content negotiation.
+                    </t>
+                    <t>
+                        When no such protocol-specific information is available, or when the
+                        implementation does not recognize the protocol involved, then the value
+                        SHOULD be taken to be "application/json".
+                    </t>
+                </section>
+
+                <section title="targetSchema" anchor="targetSchema">
+                    <t>
+                        This property provides a schema that is expected to describe
+                        the link target's representation.  Depending on the protocol,
+                        the schema may or may not describe the request or response to
+                        any particular operation performed with the link. See the
+                        <xref target="HTTP">JSON Hyper-Schema and HTTP</xref> section for
+                        an in-depth discussion of how this keyword is used with HTTP.
+                    </t>
+                </section>
+
+                <section title="targetHints" anchor="targetHints">
+                    <t>
+                        <cref>
+                            This section attempts to strike a balance between comprehensiveness
+                            and flexibility by deferring most of its structure to the protocol
+                            indicated by the URI scheme.  Note that a resource can be identified
+                            by a URI with a dereferenceable scheme, yet not be accessible over
+                            that protocol.  While currently very loose, this section is expected
+                            to become more well-defined based on draft feedback, and may change
+                            significantly in future drafts.
+                        </cref>
+                    </t>
+                    <t>
+                        The value of this property is advisory only.  It represents information that
+                        is expected to be discoverable through interacting with the target resource,
+                        typically in the form of protocol-specific control information or meta-data
+                        such as headers returned in response to an HTTP HEAD or OPTIONS request.
+                        The protocol is determined by the "href" URI scheme, although note that
+                        resources are not guaranteed to be accessible over such a protocol.
+                    </t>
+                    <t>
+                        The value of this property SHOULD be an object.  The keys to this object
+                        SHOULD be lower-cased forms of the control data field names.  Each value
+                        SHOULD be an array, in order to uniformly handle multi-valued fields.
+                        Multiple values MUST be presented as an array, and not as a single string.
+                    </t>
+                    <t>
+                        Protocols with control information not suitable for representation as
+                        a JSON object MAY be represented by another data type, such as an array.
+                    </t>
+                    <t>
+                        Values that cannot be understood as part of the indicated protocol MUST
+                        be ignored by a JSON Hyper-Schema implementation.  Applications MAY make
+                        use of such values, but MUST NOT assume interoperability with other
+                        implementations.
+                    </t>
+                    <t>
+                        Implementations MUST NOT assume that all discoverable information is
+                        accounted for in this object.  Clients MUST properly handle run-time
+                        responses that contradict this property's values.
+                    </t>
+                    <t>
+                        Clients MUST NOT assume that an implementation will automatically take any
+                        action based on the value of this property.
+                    </t>
+                    <t>
+                        See <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> for
+                        guidance on using this keyword with HTTP and analogous protocols.
+                    </t>
+                </section>
+            </section>
+            <section title="Link input" anchor="input">
+                <t>
+                    There are four ways to use client-supplied data with a link, and each
+                    is addressed by a separate link description object keyword.  When performing
+                    operations, clients SHOULD ignore schemas that are not relevant to their
+                    semantics.
+                </t>
+                <section title="hrefSchema" anchor="hrefSchema">
+                    <t>
+                        The value of the "hrefSchema" link description property MUST be
+                        a valid JSON Schema.  This schema is used to validate user input
+                        or other user agent data for filling out the URI Template in
+                        <xref target="href">"href"</xref>.
+                    </t>
+                    <t>
+                        Omitting "hrefSchema" or setting the entire schema to "false" prevents
+                        any user agent data from being accepted.
+                    </t>
+                    <t>
+                        Setting any subschema that applies to a particular variable to the
+                        JSON literal value "false" prevents any user agent data from being
+                        accepted for that single variable.
+                    </t>
+                    <t>
+                        For template variables that can be resolved from the instance data,
+                        if the instance data is valid against all applicable subschemas
+                        in "hrefSchema", then it MUST be used to pre-populate the input
+                        data set for that variable.
+                    </t>
+                    <t>
+                        Note that even when data is pre-populated from the instance, the
+                        validation schema for that variable in "hrefSchema" need not be identical
+                        to the validation schema(s) that apply to the instance data's location.
+                        This allows for different validation rules for user agent data, such as
+                        supporting spelled-out months for date-time input, but using the standard
+                        date-time format for storage.
+                    </t>
+                    <t>
+                        After input is accepted, potentially overriding the pre-populated
+                        instance data, the resulting data set MUST successfully validate
+                        against the value of "hrefSchema".  If it does not then the link
+                        MUST NOT be used.  If it is valid, then the process given in the
+                        "URI Templating" section continues with this updated data set.
+                    </t>
+                </section>
+
+                <section title="headerSchema" anchor="headerSchema">
+                    <t>
+                        <cref>
+                            As with "targetHints", this keyword is somewhat under-specified
+                            to encourage experimentation and feedback as we try to balance
+                            flexibility and clarity.
+                        </cref>
+                    </t>
+                    <t>
+                        If present, this property is a schema for protocol-specific request
+                        headers or analogous control and meta-data.  The value of this
+                        object MUST be a valid JSON Schema.
+                        The protocol is determined by the "href" URI scheme, although note that
+                        resources are not guaranteed to be accessible over such a protocol.
+                        The schema is advisory only; the target resource's behavior is not
+                        constrained by its presence.
+                    </t>
+                    <t>
+                        The purpose of this keyword is to advertise target resource interaction
+                        features, and indicate to clients what headers and header values are
+                        likely to be useful.  Clients MAY use the schema to validate relevant
+                        headers, but MUST NOT assume that missing headers or values are forbidden
+                        from use.  While schema authors MAY set "additionalProperties" to
+                        false, this is NOT RECOMMENDED and MUST NOT prevent clients or user agents
+                        from supplying additional headers when requests are made.
+                    </t>
+                    <t>
+                        The exact mapping of the JSON data model into the headers is
+                        protocol-dependent.  However, in most cases this schema SHOULD
+                        specify a type of "object", and the property names SHOULD be
+                        lower-cased forms of the control data field names.  See the
+                        <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> section
+                        for detailed guidance on using this keyword with HTTP and
+                        analogous protocols.
+                    </t>
+                    <t>
+                        "headerSchema" is applicable to any request method or command that the
+                        protocol supports.  When generating a request, clients SHOULD ignore
+                        schemas for headers that are not relevant to that request.
+                    </t>
+                </section>
+
                 <section title="Manipulating the target resource representation">
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
                         supplies a non-authoritative description of the target resource's
                         representation. A client can use "targetSchema" to structure input for
-                        replacing or modifying the representation.  Alternatively, if "targetSchema"
-                        is absent or if the client prefers to only use authoritative information, it
-                        can interact with the target resource to confirm or discover its
-                        representation structure.
+                        replacing or modifying the representation, or as the base representation
+                        for building a patch document based on a patch media type.
+                    </t>
+                    <t>
+                        Alternatively, if "targetSchema" is absent or if the client prefers to
+                        only use authoritative information, it can interact with the target
+                        resource to confirm or discover its representation structure.
                     </t>
                     <t>
                         "targetSchema" is not intended to describe link operation responses,
                         except when the response semantics indicate that it is a representation
                         of the target resource.  In all cases, the schema indicated by the response
-                        itself is authoritative.  See the
-                        <xref target="targetHTTP" /> for guidance
-                        specific to each HTTP method when using "targetSchema" with HTTP URIs.
+                        itself is authoritative.  See
+                        <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> for detailed
+                        examples.
                     </t>
                 </section>
+
                 <section title="Submitting data for processing">
                     <t>
                         The <xref target="submissionSchema">"submissionSchema"</xref> and
@@ -434,1117 +870,301 @@
                         resource. Otherwise, as noted above, the submission schema and media type
                         are ignored for operations to which they are not relevant.
                     </t>
-                </section>
-            </section>
 
-            <!-- Possibly include a short section on motivations, including triples, resources, and progressive disclosure -->
-
-            <section title="href" anchor="href">
-                <t>
-                    The value of the "href" link description property is a template used to
-                    determine the target URI of the related resource.
-                    The value of the instance property MUST be resolved as a
-                    <xref target="RFC3986">URI-reference</xref> against the base URI of the
-                    instance.
-                </t>
-                <t>
-                    This property is REQUIRED.
-                </t>
-
-                <section title="URI Templating">
-                    <t>
-                        <cref>
-                            The pre-processing rules present in earlier drafts have been removed due
-                            to their complexity and inability to address all limitations with URI
-                            templating.
-                            This section is subject to significant change in upcoming drafts to
-                            replace the old pre-processing with a comprehensive solution.
-                        </cref>
-                    </t>
-                    <t>
-                        The value of "href" is to be used as a URI Template, as defined in
-                        <xref target="RFC6570">RFC 6570</xref>.
-                        However, some special considerations apply:
-                    </t>
-
-                    <section title="Values for substitution">
+                    <section title="submissionMediaType" anchor="submissionMediaType">
                         <t>
-                            The URI Template is filled out using data from some combination of an
-                            external source and the instance.
-                            Where either instance data or user agent data may be used, this section
-                            will refer simply to "data" or to a "value".
-                            When the source is important, it is specified explicitly.
-
-                            To allow the use of any object property (including the empty string) or
-                            array index, the following rules are defined:
+                            If present, this property indicates the media type format the
+                            client should use for the request payload described by
+                            <xref target="submissionSchema">"submissionSchema"</xref>.
                         </t>
-
                         <t>
-                            For a given variable name in the URI Template, the value to use is
-                            determined as follows:
-                            <list>
-                                <t>
-                                    If the data is an array, and the variable name is a
-                                    representation of a non-negative integer, then the value at the
-                                    corresponding array index MUST be used (if it exists).
-                                </t>
-                                <t>
-                                    Otherwise, the variable name should be percent-decoded, and the
-                                    corresponding object property MUST be used (if it exists).
-                                </t>
-                            </list>
+                            Omitting this keyword has the same behavior as a value of
+                            application/json.
                         </t>
-
                         <t>
-                            If <xref target="hrefSchema">"hrefSchema"</xref> is present and
-                            user agent data is provided, the data MUST be a valid instance according
-                            to the value of "hrefSchema".
-                            Template variables, after the process listed above, MUST first
-                            be resolved from the user agent data instance.  Any variables left
-                            unresolved MUST be resolved from the resource instance data.
+                            Note that "submissionMediaType" and "submissionSchema"
+                            are not restricted to HTTP URIs.
+                            <cref>This statement might move to wherever the example ends up.</cref>
                         </t>
-
-                        <section title="Converting to strings">
-                            <t>
-                                When any value referenced by the URI template is null, a boolean or
-                                a number, then it should first be converted into a string as
-                                follows:
-                                <list>
-                                    <t>
-                                        null values SHOULD be replaced by the text "null"
-                                    </t>
-                                    <t>
-                                        boolean values SHOULD be replaced by their lower-case
-                                        equivalents: "true" or "false"
-                                    </t>
-                                    <t>
-                                        numbers SHOULD be replaced with their original JSON
-                                        representation.
-                                    </t>
-                                </list>
-                            </t>
-                            <t>
-                                In some software environments the original JSON representation of a
-                                number will not be available (there is no way to tell the difference
-                                between 1.0 and 1), so any reasonable representation should be used.
-                                Schema and API authors should bear this in mind, and use other types
-                                (such as string or boolean) if the exact representation is
-                                important.
-                            </t>
-                        </section>
                     </section>
 
-                    <section title="Missing values" anchor="missingValues">
+                    <section title="submissionSchema" anchor="submissionSchema">
                         <t>
-                            Sometimes, the appropriate values will not be available.  In many
-                            cases, the URI Template behavior of simply removing variables that
-                            do not have a value will be appropriate.  An example of this is
-                            optional query parameters, the presence or absence of which does
-                            not change the nature of the link relation type.
+                            This property contains a schema which defines the acceptable structure
+                            of the document to be encoded according to the "submissionMediaType"
+                            property and sent to the target resource for processing.  This can be
+                            viewed as describing the domain of the processing function implemented
+                            by the target resource.
                         </t>
-
                         <t>
-                            However, some variables, such as an identifier used in a path component,
-                            cannot meaningfully be omitted.  The resulting URI would be meaningless,
-                            or would require a different link relation type.  While "hrefSchema" can
-                            express a requirement for those variables that can be supplied via input,
-                            some variables must be resolved from instance data.  When that instance
-                            data is not required by the context schema, the
-                            <xref target="hrefRequired">"hrefRequired</xref> keyword may be used to
-                            indicate that when the instance data is not available, the link does
-                            not apply.
+                            This is a separate concept from the
+                            <xref target="targetSchema">"targetSchema"</xref> property, which
+                            describes the target information resource (including for replacing the
+                            contents of the resource in a PUT request), unlike "submissionSchema"
+                            which describes the user-submitted request data to be evaluated by the
+                            resource. "submissionSchema" is intended for use with requests that
+                            have payloads that are not necessarily defined in terms of the target
+                            representation.
+                        </t>
+                        <t>
+                            Omitting "submissionSchema" or setting the entire schema to "false"
+                            prevents any user agent data from being accepted.
+                            <cref>
+                                Is this correct?  In draft-06 this was the only way to signal
+                                support for data submission, but now we have "targetHints" for
+                                that.  It may make more sense for this to default to behaving
+                                as if the schema is set to true.  The original idea was that
+                                both this keyword and "hrefSchema" indicated the presence
+                                of optional functionality.  This makes sense for "hrefSchema",
+                                as it is used with "href" which is owned by the hyper-schema.
+                                However, "submissionSchema" describes a message that is
+                                supposedly accepted by the target resource.  In general, we
+                                choose defaults that avoid constraining target behavior.
+                            </cref>
                         </t>
                     </section>
                 </section>
-
-            </section>
-
-            <section title="hrefPointers" anchor="hrefPointers">
-                <t>
-                    The value of the "hrefPointers" link description property MUST be
-                    an object.  Each property value in the object MUST be a valid
-                    <xref target="RFC6901">JSON Pointer</xref>, or a valid
-                    <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
-                    which is evaluated relative to the position in the instance from which
-                    <xref target="href">"href"</xref> template variable resolution would
-                    normally begin.
-                </t>
-                <t>
-                    For each property name in the object that matches a variable name in the
-                    "href" URI Template, the value of that property adjusts the starting position
-                    of variable resolution for that variable.  Properties which do not match
-                    "href" template variable names MUST be ignored.
-                </t>
-                <figure>
-                    <preamble>
-                        Recall that a Relative JSON Pointer begins with a number indicating
-                        how many levels up to move before applying the remainder of the pointer,
-                        if any, in the same manner as a regular JSON Pointer.  Consider the
-                        following schema for n-ary tree nodes, where a node is identified by
-                        its own id as well as the tree's root node id, and links are given for
-                        the IANA-registered "self" and "up" link relation types.
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "type": "object",
-    "required": ["id"],
-    "properties": {
-        "id": {"type": "integer", "minimum": 0},
-        "children": {"type": "array", "items": {"$ref": "#"}}
-    },
-    "links": [
-        {
-            "rel": "self",
-            "href": "/trees/{rootId}/nodes/{id}",
-            "hrefPointers": {
-                "rootId": "/id"
-            }
-        },
-        {
-            "rel": "up",
-            "href": "/trees/{rootId}/nodes/{parentId}",
-            "hrefPointers": {
-                "rootId": "/id",
-                "parentId": "2/id"
-            },
-            "hrefRequired": ["parentId"]
-        }
-    ]
-}]]>
-                    </artwork>
-                </figure>
-                <t>
-                    In "self" link, the context node's id resolves with the standard process and
-                    therefore does not appear in "hrefPointers".  In both "self" and "up" links,
-                    the root id is located using an absolute JSON Pointer. Finally, in "up" link,
-                    the parent node uses a Relative JSON Pointer, going up two levels (one level up
-                    is the array of children, two levels up is the whole parent node), and then
-                    looking at the "id" field from that point.
-                </t>
-                <figure>
-                    <preamble>
-                        Given the following instance:
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-  "id": 0,
-  "children": [ {
-    "id": 1,
-    "children": [ {
-      "id": 2,
-      "children": [ {
-        "id": 3
-      } ]
-    } ]
-  } ]
-}]]>
-                    </artwork>
-                </figure>
-                <t>
-                    For each node (as identified by JSON Pointers), we get these "self" links:
-                    <list style="hanging">
-                        <t hangText='"" (the root node)'>/trees/0/nodes/0</t>
-                        <t hangText='"/children/0"'>/trees/0/nodes/1</t>
-                        <t hangText='"/children/0/children/0"'>/trees/0/nodes/2</t>
-                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/nodes/3</t>
-                    </list>
-                </t>
-                <t>
-                    and these "up" links:
-                    <list style="hanging">
-                        <t hangText='"/children/0"'>/trees/0/nodes/0</t>
-                        <t hangText='"/children/0/children/0"'>/trees/0/nodes/1</t>
-                        <t hangText='"/children/0/children/0/children/0"'>/trees/0/nodes/2</t>
-                    </list>
-                </t>
-                <t>
-                    For the root node, the relative pointer for the parent doesn't point
-                    to anything, so <xref target="hrefRequired">"hrefRequired"</xref>
-                    prevents the link from being used with that node.
-                </t>
-            </section>
-
-            <section title="hrefSchema" anchor="hrefSchema">
-                <t>
-                    The value of the "hrefSchema" link description property MUST be
-                    a valid JSON Schema.  This schema is used to validate user input
-                    or other user agent data for filling out the URI Template in
-                    <xref target="href">"href"</xref>, as described in that section.
-                </t>
-                <t>
-                    Omitting "hrefSchema" or setting the entire schema to "false" prevents
-                    any user agent data from being accepted.
-                </t>
-                <t>
-                    Implementations MUST NOT attempt to validate values resolved from
-                    resource instance data with "hrefSchema".  This allows for different
-                    validation rules for user agent data, such as supporting spelled-out
-                    months for date-time input but using the standard date-time
-                    format for storage.
-                </t>
-                <figure>
-                    <preamble>
-                        For example, this defines a schema for each of the query string
-                        parameters in the URI template:
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "href": "/foos{?condition,count,query}",
-    "hrefSchema": {
-        "properties": {
-            "condition": {
-                "type": "boolean",
-                "default": true
-            },
-            "count": {
-                "type": "integer",
-                "minimum": 0,
-                "default": 0
-            },
-            "query": {
-                "type": "string"
-            }
-        }
-    }
-}]]>
-                    </artwork>
-                </figure>
-                <figure>
-                    <preamble>
-                        In this example, the schema for "extra" is given as a reference
-                        to keep the user agent data validation constraints identical to the
-                        instance validation constraints for the corresponding property,
-                        while "id" is given a false schema to prevent user agent data for
-                        that variable.
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "definitions": {
-        "extra": {
-            "type": "string",
-            "maxLength": 32
-        }
-    },
-    "type": "object",
-    "properties": {
-        "id": {
-            "type": "integer",
-            "minimum": 1,
-            "readOnly": true
-        },
-        "extra": {"$ref": "#/definitions/extra"}
-    },
-    "links": [{
-        "rel": "self",
-        "href": "/things/{id}{?extra}",
-        "hrefSchema": {
-            "properties": {
-                "id": false,
-                "extra": {"$ref": "#/definitions/extra"}
-            }
-        }
-    }]
-}]]>
-                    </artwork>
-                </figure>
-                <t>
-                    <cref>
-                        The above example simulates the behavior handled in earlier drafts
-                        with a "method" of "get" by using the new "hrefSchema" keyword.
-                    </cref>
-                </t>
-            </section>
-
-            <section title="hrefRequired" anchor="hrefRequired">
-                <t>
-                    The value of this keyword MUST be an array, and the elements MUST be unique.
-                    Each element SHOULD match a variable in the link's URI Template, without
-                    percent-encoding.  After completing the entire URI Template resolution
-                    process, if any variable that is present in this array does not have
-                    a value, the link MUST NOT be used.
-                </t>
-                <figure>
-                    <preamble>
-                        Here is a simplified version of the "up" link from the
-                        <xref target="hrefPointers">"hrefPointers</xref> tree example,
-                        modified to only use the parent identifier for its "href" template.
-                        While each individual node is required to have an "id" field, the
-                        "up" link uses the parent node's field, and the root node, by definition,
-                        does not have a parent node.  Putting "parentId" in "hrefRequired" ensures
-                        that the "up" link is correctly unusable with the root node.
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "rel": "up",
-    "href": "/nodes/{parentId}",
-    "hrefPointers": {
-        "parentId": "2/id"
-    },
-    "hrefRequired": ["parentId"]
-}]]>
-                    </artwork>
-                </figure>
-            </section>
-
-            <section title="rel" anchor="rel">
-                <t>
-                    The value of the "rel" property indicates the name of the relation to the target
-                    resource. The value MUST be a registered link relation from the
-                    <xref target="RFC5988">IANA Link Relation Type Registry established in RFC 5988</xref>,
-                    or a normalized URI following the <xref target="RFC3986">URI production of RFC 3986</xref>.
-                    This property is required.
-                </t>
-
-                <t>
-                    As defined by RFC 5988, a link connects a context resource
-                    to a target resource, where the nature of the connection
-                    is described by the link relation type.  The context
-                    resource is the instance to which the schema (or sub-schema)
-                    applies, rather than any larger document in which the
-                    instance may have been found.  The context may be changed
-                    with the <xref target="anchor">"anchor"</xref> or
-                    <xref target="anchorPointer">"anchorPointer"</xref> properties.
-                </t>
-
-                <t>
-                    Depending on the media type of the instance, it may or may
-                    not be possible to assign a URI to the exact default context
-                    resource.  In particular, application/json does not define
-                    URI fragment resolution semantics, so properties or array
-                    elements within a plain JSON document cannot be identified
-                    by a URI.
-                </t>
-
-                <t>
-                    Relationship definitions are not normally media type
-                    dependent, and users are encouraged to utilize the most
-                    suitable existing accepted relation definitions.
-                </t>
-
-                <t>
-                    When no registered relation (aside from "related") applies, users are
-                    encouraged to mint their own extension relation types, as described in
-                    <xref target="RFC5988">section 4.2 of RFC 5988</xref>.  The simplest
-                    approaches for choosing link relation type URIs are to either use
-                    a URI scheme that is already in use to identify the system's primary
-                    resources, or to use a human-readable, non-dereferenceable URI scheme
-                    such as <xref target="RFC4151">"tag", defined by RFC 4151</xref>.
-                    Extension relation type URIs need not be dereferenceable, even when
-                    using a scheme that allows it.
-                </t>
-                <figure>
-                    <preamble>
-                        As an example of registered relation types, if a hyper-schema is defined:
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "type": "array",
-    "items": {
-        "links": [{
-            "rel": "item",
-            "href": "{id}"
-        }, {
-            "rel": "up",
-            "href": "{upId}"
-        }]
-    }
-}]]>
-                    </artwork>
-                </figure>
-
-                <figure>
-                    <preamble>
-                        And if a collection of instance resources were retrieved with JSON
-                        representation:
-                    </preamble>
-                    <artwork>
-<![CDATA[GET /Resource/
-
-[{
-    "id": "thing",
-    "upId": "parent"
-}, {
-    "id": "thing2",
-    "upId": "parent"
-}]]]>
-                    </artwork>
-                    <postamble>
-                        This would indicate that for the first item in the collection, its URI as
-                        its own resource would resolve to "/Resource/thing" and the first item's
-                        "up" relation SHOULD be resolved to the resource at "/Resource/parent".
-                    </postamble>
-                </figure>
-
-                <t>
-                    Note that these relationship values are case-insensitive, consistent with their
-                    use in HTML and the <xref target="RFC5988">HTTP Link header</xref>.
-                </t>
-
-                <section title="Security Considerations for &quot;self&quot; links">
-                    <t>
-                        When link relation of "self" is used to denote a full representation of an
-                        object, the user agent SHOULD NOT consider the representation to be the
-                        authoritative representation of the resource denoted by the target URI if
-                        the target URI is not equivalent to or a sub-path of the URI used to request
-                        the resource representation which contains the target URI with the "self"
-                        link.
-
-                        <figure>
-                            <preamble>
-                                For example, if a hyper-schema was defined:
-                            </preamble>
-                            <artwork>
-<![CDATA[{
-    "links": [{
-        "rel": "self",
-        "href": "{id}"
-    }]
-}]]>
-                            </artwork>
-                        </figure>
-
-                        <figure>
-                            <preamble>
-                                And a resource was requested from somesite.com:
-                            </preamble>
-                            <artwork>
-<![CDATA[
-GET /foo/
-]]>
-                            </artwork>
-                        </figure>
-
-                        <figure>
-                            <preamble>
-                                With a response of (with newlines and whitespace added):
-                            </preamble>
-                            <artwork>
-<![CDATA[Content-Type: application/json; profile="http://example.com/alpha"
-
-[{
-    "id": "bar",
-    "name": "This representation can be safely treated
-             as authoritative "
-}, {
-    "id": "/baz",
-    "name": "This representation should not be treated as
-             authoritative the user agent should make request the
-             resource from '/baz' to ensure it has the authoritative
-             representation"
-}, {
-    "id": "http://othersite.com/something",
-    "name": "This representation
-             should also not be treated as authoritative and the
-             target resource representation should be retrieved
-             for the authoritative representation"
-}]]]>
-                            </artwork>
-                        </figure>
-                    </t>
-                </section>
-            </section>
-
-            <section title="anchor" anchor="anchor">
-                <t>
-                    This property sets the context URI of the link.
-                    The value of the property MUST be resolved as a
-                    <xref target="RFC3986">URI-reference</xref> against
-                    the base URI of the instance.
-                </t>
-            </section>
-
-            <section title="anchorPointer" anchor="anchorPointer">
-                <t>
-                    This property changes the point within the instance that is considered
-                    to be the context resource of the link.  The value of the property MUST be a
-                    valid <xref target="RFC6901">JSON Pointer</xref>, or a valid 
-                    <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
-                    which is evaluated relative to the position in the instance from which
-                    <xref target="href">"href"</xref> template variable resolution would
-                    normally begin.
-                </t>
-                <t>
-                    While an alternate context with a known URI is best set with the
-                    <xref target="anchor">"anchor"</xref> keyword, the lack of a fragment identifier
-                    syntax for application/json means that it is usually not possible to
-                    change the context within a JSON instance using a URI.
-                </t>
-                <t>
-                    Even in "+json" media types that define JSON Pointer as a fragment identifier
-                    syntax, if the default context is nested within an array, it is not possible to
-                    obtain the index of the default context's position in that array in order
-                    to construct a pointer to another property in that same nested JSON object.
-                </t>
-
-                <figure>
-                    <preamble>
-                        For example, given this hyper-schema:
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "type": "object",
-    "properties": {
-        "theThing": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string"}
-            }
-        },
-        "examples": {
-            "title": "The collection of example for the thing",
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "integer"}
-                },
-                "links": [{
-                    "rel": "item",
-                    "href": "/examples/{id}",
-                    "anchorPointer": "1"
-                }]
-            }
-        }
-    }
-}]]>
-                    </artwork>
-                    <postamble>
-                        The "item" relation indicates that each array entry can be used to construct
-                        a link from the collection embedded in this instance to a resource for that
-                        specific item.  The default context of this link is the individual array
-                        element.  But the context of an "item" relation should be the collection,
-                        which is the entire "examples" array.  The Relative JSON Pointer of "1"
-                        accomplishes this as follows:
-                    </postamble>
-                </figure>
-                <figure>
-                    <preamble>
-                        Given this instance of media type application/json:
-                    </preamble>
-                    <artwork>
-<![CDATA[{
-    "theThing": {"name": "An actual thing"},
-    "examples": [{"id": 1234}, {"id": 5678}]
-}]]>
-                    </artwork>
-                    <postamble>
-                        The default context for the link to "/examples/1234" is the first
-                        array entry, and for the link to "/examples/5678" it is the second array
-                        entry.  But "anchorPointer" moves this up one instance level (the "1"
-                        Relative JSON Pointer) to be the array containing each entry.
-                    </postamble>
-                </figure>
-                <t>
-                    If both "anchor" and "anchorPointer" are defined, and do not resolve to
-                    the same link context, the resulting behavior is undefined.
-                </t>
-            </section>
-
-            <section title="title">
-                <t>
-                    This property defines a title for the link.
-                    The value MUST be a string.
-                </t>
-
-                <t>
-                    User agents MAY use this title when presenting the link to the user.
-                </t>
-            </section>
-
-            <section title="description">
-                <t>
-                    This property provides additional information beyond what
-                    is present in the title.  The value MUST be a string.
-                    While a title is preferably short, a description can be
-                    used to go into more detail about the purpose and usage
-                    of the link.
-                </t>
-
-                <t>
-                    User agents MAY use this description when presenting
-                    the link to the user.
-                </t>
-            </section>
-
-            <section title="targetSchema" anchor="targetSchema">
-                <t>
-                    This property provides a schema that is expected to describe
-                    the link target's representation.  Depending on the protocol,
-                    the schema may or may not describe the response to any particular
-                    request sent to the link.  This property is advisory only.
-                </t>
-                <section title="&quot;targetSchema&quot; and HTTP" anchor="targetHTTP">
-                    <t>
-                        The relationship between a resource's representation and HTTP requests and
-                        responses is determined by <xref target="RFC7231">RFC 7231, section 4.3.1 -
-                            "GET", section 4.3.4 "PUT", and section 3.1.4.2,
-                            "Content-Location"</xref>. In particular, "targetSchema" suggests what a
-                        client can expect for the response to an HTTP GET or any response for which
-                        the "Content-Location" header is equal to the request URI, and what a client
-                        should send if it replaces the resource in an HTTP PUT request. Per <xref
-                            target="RFC5789">RFC 5789</xref>, the request structure for an HTTP
-                        PATCH is determined by the combination of "targetSchema" and the request
-                        media type.
-                    </t>
-                </section>
-                <section title="Security Considerations for &quot;targetSchema&quot;">
-                    <t>
-                        This property has similar security concerns to that of "targetMediaType".
-                        Clients MUST NOT use the value of this property to aid in the interpretation
-                        of the data received in response to following the link, as this leaves
-                        "safe" data open to re-interpretation.
-                    </t>
-                    <t>
-                        <figure>
-                            <preamble>
-                                For example, suppose two programmers are having a discussion about
-                                web security using a text-only message board.
-                                Here is some data from that conversation, with a URI of:
-                                http://forum.example.com/topics/152/comments/13
-                            </preamble>
-                            <artwork>
-<![CDATA[{
-    "topicId": 152,
-    "commentId": 13,
-    "from": {
-        "name": "Jane",
-        "id": 5
-    },
-    "to": {
-        "name": "Jason",
-        "id": 8
-    },
-    "message": "It's easy, just add some HTML like
-         this: <script>doSomethingEvil()</script>"
-}]]>
-                            </artwork>
-                            <postamble>
-                                The message string was split over two lines for readability.
-                            </postamble>
-                        </figure>
-                    </t>
-                    <t>
-                        A third party might then provide the following Link Description Object at
-                        another location:
-                        <figure>
-                            <artwork>
-<![CDATA[{
-    "rel": "evil-attack",
-    "href": "http://forum.example.com/topics/152/comments/13",
-    "targetSchema": {
-        "properties": {
-            "message": {
-                "description": "Re-interpret `message` as HTML",
-                "contentMediaType": "text/html"
-            }
-        }
-    }
-}]]>
-                            </artwork>
-                            <postamble>
-                                If the client used this "targetSchema" value when interpreting the
-                                above data, then it might display the contents of "message" as HTML.
-                                At this point, the JavaScript embedded in the message might be
-                                executed (in the context of the "forum.example.com" domain).
-                            </postamble>
-                        </figure>
-                    </t>
-                </section>
-            </section>
-
-            <section title="targetHints" anchor="targetHints">
-                <t>
-                    <cref>
-                        This section attempts to strike a balance between comprehensiveness
-                        and flexibility by deferring most of its structure to the protocol
-                        indicated by the URI scheme.  Note that a resource can be identified
-                        by a URI with a dereferenceable scheme, yet not be accessible over
-                        that protocol.  While currently very loose, this section is expected
-                        to become more well-defined based on draft feedback, and may change
-                        significantly in future drafts.
-                    </cref>
-                </t>
-                <t>
-                    The value of this property is advisory only.  It represents information that
-                    is expected to be discoverable through interacting with the target resource,
-                    typically in the form of protocol-specific control information or meta-data
-                    such as headers returned in response to an HTTP HEAD or OPTIONS request.
-                    The protocol is determined by the "href" URI scheme, although note that
-                    resources are not guaranteed to be accessible over such a protocol.
-                </t>
-                <t>
-                    The value of this property SHOULD be an object.  The keys to this object
-                    SHOULD be lower-cased forms of the control data field names.  Each value
-                    SHOULD be an array, in order to uniformly handle multi-valued fields.
-                    Multiple values MUST be presented as an array, and not as a single string.
-                </t>
-                <t>
-                    Protocols with control information not suitable for representation as
-                    a JSON object MAY be represented by another data type, such as an array.
-                </t>
-                <t>
-                    Values that cannot be understood as part of the indicated protocol MUST
-                    be ignored by a JSON Hyper-Schema implementation.  Applications MAY make
-                    use of such values, but MUST NOT assume interoperability with other
-                    implementations.
-                </t>
-                <t>
-                    Implementations MUST NOT assume that all discoverable information is
-                    accounted for in this object.  Clients MUST properly handle run-time responses
-                    that contradict this property's values.
-                </t>
-                <t>
-                    Clients MUST NOT assume that an implementation will automatically take any
-                    action based on the value of this property.
-                </t>
-                <section title='"targetHints" for HTTP'>
-                    <t>
-                        <cref>It would be good to also include a section with CoAP examples.</cref>
-                    </t>
-                    <t>
-                        JSON serializations of HTTP response header information SHOULD follow the
-                        guidelines established by the work in progress
-                        <xref target="I-D.reschke-http-jfv">"A JSON Encoding for HTTP Header Field Values"</xref>.
-                        Approaches shown in that document's examples SHOULD be applied to other
-                        similarly structured headers wherever possible.
-                    </t>
-                    <t>
-                        No distinction is made between headers that may appear in responses to
-                        different methods, such as HEAD vs OPTIONS.
-                    </t>
-                    <figure>
-                        <preamble>
-                            This examples shows several hints that are useful for clients
-                            when determining what requests to make and how to make them.
-                        </preamble>
-                        <artwork>
-<![CDATA[{
-    "targetHints": {
-        "allow": ["GET", "PUT"],
-        "accept-patch": ["application/merge-patch+json"],
-        "accept-ranges": ["none"]
-    }
-}]]>
-                        </artwork>
-                    </figure>
-                </section>
-            </section>
-
-            <section title="targetMediaType">
-                <t>
-                    The value of this property is advisory only, and represents the media type
-                    <xref target="RFC2046">RFC 2046</xref>, that is expected to be returned when
-                    fetching this resource.
-                    This property value MAY be a media range instead, using the same pattern defined
-                    in <xref target="RFC7231">RFC 7231, section 5.3.2 - HTTP "Accept" header</xref>.
-                </t>
-
-                <t>
-                    This property is analogous to the "type" property of &lt;a&gt; elements in HTML
-                    (advisory content type), or the "type" parameter in the
-                    <xref target="RFC5988">HTTP Link header</xref>.
-                    User agents MAY use this information to inform the interface they present to the
-                    user before the link is followed, but this information MUST NOT use this
-                    information in the interpretation of the resulting data.
-                    When deciding how to interpret data obtained through following this link, the
-                    behaviour of user agents MUST be identical regardless of the value of the this
-                    property.
-                </t>
-
-                <t>
-                    If this property's value is specified, and the link's target is to be obtained
-                    using any protocol that supports the HTTP/1.1 "Accept" header
-                    <xref target="RFC7231">RFC 7231, section 5.3.2</xref>, then user agents MAY use
-                    the value of this property to aid in the assembly of that header when making the
-                    request to the server.
-                </t>
-
-                <t>
-                    If this property's value is not specified, then the value should be taken to be
-                    "application/json".  Hyper-Schema authors SHOULD NOT use a protocol-specific
-                    value in <xref target="targetHints">"targetHints"</xref> for this purpose.
-                </t>
-
-                <figure>
-                    <preamble>
-                        For example, if a schema is defined:
-                    </preamble>
-                    <artwork>
-<![CDATA[
-{
-    "links": [{
-        "rel": "self",
-        "href": "/{id}/json"
-    }, {
-        "rel": "alternate",
-        "href": "/{id}/html",
-        "targetMediaType": "text/html"
-    }, {
-        "rel": "alternate",
-        "href": "/{id}/rss",
-        "targetMediaType": "application/rss+xml"
-    }, {
-        "rel": "icon",
-        "href": "{id}/icon",
-        "targetMediaType": "image/*"
-    }]
-}
-]]>
-                    </artwork>
-                    <postamble>
-                        A suitable instance described by this schema would have four links defined.
-                        The link with a "rel" value of "self" would have an expected MIME type of
-                        "application/json" (the default).
-                        The two links with a "rel" value of "alternate" specify the locations of
-                        HTML and RSS versions of the current item.
-                        The link with a "rel" value of "icon" links to an image, but does not
-                        specify the exact format.
-                    </postamble>
-                </figure>
-
-                <t>
-                    A visual user agent displaying the item from the above example might present a
-                    button representing an RSS feed, which when pressed passes the target URI
-                    (calculated "href" value) to an view more suited to displaying it, such as a
-                    news feed aggregator tab.
-                </t>
-
-                <t>
-                    Note that presenting the link in the above manner, or passing the URI to a news
-                    feed aggregator view does not constitute interpretation of the data, but an
-                    interpretation of the link.
-                    The interpretation of the data itself is performed by the news feed aggregator,
-                    which SHOULD reject any data that would not have also been interpreted as a news
-                    feed, had it been displayed in the main view.
-                </t>
-
-                <section title="Security concerns for &quot;targetMediaType&quot;">
-                    <t>
-                        The "targetMediaType" property in link definitions defines the expected
-                        format of the link's target.
-                        However, this is advisory only, and MUST NOT be considered authoritative.
-                    </t>
-
-                    <t>
-                        When choosing how to interpret data, the type information provided by the
-                        server (or inferred from the filename, or any other usual method) MUST be
-                        the only consideration, and the "targetMediaType" property of the link
-                        MUST NOT be used.
-                        User agents MAY use this information to determine how they represent the
-                        link or where to display it (for example hover-text, opening in a new tab).
-                        If user agents decide to pass the link to an external program, they SHOULD
-                        first verify that the data is of a type that would normally be passed to
-                        that external program.
-                    </t>
-
-                    <t>
-                        This is to guard against re-interpretation of "safe" data, similar to the
-                        precautions for "targetSchema".
-                    </t>
-                </section>
-            </section>
-
-            <section title="headerSchema" anchor="headerSchema">
-                <t>
-                    <cref>
-                        As with "targetHints", this keyword is somewhat under-specified
-                        to encourage experimentation and feedback as we try to balance
-                        flexibility and clarity.
-                    </cref>
-                </t>
-                <t>
-                    If present, this property is a schema for protocol-specific request
-                    headers or analogous control and meta-data.  The value of this
-                    object MUST be a valid JSON Schema.
-                    The protocol is determined by the "href" URI scheme, although note that
-                    resources are not guaranteed to be accessible over such a protocol.
-                    The schema is advisory only; the target resource's behavior is not
-                    constrained by its presence.
-                </t>
-                <t>
-                    The purpose of this keyword is to advertise target resource interaction
-                    features, and indicate to clients what headers and header values are
-                    likely to be useful.  Clients MAY use the schema to validate relevant
-                    headers, but MUST NOT assume that missing headers or values are forbidden
-                    from use.  While schema authors MAY set "additionalProperties" to
-                    false, this is NOT RECOMMENDED and MUST NOT prevent clients or user agents
-                    from supplying additional headers when requests are made.
-                </t>
-                <t>
-                    The exact mapping of the JSON data model into the headers is
-                    protocol-dependent.  However, in most cases this schema SHOULD
-                    specify a type of "object", and the property names SHOULD be
-                    lower-cased forms of the control data field names.
-                </t>
-                <t>
-                    "headerSchema" is applicable to any request method or command that the
-                    protocol supports.  When generating a request, clients SHOULD ignore
-                    schemas for headers that are not relevant to that request.
-                </t>
-                <section title='"headerSchema" for HTTP'>
-                    <t>
-                        Schemas SHOULD be written to describe JSON serializations that
-                        follow guidelines established by the work in progress
-                        <xref target="I-D.reschke-http-jfv">"A JSON Encoding for HTTP Header Field Values"</xref>
-                        Approaches shown in that document's examples SHOULD be applied to
-                        other similarly structured headers wherever possible.
-                    </t>
-                    <t>
-                        The "Prefer" header defined in <xref target="RFC7240">RFC 7240</xref>
-                        is a good candidate for description in "headerSchema".  It defines
-                        several standard values and allows for extension values.
-                    </t>
-                    <figure>
-                        <preamble>
-                            This schema indicates that the target understands the
-                            "respond-async" preference, the "wait" preference which
-                            takes a number of seconds to wait, as well as "minimal" and
-                            "representation" for the "return" preference.
-                        </preamble>
-                        <artwork>
-<![CDATA[{
-    "type": "object",
-    "properties": {
-        "prefer": {
-            "type": "array",
-            "items": {
-                "oneOf": [
-                    {"const": "respond-async"},
-                    {
-                        "type": "object",
-                        "minProperties": 1,
-                        "maxProperties": 1,
-                        "properties": {
-                            {
-                                "return": {
-                                    "enum": [
-                                        "representation",
-                                        "minimal"
-                                    ]
-                                },
-                                "wait": {
-                                    "type": "integer",
-                                    "minimum": 1
-                                }
-                            }
-                        }
-                    }
-                ]
-            },
-            "uniqueItems": true
-        }
-    }
-}]]>
-                        </artwork>
-                        <postamble>
-                            Each name/value preference pair is a single value of the
-                            header, so each object in the list can only have one such
-                            pair.  Simplifying the "response-async" value to a single string
-                            is based on the "Accept-Encoding" example in
-                            <xref target="I-D.reschke-http-jfv">appendix A.4 of the JSON encoding draft</xref>.
-                        </postamble>
-                    </figure>
-                    <t>
-                        The Prefer header also stretches the limits of existing recommendations
-                        for serializing HTTP headers in JSON.  It is possible for both the
-                        single string and name/value pair preferences to take additional
-                        name/value parameters.  While a single-string preference can accomodate
-                        such parameters following the "Accept-Encoding" example, there is
-                        no example to date of a name/value pair with parameters.
-                        <cref>
-                            We hope to get feedback from hyper-schema authors on what
-                            practical concerns arise, and from there decide how best to
-                            handle them.  The specification for this keyword is expected to
-                            become more well-defined in future drafts.
-                        </cref>
-                    </t>
-                </section>
-            </section>
-
-            <section title="submissionMediaType" anchor="submissionMediaType">
-                <t>
-                    If present, this property indicates the media type format the
-                    client should use for the request payload described by
-                    <xref target="submissionSchema">"submissionSchema"</xref>.
-                </t>
-                <t>
-                    Omitting this keyword has the same behavior as a value of application/json.
-                </t>
-                <t>
-                    Note that "submissionMediaType" and "submissionSchema"
-                    are not restricted to HTTP URIs.
-
-                    <figure>
-                        <preamble>
-                            For example, this link indicates that if you want to
-                            send an email to the author of the context resource,
-                            your client needs to ask for both a plain text
-                            and an HTML representation.
-                        </preamble>
-                        <artwork>
-<![CDATA[{
-    "links": [{
-        "submissionMediaType": "multipart/alternative; boundary=ab2",
-        "rel": "author",
-        "href": "mailto:someone@example.com{?subject}",
-        "hrefSchema": {
-            "type": "object",
-            "properties": {
-                "subject": { "type": "string" }
-            },
-            "required": ["subject"]
-        },
-        "submissionSchema": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "string",
-                    "contentMediaType": "text/plain; charset=utf8"
-                },
-                {
-                    "type": "string",
-                    "contentMediaType": "text/html"
-                }
-            ],
-            "minItems": 2
-        }
-    }]
-}]]>
-                        </artwork>
-                    </figure>
-                </t>
-            </section>
-
-            <section title="submissionSchema" anchor="submissionSchema">
-                <t>
-                    This property contains a schema which defines the acceptable structure
-                    of the document to be encoded according to the "submissionMediaType" property
-                    and sent to the target resource for processing.  This can be viewed as
-                    describing the domain of the processing function implemented by the
-                    target resource.
-                </t>
-
-                <t>
-                    This is a separate concept from the
-                    <xref target="targetSchema">"targetSchema"</xref> property, which is describing
-                    the target information resource (including for replacing the contents of the
-                    resource in a PUT request), unlike "submissionSchema" which describes the
-                    user-submitted request data to be evaluated by the resource. "submissionSchema"
-                    is intended for use with requests that have payloads that are not defined in
-                    terms of the target representation.
-                </t>
-                <t>
-                    Omitting "submissionSchema" or setting the entire schema to "false" prevents
-                    any user agent data from being accepted.
-                </t>
             </section>
         </section>
 
+        <section title="URI Templating" anchor="uriTemplating">
+            <t>
+                Three hyper-schema keywords are <xref target="RFC6570">URI Templates</xref>:
+                "base", "anchor", and "href".  Each are resolved separately to URI-references,
+                and then the anchor or href URI-reference is resolved against the base (which
+                is itself resolved against earlier bases as needed, each of which was first
+                resolved from a URI Template to a URI-reference).
+            </t>
+            <t>
+                All three keywords share the same algorithm for resolving variables from
+                instance data, which makes use of the "templatePointers" and "templateRequired"
+                keywords.  When resolving "href", both it and any "base" templates
+                needed for resolution to an absolute URI, the algorithm is modfied to
+                optionally accept user input based on the "hrefSchema" keyword.
+            </t>
+            <t>
+                For each URI Template (T), the following pseudocode describes an algorithm for
+                resolving T into a URI-reference (R).  For the purpose of this algorithm:
+                <list style="symbols">
+                    <t>
+                        "ldo.templatePointers" is an empty object if the keyword was not
+                        present and "ldo.templateRequired" is likewise an empty array.
+                    </t>
+                    <t>
+                        "attachmentPointer" is the absolute JSON Pointer for the attachment
+                        location of the LDO.
+                    </t>
+                    <t>
+                        "getApplicableSchemas()" returns an iterable set of all (sub)schemas
+                        that apply to the attachment point in the instance.
+                    </t>
+                </list>
+            </t>
+            <t>
+                This algorithm should be applied first to either "href" or "anchor",
+                and then as needed to each successive "base".  The order is important,
+                as it is not always possible to tell whether a template will resolve
+                to a full URI or a URI-reference.
+            </t>
+            <figure>
+                <preamble>
+                    This is the high-level algorithm.  "T" comes from either "href"
+                    or "anchor" within the LDO, or from "base" in a containing schema.
+                    Pseudocode for each step follows.
+                </preamble>
+                <artwork>
+<![CDATA[
+templateData = populateDataFromInstance(T, ldo, instance)
+
+if resolving "href" or "base" for "href" and ldo.hrefSchema exists:
+    inputData = acceptInput(ldo, instance, templateData)
+    for varname in inputData:
+        templateData[varname] = inputData[varname]
+
+for varname in ldo.templateRequired:
+    if not exists templateData[varname]
+        fatal("Missing required variable(s)")
+
+templateData = stringEncode(templateData)
+R = rfc6570ResolutionAlgorithm(T, templateData)
+]]>
+                </artwork>
+            </figure>
+
+            <section title="Populating template data from the instance">
+                <figure>
+                    <artwork>
+<![CDATA[
+for varname in T:
+    varname = rfc3986PercentDecode(varname)
+    if varname in ldo.templatePointers:
+        valuePointer = templatePointers[varname]
+        if valuePointer is relative:
+            valuePointer = resolveRelative(attachmentPointer,
+                                           valuePointer)
+    else
+        valuePointer = attachmentPointer + "/" + varname
+
+    value = instance.valueAt(valuePointer)
+    if value is defined:
+        templateData[varname] = value
+]]>
+                    </artwork>
+                </figure>
+            </section>
+
+            <section title="Accepting input for template data">
+                <figure>
+                    <preamble>
+                        "InputForm" represents whatevers sort of input mechanism is appropriate.
+                        This may be a literal web form, or may be a more programmatic construct
+                        such as a callback funciton accepting specific fields and data types,
+                        with the given initial values, if any.
+                    </preamble>
+                    <artwork>
+<![CDATA[
+form = new InputForm()
+for varname in T:
+    useField = true
+    useInitialData = true
+    for schema in getApplicableSchemas(ldo.hrefSchema,
+                                       "/" + varname):
+        if schema is false:
+            useField = false
+            break
+
+        if varname in templateData and
+           not isValid(templateData[varname], schema)):
+            useInitialData = false
+            break
+
+    if useField:
+        if useInitialData:
+            form.addInputFieldFor(varname, ldo.hrefSchema,
+                                  templateData[varname])
+        else:
+            form.addInputFieldFor(varname, ldo.hrefSchema)
+
+inputData = form.acceptInput()
+
+if not isValid(inputData, hrefSchema):
+    fatal("Input invalid, link is not usable")
+
+return inputData:
+]]>
+                    </artwork>
+                </figure>
+            </section>
+
+            <section title="Encoding data as strings">
+                <figure>
+                    <artwork>
+<![CDATA[
+for varname in templateData:
+    value = templateData[varname]
+    if value is true:
+        templateData[varname] = "true"
+    else if value is false:
+        temlateData[varname] = "false"
+    else if value is null:
+        templateData[varname] = "null"
+    else if value is a number:
+        templateData[varname] =
+            bestEffortOriginalJsonString(value)
+    else:
+        templateData[varname] = rfc3986PercentEncode(value)
+]]>
+                    </artwork>
+                    <postamble>
+                        In some software environments the original JSON representation of a
+                        number will not be available (there is no way to tell the difference
+                        between 1.0 and 1), so any reasonable representation should be used.
+                        Schema and API authors should bear this in mind, and use other types
+                        (such as string or boolean) if the exact representation is
+                        important.  If the number was provide as input in the form of a
+                        string, the string used as input SHOULD be used.
+                    </postamble>
+                </figure>
+            </section>
+        </section>
+
+        <section title="Security Considerations" anchor="security">
+            <t><cref>Need to reference the core and validation security considerations.</cref></t>
+            <section title='"self" links'>
+                <t>
+                    When link relation of "self" is used to denote a full representation of an
+                    object, the user agent SHOULD NOT consider the representation to be the
+                    authoritative representation of the resource denoted by the target URI if
+                    the target URI is not equivalent to or a sub-path of the URI used to request
+                    the resource representation which contains the target URI with the "self"
+                    link.
+                </t>
+            </section>
+            <section title="Target attributes">
+                <t>
+                    <cref>
+                        This whole section needs more work, but I do like having security
+                        concerns around target interactions consolidated and addressed as a whole.
+                    </cref>
+                </t>
+                <t>
+                    The "targetMediaType" property in link definitions defines the expected
+                    format of the link's target.
+                    However, this is advisory only, and MUST NOT be considered authoritative.
+                </t>
+                <t>
+                    When choosing how to interpret data, the type information provided by the
+                    server (or inferred from the filename, or any other usual method) MUST be
+                    the only consideration, and the "targetMediaType" property of the link
+                    MUST NOT be used.
+                    User agents MAY use this information to determine how they represent the
+                    link or where to display it (for example hover-text, opening in a new tab).
+                    If user agents decide to pass the link to an external program, they SHOULD
+                    first verify that the data is of a type that would normally be passed to
+                    that external program.
+                </t>
+                <t>
+                    This is to guard against re-interpretation of "safe" data, similar to the
+                    precautions for "targetSchema".
+                </t>
+                <t>
+                    The "targetSchema" keyword has similar security concerns to that of
+                    "targetMediaType".
+                    Clients MUST NOT use the value of this property to aid in the interpretation
+                    of the data received in response to following the link, as this leaves
+                    "safe" data open to re-interpretation.
+                </t>
+            </section>
+        </section>
 <!--
         <section title="IANA Considerations">
             <t>No considerations</t>
         </section>
 -->
+        <section title="Acknowledgments">
+            <t>
+                Thanks to
+                Gary Court,
+                Francis Galiegue,
+                Kris Zyp,
+                and Geraint Luff
+                for their work on the initial drafts of JSON Schema.
+            </t>
+            <t>
+                Thanks to
+                Jason Desrosiers,
+                Daniel Perrett,
+                Erik Wilde,
+                Ben Hutton,
+                Evgeny Poberezkin,
+                Brad Bowman,
+                Gowry Sankar,
+                Donald Pipowitch,
+                Dave Finlay,
+                and Denis Laxalde
+                for their submissions and patches to the document.
+            </t>
+        </section>
     </middle>
 
     <back>
@@ -1584,32 +1204,284 @@ GET /foo/
             &rfc4151;
             &rfc5789;
             &rfc5988;
+            &rfc6573;
             &rfc7231;
-            &rfc7240;
+            &I-D.nottingham-rfc5988bis;
+            &I-D.kelly-json-hal;
+            &ldp;
         </references>
-
-        <section title="Acknowledgments">
+        <section title="JSON Hyper-Schema and HTTP" anchor="HTTP">
             <t>
-                Thanks to
-                Gary Court,
-                Francis Galiegue,
-                Kris Zyp,
-                and Geraint Luff
-                for their work on the initial drafts of JSON Schema.
+                While JSON Hyper-Schema is a hypermedia format and therefore protocol-independent,
+                it is expected that its most common use will be in HTTP systems, or systems
+                using protocols such as CoAP that are explicitly analogous to HTTP.
             </t>
             <t>
-                Thanks to
-                Jason Desrosiers,
-                Daniel Perrett,
-                Erik Wilde,
-                Ben Hutton,
-                Evgeny Poberezkin,
-                Brad Bowman,
-                Gowry Sankar,
-                Donald Pipowitch,
-                Dave Finlay,
-                and Denis Laxalde
-                for their submissions and patches to the document.
+                This appendix provides guidance on how to define links for use with each
+                common HTTP method, and how collection resources impose additional constarints
+                on the use of HTTP POST.  Additionaly, guidance is provided on hinting at
+                HTTP response header values and describing possible HTTP request headers
+                that are relevant to the given resource.
+            </t>
+            <section title="One link per target and relation type">
+                <t>
+                    Link Description Objects do not directly indicate what operations, such
+                    as HTTP methods, are supported by the target resource.  Instead, operations
+                    should be inferred primarily from link <xref target="rel">relation types</xref>
+                    and URI schemes.
+                </t>
+                <t>
+                    This means that for each target resource and link relation type pair, schema
+                    authors SHOULD only define a single LDO.  While it is possible to use
+                    "allow" with "targetHints" to repeat a relation type and target pair with
+                    different HTTP methods marked as allowed, this is NOT RECOMMENDED and may
+                    not be well-supported by conforming implementations.
+                </t>
+                <t>
+                    All information necessary to use each HTTP method can be conveyed in a
+                    single LDO as explained in this appendix.
+                </t>
+                <t>
+                    Note, however, that a resource may always decline an operation at runtime,
+                    for instance due to authorization failure, or due to other application state
+                    that controls the operation's availability.
+                </t>
+            </section>
+            <section title='"targetSchema" and HTTP' anchor="targetHTTP">
+                <t>
+                    The relationship between a resource's representation and HTTP requests and
+                    responses is determined by <xref target="RFC7231">RFC 7231, section 4.3.1 -
+                        "GET", section 4.3.4 "PUT", and section 3.1.4.2,
+                        "Content-Location"</xref>. In particular, "targetSchema" suggests what a
+                    client can expect for the response to an HTTP GET or any response for which
+                    the "Content-Location" header is equal to the request URI, and what a client
+                    should send if it replaces the resource in an HTTP PUT request.
+                </t>
+                <t>
+                    The media type of the representation is given by the "targetMediaType"
+                    field.  Alternatively, possible available media types MAY be advertised
+                    using an entry for the "Accept" request header field in "headerSchema".
+                </t>
+                <t>
+                    Per <xref target="RFC5789">RFC 5789</xref>, the request structure for an HTTP
+                    PATCH is determined by the combination of "targetSchema" and the request
+                    media type, which is conveyed by the "Accept-Patch" header.
+                </t>
+                <t>
+                    HTTP POST requests are determined by the "submissionSchema" and
+                    "submissionMediaType" fields.  Alternatively, the "Accept-Post" header has
+                    been defined and registered by the
+                    <xref target="W3C.REC-ldp-20150226">Linked Data Platform</xref>, and MAY be
+                    advertised via the "targetHints" field.
+                    <cref>
+                        What happens if both are used?  Also, "submissionSchema" is a MUST
+                        to support, while "targetHints" are at most a SHOULD.  But forbidding
+                        the use of "Accept-Post" in "targetHints" seems incorrect.
+                    </cref>
+                </t>
+<!-- targetMediaType and "Accept"
+                    <t>
+                        If this property's value is specified, and the link's target is to be obtained
+                        using any protocol that supports the HTTP/1.1 "Accept" header
+                        <xref target="RFC7231">RFC 7231, section 5.3.2</xref>, then user agents MAY use
+                        the value of this property to aid in the assembly of that header when making the
+                        request to the server.
+                    </t>
+  -->
+            </section>
+            <section title='Optimizing HTTP discoverability with "targetHints"'>
+                <t>
+                    <cref>It would be good to also include a section with CoAP examples.</cref>
+                </t>
+                <t>
+                    JSON serializations of HTTP response header information SHOULD follow the
+                    guidelines established by the work in progress
+                    <xref target="I-D.reschke-http-jfv">"A JSON Encoding for HTTP Header Field Values"</xref>.
+                    Approaches shown in that document's examples SHOULD be applied to other
+                    similarly structured headers wherever possible.
+                </t>
+                <t>
+                    No distinction is made between headers that may appear in responses to
+                    different methods, such as HEAD vs OPTIONS.
+                </t>
+                <t>
+                    It is RECOMMENDED that schema authors provide hints for the values of
+                    the following types of HTTP headers whenever applicable:
+                    <list style="symbols">
+                        <t>Method allowance</t>
+                        <t>Method-specific request media types</t>
+                        <t>Authentication challenges</t>
+                    </list>
+                </t>
+                <t>
+                    In general, headers that are likely to have different values at different
+                    times SHOULD NOT be included in "targetHints".
+                </t>
+            </section>
+            <section title='Advertising HTTP features with "headerSchema"'>
+                <t>
+                    Schemas SHOULD be written to describe JSON serializations that
+                    follow guidelines established by the work in progress
+                    <xref target="I-D.reschke-http-jfv">"A JSON Encoding for HTTP Header Field Values"</xref>
+                    Approaches shown in that document's examples SHOULD be applied to
+                    other similarly structured headers wherever possible.
+                </t>
+                <t>
+                    It is RECOMMENDED that schema authors describe the available usage of
+                    the following types of HTTP headers whenever applicable:
+                    <list style="symbols">
+                        <t>Content negotiation</t>
+                        <t>Authentication and authorization</t>
+                        <t>Range requests</t>
+                        <t>The "Prefer" header</t>
+                    </list>
+                </t>
+                <t>
+                    Headers such as cache control and conditional request headers are generally
+                    implemented by intermediaries rather than the resource, and are therefore
+                    not generally useful to describe.  While the resource must supply the
+                    information needed to use conditional requests, the runtime handling of
+                    such headers and related responses is not resource-specific.
+                </t>
+            </section>
+            <section title="Creating resources through collections">
+                <t>
+                    When using HTTP, or a protocol such as CoAP that is explicitly analogous
+                    to HTTP, this is done by POST-ing a representation of the individual
+                    resource to be created to the collection resource.
+                </t>
+            </section>
+        </section>
+        <section title="Using JSON Hyper-Schema in APIs" anchor="apis">
+            <t>
+                Hypermedia APIs, which follow the constraints of the REST architectural
+                style, enable the creation of generic user agents.  Such a user agent
+                has no application-specific knowledge.  Rather, it understands pre-defined
+                media types, URI schemes, protocols, and link relations, often by recognizing
+                these and coordinating the use of existing software that implement support
+                for them.  Applications can then be built on top of such a user agent, focusing
+                on their own semantics and logic rather than the mechanics of the interactions.
+            </t>
+            <t>
+                JSON Hyper-Schema is ideal for representing individual resources in hypermedia
+                APIs.  It offers comprehensive capabilities for describing how to use hyperlinks
+                to interact with the current resource (through "self" links), or related
+                resources.  Using a hyper-schema-based API involves traversing links from
+                one resource to the next, interacting with resources through their
+                representations as described by the target keywords, or submitting data
+                to resources for processing using the submission keywords.
+            </t>
+            <t>
+                Hyper-schema is only concerned with one resource and set of associated links
+                at a time.  Just as a web browser works with only one HTML page at a time,
+                with no concept of whether or how that page functions as part of a "site",
+                a hyper-schema-aware user agent works with one resource at a time, without
+                any concept of whether or how that resource fits into an API.
+            </t>
+            <t>
+                While aspects of cross-cutting API concerns such as authentication
+                and authorization may be described in hyper-schema, for instance in
+                the headerSchema of a link, defining an API-wide approach to any
+                cross-cutting concerns is beyond the scope of hyper-schema.
+            </t>
+            <section title="Separation of concerns">
+                <t>
+                    Working with a JSON Hyper-Schema-based API will generally involve
+                    three components:  The hyper-schema implementation, a generic user agent,
+                    and a client application.  The hyper-schema implementation's requirements
+                    are given in this specification.  The generic user agent handles standardized
+                    URI schemes, protocols, and media types.  User agents that handle HTTP,
+                    HTTPS, and JSON, for instance, are available as libraries in many programming
+                    languages.
+                </t>
+                <t>
+                    The client application has the domain-specific knowledge of link relation
+                    types and data structure fields needed to make use of the specific API.
+                    A client application can use an available user agent library and a hyper-schema
+                    implementation separately.  Alternatively, extensible user agents can allow
+                    adding hyper-schema support as a plug-in alongside support for plain JSON, XML,
+                    or other media types.
+                </t>
+                <t>
+                    <cref>
+                        Add something about generic user agents not being magic, HATEOAS, etc.
+                    </cref>
+                </t>
+            </section>
+            <section title="Resource evolution with Hyper-Schema">
+                <t>
+                    Since a given JSON Hyper-Schema is used with a single resource at a single
+                    point in time, it has no inherent notion of versioning.  However, a given
+                    resource can change which schema or schemas it uses over time, and the
+                    URIs of these schemas can be used to indicate versioning information.
+                    When used with a media type that supports indicating a schema with a media
+                    type parameter, these versioned schema URIs can be used in content negotiation.
+                </t>
+                <t>
+                    A resource can indicate that it is an instance of multiple schemas, which allows
+                    supporting multiple compatible versions simultaneously.  A client application
+                    can then make use of the hyper-schema that it recognizes, and ignore newer
+                    or older versions.
+                </t>
+                <t>
+                    Note that this notion of changing the representaiton version using
+                    successive hyper-schemas is separate from deprecating an entire resource
+                    and either removing it or replacing it with a new resource at a new URI.
+                    The "targetHints" keyword can be used to convey deprecation information.
+                </t>
+                <t>
+                    <cref>
+                        This section is something of a placeholder, with the goal being to 
+                        get readers to understand that while hyper-schema helps with versioning,
+                        it does not and will not have explicit features to support it.
+                    </cref>
+                </t>
+            </section>
+            <section title="Entry point resource">
+                <t>
+                    To create an entry point for an API, it is RECOMMENDED to provide
+                    a resource at a documented entry point URI with the minimal amount of data
+                    necessary to begin interacting with API resources.
+                    The hyper-schema for this resource SHOULD contain links to all
+                    API resources that can be accessed with only user input and/or
+                    data contained in the entry point resource's representation.
+                </t>
+            </section>
+            <section title="Responses and errors">
+                <t>
+                    Because a hyper-schema represents a single resource at a time, it does not
+                    provide for an enumeration of all possible responses to protocol operations
+                    performed with links.  Each response, including errors, is considered
+                    its own (possibly anonymous) resource, and should identify its own
+                    hyper-schema to allow the user agent or client application to interpret any
+                    information that is provided beyond the protocol's own status reporting.
+                </t>
+                <t>
+                    Protocol and media type specifications provide the necessary information to
+                    deal with different responses at runtime, while documenting all responses
+                    is a concern static analysis across all hyper-schemas making up an API.
+                </t>
+            </section>
+        </section>
+        <section title="Static analysis of hyper-schemas">
+            <t>
+                It is possible to statically analyze a set of hyper-schemas without instance
+                data in order to generate output such as documentation or code.  However,
+                the full feature set of both validation and hyper-schema cannot be accessed
+                without runtime instance data.
+            </t>
+            <t>
+                This is an intentional design choice to provide the maximum runtime
+                flexibility for hypermedia systems.  JSON Schema as a media type allows for
+                establishing additional vocabularies for static analysis and content
+                generation, which are not addressed in this specification.  Additionally,
+                individual systems may restrict their usage to subsets that can be
+                analyzed statically if full design-time description is a goal.
+                <cref>
+                    Vocabularies for API documentation and other purposes have been
+                    proposed, and contributions are welcome at
+                    https://github.com/json-schema-org/json-schema-vocabularies
+                </cref>
             </t>
         </section>
 
