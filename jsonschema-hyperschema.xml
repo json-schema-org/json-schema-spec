@@ -968,7 +968,7 @@
             </t>
             <t>
                 In English, the high-level algorithm is:
-                <list>
+                <list style="numbers">
                     <t>Populate template variable data from the instance</t>
                     <t>If input is desired, accept input</t>
                     <t>Check that all required variables have a value</t>
@@ -1003,7 +1003,7 @@ R = rfc6570ResolutionAlgorithm(T, templateData)
             <section title="Populating template data from the instance">
                 <t>
                     This step looks at various data sources in the instance:
-                    <list>
+                    <list style="numbers">
                         <t>Use "templatePointers" to find values where appropriate</t>
                         <t>Look in the immediate instance for remaining values</t>
                         <t>
@@ -1041,7 +1041,7 @@ for varname in T:
                     and some will not.
                 </t>
                 <t>
-                    <list>
+                    <list style="numbers">
                         <t>Figure out which variables can accept input</t>
                         <t>
                             Pre-populate the input data set if the template resolution data
