@@ -1428,10 +1428,19 @@ GET /foo/
                 as it is not always possible to tell whether a template will resolve
                 to a full URI or a URI-reference.
             </t>
+            <t>
+                In English, the high-level algorithm is:
+                <list>
+                    <t>Populate template variable data from the instance</t>
+                    <t>If input is desired, accept input</t>
+                    <t>Check that all required variables have a value</t>
+                    <t>Encode values into strings and fill out the template</t>
+                </list>
+            </t>
             <figure>
                 <preamble>
-                    This is the high-level algorithm.  "T" comes from either "href"
-                    or "anchor" within the LDO, or from "base" in a containing schema.
+                    This is the high-level algorithm as pseudocode.  "T" comes from either
+                    "href" or "anchor" within the LDO, or from "base" in a containing schema.
                     Pseudocode for each step follows.
                 </preamble>
                 <artwork>
@@ -1454,6 +1463,17 @@ R = rfc6570ResolutionAlgorithm(T, templateData)
             </figure>
 
             <section title="Populating template data from the instance">
+                <t>
+                    This step looks at various data sources in the instance:
+                    <list>
+                        <t>Use "templatePointers" to find values where appropriate</t>
+                        <t>Look in the immediate instance for remaining values</t>
+                        <t>
+                            Either way, if there is a value there, put it in the
+                            template resolution data set
+                        </t>
+                    </list>
+                </t>
                 <figure>
                     <artwork>
 <![CDATA[
@@ -1476,6 +1496,27 @@ for varname in T:
             </section>
 
             <section title="Accepting input for template data">
+                <t>
+                    This step is relatively complex, as there are several cases to support.
+                    Some variables will forbid input and some will allow it.  Some will
+                    have initial values that need to be presented in the input interface,
+                    and some will not.
+                </t>
+                <t>
+                    <list>
+                        <t>Figure out which variables can accept input</t>
+                        <t>
+                            Pre-populate the input data set if the template resolution data
+                            set has a value
+                        </t>
+                        <t>Accept input (present a web form, make a callback, etc.)</t>
+                        <t>Validate the input data set, (not the template resolution data set)</t>
+                        <t>
+                            Put the input in the template resolution data set, overriding
+                            any existing values
+                        </t>
+                    </list>
+                </t>
                 <figure>
                     <preamble>
                         "InputForm" represents whatevers sort of input mechanism is appropriate.
@@ -1519,6 +1560,11 @@ return inputData:
             </section>
 
             <section title="Encoding data as strings">
+                <t>
+                    This section is straightforward, converting literals to their names
+                    as strings, and converting numbers to strings in the most obvious manner,
+                    and percent-encoding as needed for use in the URI.
+                </t>
                 <figure>
                     <artwork>
 <![CDATA[
