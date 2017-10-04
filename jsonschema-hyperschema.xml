@@ -205,8 +205,14 @@
 
         <section title="Meta-schema">
             <t>
-                The current URI for the JSON Hyper-Schema meta-schema is
+                The current URI for the JSON Hyper-Schema meta-schema , intended
+                for use with "$schema" and "$vocabularies", is
                 &lt;http://json-schema.org/draft-06/hyper-schema#&gt;.
+            </t>
+            <t>
+                Schemas that declare the hyper-schema vocabulary in "$vocabularies" SHOULD
+                also declare the corresponding version of the
+                <xref target="json-schema-validation">validation</xref> vocabulary.
             </t>
         </section>
 
