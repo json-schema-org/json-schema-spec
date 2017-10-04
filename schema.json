@@ -1,12 +1,15 @@
 {
     "$schema": "http://json-schema.org/draft-06/schema#",
     "$id": "http://json-schema.org/draft-06/schema#",
+    "$vocabularies": [
+        "http://json-schema.org/draft-06/schema#"
+    ],
     "title": "Core schema meta-schema",
     "definitions": {
         "schemaArray": {
             "type": "array",
             "minItems": 1,
-            "items": { "$ref": "#" }
+            "items": { "$ref": "#/definitions/subschema" }
         },
         "nonNegativeInteger": {
             "type": "integer",
@@ -34,6 +37,12 @@
             "items": { "type": "string" },
             "uniqueItems": true,
             "default": []
+        },
+        "subschema": {
+            "allOf": [
+                { "$ref": "#" },
+                { "properties": { "$schema": false } }
+            ]
         }
     },
     "type": ["object", "boolean"],
@@ -45,6 +54,13 @@
         "$schema": {
             "type": "string",
             "format": "uri"
+        },
+        "$vocabularies": {
+            "type": "array",
+            "items": {
+                  "type": "string",
+                  "format": "uri"
+            }
         },
         "$ref": {
             "type": "string",
@@ -90,10 +106,10 @@
             "type": "string",
             "format": "regex"
         },
-        "additionalItems": { "$ref": "#" },
+        "additionalItems": { "$ref": "#/definitions/subschema" },
         "items": {
             "anyOf": [
-                { "$ref": "#" },
+                { "$ref": "#/definitions/subschema" },
                 { "$ref": "#/definitions/schemaArray" }
             ],
             "default": {}
@@ -104,24 +120,24 @@
             "type": "boolean",
             "default": false
         },
-        "contains": { "$ref": "#" },
+        "contains": { "$ref": "#/definitions/subschema" },
         "maxProperties": { "$ref": "#/definitions/nonNegativeInteger" },
         "minProperties": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
         "required": { "$ref": "#/definitions/stringArray" },
-        "additionalProperties": { "$ref": "#" },
+        "additionalProperties": { "$ref": "#/definitions/subschema" },
         "definitions": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$ref": "#/definitions/subschema" },
             "default": {}
         },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$ref": "#/definitions/subschema" },
             "default": {}
         },
         "patternProperties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$ref": "#/definitions/subschema" },
             "propertyNames": { "format": "regex" },
             "default": {}
         },
@@ -129,12 +145,12 @@
             "type": "object",
             "additionalProperties": {
                 "anyOf": [
-                    { "$ref": "#" },
+                    { "$ref": "#/definitions/subschema" },
                     { "$ref": "#/definitions/stringArray" }
                 ]
             }
         },
-        "propertyNames": { "$ref": "#" },
+        "propertyNames": { "$ref": "#/definitions/subschema" },
         "const": {},
         "enum": {
             "type": "array",
@@ -155,13 +171,13 @@
         "format": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": {"$ref": "#/definitions/subschema"},
+        "then": {"$ref": "#/definitions/subschema"},
+        "else": {"$ref": "#/definitions/subschema"},
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" }
+        "not": { "$ref": "#/definitions/subschema" }
     },
     "default": {}
 }

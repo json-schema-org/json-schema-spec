@@ -1,6 +1,10 @@
 {
     "$schema": "http://json-schema.org/draft-06/hyper-schema#",
     "$id": "http://json-schema.org/draft-06/links#",
+    "$vocabularies": [
+        "http://json-schema.org/draft-06/schema#",
+        "http://json-schema.org/draft-06/hyper-schema#"
+    ],
     "title": "Link Description Object",
     "type": "object",
     "required": [ "href" ],
@@ -21,7 +25,7 @@
         },
         "hrefSchema": {
             "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#/definitions/subschema" }
             ]
         },
         "hrefRequired": {
@@ -53,7 +57,7 @@
         },
         "targetSchema": {
             "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#/definitions/subschema" }
             ]
         },
         "targetHints": { },
@@ -62,7 +66,7 @@
         },
         "headerSchema": {
             "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#/definitions/subschema" }
             ]
         },
         "submissionEncType": {
@@ -71,7 +75,7 @@
         },
         "submissionSchema": {
             "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#/definitions/subschema" }
             ]
         },
         "$comment": {

@@ -1,53 +1,63 @@
 {
     "$schema": "http://json-schema.org/draft-06/hyper-schema#",
     "$id": "http://json-schema.org/draft-06/hyper-schema#",
+    "$vocabularies": [
+        "http://json-schema.org/draft-06/schema#",
+        "http://json-schema.org/draft-06/hyper-schema#"
+    ],
     "title": "JSON Hyper-Schema",
     "definitions": {
         "schemaArray": {
             "allOf": [
                 { "$ref": "http://json-schema.org/draft-06/schema#/definitions/schemaArray" },
                 {
-                    "items": { "$ref": "#" }
+                    "items": { "$ref": "#/definitions/subschema" }
                 }
+            ]
+        },
+        "subschema": {
+            "allOf": [
+                { "$ref": "#" },
+                { "properties": { "$schema": false } }
             ]
         }
     },
     "allOf": [ { "$ref": "http://json-schema.org/draft-06/schema#" } ],
     "properties": {
-        "additionalItems": { "$ref": "#" },
-        "additionalProperties": { "$ref": "#"},
+        "additionalItems": { "$ref": "#/definitions/subschema" },
+        "additionalProperties": { "$ref": "#/definitions/subschema"},
         "dependencies": {
             "additionalProperties": {
                 "anyOf": [
-                    { "$ref": "#" },
+                    { "$ref": "#/definitions/subschema" },
                     { "type": "array" }
                 ]
             }
         },
         "items": {
             "anyOf": [
-                { "$ref": "#" },
+                { "$ref": "#/definitions/subschema" },
                 { "$ref": "#/definitions/schemaArray" }
             ]
         },
         "definitions": {
-            "additionalProperties": { "$ref": "#" }
+            "additionalProperties": { "$ref": "#/definitions/subschema" }
         },
         "patternProperties": {
-            "additionalProperties": { "$ref": "#" }
+            "additionalProperties": { "$ref": "#/definitions/subschema" }
         },
         "properties": {
-            "additionalProperties": { "$ref": "#" }
+            "additionalProperties": { "$ref": "#/definitions/subschema" }
         },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": {"$ref": "#/definitions/subschema"},
+        "then": {"$ref": "#/definitions/subschema"},
+        "else": {"$ref": "#/definitions/subschema"},
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" },
-        "contains": { "$ref": "#" },
-        "propertyNames": { "$ref": "#" },
+        "not": { "$ref": "#/definitions/subschema" },
+        "contains": { "$ref": "#/definitions/subschema" },
+        "propertyNames": { "$ref": "#/definitions/subschema" },
 
         "base": {
             "type": "string"
