@@ -365,36 +365,113 @@
 
         </section>
 
-        <section title='The "$schema" keyword'>
-            <!-- TODO a custom $schema keyword might also be used to enforce minimum required functionality of a validator -->
+        <section title="Schema vocabularies">
             <t>
-                The "$schema" keyword is both used as a JSON Schema version identifier and the
-                location of a resource which is itself a JSON Schema, which describes any schema
-                written for this particular version.
+                JSON Schema is a media type, and as described by this specification offers
+                minimal functionality.  Schema authors will need to use at least one vocabulary,
+                such as 
+                <xref target="json-schema-validation">validation</xref> or
+                <xref target="json-hyper-schema">hyper-schema</xref>, to create meaningful
+                schema documents.
             </t>
             <t>
-                The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
-                (containing a scheme) and this URI MUST be normalized.
-                The current schema MUST be valid against the meta-schema identified by this URI.
+                Schemas can themselves be described by a schema, referred to as a meta-schema.
+                This process, as with other instance documents, applies a single meta-schema
+                across the entire schema document.  A meta-schema is declared with "$schema".
             </t>
             <t>
-                The "$schema" keyword SHOULD be used in a root schema.
-                It MUST NOT appear in subschemas.
+                Schema vocabularies, however, can be mixed within a single document, at the
+                schema object level.  While a schema vocabulary is identified by a meta-schema,
+                vocabularies used within a schema document are not necessarily capable of
+                validating the entire document.  Vocabularies are declared with "$vocabularies".
             </t>
             <t>
-                <cref>
-                    While this pattern is likely to remain best practice for schema authoring,
-                    implementation behavior is subject to be revised or liberalized in future
-                    drafts.
-                </cref>
+                Either the "$schema" or "$vocabularies" keyword SHOULD be present in a non-empty root
+                schema, or else the interpretation of the schema is undefined.  Implementations MAY
+                make assumptions based on other input or on the schema's contents, but MUST NOT assume
+                identical behavior in peer implementations.
             </t>
             <t>
-                Values for this property are defined in other documents and by other parties.
+                Values for these properties are defined in other documents and by other parties.
                 JSON Schema implementations SHOULD implement support for current and previous
                 published drafts of JSON Schema vocabularies as deemed reasonable.
             </t>
-        </section>
+            <section title='The "$schema" keyword'>
+                <t>
+                    The "$schema" keyword is used to identify another schema which is used to
+                    validate the schema.  This other schema is referred to as a meta-schema.
+                </t>
+                <t>
+                    The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
+                    (containing a scheme) and this URI MUST be normalized.
+                    The current schema MUST be valid against the meta-schema identified by this URI.
+                </t>
+                <t>
+                    The "$schema" keyword SHOULD be used in a root schema.
+                    It MUST NOT appear in subschemas, as the schema validation process applies
+                    at a whole-document granularity.  Note that "$vocabularies" can be used
+                    for more fine-grained control indication of purpose within a document,
+                    as long as the vocabularies declared do not contradict the meta-schema
+                    declared by "$schema".
+                </t>
+                <t>
+                    <cref>
+                        Note that if "$vocabularies" is present in the root schema, and if
+                        a meta-schema is associated with the schema using one of the mechanisms
+                        avaialble to associate schemas with non-schema instance documents, "$schema"
+                        is not strictly necessary.  However, it remains a best practice to include one.
+                        This recommendation is subject to be revised or liberalized in future drafts.
+                    </cref>
+                </t>
+                <t>
+                    Implementations SHOULD NOT make processing decisions other than meta-schema
+                    validation based on this keyword, although in the absence of the "$vocabularies"
+                    keyword, it's default is based on "$schema", if present.
+                </t>
+            </section>
 
+            <section title='The "$vocabularies" keyword'>
+                <t>
+                    The value of this keyword MUST be an array.  Each element in the array
+                    MUST be a URI (containing a scheme) and this URI MUST be normalized.
+                    Vocabulary identifiers SHOULD also be usable as meta-schema identifiers.
+                    However, as vocabularies are declared per schema object, while meta-schemas
+                    are declared per schema document, implementations MUST NOT attempt to
+                    validate the entire document against individual vocabularies.
+                </t>
+                <t>
+                    Implementations SHOULD examine this keyword before any others to determine
+                    if a recognized vocabulary is in use.
+                    <cref>
+                        It is not clear what, if anything, implementations should do with
+                        unrecognized URIs.  Ignore, warn, or error out?  Ignore seems the
+                        safest, but offering the ability to warn or error also seems useful.
+                        Also, could unrecognized vocabulary URIs introduce any kind of
+                        security concern?
+                    </cref>
+                </t>
+                <t>
+                    Each vocabulary SHOULD be listed separately.  For example, the validation
+                    vocabulary should be listed whenever the hyper-schema vocabulary is in use,
+                    as hyper-schema depends on validation.  This avoids the need for implementations
+                    to understand dependencies among vocabularies, and allows a validator to
+                    recognize the validation vocabulary without understanding hyper-schema.
+                </t>
+                <t>
+                    This keyword SHOULD be used in root schemas, and MAY be used in subschemas.
+                    Omitting this keyword in a subschema has the same effect as re-declaring
+                    the parent schema's vocabularies.  Omitting this keyword in a root schema
+                    has the same effect as specifying a one-element array with the same value
+                    as the value of "$schema", if any.
+                </t>
+                <t>
+                    For historical reasons, when "$vocabularies" is omitted from a root schema
+                    and the value of "$schema" is a hyper-schema identifier, then the behavior
+                    of "$vocabularies" is identical to a two-element array containing both the
+                    value of "$schema" and the URI of the corresponding validation vocabulary.
+                </t>
+            </section>
+        </section>
         <section title='Schema references with "$ref"'>
             <t>
                 The "$ref" keyword is used to reference a schema, and provides the ability to
@@ -405,6 +482,12 @@
                 The value of the "$ref" property MUST be a URI Reference.
                 Resolved against the current URI base, it identifies the URI of a schema to use.
                 All other properties in a "$ref" object MUST be ignored.
+            </t>
+            <t>
+                For the purpose of meta-schema validation, when a reference target is in a different
+                schema document than the reference context, validation MUST be processed on
+                each document independently.  The reference target MUST NOT be processed as if
+                it were included in the context document.
             </t>
             <t>
                 The URI is not a network locator, only an identifier. A schema need not be
