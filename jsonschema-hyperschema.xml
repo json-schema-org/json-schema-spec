@@ -1297,6 +1297,19 @@ GET /foo/
                         similarly structured headers wherever possible.
                     </t>
                     <t>
+                        It is RECOMMENDED that schema authors provide hints for the values of
+                        the following types of HTTP headers whenever applicable:
+                        <list style="symbols">
+                            <t>Method allowance</t>
+                            <t>Method-specific request media types</t>
+                            <t>Authentication challenges</t>
+                        </list>
+                    </t>
+                    <t>
+                        In general, headers that are likely to have different values at different
+                        times SHOULD NOT be included in "targetHints".
+                    </t>
+                    <t>
                         No distinction is made between headers that may appear in responses to
                         different methods, such as HEAD vs OPTIONS.
                     </t>
@@ -1478,12 +1491,27 @@ GET /foo/
                         other similarly structured headers wherever possible.
                     </t>
                     <t>
-                        The "Prefer" header defined in <xref target="RFC7240">RFC 7240</xref>
-                        is a good candidate for description in "headerSchema".  It defines
-                        several standard values and allows for extension values.
+                        It is RECOMMENDED that schema authors describe the available usage of
+                        the following types of HTTP headers whenever applicable:
+                        <list style="symbols">
+                            <t>Content negotiation</t>
+                            <t>Authentication and authorization</t>
+                            <t>Range requests</t>
+                            <t>The "Prefer" header</t>
+                        </list>
+                    </t>
+                    <t>
+                        Headers such as cache control and conditional request headers are generally
+                        implemented by intermediaries rather than the resource, and are therefore
+                        not generally useful to describe.  While the resource must supply the
+                        information needed to use conditional requests, the runtime handling of
+                        such headers and related responses is not resource-specific.
                     </t>
                     <figure>
                         <preamble>
+                            The "Prefer" header defined in <xref target="RFC7240">RFC 7240</xref>
+                            is a good candidate for description in "headerSchema".  It defines
+                            several standard values and allows for extension values.
                             This schema indicates that the target understands the
                             "respond-async" preference, the "wait" preference which
                             takes a number of seconds to wait, as well as "minimal" and
