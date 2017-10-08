@@ -14,7 +14,6 @@
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
-<!ENTITY I-D.kelly-json-hal SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-kelly-json-hal-08.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 <!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
 ]>
@@ -160,17 +159,9 @@
                 Hyper-schemas allow representations to take up fewer bytes on the wire, and
                 distribute the burden of link construction from the server to each client.
                 A user agent need not construct a link unless a client application requests
-                that link.
-            </t>
-            <t>
-                JSON Hyper-Schema can also be used on the server side to generate other
-                link serializations at runtime, such as HTTP Link headers or
-                <xref target="I-D.kelly-json-hal">JSON HAL</xref>.  Because hyper-schema offers
-                a superset of the features of many other systems, using it on the server
-                can make it easier to support multiple representation media types and
-                linking mechanisms.  It is even possible to support features such as JSON HAL's
-                embedded resources by automatically following links on the server and
-                inlining the results.
+                that link.  JSON Hyper-Schema can also be used on the server side to generate
+                other link serializations or representation formats at runtime, or pre-emptively
+                follow links to faciliate server push usage.
             </t>
         </section>
 
@@ -1248,7 +1239,6 @@ for varname in templateData:
             &rfc6573;
             &rfc7231;
             &I-D.nottingham-rfc5988bis;
-            &I-D.kelly-json-hal;
             &ldp;
         </references>
         <section title="JSON Hyper-Schema and HTTP" anchor="HTTP">
