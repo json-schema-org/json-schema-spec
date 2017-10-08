@@ -188,7 +188,7 @@
                 Each of these requirements is covered in more detail in the individual keyword
                 sections and keyword group overviews.
             </t>
-            <section title="Link discovery">
+            <section title="Link discovery and validity">
                 <t>
                     Before links can be used, they must be discovered.  JSON Hyper-Schema provides
                     for two ways to discover links: based on the location in the instance to which
@@ -201,14 +201,19 @@
                     In both approaches, the relevant <xref target="base">"base"</xref>
                     values MUST be included as described in that keyword's section.
                 </t>
+                <t>
+                    Note that not all discovered links will necessarily be valid for use with
+                    the specific instance at hand.  Links may be unusable due to the contents
+                    of the instance or input, as described in the keywords controlling the
+                    link construction process.
+                </t>
                 <section title="By hyper-schema applicability">
                     <t>
                         An implementation MUST find and make the links in all applicable
                         (sub)schemas available to clients.  Schema applicability is defined
                         in <xref target="json-schema-validation">Section 10.1 of the JSON Schema
-                        validation specification</xref>.  Links that cannot fulfill
-                        their "templateRequired" keyword based on the instance and/or potential
-                        client input MUST be excluded.
+                        validation specification</xref>.  Links that are not valid with the
+                        current instance and/or client input MUST be excluded.
                     </t>
                     <t>
                         These links MUST all be presented as a single set, regardless
@@ -250,10 +255,9 @@
                     </t>
                     <t>
                         For a given link, an implementation MUST be able to construct the
-                        target IRI or URI based on the instance and, if "hrefSchema" is present,
-                        client input.  When working with client input, the input data MUST be
-                        pre-populated from the instance when a template variable matches instance
-                        data and is present in "hrefSchema".
+                        target IRI or URI based on the instance and/or client input.
+                        When working with client input, the input data MUST be pre-populated
+                        from the instance as controlled by the link construction keywords.
                     </t>
                     <t>
                         For both context and target URIs, this requirement includes
@@ -262,10 +266,9 @@
                     </t>
                     <t>
                         In order to encourage treating context and target URIs as opaque
-                        identifiers, implementations MAY opt to hide those fields that
-                        are only used in URI construction ("href", "templatePointers",
-                        "templateRequired", "anchor", and "anchorPointer") when making
-                        the remainder of the LDO available to clients.  Implementations
+                        identifiers, implementations MAY opt to hide those keywords that
+                        are only used in URI construction when making the remainder of the
+                        Link Description Object available to clients.  Implementations
                         MAY offer a configuration option to enable or disable encapsulation.
                     </t>
                 </section>
