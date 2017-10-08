@@ -361,7 +361,7 @@
                         sub-instance that validated against the schema containing the LDO.
                     </t>
                     <t>
-                        <xref target="hrefPointers">"hrefPointers"</xref> allows adjusting
+                        <xref target="templatePointers">"templatePointers"</xref> allows adjusting
                         the location from which instance data is resolved on a per-variable
                         basis.
                     </t>
@@ -551,18 +551,18 @@
                             express a requirement for those variables that can be supplied via input,
                             some variables must be resolved from instance data.  When that instance
                             data is not required by the context schema, the
-                            <xref target="hrefRequired">"hrefRequired</xref> keyword may be used to
-                            indicate that when the instance data is not available, the link does
-                            not apply.
+                            <xref target="templateRequired">"templateRequired</xref> keyword may
+                            be used to indicate that when the instance data is not available, the
+                            link does not apply.
                         </t>
                     </section>
                 </section>
 
             </section>
 
-            <section title="hrefPointers" anchor="hrefPointers">
+            <section title="templatePointers" anchor="templatePointers">
                 <t>
-                    The value of the "hrefPointers" link description property MUST be
+                    The value of the "templatePointers" link description property MUST be
                     an object.  Each property value in the object MUST be a valid
                     <xref target="RFC6901">JSON Pointer</xref>, or a valid
                     <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
@@ -597,18 +597,18 @@
         {
             "rel": "self",
             "href": "/trees/{rootId}/nodes/{id}",
-            "hrefPointers": {
+            "templatePointers": {
                 "rootId": "/id"
             }
         },
         {
             "rel": "up",
             "href": "/trees/{rootId}/nodes/{parentId}",
-            "hrefPointers": {
+            "templatePointers": {
                 "rootId": "/id",
                 "parentId": "2/id"
             },
-            "hrefRequired": ["parentId"]
+            "templateRequired": ["parentId"]
         }
     ]
 }]]>
@@ -616,7 +616,7 @@
                 </figure>
                 <t>
                     In "self" link, the context node's id resolves with the standard process and
-                    therefore does not appear in "hrefPointers".  In both "self" and "up" links,
+                    therefore does not appear in "templatePointers".  In both "self" and "up" links,
                     the root id is located using an absolute JSON Pointer. Finally, in "up" link,
                     the parent node uses a Relative JSON Pointer, going up two levels (one level up
                     is the array of children, two levels up is the whole parent node), and then
@@ -660,7 +660,7 @@
                 </t>
                 <t>
                     For the root node, the relative pointer for the parent doesn't point
-                    to anything, so <xref target="hrefRequired">"hrefRequired"</xref>
+                    to anything, so <xref target="templateRequired">"templateRequired"</xref>
                     prevents the link from being used with that node.
                 </t>
             </section>
@@ -756,7 +756,7 @@
                 </t>
             </section>
 
-            <section title="hrefRequired" anchor="hrefRequired">
+            <section title="templateRequired" anchor="templateRequired">
                 <t>
                     The value of this keyword MUST be an array, and the elements MUST be unique.
                     Each element SHOULD match a variable in the link's URI Template, without
@@ -767,21 +767,21 @@
                 <figure>
                     <preamble>
                         Here is a simplified version of the "up" link from the
-                        <xref target="hrefPointers">"hrefPointers</xref> tree example,
+                        <xref target="templatePointers">"templatePointers</xref> tree example,
                         modified to only use the parent identifier for its "href" template.
                         While each individual node is required to have an "id" field, the
                         "up" link uses the parent node's field, and the root node, by definition,
-                        does not have a parent node.  Putting "parentId" in "hrefRequired" ensures
-                        that the "up" link is correctly unusable with the root node.
+                        does not have a parent node.  Putting "parentId" in "templateRequired"
+                        ensures that the "up" link is correctly unusable with the root node.
                     </preamble>
                     <artwork>
 <![CDATA[{
     "rel": "up",
     "href": "/nodes/{parentId}",
-    "hrefPointers": {
+    "templatePointers": {
         "parentId": "2/id"
     },
-    "hrefRequired": ["parentId"]
+    "templateRequired": ["parentId"]
 }]]>
                     </artwork>
                 </figure>
