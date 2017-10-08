@@ -907,20 +907,7 @@
                             representation.
                         </t>
                         <t>
-                            Omitting "submissionSchema" or setting the entire schema to "false"
-                            prevents any user agent data from being accepted.
-                            <cref>
-                                Is this correct?  In draft-06 this was the only way to signal
-                                support for data submission, but now we have "targetHints" for
-                                that.  It may make more sense for this to default to behaving
-                                as if the schema is set to true.  The original idea was that
-                                both this keyword and "hrefSchema" indicated the presence
-                                of optional functionality.  This makes sense for "hrefSchema",
-                                as it is used with "href" which is owned by the hyper-schema.
-                                However, "submissionSchema" describes a message that is
-                                supposedly accepted by the target resource.  In general, we
-                                choose defaults that avoid constraining target behavior.
-                            </cref>
+                            Omitting "submissionSchema" has the same behavior as a value of "true".
                         </t>
                     </section>
                 </section>
