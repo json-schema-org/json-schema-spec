@@ -1366,7 +1366,206 @@ for varname in templateData:
         </section>
 
         <section title="Examples" anchor="examples">
-            <t><cref>Examples are being added in a subsequent PR.</cref></t>
+            <t>
+                This section shows how the keywords that construct URIs and JSON Pointers
+                are used.  The results are shown in the format used by the test suite.
+                <cref>
+                    Need to post that and link it, but it should be pretty self-explanatory
+                    to those of you reviewing things at this stage.
+                </cref>
+            </t>
+            <t> Most other keywords are either straightforward ("title" and "description"),
+                apply validation to specific sorts of input, requests, or responses, or have
+                protocol-specific behavior.  Examples demonstrating HTTP usage are available
+                in <xref target="HTTP">an Appendix</xref>.
+            </t>
+
+            <section title="Entry point links, no templates">
+                <t>
+                    For this example, we will assume an example API with a documented
+                    entry point URI of https://example.com, which is an empty JSON object
+                    with a link to a schema.  Here, the entry point has no data of its
+                    own and exists only to provide an initial set of links:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+GET https://api.example.com HTTP/1.1
+
+200 OK
+Content-Type: application/json
+Link: <https://schema.example.com/entry> rel=describedBy
+{}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    The linked hyper-schema defines the API's base URI and provides
+                    two links:  an "about" link to API documentation, and a "self"
+                    link indicating that this is a schema for the base URI.  In this
+                    case the base URI is also the entry point URI.
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "$id": "https://schemaexample.com/entry",
+    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "base": "https://api.example.com",
+    "links": [
+        {
+            "rel": "self",
+            "href": ""
+        },
+        {
+            "rel": "about",
+            "href": "/docs"
+        }
+    ]
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    These are the simplest possible links, with only a relation type and
+                    an "href" with no template variables.  They resolve as follows:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[[
+    {
+        "contextUri": "https://api.example.com",
+        "contextPointer": "",
+        "rel": "self",
+        "targetUri": "https://api.example.com",
+        "attachmentPointer": ""
+    },
+    {
+        "contextUri": "https://api.example.com",
+        "contextPointer": "",
+        "rel": "about",
+        "targetUri": "https://api.example.com/docs",
+        "attachmentPointer": ""
+    }
+]]]>
+                    </artwork>
+                </figure>
+                <t>
+                    The attachment pointer is the root pointer (the only possiblity with
+                    an empty object for the instance).  The context URI is the default,
+                    which is the requested document.  Since application/json does not allow
+                    for fragments, the context pointer is necessary to fully describe the
+                    context.  Its default behavior is to be the same as the attachement pointer.
+                </t>
+            </section>
+            <section title="Individually identified resources">
+                <t>
+                    Let's add "things" to our system, starting with an individual thing:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[{
+    "$id": "https://schema.example.com/thing",
+    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "base": "http://api.example.com",
+    "type": "object",
+    "required": "data",
+    "properties": {
+        "id": {"$ref": "#/definitions/id"},
+        "data": true
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "things/{id}",
+            "hrefRequired": "id",
+            "targetSchema": {"$ref": "#"}
+        }
+    ],
+    "definitions": {
+            "type": "integer",
+            "minimum": 1,
+            "readOnly": true
+        }
+    }
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    Our "thing" has a server-assigned id, which is required in order to
+                    construct the "self" link.  It also has a "data" field which can be
+                    of any type.  The reason for the "definitions" section will be clear
+                    in the next example.
+                </t>
+                <t>
+                    Note that "id" is not required by the validation schema, but is required
+                    by the self link.  This makes sense: a "thing" only has a URI if it has
+                    been created, and the server has assigned an id.  However, you can use
+                    this schema with an instance containing only the data field, which allows
+                    you to validate "thing" instances that you are about to create.
+                </t>
+                <t>
+                    Let's add a link to our entry point schema that lets you jump directly
+                    to a particular thing if you can supply it's id as input.  To save space,
+                    only the new LDO is shown.  Unlike "self" and "about", there is no
+                    IANA-registered relationship about hypothetical things, so an extension
+                    relationship is defined using the
+                    <xref target="RFC4151">"tag:" URI scheme</xref>:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[{
+    "rel": "tag:rel.example.com,2017:thing",
+    "href": "things/{id}",
+    "hrefSchema": {
+        "required": ["id"],
+        "properties": {
+            "id": {"$ref": "thing#/definitions/id"}
+                "type": "integer",
+                "minimum": 1
+            }
+        }
+    },
+    "targetSchema": {"$ref": "thing#"}
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    The "href" value here is the same, but everything else is different.
+                    Recall that the instance is an empty object, so "id" cannot be resolved
+                    from instance data.  Instead it is required as client input.  This LDO
+                    could also have used "hrefRequired" but with "required" in "hrefSchema"
+                    it is not strictly necessary.  Providing "hrefRequired" without marking
+                    "id" as requried in "hrefSchema" would lead to errors, as client input
+                    is the only possible source for resolving this link.
+                </t>
+            </section>
+            <section title="Collections">
+                <t><cref>
+                    Reciprocal collection/item relations
+                    Pagination: fixed links vs jumping to an arbitrary offset
+                    Using "anchorPointer" and "hrefPointer"
+                    Discovering ordered links
+                    Multiple self links (for the collection and each item)
+                </cref></t>
+            </section>
+            <section title="Complex URI Template input">
+                <t><cref>
+                    Pre-populated input data from the instance.
+                    Forbidding input and requiring instance data.
+                    Requiring input and forbidding instance data.
+                </cref></t>
+            </section>
+            <section title='"anchor" and "base" as URI Templates'>
+                <t><cref>
+                    "base" used as a template with both "anchor" and "href" templates.
+                </cref></t>
+            </section>
+            <section title="Non-JSON media types and non-HTTP URIs">
+                <t><cref>
+                    Multipart request example
+                    mailto: example
+                </cref></t>
+            </section>
         </section>
 
         <section title="Security Considerations" anchor="security">
