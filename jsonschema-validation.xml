@@ -1263,6 +1263,27 @@
                     </t>
                 </section>
 
+                <section title='"secret"'>
+                    <t>
+                        The value of this keyword MUST be a boolean.  When multiple occurrences
+                        of this keyword are applicable to a single sub-instance, the resulting
+                        value MUST be true if any occurrence specifies a true value, and MUST
+                        be false otherwise.
+                    </t>
+                    <t>
+                        If it has value of boolean true, this keyword indicates that the value
+                        of the instance is sensitive in nature and SHOULD NOT be displayed
+                        except while being created.  A system MAY implement this keyword as a
+                        write-only value.
+                    </t>
+                    <t>
+                        This keyword can be used to assist in user interface instance generation.
+                    </t>
+                    <t>
+                        Omitting this keyword has the same behavior as a value of false.
+                    </t>
+                </section>
+
                 <section title='"examples"'>
                     <t>
                         The value of this keyword MUST be an array.
