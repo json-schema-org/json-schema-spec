@@ -1029,9 +1029,15 @@ GET /foo/
             <section title="anchor" anchor="anchor">
                 <t>
                     This property sets the context URI of the link.
-                    The value of the property MUST be resolved as a
-                    <xref target="RFC3986">URI-reference</xref> against
-                    the base URI of the instance.
+                    The value of the property is a <xref target="RFC6570">URI Template</xref>,
+                    and the resulting <xref target="RFC3986">URI-reference</xref> MUST be resolved
+                    against the base URI of the instance.
+                </t>
+                <t>
+                    The URI is computed from the provided URI template using the same process
+                    described for the <xref target="href">"href"</xref> property, with the
+                    exception that <xref target="hrefSchema">"hrefSchema"</xref> MUST NOT
+                    be applied.  Unlike target URIs, context URIs do not accept user input.
                 </t>
             </section>
 
