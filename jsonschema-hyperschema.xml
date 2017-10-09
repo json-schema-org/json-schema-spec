@@ -1551,13 +1551,15 @@ GET /foo/
                 <preamble>
                     This is the high-level algorithm as pseudocode.  "T" comes from either
                     "href" or "anchor" within the LDO, or from "base" in a containing schema.
-                    Pseudocode for each step follows.
+                    Pseudocode for each step follows.  "anchorOrHref" indicates which of the
+                    two started the process (since "base" is always resolved in order to finish
+                    resolving one or the other of those keywords).
                 </preamble>
                 <artwork>
 <![CDATA[
 templateData = populateDataFromInstance(T, ldo, instance)
 
-if resolving "href" or "base" for "href" and ldo.hrefSchema exists:
+if anchorOrHref == "href" and ldo.hrefSchema exists:
     inputData = acceptInput(ldo, instance, templateData)
     for varname in inputData:
         templateData[varname] = inputData[varname]
@@ -1574,13 +1576,20 @@ R = rfc6570ResolutionAlgorithm(T, templateData)
 
             <section title="Populating template data from the instance">
                 <t>
-                    This step looks at various data sources in the instance:
+                    This step looks at various locations in the instance for variable values.
+                    For each variable:
                     <list>
-                        <t>Use "templatePointers" to find values where appropriate</t>
-                        <t>Look in the immediate instance for remaining values</t>
                         <t>
-                            Either way, if there is a value there, put it in the
-                            template resolution data set
+                            Use "templatePointers" to find a value if the variable
+                            appears in that keyword's value
+                        </t>
+                        <t>
+                            Otherwise, look for a property names matching the variable in
+                            the instance location to which the link is attached
+                        </t>
+                        <t>
+                            In either case, if there is a value at the location, put it in
+                            the template resolution data set
                         </t>
                     </list>
                 </t>
