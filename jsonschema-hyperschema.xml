@@ -1409,7 +1409,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     <artwork>
 <![CDATA[
 {
-    "$id": "https://schemaexample.com/entry",
+    "$id": "https://schema.example.com/entry",
     "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
     "base": "https://api.example.com",
     "links": [
@@ -1454,7 +1454,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     an empty object for the instance).  The context URI is the default,
                     which is the requested document.  Since application/json does not allow
                     for fragments, the context pointer is necessary to fully describe the
-                    context.  Its default behavior is to be the same as the attachement pointer.
+                    context.  Its default behavior is to be the same as the attachment pointer.
                 </t>
             </section>
             <section title="Individually identified resources">
@@ -1477,11 +1477,12 @@ Link: <https://schema.example.com/entry> rel=describedBy
         {
             "rel": "self",
             "href": "things/{id}",
-            "hrefRequired": "id",
+            "hrefRequired": ["id"],
             "targetSchema": {"$ref": "#"}
         }
     ],
     "definitions": {
+        "id": {
             "type": "integer",
             "minimum": 1,
             "readOnly": true
@@ -1520,9 +1521,6 @@ Link: <https://schema.example.com/entry> rel=describedBy
         "required": ["id"],
         "properties": {
             "id": {"$ref": "thing#/definitions/id"}
-                "type": "integer",
-                "minimum": 1
-            }
         }
     },
     "targetSchema": {"$ref": "thing#"}
@@ -1535,7 +1533,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     from instance data.  Instead it is required as client input.  This LDO
                     could also have used "hrefRequired" but with "required" in "hrefSchema"
                     it is not strictly necessary.  Providing "hrefRequired" without marking
-                    "id" as requried in "hrefSchema" would lead to errors, as client input
+                    "id" as required in "hrefSchema" would lead to errors, as client input
                     is the only possible source for resolving this link.
                 </t>
             </section>
