@@ -1511,7 +1511,7 @@ GET /foo/
                 All three keywords share the same algorithm for resolving variables from
                 instance data, which makes use of the "templatePointers" and "templateRequired"
                 keywords.  When resolving "href", both it and any "base" templates
-                needed for resolution to an absolute URI, the algorithm is modfied to
+                needed for resolution to an absolute URI, the algorithm is modified to
                 optionally accept user input based on the "hrefSchema" keyword.
             </t>
             <t>
@@ -1551,15 +1551,15 @@ GET /foo/
                 <preamble>
                     This is the high-level algorithm as pseudocode.  "T" comes from either
                     "href" or "anchor" within the LDO, or from "base" in a containing schema.
-                    Pseudocode for each step follows.  "anchorOrHref" indicates which of the
-                    two started the process (since "base" is always resolved in order to finish
-                    resolving one or the other of those keywords).
+                    Pseudocode for each step follows.  "initialTemplateKeyword" indicates
+                    which of the two started the process (since "base" is always resolved
+                    in order to finish resolving one or the other of those keywords).
                 </preamble>
                 <artwork>
 <![CDATA[
 templateData = populateDataFromInstance(T, ldo, instance)
 
-if anchorOrHref == "href" and ldo.hrefSchema exists:
+if initialTemplateKeyword == "href" and ldo.hrefSchema exists:
     inputData = acceptInput(ldo, instance, templateData)
     for varname in inputData:
         templateData[varname] = inputData[varname]
@@ -1584,7 +1584,7 @@ R = rfc6570ResolutionAlgorithm(T, templateData)
                             appears in that keyword's value
                         </t>
                         <t>
-                            Otherwise, look for a property names matching the variable in
+                            Otherwise, look for a property name matching the variable in
                             the instance location to which the link is attached
                         </t>
                         <t>
@@ -1640,7 +1640,7 @@ for varname in T:
                     <preamble>
                         "InputForm" represents whatevers sort of input mechanism is appropriate.
                         This may be a literal web form, or may be a more programmatic construct
-                        such as a callback funciton accepting specific fields and data types,
+                        such as a callback function accepting specific fields and data types,
                         with the given initial values, if any.
                     </preamble>
                     <artwork>
