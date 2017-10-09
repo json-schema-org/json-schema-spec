@@ -15,7 +15,6 @@
 <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
-<!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -1257,7 +1256,6 @@ for varname in templateData:
             &rfc6573;
             &rfc7231;
             &I-D.nottingham-rfc5988bis;
-            &ldp;
         </references>
         <section title="JSON Hyper-Schema and HTTP" anchor="HTTP">
             <t>
@@ -1300,8 +1298,8 @@ for varname in templateData:
                 <t>
                     The relationship between a resource's representation and HTTP requests and
                     responses is determined by <xref target="RFC7231">RFC 7231, section 4.3.1 -
-                        "GET", section 4.3.4 "PUT", and section 3.1.4.2,
-                        "Content-Location"</xref>. In particular, "targetSchema" suggests what a
+                    "GET", section 4.3.4 "PUT", and section 3.1.4.2, "Content-Location"</xref>.
+                    In particular, "targetSchema" suggests what a
                     client can expect for the response to an HTTP GET or any response for which
                     the "Content-Location" header is equal to the request URI, and what a client
                     should send if it replaces the resource in an HTTP PUT request.
@@ -1318,9 +1316,8 @@ for varname in templateData:
                 </t>
                 <t>
                     HTTP POST requests are determined by the "submissionSchema" and
-                    "submissionMediaType" fields.  Alternatively, the "Accept-Post" header has
-                    been defined and registered by the
-                    <xref target="W3C.REC-ldp-20150226">Linked Data Platform</xref>, and MAY be
+                    "submissionMediaType" fields.  Additionally, the "Accept-Post" header
+                    can be used to specify the necessary media type, and MAY be
                     advertised via the "targetHints" field.
                     <cref>
                         What happens if both are used?  Also, "submissionSchema" is a MUST
@@ -1328,15 +1325,6 @@ for varname in templateData:
                         the use of "Accept-Post" in "targetHints" seems incorrect.
                     </cref>
                 </t>
-<!-- targetMediaType and "Accept"
-                    <t>
-                        If this property's value is specified, and the link's target is to be obtained
-                        using any protocol that supports the HTTP/1.1 "Accept" header
-                        <xref target="RFC7231">RFC 7231, section 5.3.2</xref>, then user agents MAY use
-                        the value of this property to aid in the assembly of that header when making the
-                        request to the server.
-                    </t>
-  -->
             </section>
             <section title='Optimizing HTTP discoverability with "targetHints"'>
                 <t>
