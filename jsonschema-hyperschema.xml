@@ -8,6 +8,7 @@
 <!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+<!ENTITY rfc6068 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6068.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc6573 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6573.xml">
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
@@ -1468,7 +1469,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
     "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
     "base": "http://api.example.com",
     "type": "object",
-    "required": "data",
+    "required": ["data"],
     "properties": {
         "id": {"$ref": "#/definitions/id"},
         "data": true
@@ -1477,7 +1478,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
         {
             "rel": "self",
             "href": "things/{id}",
-            "hrefRequired": ["id"],
+            "templateRequired": ["id"],
             "targetSchema": {"$ref": "#"}
         }
     ],
@@ -1531,37 +1532,196 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     The "href" value here is the same, but everything else is different.
                     Recall that the instance is an empty object, so "id" cannot be resolved
                     from instance data.  Instead it is required as client input.  This LDO
-                    could also have used "hrefRequired" but with "required" in "hrefSchema"
-                    it is not strictly necessary.  Providing "hrefRequired" without marking
+                    could also have used "templateRequired" but with "required" in "hrefSchema"
+                    it is not strictly necessary.  Providing "templateRequired" without marking
                     "id" as required in "hrefSchema" would lead to errors, as client input
                     is the only possible source for resolving this link.
                 </t>
             </section>
-            <section title="Collections">
-                <t><cref>
-                    Reciprocal collection/item relations
-                    Pagination: fixed links vs jumping to an arbitrary offset
-                    Using "anchorPointer" and "hrefPointer"
-                    Discovering ordered links
-                    Multiple self links (for the collection and each item)
-                </cref></t>
-            </section>
-            <section title="Complex URI Template input">
-                <t><cref>
-                    Pre-populated input data from the instance.
-                    Forbidding input and requiring instance data.
-                    Requiring input and forbidding instance data.
-                </cref></t>
+            <section title="Submitting a payload and accepting URI input">
+                <t>
+                    This example covers using the "submission" fields for non-representation
+                    input, as well as using them alongside of resolving the URI Template with
+                    input.  Unlike HTML forms, which require either constructing a URI or
+                    sending a payload, but do not allow not both at once, JSON Hyper-Schema can
+                    describe both sorts of input to for the same operation on the same link.
+                </t>
+                <t>
+                    The "submissionSchema" and "submissionMediaType" fields are for
+                    describing payloads that are not representations of the target resource.
+                    When used with "http(s)://" URIs, they generally refer to a POST request
+                    payload, as seen in the <xref target="HTTP">appendix on HTTP usage</xref>.
+                </t>
+                <t>
+                    In this case, we use a "mailto:" URI, which, per
+                    <xref target="RFC6068">RFC 6068, Section 3"</xref>, does not provide any
+                    operation for retrieving a resource.  It can only be used to construct
+                    a message for sending.  Since there is no concept of a retrievable,
+                    replaceable, or deletable target resource, "targetSchema" and
+                    "targetMediaType" are not used.  Non-representation payloads are
+                    described by "submissionSchema" and "submission MediaType".
+                </t>
+                <t>
+                    Instead, we use "submissionMediaType" to indicate a multipart/alternative
+                    payload format, providing two representations of the same data (HTML and
+                    plain text).  Since a multipart/alternative message is an ordered sequence
+                    (the last part is the most preferred alternative), we model the sequence as
+                    an array in "submissionSchema".  Since each part is itself a document with
+                    a media type, we model each item in the array as a string, using
+                    "contentMediaType" to indicate the format within the string.
+                </t>
+                <t>
+                    Note that media types such as multipart/form-data, which associate a name with
+                    each part and are not ordered, should be modeled as JSON objects rather than
+                    arrays.
+                </t>
+                <t>
+                    For the URI parameters, each of the three demonstrates a different way of
+                    resolving the input:
+                    <list style="hanging">
+                        <t hangText="email:">
+                            This variable's presence in "templateRequired" means that it must be
+                            resolved for the template to be used.  Since the "false" schema
+                            assigned to it in "hrefSchema" excludes it from the input data set,
+                            it must be resolved from the instance.
+                        </t>
+                        <t hangText="title:">
+                            The instance field matching this variable is required, and it is also
+                            allowed in the input data.  So its instance value is used to
+                            pre-populate the input data set before accepting the client's input.
+                            The client can opt to leave the instance value in place.  Since
+                            this field is required in "hrefSchema", the client cannot delete it
+                            (although it could set it to an empty string).
+                        </t>
+                        <t hangText="cc:">
+                            The "false" schema set for this in the main schema prevents this field
+                            from having an instance value.  If it is present at all, it must come
+                            from client input.  As it is not required in "hrefSchema", it may not
+                            be used at all.
+                        </t>
+                    </list>
+                </t>
+                <figure>
+                    <preamble>
+                        Note that some lines are wrapped to fit this document's width restrictions.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "$id": "https://schema.example.com/interesting-stuff",
+    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "required": ["stuffWorthEmailingAbout", "email", "title"],
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "stuffWorthEmailingAbout": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "cc": false
+    },
+    "links": [
+        {
+            "rel": "author",
+            "href": "mailto:{email}?subject={title}{&cc}",
+            "templateRequired": ["email"],
+            "hrefSchema": {
+                "required": ["title"],
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "cc": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "email": false
+                }
+            }
+            "submissionMediaType":
+                    "multipart/alternative; boundary=ab2",
+            "submissionSchema": {
+                "type": "array",
+                "items": [
+                    {
+                        "type": "string",
+                        "contentMediaType":
+                                "text/plain; charset=utf8"
+                    },
+                    {
+                        "type": "string",
+                        "contentMediaType": "text/html"
+                    }
+                ],
+                "minItems": 2
+            }
+        }
+    ]
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    So, given the following instance retrieved from "https://api.example.com/stuff":
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[{
+    "title": "The Awesome Thing",
+    "stuffWorthEmailingAbout": "Lots of text here...",
+    "email": "someone@exapmle.com"
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    We can partially resolve the link as follows, before asking the client for input.
+                    Note that the input template line is wrapped to fit this document's width restrictions.
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[{
+    "contextUri": "https://api.example.com/stuff",
+    "contextPointer": "",
+    "rel": "author",
+    "hrefInputTemplate":
+      "mailto:someone@example.com?subject={title}{&cc}",
+    "hrefPrepopulatedInput": {
+        "title": "The Really Awesome Thing"
+    },
+    "attachmentPointer": ""
+}]]>
+                    </artwork>
+                </figure>
+                <t>
+                    Notice the "href*" keywords in place of "targetUri".  These are three
+                    possible "targetUri" values covering different sorts of input:
+                    <list style="hanging">
+                        <t hangText="No additional or changed input:">
+                            "mailto:someone@example.com?subject=The%20Awesome%20Thing"
+                        </t>
+                        <t hangText='Change "title" to "your work":'>
+                            "mailto:someone@example.com?subject=your%20work"
+                        </t>
+                        <t hangText='Change title add a "cc" of "other@elsewhere.org":'>
+                            "mailto:someone@example.com?subject=your%20work&amp;cc=other@elsewhere.org"
+                        </t>
+                    </list>
+                </t>
             </section>
             <section title='"anchor" and "base" as URI Templates'>
                 <t><cref>
                     "base" used as a template with both "anchor" and "href" templates.
                 </cref></t>
             </section>
-            <section title="Non-JSON media types and non-HTTP URIs">
+            <section title="Collections">
                 <t><cref>
-                    Multipart request example
-                    mailto: example
+                    Reciprocal collection/item relations
+                    Pagination: fixed links vs jumping to an arbitrary offset
+                    Using "anchorPointer" and "templatePointers"
+                    Discovering ordered links
+                    Multiple self links (for the collection and each item)
                 </cref></t>
             </section>
         </section>
@@ -1682,6 +1842,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
             &rfc4151;
             &rfc5789;
             &rfc5988;
+            &rfc6068;
             &rfc6573;
             &rfc7230;
             &rfc7231;
