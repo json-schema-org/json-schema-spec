@@ -1,269 +1,282 @@
-Internet Engineering Task Force                             G. Luff, Ed.
-Internet-Draft
-Intended status: Informational                             July 01, 2013
-Expires: January 02, 2014
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
+<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+]>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes" ?>
+<rfc category="info" docName="draft-handrews-relative-json-pointer-00" ipr="trust200902">
+    <front>
+        <title abbrev="Relative JSON Pointers">Relative JSON Pointers</title>
+
+        <author fullname="Geraint Luff" initials="G" surname="Luff">
+            <address>
+                <postal>
+                    <street></street>
+                    <city>Cambridge</city>
+                    <country>UK</country>
+                </postal>
+                <email>luffgd@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
+            <organization>Cloudflare, Inc.</organization>
+            <address>
+                <email>henry@cloudflare.com</email>
+            </address>
+        </author>
+
+        <date year="2017"/>
+        <workgroup>Internet Engineering Task Force</workgroup>
+        <keyword>JSON</keyword>
+        <keyword>JavaScript</keyword>
+        <keyword>Object</keyword>
+        <keyword>Notation</keyword>
 
 
-                         <span class="h1">Relative JSON Pointers</span>
-                  <span class="h1">draft-luff-relative-json-pointer-00</span>
+        <abstract>
+            <t>
+                JSON Pointer is a syntax for specifying locations in a JSON document,
+                starting from the document root.  This document defines an extension
+                to the JSON Pointer syntax, allowing relative locations from within
+                the document.
+            </t>
+        </abstract>
+    </front>
 
-Abstract
+    <middle>
+        <section title="Introduction">
+            <t>
+                JSON Pointer (<xref target="RFC6901">RFC 6901</xref>) is a syntax for specifying
+                locations in a JSON document, starting from the document root.  This
+                document defines an extension to the JSON Pointer syntax, allowing
+                relative locations from within the document.
+            </t>
+        </section>
 
-   JSON Pointer is a syntax for specifying locations in a JSON document,
-   starting from the document root.  This document defines an extension
-   to the JSON Pointer syntax, allowing relative locations from within
-   the document.
+        <section title="Conventions and Terminology">
+            <t>
+                <!-- The text in this section has been copied from the official boilerplate,
+                and should not be modified.-->
 
-Status of This Memo
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+                "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+                interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+            </t>
+        </section>
 
-   This Internet-Draft is submitted in full conformance with the
-   provisions of <a href="./bcp78">BCP 78</a> and <a href="./bcp79">BCP 79</a>.
+        <section title="Syntax">
+            <t>
+                A Relative JSON Pointer is a Unicode string (see RFC 4627,
+                <xref target="RFC4627">Section 3</xref>), comprising a positive integer,
+                followed by either a '#' (%x23) character or a JSON Pointer
+                (<xref target="RFC6901">RFC 6901</xref>).
+            </t>
+            <t>
+                The separation between the integer prefix and the JSON Pointer will
+                always be unambigious, because a JSON Pointer must be either zero-
+                length or start with a '/' (%x2F).  Similarly, a JSON Pointer will
+                never be ambiguous with the '#'.
+            </t>
+            <figure align="center">
+                <preamble>
+                    The ABNF syntax of a Relative JSON Pointer is:
+                </preamble>
+                <artwork>
+<![CDATA[
+      relative-json-pointer =  positive-integer &lt;json-pointer&gt;
+      relative-json-pointer =/ positive-integer "#"
+      positive-integer      =  %x30 / %x31-39 *( %x30-39 )
+              ; "0", or digits without a leading "0"
+]]>
+                </artwork>
+                <postamble>
+                    where &lt;json-pointer&gt; follows the production defined in
+                    <xref target="RFC6901">RFC 6901, Section&nbsp;3</xref> ("Syntax").
+                </postamble>
+            </figure>
+            <t>
+            </t>
+        </section>
 
-   Internet-Drafts are working documents of the Internet Engineering
-   Task Force (IETF).  Note that other groups may also distribute
-   working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at <a href="http://datatracker.ietf.org/drafts/current/">http://datatracker.ietf.org/drafts/current/</a>.
+        <section title="Evaluation">
+            <t>
+                Evaluation of a Relative JSON Pointer begins with a reference to a
+                value within a JSON document, and completes with either a value
+                within that document, a string corresponding to an object member, or
+                integer value representing an array index.
+            </t>
+            <t>
+                Evaluation begins by processing the positive-integer prefix.  This
+                can be found by taking the longest continuous sequence of decimal
+                digits available, starting from the beginning of the string, taking
+                the decimal numerical value.  If this value is more than zero, then
+                the following steps are repeated that number of times:
+                <list>
+                    <t>
+                        If the current referenced value is the root of the document, then
+                        evaluation fails (see below).
+                    </t>
+                    <t>
+                        If the referenced value is an item within an array, then the new
+                        referenced value is that array.
+                    </t>
+                    <t>
+                        If the referenced value is an object member within an object, then
+                        the new referenced value is that object.
+                    </t>
+                </list>
+                If the remainder of the Relative JSON Pointer is a JSON Pointer, then
+                evaluation proceeds as per <xref target="RFC6901">RFC 6901, Section 4</xref>
+                ("Evaluation"), with the modification that the initial reference
+                being used is the reference currently being held (which may not be
+                root of the document).
+            </t>
+            <t>
+                Otherwise (when the remainder of the Relative JSON Pointer is the
+                character '#'), the final result is determined as follows:
+                <list>
+                    <t>
+                        If the current referenced value is the root of the document, then
+                        evaluation fails (see below).
+                    </t>
+                    <t>
+                        If the referenced value is an item within an array, then the final
+                        evaluation result is the value's index position within the array.
+                    </t>
+                    <t>
+                        If the referenced value is an object member within an object, then
+                        the new referenced value is the corresponding member name.
+                    </t>
+                </list>
+            </t>
+        </section>
 
-   Internet-Drafts are draft documents valid for a maximum of six months
-   and may be updated, replaced, or obsoleted by other documents at any
-   time.  It is inappropriate to use Internet-Drafts as reference
-   material or to cite them other than as "work in progress."
-
-   This Internet-Draft will expire on January 02, 2014.
-
-Copyright Notice
-
-   Copyright (c) 2013 IETF Trust and the persons identified as the
-   document authors.  All rights reserved.
-
-   This document is subject to <a href="./bcp78">BCP 78</a> and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
-   (<a href="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</a>) in effect on the date of
-   publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
-
-
-
-
-<span class="grey">Luff                    Expires January 02, 2014                [Page 1]</span></pre>
-<hr class='noprint' style='width: 96ex;' align='left'/><!--NewPage--><pre class='newpage'><a name="page-2" id="page-2" href="#page-2" class="invisible"> </a>
-<span class="grey">Internet-Draft           Relative JSON Pointers                July 2013</span>
-
-
-Table of Contents
-
-   <a href="#section-1">1</a>.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-2">2</a>
-   <a href="#section-2">2</a>.  Conventions and Terminology . . . . . . . . . . . . . . . . .   <a href="#page-2">2</a>
-   <a href="#section-3">3</a>.  Syntax  . . . . . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-2">2</a>
-   <a href="#section-4">4</a>.  Evaluation  . . . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-3">3</a>
-   <a href="#section-5">5</a>.  JSON String Representation  . . . . . . . . . . . . . . . . .   <a href="#page-3">3</a>
-     <a href="#section-5.1">5.1</a>.  Examples  . . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-4">4</a>
-   <a href="#section-6">6</a>.  Non-use in URI Fragment Identifiers . . . . . . . . . . . . .   <a href="#page-4">4</a>
-   <a href="#section-7">7</a>.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-   <a href="#section-8">8</a>.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-   <a href="#section-9">9</a>.  Security Considerations . . . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-   <a href="#section-10">10</a>. References  . . . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-     <a href="#section-10.1">10.1</a>.  Normative References . . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-     <a href="#section-10.2">10.2</a>.  Informative References . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   <a href="#page-5">5</a>
-
-<span class="h2"><a class="selflink" name="section-1" href="#section-1">1</a>.  Introduction</span>
-
-   JSON Pointer (<a href="./rfc6901">RFC 6901</a> [<a href="./rfc6901" title="&quot;JavaScript Object Notation (JSON) Pointer&quot;">RFC6901</a>]) is a syntax for specifying
-   locations in a JSON document, starting from the document root.  This
-   document defines an extension to the JSON Pointer syntax, allowing
-   relative locations from within the document.
-
-<span class="h2"><a class="selflink" name="section-2" href="#section-2">2</a>.  Conventions and Terminology</span>
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in <a href="./rfc2119">RFC 2119</a> [<a href="./rfc2119" title="&quot;Key words for use in RFCs to Indicate Requirement Levels&quot;">RFC2119</a>].
-
-<span class="h2"><a class="selflink" name="section-3" href="#section-3">3</a>.  Syntax</span>
-
-   A Relative JSON Pointer is a Unicode string (see RFC  4627, <a href="./rfc4627#section-3">Section&nbsp;3
-   [RFC4627]</a>), comprising a positive integer, followed by either a '#'
-   (%x23) character or a JSON Pointer (<a href="./rfc6901">RFC 6901</a> [<a href="./rfc6901" title="&quot;JavaScript Object Notation (JSON) Pointer&quot;">RFC6901</a>]).
-
-   The separation between the integer prefix and the JSON Pointer will
-   always be unambigious, because a JSON Pointer must be either zero-
-   length or start with a '/' (%x2F).  Similarly, a JSON Pointer will
-   never be ambiguous with the '#'.
-
-              The ABNF syntax of a Relative JSON Pointer is:
-
-
-         relative-json-pointer =  positive-integer &lt;json-pointer&gt;
-         relative-json-pointer =/ positive-integer "#"
-         positive-integer      =  %x30 / %x31-39 *( %x30-39 )
-                 ; "0", or digits without a leading "0"
-
-
-
-<span class="grey">Luff                    Expires January 02, 2014                [Page 2]</span></pre>
-<hr class='noprint' style='width: 96ex;' align='left'/><!--NewPage--><pre class='newpage'><a name="page-3" id="page-3" href="#page-3" class="invisible"> </a>
-<span class="grey">Internet-Draft           Relative JSON Pointers                July 2013</span>
-
-
-     where &lt;json-pointer&gt; follows the production defined in <a href="./rfc6901#section-3">RFC 6901,
-                      Section&nbsp;3</a> [<a href="./rfc6901" title="&quot;JavaScript Object Notation (JSON) Pointer&quot;">RFC6901</a>] ("Syntax").
-
-                                 Figure 1
-
-<span class="h2"><a class="selflink" name="section-4" href="#section-4">4</a>.  Evaluation</span>
-
-   Evaluation of a Relative JSON Pointer begins with a reference to a
-   value within a JSON document, and completes with either a value
-   within that document, a string corresponding to an object member, or
-   integer value representing an array index.
-
-   Evaluation begins by processing the positive-integer prefix.  This
-   can be found by taking the longest continuous sequence of decimal
-   digits available, starting from the beginning of the string, taking
-   the decimal numerical value.  If this value is more than zero, then
-   the following steps are repeated that number of times:
-
-      If the current referenced value is the root of the document, then
-      evaluation fails (see below).
-
-      If the referenced value is an item within an array, then the new
-      referenced value is that array.
-
-      If the referenced value is an object member within an object, then
-      the new referenced value is that object.
-
-   If the remainder of the Relative JSON Pointer is a JSON Pointer, then
-   evaluation proceeds as per <a href="./rfc6901#section-4">RFC 6901, Section&nbsp;4</a> [<a href="./rfc6901" title="&quot;JavaScript Object Notation (JSON) Pointer&quot;">RFC6901</a>]
-   ("Evaluation"), with the modification that the initial reference
-   being used is the reference currently being held (which may not be
-   root of the document).
-
-   Otherwise (when the remainder of the Relative JSON Pointer is the
-   character '#'), the final result is determined as follows:
-
-      If the current referenced value is the root of the document, then
-      evaluation fails (see below).
-
-      If the referenced value is an item within an array, then the final
-      evaluation result is the value's index position within the array.
-
-      If the referenced value is an object member within an object, then
-      the new referenced value is the corresponding member name.
-
-<span class="h2"><a class="selflink" name="section-5" href="#section-5">5</a>.  JSON String Representation</span>
-
-
-
-
-
-<span class="grey">Luff                    Expires January 02, 2014                [Page 3]</span></pre>
-<hr class='noprint' style='width: 96ex;' align='left'/><!--NewPage--><pre class='newpage'><a name="page-4" id="page-4" href="#page-4" class="invisible"> </a>
-<span class="grey">Internet-Draft           Relative JSON Pointers                July 2013</span>
-
-
-   The concerns surrounding JSON String representation of a Relative
-   JSON Pointer are identical to those laid out in <a href="./rfc6901#section-5">RFC 6901, Section&nbsp;5</a>
-   [<a href="./rfc6901" title="&quot;JavaScript Object Notation (JSON) Pointer&quot;">RFC6901</a>].
-
-<span class="h3"><a class="selflink" name="section-5.1" href="#section-5.1">5.1</a>.  Examples</span>
-
-                   For example, given the JSON document:
-
-
-                         {
-                            "foo": ["bar", "baz"],
-                            "highly": {
-                               "nested": {
-                                  "objects": true
-                               }
+        <section title="JSON String Representation">
+            <t>
+                The concerns surrounding JSON String representation of a Relative
+                JSON Pointer are identical to those laid out in
+                <xref target="RFC6901">RFC 6901, Section 5</xref>
+            </t>
+            <section title="Examples">
+                <figure align="center">
+                    <preamble>
+                        For example, given the JSON document:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+                      {
+                         "foo": ["bar", "baz"],
+                         "highly": {
+                            "nested": {
+                               "objects": true
                             }
                          }
+                      }
+]]>
+                    </artwork>
+                </figure>
+                <figure align="center">
+                    <preamble>
+                        Starting from the value "baz" (inside "foo"), the following JSON
+                                strings evaluate to the accompanying values:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+                  "0"                         "baz"
+                  "1/0"                       "bar"
+                  "2/highly/nested/objects"   true
+                  "0#"                        1
+                  "1#"                        "foo"
+]]>
+                    </artwork>
+                </figure>
+                <figure align="center">
+                    <preamble>
+                        Starting from the value {"objects":true} (corresponding to the member
+                              key "nested"), the following JSON strings evaluate to the
+                                                accompanying values:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+                "0/objects"                 true
+                "1/nested/objects"          true
+                "2/foo/0"                   "bar"
+                "0#"                        "nested"
+                "1#"                        "highly"
+]]>
+                    </artwork>
+                </figure>
+            </section>
+        </section>
 
+        <section title="Non-use in URI Fragment Identifiers">
+            <t>
+                Unlike a JSON Pointer, a Relative JSON Pointer can not be used in a
+                URI fragment identifier.  Such fragments specify exact positions
+                within a document, and therefore Relative JSON Pointers are not
+                suitable.
+            </t>
+        </section>
 
-     Starting from the value "baz" (inside "foo"), the following JSON
-               strings evaluate to the accompanying values:
+        <section title="Error Handling">
+            <t>
+                In the event of an error condition, evaluation of the JSON Pointer
+                fails to complete.
+            </t>
+            <t>
+                Evaluation may fail due to invalid syntax, or referencing a non-
+                existent value.  This specification does not define how errors are
+                handled.  An application of JSON Relative Pointer SHOULD specify the
+                impact and handling of each type of error.
+            </t>
+        </section>
 
+        <section title="Acknowledgements">
+            <t>
+                The language and structure of this specification are based heavily on
+                <xref target="RFC6901"/>, sometimes quoting it outright.
+            </t>
+        </section>
 
-                     "0"                         "baz"
-                     "1/0"                       "bar"
-                     "2/highly/nested/objects"   true
-                     "0#"                        1
-                     "1#"                        "foo"
+        <section title="Security Considerations">
+            <t>
+                Evaluation of a given Relative JSON Pointer is not guaranteed to
+                reference an actual JSON value.  Applications using Relative JSON
+                Pointer should anticipate this situation by defining how a pointer
+                that does not resolve ought to be handled.
+            </t>
+            <t>
+                As part of processing, a composite data structure may be assembled
+                from multiple JSON documents (in part or in full).  In such cases,
+                applications SHOULD ensure that a Relative JSON Pointer does not
+                evaluate to a value outside the document for which is was written.
+            </t>
+            <t>
+                Note that JSON pointers can contain the NUL (Unicode U+0000)
+                character.  Care is needed not to misinterpret this character in
+                programming languages that use NUL to mark the end of a string.
+            </t>
+        </section>
+    </middle>
 
+    <back>
+        <!-- References Section -->
+        <references title="Normative References">
+            &RFC2119;
+            &RFC6901;
+        </references>
 
-   Starting from the value {"objects":true} (corresponding to the member
-         key "nested"), the following JSON strings evaluate to the
-                           accompanying values:
-
-
-                   "0/objects"                 true
-                   "1/nested/objects"          true
-                   "2/foo/0"                   "bar"
-                   "0#"                        "nested"
-                   "1#"                        "highly"
-
-
-<span class="h2"><a class="selflink" name="section-6" href="#section-6">6</a>.  Non-use in URI Fragment Identifiers</span>
-
-   Unlike a JSON Pointer, a Relative JSON Pointer can not be used in a
-   URI fragment identifier.  Such fragments specify exact positions
-   within a document, and therefore Relative JSON Pointers are not
-   suitable.
-
-
-
-<span class="grey">Luff                    Expires January 02, 2014                [Page 4]</span></pre>
-<hr class='noprint' style='width: 96ex;' align='left'/><!--NewPage--><pre class='newpage'><a name="page-5" id="page-5" href="#page-5" class="invisible"> </a>
-<span class="grey">Internet-Draft           Relative JSON Pointers                July 2013</span>
-
-
-<span class="h2"><a class="selflink" name="section-7" href="#section-7">7</a>.  Error Handling</span>
-
-   In the event of an error condition, evaluation of the JSON Pointer
-   fails to complete.
-
-   Evaluation may fail due to invalid syntax, or referencing a non-
-   existent value.  This specification does not define how errors are
-   handled.  An application of JSON Relative Pointer SHOULD specify the
-   impact and handling of each type of error.
-
-<span class="h2"><a class="selflink" name="section-8" href="#section-8">8</a>.  Acknowledgements</span>
-
-   The language and structure of this specification are based heavily on
-   <a href="./rfc6901">RFC6901</a>, sometimes quoting it outright.
-
-<span class="h2"><a class="selflink" name="section-9" href="#section-9">9</a>.  Security Considerations</span>
-
-   Evaluation of a given Relative JSON Pointer is not guaranteed to
-   reference an actual JSON value.  Applications using Relative JSON
-   Pointer should anticipate this situation by defining how a pointer
-   that does not resolve ought to be handled.
-
-   As part of processing, a composite data structure may be assembled
-   from multiple JSON documents (in part or in full).  In such cases,
-   applications SHOULD ensure that a Relative JSON Pointer does not
-   evaluate to a value outside the document for which is was written.
-
-   Note that JSON pointers can contain the NUL (Unicode U+0000)
-   character.  Care is needed not to misinterpret this character in
-   programming languages that use NUL to mark the end of a string.
-
-<span class="h2"><a class="selflink" name="section-10" href="#section-10">10</a>.  References</span>
-
-<span class="h3"><a class="selflink" name="section-10.1" href="#section-10.1">10.1</a>.  Normative References</span>
-
-   [<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", <a href="./bcp14">BCP 14</a>, <a href="./rfc2119">RFC 2119</a>, March 1997.
-
-   [<a name="ref-RFC6901" id="ref-RFC6901">RFC6901</a>]  Bryan, P., Zyp, K., and M. Nottingham, "JavaScript Object
-              Notation (JSON) Pointer", <a href="./rfc6901">RFC 6901</a>, April 2013.
-
-<span class="h3"><a class="selflink" name="section-10.2" href="#section-10.2">10.2</a>.  Informative References</span>
-
-   [<a name="ref-RFC4627" id="ref-RFC4627">RFC4627</a>]  Crockford, D., "The application/json Media Type for
-              JavaScript Object Notation (JSON)", <a href="./rfc4627">RFC 4627</a>, July 2006.
+        <references title="Informative References">
+            &RFC4627;
+        </references>
+    </back>
+</rfc>
