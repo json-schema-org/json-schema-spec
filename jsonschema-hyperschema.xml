@@ -473,7 +473,8 @@
                         a collection resource, as identified by these link relation types,
                         MUST NOT define semantics for that method that conflict with the semantics
                         of creating a collection member.  Collection resources MAY implement
-                        item creation via such a protocol method.
+                        item creation via such a protocol method, and user agents MAY assume
+                        that any such operation, if it exists, has item creation semantics.
                     </t>
                     <t>
                         As such a method would correspond to JSON Hyper-Schema's data submission
@@ -859,219 +860,147 @@
         </section>
 
         <section title="Implementation requirements">
-            <t><cref>THIS SECTION HAS JUST BEEN MOVED! It will be reworked soon</cref></t>
             <t>
                 At a high level, a conforming implementation will meet the following
                 requirements.  Each of these requirements is covered in more detail in the
                 individual keyword sections and keyword group overviews.
             </t>
-            <section title="Link discovery and validity">
-                <t>
-                    Before links can be used, they must be discovered.  JSON Hyper-Schema provides
-                    for two ways to discover links: based on the location in the instance to which
-                    they are attached, and based on the link context.  While the link context is
-                    the traditional notion of the "source" end of the link, the attachment point
-                    is often more useful with JSON instances, as it associates the link with
-                    the JSON data to which it is most relevant.
-                </t>
-                <t>
-                    In both approaches, the relevant <xref target="base">"base"</xref>
-                    values MUST be included as described in that keyword's section.
-                </t>
-                <t>
-                    Note that not all discovered links will necessarily be valid for use with
-                    the specific instance at hand.  Links may be unusable due to the contents
-                    of the instance or input, as described in the keywords controlling the
-                    link construction process.
-                </t>
-                <section title="By hyper-schema applicability">
-                    <t>
-                        An implementation MUST find and make the links in all applicable
-                        (sub)schemas available to clients.  Schema applicability is defined
-                        in <xref target="json-schema-validation">Section 10.1 of the JSON Schema
-                        validation specification</xref>.  Links that are not valid with the
-                        current instance and/or client input MUST be excluded.
+            <t>
+                Note that the requirements around how an implementation MUST recognize
+                "self", "collection", and "item" links are thoroughly covered in the
+                <xref target="relationType">link relation type</xref> section and are not
+                repeated here.
+            </t>
+            <t>
+                While it is not a mandatory format for implementations, the output format used
+                in the test suite summarizes what needs to be computed for each link before
+                it can be used:
+                <list style="hanging">
+                    <t hangText="contextUri">
+                        The fully resolved URI (with scheme) of the context resource.  If
+                        the context is not the entire resource and there is a usable fragment
+                        identifier syntax, then the URI includes a fragment.  Note that there
+                        is no such syntax for application/json.
                     </t>
-                    <t>
-                        Schemas that are found as values within Link Description Objects
-                        are not considered to be applicable to the instance, even when the
-                        link is applicable and valid.  They are only applied to various kinds
-                        of input or message payloads as described for each keyword.
+                    <t hangText="contextPointer">
+                        The JSON Pointer for the location within the instance of the context
+                        resource.  If the instance media type supports JSON Pointers as fragment
+                        identifiers, this pointer will be the same as the one encoded in the
+                        fragment of the "contextUri" field.
                     </t>
-                    <t>
-                        These links MUST all be presented as a single set, regardless
-                        of the number of subschemas involved.  The order of links in the set
-                        is not significant.
+                    <t hangText="rel">
+                        The link relation type, as it appears in the LDO.
                     </t>
-                </section>
-                <section title="By link context location">
-                    <t>
-                        Implementations MUST also make accessible the set of links for which
-                        a given instance location is the link's context.  All such links MUST
-                        be in at least one set of links produced by examining schema applicability.
+                    <t hangText="targetUri">
+                        The fully resolved URI (with a scheme) of the target resource.  If the
+                        link accepts input, this can only be produced once the input has been
+                        supplied.
                     </t>
-                    <t>
-                        Link sets based on a context can include links attached to elements
-                        of an ordered array.  Implementations MUST preserve the order of
-                        such links with respect to each other.  Order is not otherwise significant.
+                    <t hangText="hrefInputTemplates">
+                        The list of partially resolved URI references for a link that accepts
+                        input.  The first entry in the list is the partially resolved "href".
+                        The additional entries, if any, are the partially resolved "base" values
+                        ordered from the most immediate out to the root of the schema.
+                        Template variables that are pre-populated in the input are not resolved
+                        at this stage, as the pre-populated value can be overridden.
                     </t>
-                </section>
-            </section>
-            <section title="Link usage">
-                <t>
-                    Once discovered, a link is generally selected based on its link relation
-                    type, and used by communicating with the resource at the target URI.
-                    This means that the target URI must be correctly computed based on the
-                    instance data and optionally on input.  The context URI must similarly
-                    be calculated, although often only for use in context-based discovery
-                    as described above.  Finally, implementations need to recognize link
-                    relation types that have well-known semantics within JSON Hyper-Schema.
-                </t>
-                <section title="Target and context identification">
-                    <t>
-                        For a given link, an implementation MUST be able to identify the
-                        link's context.  The identifier MUST either be an IRI or URI
-                        that fully identifies the context, or an IRI or URI together
-                        with a JSON Pointer if the context is not an entire resource
-                        and the representation's media type does not allow constructing an
-                        appropriate fragment.
+                    <t hangText="hrefPrepopulatedInput">
+                        The data set that the user agent should use to prepopulate any
+                        input mechanism before accepting client input.  If input is to be
+                        accepted but no fields are to be pre-populated, then this will be
+                        an empty object.
                     </t>
-                    <t>
-                        For a given link, an implementation MUST be able to construct the
-                        target IRI or URI based on the instance and/or client input.
-                        When working with client input, the input data MUST be pre-populated
-                        from the instance as controlled by the link construction keywords.
+                    <t hangText="attachmentPointer">
+                        The JSON Pointer for the location within the instance to which the
+                        link is attached.  By default, "contextUri" and "attachementUri" are
+                        the same, but "contextUri" can be changed by LDO keywords, while
+                        "attachmentUri" cannot.
                     </t>
-                    <t>
-                        For both context and target URIs, this requirement includes
-                        determining the correct base URI when the target is provided as
-                        a relative reference.
-                    </t>
-                    <t>
-                        In order to encourage treating context and target URIs as opaque
-                        identifiers, implementations MAY opt to hide those keywords that
-                        are only used in URI construction when making the remainder of the
-                        Link Description Object available to clients.  Implementations
-                        MAY offer a configuration option to enable or disable encapsulation.
-                    </t>
-                </section>
-                <section title="Recognizing standard link relation types">
-                    <t>
-                        Implementations MUST recognize a link with a "self" relation typd as
-                        describing the possible interactions with the resource represented by
-                        the instance data.  Collections MUST be recognized based on traversing
-                        a "collection" link, or on discovering an "item" link which has the
-                        instance or sub-instance as its context.
-                    </t>
-                </section>
-                <section title="Providing access to target attributes and input schemas">
-                    <t>
-                        For a given link, an implementation MUST make the values of all
-                        target attribute keywords directly available to the client.
-                        Implementations MAY provide additional interfaces for using this
-                        information, which is discussed in each keyword's section.
-                    </t>
-                    <t>
-                        For a given link, an implementation MUST make the value of each
-                        input schema keyword directly available to the client.
-                    </t>
-                </section>
-            </section>
-            <section title="Additional functionality">
-                <t>
-                    Implementations MAY provide additional functionality coordinating the use of
-                    JSON Hyper-Schema with other specifications, including but not limited to
-                    JSON Schema validation, serializing payloads based on media types, and
-                    communicating with resources via protocols as indicated by URI schemes.
-                    <cref>
-                        This is vague.  I'm trying to convey that most uses of Hyper-Schema
-                        would benefit from including integration with the media types, URI schemes,
-                        and protocols, such as automatically validating submission data against
-                        "submissionSchema", encoding it according to "submissionMediaType",
-                        examining the URI for the "http" or "https" scheme, validating JSON
-                        representations of headers against "headerSchema", serializing them
-                        into HTTP header format, and constructing the appropriate POST request.
-                        While many of those activities are technically outside of the scope of
-                        Hyper-Schema, coordinating all of them is specific to Hyper-Schema and
-                        beneficial to automate.
-                    </cref>
-                </t>
-            </section>
-            <section title="Streaming parsers">
-                <t>
-                    The requirements around discovering links based on their context, or
-                    using the context of links to identify collections, present unique
-                    challenges when used with streaming parsers.  It is not possible to
-                    authoritatively fulfill these requirments without processing the entire
-                    schema and instance documents.
-                </t>
-                <t>
-                    Such implementations MAY chooose to return non-authoritative answers
-                    based on data processed to date.  When offering this approach,
-                    implementations MUST be clear on the nature of the response, and MUST
-                    offer an option to block and wait until all data is processed and
-                    an authoritative answer can be returned.
-                </t>
-            </section>
-        </section>
+                </list>
+                Other LDO keywords that are not involved in producing the above information
+                are included exactly as they appear when producing output for the test suite.
+                Those fields will not be further discussed here unless specifically relevant.
+            </t>
 
-        <section title="URI Templating" anchor="uriTemplating">
-            <t>
-                Three hyper-schema keywords are <xref target="RFC6570">URI Templates</xref>:
-                "base", "anchor", and "href".  Each are resolved separately to URI-references,
-                and then the anchor or href URI-reference is resolved against the base (which
-                is itself resolved against earlier bases as needed, each of which was first
-                resolved from a URI Template to a URI-reference).
-            </t>
-            <t>
-                All three keywords share the same algorithm for resolving variables from
-                instance data, which makes use of the "templatePointers" and "templateRequired"
-                keywords.  When resolving "href", both it and any "base" templates
-                needed for resolution to an absolute URI, the algorithm is modified to
-                optionally accept user input based on the "hrefSchema" keyword.
-            </t>
-            <t>
-                For each URI Template (T), the following pseudocode describes an algorithm for
-                resolving T into a URI-reference (R).  For the purpose of this algorithm:
-                <list style="symbols">
-                    <t>
-                        "ldo.templatePointers" is an empty object if the keyword was not
-                        present and "ldo.templateRequired" is likewise an empty array.
-                    </t>
-                    <t>
-                        "attachmentPointer" is the absolute JSON Pointer for the attachment
-                        location of the LDO.
-                    </t>
-                    <t>
-                        "getApplicableSchemas()" returns an iterable set of all (sub)schemas
-                        that apply to the attachment point in the instance.
-                    </t>
-                </list>
-            </t>
-            <t>
-                This algorithm should be applied first to either "href" or "anchor",
-                and then as needed to each successive "base".  The order is important,
-                as it is not always possible to tell whether a template will resolve
-                to a full URI or a URI-reference.
-            </t>
-            <t>
-                In English, the high-level algorithm is:
-                <list style="numbers">
-                    <t>Populate template variable data from the instance</t>
-                    <t>If input is desired, accept input</t>
-                    <t>Check that all required variables have a value</t>
-                    <t>Encode values into strings and fill out the template</t>
-                </list>
-            </t>
-            <figure>
-                <preamble>
-                    This is the high-level algorithm as pseudocode.  "T" comes from either
-                    "href" or "anchor" within the LDO, or from "base" in a containing schema.
-                    Pseudocode for each step follows.  "initialTemplateKeyword" indicates
-                    which of the two started the process (since "base" is always resolved
-                    in order to finish resolving one or the other of those keywords).
-                </preamble>
-                <artwork>
+            <section title="Link discovery and look-up">
+                <t>
+                    Before links can be used, they must be discovered by applying the hyper-schema
+                    to the instance and finding all applicable and valid links.  Note that in
+                    addition to collecting valid links, any <xref target="base">"base"</xref>
+                    values necessary to resolve each LDO's URI Templates must also be located
+                    and associated with the LDO through whatever mechanism is most useful for
+                    the implementation's URI Template resolution process.
+                </t>
+                <t>
+                    And implementation MUST support looking up links by either their
+                    attachement pointer or context pointer, either by performing the look-up
+                    or by providing the set of all links with both pointers determined
+                    so that user agents can implement the look-up themselves.
+                </t>
+                <t>
+                    When performing look-ups by context pointer, links that are attached to
+                    elements of the same array MUST be returned in the same order as the
+                    array elements to which they are attached.
+                </t>
+            </section>
+
+            <section title="URI Templating" anchor="uriTemplating">
+                <t>
+                    Three hyper-schema keywords are <xref target="RFC6570">URI Templates</xref>:
+                    "base", "anchor", and "href".  Each are resolved separately to URI-references,
+                    and then the anchor or href URI-reference is resolved against the base (which
+                    is itself resolved against earlier bases as needed, each of which was first
+                    resolved from a URI Template to a URI-reference).
+                </t>
+                <t>
+                    All three keywords share the same algorithm for resolving variables from
+                    instance data, which makes use of the "templatePointers" and "templateRequired"
+                    keywords.  When resolving "href", both it and any "base" templates
+                    needed for resolution to an absolute URI, the algorithm is modified to
+                    optionally accept user input based on the "hrefSchema" keyword.
+                </t>
+                <t>
+                    For each URI Template (T), the following pseudocode describes an algorithm for
+                    resolving T into a URI-reference (R).  For the purpose of this algorithm:
+                    <list style="symbols">
+                        <t>
+                            "ldo.templatePointers" is an empty object if the keyword was not
+                            present and "ldo.templateRequired" is likewise an empty array.
+                        </t>
+                        <t>
+                            "attachmentPointer" is the absolute JSON Pointer for the attachment
+                            location of the LDO.
+                        </t>
+                        <t>
+                            "getApplicableSchemas()" returns an iterable set of all (sub)schemas
+                            that apply to the attachment point in the instance.
+                        </t>
+                    </list>
+                </t>
+                <t>
+                    This algorithm should be applied first to either "href" or "anchor",
+                    and then as needed to each successive "base".  The order is important,
+                    as it is not always possible to tell whether a template will resolve
+                    to a full URI or a URI-reference.
+                </t>
+                <t>
+                    In English, the high-level algorithm is:
+                    <list style="numbers">
+                        <t>Populate template variable data from the instance</t>
+                        <t>If input is desired, accept input</t>
+                        <t>Check that all required variables have a value</t>
+                        <t>Encode values into strings and fill out the template</t>
+                    </list>
+                </t>
+                <figure>
+                    <preamble>
+                        This is the high-level algorithm as pseudocode.  "T" comes from either
+                        "href" or "anchor" within the LDO, or from "base" in a containing schema.
+                        Pseudocode for each step follows.  "initialTemplateKeyword" indicates
+                        which of the two started the process (since "base" is always resolved
+                        in order to finish resolving one or the other of those keywords).
+                    </preamble>
+                    <artwork>
 <![CDATA[
 templateData = populateDataFromInstance(T, ldo, instance)
 
@@ -1087,30 +1016,30 @@ for varname in ldo.templateRequired:
 templateData = stringEncode(templateData)
 R = rfc6570ResolutionAlgorithm(T, templateData)
 ]]>
-                </artwork>
-            </figure>
+                    </artwork>
+                </figure>
 
-            <section title="Populating template data from the instance">
-                <t>
-                    This step looks at various locations in the instance for variable values.
-                    For each variable:
-                    <list style="numbers">
-                        <t>
-                            Use "templatePointers" to find a value if the variable
-                            appears in that keyword's value
-                        </t>
-                        <t>
-                            Otherwise, look for a property name matching the variable in
-                            the instance location to which the link is attached
-                        </t>
-                        <t>
-                            In either case, if there is a value at the location, put it in
-                            the template resolution data set
-                        </t>
-                    </list>
-                </t>
-                <figure>
-                    <artwork>
+                <section title="Populating template data from the instance">
+                    <t>
+                        This step looks at various locations in the instance for variable values.
+                        For each variable:
+                        <list style="numbers">
+                            <t>
+                                Use "templatePointers" to find a value if the variable
+                                appears in that keyword's value
+                            </t>
+                            <t>
+                                Otherwise, look for a property name matching the variable in
+                                the instance location to which the link is attached
+                            </t>
+                            <t>
+                                In either case, if there is a value at the location, put it in
+                                the template resolution data set
+                            </t>
+                        </list>
+                    </t>
+                    <figure>
+                        <artwork>
 <![CDATA[
 for varname in T:
     varname = rfc3986PercentDecode(varname)
@@ -1126,40 +1055,46 @@ for varname in T:
     if value is defined:
         templateData[varname] = value
 ]]>
-                    </artwork>
-                </figure>
-            </section>
+                        </artwork>
+                    </figure>
+                </section>
 
-            <section title="Accepting input for template data">
-                <t>
-                    This step is relatively complex, as there are several cases to support.
-                    Some variables will forbid input and some will allow it.  Some will
-                    have initial values that need to be presented in the input interface,
-                    and some will not.
-                </t>
-                <t>
-                    <list style="numbers">
-                        <t>Figure out which variables can accept input</t>
-                        <t>
-                            Pre-populate the input data set if the template resolution data
-                            set has a value
-                        </t>
-                        <t>Accept input (present a web form, make a callback, etc.)</t>
-                        <t>Validate the input data set, (not the template resolution data set)</t>
-                        <t>
-                            Put the input in the template resolution data set, overriding
-                            any existing values
-                        </t>
-                    </list>
-                </t>
-                <figure>
-                    <preamble>
-                        "InputForm" represents whatevers sort of input mechanism is appropriate.
-                        This may be a literal web form, or may be a more programmatic construct
-                        such as a callback function accepting specific fields and data types,
-                        with the given initial values, if any.
-                    </preamble>
-                    <artwork>
+                <section title="Accepting input for template data">
+                    <t>
+                        This step is relatively complex, as there are several cases to support.
+                        Some variables will forbid input and some will allow it.  Some will
+                        have initial values that need to be presented in the input interface,
+                        and some will not.
+                    </t>
+                    <t>
+                        <list style="numbers">
+                            <t>
+                                Deterimine which variables can accept input
+                            </t>
+                            <t>
+                                Pre-populate the input data set if the template resolution data
+                                set has a value
+                            </t>
+                            <t>
+                                Accept input (present a web form, make a callback, etc.)
+                            </t>
+                            <t>
+                                Validate the input data set, (not the template resolution data set)
+                            </t>
+                            <t>
+                                Put the input in the template resolution data set, overriding
+                                any existing values
+                            </t>
+                        </list>
+                    </t>
+                    <figure>
+                        <preamble>
+                            "InputForm" represents whatevers sort of input mechanism is appropriate.
+                            This may be a literal web form, or may be a more programmatic construct
+                            such as a callback function accepting specific fields and data types,
+                            with the given initial values, if any.
+                        </preamble>
+                        <artwork>
 <![CDATA[
 form = new InputForm()
 for varname in T:
@@ -1190,18 +1125,18 @@ if not isValid(inputData, hrefSchema):
 
 return inputData:
 ]]>
-                    </artwork>
-                </figure>
-            </section>
+                        </artwork>
+                    </figure>
+                </section>
 
-            <section title="Encoding data as strings">
-                <t>
-                    This section is straightforward, converting literals to their names
-                    as strings, and converting numbers to strings in the most obvious manner,
-                    and percent-encoding as needed for use in the URI.
-                </t>
-                <figure>
-                    <artwork>
+                <section title="Encoding data as strings">
+                    <t>
+                        This section is straightforward, converting literals to their names
+                        as strings, and converting numbers to strings in the most obvious manner,
+                        and percent-encoding as needed for use in the URI.
+                    </t>
+                    <figure>
+                        <artwork>
 <![CDATA[
 for varname in templateData:
     value = templateData[varname]
@@ -1217,17 +1152,79 @@ for varname in templateData:
     else:
         templateData[varname] = rfc3986PercentEncode(value)
 ]]>
-                    </artwork>
-                    <postamble>
-                        In some software environments the original JSON representation of a
-                        number will not be available (there is no way to tell the difference
-                        between 1.0 and 1), so any reasonable representation should be used.
-                        Schema and API authors should bear this in mind, and use other types
-                        (such as string or boolean) if the exact representation is
-                        important.  If the number was provide as input in the form of a
-                        string, the string used as input SHOULD be used.
-                    </postamble>
-                </figure>
+                        </artwork>
+                        <postamble>
+                            In some software environments the original JSON representation of a
+                            number will not be available (there is no way to tell the difference
+                            between 1.0 and 1), so any reasonable representation should be used.
+                            Schema and API authors should bear this in mind, and use other types
+                            (such as string or boolean) if the exact representation is
+                            important.  If the number was provide as input in the form of a
+                            string, the string used as input SHOULD be used.
+                        </postamble>
+                    </figure>
+                </section>
+            </section>
+
+            <section title="Providing access to LDO keywords">
+                <t>
+                    For a given link, an implementation MUST make the values of all
+                    target attribute keywords directly available to the user agent.
+                    Implementations MAY provide additional interfaces for using this
+                    information, as discussed in each keyword's section.
+                </t>
+                <t>
+                    For a given link, an implementation MUST make the value of each
+                    input schema keyword directly available to the user agent.
+                </t>
+                <t>
+                    To encourage encapsulation of the URI Template resolution process,
+                    implementations MAY omit the LDO keywords that are used only to
+                    construct URIs.  However, implementations MUST provide access to
+                    the link relation type.
+                </t>
+                <t>
+                    Unrecognized keywords SHOULD be made available to the user agent,
+                    and MUST otherwise be ignored.
+                </t>
+            </section>
+
+            <section title="Additional functionality">
+                <t>
+                    Implementations MAY provide additional functionality coordinating the use of
+                    JSON Hyper-Schema with other specifications, including but not limited to
+                    JSON Schema validation, serializing payloads based on media types, and
+                    communicating with resources via protocols as indicated by URI schemes.
+                    <cref>
+                        This is vague.  I'm trying to convey that most uses of Hyper-Schema
+                        would benefit from including integration with the media types, URI schemes,
+                        and protocols, such as automatically validating submission data against
+                        "submissionSchema", encoding it according to "submissionMediaType",
+                        examining the URI for the "http" or "https" scheme, validating JSON
+                        representations of headers against "headerSchema", serializing them
+                        into HTTP header format, and constructing the appropriate POST request.
+                        While many of those activities are technically outside of the scope of
+                        Hyper-Schema, coordinating all of them is specific to Hyper-Schema and
+                        beneficial to automate.
+                    </cref>
+                </t>
+            </section>
+
+            <section title="Streaming parsers" anchor="streaming">
+                <t>
+                    The requirements around discovering links based on their context, or
+                    using the context of links to identify collections, present unique
+                    challenges when used with streaming parsers.  It is not possible to
+                    authoritatively fulfill these requirments without processing the entire
+                    schema and instance documents.
+                </t>
+                <t>
+                    Such implementations MAY chooose to return non-authoritative answers
+                    based on data processed to date.  When offering this approach,
+                    implementations MUST be clear on the nature of the response, and MUST
+                    offer an option to block and wait until all data is processed and
+                    an authoritative answer can be returned.
+                </t>
             </section>
         </section>
 
