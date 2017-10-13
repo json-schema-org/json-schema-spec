@@ -11,6 +11,7 @@
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc6573 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6573.xml">
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
+<!ENTITY rfc7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
@@ -117,7 +118,7 @@
             </t>
         </section>
 
-        <section title="Conventions and Terminology">
+        <section title="Notational Conventions">
             <t>
                 <!-- The text in this section has been copied from the official boilerplate,
                 and should not be modified.-->
@@ -125,11 +126,6 @@
                 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
                 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
                 interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
-            </t>
-
-            <t>
-                The terms "schema" and "instance" are to be interpreted as defined in the
-                <xref target="json-schema">JSON Schema core specification</xref>.
             </t>
         </section>
 
@@ -162,179 +158,128 @@
                 other link serializations or representation formats at runtime, or pre-emptively
                 follow links to faciliate server push usage.
             </t>
+
+            <section title="Terminology">
+                <t>
+                    The terms "schema", "instance", and "meta-schema" are to be interpreted as
+                    defined in the <xref target="json-schema">JSON Schema core specification</xref>.
+                </t>
+                <t>
+                    The terms "applicable" and "attached" are to be interpreted as defined in
+                    <xref target="json-schema-validation">Section 10.1 of the
+                    JSON Schema validation specification</xref>.
+                </t>
+                <t>
+                    The terms "link", "link context" (or "context"), "link target" (or "target"),
+                    and "target attributes" are to be interpreted as defined in
+                    <xref target="I-D.nottingham-rfc5988bis">Section 2 of RFC 5988bis</xref>.
+                </t>
+                <t>
+                    The term "user agent" is to be interpreted as defined in
+                    <xref target="RFC7230">Section 2.1 of RFC 7230</xref>, generalized to apply
+                    to any protocol that may be used in a hypermedia system rather than
+                    specifically being an HTTP client.
+                </t>
+                <t>
+                    This specification defines the following terms:
+                    <list style="hanging">
+                        <t hangText="JSON Hyper-Schema">
+                            A JSON Schema using the keywords defined by this specification.
+                        </t>
+                        <t hangText="hyper-schema">
+                            Within this document, the term "hyper-schema" always refers to
+                            a JSON Hyper-Schema
+                        </t>
+                        <t hangText="link validity">
+                            A valid link for an instance is one that is applicable to that
+                            instance and does not fail any requirement imposed by the keywords
+                            in the Link Description Object.
+                        </t>
+                        <t hangText="generic user agent">
+                            A user agent which is only aware of standardized link relations,
+                            media types, URI schemes, and protocols.  It may have an extensible
+                            architecture to allow adding support for standards beyond the core
+                            set of which it is aware.
+                        </t>
+                        <t hangText="client application">
+                            An application which uses a hypermedia system for a specific
+                            purpose.  Such an application may also be its own user agent,
+                            or it may be built on top of a generic user agent.  A client
+                            application is programmed with knowledge of link relations,
+                            media types, URI schemes, protocols, and data structures that
+                            are specific to the application's domain.
+                        </t>
+                        <t hangText="client input">
+                            Data provided through a user agent, and most often also through
+                            a client application.  Such data may be requested from a user
+                            interactively, or provided before interaction in forms such as
+                            command-line arguments, configuration files, or hardcoded values
+                            in source code.
+                        </t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Functionality">
+                <t>
+                    A JSON Hyper-Schema implementation is able to take a hyper-schema, an
+                    instance, and in some cases client input, and produce a set of fully
+                    resolved valid links.  As defined by
+                    <xref target="I-D.nottingham-rfc5988bis">RFC 5988bis, section 2</xref>,
+                    a link consists of a context, a typed relation, a target, and optionally
+                    additional target attributes.
+                </t>
+                <t>
+                    The relation type and target attributes are taken directly from each link's
+                    Link Description Object.  The context and target identifiers are constructed
+                    from some combination of URI Templates, instance data, and (in the case
+                    of the target identifier) client input.
+                </t>
+                <t>
+                    The target is always fully identified by a URI.  Due to the lack of a URI
+                    fragment identifier syntax for application/json and many other media types
+                    that can be used with JSON Hyper-Schema, the context may be only partially
+                    identified by a URI.  In such cases, the remaining identification will be
+                    provided as a JSON Pointer.
+                </t>
+                <t>
+                    A few IANA-registered link relation types are given specific semantics in
+                    a JSON Hyper-Schema document.  A "self" link is used to interact with the
+                    resource that the instance document represents, while "collection" and
+                    "item" links identify resources for which collection-specific semantics
+                    can be assumed.
+                </t>
+            </section>
         </section>
 
-        <section title="Meta-schema">
+        <section title="Meta-schemas and output schema">
+            <t>
+                <cref>The "draft-07-wip" is a placeholder.</cref>
+            </t>
             <t>
                 The current URI for the JSON Hyper-Schema meta-schema is
-                <eref target="http://json-schema.org/draft-06/hyper-schema#">
-                http://json-schema.org/draft-06/hyper-schema#</eref> (draft-06 version).
-            </t>
-        </section>
-
-        <section title="General implementation requirements">
-            <t>
-                A JSON Hyper-Schema implementation is able to take a hyper-schema, an
-                instance, and optionally an identification of a location within the instance
-                (such as a JSON Pointer or a URI fragment appropriate for the media type),
-                and produce information about any links that apply to that instance
-                or location.  This information is returned in the form of URIs and/or JSON Pointers.
-                Additionally, some fields are intended for direct use by user agents and
-                client applications.
+                <eref target="http://json-schema.org/draft-07-wip/hyper-schema#">
+                http://json-schema.org/draft-07-wip/hyper-schema#</eref>
+                (draft-07 work-in-progress version).
             </t>
             <t>
-                At a high level, a conforming implementation will meet the following requirements.
-                Each of these requirements is covered in more detail in the individual keyword
-                sections and keyword group overviews.
+                The <xref target="ldo">link description format</xref> can be used without JSON
+                Schema, and use of this format can be declared by referencing the normative
+                link description schema as the schema for the data structure that uses the links.
+                The URI of the normative link description schema is:
+                <eref target="http://json-schema.org/draft-07-wip/links#">
+                http://json-schema.org/draft-07-wip/links#</eref>
+                (draft-07 work-in-progress version).
             </t>
-            <section title="Link discovery and validity">
-                <t>
-                    Before links can be used, they must be discovered.  JSON Hyper-Schema provides
-                    for two ways to discover links: based on the location in the instance to which
-                    they are attached, and based on the link context.  While the link context is
-                    the traditional notion of the "source" end of the link, the attachment point
-                    is often more useful with JSON instances, as it associates the link with
-                    the JSON data to which it is most relevant.
-                </t>
-                <t>
-                    In both approaches, the relevant <xref target="base">"base"</xref>
-                    values MUST be included as described in that keyword's section.
-                </t>
-                <t>
-                    Note that not all discovered links will necessarily be valid for use with
-                    the specific instance at hand.  Links may be unusable due to the contents
-                    of the instance or input, as described in the keywords controlling the
-                    link construction process.
-                </t>
-                <section title="By hyper-schema applicability">
-                    <t>
-                        An implementation MUST find and make the links in all applicable
-                        (sub)schemas available to clients.  Schema applicability is defined
-                        in <xref target="json-schema-validation">Section 10.1 of the JSON Schema
-                        validation specification</xref>.  Links that are not valid with the
-                        current instance and/or client input MUST be excluded.
-                    </t>
-                    <t>
-                        Schemas that are found as values within Link Description Objects
-                        are not considered to be applicable to the instance, even when the
-                        link is applicable and valid.  They are only applied to various kinds
-                        of input or message payloads as described for each keyword.
-                    </t>
-                    <t>
-                        These links MUST all be presented as a single set, regardless
-                        of the number of subschemas involved.  The order of links in the set
-                        is not significant.
-                    </t>
-                </section>
-                <section title="By link context location">
-                    <t>
-                        Implementations MUST also make accessible the set of links for which
-                        a given instance location is the link's context.  All such links MUST
-                        be in at least one set of links produced by examining schema applicability.
-                    </t>
-                    <t>
-                        Link sets based on a context can include links attached to elements
-                        of an ordered array.  Implementations MUST preserve the order of
-                        such links with respect to each other.  Order is not otherwise significant.
-                    </t>
-                </section>
-            </section>
-            <section title="Link usage">
-                <t>
-                    Once discovered, a link is generally selected based on its link relation
-                    type, and used by communicating with the resource at the target URI.
-                    This means that the target URI must be correctly computed based on the
-                    instance data and optionally on input.  The context URI must similarly
-                    be calculated, although often only for use in context-based discovery
-                    as described above.  Finally, implementations need to recognize link
-                    relation types that have well-known semantics within JSON Hyper-Schema.
-                </t>
-                <section title="Target and context identification">
-                    <t>
-                        For a given link, an implementation MUST be able to identify the
-                        link's context.  The identifier MUST either be an IRI or URI
-                        that fully identifies the context, or an IRI or URI together
-                        with a JSON Pointer if the context is not an entire resource
-                        and the representation's media type does not allow constructing an
-                        appropriate fragment.
-                    </t>
-                    <t>
-                        For a given link, an implementation MUST be able to construct the
-                        target IRI or URI based on the instance and/or client input.
-                        When working with client input, the input data MUST be pre-populated
-                        from the instance as controlled by the link construction keywords.
-                    </t>
-                    <t>
-                        For both context and target URIs, this requirement includes
-                        determining the correct base URI when the target is provided as
-                        a relative reference.
-                    </t>
-                    <t>
-                        In order to encourage treating context and target URIs as opaque
-                        identifiers, implementations MAY opt to hide those keywords that
-                        are only used in URI construction when making the remainder of the
-                        Link Description Object available to clients.  Implementations
-                        MAY offer a configuration option to enable or disable encapsulation.
-                    </t>
-                </section>
-                <section title="Recognizing standard link relation types">
-                    <t>
-                        Implementations MUST recognize a link with a "self" relation typd as
-                        describing the possible interactions with the resource represented by
-                        the instance data.  Collections MUST be recognized based on traversing
-                        a "collection" link, or on discovering an "item" link which has the
-                        instance or sub-instance as its context.
-                    </t>
-                </section>
-                <section title="Providing access to target attributes and input schemas">
-                    <t>
-                        For a given link, an implementation MUST make the values of all
-                        target attribute keywords directly available to the client.
-                        Implementations MAY provide additional interfaces for using this
-                        information, which is discussed in each keyword's section.
-                    </t>
-                    <t>
-                        For a given link, an implementation MUST make the value of each
-                        input schema keyword directly available to the client.
-                    </t>
-                </section>
-            </section>
-            <section title="Additional functionality">
-                <t>
-                    Implementations MAY provide additional functionality coordinating the use of
-                    JSON Hyper-Schema with other specifications, including but not limited to
-                    JSON Schema validation, serializing payloads based on media types, and
-                    communicating with resources via protocols as indicated by URI schemes.
-                    <cref>
-                        This is vague.  I'm trying to convey that most uses of Hyper-Schema
-                        would benefit from including integration with the media types, URI schemes,
-                        and protocols, such as automatically validating submission data against
-                        "submissionSchema", encoding it according to "submissionMediaType",
-                        examining the URI for the "http" or "https" scheme, validating JSON
-                        representations of headers against "headerSchema", serializing them
-                        into HTTP header format, and constructing the appropriate POST request.
-                        While many of those activities are technically outside of the scope of
-                        Hyper-Schema, coordinating all of them is specific to Hyper-Schema and
-                        beneficial to automate.
-                    </cref>
-                </t>
-            </section>
-            <section title="Streaming parsers">
-                <t>
-                    The requirements around discovering links based on their context, or
-                    using the context of links to identify collections, present unique
-                    challenges when used with streaming parsers.  It is not possible to
-                    authoritatively fulfill these requirments without processing the entire
-                    schema and instance documents.
-                </t>
-                <t>
-                    Such implementations MAY chooose to return non-authoritative answers
-                    based on data processed to date.  When offering this approach,
-                    implementations MUST be clear on the nature of the response, and MUST
-                    offer an option to block and wait until all data is processed and
-                    an authoritative answer can be returned.
-                </t>
-            </section>
+            <t>
+                While implementations are free to provide output in any format, the format
+                used for examples in this document is also used by the conformance test suite,
+                and is therefore a good default output format.  The URI of the JSON Schema
+                describing that format is
+                <eref target="http://json-schema.org/draft-7-wip/hyper-schema-output#">
+                http://json-schema.org/draft-7-wip/hyper-schema-output#</eref>
+                (draft-07 work-in-progress version).
+            </t>
         </section>
         <section title="Schema keywords">
             <t>
@@ -377,7 +322,7 @@
             </section>
         </section>
 
-        <section title="Link Description Object">
+        <section title="Link Description Object" anchor="ldo">
             <t>
                 <cref>
                     This section references the work-in-progress RFC5988bis, with the expectation
@@ -409,14 +354,6 @@
                 <xref target="href">"href"</xref> and <xref target="rel">"rel"</xref> properties
                 MUST be present.  Each keyword is covered briefly in this section, with additional
                 usage explanation and comprehensive examples given later in the document.
-            </t>
-            <t>
-                The link description format can be used without JSON Schema, and use of this format
-                can be declared by referencing the normative link description schema as the schema
-                for the data structure that uses the links.
-                The URI of the normative link description schema is:
-                <eref target="http://json-schema.org/draft-06/links#">
-                http://json-schema.org/draft-06/links#</eref> (draft-06 version).
             </t>
 
             <section title="Link context" anchor="context">
@@ -921,6 +858,163 @@
             </section>
         </section>
 
+        <section title="Implementation requirements">
+            <t><cref>THIS SECTION HAS JUST BEEN MOVED! It will be reworked soon</cref></t>
+            <t>
+                At a high level, a conforming implementation will meet the following
+                requirements.  Each of these requirements is covered in more detail in the
+                individual keyword sections and keyword group overviews.
+            </t>
+            <section title="Link discovery and validity">
+                <t>
+                    Before links can be used, they must be discovered.  JSON Hyper-Schema provides
+                    for two ways to discover links: based on the location in the instance to which
+                    they are attached, and based on the link context.  While the link context is
+                    the traditional notion of the "source" end of the link, the attachment point
+                    is often more useful with JSON instances, as it associates the link with
+                    the JSON data to which it is most relevant.
+                </t>
+                <t>
+                    In both approaches, the relevant <xref target="base">"base"</xref>
+                    values MUST be included as described in that keyword's section.
+                </t>
+                <t>
+                    Note that not all discovered links will necessarily be valid for use with
+                    the specific instance at hand.  Links may be unusable due to the contents
+                    of the instance or input, as described in the keywords controlling the
+                    link construction process.
+                </t>
+                <section title="By hyper-schema applicability">
+                    <t>
+                        An implementation MUST find and make the links in all applicable
+                        (sub)schemas available to clients.  Schema applicability is defined
+                        in <xref target="json-schema-validation">Section 10.1 of the JSON Schema
+                        validation specification</xref>.  Links that are not valid with the
+                        current instance and/or client input MUST be excluded.
+                    </t>
+                    <t>
+                        Schemas that are found as values within Link Description Objects
+                        are not considered to be applicable to the instance, even when the
+                        link is applicable and valid.  They are only applied to various kinds
+                        of input or message payloads as described for each keyword.
+                    </t>
+                    <t>
+                        These links MUST all be presented as a single set, regardless
+                        of the number of subschemas involved.  The order of links in the set
+                        is not significant.
+                    </t>
+                </section>
+                <section title="By link context location">
+                    <t>
+                        Implementations MUST also make accessible the set of links for which
+                        a given instance location is the link's context.  All such links MUST
+                        be in at least one set of links produced by examining schema applicability.
+                    </t>
+                    <t>
+                        Link sets based on a context can include links attached to elements
+                        of an ordered array.  Implementations MUST preserve the order of
+                        such links with respect to each other.  Order is not otherwise significant.
+                    </t>
+                </section>
+            </section>
+            <section title="Link usage">
+                <t>
+                    Once discovered, a link is generally selected based on its link relation
+                    type, and used by communicating with the resource at the target URI.
+                    This means that the target URI must be correctly computed based on the
+                    instance data and optionally on input.  The context URI must similarly
+                    be calculated, although often only for use in context-based discovery
+                    as described above.  Finally, implementations need to recognize link
+                    relation types that have well-known semantics within JSON Hyper-Schema.
+                </t>
+                <section title="Target and context identification">
+                    <t>
+                        For a given link, an implementation MUST be able to identify the
+                        link's context.  The identifier MUST either be an IRI or URI
+                        that fully identifies the context, or an IRI or URI together
+                        with a JSON Pointer if the context is not an entire resource
+                        and the representation's media type does not allow constructing an
+                        appropriate fragment.
+                    </t>
+                    <t>
+                        For a given link, an implementation MUST be able to construct the
+                        target IRI or URI based on the instance and/or client input.
+                        When working with client input, the input data MUST be pre-populated
+                        from the instance as controlled by the link construction keywords.
+                    </t>
+                    <t>
+                        For both context and target URIs, this requirement includes
+                        determining the correct base URI when the target is provided as
+                        a relative reference.
+                    </t>
+                    <t>
+                        In order to encourage treating context and target URIs as opaque
+                        identifiers, implementations MAY opt to hide those keywords that
+                        are only used in URI construction when making the remainder of the
+                        Link Description Object available to clients.  Implementations
+                        MAY offer a configuration option to enable or disable encapsulation.
+                    </t>
+                </section>
+                <section title="Recognizing standard link relation types">
+                    <t>
+                        Implementations MUST recognize a link with a "self" relation typd as
+                        describing the possible interactions with the resource represented by
+                        the instance data.  Collections MUST be recognized based on traversing
+                        a "collection" link, or on discovering an "item" link which has the
+                        instance or sub-instance as its context.
+                    </t>
+                </section>
+                <section title="Providing access to target attributes and input schemas">
+                    <t>
+                        For a given link, an implementation MUST make the values of all
+                        target attribute keywords directly available to the client.
+                        Implementations MAY provide additional interfaces for using this
+                        information, which is discussed in each keyword's section.
+                    </t>
+                    <t>
+                        For a given link, an implementation MUST make the value of each
+                        input schema keyword directly available to the client.
+                    </t>
+                </section>
+            </section>
+            <section title="Additional functionality">
+                <t>
+                    Implementations MAY provide additional functionality coordinating the use of
+                    JSON Hyper-Schema with other specifications, including but not limited to
+                    JSON Schema validation, serializing payloads based on media types, and
+                    communicating with resources via protocols as indicated by URI schemes.
+                    <cref>
+                        This is vague.  I'm trying to convey that most uses of Hyper-Schema
+                        would benefit from including integration with the media types, URI schemes,
+                        and protocols, such as automatically validating submission data against
+                        "submissionSchema", encoding it according to "submissionMediaType",
+                        examining the URI for the "http" or "https" scheme, validating JSON
+                        representations of headers against "headerSchema", serializing them
+                        into HTTP header format, and constructing the appropriate POST request.
+                        While many of those activities are technically outside of the scope of
+                        Hyper-Schema, coordinating all of them is specific to Hyper-Schema and
+                        beneficial to automate.
+                    </cref>
+                </t>
+            </section>
+            <section title="Streaming parsers">
+                <t>
+                    The requirements around discovering links based on their context, or
+                    using the context of links to identify collections, present unique
+                    challenges when used with streaming parsers.  It is not possible to
+                    authoritatively fulfill these requirments without processing the entire
+                    schema and instance documents.
+                </t>
+                <t>
+                    Such implementations MAY chooose to return non-authoritative answers
+                    based on data processed to date.  When offering this approach,
+                    implementations MUST be clear on the nature of the response, and MUST
+                    offer an option to block and wait until all data is processed and
+                    an authoritative answer can be returned.
+                </t>
+            </section>
+        </section>
+
         <section title="URI Templating" anchor="uriTemplating">
             <t>
                 Three hyper-schema keywords are <xref target="RFC6570">URI Templates</xref>:
@@ -1254,6 +1348,7 @@ for varname in templateData:
             &rfc5789;
             &rfc5988;
             &rfc6573;
+            &rfc7230;
             &rfc7231;
             &I-D.nottingham-rfc5988bis;
         </references>
