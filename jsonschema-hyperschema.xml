@@ -13,6 +13,7 @@
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY rfc7807 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7807.xml">
 <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
@@ -1347,6 +1348,7 @@ for varname in templateData:
             &rfc6573;
             &rfc7230;
             &rfc7231;
+            &rfc7807;
             &I-D.nottingham-rfc5988bis;
         </references>
         <section title="JSON Hyper-Schema and HTTP" anchor="HTTP">
@@ -1487,18 +1489,10 @@ for varname in templateData:
                 style, enable the creation of generic user agents.  Such a user agent
                 has no application-specific knowledge.  Rather, it understands pre-defined
                 media types, URI schemes, protocols, and link relations, often by recognizing
-                these and coordinating the use of existing software that implement support
-                for them.  Applications can then be built on top of such a user agent, focusing
-                on their own semantics and logic rather than the mechanics of the interactions.
-            </t>
-            <t>
-                JSON Hyper-Schema is ideal for representing individual resources in hypermedia
-                APIs.  It offers comprehensive capabilities for describing how to use hyperlinks
-                to interact with the current resource (through "self" links), or related
-                resources.  Using a hyper-schema-based API involves traversing links from
-                one resource to the next, interacting with resources through their
-                representations as described by the target keywords, or submitting data
-                to resources for processing using the submission keywords.
+                these and coordinating the use of existing software that implements support
+                for them.  Client applications can then be built on top of such a user agent,
+                focusing on their own semantics and logic rather than the mechanics of the
+                interactions.
             </t>
             <t>
                 Hyper-schema is only concerned with one resource and set of associated links
@@ -1508,35 +1502,12 @@ for varname in templateData:
                 any concept of whether or how that resource fits into an API.
             </t>
             <t>
-                While aspects of cross-cutting API concerns such as authentication
-                and authorization may be described in hyper-schema, for instance in
-                the headerSchema of a link, defining an API-wide approach to any
-                cross-cutting concerns is beyond the scope of hyper-schema.
+                Therefore, hyper-schema is suitable for use within an API, but is not suitable
+                for the description of APIs as complete entities in their own right.  There is
+                no way to describe concepts at the API scope, rather than the resource and
+                link scope, and such descriptions are outside of the boundaries
+                of JSON Hyper-Schema.
             </t>
-            <section title="Separation of concerns">
-                <t>
-                    Working with a JSON Hyper-Schema-based API will generally involve
-                    three components:  The hyper-schema implementation, a generic user agent,
-                    and a client application.  The hyper-schema implementation's requirements
-                    are given in this specification.  The generic user agent handles standardized
-                    URI schemes, protocols, and media types.  User agents that handle HTTP,
-                    HTTPS, and JSON, for instance, are available as libraries in many programming
-                    languages.
-                </t>
-                <t>
-                    The client application has the domain-specific knowledge of link relation
-                    types and data structure fields needed to make use of the specific API.
-                    A client application can use an available user agent library and a hyper-schema
-                    implementation separately.  Alternatively, extensible user agents can allow
-                    adding hyper-schema support as a plug-in alongside support for plain JSON, XML,
-                    or other media types.
-                </t>
-                <t>
-                    <cref>
-                        Add something about generic user agents not being magic, HATEOAS, etc.
-                    </cref>
-                </t>
-            </section>
             <section title="Resource evolution with Hyper-Schema">
                 <t>
                     Since a given JSON Hyper-Schema is used with a single resource at a single
@@ -1552,29 +1523,6 @@ for varname in templateData:
                     can then make use of the hyper-schema that it recognizes, and ignore newer
                     or older versions.
                 </t>
-                <t>
-                    Note that this notion of changing the representaiton version using
-                    successive hyper-schemas is separate from deprecating an entire resource
-                    and either removing it or replacing it with a new resource at a new URI.
-                    The "targetHints" keyword can be used to convey deprecation information.
-                </t>
-                <t>
-                    <cref>
-                        This section is something of a placeholder, with the goal being to 
-                        get readers to understand that while hyper-schema helps with versioning,
-                        it does not and will not have explicit features to support it.
-                    </cref>
-                </t>
-            </section>
-            <section title="Entry point resource">
-                <t>
-                    To create an entry point for an API, it is RECOMMENDED to provide
-                    a resource at a documented entry point URI with the minimal amount of data
-                    necessary to begin interacting with API resources.
-                    The hyper-schema for this resource SHOULD contain links to all
-                    API resources that can be accessed with only user input and/or
-                    data contained in the entry point resource's representation.
-                </t>
             </section>
             <section title="Responses and errors">
                 <t>
@@ -1582,36 +1530,33 @@ for varname in templateData:
                     provide for an enumeration of all possible responses to protocol operations
                     performed with links.  Each response, including errors, is considered
                     its own (possibly anonymous) resource, and should identify its own
-                    hyper-schema to allow the user agent or client application to interpret any
+                    hyper-schema, and optionally use an appropriate media type such as
+                    <xref target="RFC7807">RFC 7807's "application/problem+json"</xref>,
+                    to allow the user agent or client application to interpret any
                     information that is provided beyond the protocol's own status reporting.
                 </t>
+            </section>
+            <section title="Static analysis of an API's hyper-schemas">
                 <t>
-                    Protocol and media type specifications provide the necessary information to
-                    deal with different responses at runtime, while documenting all responses
-                    is a concern static analysis across all hyper-schemas making up an API.
+                    It is possible to statically analyze a set of hyper-schemas without instance
+                    data in order to generate output such as documentation or code.  However,
+                    the full feature set of both validation and hyper-schema cannot be accessed
+                    without runtime instance data.
+                </t>
+                <t>
+                    This is an intentional design choice to provide the maximum runtime
+                    flexibility for hypermedia systems.  JSON Schema as a media type allows for
+                    establishing additional vocabularies for static analysis and content
+                    generation, which are not addressed in this specification.  Additionally,
+                    individual systems may restrict their usage to subsets that can be
+                    analyzed statically if full design-time description is a goal.
+                    <cref>
+                        Vocabularies for API documentation and other purposes have been
+                        proposed, and contributions are welcome at
+                        https://github.com/json-schema-org/json-schema-vocabularies
+                    </cref>
                 </t>
             </section>
-        </section>
-        <section title="Static analysis of hyper-schemas">
-            <t>
-                It is possible to statically analyze a set of hyper-schemas without instance
-                data in order to generate output such as documentation or code.  However,
-                the full feature set of both validation and hyper-schema cannot be accessed
-                without runtime instance data.
-            </t>
-            <t>
-                This is an intentional design choice to provide the maximum runtime
-                flexibility for hypermedia systems.  JSON Schema as a media type allows for
-                establishing additional vocabularies for static analysis and content
-                generation, which are not addressed in this specification.  Additionally,
-                individual systems may restrict their usage to subsets that can be
-                analyzed statically if full design-time description is a goal.
-                <cref>
-                    Vocabularies for API documentation and other purposes have been
-                    proposed, and contributions are welcome at
-                    https://github.com/json-schema-org/json-schema-vocabularies
-                </cref>
-            </t>
         </section>
 
         <section title="Change Log">
