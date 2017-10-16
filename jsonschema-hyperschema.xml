@@ -1562,7 +1562,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     described by "submissionSchema" and "submission MediaType".
                 </t>
                 <t>
-                    Instead, we use "submissionMediaType" to indicate a multipart/alternative
+                    Therefore, we use "submissionMediaType" to indicate a multipart/alternative
                     payload format, providing two representations of the same data (HTML and
                     plain text).  Since a multipart/alternative message is an ordered sequence
                     (the last part is the most preferred alternative), we model the sequence as
@@ -1676,8 +1676,9 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     </artwork>
                 </figure>
                 <t>
-                    We can partially resolve the link as follows, before asking the client for input.
-                    Note that the input template line is wrapped to fit this document's width restrictions.
+                    We can partially resolve the link as follows, before asking the client
+                    for input.  Note that the input template line is wrapped to fit this
+                    document's width restrictions.
                 </t>
                 <figure>
                     <artwork>
@@ -1704,7 +1705,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                         <t hangText='Change "title" to "your work":'>
                             "mailto:someone@example.com?subject=your%20work"
                         </t>
-                        <t hangText='Change title add a "cc" of "other@elsewhere.org":'>
+                        <t hangText='Change title and add a "cc" of "other@elsewhere.org":'>
                             "mailto:someone@example.com?subject=your%20work&amp;cc=other@elsewhere.org"
                         </t>
                     </list>
