@@ -1,86 +1,85 @@
 {
-    "$schema": "http://json-schema.org/draft-06/hyper-schema#",
-    "$id": "http://json-schema.org/draft-06/links#",
+    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "$id": "http://json-schema.org/draft-07-wip/links#",
     "title": "Link Description Object",
-    "type": "object",
-    "required": [ "href" ],
-    "properties": {
-        "anchor": {
-            "type": "string",
-            "format": "uri-template"
-        },
-        "anchorPointer": {
-            "type": "string",
-            "anyOf": [
-                { "format": "json-pointer" },
-                { "format": "relative-json-pointer" }
-            ]
-        },
-        "rel": {
-            "type": "string"
-        },
-        "href": {
-            "type": "string",
-            "format": "uri-template"
-        },
-        "hrefSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
-        "templatePointers": {
+    "allOf": [
+        { "required": [ "rel", "href" ] },
+        { "$ref": "#/definitions/noRequiredFields" }
+    ],
+    "definitions": {
+        "noRequiredFields": {
             "type": "object",
-            "additionalProperties": {
-                "type": "string",
-                "anyOf": [
-                    { "format": "json-pointer" },
-                    { "format": "relative-json-pointer" }
-                ]
+            "properties": {
+                "anchor": {
+                    "type": "string",
+                    "format": "uri-template"
+                },
+                "anchorPointer": {
+                    "type": "string",
+                    "anyOf": [
+                        { "format": "json-pointer" },
+                        { "format": "relative-json-pointer" }
+                    ]
+                },
+                "rel": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string",
+                    "format": "uri-template"
+                },
+                "hrefSchema": {
+                    "allOf": [
+                        { "$ref": "http://json-schema.org/draft-07-wip/hyper-schema#" }
+                    ]
+                },
+                "templatePointers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string",
+                        "anyOf": [
+                            { "format": "json-pointer" },
+                            { "format": "relative-json-pointer" }
+                        ]
+                    }
+                },
+                "templateRequired": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "targetSchema": {
+                    "$ref": "http://json-schema.org/draft-07-wip/hyper-schema#"
+                },
+                "targetMediaType": {
+                    "type": "string"
+                },
+                "targetHints": { },
+                "hrefSchema": {
+                    "$ref": "http://json-schema.org/draft-07-wip/hyper-schema#"
+                },
+                "headerSchema": {
+                    "$ref": "http://json-schema.org/draft-07-wip/hyper-schema#"
+                },
+                "submissionMediaType": {
+                    "type": "string",
+                    "default": "application/json"
+                },
+                "submissionSchema": {
+                    "$ref": "http://json-schema.org/draft-07-wip/hyper-schema#"
+                },
+                "$comment": {
+                    "type": "string"
+                }
             }
-        },
-        "templateRequired": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "uniqueItems": true
-        },
-        "title": {
-            "type": "string"
-        },
-        "description": {
-            "type": "string"
-        },
-        "targetSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
-        "targetMediaType": {
-            "type": "string"
-        },
-        "targetHints": { },
-        "hrefSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
-        "headerSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
-        "submissionMediaType": {
-            "type": "string",
-            "default": "application/json"
-        },
-        "submissionSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
-        "$comment": {
-            "type": "string"
         }
     }
 }
