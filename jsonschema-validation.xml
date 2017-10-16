@@ -770,106 +770,6 @@
             </section>
         </section>
 
-        <section title="Metadata keywords">
-            <section title="definitions">
-                <t>
-                    This keyword's value MUST be an object.
-                    Each member value of this object MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    This keyword plays no role in validation per se. Its role is to provide
-                    a standardized location for schema authors to inline JSON Schemas into a
-                    more general schema.
-                </t>
-
-                <t>
-                    As an example, here is a schema describing an array of positive
-                    integers, where the positive integer constraint is a subschema in
-                    "definitions":
-
-                    <figure>
-                        <artwork>
-<![CDATA[
-{
-    "type": "array",
-    "items": { "$ref": "#/definitions/positiveInteger" },
-    "definitions": {
-        "positiveInteger": {
-            "type": "integer",
-            "exclusiveMinimum": 0
-        }
-    }
-}
-]]>
-                        </artwork>
-                    </figure>
-                </t>
-            </section>
-
-            <section title='"title" and "description"'>
-                <t>
-                    The value of both of these keywords MUST be a string.
-                </t>
-                <t>
-                    Both of these keywords can be used to decorate a user interface with
-                    information about the data produced by this user interface. A title will
-                    preferably be short, whereas a description will provide explanation about
-                    the purpose of the instance described by this schema.
-                </t>
-            </section>
-
-            <section title='"default"'>
-                <t>
-                    There are no restrictions placed on the value of this keyword.
-                </t>
-                <t>
-                    This keyword can be used to supply a default JSON value associated with a
-                    particular schema. It is RECOMMENDED that a default value be valid against
-                    the associated schema.
-                </t>
-            </section>
-
-            <section title='"readOnly"'>
-                <t>
-                    The value of this keyword MUST be a boolean.
-                </t>
-                <t>
-                    If it has a value of boolean true, this keyword indicates that the value of the
-                    instance is managed exclusively by the owning authority, and attempts by an
-                    application to modify the value of this property are expected to be ignored or
-                    rejected by that owning authority.
-                </t>
-                <t>
-                    For example, this property would be used to mark a database-generated serial
-                    number as read-only.
-                </t>
-                <t>
-                    This keyword can be used to assist in user interface instance generation.
-                </t>
-                <t>
-                    Omitting this keyword has the same behavior as a value of false.
-                </t>
-            </section>
-
-            <section title='"examples"'>
-                <t>
-                    The value of this keyword MUST be an array.
-                    There are no restrictions placed on the values within the array.
-                </t>
-                <t>
-                    This keyword can be used to provide sample JSON values associated with a
-                    particular schema, for the purpose of illustrating usage.  It is
-                    RECOMMENDED that these values be valid against the associated schema.
-                </t>
-                <t>
-                    Implementations MAY use the value of "default", if present, as
-                    an additional example.  If "examples" is absent, "default"
-                    MAY still be used in this manner.
-                </t>
-            </section>
-
-        </section>
-
         <section title='Semantic validation with "format"'>
 
             <section title="Foreword">
@@ -1208,6 +1108,181 @@
                 </figure>
             </section>
 
+        </section>
+
+        <section title='Schema re-use with "definitions"'>
+            <t>
+                The "definitions" keywords provides a standardized location for schema
+                authors to inline re-usable JSON Schemas into a more general schema.
+                The keyword does not directly affect the validation result.
+            </t>
+            <t>
+                This keyword's value MUST be an object.
+                Each member value of this object MUST be a valid JSON Schema.
+            </t>
+            <t>
+                As an example, here is a schema describing an array of positive
+                integers, where the positive integer constraint is a subschema in
+                "definitions":
+
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "type": "array",
+    "items": { "$ref": "#/definitions/positiveInteger" },
+    "definitions": {
+        "positiveInteger": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
+            </t>
+        </section>
+
+        <section title="Schema annotations and extension vocabularies">
+            <t>
+                Schema validation is a useful mechanism for annotating instance data
+                with additional information.  This section describes the rules for
+                determining when and how annotations apply to an instance, and specifies
+                a small general-purpose annotation vocabulary.
+            </t>
+            <t>
+                Additional vocabularies SHOULD make use of this mechanism for applying
+                their keywords to instances.
+            </t>
+            <section title="Applicability and attachment">
+                <t>
+                    Annotations can be applied to an instance when it is valid against
+                    the schema that includes the annotation keywords.  For any given location
+                    in the instance (referred to as a sub-instance), each (sub)schema against
+                    which it successfully validates is considered to be <spanx>applicable</spanx>
+                    to that sub-instance.  The (sub)schema is said to be <spanx>attached</spanx>
+                    to each sub-instance to which it applies.
+                </t>
+                <t>
+                    A validation implementation MAY choose to implement determining subschema
+                    applicability and providing access to the value(s) of applicable annotation
+                    keywords.  Implementation of this feature MAY instead be done separately.
+                </t>
+                <t>
+                    Since many subschemas can be applicable to any single sub-instance, each
+                    annotation keyword or vocabulary needs to specify how to handle multiple
+                    occurrences with different values.  In the absence of keyword-specific
+                    handling rules, an implementation MUST collect all values and make them
+                    available as a data structure in which order is not significant and items
+                    need not be unique.
+                </t>
+                <section title="Combinatoric and conditional schemas">
+                    <t>
+                        Annotations in branches of an "anyOf", "oneOf", or "if"/"then"/"else"
+                        that do not validate, or in a "dependencies" subschema that is not relevant
+                        to the instance, MUST be ignored.
+                    </t>
+                    <t>
+                        Annotations in a subschema contained within a "not", at any depth,
+                        including any number of intervening additional "not" subschemas, MUST be
+                        ignored.
+                    </t>
+                </section>
+                <section title="Annotations and short-circuit validation">
+                    <t>
+                        Schema keywords MUST be applied to all possible sub-instances when
+                        considering annotations, even if such application can be short-circuited
+                        when only the overall validation result is needed.
+                    </t>
+                    <t>
+                        An example of this is the "contains" keyword, which need only be evaluated
+                        against array elements until it produces at least one successful outcome
+                        in order to be implemented.  However, when annotations are considered,
+                        it must be checked against every array element, and the annotations MUST
+                        be applied to every element that successfully validates against the
+                        "contains" susbschema.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Basic annotation keywords">
+                <t>
+                    These general-purpose annotation keywords provide commonly used information
+                    for documentation and user interface display purposes.  They are not intended
+                    to form a comprehensive set of features.  Rather, additional vocabularies
+                    can be defined for more complex annotation-based applications.
+                </t>
+                <section title='"title" and "description"'>
+                    <t>
+                        The value of both of these keywords MUST be a string.
+                    </t>
+                    <t>
+                        Both of these keywords can be used to decorate a user interface with
+                        information about the data produced by this user interface. A title will
+                        preferably be short, whereas a description will provide explanation about
+                        the purpose of the instance described by this schema.
+                    </t>
+                </section>
+
+                <section title='"default"'>
+                    <t>
+                        There are no restrictions placed on the value of this keyword.  When
+                        multiple occurrences of this keyword are applicable to a single
+                        sub-instance, implementations SHOULD remove duplicates.
+                    </t>
+                    <t>
+                        This keyword can be used to supply a default JSON value associated with a
+                        particular schema. It is RECOMMENDED that a default value be valid against
+                        the associated schema.
+                    </t>
+                </section>
+
+                <section title='"readOnly"'>
+                    <t>
+                        The value of this keyword MUST be a boolean.  When multiple occurrences
+                        of this keyword are applicable to a single sub-instance, the resulting
+                        value MUST be true if any occurrence specifies a true value, and MUST
+                        be false otherwise.
+                    </t>
+                    <t>
+                        If it has a value of boolean true, this keyword indicates that the value
+                        of the instance is managed exclusively by the owning authority, and
+                        attempts by an application to modify the value of this property are
+                        expected to be ignored or rejected by that owning authority.
+                    </t>
+                    <t>
+                        For example, this property would be used to mark a database-generated serial
+                        number as read-only.
+                    </t>
+                    <t>
+                        This keyword can be used to assist in user interface instance generation.
+                    </t>
+                    <t>
+                        Omitting this keyword has the same behavior as a value of false.
+                    </t>
+                </section>
+
+                <section title='"examples"'>
+                    <t>
+                        The value of this keyword MUST be an array.
+                        There are no restrictions placed on the values within the array.
+                        When multiple occurrences of this keyword are applicable to a single
+                        sub-instance, implementations MUST provide a flat array of all
+                        values rather than an array of arrays.
+                    </t>
+                    <t>
+                        This keyword can be used to provide sample JSON values associated with a
+                        particular schema, for the purpose of illustrating usage.  It is
+                        RECOMMENDED that these values be valid against the associated schema.
+                    </t>
+                    <t>
+                        Implementations MAY use the value(s) of "default", if present, as
+                        an additional example.  If "examples" is absent, "default"
+                        MAY still be used in this manner.
+                    </t>
+                </section>
+            </section>
         </section>
 
         <section title="Security considerations">
