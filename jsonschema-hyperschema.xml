@@ -1251,7 +1251,9 @@ for varname in templateData:
                 </t>
                 <t>
                     All information necessary to use each HTTP method can be conveyed in a
-                    single LDO as explained in this appendix.
+                    single LDO as explained in this section.  The "allow" field in "targetHints"
+                    is intended simply to hint at which operations are supported, not to
+                    separately define each operation.
                 </t>
                 <t>
                     Note, however, that a resource may always decline an operation at runtime,
@@ -1264,23 +1266,27 @@ for varname in templateData:
                     The relationship between a resource's representation and HTTP requests and
                     responses is determined by <xref target="RFC7231">RFC 7231, section 4.3.1 -
                     "GET", section 4.3.4 "PUT", and section 3.1.4.2, "Content-Location"</xref>.
-                    In particular, "targetSchema" suggests what a
-                    client can expect for the response to an HTTP GET or any response for which
-                    the "Content-Location" header is equal to the request URI, and what a client
-                    should send if it replaces the resource in an HTTP PUT request.
+                    In particular, "targetSchema" suggests what a client can expect for the
+                    response to an HTTP GET or any response for which the "Content-Location"
+                    header is equal to the request URI, and what a client should send if it
+                    replaces the resource in an HTTP PUT request.
                 </t>
                 <t>
                     The media type of the representation is given by the "targetMediaType"
                     field.  Alternatively, possible available media types MAY be advertised
-                    using an entry for the "Accept" request header field in "headerSchema".
+                    for HTTP-accessible resources using the "accept" field in "headerSchema",
+                    corresponding to the HTTP "Accept" header.
                 </t>
                 <t>
                     Per <xref target="RFC5789">RFC 5789</xref>, the request structure for an HTTP
                     PATCH is determined by the combination of "targetSchema" and the request
-                    media type, which is conveyed by the "Accept-Patch" header.
+                    media type, which is conveyed by the "Accept-Patch" header.  Media types
+                    that are suitable for PATCH-ing define a syntax for expressing changes
+                    to a document, which can be applied to the representation described by
+                    "targetSchema" to determine the set of syntactically valid request payloads.
                 </t>
                 <t>
-                    HTTP POST requests are determined by the "submissionSchema" and
+                    HTTP POST request payloads are described by the "submissionSchema" and
                     "submissionMediaType" fields.  Additionally, the "Accept-Post" header
                     can be used to specify the necessary media type, and MAY be
                     advertised via the "targetHints" field.
@@ -1350,7 +1356,9 @@ for varname in templateData:
                 <t>
                     When using HTTP, or a protocol such as CoAP that is explicitly analogous
                     to HTTP, this is done by POST-ing a representation of the individual
-                    resource to be created to the collection resource.
+                    resource to be created to the collection resource.  The process for
+                    recognizing collection and item resources is described in
+                    <xref target="collectionAndItem" />.
                 </t>
             </section>
         </section>
