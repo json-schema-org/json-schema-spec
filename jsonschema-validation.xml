@@ -172,78 +172,145 @@
 
         </section>
 
-        <section title="General validation considerations">
-
-            <section title="Keywords and instance primitive types">
+        <section title="Overview">
+            <t>
+                JSON Schema validation applies schemas to locations within the instance,
+                and asserts constraints on the structure of the data at each location.
+                An instance location that satisfies all asserted constraints is then
+                annotated with any keywords that contain non-assertion information,
+                such as desciptive metadata and usage hints.  If all locations within
+                the instance satisfy all asserted constraints, then the instance is
+                said to be valid against the schema.
+            </t>
+            <t>
+                Each schema object is independently evaluated against each instance location
+                to which it applies.  This greatly simplifies the implementation requirements
+                for validators by ensuring that they do not need to maintain state across
+                the document-wide validation process.
+            </t>
+            <section title="Applicability">
                 <t>
-                    Most validation keywords only constrain values within a certain primitive type.
-                    When the type of the instance is not of the type targeted by the keyword, the
-                    validation succeeds.
+                    Validation begins by applying the root schema to the complete instance
+                    document.  From there, various keywords are used to determine which additional
+                    subschemas are applied to either the current location, or a child location.
+                    These keywords also define whether and how subschema assertion results are
+                    modified and/or combined.  Such keywords do not assert conditions on their
+                    own.  Rather, they control how assertions are applied and evaluated.
                 </t>
                 <t>
-                    For example, the "maxLength" keyword will only restrict certain strings (that
-                    are too long) from being valid.
-                    If the instance is a number, boolean, null, array, or object, the keyword passes
-                    validation.
+                    The keywords in the <xref target="logic">boolean logic</xref> and
+                    <xref target="conditional">conditional</xref> sections of this specification
+                    apply subschemas to the same location as the parent schema.  The former group
+                    defines boolean operations on the subschema assertion results, while the
+                    latter evaluates one subschema and uses its assertion results to determine
+                    which of two other subschemas to apply as well.
                 </t>
+                <t>
+                    Several keywords determine which subschemas are applied to array items,
+                    object property values, and object property names.  They are:
+                    "items", "additionalItems", "contains", "properties", "patternProperties",
+                    "additionalProperties", and "propertyNames".  The "contains" keyword only
+                    requires its subschema to be valid against at least one child instance, while
+                    the other keywords require that all subschemas are valid against all child
+                    instances to which they apply.
+                </t>
+                <section title="Keyword independence">
+                    <t>
+                        Validation keywords typically operate independently, without
+                        affecting each other's outcomes.
+                    </t>
+                    <t>
+                        For schema author convenience, there are some exceptions among the
+                        keywords that control subschema applicability:
+                        <list>
+                            <t>
+                                "additionalProperties", whose behavior is defined in terms of
+                                "properties" and "patternProperties"; and
+                            </t>
+                            <t>
+                                "additionalItems", whose behavior is defined in terms of "items".
+                            </t>
+                        </list>
+                    </t>
+                </section>
             </section>
-
-            <section title="Validation of primitive types and child values">
+            <section title="Assertions">
                 <t>
-                    Two of the primitive types, array and object, allow for child values.
-                    The validation of the primitive type is considered separately from
-                    the validation of child instances.
+                    Validation is a process of checking assertions.  Each assertion adds
+                    constraints that an instance must satisfy in order to successfully validate.
                 </t>
                 <t>
-                    For arrays, primitive type validation consists of validating
-                    restrictions on length with "minItems" and "maxItems", while
-                    "items" and "additionalItems" determine which subschemas apply
-                    to which elements of the array.  In addition, "uniqueItems"
-                    and "contains" validate array contents as a whole.
-                </t>
-                <t>
-                    For objects, primitive type validation consists of validating
-                    restrictions on which and how many properties appear with
-                    "required", "minProperties", "maxProperties", "propertyNames",
-                    and the string array form of "dependencies", while "properties",
-                    "patternProperties", and "additionalProperties" determine which
-                    subschemas apply to which object property values.
-                    In addition, the schema form of "dependencies" validates the
-                    object as a whole based on the presence of specific property names.
-                </t>
-            </section>
-
-            <section title="Constraints and missing keywords">
-                <t>
-                    Each JSON Schema validation keyword adds constraints that
-                    an instance must satisfy in order to successfully validate.
-                </t>
-                <t>
-                    Validation keywords that are missing never restrict validation.
+                    Assertion keywords that are absent never restrict validation.
                     In some cases, this no-op behavior is identical to a keyword that exists with
                     certain values, and these values are noted where known.
                 </t>
-            </section>
-
-            <section title="Keyword independence">
                 <t>
-                    Validation keywords typically operate independently, without
-                    affecting each other's outcomes.
+                    All of the keywords in the <xref target="general">general</xref>,
+                    <xref target="numeric">numeric</xref>, and <xref target="string">string</xref>
+                    sections are assertions, as well as "minItems", "maxItems", "uniqueItems",
+                    "minProperties", "maxProperties", and "required".  Additionally, "dependencies"
+                    is shorthand for a combination of conditional and assertion keywords.
                 </t>
                 <t>
-                    For schema author convenience, there are some exceptions:
-                    <list>
-                        <t>
-                            "additionalProperties", whose behavior is defined in terms of
-                            "properties" and "patternProperties"; and
-                        </t>
-                        <t>
-                            "additionalItems", whose behavior is defined in terms of "items".
-                        </t>
-                    </list>
+                    The "format", "contentType", and "contentEncoding" keywords can also be
+                    implemented as assertions, although that functionality is an optional part
+                    of this specification, and the keywords convey additional non-assertion
+                    information.
                 </t>
+                <section title="Assertions and instance primitive types">
+                    <t>
+                        Most validation assertions only constrain values within a certain
+                        primitive type.  When the type of the instance is not of the type
+                        targeted by the keyword, the instance is considered to conform
+                        to the assertion.
+                    </t>
+                    <t>
+                        For example, the "maxLength" keyword will only restrict certain strings
+                        (that are too long) from being valid.  If the instance is a number,
+                        boolean, null, array, or object, then it is valid against this assertion.
+                    </t>
+                </section>
             </section>
-
+            <section title="Annotations">
+                <t>
+                    In addition to assertions, this specification provides a small vocabulary
+                    of metadata keywords that can be used to annotate the JSON instance with
+                    useful information.  The <xref target="format" /> and <xref target="content" />
+                    keywords are also useful as annotations as well as being optional assertions,
+                    as they convey additional usage guidance for the instance data.
+                </t>
+                <t>
+                    A schema that is applicable to a particular location in the instance, against
+                    which the instance location is valid, attaches its annotations to that location
+                    in the instance.  Since many subschemas can be applicable to any single
+                    location, annotation keywords need to specify any unusual handling of
+                    multiple applicable occurrences of the keyword with different values.
+                    The default behavior is simply to collect all values.
+                </t>
+                <t>
+                    Additional vocabularies SHOULD make use of this mechanism for applying
+                    their own annotations to instances.
+                </t>
+                <section title="Negated schemas">
+                    <t>
+                        Annotations in a subschema contained within a "not", at any depth,
+                        including any number of intervening additional "not" subschemas, MUST be
+                        ignored.  Similarly, annotations within a failing branch of a "oneOf",
+                        "anyOf", "then", or "else" MUST be ignored.
+                    </t>
+                </section>
+                <section title="Annotations and short-circuit validation">
+                    <t>
+                        Annotation keywords MUST be applied to all possible sub-instances.
+                        even if such application can be short-circuited when only assertion
+                        evaluation is needed.  For instance, the "contains" keyword need only
+                        be checked for assertions until at least one array item proves valid.
+                        However, when working with annotations, all items in the array must
+                        be evaluated to determine all items with which the annotations should
+                        be associated.
+                    </t>
+                </section>
+            </section>
         </section>
 
         <section title="Meta-schema">
@@ -259,7 +326,7 @@
                 instance.
             </t>
 
-            <section title="Validation keywords for any instance type">
+            <section title="Validation keywords for any instance type" anchor="general">
                 <section title="type">
                     <t>
                         The value of this keyword MUST be either a string or an array. If it is
@@ -301,7 +368,8 @@
                 </section>
             </section>
 
-            <section title="Validation keywords for numeric instances (number and integer)">
+            <section title="Validation keywords for numeric instances (number and integer)"
+                     anchor="numeric">
                 <section title="multipleOf">
                     <t>
                         The value of "multipleOf" MUST be a number, strictly greater than 0.
@@ -357,7 +425,7 @@
                 </section>
             </section>
 
-            <section title="Validation keywords for strings">
+            <section title="Validation keywords for strings" anchor="string">
                 <section title="maxLength">
                     <t>
                         The value of this keyword MUST be a non-negative integer.</t>
@@ -655,7 +723,7 @@
                 </section>
             </section>
 
-            <section title="Keywords for applying subschemas conditionally">
+            <section title="Keywords for applying subschemas conditionally" anchor="conditional">
                 <t>
                     These keywords work together to implement conditional
                     application of a subschema based on the outcome of
@@ -727,7 +795,7 @@
                 </section>
             </section>
 
-            <section title="Keywords for applying subschemas with boolean logic">
+            <section title="Keywords for applying subschemas with boolean logic" anchor="logic">
                 <section title="allOf">
                     <t>
                         This keyword's value MUST be a non-empty array.
@@ -773,7 +841,7 @@
             </section>
         </section>
 
-        <section title='Semantic validation with "format"'>
+        <section title='Semantic validation with "format"' anchor="format">
 
             <section title="Foreword">
                 <t>
@@ -1003,7 +1071,7 @@
             </section>
         </section>
 
-        <section title='String-encoding non-JSON data'>
+        <section title='String-encoding non-JSON data' anchor="content">
 
             <section title="Foreword">
                 <t>
@@ -1147,75 +1215,19 @@
             </t>
         </section>
 
-        <section title="Schema annotations and extension vocabularies">
+        <section title="Schema annotations">
             <t>
                 Schema validation is a useful mechanism for annotating instance data
-                with additional information.  This section describes the rules for
-                determining when and how annotations apply to an instance, and specifies
-                a small general-purpose annotation vocabulary.
+                with additional information.  The rules for determining when and how
+                annotations are associated with an instance are outlined in this specification's
+                overview.
             </t>
             <t>
-                Additional vocabularies SHOULD make use of this mechanism for applying
-                their keywords to instances.
+                These general-purpose annotation keywords provide commonly used information
+                for documentation and user interface display purposes.  They are not intended
+                to form a comprehensive set of features.  Rather, additional vocabularies
+                can be defined for more complex annotation-based applications.
             </t>
-            <section title="Applicability and attachment">
-                <t>
-                    Annotations can be applied to an instance when it is valid against
-                    the schema that includes the annotation keywords.  For any given location
-                    in the instance (referred to as a sub-instance), each (sub)schema against
-                    which it successfully validates is considered to be <spanx>applicable</spanx>
-                    to that sub-instance.  The (sub)schema is said to be <spanx>attached</spanx>
-                    to each sub-instance to which it applies.
-                </t>
-                <t>
-                    A validation implementation MAY choose to implement determining subschema
-                    applicability and providing access to the value(s) of applicable annotation
-                    keywords.  Implementation of this feature MAY instead be done separately.
-                </t>
-                <t>
-                    Since many subschemas can be applicable to any single sub-instance, each
-                    annotation keyword or vocabulary needs to specify how to handle multiple
-                    occurrences with different values.  In the absence of keyword-specific
-                    handling rules, an implementation MUST collect all values and make them
-                    available as a data structure in which order is not significant and items
-                    need not be unique.
-                </t>
-                <section title="Combinatoric and conditional schemas">
-                    <t>
-                        Annotations in branches of an "anyOf", "oneOf", or "if"/"then"/"else"
-                        that do not validate, or in a "dependencies" subschema that is not relevant
-                        to the instance, MUST be ignored.
-                    </t>
-                    <t>
-                        Annotations in a subschema contained within a "not", at any depth,
-                        including any number of intervening additional "not" subschemas, MUST be
-                        ignored.
-                    </t>
-                </section>
-                <section title="Annotations and short-circuit validation">
-                    <t>
-                        Schema keywords MUST be applied to all possible sub-instances when
-                        considering annotations, even if such application can be short-circuited
-                        when only the overall validation result is needed.
-                    </t>
-                    <t>
-                        An example of this is the "contains" keyword, which need only be evaluated
-                        against array elements until it produces at least one successful outcome
-                        in order to be implemented.  However, when annotations are considered,
-                        it must be checked against every array element, and the annotations MUST
-                        be applied to every element that successfully validates against the
-                        "contains" susbschema.
-                    </t>
-                </section>
-            </section>
-
-            <section title="Basic annotation keywords">
-                <t>
-                    These general-purpose annotation keywords provide commonly used information
-                    for documentation and user interface display purposes.  They are not intended
-                    to form a comprehensive set of features.  Rather, additional vocabularies
-                    can be defined for more complex annotation-based applications.
-                </t>
                 <section title='"title" and "description"'>
                     <t>
                         The value of both of these keywords MUST be a string.
@@ -1306,7 +1318,6 @@
                         MAY still be used in this manner.
                     </t>
                 </section>
-            </section>
         </section>
 
         <section title="Security considerations">
