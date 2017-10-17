@@ -259,7 +259,11 @@
                     A JSON Schema MUST be an object or a boolean.
                 </t>
                 <t>
-                    Boolean values are equivalent to the following behaviors:
+                    JSON Schema vocabularies can include assertions, which return a boolean result
+                    when applied to an instance.  The boolean schema values "true" and "false"
+                    are trivial assertions that always return themselves regardless of the
+                    instance value.  As an example, in terms of the validation vocabulary,
+                    boolean schemas are equivalent to the following behaviors:
                     <list style="hanging">
                         <t hangText="true">Always passes validation, as if the empty schema {}</t>
                         <t hangText="false">Always fails validation, as if the schema { "not":{} }</t>
