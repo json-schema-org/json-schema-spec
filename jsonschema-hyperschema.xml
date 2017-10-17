@@ -1222,132 +1222,6 @@ for varname in templateData:
             </section>
         </section>
 
-        <section title="Examples" anchor="examples">
-            <t><cref>Examples are being added in a subsequent PR.</cref></t>
-        </section>
-
-        <section title="Security Considerations" anchor="security">
-            <t><cref>Need to reference the core and validation security considerations.</cref></t>
-            <section title='"self" links'>
-                <t>
-                    When link relation of "self" is used to denote a full representation of an
-                    object, the user agent SHOULD NOT consider the representation to be the
-                    authoritative representation of the resource denoted by the target URI if
-                    the target URI is not equivalent to or a sub-path of the URI used to request
-                    the resource representation which contains the target URI with the "self"
-                    link.
-                </t>
-            </section>
-            <section title="Target attributes">
-                <t>
-                    <cref>
-                        This whole section needs more work, but I do like having security
-                        concerns around target interactions consolidated and addressed as a whole.
-                    </cref>
-                </t>
-                <t>
-                    The "targetMediaType" property in link definitions defines the expected
-                    format of the link's target.
-                    However, this is advisory only, and MUST NOT be considered authoritative.
-                </t>
-                <t>
-                    When choosing how to interpret data, the type information provided by the
-                    server (or inferred from the filename, or any other usual method) MUST be
-                    the only consideration, and the "targetMediaType" property of the link
-                    MUST NOT be used.
-                    User agents MAY use this information to determine how they represent the
-                    link or where to display it (for example hover-text, opening in a new tab).
-                    If user agents decide to pass the link to an external program, they SHOULD
-                    first verify that the data is of a type that would normally be passed to
-                    that external program.
-                </t>
-                <t>
-                    This is to guard against re-interpretation of "safe" data, similar to the
-                    precautions for "targetSchema".
-                </t>
-                <t>
-                    The "targetSchema" keyword has similar security concerns to that of
-                    "targetMediaType".
-                    Clients MUST NOT use the value of this property to aid in the interpretation
-                    of the data received in response to following the link, as this leaves
-                    "safe" data open to re-interpretation.
-                </t>
-            </section>
-        </section>
-<!--
-        <section title="IANA Considerations">
-            <t>No considerations</t>
-        </section>
--->
-        <section title="Acknowledgments">
-            <t>
-                Thanks to
-                Gary Court,
-                Francis Galiegue,
-                Kris Zyp,
-                and Geraint Luff
-                for their work on the initial drafts of JSON Schema.
-            </t>
-            <t>
-                Thanks to
-                Jason Desrosiers,
-                Daniel Perrett,
-                Erik Wilde,
-                Ben Hutton,
-                Evgeny Poberezkin,
-                Brad Bowman,
-                Gowry Sankar,
-                Donald Pipowitch,
-                Dave Finlay,
-                and Denis Laxalde
-                for their submissions and patches to the document.
-            </t>
-        </section>
-    </middle>
-
-    <back>
-        <!-- References Section -->
-        <references title="Normative References">
-            &rfc2119;
-            &rfc3986;
-            <!--&rfc4287;-->
-            &rfc6570;
-            &rfc6901;
-            &I-D.luff-relative-json-pointer;
-            &I-D.reschke-http-jfv;
-            <reference anchor="json-schema">
-                <front>
-                    <title>JSON Schema: A Media Type for Describing JSON Documents</title>
-                    <author initials="A." surname="Wright">
-                        <organization/>
-                    </author>
-                    <date year="2016" month="October"/>
-                </front>
-                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-01" />
-            </reference>
-            <reference anchor="json-schema-validation">
-                <front>
-                    <title>JSON Schema Validation: A Vocabulary for Structural Validation of JSON</title>
-                    <author initials="A." surname="Wright">
-                        <organization/>
-                    </author>
-                    <date year="2016" month="October"/>
-                </front>
-                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-validation-01" />
-            </reference>
-        </references>
-        <references title="Informative References">
-            &rfc2046;
-            <!--&rfc5226;-->
-            &rfc4151;
-            &rfc5789;
-            &rfc5988;
-            &rfc6573;
-            &rfc7230;
-            &rfc7231;
-            &rfc7807;
-            &I-D.nottingham-rfc5988bis;
-        </references>
         <section title="JSON Hyper-Schema and HTTP" anchor="HTTP">
             <t>
                 While JSON Hyper-Schema is a hypermedia format and therefore protocol-independent,
@@ -1480,6 +1354,133 @@ for varname in templateData:
                 </t>
             </section>
         </section>
+
+        <section title="Examples" anchor="examples">
+            <t><cref>Examples are being added in a subsequent PR.</cref></t>
+        </section>
+
+        <section title="Security Considerations" anchor="security">
+            <t><cref>Need to reference the core and validation security considerations.</cref></t>
+            <section title='"self" links'>
+                <t>
+                    When link relation of "self" is used to denote a full representation of an
+                    object, the user agent SHOULD NOT consider the representation to be the
+                    authoritative representation of the resource denoted by the target URI if
+                    the target URI is not equivalent to or a sub-path of the URI used to request
+                    the resource representation which contains the target URI with the "self"
+                    link.
+                </t>
+            </section>
+            <section title="Target attributes">
+                <t>
+                    <cref>
+                        This whole section needs more work, but I do like having security
+                        concerns around target interactions consolidated and addressed as a whole.
+                    </cref>
+                </t>
+                <t>
+                    The "targetMediaType" property in link definitions defines the expected
+                    format of the link's target.
+                    However, this is advisory only, and MUST NOT be considered authoritative.
+                </t>
+                <t>
+                    When choosing how to interpret data, the type information provided by the
+                    server (or inferred from the filename, or any other usual method) MUST be
+                    the only consideration, and the "targetMediaType" property of the link
+                    MUST NOT be used.
+                    User agents MAY use this information to determine how they represent the
+                    link or where to display it (for example hover-text, opening in a new tab).
+                    If user agents decide to pass the link to an external program, they SHOULD
+                    first verify that the data is of a type that would normally be passed to
+                    that external program.
+                </t>
+                <t>
+                    This is to guard against re-interpretation of "safe" data, similar to the
+                    precautions for "targetSchema".
+                </t>
+                <t>
+                    The "targetSchema" keyword has similar security concerns to that of
+                    "targetMediaType".
+                    Clients MUST NOT use the value of this property to aid in the interpretation
+                    of the data received in response to following the link, as this leaves
+                    "safe" data open to re-interpretation.
+                </t>
+            </section>
+        </section>
+<!--
+        <section title="IANA Considerations">
+            <t>No considerations</t>
+        </section>
+-->
+        <section title="Acknowledgments">
+            <t>
+                Thanks to
+                Gary Court,
+                Francis Galiegue,
+                Kris Zyp,
+                and Geraint Luff
+                for their work on the initial drafts of JSON Schema.
+            </t>
+            <t>
+                Thanks to
+                Jason Desrosiers,
+                Daniel Perrett,
+                Erik Wilde,
+                Ben Hutton,
+                Evgeny Poberezkin,
+                Brad Bowman,
+                Gowry Sankar,
+                Donald Pipowitch,
+                Dave Finlay,
+                and Denis Laxalde
+                for their submissions and patches to the document.
+            </t>
+        </section>
+    </middle>
+
+    <back>
+        <!-- References Section -->
+        <references title="Normative References">
+            &rfc2119;
+            &rfc3986;
+            <!--&rfc4287;-->
+            &rfc6570;
+            &rfc6901;
+            &I-D.luff-relative-json-pointer;
+            &I-D.reschke-http-jfv;
+            <reference anchor="json-schema">
+                <front>
+                    <title>JSON Schema: A Media Type for Describing JSON Documents</title>
+                    <author initials="A." surname="Wright">
+                        <organization/>
+                    </author>
+                    <date year="2016" month="October"/>
+                </front>
+                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-01" />
+            </reference>
+            <reference anchor="json-schema-validation">
+                <front>
+                    <title>JSON Schema Validation: A Vocabulary for Structural Validation of JSON</title>
+                    <author initials="A." surname="Wright">
+                        <organization/>
+                    </author>
+                    <date year="2016" month="October"/>
+                </front>
+                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-validation-01" />
+            </reference>
+        </references>
+        <references title="Informative References">
+            &rfc2046;
+            <!--&rfc5226;-->
+            &rfc4151;
+            &rfc5789;
+            &rfc5988;
+            &rfc6573;
+            &rfc7230;
+            &rfc7231;
+            &rfc7807;
+            &I-D.nottingham-rfc5988bis;
+        </references>
         <section title="Using JSON Hyper-Schema in APIs" anchor="apis">
             <t>
                 Hypermedia APIs, which follow the constraints of the REST architectural
