@@ -1677,8 +1677,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                 </figure>
                 <t>
                     We can partially resolve the link as follows, before asking the client
-                    for input.  Note that the input template line is wrapped to fit this
-                    document's width restrictions.
+                    for input.
                 </t>
                 <figure>
                     <artwork>
@@ -1686,8 +1685,9 @@ Link: <https://schema.example.com/entry> rel=describedBy
     "contextUri": "https://api.example.com/stuff",
     "contextPointer": "",
     "rel": "author",
-    "hrefInputTemplate":
+    "hrefInputTemplates": [
       "mailto:someone@example.com?subject={title}{&cc}",
+    ],
     "hrefPrepopulatedInput": {
         "title": "The Really Awesome Thing"
     },
