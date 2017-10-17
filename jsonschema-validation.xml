@@ -1228,96 +1228,96 @@
                 to form a comprehensive set of features.  Rather, additional vocabularies
                 can be defined for more complex annotation-based applications.
             </t>
-                <section title='"title" and "description"'>
-                    <t>
-                        The value of both of these keywords MUST be a string.
-                    </t>
-                    <t>
-                        Both of these keywords can be used to decorate a user interface with
-                        information about the data produced by this user interface. A title will
-                        preferably be short, whereas a description will provide explanation about
-                        the purpose of the instance described by this schema.
-                    </t>
-                </section>
+            <section title='"title" and "description"'>
+                <t>
+                    The value of both of these keywords MUST be a string.
+                </t>
+                <t>
+                    Both of these keywords can be used to decorate a user interface with
+                    information about the data produced by this user interface. A title will
+                    preferably be short, whereas a description will provide explanation about
+                    the purpose of the instance described by this schema.
+                </t>
+            </section>
 
-                <section title='"default"'>
-                    <t>
-                        There are no restrictions placed on the value of this keyword.  When
-                        multiple occurrences of this keyword are applicable to a single
-                        sub-instance, implementations SHOULD remove duplicates.
-                    </t>
-                    <t>
-                        This keyword can be used to supply a default JSON value associated with a
-                        particular schema. It is RECOMMENDED that a default value be valid against
-                        the associated schema.
-                    </t>
-                </section>
+            <section title='"default"'>
+                <t>
+                    There are no restrictions placed on the value of this keyword.  When
+                    multiple occurrences of this keyword are applicable to a single
+                    sub-instance, implementations SHOULD remove duplicates.
+                </t>
+                <t>
+                    This keyword can be used to supply a default JSON value associated with a
+                    particular schema. It is RECOMMENDED that a default value be valid against
+                    the associated schema.
+                </t>
+            </section>
 
-                <section title='"readOnly" and "writeOnly"'>
-                    <t>
-                        The value of these keywords MUST be a boolean.  When multiple occurrences
-                        of these keywords are applicable to a single sub-instance, the resulting
-                        value MUST be true if any occurrence specifies a true value, and MUST
-                        be false otherwise.
-                    </t>
-                    <t>
-                        If "readOnly" has a value of boolean true, it indicates that the value
-                        of the instance is managed exclusively by the owning authority, and
-                        attempts by an application to modify the value of this property are
-                        expected to be ignored or rejected by that owning authority.
-                    </t>
-                    <t>
-                        An instance document that is marked as "readOnly for the entire document
-                        MAY be ignored if sent to the owning authority, or MAY result in an
-                        error, at the authority's discretion.
-                    </t>
-                    <t>
-                        If "writeOnly" has a value of boolean true, it indicates that the value
-                        is never present when the instance is retrieved from the owning authority.
-                        It can be present when sent to the owning authority to update or create
-                        the document (or the resource it represents), but it will not be included
-                        in any updated or newly created version of the instance.
-                    </t>
-                    <t>
-                        An instance document that is marked as "writeOnly" for the entire document
-                        MAY be returned as a blank document of some sort, or MAY produce an error
-                        upon retrieval, or have the retrieval request ignored, at the authority's
-                        discretion.
-                    </t>
-                    <t>
-                        For example, "readOnly" would be used to mark a database-generated serial
-                        number as read-only, while "writeOnly" would be used to mark a password
-                        input field.
-                    </t>
-                    <t>
-                        These keywords can be used to assist in user interface instance generation.
-                        In particular, an application MAY choose to use a widget that hides
-                        input values as they are typed for write-only fields.
-                    </t>
-                    <t>
-                        Omitting these keywords has the same behavior as values of false.
-                    </t>
-                </section>
+            <section title='"readOnly" and "writeOnly"'>
+                <t>
+                    The value of these keywords MUST be a boolean.  When multiple occurrences
+                    of these keywords are applicable to a single sub-instance, the resulting
+                    value MUST be true if any occurrence specifies a true value, and MUST
+                    be false otherwise.
+                </t>
+                <t>
+                    If "readOnly" has a value of boolean true, it indicates that the value
+                    of the instance is managed exclusively by the owning authority, and
+                    attempts by an application to modify the value of this property are
+                    expected to be ignored or rejected by that owning authority.
+                </t>
+                <t>
+                    An instance document that is marked as "readOnly for the entire document
+                    MAY be ignored if sent to the owning authority, or MAY result in an
+                    error, at the authority's discretion.
+                </t>
+                <t>
+                    If "writeOnly" has a value of boolean true, it indicates that the value
+                    is never present when the instance is retrieved from the owning authority.
+                    It can be present when sent to the owning authority to update or create
+                    the document (or the resource it represents), but it will not be included
+                    in any updated or newly created version of the instance.
+                </t>
+                <t>
+                    An instance document that is marked as "writeOnly" for the entire document
+                    MAY be returned as a blank document of some sort, or MAY produce an error
+                    upon retrieval, or have the retrieval request ignored, at the authority's
+                    discretion.
+                </t>
+                <t>
+                    For example, "readOnly" would be used to mark a database-generated serial
+                    number as read-only, while "writeOnly" would be used to mark a password
+                    input field.
+                </t>
+                <t>
+                    These keywords can be used to assist in user interface instance generation.
+                    In particular, an application MAY choose to use a widget that hides
+                    input values as they are typed for write-only fields.
+                </t>
+                <t>
+                    Omitting these keywords has the same behavior as values of false.
+                </t>
+            </section>
 
-                <section title='"examples"'>
-                    <t>
-                        The value of this keyword MUST be an array.
-                        There are no restrictions placed on the values within the array.
-                        When multiple occurrences of this keyword are applicable to a single
-                        sub-instance, implementations MUST provide a flat array of all
-                        values rather than an array of arrays.
-                    </t>
-                    <t>
-                        This keyword can be used to provide sample JSON values associated with a
-                        particular schema, for the purpose of illustrating usage.  It is
-                        RECOMMENDED that these values be valid against the associated schema.
-                    </t>
-                    <t>
-                        Implementations MAY use the value(s) of "default", if present, as
-                        an additional example.  If "examples" is absent, "default"
-                        MAY still be used in this manner.
-                    </t>
-                </section>
+            <section title='"examples"'>
+                <t>
+                    The value of this keyword MUST be an array.
+                    There are no restrictions placed on the values within the array.
+                    When multiple occurrences of this keyword are applicable to a single
+                    sub-instance, implementations MUST provide a flat array of all
+                    values rather than an array of arrays.
+                </t>
+                <t>
+                    This keyword can be used to provide sample JSON values associated with a
+                    particular schema, for the purpose of illustrating usage.  It is
+                    RECOMMENDED that these values be valid against the associated schema.
+                </t>
+                <t>
+                    Implementations MAY use the value(s) of "default", if present, as
+                    an additional example.  If "examples" is absent, "default"
+                    MAY still be used in this manner.
+                </t>
+            </section>
         </section>
 
         <section title="Security considerations">
