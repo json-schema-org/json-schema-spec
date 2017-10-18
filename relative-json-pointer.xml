@@ -57,8 +57,8 @@
             <t>
                 JSON Pointer (<xref target="RFC6901">RFC 6901</xref>) is a syntax for specifying
                 locations in a JSON document, starting from the document root.  This
-                document defines an extension to the JSON Pointer syntax, allowing
-                relative locations from within the document.
+                document defines a related syntax allowing identification of relative locations
+                from within the document.
             </t>
         </section>
 
@@ -237,6 +237,15 @@
                 existent value.  This specification does not define how errors are
                 handled.  An application of JSON Relative Pointer SHOULD specify the
                 impact and handling of each type of error.
+            </t>
+        </section>
+
+        <section title="Relationship to JSON Pointer">
+            <t>
+                Relative JSON Pointers are intended as a companion to JSON Pointers.
+                Applications MUST specify the use of each syntax separately.
+                Defining either JSON Pointer or Relative JSON Pointer as an acceptable
+                syntax does not imply that the other syntax is also acceptable.
             </t>
         </section>
 
