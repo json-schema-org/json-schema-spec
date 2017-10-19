@@ -178,7 +178,7 @@
                     </t>
                 </section>
             </section>
-            <section title="Assertions">
+            <section title="Assertions" anchor="assertions">
                 <t>
                     Validation is a process of checking assertions.  Each assertion adds
                     constraints that an instance must satisfy in order to successfully validate.
@@ -215,7 +215,7 @@
                     </t>
                 </section>
             </section>
-            <section title="Annotations">
+            <section title="Annotations" anchor="annotations">
                 <t>
                     In addition to assertions, this specification provides a small vocabulary
                     of metadata keywords that can be used to annotate the JSON instance with
@@ -863,7 +863,15 @@
 
             <section title="Implementation requirements">
                 <t>
-                    Implementations MAY support the "format" keyword. Should they choose to do so:
+                    The "format" keyword functions as both an annotation
+                    (<xref target="annotations" />) and as an assertion
+                    (<xref target="assertions" />).  While no special effort is required to
+                    implement it as an annotation convenying semantic meaning, implementing
+                    validation is non-trivial.
+                </t>
+                <t>
+                    Implementations MAY support the "format" keyword as a validation assertion.
+                    Should they choose to do so:
 
                     <list>
                         <t>they SHOULD implement validation for attributes defined below;</t>
@@ -1087,7 +1095,16 @@
 
             <section title="Implementation requirements">
                 <t>
-                    Implementations MAY support keywords defined in this section.
+                    The content keywords function as both annotations
+                    (<xref target="annotations" />) and as assertions
+                    (<xref target="assertions" />).
+                    While no special effort is required to implement them as annotations convenying
+                    how applications can interpret the data in the string, implementing
+                    validation of conformance to the media type and encoding is non-trivial.
+                </t>
+                <t>
+                    Implementations MAY support the "contentMediaType" and "contentEncoding"
+                    keywords as validation assertions.
                     Should they choose to do so, they SHOULD offer an option to disable validation
                     for these keywords.
                 </t>
