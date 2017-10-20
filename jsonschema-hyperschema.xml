@@ -440,7 +440,7 @@
                 <section title='"self" links' anchor="self">
                     <t>
                         A hyper-schema implementation MUST recognize that a link with relation
-                        type "self" that is applicable to the entire instance document describes    
+                        type "self" that is applicable to the entire instance document describes
                         how a user agent can interact with the resource represented by that
                         instance document.  A "self" link MUST be resolvable from the instance,
                         and therefore "hrefSchema" MUST NOT be present.
@@ -1467,7 +1467,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
     "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
-    "base": "http://api.example.com",
+    "base": "https://api.example.com",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -1724,6 +1724,302 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     Discovering ordered links
                     Multiple self links (for the collection and each item)
                 </cref></t>
+                <t>
+                    In many systems, individual resources are grouped into collections.  Those
+                    collections also often provide a way to create individual item resources with
+                    server-assigned identifiers.
+                </t>
+                <t>
+                    This schema describes a collection where each item representation is
+                    identical to the individual resource item representation, and there
+                    is enough metadata included in the collection representation to
+                    produce pagination links.  The "first" and "last" pagination links
+                    were omitted as this is already a long example.
+                </t>
+                <t>
+                    Note that there is an object member called "items", which is an array
+                    and thefore uses the validation keyword "items" in its own schema.  The outer
+                    "items" is a property name, the inner one is a schema keyword.
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[{
+    "$id": "https://schema.example.com/thing-collection",
+    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "base": "https://api.example.com",
+    "type": "object",
+    "required": ["items"],
+    "properties": {
+        "items": {
+            "type": "array",
+            "items": {
+                "allOf": [{"$ref": "thing#"}],
+                "links": [
+                    {
+                        "anchorPointer": "",
+                        "rel": "item",
+                        "href": "things/{id}",
+                        "hrefRequired": ["id"],
+                        "targetSchema": {"$ref": "thing#"}
+                    }
+                ]
+            }
+        },
+        "meta": {
+            "type": "object",
+            "properties": {
+                "prev": {"$ref": "#/definitions/scrolling"},
+                "current": {"$ref": "#/definitions/scrolling"},
+                "next": {"$ref": "#/definitions/scrolling"}
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "things{?offset,limit}",
+            "hrefRequired": ["offset", "limit"],
+            "hrefPointers": {
+                "offset": "/meta/current/offset",
+                "limit": "/meta/current/limit"
+            },
+            "targetSchema": {"$ref": "#"}
+        },
+        {
+            "rel": "prev",
+            "href": "things{?offset,limit}",
+            "hrefRequired": ["offset", "limit"],
+            "hrefPointers": {
+                "offset": "/meta/prev/offset",
+                "limit": "/meta/prev/limit"
+            },
+            "targetSchema": {"$ref": "#"}
+        },
+        {
+            "rel": "next",
+            "href": "things{?offset,limit}",
+            "hrefRequired": ["offset", "limit"],
+            "hrefPointers": {
+                "offset": "/meta/next/offset",
+                "limit": "/meta/next/limit"
+            },
+            "targetSchema": {"$ref": "#"}
+        }
+    ],
+    "definitions": {
+        "scrolling": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 10
+                }
+            }
+        }
+    }
+}]]>
+                    </artwork>
+                    <postamble>
+                        Notice that the "self" link includes the pagination query
+                        that produced the exact representation, rather than being
+                        a generic link to the collection allowing selecting the
+                        page via input.  There is no link for manual page selection
+                        in the example as shown here, nor is there a "submissionSchema"
+                        for item creation, but we will consider those additions further down.
+                    </postamble>
+                </figure>
+                <figure>
+                    <artwork>
+<![CDATA[{
+    "items": [
+        {"id": 12345, "data": {}},
+        {"id": 67890, "data": {}}
+    ],
+    "meta": {
+        "current": {
+            "offset": 0,
+            "limit": 2
+        },
+        "next": {
+            "offset": 3,
+            "limit": 2
+        }
+    }
+}]]>
+                    </artwork>
+                </figure>
+                <figure>
+                    <preamble>
+                        Here are all of the links that apply to this instance,
+                        including those that are referenced by using the "thing"
+                        schema for the individual items.  The "self" links for
+                        the overal resource and each individual item are
+                        distinguished by different context pointers.  Note also
+                        that the "item" and "self" links for a given thing have
+                        identical target URIs but different context pointers.
+                    </preamble>
+                    <artwork>
+<![CDATA[[
+    {
+        "contextUri": "https://api.example.com/things",
+        "contextPointer": "",
+        "rel": "self",
+        "targetUri": "https://api.example.com/things?offset=20,limit=2",
+        "attachmentPointer": ""
+    },
+    {
+        "contextUri": "https://api.example.com/things",
+        "contextPointer": "",
+        "rel": "next",
+        "targetUri": "https://api.example.com/things?offset=22,limit=2",
+        "attachmentPointer": ""
+    },
+    {
+        "contextUri": "https://api.example.com/things",
+        "contextPointer": "",
+        "rel": "item",
+        "targetUri": "https://api.example.com/things/1234",
+        "attachmentPointer": "/items/0"
+    },
+    {
+        "contextUri": "https://api.example.com/things",
+        "contextPointer": "",
+        "rel": "item",
+        "targetUri": "https://api.example.com/things/67890",
+        "attachmentPointer": "/items/1"
+    },
+    {
+        "contextUri": "https://api.example.com/things",
+        "contextPointer": "/items/0",
+        "rel": "self",
+        "targetUri": "https://api.example.com/things/1234",
+        "attachmentPointer": "/items/0"
+    },
+    {
+        "contextUri": "https://api.example.com/things",
+        "contextPointer": "/items/1",
+        "rel": "self",
+        "targetUri": "https://api.example.com/things/67890",
+        "attachmentPointer": "/items/1"
+    }
+]]]>
+
+                    </artwork>
+                    <postamble>
+                        Note that there is no "prev" link in the output, as we are looking
+                        at the first page.  The lack of a "prev" field under "meta",
+                        together with the "prev" link's "hrefRequired" values, means
+                        that the link is not usable with this particular instance.
+                    </postamble>
+                </figure>
+                <t>
+                    To fully specify our collection, we also need to add the following
+                    link to our "thing" schema.  Note that this would cause it to also
+                    appear as a link in each item in the collection representation, which
+                    is a good example of why it is best to only construct links upon request.
+                    There is no need for having as many functionally identical "collection"
+                    links as there are items in a collection page on every collection
+                    representation.
+                </t>
+                <figure>
+                    <preamble>
+                        This link would be added to the top-level "links" array in the
+                        "https://schemasexample.com/thing" schema.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "rel": "collection",
+    "href": "/things",
+    "targetSchema": {"$ref": "thing-collection#"},
+    "submissionSchema": {"$ref": "#"}
+}]]>
+                    </artwork>
+                    <postamble>
+                        Here we see the "submissionSchema" indicating that we can create
+                        a single "thing" by submitting a representation (minus server-created
+                        fields such as "id") to the collection that is this link's target
+                        schema.  While we cannot, in general, make assumptions about the
+                        semantics of making a data submission request (in HTTP terms, a POST),
+                        <xref target="collectionAndItem" /> tells us that we MAY make such
+                        an assumption when the link relation is "collection", and that
+                        hyper-schema authors MUST NOT use a "collection" link if the data
+                        submission operation has semantics other than item creation.
+                    </postamble>
+                </figure>
+                <t>
+                    <cref>
+                        I left off the scrolling parameters for this link.  Technically,
+                        the link should go to the page containing the specific "thing"
+                        that is the context of the link.  If the collection is using
+                        semantic sorting, then this is do-able (ideally setting
+                        the page boundary such that this is the first item, and allowing
+                        input on the page count / "limit" parameter).  But getting into
+                        semantic scrolling/pagination seems way too involved for this
+                        example.
+                    </cref>
+                </t>
+                <t>
+                    <cref>
+                        Note also that POST-ing to a collection page that will not contain
+                        the created item also seems weird.  While retrieving the collection
+                        from a query parameter-less URI will still retrieve a page, that's
+                        a limit imposed by the server.  POST-ing to such a URI and disregarding
+                        the "default" values for the parameters seems correct.  This is another
+                        reason to *not* automatically write default values into the query.
+                    </cref>
+                </t>
+                <t>
+                    But what if we do not have any "thing"s yet?  We cannot get to the
+                    individual "thing" schema as there is no individual "thing" to fetch.
+                    And the "tag:rel.example.com,2017:thing" link in the entry point
+                    resource does not indicate how to create a "thing".  The "self" link
+                    requires the "id" to already exist, but it is assigned by the server.
+                    So we need to add another link to our entry point schema:
+                </t>
+                <figure>
+                    <preamble>
+                        This LDO would be added to the top-level "links" array in the entry
+                        point resource's hyper-schema.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "rel": "tag:rel.example.com,2017:thing-collection",
+    "href": "/things{?offset,limit}",
+    "hrefSchema": {
+        "$ref": "thing-collection#/definitions/scrolling"
+    },
+    "submissionSchema": {
+        "$ref": "thing#"
+    },
+    "targetSchema": {
+        "$ref": "thing-collection#"
+    }
+}]]>
+                    </artwork>
+                    <postamble>
+                        Now we see the scrolling parameters being accepted as input, so
+                        we can jump to any scroll window within the collection.
+                    </postamble>
+                </figure>
+                <t>
+                    <cref>
+                        Here we also see the "submissionSchema" to use to create a "thing",
+                        but how do we recognize it?  We can't use a "collection" link relation
+                        here, because there is no identifiable "thing" to serve as the context
+                        resource.  We could look at the submission schema, notice that it
+                        has a "collection" link and is therefore an item, and notice that
+                        its "collection" link produces the same(-ish?) URI, but that seems
+                        overly complicated and also gets into trouble with query parameters
+                        again.
+                    </cref>
+                </t>
             </section>
         </section>
 
