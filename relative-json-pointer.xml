@@ -57,8 +57,8 @@
             <t>
                 JSON Pointer (<xref target="RFC6901">RFC 6901</xref>) is a syntax for specifying
                 locations in a JSON document, starting from the document root.  This
-                document defines an extension to the JSON Pointer syntax, allowing
-                relative locations from within the document.
+                document defines a related syntax allowing identification of relative locations
+                from within the document.
             </t>
         </section>
 
@@ -82,7 +82,7 @@
             </t>
             <t>
                 The separation between the integer prefix and the JSON Pointer will
-                always be unambigious, because a JSON Pointer must be either zero-
+                always be unambiguous, because a JSON Pointer must be either zero-
                 length or start with a '/' (%x2F).  Similarly, a JSON Pointer will
                 never be ambiguous with the '#'.
             </t>
@@ -240,10 +240,23 @@
             </t>
         </section>
 
+        <section title="Relationship to JSON Pointer">
+            <t>
+                Relative JSON Pointers are intended as a companion to JSON Pointers.
+                Applications MUST specify the use of each syntax separately.
+                Defining either JSON Pointer or Relative JSON Pointer as an acceptable
+                syntax does not imply that the other syntax is also acceptable.
+            </t>
+        </section>
+
         <section title="Acknowledgements">
             <t>
                 The language and structure of this specification are based heavily on
                 <xref target="RFC6901"/>, sometimes quoting it outright.
+            </t>
+            <t>
+                This draft remains primarily as written and published by Geraint Luff,
+                with only minor subsequent alterations under new editorship.
             </t>
         </section>
 
@@ -278,5 +291,26 @@
         <references title="Informative References">
             &RFC4627;
         </references>
+
+        <section title="ChangeLog">
+            <t>
+                <cref>This section to be removed before leaving Internet-Draft status.</cref>
+            </t>
+            <t>
+                <list style="hanging">
+                    <t hangText="draft-handrews-relative-json-pointer-00">
+                        <list style="symbols">
+                            <t>Revived draft with identical wording and structure.</t>
+                            <t>Clarified how to use alongside JSON Pointer.</t>
+                        </list>
+                    </t>
+                    <t hangText="draft-luff-relative-json-pointer-00">
+                        <list style="symbols">
+                            <t>Initial draft.</t>
+                        </list>
+                    </t>
+                </list>
+            </t>
+        </section>
     </back>
 </rfc>
