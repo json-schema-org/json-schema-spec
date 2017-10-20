@@ -50,9 +50,10 @@
                 for describing the structure of JSON data.
                 JSON Schema asserts what a JSON document must look like,
                 ways to extract information from it,
-                and how to interact with it,
-                ideal for annotating existing JSON APIs that would not otherwise have hypermedia
-                controls or be machine-readable.
+                and how to interact with it.
+                The "application/schema-instance+json" media type provides additional
+                feature-rich integration with "application/schema+json" beyond what can be offered
+                for "application/json" documents.
             </t>
         </abstract>
         <note title="Note to Readers">
@@ -110,6 +111,8 @@
             <t>
                 This document proposes a new media type "application/schema+json" to identify a JSON
                 Schema for describing JSON data.
+                It also proposes a further optional media type, "application/schema-instance+json",
+                to provide additional integration features.
                 JSON Schemas are themselves JSON documents.
                 This, and related specifications, define keywords allowing authors to describe JSON
                 data in several ways.
@@ -164,64 +167,96 @@
 
             <section title="Instance">
                 <t>
-                    JSON Schema interprets documents according to a data model. A JSON value
-                    interpreted according to this data model is called an "instance".
+                    A JSON document to which a schema is applied is known as an "instance".
                 </t>
-                <t>
-                    An instance has one of six primitive types, and a range of possible values
-                    depending on the type:
 
-                    <list style="hanging">
-                        <t hangText="null">A JSON "null" production</t>
-                        <t hangText="boolean">A "true" or "false" value, from the JSON "true" or "false" productions</t>
-                        <t hangText="object">An unordered set of properties mapping a string to an instance, from the JSON "object" production</t>
-                        <t hangText="array">An ordered list of instances, from the JSON "array" production</t>
-                        <t hangText="number">An arbitrary-precision, base-10 decimal number value, from the JSON "number" production</t>
-                        <t hangText="string">A string of Unicode code points, from the JSON "string" production</t>
-                    </list>
-                </t>
-                <t>
-                    Whitespace and formatting concerns are thus outside the scope of JSON Schema.
-                </t>
-                <t>
-                    Since an object cannot have two properties with the same key, behavior for a
-                    JSON document that tries to define two properties (the "member" production) with
-                    the same key (the "string" production) in a single object is undefined.
-                </t>
-            </section>
+                <section title="Instance data model">
+                    <t>
+                        JSON Schema interprets documents according to a data model. A JSON value
+                        interpreted according to this data model is called an "instance".
+                    </t>
+                    <t>
+                        An instance has one of six primitive types, and a range of possible values
+                        depending on the type:
 
-            <section title="Instance equality">
-                <t>
-                    Two JSON instances are said to be equal if and only if they are of the same type
-                    and have the same value according to the data model. Specifically, this means:
+                        <list style="hanging">
+                            <t hangText="null">A JSON "null" production</t>
+                            <t hangText="boolean">A "true" or "false" value, from the JSON "true" or "false" productions</t>
+                            <t hangText="object">An unordered set of properties mapping a string to an instance, from the JSON "object" production</t>
+                            <t hangText="array">An ordered list of instances, from the JSON "array" production</t>
+                            <t hangText="number">An arbitrary-precision, base-10 decimal number value, from the JSON "number" production</t>
+                            <t hangText="string">A string of Unicode code points, from the JSON "string" production</t>
+                        </list>
+                    </t>
+                    <t>
+                        Whitespace and formatting concerns are thus outside the scope of JSON Schema.
+                    </t>
+                    <t>
+                        Since an object cannot have two properties with the same key, behavior for a
+                        JSON document that tries to define two properties (the "member" production) with
+                        the same key (the "string" production) in a single object is undefined.
+                    </t>
+                </section>
 
-                    <list>
-                        <t>both are null; or</t>
-                        <t>both are true; or</t>
-                        <t>both are false; or</t>
-                        <t>both are strings, and are the same codepoint-for-codepoint; or</t>
-                        <t>both are numbers, and have the same mathematical value; or</t>
-                        <t>both are arrays, and have an equal value item-for-item; or</t>
-                        <t>both are objects, and each property in one has exactly one property with
-                            a key equal to the other's, and that other property has an equal
-                            value.</t>
-                    </list>
-                </t>
-                <t>
-                    Implied in this definition is that arrays must be the same length,
-                    objects must have the same number of members,
-                    properties in objects are unordered,
-                    there is no way to define multiple properties with the same key,
-                    and mere formatting differences (indentation, placement of commas, trailing
-                    zeros) are insignificant.
-                </t>
+                <section title="Instance media types">
+                    <t>
+                        JSON Schema is designed to fully work with "application/json" documents,
+                        as well as media types using the "+json" structured syntax suffix.
+                    </t>
+                    <t>
+                        Some functionality that is useful for working with schemas is
+                        defined by each media type, namely media type parameters and
+                        URI fragment identifier syntax and semantics.  These features are
+                        useful in content negotiation and in caclulating URIs for specific
+                        locations within an instance, respectively.
+                    </t>
+                    <t>
+                        This specification defines the "application/schema-instance+json"
+                        media type in order to allow instance authors to take full advantage
+                        of parameters and fragment identifiers for these purposes.
+                    </t>
+                </section>
+
+                <section title="Instance equality">
+                    <t>
+                        Two JSON instances are said to be equal if and only if they are of the same type
+                        and have the same value according to the data model. Specifically, this means:
+
+                        <list>
+                            <t>both are null; or</t>
+                            <t>both are true; or</t>
+                            <t>both are false; or</t>
+                            <t>both are strings, and are the same codepoint-for-codepoint; or</t>
+                            <t>both are numbers, and have the same mathematical value; or</t>
+                            <t>both are arrays, and have an equal value item-for-item; or</t>
+                            <t>both are objects, and each property in one has exactly one property with
+                                a key equal to the other's, and that other property has an equal
+                                value.</t>
+                        </list>
+                    </t>
+                    <t>
+                        Implied in this definition is that arrays must be the same length,
+                        objects must have the same number of members,
+                        properties in objects are unordered,
+                        there is no way to define multiple properties with the same key,
+                        and mere formatting differences (indentation, placement of commas, trailing
+                        zeros) are insignificant.
+                    </t>
+                </section>
             </section>
 
             <section title="JSON Schema documents">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe
                     an instance.
-                    A schema is itself interpreted as an instance.
+                    A schema is itself interpreted as an instance, but SHOULD always be given
+                    the media type "application/schema+json" rather than
+                    "application/schema-instance+json".  The "application/schema+json" media
+                    type is defined to offer a superset of the media type parameter and
+                    fragment identifier syntax and semantics provided by
+                    "application/schema-instance+json".
+                </t>
+                <t>
                     A JSON Schema MUST be an object or a boolean.
                 </t>
                 <t>
@@ -248,17 +283,16 @@
                 <t>
                     An empty schema is a JSON Schema with no properties, or only unknown properties.
                 </t>
-            </section>
 
-            <section title="Root schema and subschemas">
-                <t>
-                    The root schema is the schema that comprises the entire JSON document in question.
-                </t>
-                <t>
-                    Some keywords take schemas themselves, allowing JSON Schemas to be nested:
-                </t>
-                <figure>
-                    <artwork>
+                <section title="Root schema and subschemas">
+                    <t>
+                        The root schema is the schema that comprises the entire JSON document in question.
+                    </t>
+                    <t>
+                        Some keywords take schemas themselves, allowing JSON Schemas to be nested:
+                    </t>
+                    <figure>
+                        <artwork>
 <![CDATA[
 {
     "title": "root",
@@ -267,15 +301,16 @@
     }
 }
 ]]>
-                    </artwork>
-                </figure>
-                <t>
-                    In this example document, the schema titled "array item" is a subschema,
-                    and the schema titled "root" is the root schema.
-                </t>
-                <t>
-                    As with the root schema, a subschema is either an object or a boolean.
-                </t>
+                        </artwork>
+                    </figure>
+                    <t>
+                        In this example document, the schema titled "array item" is a subschema,
+                        and the schema titled "root" is the root schema.
+                    </t>
+                    <t>
+                        As with the root schema, a subschema is either an object or a boolean.
+                    </t>
+                </section>
             </section>
 
         </section>
@@ -291,22 +326,27 @@
             <t>
                 Additionally, the "application/schema+json" media type supports two
                 fragment identifier structures: plain names and JSON Pointers.
+                The "application/schema-instance+json" media type supports one
+                fragment identifier structure: JSON Pointers.
+            </t>
+            <t>
                 The use of JSON Pointers as URI fragment identifiers is described in
                 <xref target="RFC6901">RFC 6901</xref>.
-                Fragment identifiers matching the JSON Pointer syntax, including
-                the empty string, MUST be interpreted as JSON Pointer fragment
-                identifiers.
+                For "application/schema+json", which supports two fragment identifier syntaxes,
+                fragment identifiers matching the JSON Pointer syntax, including the empty string,
+                MUST be interpreted as JSON Pointer fragment identifiers.
             </t>
             <t>
                 Per the W3C's
                 <xref target="W3C.WD-fragid-best-practices-20121025">best practices for fragment identifiers</xref>,
-                plain name fragment identifiers are reserved for referencing
+                plain name fragment identifiers in "application/schema+json" are reserved for referencing
                 locally named schemas.  All fragment identifiers that do
                 not match the JSON Pointer syntax MUST be interpreted as
                 plain name fragment identifiers.
             </t>
             <t>
-                Defining and referencing a plain name fragment identifier are specified
+                Defining and referencing a plain name fragment identifier within an
+                "application/schema+json" document are specified
                 in the <xref target="id-keyword">"$id" keyword</xref> section.
             </t>
             <t>
@@ -376,6 +416,10 @@
                 The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
                 (containing a scheme) and this URI MUST be normalized.
                 The current schema MUST be valid against the meta-schema identified by this URI.
+            </t>
+            <t>
+                If this URI identifies a retrievable resource, that resource SHOULD be of
+                media type "application/schema+json".
             </t>
             <t>
                 The "$schema" keyword SHOULD be used in a root schema.
@@ -783,34 +827,78 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
         </section>
 
         <section title="IANA Considerations">
-            <t>
-                The proposed MIME media type for JSON Schema is defined as follows:
+            <section title="application/schema+json">
+                <t>
+                    The proposed MIME media type for JSON Schema is defined as follows:
 
-                <list>
-                    <t>Type name: application</t>
-                    <t>Subtype name: schema+json</t>
-                    <t>Required parameters: N/A</t>
-                    <t>
-                        Encoding considerations: Encoding considerations are
-                        identical to those specified for the "application/json"
-                        media type.  See <xref target="RFC7159">JSON</xref>.
-                    </t>
-                    <t>
-                        Security considerations: See Section
-                        <xref target="security" format="counter"></xref> above.
-                    </t>
-                    <t>
-                        Interoperability considerations: See Sections
-                        <xref target="language" format="counter"></xref> and
-                        <xref target="integers" format="counter"></xref> above.
-                    </t>
-                    <t>
-                        Fragment identifier considerations: See Section
-                        <xref target="fragments" format="counter"></xref>
-                    </t>
-                </list>
-            </t>
+                    <list>
+                        <t>Type name: application</t>
+                        <t>Subtype name: schema+json</t>
+                        <t>Required parameters: N/A</t>
+                        <t>
+                            Encoding considerations: Encoding considerations are
+                            identical to those specified for the "application/json"
+                            media type.  See <xref target="RFC7159">JSON</xref>.
+                        </t>
+                        <t>
+                            Security considerations: See Section
+                            <xref target="security" format="counter"></xref> above.
+                        </t>
+                        <t>
+                            Interoperability considerations: See Sections
+                            <xref target="language" format="counter"></xref> and
+                            <xref target="integers" format="counter"></xref> above.
+                        </t>
+                        <t>
+                            Fragment identifier considerations: See Section
+                            <xref target="fragments" format="counter"></xref>
+                        </t>
+                    </list>
+                </t>
+            </section>
+            <section title="application/schema-instance+json">
+                <t>
+                    The proposed MIME media type for JSON Schema Instances that require
+                    a JSON Schema-specific media type is defined as follows:
 
+                    <list>
+                        <t>Type name: application</t>
+                        <t>Subtype name: schema-instance+json</t>
+                        <t>
+                            Required parameters:
+                            <list style="hanging">
+                                <t hangText="schema">
+                                    A non-empty list of space-separated URIs, each identifying
+                                    a JSON Schema resource.  The instance SHOULD successfully
+                                    validate against at least one of these schemas.
+                                    Non-validating schemas MAY be included for purposes such
+                                    as allowing clients to make use of older versions of a schema
+                                    as long as the runtime instance validates against that
+                                    older version.
+                                </t>
+                            </list>
+                        </t>
+                        <t>
+                            Encoding considerations: Encoding considerations are
+                            identical to those specified for the "application/json"
+                            media type.  See <xref target="RFC7159">JSON</xref>.
+                        </t>
+                        <t>
+                            Security considerations: See Section
+                            <xref target="security" format="counter"></xref> above.
+                        </t>
+                        <t>
+                            Interoperability considerations: See Sections
+                            <xref target="language" format="counter"></xref> and
+                            <xref target="integers" format="counter"></xref> above.
+                        </t>
+                        <t>
+                            Fragment identifier considerations: See Section
+                            <xref target="fragments" format="counter"></xref>
+                        </t>
+                    </list>
+                </t>
+            </section>
         </section>
     </middle>
 
