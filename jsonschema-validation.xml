@@ -1241,28 +1241,49 @@
                     </t>
                 </section>
 
-                <section title='"readOnly"'>
+                <section title='"readOnly" and "writeOnly"'>
                     <t>
-                        The value of this keyword MUST be a boolean.  When multiple occurrences
-                        of this keyword are applicable to a single sub-instance, the resulting
+                        The value of these keywords MUST be a boolean.  When multiple occurrences
+                        of these keywords are applicable to a single sub-instance, the resulting
                         value MUST be true if any occurrence specifies a true value, and MUST
                         be false otherwise.
                     </t>
                     <t>
-                        If it has a value of boolean true, this keyword indicates that the value
+                        If "readOnly" has a value of boolean true, it indicates that the value
                         of the instance is managed exclusively by the owning authority, and
                         attempts by an application to modify the value of this property are
                         expected to be ignored or rejected by that owning authority.
                     </t>
                     <t>
-                        For example, this property would be used to mark a database-generated serial
-                        number as read-only.
+                        An instance document that is marked as "readOnly for the entire document
+                        MAY be ignored if sent to the owning authority, or MAY result in an
+                        error, at the authority's discretion.
                     </t>
                     <t>
-                        This keyword can be used to assist in user interface instance generation.
+                        If "writeOnly" has a value of boolean true, it indicates that the value
+                        is never present when the instance is retrieved from the owning authority.
+                        It can be present when sent to the owning authority to update or create
+                        the document (or the resource it represents), but it will not be included
+                        in any updated or newly created version of the instance.
                     </t>
                     <t>
-                        Omitting this keyword has the same behavior as a value of false.
+                        An instance document that is marked as "writeOnly" for the entire document
+                        MAY be returned as a blank document of some sort, or MAY produce an error
+                        upon retrieval, or have the retrieval request ignored, at the authority's
+                        discretion.
+                    </t>
+                    <t>
+                        For example, "readOnly" would be used to mark a database-generated serial
+                        number as read-only, while "writeOnly" would be used to mark a password
+                        input field.
+                    </t>
+                    <t>
+                        These keywords can be used to assist in user interface instance generation.
+                        In particular, an application MAY choose to use a widget that hides
+                        input values as they are typed for write-only fields.
+                    </t>
+                    <t>
+                        Omitting these keywords has the same behavior as values of false.
                     </t>
                 </section>
 
@@ -1390,6 +1411,7 @@
                             <t>Warn of possibly removing "dependencies" in the future</t>
                             <t>Grouped validation keywords into sub-sections for readability</t>
                             <t>Moved "readOnly" from hyper-schema to validation meta-data</t>
+                            <t>Added "writeOnly"</t>
                             <t>Added string-encoded media section, with former hyper-schema "media" keywords</t>
                             <t>Restored "regex" format (removal was unintentional)</t>
                             <t>Added "date" and "time" formats, and reserved additional RFC 3339 format names</t>
