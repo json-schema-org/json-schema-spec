@@ -5,9 +5,28 @@
     "type": "object",
     "required": [ "href" ],
     "properties": {
+        "anchor": {
+            "type": "string",
+            "format": "uri-template"
+        },
+        "anchorPointer": {
+            "type": "string",
+            "anyOf": [
+                { "format": "json-pointer" },
+                { "format": "relative-json-pointer" }
+            ]
+        },
+        "rel": {
+            "type": "string"
+        },
         "href": {
             "type": "string",
             "format": "uri-template"
+        },
+        "hrefSchema": {
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "templatePointers": {
             "type": "object",
@@ -19,31 +38,12 @@
                 ]
             }
         },
-        "hrefSchema": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
-            ]
-        },
         "templateRequired": {
             "type": "array",
             "items": {
                 "type": "string"
             },
             "uniqueItems": true
-        },
-        "rel": {
-            "type": "string"
-        },
-        "anchor": {
-            "type": "string",
-            "format": "uri-template"
-        },
-        "anchorPointer": {
-            "type": "string",
-            "anyOf": [
-                { "format": "json-pointer" },
-                { "format": "relative-json-pointer" }
-            ]
         },
         "title": {
             "type": "string"
@@ -56,16 +56,21 @@
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
             ]
         },
-        "targetHints": { },
-        "mediaType": {
+        "targetMediaType": {
             "type": "string"
+        },
+        "targetHints": { },
+        "hrefSchema": {
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
+            ]
         },
         "headerSchema": {
             "allOf": [
                 { "$ref": "http://json-schema.org/draft-06/hyper-schema#" }
             ]
         },
-        "submissionEncType": {
+        "submissionMediaType": {
             "type": "string",
             "default": "application/json"
         },
