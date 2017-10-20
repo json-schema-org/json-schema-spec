@@ -207,6 +207,14 @@
                             command-line arguments, configuration files, or hardcoded values
                             in source code.
                         </t>
+                        <t hangText="operation">
+                            A specific use of a hyperlink, such as making a network request
+                            (for a URI with a scheme such as "http://" that indicates a protocol)
+                            or otherwise taking action based on a link (reading data from a
+                            "data:" URI, or constructing an email message based on a "mailto:"
+                            link).  For protocols such as HTTP that support multiple methods,
+                            each method is considered to be a separate operation on the same link.
+                        </t>
                     </list>
                 </t>
             </section>
@@ -1186,24 +1194,81 @@ for varname in templateData:
                 </t>
             </section>
 
-            <section title="Additional functionality">
+            <section title="Requests">
                 <t>
-                    Implementations MAY provide additional functionality coordinating the use of
-                    JSON Hyper-Schema with other specifications, including but not limited to
-                    JSON Schema validation, serializing payloads based on media types, and
-                    communicating with resources via protocols as indicated by URI schemes.
-                    <cref>
-                        This is vague.  I'm trying to convey that most uses of Hyper-Schema
-                        would benefit from including integration with the media types, URI schemes,
-                        and protocols, such as automatically validating submission data against
-                        "submissionSchema", encoding it according to "submissionMediaType",
-                        examining the URI for the "http" or "https" scheme, validating JSON
-                        representations of headers against "headerSchema", serializing them
-                        into HTTP header format, and constructing the appropriate POST request.
-                        While many of those activities are technically outside of the scope of
-                        Hyper-Schema, coordinating all of them is specific to Hyper-Schema and
-                        beneficial to automate.
-                    </cref>
+                    A hyper-schema implementation SHOULD provide access to all information
+                    needed to construct any valid request to the target resource.
+                </t>
+                <t>
+                    The LDO can express all information needed to perform any operation on
+                    a link.  This section explains what hyper-schema fields a user agent
+                    should examine to build requests from any combination of instance data
+                    and client input.  A hyper-schema implementation is not itself expected
+                    to construct and send requests.
+                </t>
+                <t>
+                    Target URI construction rules, including "hrefSchema" for accepting input,
+                    are identical for all possible requests.
+                </t>
+                <t>
+                    Requests that do not carry a body payload do not require additional keyword
+                    support.
+                </t>
+                <t>
+                    Requests that take a target representation as a payload SHOULD use the
+                    "targetSchema" and "targetMediaType" keywords for input description and
+                    payload validation.  If a protocol allows an operation taking a payload
+                    that is based on the representation as modified by a media type
+                    (such as a patch media type), then such a media type SHOULD be indicated
+                    through "targetHints" in a protocol-specific manner.
+                </t>
+                <t>
+                    Requests that take a payload that is not derived from the target resource's
+                    representation SHOULD use the "submissionSchema" and "submissionMediaType"
+                    keywords for input description and payload validation.  Protocols used in
+                    hypermedia generally only support one such non-representation operation
+                    per link.
+                </t>
+                <t>
+                    RPC systems that pipe many application operations with arbitrarily different
+                    request structures through a single hypermedia protocol operation are outside
+                    of the scope of a hypermedia format such as JSON Hyper-Schema.
+                </t>
+            </section>
+
+            <section title="Responses">
+                <t>
+                    As a hypermedia format, JSON Hyper-Schema is concerned with describing
+                    a resource, including describing its links in sufficient detail to make
+                    all valid requests.  It is not concerned with directly describing all
+                    possible responses for those requests.
+                </t>
+                <t>
+                    As in any hypermedia system, responses are expected to be self-describing.
+                    In the context of hyper-schema, this means that each response MUST link
+                    its own hyper-schema(s).  While responses that consist of a representation
+                    of the target resource are expected to be valid against "targetSchema"
+                    and "targetMediaType", those keywords are advisory only and MUST be
+                    ignored if contradicted by the response itself.
+                </t>
+                <t>
+                    Other responses, including error responses, complex redirections, and
+                    processing status representations SHOULD also link to their own schemas
+                    and use appropriate media types
+                    (e.g. <xref target="RFC7807">"application/problem+json"</xref> for errors).
+                    Certain errors might not link a schema due to being generated by an
+                    intermediary that is not aware of hyper-schema, rather than by the origin.
+                </t>
+                <t>
+                    User agents are expected to understand protocol status codes and response
+                    media types well enough to handle common situations, and provide enough
+                    information to client applications to handle domain-specific responses.
+                </t>
+                <t>
+                    Statically mapping all possible responses and their schemas at design time
+                    is outside of the scope of JSON Hyper-Schema, but may be within the scope
+                    of other JSON Schema vocabularies which build on hyper-schema
+                    (see <xref target="staticAnalysis" />).
                 </t>
             </section>
 
@@ -2199,7 +2264,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     information that is provided beyond the protocol's own status reporting.
                 </t>
             </section>
-            <section title="Static analysis of an API's hyper-schemas">
+            <section title="Static analysis of an API's hyper-schemas" anchor="staticAnalysis">
                 <t>
                     It is possible to statically analyze a set of hyper-schemas without instance
                     data in order to generate output such as documentation or code.  However,
