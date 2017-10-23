@@ -1302,6 +1302,15 @@ for varname in templateData:
                 Additionally, guidance is provided on hinting at HTTP response header values and
                 describing possible HTTP request headers that are relevant to the given resource.
             </t>
+            <t>
+                <xref target="json-schema">Section 11 of the JSON Schema core specification</xref>
+                provides guidance on linking instances in a hypermedia system to their schemas.
+                This may be done with network-accessible schemas, or may simply identify schemas
+                which were pre-packaged within the client application.  JSON Hyper-Schema
+                intentionally does not constrain this mechanism, although it is RECOMMENDED that
+                the techniques outlined in the core specification be used to whatever extent
+                is possible.
+            </t>
             <section title="One link per target and relation type">
                 <t>
                     Link Description Objects do not directly indicate what operations, such
