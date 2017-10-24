@@ -1297,11 +1297,19 @@ for varname in templateData:
                 using protocols such as CoAP that are explicitly analogous to HTTP.
             </t>
             <t>
-                This section provides guidance on how to define links for use with each
-                common HTTP method, and how collection resources impose additional constraints
-                on the use of HTTP POST.  Additionally, guidance is provided on hinting at
-                HTTP response header values and describing possible HTTP request headers
-                that are relevant to the given resource.
+                This section provides guidance on how to use each common HTTP method with a link,
+                and how colletion resources impose additional constraints on HTTP POST.
+                Additionally, guidance is provided on hinting at HTTP response header values and
+                describing possible HTTP request headers that are relevant to the given resource.
+            </t>
+            <t>
+                <xref target="json-schema">Section 11 of the JSON Schema core specification</xref>
+                provides guidance on linking instances in a hypermedia system to their schemas.
+                This may be done with network-accessible schemas, or may simply identify schemas
+                which were pre-packaged within the client application.  JSON Hyper-Schema
+                intentionally does not constrain this mechanism, although it is RECOMMENDED that
+                the techniques outlined in the core specification be used to whatever extent
+                is possible.
             </t>
             <section title="One link per target and relation type">
                 <t>
@@ -1352,6 +1360,8 @@ for varname in templateData:
                     that are suitable for PATCH-ing define a syntax for expressing changes
                     to a document, which can be applied to the representation described by
                     "targetSchema" to determine the set of syntactically valid request payloads.
+                    Often, the simplest way to validate a PATCH is to apply it and validate
+                    the result as a normal representation.
                 </t>
                 <t>
                     HTTP POST request payloads are described by the "submissionSchema" and
@@ -1427,6 +1437,31 @@ for varname in templateData:
                     resource to be created to the collection resource.  The process for
                     recognizing collection and item resources is described in
                     <xref target="collectionAndItem" />.
+                </t>
+            </section>
+            <section title="Content negotiation and schema evolution">
+                <t>
+                    JSON Hyper-Schema facilitates HTTP content negotiation, and allows for
+                    a hybrid of the proactive and reactive strategies.  As mentioned
+                    above, a hyper-schema can include a schema for HTTP headers such as
+                    "Accept", "Accept-Charset", "Accept-Language", etc with the "headerSchema"
+                    keyword.  A user agent or client application can use information in
+                    this schema, such as an enumerated list of supported languages, in lieu of
+                    making an initial request to start the reactive negotiation process.
+                </t>
+                <t>
+                    In this way, the proactive content negotiation technique of setting these
+                    headers can be informed by server information about what values are
+                    possible, similar to examining a list of alternatives in reactive negotiation.
+                </t>
+                <t>
+                    For media types that allow specifying a schema as a media type parameter,
+                    the "Accept" values sent in a request or advertised in "headerSchema" can
+                    include the URI(s) of the schema(s) to which the negotiated representation
+                    is expected to conform.  One possible use for schema parameters in
+                    content negotiation is if the resource has conformed to several different
+                    schema versions over time.  The client can indicate what version(s) it
+                    understands in the "Accept" header in this way.
                 </t>
             </section>
         </section>
