@@ -2,12 +2,12 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
-<!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY RFC6839 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6839.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY RFC8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 <!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
 <!ENTITY fragid-best-practices SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.WD-fragid-best-practices-20121025.xml">
 ]>
@@ -673,7 +673,7 @@
                 JSON has been adopted widely by HTTP servers for automated APIs and robots. This
                 section describes how to enhance processing of JSON documents in a more RESTful
                 manner when used with protocols that support media types and
-                <xref target="RFC5988">Web linking</xref>.
+                <xref target="RFC8288">Web linking</xref>.
             </t>
 
             <section title='Linking to a schema'>
@@ -685,7 +685,7 @@
 
                 <t>
                     In HTTP, such links can be attached to any response using the
-                    <xref target="RFC5988">Link header</xref>. An example of such a header would be:
+                    <xref target="RFC8288">Link header</xref>. An example of such a header would be:
                 </t>
 
                 <figure>
@@ -924,9 +924,9 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
         </references>
 
         <references title="Informative References">
-            &RFC5988;
             &RFC7049;
             &RFC7231;
+            &RFC8288;
             &fragid-best-practices;
             <reference anchor="json-schema-validation">
                 <front>

@@ -7,7 +7,6 @@
 <!--<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">-->
 <!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
-<!ENTITY rfc5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY rfc6068 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6068.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY rfc6573 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6573.xml">
@@ -15,7 +14,7 @@
 <!ENTITY rfc7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY rfc7807 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7807.xml">
-<!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
+<!ENTITY rfc8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 ]>
@@ -95,11 +94,7 @@
             <t>
                 The primary mechanism introduced for specifying links is the Link Description
                 Object (LDO), which is a serialization of the abstract link model
-                defined in <xref target="I-D.nottingham-rfc5988bis">RFC 5988bis, section 2</xref>.
-                <cref>
-                    This section references the work-in-progress RFC5988bis, with the expectation
-                    that it will reach RFC before this specification does.
-                </cref>
+                defined in <xref target="RFC8288">RFC 8288, section 2</xref>.
             </t>
             <t>
                 This specification will use the concepts, syntax, and terminology defined by the
@@ -163,7 +158,7 @@
                 <t>
                     The terms "link", "link context" (or "context"), "link target" (or "target"),
                     and "target attributes" are to be interpreted as defined in
-                    <xref target="I-D.nottingham-rfc5988bis">Section 2 of RFC 5988bis</xref>.
+                    <xref target="RFC8288">Section 2 of RFC 8288</xref>.
                 </t>
                 <t>
                     The term "user agent" is to be interpreted as defined in
@@ -224,7 +219,7 @@
                     A JSON Hyper-Schema implementation is able to take a hyper-schema, an
                     instance, and in some cases client input, and produce a set of fully
                     resolved valid links.  As defined by
-                    <xref target="I-D.nottingham-rfc5988bis">RFC 5988bis, section 2</xref>,
+                    <xref target="RFC8288">RFC 8288, section 2</xref>,
                     a link consists of a context, a typed relation, a target, and optionally
                     additional target attributes.
                 </t>
@@ -327,12 +322,8 @@
 
         <section title="Link Description Object" anchor="ldo">
             <t>
-                <cref>
-                    This section references the work-in-progress RFC5988bis, with the expectation
-                    that it will reach RFC before this specification does.
-                </cref>
                 A Link Description Object (LDO) is a serialization of the abstract link model
-                defined in <xref target="I-D.nottingham-rfc5988bis">RFC 5988bis, section 2</xref>.
+                defined in <xref target="RFC8288">RFC 8288, section 2</xref>.
                 As described in that document, a link consists of a context, a relation type,
                 a target, and optionally target attributes.  JSON Hyper-Schema's LDO provides
                 all of these, along with additional features using JSON Schema to describe input
@@ -439,7 +430,7 @@
                 <section title="rel" anchor="rel">
                     <t>
                         The value of this property MUST be a string, and MUST be a single
-                        Link Relation Type as defined in RFC 5988bis, Section 2.1.
+                        Link Relation Type as defined in RFC 8288, Section 2.1.
                     </t>
                     <t>
                         This property is required.
@@ -492,7 +483,7 @@
                     <t>
                         When no registered relation (aside from "related") applies, users are
                         encouraged to mint their own extension relation types, as described in
-                        <xref target="RFC5988">section 4.2 of RFC 5988</xref>.  The simplest
+                        <xref target="RFC8288">section 2.1.2 of RFC 8288</xref>.  The simplest
                         approaches for choosing link relation type URIs are to either use
                         a URI scheme that is already in use to identify the system's primary
                         resources, or to use a human-readable, non-dereferenceable URI scheme
@@ -2238,13 +2229,12 @@ Link: <https://schema.example.com/entry> rel=describedBy
             <!--&rfc5226;-->
             &rfc4151;
             &rfc5789;
-            &rfc5988;
             &rfc6068;
             &rfc6573;
             &rfc7230;
             &rfc7231;
             &rfc7807;
-            &I-D.nottingham-rfc5988bis;
+            &rfc8288;
         </references>
         <section title="Using JSON Hyper-Schema in APIs" anchor="apis">
             <t>
@@ -2331,7 +2321,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     <t hangText="draft-handrews-json-schema-hyperschema-00">
                         <list style="symbols">
                             <t>Top to bottom reorganization and rewrite</t>
-                            <t>Group keywords per RFC 5988bis context/relation/target/target attributes</t>
+                            <t>Group keywords per RFC 8288 context/relation/target/target attributes</t>
                             <t>Additional keyword groups for template resolution and describing input</t>
                             <t>Added section on general implementation requirements</t>
                             <t>Expanded overview to provide context</t>
