@@ -188,7 +188,13 @@
                         </list>
                     </t>
                     <t>
-                        Whitespace and formatting concerns are thus outside the scope of JSON Schema.
+                        Whitespace and formatting concerns, including different lexical
+                        representations of numbers that are equal within the data model, are thus
+                        outside the scope of JSON Schema.  JSON Schema vocabularies that wish
+                        to work with such differences in lexical representations SHOULD define
+                        keywords to precisely interpret formatted strings within the data model
+                        rather than relying on having the original JSON representation Unicode
+                        characters available.
                     </t>
                     <t>
                         Since an object cannot have two properties with the same key, behavior for a
