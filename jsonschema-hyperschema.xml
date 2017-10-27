@@ -1731,7 +1731,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     },
                     "email": false
                 }
-            }
+            },
             "submissionMediaType":
                     "multipart/alternative; boundary=ab2",
             "submissionSchema": {
@@ -1925,8 +1925,8 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                 </t>
                 <t>
                     Note that there is an object member called "items", which is an array
-                    and thefore uses the validation keyword "items" in its own schema.  The outer
-                    "items" is a property name, the inner one is a schema keyword.
+                    and therefore uses the validation keyword "items" in its own schema.
+                    The outer "items" is a property name, the inner one is a schema keyword.
                 </t>
                 <figure>
                     <artwork>
@@ -2047,7 +2047,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                         Here are all of the links that apply to this instance,
                         including those that are referenced by using the "thing"
                         schema for the individual items.  The "self" links for
-                        the overal resource and each individual item are
+                        the overall resource and each individual item are
                         distinguished by different context pointers.  Note also
                         that the "item" and "self" links for a given thing have
                         identical target URIs but different context pointers.
@@ -2058,14 +2058,16 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         "contextUri": "https://api.example.com/things",
         "contextPointer": "",
         "rel": "self",
-        "targetUri": "https://api.example.com/things?offset=20,limit=2",
+        "targetUri":
+            "https://api.example.com/things?offset=20,limit=2",
         "attachmentPointer": ""
     },
     {
         "contextUri": "https://api.example.com/things",
         "contextPointer": "",
         "rel": "next",
-        "targetUri": "https://api.example.com/things?offset=22,limit=2",
+        "targetUri":
+            "https://api.example.com/things?offset=22,limit=2",
         "attachmentPointer": ""
     },
     {
