@@ -1802,10 +1802,106 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     </list>
                 </t>
             </section>
-            <section title='"anchor" and "base" as URI Templates'>
-                <t><cref>
-                    "base" used as a template with both "anchor" and "href" templates.
-                </cref></t>
+            <section title='"anchor", "base" and URI Template resolution'>
+                <t>
+                    A link is a typed connection from a context resource to a target resource.
+                    Older link serializations support a "rev" keyword that takes a link relation
+                    type as "rel" does, but reverses the semantics.  This has long been deprecated,
+                    so JSON Hyper-Schema does not support it.  Instead, "anchor"'s ability to
+                    change the context URI can be used to reverse the direction of a link.
+                    It can also be used to describe a link between two resources, neither of
+                    which is the current resource.
+                </t>
+                <t>
+                    As an example, there is an IANA-registered "up" relation, but
+                    there is no "down".  In an HTTP Link header, you could implement
+                    "down" as <spanx style="verb">"rev": "up"</spanx>.
+                </t>
+                <figure>
+                    <preamble>
+                        First let's look at how this could be done in HTTP, showing a "self"
+                        link and two semantically identical links, one with "rev": "up"
+                        and the other using "anchor" with "rel": "up" (line wrapped due to
+                        formatting limitations).
+                    </preamble>
+                    <artwork>
+<![CDATA[
+GET https://api.example.com/trees/1/nodes/123 HTTP/1.1
+
+200 OK
+Content-Type: application/json
+Link: <https://api.example.com/trees/1/nodes/123> rel=self
+Link: <https://api.example.com/trees/1/nodes/123> rel=up
+        anchor=<https://api.example.com/trees/1/nodes/456>
+Link: <https://api.example.com/trees/1/nodes/456> rev=up
+{
+    "id": 123
+    "treeId": 1,
+    "childIds": [456]
+}
+]]>
+                    </artwork>
+                    <postamble>
+                        Note that the "rel=up" link has a target URI identical
+                        to the "rel=self" link, and sets "anchor" (which identifies
+                        the link's context) to the child's URI.  This sort of reversed
+                        link is easily detectable by tools when a "self" link is also present.
+                    </postamble>
+                </figure>
+
+                <figure>
+                    <preamble>
+                        The following hyper-schema, applied to the instance in the response
+                        above, would produce the same "self" link and "up" link with "anchor".
+                        It also shows the use of a templated "base" URI, plus both absolute
+                        and relative JSON Pointers in "tempaltePointers".
+                    </preamble>
+                    <artwork>
+<![CDATA[
+    "base": "trees/{treeId}",
+    "properties": {
+        "id": {"type": "integer"},
+        "treeId": {"type": "integer"},
+        "childIds": {
+            "type": "array",
+            "items": {
+                "type": "integer",
+                "links": [
+                    {
+                        "anchor": "nodes/{thisNodeId}",
+                        "rel": "up",
+                        "href": "nodes/{childId}",
+                        "templatePointers": {
+                            "thisNodeId": "/id",
+                            "childId": "0"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "nodes/{id}"
+        }
+    ]
+}]]>
+                    </artwork>
+                    <postamble>
+                        The "base" template is evaluated identically for both the
+                        target ("href") and context ("anchor") URIs.
+                    </postamble>
+                </figure>
+                <t>
+                    Note the two different sorts of templatePointers used.
+                    "thisNodeId" is mapped to an absolute JSON Pointer, "/id",
+                    while "childId" is mapped to a relative pointer, "0", which
+                    indicates the value of the current item.  Absolute
+                    JSON Pointers do not support any kind of wildcarding, so
+                    there is no way to specify a concept like "current item"
+                    without a relative JSON Pointer.
+                </t>
             </section>
             <section title="Collections">
                 <t><cref>
