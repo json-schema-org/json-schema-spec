@@ -293,7 +293,7 @@
             </t>
             <t>
                 As with all JSON Schema keywords, all keywords described in this section
-                are optional. The minimal valid JSON Hyper-schema is the blank object.
+                are optional.  The minimal valid JSON Hyper-schema is the blank object.
             </t>
 
             <section title="base" anchor="base">
@@ -635,7 +635,7 @@
                         This property provides a schema that is expected to describe
                         the link target's representation.  Depending on the protocol,
                         the schema may or may not describe the request or response to
-                        any particular operation performed with the link. See the
+                        any particular operation performed with the link.  See the
                         <xref target="HTTP">JSON Hyper-Schema and HTTP</xref> section for
                         an in-depth discussion of how this keyword is used with HTTP.
                     </t>
@@ -784,7 +784,7 @@
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
                         supplies a non-authoritative description of the target resource's
-                        representation. A client can use "targetSchema" to structure input for
+                        representation.  A client can use "targetSchema" to structure input for
                         replacing or modifying the representation, or as the base representation
                         for building a patch document based on a patch media type.
                     </t>
@@ -808,7 +808,7 @@
                         The <xref target="submissionSchema">"submissionSchema"</xref> and
                         <xref target="submissionMediaType">"submissionMediaType"</xref> keywords
                         describe the domain of the processing function implemented by the target
-                        resource. Otherwise, as noted above, the submission schema and media type
+                        resource.  Otherwise, as noted above, the submission schema and media type
                         are ignored for operations to which they are not relevant.
                     </t>
 
@@ -843,7 +843,7 @@
                             describes the target information resource (including for replacing the
                             contents of the resource in a PUT request), unlike "submissionSchema"
                             which describes the user-submitted request data to be evaluated by the
-                            resource. "submissionSchema" is intended for use with requests that
+                            resource.  "submissionSchema" is intended for use with requests that
                             have payloads that are not necessarily defined in terms of the target
                             representation.
                         </t>
