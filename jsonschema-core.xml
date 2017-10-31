@@ -436,10 +436,21 @@
             </t>
             <t>
                 <cref>
-                    While this pattern is likely to remain best practice for schema authoring,
-                    implementation behavior is subject to be revised or liberalized in future
-                    drafts.
+                    Using multiple "$schema" keywords in the same document would imply that the
+                    vocabulary and therefore behavior can change within a document.  This would
+                    necessitate resolving a number of implementation concerns that have not yet
+                    been clearly defined.  So, while the pattern of using "$schema" only in root
+                    schemas is likely to remain the best practice for schema authoring,
+                    implementation behavior is subject to be revised or liberalized in
+                    future drafts.
                 </cref>
+                <!--
+                    In particular, the process of validating an instance, including validating a
+                    schema as an instance against its meta-schema, only allows for a single set
+                    of rules across the entire instance document.  There is no equivalent of
+                    changing the meta-schema partway through the validation for non-schema
+                    instances.
+                  -->
             </t>
             <t>
                 Values for this property are defined in other documents and by other parties.
