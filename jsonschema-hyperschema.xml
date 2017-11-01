@@ -1910,28 +1910,23 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     collections also often provide a way to create individual item resources with
                     server-assigned identifiers.
                 </t>
-                <t>
-                    This schema describes a collection where each item representation is
-                    identical to the individual resource item representation, and there
-                    is enough metadata included in the collection representation to
-                    produce pagination links.  The "first" and "last" pagination links
-                    were omitted as this is already a long example.
-                </t>
-                <t>
-                    Note that there is an object member called "items", which is an array
-                    and therefore uses the validation keyword "items" in its own schema.
-                    The outer "items" is a property name, the inner one is a schema keyword.
-                </t>
                 <figure>
+                    <preamble>
+                        This schema describes a collection where each item representation is
+                        identical to the individual resource item representation, and there
+                        is enough metadata included in the collection representation to
+                        produce pagination links.  The "first" and "last" pagination links
+                        were omitted as this is already a long example.
+                    </preamble>
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing-collection",
     "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
     "base": "https://api.example.com",
     "type": "object",
-    "required": ["items"],
+    "required": ["elements"],
     "properties": {
-        "items": {
+        "elements": {
             "type": "array",
             "items": {
                 "allOf": [{"$ref": "thing#"}],
@@ -2019,7 +2014,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                 <figure>
                     <artwork>
 <![CDATA[{
-    "items": [
+    "elements": [
         {"id": 12345, "data": {}},
         {"id": 67890, "data": {}}
     ],
@@ -2069,28 +2064,28 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         "contextPointer": "",
         "rel": "item",
         "targetUri": "https://api.example.com/things/1234",
-        "attachmentPointer": "/items/0"
+        "attachmentPointer": "/elements/0"
     },
     {
         "contextUri": "https://api.example.com/things",
         "contextPointer": "",
         "rel": "item",
         "targetUri": "https://api.example.com/things/67890",
-        "attachmentPointer": "/items/1"
+        "attachmentPointer": "/elements/1"
     },
     {
         "contextUri": "https://api.example.com/things",
-        "contextPointer": "/items/0",
+        "contextPointer": "/elements/0",
         "rel": "self",
         "targetUri": "https://api.example.com/things/1234",
-        "attachmentPointer": "/items/0"
+        "attachmentPointer": "/elements/0"
     },
     {
         "contextUri": "https://api.example.com/things",
-        "contextPointer": "/items/1",
+        "contextPointer": "/elements/1",
         "rel": "self",
         "targetUri": "https://api.example.com/things/67890",
-        "attachmentPointer": "/items/1"
+        "attachmentPointer": "/elements/1"
     }
 ]]]>
 
