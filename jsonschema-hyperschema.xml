@@ -13,6 +13,7 @@
 <!ENTITY rfc6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY rfc7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY rfc7240 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7240.xml">
 <!ENTITY rfc7807 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7807.xml">
 <!ENTITY rfc8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 <!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
@@ -1435,6 +1436,75 @@ for varname in templateData:
                     information needed to use conditional requests, the runtime handling of
                     such headers and related responses is not resource-specific.
                 </t>
+                <figure>
+                    <preamble>
+                        The "Prefer" header defined in <xref target="RFC7240">RFC 7240</xref>
+                        is a good candidate for description in "headerSchema".  It defines
+                        several standard values and allows for extension values.
+                        This schema indicates that the target understands the
+                        "respond-async" preference, the "wait" preference which
+                        takes a number of seconds to wait, as well as "minimal" and
+                        "representation" for the "return" preference.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "headerSchema": {
+        "type": "object",
+        "properties": {
+            "prefer": {
+                "type": "array",
+                "items": {
+                    "oneOf": [
+                        {"const": "respond-async"},
+                        {
+                            "type": "object",
+                            "minProperties": 1,
+                            "maxProperties": 1,
+                            "properties": {
+                                {
+                                    "return": {
+                                        "enum": [
+                                            "representation",
+                                            "minimal"
+                                        ]
+                                    },
+                                    "wait": {
+                                        "type": "integer",
+                                        "minimum": 1
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "uniqueItems": true
+            }
+        }
+    }
+}]]>
+                    </artwork>
+                    <postamble>
+                        Each name/value preference pair is a single value of the
+                        header, so each object in the list can only have one such
+                        pair.  Simplifying the "response-async" value to a single string
+                        is based on the "Accept-Encoding" example in
+                        <xref target="I-D.reschke-http-jfv">appendix A.4 of the JSON encoding draft</xref>.
+                    </postamble>
+                </figure>
+                <t>
+                    The Prefer header also stretches the limits of existing recommendations
+                    for serializing HTTP headers in JSON.  It is possible for both the
+                    single string and name/value pair preferences to take additional
+                    name/value parameters.  While a single-string preference can accomodate
+                    such parameters following the "Accept-Encoding" example, there is
+                    no example to date of a name/value pair with parameters.
+                    <cref>
+                        We hope to get feedback from hyper-schema authors on what
+                        practical concerns arise, and from there decide how best to
+                        handle them.  The specification for this keyword is expected to
+                        become more well-defined in future drafts.
+                    </cref>
+                </t>
             </section>
             <section title="Creating resources through collections">
                 <t>
@@ -2346,6 +2416,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             &rfc6573;
             &rfc7230;
             &rfc7231;
+            &rfc7240;
             &rfc7807;
             &rfc8288;
         </references>
