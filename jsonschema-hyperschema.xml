@@ -1394,6 +1394,21 @@ for varname in templateData:
                     In general, headers that are likely to have different values at different
                     times SHOULD NOT be included in "targetHints".
                 </t>
+                <figure>
+                    <preamble>
+                        This examples shows several hints that are useful for clients
+                        when determining what requests to make and how to make them.
+                    </preamble>
+                    <artwork>
+<![CDATA[{
+    "targetHints": {
+        "allow": ["GET", "PUT"],
+        "accept-patch": ["application/merge-patch+json"],
+        "accept-ranges": ["none"]
+    }
+}]]>
+                    </artwork>
+                </figure>
             </section>
             <section title='Advertising HTTP features with "headerSchema"'>
                 <t>
