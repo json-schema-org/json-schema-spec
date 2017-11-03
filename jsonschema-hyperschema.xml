@@ -1330,13 +1330,13 @@ for varname in templateData:
             </section>
             <section title='"targetSchema" and HTTP' anchor="targetHTTP">
                 <t>
+                    "targetSchema" suggests what a client can expect for the response to an HTTP
+                    GET or any response for which the "Content-Location" header is equal to the
+                    request URI, and what a client should send if it replaces the resource in an
+                    HTTP PUT request.
                     The relationship between a resource's representation and HTTP requests and
                     responses is determined by <xref target="RFC7231">RFC 7231, section 4.3.1 -
                     "GET", section 4.3.4 "PUT", and section 3.1.4.2, "Content-Location"</xref>.
-                    In particular, "targetSchema" suggests what a client can expect for the
-                    response to an HTTP GET or any response for which the "Content-Location"
-                    header is equal to the request URI, and what a client should send if it
-                    replaces the resource in an HTTP PUT request.
                 </t>
                 <t>
                     The media type of the representation is given by the "targetMediaType"
