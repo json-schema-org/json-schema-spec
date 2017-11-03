@@ -1653,7 +1653,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     described by "submissionSchema" and "submission MediaType".
                 </t>
                 <t>
-                    Therefore, we use "submissionMediaType" to indicate a multipart/alternative
+                    We use "submissionMediaType" to indicate a multipart/alternative
                     payload format, providing two representations of the same data (HTML and
                     plain text).  Since a multipart/alternative message is an ordered sequence
                     (the last part is the most preferred alternative), we model the sequence as
@@ -1665,32 +1665,6 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     Note that media types such as multipart/form-data, which associate a name with
                     each part and are not ordered, should be modeled as JSON objects rather than
                     arrays.
-                </t>
-                <t>
-                    For the URI parameters, each of the three demonstrates a different way of
-                    resolving the input:
-                    <list style="hanging">
-                        <t hangText="email:">
-                            This variable's presence in "templateRequired" means that it must be
-                            resolved for the template to be used.  Since the "false" schema
-                            assigned to it in "hrefSchema" excludes it from the input data set,
-                            it must be resolved from the instance.
-                        </t>
-                        <t hangText="title:">
-                            The instance field matching this variable is required, and it is also
-                            allowed in the input data.  So its instance value is used to
-                            pre-populate the input data set before accepting the client's input.
-                            The client can opt to leave the instance value in place.  Since
-                            this field is required in "hrefSchema", the client cannot delete it
-                            (although it could set it to an empty string).
-                        </t>
-                        <t hangText="cc:">
-                            The "false" schema set for this in the main schema prevents this field
-                            from having an instance value.  If it is present at all, it must come
-                            from client input.  As it is not required in "hrefSchema", it may not
-                            be used at all.
-                        </t>
-                    </list>
                 </t>
                 <figure>
                     <preamble>
@@ -1754,6 +1728,32 @@ Link: <https://schema.example.com/entry> rel=describedBy
 }]]>
                     </artwork>
                 </figure>
+                <t>
+                    For the URI parameters, each of the three demonstrates a different way of
+                    resolving the input:
+                    <list style="hanging">
+                        <t hangText="email:">
+                            This variable's presence in "templateRequired" means that it must be
+                            resolved for the template to be used.  Since the "false" schema
+                            assigned to it in "hrefSchema" excludes it from the input data set,
+                            it must be resolved from the instance.
+                        </t>
+                        <t hangText="title:">
+                            The instance field matching this variable is required, and it is also
+                            allowed in the input data.  So its instance value is used to
+                            pre-populate the input data set before accepting the client's input.
+                            The client can opt to leave the instance value in place.  Since
+                            this field is required in "hrefSchema", the client cannot delete it
+                            (although it could set it to an empty string).
+                        </t>
+                        <t hangText="cc:">
+                            The "false" schema set for this in the main schema prevents this field
+                            from having an instance value.  If it is present at all, it must come
+                            from client input.  As it is not required in "hrefSchema", it may not
+                            be used at all.
+                        </t>
+                    </list>
+                </t>
                 <t>
                     So, given the following instance retrieved from "https://api.example.com/stuff":
                 </t>
