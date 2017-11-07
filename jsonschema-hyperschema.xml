@@ -152,7 +152,7 @@
                 </t>
                 <t>
                     The terms "applicable" and "attached" are to be interpreted as defined in
-                    <xref target="json-schema-validation">Section 10.1 of the
+                    <xref target="json-schema-validation">Section 3 of the
                     JSON Schema validation specification</xref>.
                 </t>
                 <t>
@@ -283,7 +283,7 @@
             <t>
                 Hyper-schema keywords from all schemas that are applicable to a position
                 in an instance, as defined by <xref target="json-schema-validation">Section
-                10.1 of JSON Schema validation</xref>, can be used with that instance.
+                3 of JSON Schema validation</xref>, can be used with that instance.
             </t>
             <t>
                 When multiple subschemas are applicable to a given sub-instance, all "link"
@@ -293,7 +293,7 @@
             </t>
             <t>
                 As with all JSON Schema keywords, all keywords described in this section
-                are optional. The minimal valid JSON Hyper-schema is the blank object.
+                are optional.  The minimal valid JSON Hyper-schema is the blank object.
             </t>
 
             <section title="base" anchor="base">
@@ -354,7 +354,7 @@
                 <t>
                     In JSON Hyper-Schema, the link's context resource is, by default, the
                     sub-instance to which it is attached (as defined by
-                    <xref target="json-schema-validation">Section 10.1 of the JSON Schema
+                    <xref target="json-schema-validation">Section 3 of the JSON Schema
                     validation specification</xref>).  This is often not the entire instance
                     document.  This default context can be changed using the keywords
                     in this section.
@@ -635,7 +635,7 @@
                         This property provides a schema that is expected to describe
                         the link target's representation.  Depending on the protocol,
                         the schema may or may not describe the request or response to
-                        any particular operation performed with the link. See the
+                        any particular operation performed with the link.  See the
                         <xref target="HTTP">JSON Hyper-Schema and HTTP</xref> section for
                         an in-depth discussion of how this keyword is used with HTTP.
                     </t>
@@ -784,7 +784,7 @@
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
                         supplies a non-authoritative description of the target resource's
-                        representation. A client can use "targetSchema" to structure input for
+                        representation.  A client can use "targetSchema" to structure input for
                         replacing or modifying the representation, or as the base representation
                         for building a patch document based on a patch media type.
                     </t>
@@ -808,7 +808,7 @@
                         The <xref target="submissionSchema">"submissionSchema"</xref> and
                         <xref target="submissionMediaType">"submissionMediaType"</xref> keywords
                         describe the domain of the processing function implemented by the target
-                        resource. Otherwise, as noted above, the submission schema and media type
+                        resource.  Otherwise, as noted above, the submission schema and media type
                         are ignored for operations to which they are not relevant.
                     </t>
 
@@ -843,7 +843,7 @@
                             describes the target information resource (including for replacing the
                             contents of the resource in a PUT request), unlike "submissionSchema"
                             which describes the user-submitted request data to be evaluated by the
-                            resource. "submissionSchema" is intended for use with requests that
+                            resource.  "submissionSchema" is intended for use with requests that
                             have payloads that are not necessarily defined in terms of the target
                             representation.
                         </t>
@@ -1905,13 +1905,6 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                 </t>
             </section>
             <section title="Collections">
-                <t><cref>
-                    Reciprocal collection/item relations
-                    Pagination: fixed links vs jumping to an arbitrary offset
-                    Using "anchorPointer" and "templatePointers"
-                    Discovering ordered links
-                    Multiple self links (for the collection and each item)
-                </cref></t>
                 <t>
                     In many systems, individual resources are grouped into collections.  Those
                     collections also often provide a way to create individual item resources with
@@ -2121,7 +2114,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                 <figure>
                     <preamble>
                         This link would be added to the top-level "links" array in the
-                        "https://schemasexample.com/thing" schema.
+                        "https://schema.example.com/thing" schema.
                     </preamble>
                     <artwork>
 <![CDATA[{
