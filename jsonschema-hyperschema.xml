@@ -1330,29 +1330,38 @@ for varname in templateData:
             </section>
             <section title='"targetSchema" and HTTP' anchor="targetHTTP">
                 <t>
-                    The relationship between a resource's representation and HTTP requests and
-                    responses is determined by <xref target="RFC7231">RFC 7231, section 4.3.1 -
-                    "GET", section 4.3.4 "PUT", and section 3.1.4.2, "Content-Location"</xref>.
+                    "targetSchema" describes the resource on the other end of the link, while
+                    "targetMediaType" defines that resource's media type.  With HTTP links,
+                    "headerSchema" can also be used to describe valid values for use in an
+                    "Accept" request header, which can support multiple media types or
+                    media ranges.  When both ways of indicating the target media type are
+                    present, "targetMediaType" SHOULD indicate the default representation
+                    media type, while the schema for "accept" in "headerSchema" SHOULD include
+                    the default as well as any alternate media types or media ranges that can
+                    be requested.
+                </t>
+                <t>
+                    Since the semantics of many HTTP methods are defined in terms of the target
+                    resource, "targetSchema" is used for requests and/or responses for several
+                    HTTP methods.
                     In particular, "targetSchema" suggests what a client can expect for the
                     response to an HTTP GET or any response for which the "Content-Location"
                     header is equal to the request URI, and what a client should send if it
                     replaces the resource in an HTTP PUT request.
-                </t>
-                <t>
-                    The media type of the representation is given by the "targetMediaType"
-                    field.  Alternatively, possible available media types MAY be advertised
-                    for HTTP-accessible resources using the "accept" field in "headerSchema",
-                    corresponding to the HTTP "Accept" header.
+                    These correlations are defined by <xref target="RFC7231">RFC 7231,
+                    section 4.3.1 - "GET", section 4.3.4 "PUT", and section 3.1.4.2,
+                    "Content-Location"</xref>.
                 </t>
                 <t>
                     Per <xref target="RFC5789">RFC 5789</xref>, the request structure for an HTTP
                     PATCH is determined by the combination of "targetSchema" and the request
-                    media type, which is conveyed by the "Accept-Patch" header.  Media types
-                    that are suitable for PATCH-ing define a syntax for expressing changes
-                    to a document, which can be applied to the representation described by
-                    "targetSchema" to determine the set of syntactically valid request payloads.
-                    Often, the simplest way to validate a PATCH is to apply it and validate
-                    the result as a normal representation.
+                    media type, which is conveyed by the "Accept-Patch" header, which may be
+                    included in "targetHints".  Media types that are suitable for PATCH-ing
+                    define a syntax for expressing changes to a document, which can be applied
+                    to the representation described by "targetSchema" to determine the set of
+                    syntactically valid request payloads.  Often, the simplest way to validate
+                    a PATCH request is to apply it and validate the result as a normal
+                    representation.
                 </t>
                 <t>
                     HTTP POST request payloads are described by the "submissionSchema" and
