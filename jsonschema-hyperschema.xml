@@ -1378,8 +1378,10 @@ for varname in templateData:
                     similarly structured headers wherever possible.
                 </t>
                 <t>
-                    No distinction is made between headers that may appear in responses to
-                    different methods, such as HEAD vs OPTIONS.
+                    Headers for all possible HTTP method responses all share "headerSchema".
+                    In particular, both headers that appear in a HEAD response and those
+                    that appear in an OPTIONS response can appear.  No distinction is made
+                    within "headerSchema" as to which method response contains which header.
                 </t>
                 <t>
                     It is RECOMMENDED that schema authors provide hints for the values of
