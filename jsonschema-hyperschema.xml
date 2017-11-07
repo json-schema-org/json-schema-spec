@@ -182,10 +182,10 @@
                             in the Link Description Object.
                         </t>
                         <t hangText="generic user agent">
-                            A user agent which is only aware of standardized link relations,
-                            media types, URI schemes, and protocols.  It may have an extensible
-                            architecture to allow adding support for standards beyond the core
-                            set of which it is aware.
+                            A user agent which can be used to interact with any resource, from
+                            any server, from among the standardized link relations, media types,
+                            URI schemes, and protocols that it supports; though it may be
+                            extendible to specially handle particular profiles of media types.
                         </t>
                         <t hangText="client application">
                             An application which uses a hypermedia system for a specific
@@ -1788,7 +1788,8 @@ Link: <https://schema.example.com/entry> rel=describedBy
                 </figure>
                 <t>
                     Notice the "href*" keywords in place of "targetUri".  These are three
-                    possible "targetUri" values covering different sorts of input:
+                    possible kinds of "targetUri" values covering different sorts of input.  Here
+                    are examples of each:
                     <list style="hanging">
                         <t hangText="No additional or changed input:">
                             "mailto:someone@example.com?subject=The%20Awesome%20Thing"
