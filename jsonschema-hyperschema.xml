@@ -1366,9 +1366,20 @@ for varname in templateData:
                     a PATCH request is to apply it and validate the result as a normal
                     representation.
                 </t>
+            </section>
+            <section title='HTTP POST and the "submission*" keywords' anchor="post">
                 <t>
-                    HTTP POST request payloads are described by the "submissionSchema" and
-                    "submissionMediaType" fields.  Additionally, the "Accept-Post" header
+                    JSON Hyper-Schema allows for resources that process arbitrary data
+                    in addition to or instead of working with the target's representation.
+                    This arbitrary data is described by the "submissionSchema" and
+                    "submissionMediaType" keywords.  In the case of HTTP, the POST method
+                    is the only one that handles such data.  While there are certain
+                    conventions around using POST with collections, the semantics of a POST
+                    request are defined by the target resource, not HTTP.
+                </t>
+                <t>
+                    In addition to the protocol-neutral "submission*" keywords (see
+                    <xref target="mailto"/> for a non-HTTP example), the "Accept-Post" header
                     can be used to specify the necessary media type, and MAY be
                     advertised via the "targetHints" field.
                     <cref>
@@ -1376,6 +1387,14 @@ for varname in templateData:
                         to support, while "targetHints" are at most a SHOULD.  But forbidding
                         the use of "Accept-Post" in "targetHints" seems incorrect.
                     </cref>
+                </t>
+                <t>
+                    Successful responses to POST other than a 201 or a 200 with "Content-Location"
+                    set likewise have no HTTP-defined semantics.  As with all HTTP responses,
+                    any representation in the response should link to its own hyper-schema to
+                    indicate how it may be processed.  As noted in <xref target="responses"/>,
+                    connecting hyperlinks with all possible operation responses is not within
+                    the scope of JSON Hyper-Schema.
                 </t>
             </section>
             <section title='Optimizing HTTP discoverability with "targetHints"'>
@@ -1643,7 +1662,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     is the only possible source for resolving this link.
                 </t>
             </section>
-            <section title="Submitting a payload and accepting URI input">
+            <section title="Submitting a payload and accepting URI input" anchor="mailto">
                 <t>
                     This example covers using the "submission" fields for non-representation
                     input, as well as using them alongside of resolving the URI Template with
@@ -2452,7 +2471,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     or older versions.
                 </t>
             </section>
-            <section title="Responses and errors">
+            <section title="Responses and errors" anchor="responses">
                 <t>
                     Because a hyper-schema represents a single resource at a time, it does not
                     provide for an enumeration of all possible responses to protocol operations
