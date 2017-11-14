@@ -2382,7 +2382,10 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         </section>
 
         <section title="Security Considerations" anchor="security">
-            <t><cref>Need to reference the core and validation security considerations.</cref></t>
+            <t>
+                JSON Hyper-Schema defines a vocabulary for JSON Schema core and concerns all
+                the security considerations listed there.
+            </t>
             <section title='"self" Links'>
                 <t>
                     When link relation of "self" is used to denote a full representation of an
@@ -2391,6 +2394,11 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     the target URI is not equivalent to or a sub-path of the URI used to request
                     the resource representation which contains the target URI with the "self"
                     link.
+                    <cref>
+                        It is no longer clear what was intended by the "sub-path" option in
+                        this paragraph.  While paths are defined as a hierarchical system
+                        by RFC 3986, there semantics of the hierarchy are not defined.
+                    </cref>
                 </t>
             </section>
             <section title="Target Attributes">
