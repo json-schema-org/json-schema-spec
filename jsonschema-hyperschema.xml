@@ -563,7 +563,7 @@
                 </section>
             </section>
 
-            <section title="Link Target Attributes">
+            <section title="Link Target Attributes" anchor="targetAttributes">
                 <t>
                     All properties in this section are advisory only.  While keywords such
                     as "title" and "description" are used primarily to present the link
@@ -2403,15 +2403,15 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             </section>
             <section title="Target Attributes">
                 <t>
-                    <cref>
-                        This whole section needs more work, but I do like having security
-                        concerns around target interactions consolidated and addressed as a whole.
-                    </cref>
+                    As stated in <xref target="targetAttributes"/>, all LDO keywords describing
+                    the target resource are advisory and MUST NOT be used in place of
+                    the authoritative information supplied by the target resource in response
+                    to an operation.
                 </t>
                 <t>
-                    The "targetMediaType" property in link definitions defines the expected
-                    format of the link's target.
-                    However, this is advisory only, and MUST NOT be considered authoritative.
+                    Clients MUST NOT use the value of "targetSchema" to aid in the interpretation
+                    of the data received in response to following the link, as this leaves
+                    "safe" data open to re-interpretation.
                 </t>
                 <t>
                     When choosing how to interpret data, the type information provided by the
@@ -2429,11 +2429,14 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     precautions for "targetSchema".
                 </t>
                 <t>
-                    The "targetSchema" keyword has similar security concerns to that of
-                    "targetMediaType".
-                    Clients MUST NOT use the value of this property to aid in the interpretation
-                    of the data received in response to following the link, as this leaves
-                    "safe" data open to re-interpretation.
+                    Protocol meta-data values conveyed in "targetHints" MUST NOT be considered
+                    authoritative.  Any security considerations defined by the protocol that
+                    may apply based on incorrect assumptions about meta-data values apply.
+                </t>
+                <t>
+                    Even when no protocol security considerations are directly applicable,
+                    implementations MUST be prepared to handle responses that do not
+                    match the link's "targetHints" values.
                 </t>
             </section>
         </section>
