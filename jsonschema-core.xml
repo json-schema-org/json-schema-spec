@@ -268,41 +268,48 @@
                     fragment identifier syntax and semantics provided by
                     "application/schema-instance+json".
                 </t>
-                <t>
-                    A JSON Schema MUST be an object or a boolean.
-                </t>
-                <t>
-                    JSON Schema vocabularies can include assertions, which return a boolean result
-                    when applied to an instance.  The boolean schema values "true" and "false"
-                    are trivial assertions that always return themselves regardless of the
-                    instance value.  As an example, in terms of the validation vocabulary,
-                    boolean schemas are equivalent to the following behaviors:
-                    <list style="hanging">
-                        <t hangText="true">Always passes validation, as if the empty schema {}</t>
-                        <t hangText="false">Always fails validation, as if the schema { "not":{} }</t>
-                    </list>
-                </t>
-                <t>
-                    Properties that are used to describe the instance are called keywords, or schema
-                    keywords.
-                    The meaning of properties is specified by the vocabulary that the schema is using.
-                </t>
-                <t>
-                    A JSON Schema MAY contain properties which are not schema keywords.
-                    Unknown keywords SHOULD be ignored.
-                </t>
-                <t>
-                    A schema that itself describes a schema is called a meta-schema.
-                    Meta-schemas are used to validate JSON Schemas and specify which vocabulary it
-                    is using.
-                </t>
-                <t>
-                    An empty schema is a JSON Schema with no properties, or only unknown properties.
-                </t>
+                    <t>
+                        A JSON Schema MUST be an object or a boolean.
+                    </t>
+                    <t>
+                        JSON Schema vocabularies can include assertions, which return a boolean
+                        result when applied to an instance.  The boolean schema values "true"
+                        and "false" are trivial assertions that always return themselves regardless
+                        of the instance value.  As an example, in terms of the validation
+                        vocabulary, boolean schemas are equivalent to the following behaviors:
+                        <list style="hanging">
+                            <t hangText="true">
+                                Always passes validation, as if the empty schema {}
+                            </t>
+                            <t hangText="false">
+                                Always fails validation, as if the schema { "not":{} }
+                            </t>
+                        </list>
+                    </t>
+                    <t>
+                        Properties that are used to describe the instance are called keywords,
+                        or schema keywords.
+                        The meaning of properties is specified by the vocabulary that the schema
+                        is using.
+                    </t>
+                    <t>
+                        A JSON Schema MAY contain properties which are not schema keywords.
+                        Unknown keywords SHOULD be ignored.
+                    </t>
+                    <t>
+                        A schema that itself describes a schema is called a meta-schema.
+                        Meta-schemas are used to validate JSON Schemas and specify which vocabulary
+                        it is using.
+                    </t>
+                    <t>
+                        An empty schema is a JSON Schema with no properties, or only unknown
+                        properties.
+                    </t>
 
                 <section title="Root schema and subschemas">
                     <t>
-                        The root schema is the schema that comprises the entire JSON document in question.
+                        The root schema is the schema that comprises the entire JSON document
+                        in question.
                     </t>
                     <t>
                         Some keywords take schemas themselves, allowing JSON Schemas to be nested:
