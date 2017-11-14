@@ -201,6 +201,13 @@
                         JSON document that tries to define two properties (the "member" production) with
                         the same key (the "string" production) in a single object is undefined.
                     </t>
+                    <t>
+                        Note that JSON Schema vocabularies are free to define their own extended
+                        type system.  This should not be confused with the core data model types
+                        defined here.  As an example, "integer" is a reasonable type for a
+                        vocabulary to define as a value for a keyword, but the data model
+                        makes no distinction between integers and other numbers.
+                    </t>
                 </section>
 
                 <section title="Instance media types">
