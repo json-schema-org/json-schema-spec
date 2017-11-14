@@ -268,15 +268,33 @@
                     fragment identifier syntax and semantics provided by
                     "application/schema-instance+json".
                 </t>
+                <section title="JSON Schema values and keywords">
                     <t>
                         A JSON Schema MUST be an object or a boolean.
                     </t>
                     <t>
-                        JSON Schema vocabularies can include assertions, which return a boolean
-                        result when applied to an instance.  The boolean schema values "true"
-                        and "false" are trivial assertions that always return themselves regardless
-                        of the instance value.  As an example, in terms of the validation
-                        vocabulary, boolean schemas are equivalent to the following behaviors:
+                        Object properties that are applied to the instance are called keywords,
+                        or schema keywords.  Broadly speaking, keywords fall into one or both
+                        of two categories:
+                        <list style="hanging">
+                            <t hangText="assertions">
+                                produce a boolean result when applied to an instance
+                            </t>
+                            <t hangText="annotations">
+                                attach information to an instance for application use
+                            </t>
+                        </list>
+                    </t>
+                    <t>
+                        Keywords may fall into either or both categories.  Extension keywords,
+                        meaning those defined outside of this document and its companions,
+                        are free to define other behaviors as well.
+                    </t>
+                    <t>
+                        The boolean schema values "true" and "false" are trivial assertions that
+                        always return themselves regardless of the instance value.  As an example,
+                        in terms of the validation vocabulary, boolean schemas are equivalent to
+                        the following behaviors:
                         <list style="hanging">
                             <t hangText="true">
                                 Always passes validation, as if the empty schema {}
@@ -287,25 +305,54 @@
                         </list>
                     </t>
                     <t>
-                        Properties that are used to describe the instance are called keywords,
-                        or schema keywords.
-                        The meaning of properties is specified by the vocabulary that the schema
-                        is using.
-                    </t>
-                    <t>
                         A JSON Schema MAY contain properties which are not schema keywords.
                         Unknown keywords SHOULD be ignored.
-                    </t>
-                    <t>
-                        A schema that itself describes a schema is called a meta-schema.
-                        Meta-schemas are used to validate JSON Schemas and specify which vocabulary
-                        it is using.
                     </t>
                     <t>
                         An empty schema is a JSON Schema with no properties, or only unknown
                         properties.
                     </t>
-
+                </section>
+                <section title="JSON Schema vocabularies" anchor="vocabulary">
+                    <t>
+                        A JSON Schema vocabulary is a set of keywords defined for a particular
+                        purpose.  The vocabulary specifies the meaning of its keywords as
+                        assertions, annotations, and/or any vocabulary-defined keyword category.
+                        The two companion standards to this document each define a vocabulary:
+                        One for instance validation, and one for hypermedia annotations.
+                        Vocabularies are the primary mechanism for extensibility within
+                        the JSON Schema media type.
+                    </t>
+                    <t>
+                        Vocabularies may be defined by any entity.  Vocabulary authors SHOULD
+                        take care to avoid keyword name collisions if the vocabulary is intended
+                        for broad use, and potentially combined with other vocabularies.  JSON
+                        Schema does not provide any formal namespacing system, but also does
+                        not constrain keyword names, allowing for any number of namespacing
+                        approaches.
+                    </t>
+                    <t>
+                        Vocabularies may build on each other, such as by defining the behavior
+                        of their keywords with respect to the behavior of keywords from another
+                        vocabulary, or by using a keyword from another vocabulary with
+                        a restricted or expanded set of acceptable values.  Not all such
+                        vocabulary re-use will result in a new vocabulary that is compatible
+                        with the vocabulary on which it is built.  Vocabulary authors SHOULD
+                        clearly document what level of compatibility, if any, is expected.
+                    </t>
+                    <t>
+                        A schema that itself describes a schema is called a meta-schema.
+                        Meta-schemas are used to validate JSON Schemas and specify which vocabulary
+                        it is using.
+                        <cref>
+                            Currently, only a single meta-schema may be specified per schema,
+                            meaning that in order to use multiple vocabularies, a meta-schema
+                            must be written that encompasses all of them.  The hyper-schema
+                            meta-schema is an example of this, as it encompasses the validation
+                            vocabulary as well as the hypermedia vocabulary.
+                        </cref>
+                    </t>
+                </section>
                 <section title="Root schema and subschemas">
                     <t>
                         The root schema is the schema that comprises the entire JSON document
