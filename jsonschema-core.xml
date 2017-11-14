@@ -169,7 +169,7 @@
                     A JSON document to which a schema is applied is known as an "instance".
                 </t>
 
-                <section title="Instance data model">
+                <section title="Instance Data Model">
                     <t>
                         JSON Schema interprets documents according to a data model. A JSON value
                         interpreted according to this data model is called an "instance".
@@ -211,7 +211,7 @@
                     </t>
                 </section>
 
-                <section title="Instance media types">
+                <section title="Instance Media Types">
                     <t>
                         JSON Schema is designed to fully work with "application/json" documents,
                         as well as media types using the "+json" structured syntax suffix.
@@ -230,7 +230,7 @@
                     </t>
                 </section>
 
-                <section title="Instance equality">
+                <section title="Instance Equality">
                     <t>
                         Two JSON instances are said to be equal if and only if they are of the same type
                         and have the same value according to the data model. Specifically, this means:
@@ -258,7 +258,7 @@
                 </section>
             </section>
 
-            <section title="JSON Schema documents">
+            <section title="JSON Schema Documents">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe
                     an instance.
@@ -269,7 +269,7 @@
                     fragment identifier syntax and semantics provided by
                     "application/schema-instance+json".
                 </t>
-                <section title="JSON Schema values and keywords">
+                <section title="JSON Schema Values and Keywords">
                     <t>
                         A JSON Schema MUST be an object or a boolean.
                     </t>
@@ -314,7 +314,7 @@
                         properties.
                     </t>
                 </section>
-                <section title="JSON Schema vocabularies" anchor="vocabulary">
+                <section title="JSON Schema Vocabularies" anchor="vocabulary">
                     <t>
                         A JSON Schema vocabulary is a set of keywords defined for a particular
                         purpose.  The vocabulary specifies the meaning of its keywords as
@@ -354,7 +354,7 @@
                         </cref>
                     </t>
                 </section>
-                <section title="Root schema and subschemas">
+                <section title="Root Schema and Subschemas">
                     <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.
@@ -386,7 +386,7 @@
 
         </section>
 
-        <section title="Fragment identifiers" anchor="fragments">
+        <section title="Fragment Identifiers" anchor="fragments">
             <t>
                 In accordance with section 3.1 of <xref target="RFC6839"></xref>,
                 the syntax and semantics of fragment identifiers specified for
@@ -424,9 +424,9 @@
             </t>
         </section>
 
-        <section title="General considerations">
+        <section title="General Considerations">
 
-            <section title="Range of JSON values">
+            <section title="Range of JSON Values">
                 <t>
                     An instance may be any valid JSON value as defined by <xref target="RFC7159">JSON</xref>.
                     JSON Schema imposes no restrictions on type: JSON Schema can describe any JSON
@@ -434,7 +434,7 @@
                 </t>
             </section>
 
-            <section title="Programming language independence" anchor="language">
+            <section title="Programming Language Independence" anchor="language">
                 <t>
                     JSON Schema is programming language agnostic, and supports the full range of
                     values described in the data model.
@@ -443,7 +443,7 @@
                 </t>
             </section>
 
-            <section title="Mathematical integers" anchor="integers">
+            <section title="Mathematical Integers" anchor="integers">
                 <t>
                     Some programming languages and parsers use different internal representations
                     for floating point numbers than they do for integers.
@@ -476,7 +476,7 @@
 
         </section>
 
-        <section title='The "$schema" keyword'>
+        <section title='The "$schema" Keyword'>
             <!-- TODO a custom $schema keyword might also be used to enforce minimum required functionality of a validator -->
             <t>
                 The "$schema" keyword is both used as a JSON Schema version identifier and the
@@ -521,7 +521,7 @@
             </t>
         </section>
 
-        <section title='Schema references with "$ref"'>
+        <section title='Schema References With "$ref"'>
             <t>
                 The "$ref" keyword is used to reference a schema, and provides the ability to
                 validate recursive structures through self-reference.
@@ -548,8 +548,8 @@
             </t>
         </section>
 
-        <section title="Base URI and dereferencing">
-            <section title="Initial base URI">
+        <section title="Base URI and Dereferencing">
+            <section title="Initial Base URI">
                 <t>
                     <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
                     default base URI of a document.
@@ -560,7 +560,7 @@
                 </t>
             </section>
 
-            <section title='The "$id" keyword' anchor="id-keyword">
+            <section title='The "$id" Keyword' anchor="id-keyword">
                 <t>
                     The "$id" keyword defines a URI for the schema, and the base URI that
                     other URI references within the schema are resolved against.
@@ -646,7 +646,7 @@
                         <t hangText="#/definitions/C">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                     </list>
                 </t>
-                <section title="Internal references">
+                <section title="Internal References">
                     <t>
                         Schemas can be identified by any URI that has been given to them, including
                         a JSON Pointer or their URI given directly by "$id".
@@ -692,7 +692,7 @@
                         resolve the fragment against the base URI.
                     </t>
                 </section>
-                <section title="External references">
+                <section title="External References">
                     <t>
                         To differentiate schemas between each other in a vast ecosystem, schemas are
                         identified by URI. As specified above, this does not necessarily mean
@@ -714,7 +714,7 @@
             </section>
         </section>
 
-        <section title='Comments with "$comment"'>
+        <section title='Comments With "$comment"'>
             <t>
                 This keyword is reserved for comments from schema authors to readers or
                 maintainers of the schema.
@@ -746,7 +746,7 @@
             </t>
         </section>
 
-        <section title="Usage for hypermedia">
+        <section title="Usage for Hypermedia">
 
             <t>
                 JSON has been adopted widely by HTTP servers for automated APIs and robots. This
@@ -755,7 +755,7 @@
                 <xref target="RFC8288">Web linking</xref>.
             </t>
 
-            <section title='Linking to a schema'>
+            <section title='Linking to a Schema'>
                 <t>
                     It is RECOMMENDED that instances described by a schema provide a link to
                     a downloadable JSON Schema using the link relation "describedby", as defined by
@@ -778,7 +778,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
             </section>
 
 
-            <section title='Identifying a schema via a media type parameter' anchor="parameter">
+            <section title='Identifying a Schema via a Media Type Parameter' anchor="parameter">
                 <t>
                     Media types MAY allow for a "schema" media type parameter, which gives
                     HTTP servers the ability to perform Content-Type Negotiation based on schema.
@@ -847,7 +847,7 @@ Link: </alice>;rel="schema", </bob>;rel="schema"
 
             </section>
 
-             <section title="Usage over HTTP">
+             <section title="Usage Over HTTP">
                 <t>
                     When used for hypermedia systems over a network,
                     <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for
@@ -883,7 +883,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
 
        </section>
 
-        <section title="Security considerations" anchor="security">
+        <section title="Security Considerations" anchor="security">
             <t>
                 Both schemas and instances are JSON values. As such, all security considerations
                 defined in <xref target="RFC7159">RFC 7159</xref> apply.

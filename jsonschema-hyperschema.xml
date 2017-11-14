@@ -249,7 +249,7 @@
             </section>
         </section>
 
-        <section title="Meta-schemas and output schema">
+        <section title="Meta-Schemas and Output Schema">
             <t>
                 <cref>The "draft-07-wip" is a placeholder.</cref>
             </t>
@@ -282,7 +282,7 @@
                 (draft-07 work-in-progress version).
             </t>
         </section>
-        <section title="Schema keywords">
+        <section title="Schema Keywords">
             <t>
                 Hyper-schema keywords from all schemas that are applicable to a position
                 in an instance, as defined by <xref target="json-schema-validation">Section
@@ -353,7 +353,7 @@
                 usage explanation and comprehensive examples given later in the document.
             </t>
 
-            <section title="Link context" anchor="context">
+            <section title="Link Context" anchor="context">
                 <t>
                     In JSON Hyper-Schema, the link's context resource is, by default, the
                     sub-instance to which it is attached (as defined by
@@ -420,7 +420,7 @@
                     </t>
                 </section>
             </section>
-            <section title="Link relation type" anchor="relationType">
+            <section title="Link Relation Type" anchor="relationType">
                 <t>
                     The link's relation type identifies its semantics.  It is the primary
                     means of conveying how an application can interact with a resource.
@@ -439,7 +439,7 @@
                         This property is required.
                     </t>
                 </section>
-                <section title='"self" links' anchor="self">
+                <section title='"self" Links' anchor="self">
                     <t>
                         A hyper-schema implementation MUST recognize that a link with relation
                         type "self" that is applicable to the entire instance document describes
@@ -452,7 +452,7 @@
                         "self" link has all instance data that is needed for use.
                     </t>
                 </section>
-                <section title='"collection" and "item" links' anchor="collectionAndItem">
+                <section title='"collection" and "item" Links' anchor="collectionAndItem">
                     <t>
                         <xref target="RFC6573">RFC 6573</xref> defines and registers
                         the "item" and "collection" link relation types.  JSON Hyper-Schema imposes
@@ -482,7 +482,7 @@
                         resource.
                     </t>
                 </section>
-                <section title="Using extension relation types" anchor="extensionRelationTypes">
+                <section title="Using Extension Relation Types" anchor="extensionRelationTypes">
                     <t>
                         When no registered relation (aside from "related") applies, users are
                         encouraged to mint their own extension relation types, as described in
@@ -498,7 +498,7 @@
                     </t>
                 </section>
             </section>
-            <section title="Link target" anchor="target">
+            <section title="Link Target" anchor="target">
                 <t>
                     The target URI template is used to identify the link's target, potentially
                     making use of instance data.  Additionally, with
@@ -522,7 +522,7 @@
                 </section>
             </section>
 
-            <section title="Adjusting URI Template resolution">
+            <section title="Adjusting URI Template Resolution">
                 <t>
                     The keywords in this section are used when resolving all URI Templates
                     involved in hyper-schema: "base", "anchor", and "href".  See the
@@ -563,7 +563,7 @@
                 </section>
             </section>
 
-            <section title="Link target attributes">
+            <section title="Link Target Attributes">
                 <t>
                     All properties in this section are advisory only.  While keywords such
                     as "title" and "description" are used primarily to present the link
@@ -695,7 +695,7 @@
                     </t>
                 </section>
             </section>
-            <section title="Link input" anchor="input">
+            <section title="Link Input" anchor="input">
                 <t>
                     There are four ways to use client-supplied data with a link, and each
                     is addressed by a separate link description object keyword.  When performing
@@ -783,7 +783,7 @@
                     </t>
                 </section>
 
-                <section title="Manipulating the target resource representation">
+                <section title="Manipulating the Target Resource Representation">
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
                         supplies a non-authoritative description of the target resource's
@@ -806,7 +806,7 @@
                     </t>
                 </section>
 
-                <section title="Submitting data for processing">
+                <section title="Submitting Data for Processing">
                     <t>
                         The <xref target="submissionSchema">"submissionSchema"</xref> and
                         <xref target="submissionMediaType">"submissionMediaType"</xref> keywords
@@ -858,7 +858,7 @@
             </section>
         </section>
 
-        <section title="Implementation requirements" anchor="implementation">
+        <section title="Implementation Requirements" anchor="implementation">
             <t>
                 At a high level, a conforming implementation will meet the following
                 requirements.  Each of these requirements is covered in more detail in the
@@ -921,7 +921,7 @@
                 Those fields will not be further discussed here unless specifically relevant.
             </t>
 
-            <section title="Link discovery and look-up">
+            <section title="Link Discovery and Look-Up">
                 <t>
                     Before links can be used, they must be discovered by applying the hyper-schema
                     to the instance and finding all applicable and valid links.  Note that in
@@ -1018,7 +1018,7 @@ R = rfc6570ResolutionAlgorithm(T, templateData)
                     </artwork>
                 </figure>
 
-                <section title="Populating template data from the instance">
+                <section title="Populating Template Data From the Instance">
                     <t>
                         This step looks at various locations in the instance for variable values.
                         For each variable:
@@ -1058,7 +1058,7 @@ for varname in T:
                     </figure>
                 </section>
 
-                <section title="Accepting input for template data">
+                <section title="Accepting Input for Template Data">
                     <t>
                         This step is relatively complex, as there are several cases to support.
                         Some variables will forbid input and some will allow it.  Some will
@@ -1128,7 +1128,7 @@ return inputData:
                     </figure>
                 </section>
 
-                <section title="Encoding data as strings">
+                <section title="Encoding Data as Strings">
                     <t>
                         This section is straightforward, converting literals to their names
                         as strings, and converting numbers to strings in the most obvious manner,
@@ -1165,7 +1165,7 @@ for varname in templateData:
                 </section>
             </section>
 
-            <section title="Providing access to LDO keywords">
+            <section title="Providing Access to LDO Keywords">
                 <t>
                     For a given link, an implementation MUST make the values of all
                     target attribute keywords directly available to the user agent.
@@ -1266,7 +1266,7 @@ for varname in templateData:
                 </t>
             </section>
 
-            <section title="Streaming parsers" anchor="streaming">
+            <section title="Streaming Parsers" anchor="streaming">
                 <t>
                     The requirements around discovering links based on their context, or
                     using the context of links to identify collections, present unique
@@ -1305,7 +1305,7 @@ for varname in templateData:
                 the techniques outlined in the core specification be used to whatever extent
                 is possible.
             </t>
-            <section title="One link per target and relation type">
+            <section title="One Link Per Target and Relation Type">
                 <t>
                     Link Description Objects do not directly indicate what operations, such
                     as HTTP methods, are supported by the target resource.  Instead, operations
@@ -1397,7 +1397,7 @@ for varname in templateData:
                     the scope of JSON Hyper-Schema.
                 </t>
             </section>
-            <section title='Optimizing HTTP discoverability with "targetHints"'>
+            <section title='Optimizing HTTP Discoverability With "targetHints"'>
                 <t>
                     <cref>It would be good to also include a section with CoAP examples.</cref>
                 </t>
@@ -1428,7 +1428,7 @@ for varname in templateData:
                     times SHOULD NOT be included in "targetHints".
                 </t>
             </section>
-            <section title='Advertising HTTP features with "headerSchema"'>
+            <section title='Advertising HTTP Features With "headerSchema"'>
                 <t>
                     Schemas SHOULD be written to describe JSON serializations that
                     follow guidelines established by the work in progress
@@ -1454,7 +1454,7 @@ for varname in templateData:
                     such headers and related responses is not resource-specific.
                 </t>
             </section>
-            <section title="Creating resources through collections">
+            <section title="Creating Resources Through Collections">
                 <t>
                     When using HTTP, or a protocol such as CoAP that is explicitly analogous
                     to HTTP, this is done by POST-ing a representation of the individual
@@ -1463,7 +1463,7 @@ for varname in templateData:
                     <xref target="collectionAndItem" />.
                 </t>
             </section>
-            <section title="Content negotiation and schema evolution">
+            <section title="Content Negotiation and Schema Evolution">
                 <t>
                     JSON Hyper-Schema facilitates HTTP content negotiation, and allows for
                     a hybrid of the proactive and reactive strategies.  As mentioned
@@ -1505,7 +1505,7 @@ for varname in templateData:
                 in <xref target="HTTP">an Appendix</xref>.
             </t>
 
-            <section title="Entry point links, no templates" anchor="entryPoint">
+            <section title="Entry Point Links, No Templates" anchor="entryPoint">
                 <t>
                     For this example, we will assume an example API with a documented
                     entry point URI of https://example.com, which is an empty JSON object
@@ -1581,7 +1581,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     context.  Its default behavior is to be the same as the attachment pointer.
                 </t>
             </section>
-            <section title="Individually identified resources">
+            <section title="Individually Identified Resources">
                 <t>
                     Let's add "things" to our system, starting with an individual thing:
                 </t>
@@ -1661,7 +1661,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     is the only possible source for resolving this link.
                 </t>
             </section>
-            <section title="Submitting a payload and accepting URI input" anchor="mailto">
+            <section title="Submitting a Payload and Accepting URI Input" anchor="mailto">
                 <t>
                     This example covers using the "submission" fields for non-representation
                     input, as well as using them alongside of resolving the URI Template with
@@ -1835,7 +1835,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     </list>
                 </t>
             </section>
-            <section title='"anchor", "base" and URI Template resolution'>
+            <section title='"anchor", "base" and URI Template Resolution'>
                 <t>
                     A link is a typed connection from a context resource to a target resource.
                     Older link serializations support a "rev" keyword that takes a link relation
@@ -2383,7 +2383,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
 
         <section title="Security Considerations" anchor="security">
             <t><cref>Need to reference the core and validation security considerations.</cref></t>
-            <section title='"self" links'>
+            <section title='"self" Links'>
                 <t>
                     When link relation of "self" is used to denote a full representation of an
                     object, the user agent SHOULD NOT consider the representation to be the
@@ -2393,7 +2393,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     link.
                 </t>
             </section>
-            <section title="Target attributes">
+            <section title="Target Attributes">
                 <t>
                     <cref>
                         This whole section needs more work, but I do like having security
@@ -2528,7 +2528,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                 link scope, and such descriptions are outside of the boundaries
                 of JSON Hyper-Schema.
             </t>
-            <section title="Resource evolution with Hyper-Schema">
+            <section title="Resource Evolution With Hyper-Schema">
                 <t>
                     Since a given JSON Hyper-Schema is used with a single resource at a single
                     point in time, it has no inherent notion of versioning.  However, a given
@@ -2544,7 +2544,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     or older versions.
                 </t>
             </section>
-            <section title="Responses and errors" anchor="responses">
+            <section title="Responses and Errors" anchor="responses">
                 <t>
                     Because a hyper-schema represents a single resource at a time, it does not
                     provide for an enumeration of all possible responses to protocol operations
@@ -2556,7 +2556,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     information that is provided beyond the protocol's own status reporting.
                 </t>
             </section>
-            <section title="Static analysis of an API's hyper-schemas" anchor="staticAnalysis">
+            <section title="Static Analysis of an API's Hyper-Schemas" anchor="staticAnalysis">
                 <t>
                     It is possible to statically analyze a set of hyper-schemas without instance
                     data in order to generate output such as documentation or code.  However,
