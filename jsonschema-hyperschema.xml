@@ -2394,7 +2394,18 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     As stated in <xref target="targetAttributes"/>, all LDO keywords describing
                     the target resource are advisory and MUST NOT be used in place of
                     the authoritative information supplied by the target resource in response
-                    to an operation.
+                    to an operation.  Target resource responses SHOULD indicate their own
+                    hyper-schema, which is authoritative.
+                </t>
+                <t>
+                    If the hyper-schema in the target response matches (by "$id") the hyper-schema
+                    in which the current LDO was found, then the target attributes MAY be
+                    considered authoritative.
+                    <cref>
+                        Need to add something about the risks of spoofing by "$id", but given
+                        that other parts of the specification discourage always re-downloading
+                        the linked schema, the risk mitigation options are unclear.
+                    </cref>
                 </t>
                 <t>
                     Clients MUST NOT use the value of "targetSchema" to aid in the interpretation
