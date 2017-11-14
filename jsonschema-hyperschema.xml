@@ -2384,7 +2384,10 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         <section title="Security Considerations" anchor="security">
             <t>
                 JSON Hyper-Schema defines a vocabulary for JSON Schema core and concerns all
-                the security considerations listed there.
+                the security considerations listed there.  As a link serialization format,
+                the security considerations of <xref target="RFC8288">RFC 8288 Web Linking</xref>
+                also apply, with appropriate adjustments (e.g. "anchor" as an LDO keyword rather
+                than an HTTP Link header attribute).
             </t>
             <section title='"self" Links'>
                 <t>
