@@ -1541,8 +1541,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
         {
             "rel": "self",
             "href": ""
-        },
-        {
+        }, {
             "rel": "about",
             "href": "/docs"
         }
@@ -1810,7 +1809,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
     "contextPointer": "",
     "rel": "author",
     "hrefInputTemplates": [
-      "mailto:someone@example.com?subject={title}{&cc}",
+      "mailto:someone@example.com?subject={title}{&cc}"
     ],
     "hrefPrepopulatedInput": {
         "title": "The Really Awesome Thing"
@@ -1869,7 +1868,7 @@ Link: <https://api.example.com/trees/1/nodes/123> rel=up
         anchor=<https://api.example.com/trees/1/nodes/456>
 Link: <https://api.example.com/trees/1/nodes/456> rev=up
 {
-    "id": 123
+    "id": 123,
     "treeId": 1,
     "childIds": [456]
 }
