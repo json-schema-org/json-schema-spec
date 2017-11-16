@@ -563,7 +563,7 @@
                 </section>
             </section>
 
-            <section title="Link Target Attributes">
+            <section title="Link Target Attributes" anchor="targetAttributes">
                 <t>
                     All properties in this section are advisory only.  While keywords such
                     as "title" and "description" are used primarily to present the link
@@ -2382,28 +2382,35 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         </section>
 
         <section title="Security Considerations" anchor="security">
-            <t><cref>Need to reference the core and validation security considerations.</cref></t>
-            <section title='"self" Links'>
-                <t>
-                    When link relation of "self" is used to denote a full representation of an
-                    object, the user agent SHOULD NOT consider the representation to be the
-                    authoritative representation of the resource denoted by the target URI if
-                    the target URI is not equivalent to or a sub-path of the URI used to request
-                    the resource representation which contains the target URI with the "self"
-                    link.
-                </t>
-            </section>
+            <t>
+                JSON Hyper-Schema defines a vocabulary for JSON Schema core and concerns all
+                the security considerations listed there.  As a link serialization format,
+                the security considerations of <xref target="RFC8288">RFC 8288 Web Linking</xref>
+                also apply, with appropriate adjustments (e.g. "anchor" as an LDO keyword rather
+                than an HTTP Link header attribute).
+            </t>
             <section title="Target Attributes">
                 <t>
+                    As stated in <xref target="targetAttributes"/>, all LDO keywords describing
+                    the target resource are advisory and MUST NOT be used in place of
+                    the authoritative information supplied by the target resource in response
+                    to an operation.  Target resource responses SHOULD indicate their own
+                    hyper-schema, which is authoritative.
+                </t>
+                <t>
+                    If the hyper-schema in the target response matches (by "$id") the hyper-schema
+                    in which the current LDO was found, then the target attributes MAY be
+                    considered authoritative.
                     <cref>
-                        This whole section needs more work, but I do like having security
-                        concerns around target interactions consolidated and addressed as a whole.
+                        Need to add something about the risks of spoofing by "$id", but given
+                        that other parts of the specification discourage always re-downloading
+                        the linked schema, the risk mitigation options are unclear.
                     </cref>
                 </t>
                 <t>
-                    The "targetMediaType" property in link definitions defines the expected
-                    format of the link's target.
-                    However, this is advisory only, and MUST NOT be considered authoritative.
+                    Clients MUST NOT use the value of "targetSchema" to aid in the interpretation
+                    of the data received in response to following the link, as this leaves
+                    "safe" data open to re-interpretation.
                 </t>
                 <t>
                     When choosing how to interpret data, the type information provided by the
@@ -2421,11 +2428,29 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     precautions for "targetSchema".
                 </t>
                 <t>
-                    The "targetSchema" keyword has similar security concerns to that of
-                    "targetMediaType".
-                    Clients MUST NOT use the value of this property to aid in the interpretation
-                    of the data received in response to following the link, as this leaves
-                    "safe" data open to re-interpretation.
+                    Protocol meta-data values conveyed in "targetHints" MUST NOT be considered
+                    authoritative.  Any security considerations defined by the protocol that
+                    may apply based on incorrect assumptions about meta-data values apply.
+                </t>
+                <t>
+                    Even when no protocol security considerations are directly applicable,
+                    implementations MUST be prepared to handle responses that do not
+                    match the link's "targetHints" values.
+                </t>
+            </section>
+            <section title='"self" Links'>
+                <t>
+                    When link relation of "self" is used to denote a full representation of an
+                    object, the user agent SHOULD NOT consider the representation to be the
+                    authoritative representation of the resource denoted by the target URI if
+                    the target URI is not equivalent to or a sub-path of the URI used to request
+                    the resource representation which contains the target URI with the "self"
+                    link.
+                    <cref>
+                        It is no longer clear what was intended by the "sub-path" option in
+                        this paragraph.  While paths are defined as a hierarchical system
+                        by RFC 3986, there semantics of the hierarchy are not defined.
+                    </cref>
                 </t>
             </section>
         </section>
