@@ -158,7 +158,7 @@
                     the other keywords require that all subschemas are valid against all child
                     instances to which they apply.
                 </t>
-                <section title="Keyword independence">
+                <section title="Keyword Independence">
                     <t>
                         Validation keywords typically operate independently, without
                         affecting each other's outcomes.
@@ -201,7 +201,7 @@
                     of this specification, and the keywords convey additional non-assertion
                     information.
                 </t>
-                <section title="Assertions and instance primitive types">
+                <section title="Assertions and Instance Primitive Types">
                     <t>
                         Most validation assertions only constrain values within a certain
                         primitive type.  When the type of the instance is not of the type
@@ -235,7 +235,7 @@
                     Additional vocabularies SHOULD make use of this mechanism for applying
                     their own annotations to instances.
                 </t>
-                <section title="Negated schemas">
+                <section title="Negated Schemas">
                     <t>
                         Annotations in a subschema contained within a "not", at any depth,
                         including any number of intervening additional "not" subschemas, MUST be
@@ -243,7 +243,7 @@
                         "anyOf", "then", or "else" MUST be ignored.
                     </t>
                 </section>
-                <section title="Annotations and short-circuit validation">
+                <section title="Annotations and Short-Circuit Validation">
                     <t>
                         Annotation keywords MUST be applied to all possible sub-instances.
                         even if such application can be short-circuited when only assertion
@@ -257,9 +257,9 @@
             </section>
         </section>
 
-        <section title="Interoperability considerations">
+        <section title="Interoperability Considerations">
 
-            <section title="Validation of string instances">
+            <section title="Validation of String Instances">
                 <t>
                     It should be noted that the nul character (\u0000) is valid in a JSON string. An
                     instance to validate may contain a string value with this character, regardless
@@ -267,7 +267,7 @@
                 </t>
             </section>
 
-            <section title="Validation of numeric instances">
+            <section title="Validation of Numeric Instances">
                 <t>
                     The JSON specification allows numbers with arbitrary precision, and JSON Schema
                     does not add any such bounds.
@@ -277,7 +277,7 @@
                 </t>
             </section>
 
-            <section title="Regular expressions" anchor="regexInterop">
+            <section title="Regular Expressions" anchor="regexInterop">
                 <t>
                     Two validation keywords, "pattern" and "patternProperties", use regular
                     expressions to express constraints, and the "regex" value for the
@@ -313,20 +313,20 @@
 
         </section>
 
-        <section title="Meta-schema">
+        <section title="Meta-Schema">
             <t>
                 The current URI for the JSON Schema Validation is
                 &lt;http://json-schema.org/draft-06/schema#&gt;.
             </t>
         </section>
 
-        <section title="Validation keywords">
+        <section title="Validation Keywords">
             <t>
                 Validation keywords in a schema impose requirements for successful validation of an
                 instance.
             </t>
 
-            <section title="Validation keywords for any instance type" anchor="general">
+            <section title="Validation Keywords for Any Instance Type" anchor="general">
                 <section title="type">
                     <t>
                         The value of this keyword MUST be either a string or an array. If it is
@@ -368,7 +368,7 @@
                 </section>
             </section>
 
-            <section title="Validation keywords for numeric instances (number and integer)"
+            <section title="Validation Keywords for Numeric Instances (number and integer)"
                      anchor="numeric">
                 <section title="multipleOf">
                     <t>
@@ -425,7 +425,7 @@
                 </section>
             </section>
 
-            <section title="Validation keywords for strings" anchor="string">
+            <section title="Validation Keywords for Strings" anchor="string">
                 <section title="maxLength">
                     <t>
                         The value of this keyword MUST be a non-negative integer.</t>
@@ -471,7 +471,7 @@
                 </section>
             </section>
 
-            <section title="Validation keywords for arrays">
+            <section title="Validation Keywords for Arrays">
                 <section title="items">
                     <t>
                         The value of "items" MUST be either a valid JSON Schema or an array of valid
@@ -566,7 +566,7 @@
                 </section>
             </section>
 
-            <section title="Validation keywords for objects">
+            <section title="Validation Keywords for Objects">
                 <section title="maxProperties">
                     <t>
                         The value of this keyword MUST be a non-negative integer.
@@ -723,7 +723,7 @@
                 </section>
             </section>
 
-            <section title="Keywords for applying subschemas conditionally" anchor="conditional">
+            <section title="Keywords for Applying Subschemas Conditionally" anchor="conditional">
                 <t>
                     These keywords work together to implement conditional
                     application of a subschema based on the outcome of
@@ -795,7 +795,7 @@
                 </section>
             </section>
 
-            <section title="Keywords for applying subschemas with boolean logic" anchor="logic">
+            <section title="Keywords for Applying Subschemas With Boolean Logic" anchor="logic">
                 <section title="allOf">
                     <t>
                         This keyword's value MUST be a non-empty array.
@@ -841,7 +841,7 @@
             </section>
         </section>
 
-        <section title='Semantic validation with "format"' anchor="format">
+        <section title='Semantic Validation With "format"' anchor="format">
 
             <section title="Foreword">
                 <t>
@@ -861,7 +861,7 @@
 
             </section>
 
-            <section title="Implementation requirements">
+            <section title="Implementation Requirements">
                 <t>
                     The "format" keyword functions as both an annotation
                     (<xref target="annotations" />) and as an assertion
@@ -887,9 +887,9 @@
                 </t>
             </section>
 
-            <section title="Defined formats">
+            <section title="Defined Formats">
 
-                <section title="Dates and times">
+                <section title="Dates and Times">
                     <t>
                         These attributes apply to string instances.
                     </t>
@@ -934,7 +934,7 @@
                     </t>
                 </section>
 
-                <section title="Email addresses">
+                <section title="Email Addresses">
                     <t>
                         These attributes apply to string instances.
                     </t>
@@ -977,7 +977,7 @@
                     </t>
                 </section>
 
-                <section title="IP addresses">
+                <section title="IP Addresses">
                     <t>
                         These attributes apply to string instances.
                     </t>
@@ -998,7 +998,7 @@
                     </t>
                 </section>
 
-                <section title="Resource identifiers">
+                <section title="Resource Identifiers">
                     <t>
                         These attributes apply to string instances.
                     </t>
@@ -1079,7 +1079,7 @@
             </section>
         </section>
 
-        <section title='String-encoding non-JSON data' anchor="content">
+        <section title='String-Encoding Non-JSON Data' anchor="content">
 
             <section title="Foreword">
                 <t>
@@ -1093,7 +1093,7 @@
                 </t>
             </section>
 
-            <section title="Implementation requirements">
+            <section title="Implementation Requirements">
                 <t>
                     The content keywords function as both annotations
                     (<xref target="annotations" />) and as assertions
@@ -1198,7 +1198,7 @@
 
         </section>
 
-        <section title='Schema re-use with "definitions"'>
+        <section title='Schema Re-Use With "definitions"'>
             <t>
                 The "definitions" keywords provides a standardized location for schema
                 authors to inline re-usable JSON Schemas into a more general schema.
@@ -1232,7 +1232,7 @@
             </t>
         </section>
 
-        <section title="Schema annotations">
+        <section title="Schema Annotations">
             <t>
                 Schema validation is a useful mechanism for annotating instance data
                 with additional information.  The rules for determining when and how
@@ -1337,7 +1337,7 @@
             </section>
         </section>
 
-        <section title="Security considerations">
+        <section title="Security Considerations">
             <t>
                 JSON Schema validation defines a vocabulary for JSON Schema core and concerns all
                 the security considerations listed there.
