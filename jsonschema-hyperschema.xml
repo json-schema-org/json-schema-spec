@@ -368,7 +368,7 @@
                     application/json does not define a URI fragment resolution syntax, so
                     properties or array elements within a plain JSON document cannot be fully
                     identified by a URI.  When it is not possible to produce a complete URI,
-                    the position of the context SHOULD be conveyed by a the URI of the instance
+                    the position of the context SHOULD be conveyed by the URI of the instance
                     document, together with a separate plain-string JSON Pointer.
                 </t>
                 <t>
@@ -621,7 +621,7 @@
                         For protocols supporting content-negotiation, implementations MAY choose to
                         describe possible target media types using protocol-specific information in
                         <xref target="headerSchema">"headerSchema"</xref>.  If both
-                        protocol-specific information and "targtMediaType" are present, then the
+                        protocol-specific information and "targetMediaType" are present, then the
                         value of "targetMediaType" MUST be compatible with the protocol-specific
                         information, and SHOULD indicate the media type that will be returned in the
                         absence of content negotiation.
@@ -1068,7 +1068,7 @@ for varname in T:
                     <t>
                         <list style="numbers">
                             <t>
-                                Deterimine which variables can accept input
+                                Determine which variables can accept input
                             </t>
                             <t>
                                 Pre-populate the input data set if the template resolution data
@@ -1574,7 +1574,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     </artwork>
                 </figure>
                 <t>
-                    The attachment pointer is the root pointer (the only possiblity with
+                    The attachment pointer is the root pointer (the only possibility with
                     an empty object for the instance).  The context URI is the default,
                     which is the requested document.  Since application/json does not allow
                     for fragments, the context pointer is necessary to fully describe the
@@ -1887,7 +1887,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                         The following hyper-schema, applied to the instance in the response
                         above, would produce the same "self" link and "up" link with "anchor".
                         It also shows the use of a templated "base" URI, plus both absolute
-                        and relative JSON Pointers in "tempaltePointers".
+                        and relative JSON Pointers in "templatePointers".
                     </preamble>
                     <artwork>
 <![CDATA[
