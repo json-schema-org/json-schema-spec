@@ -122,7 +122,7 @@
                 and asserts constraints on the structure of the data at each location.
                 An instance location that satisfies all asserted constraints is then
                 annotated with any keywords that contain non-assertion information,
-                such as desciptive metadata and usage hints.  If all locations within
+                such as descriptive metadata and usage hints.  If all locations within
                 the instance satisfy all asserted constraints, then the instance is
                 said to be valid against the schema.
             </t>
@@ -246,7 +246,7 @@
                 <section title="Annotations and Short-Circuit Validation">
                     <t>
                         Annotation keywords MUST be applied to all possible sub-instances.
-                        even if such application can be short-circuited when only assertion
+                        Even if such application can be short-circuited when only assertion
                         evaluation is needed.  For instance, the "contains" keyword need only
                         be checked for assertions until at least one array item proves valid.
                         However, when working with annotations, all items in the array must
@@ -866,7 +866,7 @@
                     The "format" keyword functions as both an annotation
                     (<xref target="annotations" />) and as an assertion
                     (<xref target="assertions" />).  While no special effort is required to
-                    implement it as an annotation convenying semantic meaning, implementing
+                    implement it as an annotation conveying semantic meaning, implementing
                     validation is non-trivial.
                 </t>
                 <t>
@@ -1098,7 +1098,7 @@
                     The content keywords function as both annotations
                     (<xref target="annotations" />) and as assertions
                     (<xref target="assertions" />).
-                    While no special effort is required to implement them as annotations convenying
+                    While no special effort is required to implement them as annotations conveying
                     how applications can interpret the data in the string, implementing
                     validation of conformance to the media type and encoding is non-trivial.
                 </t>
