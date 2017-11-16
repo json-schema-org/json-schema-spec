@@ -220,7 +220,7 @@
                         Some functionality that is useful for working with schemas is
                         defined by each media type, namely media type parameters and
                         URI fragment identifier syntax and semantics.  These features are
-                        useful in content negotiation and in caclulating URIs for specific
+                        useful in content negotiation and in calculating URIs for specific
                         locations within an instance, respectively.
                     </t>
                     <t>
@@ -468,7 +468,7 @@
                     allow tools to follow the correct behaviour.
                 </t>
                 <t>
-                    Note that the recursive nature of meta-schemas requires re-definining
+                    Note that the recursive nature of meta-schemas requires re-defining
                     recursive keywords in the extended meta-schema, as can be seen in
                     the JSON Hyper-Schema meta-schema.
                 </t>
@@ -581,7 +581,7 @@
                     have one that is an empty string.
                     <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
                     <cref>
-                        How should an "$id" URI reference containing a fragement with other components
+                        How should an "$id" URI reference containing a fragment with other components
                         be interpreted?  There are two cases:  when the other components match
                         the current base URI and when they change the base URI.
                     </cref>
@@ -909,7 +909,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 fail to strip them if such behavior is expected.
             </t>
             <t>
-                A malicous schema author could place executable code or other dangerous
+                A malicious schema author could place executable code or other dangerous
                 material within a "$comment".  Implementations MUST NOT parse or otherwise
                 take action based on "$comment" contents.
             </t>
