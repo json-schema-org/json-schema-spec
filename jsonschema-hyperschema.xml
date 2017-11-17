@@ -2456,9 +2456,13 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     the resource representation which contains the target URI with the "self"
                     link.
                     <cref>
-                        It is no longer clear what was intended by the "sub-path" option in
-                        this paragraph.  While paths are defined as a hierarchical system
-                        by RFC 3986, there semantics of the hierarchy are not defined.
+                        It is no longer entirely clear what was intended by the "sub-path"
+                        option in this paragraph.  It may have been intended to allow
+                        "self" links for embedded item representations in a collection, which
+                        usually have target URIs that are sub-paths of that collection's URI,
+                        to be considered authoritative.  However, this is simply a common
+                        design convention and does not appear to be based in RFC 3986 or any other
+                        guidance on URI usage.  See GitHub issue #485 for further discussion.
                     </cref>
                 </t>
             </section>
