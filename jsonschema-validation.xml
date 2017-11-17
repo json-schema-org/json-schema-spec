@@ -1381,6 +1381,30 @@
         <!-- References Section -->
         <references title="Normative References">
             &RFC2119;
+            &RFC1034;
+            &RFC2045;
+            &RFC2046;
+            &RFC2673;
+            &RFC3339;
+            &RFC3986;
+            &RFC3987;
+            &RFC4291;
+            &RFC5322;
+            &RFC5890;
+            &RFC5891;
+            &RFC6570;
+            &RFC6531;
+            &RFC6901;
+            &RFC7159;
+            <reference anchor="ecma262"
+            target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
+                <front>
+                    <title>ECMA 262 specification</title>
+                    <author/>
+                    <date/>
+                </front>
+            </reference>
+            &I-D.luff-relative-json-pointer;
             <reference anchor="json-schema">
                 <front>
                     <title>JSON Schema: A Media Type for Describing JSON Documents</title>
@@ -1392,31 +1416,7 @@
         </references>
 
         <references title="Informative References">
-            &RFC1034;
-            &RFC2045;
-            &RFC2046;
-            &RFC2673;
-            &RFC3339;
-            &RFC3986;
-            &RFC3987;
-            &RFC4291;
             &RFC4329;
-            &RFC5890;
-            &RFC5891;
-            &RFC6570;
-            &RFC6531;
-            &RFC6901;
-            &RFC7159;
-            &RFC5322;
-            &I-D.luff-relative-json-pointer;
-            <reference anchor="ecma262"
-            target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
-                <front>
-                    <title>ECMA 262 specification</title>
-                    <author/>
-                    <date/>
-                </front>
-            </reference>
         </references>
 
         <section title="Acknowledgments">
@@ -1462,6 +1462,8 @@
                             <t>I18N formats: "iri", "iri-reference", "idn-hostname", "idn-email"</t>
                             <t>Clarify that "json-pointer" format means string encoding, not URI fragment</t>
                             <t>Fixed typo that inverted the meaning of "minimum" and "exclusiveMinimum"</t>
+                            <t>Move format syntax references into Normative References</t>
+                            <t>JSON is a normative requirement</t>
                         </list>
                     </t>
                     <t hangText="draft-wright-json-schema-validation-01">
