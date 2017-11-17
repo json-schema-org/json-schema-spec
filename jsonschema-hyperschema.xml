@@ -5,7 +5,6 @@
 <!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY rfc4151 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4151.xml">
 <!--<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">-->
-<!--<!ENTITY rfc5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">-->
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc6068 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6068.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
@@ -2492,9 +2491,10 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             &rfc3986;
             <!--&rfc4287;-->
             &rfc6570;
+            &rfc6573;
             &rfc6901;
+            &rfc8288;
             &I-D.luff-relative-json-pointer;
-            &I-D.reschke-http-jfv;
             <reference anchor="json-schema">
                 <front>
                     <title>JSON Schema: A Media Type for Describing JSON Documents</title>
@@ -2518,15 +2518,13 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         </references>
         <references title="Informative References">
             &rfc2046;
-            <!--&rfc5226;-->
             &rfc4151;
             &rfc5789;
             &rfc6068;
-            &rfc6573;
             &rfc7230;
             &rfc7231;
             &rfc7807;
-            &rfc8288;
+            &I-D.reschke-http-jfv;
         </references>
         <section title="Using JSON Hyper-Schema in APIs" anchor="apis">
             <t>
