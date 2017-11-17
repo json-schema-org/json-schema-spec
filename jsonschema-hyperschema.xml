@@ -611,8 +611,8 @@
                         serialization formats.  User agents MAY use this information to inform
                         the interface they present to the user before the link is followed,
                         but MUST NOT use this information in the interpretation of the resulting
-                        data.  Instead, a client MUST use the media type given by the response for
-                        run-time interpretation.  See the section on
+                        data.  Instead, a user agent MUST use the media type given by the response
+                        for run-time interpretation.  See the section on
                         <xref target="security">"Security Concerns"</xref> for a detailed
                         examination of mis-use of "targetMediaType".
                     </t>
@@ -681,12 +681,12 @@
                     </t>
                     <t>
                         Implementations MUST NOT assume that all discoverable information is
-                        accounted for in this object.  Clients MUST properly handle run-time
-                        responses that contradict this property's values.
+                        accounted for in this object.  Client applications MUST properly handle
+                        run-time responses that contradict this property's values.
                     </t>
                     <t>
-                        Clients MUST NOT assume that an implementation will automatically take any
-                        action based on the value of this property.
+                        Client applications MUST NOT assume that an implementation will
+                        automatically take any action based on the value of this property.
                     </t>
                     <t>
                         See <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> for
@@ -696,9 +696,9 @@
             </section>
             <section title="Link Input" anchor="input">
                 <t>
-                    There are four ways to use client-supplied data with a link, and each
+                    There are four ways to use client input with a link, and each
                     is addressed by a separate link description object keyword.  When performing
-                    operations, clients SHOULD ignore schemas that are not relevant to their
+                    operations, user agents SHOULD ignore schemas that are not relevant to their
                     semantics.
                 </t>
                 <section title="hrefSchema" anchor="hrefSchema">
@@ -759,12 +759,13 @@
                     </t>
                     <t>
                         The purpose of this keyword is to advertise target resource interaction
-                        features, and indicate to clients what headers and header values are
-                        likely to be useful.  Clients MAY use the schema to validate relevant
+                        features, and indicate to user agents and client applications what headers
+                        and header values are likely to be useful.
+                        User agents and client applications MAY use the schema to validate relevant
                         headers, but MUST NOT assume that missing headers or values are forbidden
                         from use.  While schema authors MAY set "additionalProperties" to
-                        false, this is NOT RECOMMENDED and MUST NOT prevent clients or user agents
-                        from supplying additional headers when requests are made.
+                        false, this is NOT RECOMMENDED and MUST NOT prevent client applications
+                        or user agents from supplying additional headers when requests are made.
                     </t>
                     <t>
                         The exact mapping of the JSON data model into the headers is
@@ -777,8 +778,9 @@
                     </t>
                     <t>
                         "headerSchema" is applicable to any request method or command that the
-                        protocol supports.  When generating a request, clients SHOULD ignore
-                        schemas for headers that are not relevant to that request.
+                        protocol supports.  When generating a request, user agents and client
+                        applications SHOULD ignore schemas for headers that are not relevant
+                        to that request.
                     </t>
                 </section>
 
@@ -786,14 +788,14 @@
                     <t>
                         In JSON Hyper-Schema, <xref target="targetSchema">"targetSchema"</xref>
                         supplies a non-authoritative description of the target resource's
-                        representation.  A client can use "targetSchema" to structure input for
-                        replacing or modifying the representation, or as the base representation
-                        for building a patch document based on a patch media type.
+                        representation.  A client application can use "targetSchema" to structure
+                        input for replacing or modifying the representation, or as the base
+                        representation for building a patch document based on a patch media type.
                     </t>
                     <t>
-                        Alternatively, if "targetSchema" is absent or if the client prefers to
-                        only use authoritative information, it can interact with the target
-                        resource to confirm or discover its representation structure.
+                        Alternatively, if "targetSchema" is absent or if the client application
+                        prefers to only use authoritative information, it can interact with the
+                        target resource to confirm or discover its representation structure.
                     </t>
                     <t>
                         "targetSchema" is not intended to describe link operation responses,
@@ -817,7 +819,8 @@
                     <section title="submissionMediaType" anchor="submissionMediaType">
                         <t>
                             If present, this property indicates the media type format the
-                            client should use for the request payload described by
+                            client application and user agent should use for the request
+                            payload described by
                             <xref target="submissionSchema">"submissionSchema"</xref>.
                         </t>
                         <t>
@@ -910,7 +913,7 @@
                     </t>
                     <t hangText="attachmentPointer">
                         The JSON Pointer for the location within the instance to which the
-                        link is attached.  By default, "contextUri" and "attachementUri" are
+                        link is attached.  By default, "contextUri" and "attachmentUri" are
                         the same, but "contextUri" can be changed by LDO keywords, while
                         "attachmentUri" cannot.
                     </t>
@@ -1345,11 +1348,11 @@ for varname in templateData:
                 <t>
                     Since the semantics of many HTTP methods are defined in terms of the target
                     resource, "targetSchema" is used for requests and/or responses for several
-                    HTTP methods.
-                    In particular, "targetSchema" suggests what a client can expect for the
-                    response to an HTTP GET or any response for which the "Content-Location"
-                    header is equal to the request URI, and what a client should send if it
-                    replaces the resource in an HTTP PUT request.
+                    HTTP methods.  In particular, "targetSchema" suggests what a client
+                    application can expect for the response to an HTTP GET or any response
+                    for which the "Content-Location" header is equal to the request URI,
+                    and what a client application should send if it replaces the resource
+                    in an HTTP PUT request.
                     These correlations are defined by <xref target="RFC7231">RFC 7231,
                     section 4.3.1 - "GET", section 4.3.4 "PUT", and section 3.1.4.2,
                     "Content-Location"</xref>.
@@ -1483,8 +1486,8 @@ for varname in templateData:
                     include the URI(s) of the schema(s) to which the negotiated representation
                     is expected to conform.  One possible use for schema parameters in
                     content negotiation is if the resource has conformed to several different
-                    schema versions over time.  The client can indicate what version(s) it
-                    understands in the "Accept" header in this way.
+                    schema versions over time.  The client application can indicate what version(s)
+                    it understands in the "Accept" header in this way.
                 </t>
             </section>
         </section>
@@ -1772,10 +1775,10 @@ Link: <https://schema.example.com/entry> rel=describedBy
                         <t hangText="title:">
                             The instance field matching this variable is required, and it is also
                             allowed in the input data.  So its instance value is used to
-                            pre-populate the input data set before accepting the client's input.
-                            The client can opt to leave the instance value in place.  Since
-                            this field is required in "hrefSchema", the client cannot delete it
-                            (although it could set it to an empty string).
+                            pre-populate the input data set before accepting client input.  The
+                            client application can opt to leave the instance value in place.  Since
+                            this field is required in "hrefSchema", the client application cannot
+                            delete it (although it could set it to an empty string).
                         </t>
                         <t hangText="cc:">
                             The "false" schema set for this in the main schema prevents this field
@@ -1799,7 +1802,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                 </figure>
                 <t>
                     We can partially resolve the link as follows, before asking the client
-                    for input.
+                    application for input.
                 </t>
                 <figure>
                     <artwork>
@@ -2407,8 +2410,9 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     </cref>
                 </t>
                 <t>
-                    Clients MUST NOT use the value of "targetSchema" to aid in the interpretation
-                    of the data received in response to following the link, as this leaves
+                    User agents or client applications MUST NOT use the value of "targetSchema"
+                    to aid in the interpretation of the data received in response to following
+                    the link, as this leaves
                     "safe" data open to re-interpretation.
                 </t>
                 <t>
