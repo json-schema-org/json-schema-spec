@@ -4,7 +4,7 @@
 <!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY rfc4151 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4151.xml">
-<!--<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">-->
+<!ENTITY rfc4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
 <!ENTITY rfc5789 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml">
 <!ENTITY rfc6068 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6068.xml">
 <!ENTITY rfc6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
@@ -440,11 +440,17 @@
                 </section>
                 <section title='"self" Links' anchor="self">
                     <t>
+                        A "self" link, as originally defined by <xref target="RFC4287">Section
+                        4.2.7.2 of RFC 4287</xref>, indicates that the target URI identifies
+                        a resource equivalent to the link context.  In JSON Hyper-Schema,
+                        a "self" link MUST be resolvable from the instance, and therefore
+                        "hrefSchema" MUST NOT be present.
+                    </t>
+                    <t>
                         A hyper-schema implementation MUST recognize that a link with relation
-                        type "self" that is applicable to the entire instance document describes
-                        how a user agent can interact with the resource represented by that
-                        instance document.  A "self" link MUST be resolvable from the instance,
-                        and therefore "hrefSchema" MUST NOT be present.
+                        type "self" that has the entire current instance document as its context
+                        describes how a user agent can interact with the resource represented by
+                        that instance document.
                     </t>
                     <t>
                         Hyper-schema authors SHOULD use "templateRequired" to ensure that the
@@ -2493,7 +2499,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         <references title="Normative References">
             &rfc2119;
             &rfc3986;
-            <!--&rfc4287;-->
+            &rfc4287;
             &rfc6570;
             &rfc6573;
             &rfc6901;
