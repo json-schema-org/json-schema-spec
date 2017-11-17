@@ -447,14 +447,14 @@
                         "hrefSchema" MUST NOT be present.
                     </t>
                     <t>
+                        Hyper-schema authors SHOULD use "templateRequired" to ensure that the
+                        "self" link has all instance data that is needed for use.
+                    </t>
+                    <t>
                         A hyper-schema implementation MUST recognize that a link with relation
                         type "self" that has the entire current instance document as its context
                         describes how a user agent can interact with the resource represented by
                         that instance document.
-                    </t>
-                    <t>
-                        Hyper-schema authors SHOULD use "templateRequired" to ensure that the
-                        "self" link has all instance data that is needed for use.
                     </t>
                 </section>
                 <section title='"collection" and "item" Links' anchor="collectionAndItem">
