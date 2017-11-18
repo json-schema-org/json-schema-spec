@@ -146,6 +146,36 @@
                 other link serializations or representation formats at runtime, or pre-emptively
                 follow links to facilitate server push usage.
             </t>
+            <figure>
+                <preamble>
+                    Here is an example hyper-schema that adds a single link, with the
+                    IANA-registered link relation type "self", that is built from an instance
+                    with one known object field named "id":
+                </preamble>
+                <artwork>
+<![CDATA[{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "number",
+            "readOnly": true
+        }
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "thing/{id}"
+        }
+    ]
+}]]>
+                </artwork>
+                <postamble>
+                    If the instance is {"id": 1234}, and its base URI according to
+                    <xref target="RFC3986">RFC 3986 section 5.1</xref>, is
+                    "https://api.example.com/", then "https://api.example.com/thing/1234"
+                    is the resulting link's target URI.
+                </postamble>
+            </figure>
 
             <section title="Terminology">
                 <t>
