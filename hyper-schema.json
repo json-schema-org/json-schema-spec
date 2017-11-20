@@ -1,18 +1,18 @@
 {
-    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
-    "$id": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$id": "http://json-schema.org/draft-07/hyper-schema#",
     "title": "JSON Hyper-Schema",
     "definitions": {
         "schemaArray": {
             "allOf": [
-                { "$ref": "http://json-schema.org/draft-07-wip/schema#/definitions/schemaArray" },
+                { "$ref": "http://json-schema.org/draft-07/schema#/definitions/schemaArray" },
                 {
                     "items": { "$ref": "#" }
                 }
             ]
         }
     },
-    "allOf": [ { "$ref": "http://json-schema.org/draft-07-wip/schema#" } ],
+    "allOf": [ { "$ref": "http://json-schema.org/draft-07/schema#" } ],
     "properties": {
         "additionalItems": { "$ref": "#" },
         "additionalProperties": { "$ref": "#"},
@@ -56,7 +56,7 @@
         "links": {
             "type": "array",
             "items": {
-                "$ref": "http://json-schema.org/draft-07-wip/links#"
+                "$ref": "http://json-schema.org/draft-07/links#"
             }
         }
     },
