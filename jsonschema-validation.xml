@@ -17,7 +17,6 @@
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
-<!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -33,16 +32,16 @@
             JSON Schema Validation: A Vocabulary for Structural Validation of JSON
         </title>
 
+        <author fullname="Austin Wright" initials="A" surname="Wright" role="editor">
+            <address>
+                <email>aaa@bzfx.net</email>
+            </address>
+        </author>
+
         <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
             <organization>Cloudflare, Inc.</organization>
             <address>
                 <email>henry@cloudflare.com</email>
-            </address>
-        </author>
-
-        <author fullname="Austin Wright" initials="A" surname="Wright" role="editor">
-            <address>
-                <email>aaa@bzfx.net</email>
             </address>
         </author>
 
@@ -1056,7 +1055,7 @@
                             </t>
                             <t hangText="relative-json-pointer">
                                 A string instance is valid against this attribute if it is a valid
-                                <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>.
+                                <xref target="relative-json-pointer">Relative JSON Pointer</xref>.
                             </t>
                         </list>
                         To allow for both absolute and relative JSON Pointers, use "anyOf" or
@@ -1404,14 +1403,31 @@
                     <date/>
                 </front>
             </reference>
-            &I-D.luff-relative-json-pointer;
+            <reference anchor="relative-json-pointer">
+                <front>
+                    <title>Relative JSON Pointers</title>
+                    <author initials="G." surname="Luff">
+                        <organization/>
+                    </author>
+                    <author initials="H." surname="Andrews">
+                        <organization>Cloudflare, Inc.</organization>
+                    </author>
+                    <date year="2017" month="November"/>
+                </front>
+                <seriesInfo name="Internet-Draft" value="draft-handrews-relative-json-pointer-00" />
+            </reference>
             <reference anchor="json-schema">
                 <front>
                     <title>JSON Schema: A Media Type for Describing JSON Documents</title>
-                    <author/>
-                    <date year="2016" month="October"/>
+                    <author initials="A." surname="Wright">
+                        <organization/>
+                    </author>
+                    <author initials="H." surname="Andrews">
+                        <organization>Cloudflare, Inc.</organization>
+                    </author>
+                    <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-00" />
             </reference>
         </references>
 
@@ -1438,7 +1454,8 @@
                 Brad Bowman,
                 Gowry Sankar,
                 Donald Pipowitch,
-                and Dave Finlay
+                Dave Finlay,
+                and Denis Laxalde
                 for their submissions and patches to the document.
             </t>
         </section>
