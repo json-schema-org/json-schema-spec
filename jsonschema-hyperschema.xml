@@ -14,7 +14,6 @@
 <!ENTITY rfc7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY rfc7807 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7807.xml">
 <!ENTITY rfc8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
-<!ENTITY I-D.luff-relative-json-pointer SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-luff-relative-json-pointer-00.xml">
 <!ENTITY I-D.reschke-http-jfv SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-reschke-http-jfv-06.xml">
 ]>
 <?rfc toc="yes"?>
@@ -420,7 +419,7 @@
                         This property changes the point within the instance that is considered
                         to be the context resource of the link.  The value of the property MUST
                         be a valid JSON Pointer in JSON String representation form, or a valid
-                        <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
+                        <xref target="relative-json-pointer">Relative JSON Pointer</xref>
                         which is evaluated relative to the default context.
                     </t>
                     <t>
@@ -569,7 +568,7 @@
                         The value of the "templatePointers" link description property MUST be
                         an object.  Each property value in the object MUST be a valid
                         <xref target="RFC6901">JSON Pointer</xref>, or a valid
-                        <xref target="I-D.luff-relative-json-pointer">Relative JSON Pointer</xref>
+                        <xref target="relative-json-pointer">Relative JSON Pointer</xref>
                         which is evaluated relative to the attachment point of the link
                         for which the template is being resolved.
                     </t>
@@ -2532,16 +2531,31 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             &rfc6573;
             &rfc6901;
             &rfc8288;
-            &I-D.luff-relative-json-pointer;
+            <reference anchor="relative-json-pointer">
+                <front>
+                    <title>Relative JSON Pointers</title>
+                    <author initials="G." surname="Luff">
+                        <organization/>
+                    </author>
+                    <author initials="H." surname="Andrews">
+                        <organization>Cloudflare, Inc.</organization>
+                    </author>
+                    <date year="2017" month="November"/>
+                </front>
+                <seriesInfo name="Internet-Draft" value="draft-handrews-relative-json-pointer-00" />
+            </reference>
             <reference anchor="json-schema">
                 <front>
                     <title>JSON Schema: A Media Type for Describing JSON Documents</title>
                     <author initials="A." surname="Wright">
                         <organization/>
                     </author>
-                    <date year="2016" month="October"/>
+                    <author initials="H." surname="Andrews">
+                        <organization>Cloudflare, Inc.</organization>
+                    </author>
+                    <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-01" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-00" />
             </reference>
             <reference anchor="json-schema-validation">
                 <front>
@@ -2549,9 +2563,15 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     <author initials="A." surname="Wright">
                         <organization/>
                     </author>
-                    <date year="2016" month="October"/>
+                    <author initials="H." surname="Andrews">
+                        <organization>Cloudflare, Inc.</organization>
+                    </author>
+                    <author initials="G." surname="Luff">
+                        <organization/>
+                    </author>
+                    <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-wright-json-schema-validation-01" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-validation-00" />
             </reference>
         </references>
         <references title="Informative References">
