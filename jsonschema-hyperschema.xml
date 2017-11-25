@@ -285,9 +285,6 @@
 
         <section title="Meta-Schemas and Output Schema">
             <t>
-                <cref>The "draft-07-wip" is a placeholder.</cref>
-            </t>
-            <t>
                 The current URI for the JSON Hyper-Schema meta-schema is
                 <eref target="http://json-schema.org/draft-07/hyper-schema#"/>.
             </t>
@@ -1572,8 +1569,8 @@ Link: <https://schema.example.com/entry> rel=describedBy
 <![CDATA[
 {
     "$id": "https://schema.example.com/entry",
-    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
-    "base": "https://api.example.com",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "base": "https://api.example.com/",
     "links": [
         {
             "rel": "self",
@@ -1626,8 +1623,8 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
-    "base": "https://api.example.com",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "base": "https://api.example.com/",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -1742,7 +1739,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/interesting-stuff",
-    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
     "required": ["stuffWorthEmailingAbout", "email", "title"],
     "properties": {
         "title": {
@@ -1927,8 +1924,10 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                         and relative JSON Pointers in "templatePointers".
                     </preamble>
                     <artwork>
-<![CDATA[
-    "base": "trees/{treeId}",
+<![CDATA[{
+    "$id": "https://schema.example.com/tree-node",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "base": "trees/{treeId}/",
     "properties": {
         "id": {"type": "integer"},
         "treeId": {"type": "integer"},
@@ -1989,8 +1988,8 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
-    "base": "https://api.example.com",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "base": "https://api.example.com/",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -2042,8 +2041,8 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing-collection",
-    "$schema": "http://json-schema.org/draft-07-wip/hyper-schema#",
-    "base": "https://api.example.com",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "base": "https://api.example.com/",
     "type": "object",
     "required": ["elements"],
     "properties": {
@@ -2075,6 +2074,9 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     </artwork>
                 </figure>
                 <figure>
+                    <preamble>
+                        Here is a simple two-element collection instance:
+                    </preamble>
                     <artwork>
 <![CDATA[{
     "elements": [
