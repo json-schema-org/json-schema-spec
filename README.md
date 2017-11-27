@@ -2,14 +2,13 @@
 
 JSON Schema is a vocabulary that allows you to validate, annotate, and manipulate JSON documents.
 
-This repository contains the sources for the **work in progress** of the next JSON Schema IETF Internet Draft (I-D) document.
-For released versions, please see the [Specification page](http://json-schema.org/documentation.html) on the website.
+This repository contains the sources for the **work in progress** of the next set of JSON Schema IETF Internet Draft (I-D) documents.
+For the latest released I-Ds, please see the [Specification page](http://json-schema.org/documentation.html) on the website.
 
-## Call for reviews
+## Call for contributions and feedback
 
-Reviews, comments and suggestions
-are of paramount importance to JSON Schema. It is humbly asked to you, dear
-reader, that you bring your contribution.
+Reviews, comments and suggestions are most welcome!
+Please read our [guidelines for contributing](CONTRIBUTING.md).
 
 ## Status
 For the current status of issues and pull requests, please see the following labels
@@ -24,12 +23,16 @@ Labels are assigned based on [Sensible Github Labels](https://github.com/Releque
 ## Contents
 
 * Makefile - scripts to build the Internet-Draft txt/html
-* archive/ - files for other/older JSON Schema implementations
-* hyper-schema.json - the JSON Hyper-schema meta-schema
-* schema.json - the JSON Schema meta-schema
-* jsonschema-core.xml - sources for "core" spec
-* jsonschema-validation.xml - sources for JSON Schema validation
-* jsonschema-hyperschema.xml - sources for hyper-schema spec
+* _Internet-Draft sources_
+    * jsonschema-core.xml - source for JSON Schema's "core" I-D
+    * jsonschema-validation.xml - source for the validation vocabulary I-D
+    * jsonschema-hyperschema.xml - source for the hyper-schema vocabulary I-D
+    * relative-json-pointer.xml - source for the Relative JSON Pointer I-D
+* _meta-schemas and recommended output formats_
+    * schema.json - JSON Schema "core" and Validation meta-schema
+    * hyper-schema.json - JSON Hyper-Schema meta-schema
+    * links.json - JSON Hyper-Schema's Link Description Object meta-schema
+    * hyper-schema-output.json - The recommended output format for JSON Hyper-Schema links
 
 Type "make" at a shell to build the .txt and .html spec files.
 
@@ -39,6 +42,11 @@ Descriptions of the xml2rfc, I-D documents, and RFC processes:
 * https://www.ietf.org/tao.html
 * https://www.ietf.org/ietf-ftp/1id-guidelines.html
 * https://www.rfc-editor.org/rfc/rfc7322.txt
+
+## Test suites
+
+Conformance tests for JSON Schema and its vocabularies may be found
+[in their own repository](https://github.com/json-schema-org/JSON-Schema-Test-Suite).
 
 ## The website
 
