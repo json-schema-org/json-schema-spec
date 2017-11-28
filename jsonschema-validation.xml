@@ -912,15 +912,15 @@
                         Implementations supporting formats SHOULD implement support for
                         the following attributes:
                         <list style="hanging">
-                            <t hangText="date-time">
+                            <t hangText="date-time:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "date-time" production.
                             </t>
-                            <t hangText="date">
+                            <t hangText="date:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "full-date" production.
                             </t>
-                            <t hangText="time">
+                            <t hangText="time:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "full-time" production.
                             </t>
@@ -953,10 +953,10 @@
                         A string instance is valid against these attributes if it is a valid
                         Internet email address as follows:
                         <list style="hanging">
-                            <t hangText="email">
+                            <t hangText="email:">
                                 As defined by <xref target="RFC5322">RFC 5322, section 3.4.1</xref>.
                             </t>
-                            <t hangText="idn-email">
+                            <t hangText="idn-email:">
                                 As defined by <xref target="RFC6531">RFC 6531</xref>
                             </t>
                         </list>
@@ -972,12 +972,12 @@
                         A string instance is valid against these attributes if it is a valid
                         representation for an Internet hostname as follows:
                         <list style="hanging">
-                            <t hangText="hostname">
+                            <t hangText="hostname:">
                                 As defined by <xref target="RFC1034">RFC 1034, section 3.1</xref>,
                                 including host names produced using the Punycode algorithm
                                 specified in <xref target="RFC5891">RFC 5891, section 4.4</xref>.
                             </t>
-                            <t hangText="idn-hostname">
+                            <t hangText="idn-hostname:">
                                 As defined by either RFC 1034 as for hostname, or an
                                 internationalized hostname as defined by
                                 <xref target="RFC5890">RFC 5890, section 2.3.2.3</xref>.
@@ -996,12 +996,12 @@
                         A string instance is valid against these attributes if it is a valid
                         representation of an IP address as follows:
                         <list style="hanging">
-                            <t hangText="ipv4">
+                            <t hangText="ipv4:">
                                 An IPv4 address according to the "dotted-quad" ABNF
                                 syntax as defined in
                                 <xref target="RFC2673">RFC 2673, section 3.2</xref>.
                             </t>
-                            <t hangText="ipv6">
+                            <t hangText="ipv6:">
                                 An IPv6 address as defined in
                                 <xref target="RFC4291">RFC 4291, section 2.2</xref>.
                             </t>
@@ -1015,20 +1015,20 @@
                     </t>
                     <t>
                         <list style="hanging">
-                            <t hangText="uri">
+                            <t hangText="uri:">
                                 A string instance is valid against this attribute if it is
                                 a valid URI, according to <xref target="RFC3986"/>.
                             </t>
-                            <t hangText="uri-reference">
+                            <t hangText="uri-reference:">
                                 A string instance is valid against this attribute if it is a valid URI
                                 Reference (either a URI or a relative-reference),
                                 according to <xref target="RFC3986"/>.
                             </t>
-                            <t hangText="iri">
+                            <t hangText="iri:">
                                 A string instance is valid against this attribute if it is
                                 a valid IRI, according to <xref target="RFC3987"/>.
                             </t>
-                            <t hangText="iri-reference">
+                            <t hangText="iri-reference:">
                                 A string instance is valid against this attribute if it is a valid IRI
                                 Reference (either an IRI or a relative-reference),
                                 according to <xref target="RFC3987"/>.
@@ -1059,12 +1059,12 @@
                     </t>
                     <t>
                         <list style="hanging">
-                            <t hangText="json-pointer">
+                            <t hangText="json-pointer:">
                                 A string instance is valid against this attribute if it
                                 is a valid JSON string representation of a JSON Pointer,
                                 according to <xref target="RFC6901">RFC 6901, section 5</xref>.
                             </t>
-                            <t hangText="relative-json-pointer">
+                            <t hangText="relative-json-pointer:">
                                 A string instance is valid against this attribute if it is a valid
                                 <xref target="relative-json-pointer">Relative JSON Pointer</xref>.
                             </t>
