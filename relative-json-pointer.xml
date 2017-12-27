@@ -82,7 +82,7 @@
         <section title="Syntax">
             <t>
                 A Relative JSON Pointer is a Unicode string (see RFC 4627,
-                <xref target="RFC4627">Section 3</xref>), comprising a positive integer,
+                <xref target="RFC4627">Section 3</xref>), comprising a non-negative integer,
                 followed by either a '#' (%x23) character or a JSON Pointer
                 (<xref target="RFC6901">RFC 6901</xref>).
             </t>
@@ -98,10 +98,10 @@
                 </preamble>
                 <artwork>
 <![CDATA[
-      relative-json-pointer =  positive-integer &lt;json-pointer&gt;
-      relative-json-pointer =/ positive-integer "#"
-      positive-integer      =  %x30 / %x31-39 *( %x30-39 )
-              ; "0", or digits without a leading "0"
+   relative-json-pointer =  non-negative-integer &lt;json-pointer&gt;
+   relative-json-pointer =/ non-negative-integer "#"
+   non-negative-integer      =  %x30 / %x31-39 *( %x30-39 )
+           ; "0", or digits without a leading "0"
 ]]>
                 </artwork>
                 <postamble>
@@ -121,8 +121,8 @@
                 integer value representing an array index.
             </t>
             <t>
-                Evaluation begins by processing the positive-integer prefix.  This
-                can be found by taking the longest continuous sequence of decimal
+                Evaluation begins by processing the non-negative-integer prefix.
+                This can be found by taking the longest continuous sequence of decimal
                 digits available, starting from the beginning of the string, taking
                 the decimal numerical value.  If this value is more than zero, then
                 the following steps are repeated that number of times:
