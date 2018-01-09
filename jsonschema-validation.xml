@@ -602,6 +602,11 @@
                         greater than, or equal to, the value of this keyword.
                     </t>
                     <t>
+                        A value of 0 is allowed, but is only useful for setting a range
+                        of occurrences from 0 to the value of "maxContains".  A value of
+                        0 with no "maxContains" causes "contains" to always pass validation.
+                    </t>
+                    <t>
                         If "contains" is not present within the same schema object,
                         then this keyword has no effect.
                     </t>
