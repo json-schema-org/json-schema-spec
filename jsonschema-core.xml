@@ -980,12 +980,12 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             <t>
                 Instances and schemas are both frequently written by untrusted third parties, to be
                 deployed on public Internet servers.
-                Validators should take care that the parsing of schemas doesn't consume excessive
+                Validators should take care that the parsing and validating against schemas doesn't consume excessive
                 system resources.
                 Validators MUST NOT fall into an infinite loop.
             </t>
             <t>
-                Servers need to take care that malicious parties can't change the functionality of
+                Servers MUST ensure that malicious parties can't change the functionality of
                 existing schemas by uploading a schema with an pre-existing or very similar "$id".
             </t>
             <t>
