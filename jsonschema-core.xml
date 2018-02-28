@@ -709,6 +709,25 @@
                     Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is
                     undefined.
                 </t>
+                <section title="Loading a referenced schema">
+                    <t>
+                        To differentiate schemas between each other in a vast ecosystem, schemas are
+                        identified by URI. As specified above, this does not necessarily mean
+                        anything is downloaded, but instead JSON Schema implementations SHOULD
+                        already understand the schemas they will be using, including the URIs that
+                        identify them.
+                    </t>
+                    <t>
+                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
+                        schema and/or automatically associate a schema's "$id"-given URI, depending
+                        on the trust that the validator has in the schema.
+                    </t>
+                    <t>
+                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
+                        URI to identify more than one schema. When multiple schemas try to identify
+                        with the same URI, validators SHOULD raise an error condition.
+                    </t>
+                </section>
             </section>
 
             <section title="Dereferencing">
@@ -756,25 +775,6 @@
                         &lt;http://example.net/root.json#item&gt; which is understood as the schema
                         defined elsewhere in the same document without needing to
                         resolve the fragment against the base URI.
-                    </t>
-                </section>
-                <section title="External References">
-                    <t>
-                        To differentiate schemas between each other in a vast ecosystem, schemas are
-                        identified by URI. As specified above, this does not necessarily mean
-                        anything is downloaded, but instead JSON Schema implementations SHOULD
-                        already understand the schemas they will be using, including the URIs that
-                        identify them.
-                    </t>
-                    <t>
-                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
-                        schema and/or automatically associate a schema's "$id"-given URI, depending
-                        on the trust that the validator has in the schema.
-                    </t>
-                    <t>
-                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
-                        URI to identify more than one schema. When multiple schemas try to identify
-                        with the same URI, validators SHOULD raise an error condition.
                     </t>
                 </section>
             </section>
