@@ -720,7 +720,10 @@
                     <t>
                         Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
                         schema and/or automatically associate a schema's "$id"-given URI, depending
-                        on the trust that the validator has in the schema.
+                        on the trust that the validator has in the schema.  Such URIs and schemas
+                        can be supplied to an implementation prior to processing instances, or may
+                        be noted within a schema document as it is processed, producing associations
+                        as shown in section <xref target="idExamples" format="counter"></xref>.
                     </t>
                     <t>
                         A schema MAY (and likely will) have multiple URIs, but there is no way for a
