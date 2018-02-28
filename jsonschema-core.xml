@@ -731,19 +731,19 @@
                         with the same URI, validators SHOULD raise an error condition.
                     </t>
                 </section>
-            </section>
-
-            <section title="Dereferencing">
-                <section title="Internal References">
+                <section title="Dereferencing">
                     <t>
                         Schemas can be identified by any URI that has been given to them, including
-                        a JSON Pointer or their URI given directly by "$id".
+                        a JSON Pointer or their URI given directly by "$id".  In all cases,
+                        dereferencing a "$ref" reference involves first resolving its value as a
+                        URI reference against the current base URI per
+                        <xref target="RFC3986">RFC 3986</xref>.
                     </t>
                     <t>
-                        Tools SHOULD take note of the URIs that schemas, including subschemas,
-                        provide for themselves using "$id". This is known as "Internal referencing".
+                        If the resulting URI identifies a schema within the current document, or
+                        within another schema document that has been made available to the implementation,
+                        then that schema SHOULD be used automatically.
                     </t>
-
                     <t>
                         For example, consider this schema:
                     </t>
@@ -760,7 +760,8 @@
     "definitions": {
         "single": {
             "$id": "#item",
-            "type": "integer"
+            "type": "object",
+            "additionalProperties": { "$ref": "other.json" }
         }
     }
 }
@@ -775,9 +776,22 @@
                     <t>
                         When an implementation then looks inside the &lt;#/items&gt; schema, it
                         encounters the &lt;#item&gt; reference, and resolves this to
-                        &lt;http://example.net/root.json#item&gt; which is understood as the schema
-                        defined elsewhere in the same document without needing to
-                        resolve the fragment against the base URI.
+                        &lt;http://example.net/root.json#item&gt;, which it has seen defined in
+                        this same document and can therefore use automatically.
+                    </t>
+                    <t>
+                        When an implementation encounters the reference to "other.json", it resolves
+                        this to &lt;http://example.net/other.json&gt;, which is not defined in this
+                        document.  If a schema with that identifier has otherwise been supplied to
+                        the implementation, it can also be used automatically.
+                        <cref>
+                            What should implementations do when the referenced schema is not known?
+                            Are there circumstances in which automatic network dereferencing is
+                            allowed?  A same origin policy?  A user-configurable option?  In the
+                            case of an evolving API described by Hyper-Schema, it is expected that
+                            new schemas will be added to the system dynamically, so placing an
+                            absolute requirement of pre-loading schema documents is not feasible.
+                        </cref>
                     </t>
                 </section>
             </section>
