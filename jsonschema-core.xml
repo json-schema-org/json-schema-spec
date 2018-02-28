@@ -527,33 +527,6 @@
             </t>
         </section>
 
-        <section title='Schema References With "$ref"'>
-            <t>
-                The "$ref" keyword is used to reference a schema, and provides the ability to
-                validate recursive structures through self-reference.
-            </t>
-            <t>
-                An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
-                The value of the "$ref" property MUST be a URI Reference.
-                Resolved against the current URI base, it identifies the URI of a schema to use.
-                All other properties in a "$ref" object MUST be ignored.
-            </t>
-            <t>
-                The URI is not a network locator, only an identifier. A schema need not be
-                downloadable from the address if it is a network-addressable URL, and
-                implementations SHOULD NOT assume they should perform a network operation when they
-                encounter a network-addressable URI.
-            </t>
-            <t>
-                A schema MUST NOT be run into an infinite loop against a schema. For example, if two
-                schemas "#alice" and "#bob" both have an "allOf" property that refers to the other,
-                a naive validator might get stuck in an infinite recursive loop trying to validate
-                the instance.
-                Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is
-                undefined.
-            </t>
-        </section>
-
         <section title="Base URI and Dereferencing">
             <section title="Initial Base URI">
                 <t>
@@ -581,39 +554,61 @@
                     This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt;
                     or an empty string &lt;&gt;.
                 </t>
-                <t>
-                    The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
-                    a URI (containing a scheme).  This URI SHOULD either not have a fragment, or
-                    have one that is an empty string.
-                    <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
-                    <cref>
-                        How should an "$id" URI reference containing a fragment with other components
-                        be interpreted?  There are two cases:  when the other components match
-                        the current base URI and when they change the base URI.
-                    </cref>
-                </t>
-                <t>
-                    To name subschemas in a JSON Schema document,
-                    subschemas can use "$id" to give themselves a document-local identifier.
-                    This is done by setting "$id" to a URI reference consisting
-                    only of a plain name fragment (not a JSON Pointer fragment).
-                    The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
-                    any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
-                    (":"), or periods (".").
-                </t>
-                <t>
-                    Providing a plain name fragment enables a subschema to be
-                    relocated within a schema without requiring that JSON
-                    Pointer references are updated.
-                </t>
-                <t>
-                    The effect of defining a fragment-only "$id" URI reference that neither
-                    matches the above requirements nor is a valid JSON pointer
-                    is not defined.
-                </t>
-                <t>
-                    For example:
+                <section title="Identifying the root schema">
+                    <t>
+                        The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
+                        a URI (containing a scheme).  This URI SHOULD either not have a fragment, or
+                        have one that is an empty string.
+                        <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
+                    </t>
+                </section>
+                <section title="Changing the base URI within a schema file">
+                    <t>
+                        When an "$id" sets the base URI, the object containing that "$id" and all of
+                        its subschemas can be identified by using a JSON Pointer fragment starting
+                        from that location.  This is true even of subschemas that further change the
+                        base URI.  Therefore, a single subschema may be accessible by multiple URIs,
+                        each consisting of base URI declared in the subschema or a parent, along with
+                        a JSON Pointer fragment identifying the path from the schema object that
+                        declares the base to the subschema being identified.  Examples of this are
+                        shown in section <xref target="idExamples" format="counter"></xref>.
+                    </t>
+                </section>
+                <section title="Location-independent identifiers">
+                    <t>
+                        Using JSON Pointer fragments requires knowledge of the structure of the schema.
+                        When writing schema documents with the intention to provide re-usable
+                        schemas, it may be preferable to use a plain name fragment that is not tied to
+                        any particular structural location.  This allows a subschema to be relocated
+                        without requiring JSON Pointer references to be updated.
+                    </t>
+                    <t>
+                        To name subschemas in a JSON Schema document,
+                        subschemas can use "$id" to give themselves a document-local identifier.
+                        This is done by setting "$id" to a URI reference consisting
+                        only of a plain name fragment (not a JSON Pointer fragment).
+                        The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
+                        any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
+                        (":"), or periods (".").
+                    </t>
+                    <t>
+                        The effect of defining a fragment-only "$id" URI reference that neither
+                        matches the above requirements nor is a valid JSON pointer
+                        is not defined.
+                        <cref>
+                            How should an "$id" URI reference containing a fragment with other components
+                            be interpreted?  There are two cases:  when the other components match
+                            the current base URI and when they change the base URI.
+                        </cref>
+                    </t>
+                </section>
+                <section title="Schema identification examples" anchor="idExamples">
                     <figure>
+                        <preamble>
+                            Consider the following schema, which shows "$id" being used to identify
+                            the root schema, change the base URI for subschemas, and assign plain
+                            name fragments to subschemas:
+                        </preamble>
                         <artwork>
 <![CDATA[
 {
@@ -635,33 +630,120 @@
 ]]>
                         </artwork>
                     </figure>
+                    <t>
+                        The schemas at the following URI-encoded <xref target="RFC6901">JSON
+                        Pointers</xref> (relative to the root schema) have the following
+                        base URIs, and are identifiable by any listed URI in accordance with
+                        Section <xref target="fragments" format="counter"></xref> above:
+                    </t>
+                    <t>
+                        <list style="hanging">
+                            <t hangText="# (document root)">
+                                <list>
+                                    <t>http://example.com/root.json</t>
+                                    <t>http://example.com/root.json#</t>
+                                </list>
+                            </t>
+                            <t hangText="#/definitions/A">
+                                <list>
+                                    <t>http://example.com/root.json#foo</t>
+                                    <t>http://example.com/root.json#/definitions/A</t>
+                                </list>
+                            </t>
+                            <t hangText="#/definitions/B">
+                                <list>
+                                    <t>http://example.com/other.json</t>
+                                    <t>http://example.com/other.json#</t>
+                                    <t>http://example.com/root.json#/definitions/B</t>
+                                </list>
+                            </t>
+                            <t hangText="#/definitions/B/definitions/X">
+                                <list>
+                                    <t>http://example.com/other.json#bar</t>
+                                    <t>http://example.com/other.json#/definitions/X</t>
+                                    <t>http://example.com/root.json#/definitions/B/definitions/X</t>
+                                </list>
+                            </t>
+                            <t hangText="#/definitions/B/definitions/Y">
+                                <list>
+                                    <t>http://example.com/t/inner.json</t>
+                                    <t>http://example.com/t/inner.json#</t>
+                                    <t>http://example.com/other.json#/definitions/Y</t>
+                                    <t>http://example.com/root.json#/definitions/B/definitions/Y</t>
+                                </list>
+                            </t>
+                            <t hangText="#/definitions/C">
+                                <list>
+                                    <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
+                                    <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
+                                    <t>http://example.com/root.json#/definitions/C</t>
+                                </list>
+                            </t>
+                        </list>
+                    </t>
+                </section>
+            </section>
+
+            <section title='Schema References With "$ref"'>
+                <t>
+                    The "$ref" keyword is used to reference a schema, and provides the ability to
+                    validate recursive structures through self-reference.
                 </t>
                 <t>
-                    The schemas at the following URI-encoded <xref target="RFC6901">JSON
-                    Pointers</xref> (relative to the root schema) have the following
-                    base URIs, and are identifiable by either URI in accordance with
-                    Section <xref target="fragments" format="counter"></xref> above:
+                    An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
+                    The value of the "$ref" property MUST be a URI Reference.
+                    Resolved against the current URI base, it identifies the URI of a schema to use.
+                    All other properties in a "$ref" object MUST be ignored.
                 </t>
                 <t>
-                    <list style="hanging">
-                        <t hangText="# (document root)">http://example.com/root.json#</t>
-                        <t hangText="#/definitions/A">http://example.com/root.json#foo</t>
-                        <t hangText="#/definitions/B">http://example.com/other.json</t>
-                        <t hangText="#/definitions/B/definitions/X">http://example.com/other.json#bar</t>
-                        <t hangText="#/definitions/B/definitions/Y">http://example.com/t/inner.json</t>
-                        <t hangText="#/definitions/C">urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
-                    </list>
+                    The URI is not a network locator, only an identifier. A schema need not be
+                    downloadable from the address if it is a network-addressable URL, and
+                    implementations SHOULD NOT assume they should perform a network operation when they
+                    encounter a network-addressable URI.
                 </t>
-                <section title="Internal References">
+                <t>
+                    A schema MUST NOT be run into an infinite loop against a schema. For example, if two
+                    schemas "#alice" and "#bob" both have an "allOf" property that refers to the other,
+                    a naive validator might get stuck in an infinite recursive loop trying to validate
+                    the instance.
+                    Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is
+                    undefined.
+                </t>
+                <section title="Loading a referenced schema">
+                    <t>
+                        To differentiate schemas between each other in a vast ecosystem, schemas are
+                        identified by URI. As specified above, this does not necessarily mean
+                        anything is downloaded, but instead JSON Schema implementations SHOULD
+                        already understand the schemas they will be using, including the URIs that
+                        identify them.
+                    </t>
+                    <t>
+                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
+                        schema and/or automatically associate a schema's "$id"-given URI, depending
+                        on the trust that the validator has in the schema.  Such URIs and schemas
+                        can be supplied to an implementation prior to processing instances, or may
+                        be noted within a schema document as it is processed, producing associations
+                        as shown in section <xref target="idExamples" format="counter"></xref>.
+                    </t>
+                    <t>
+                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
+                        URI to identify more than one schema. When multiple schemas try to identify
+                        with the same URI, validators SHOULD raise an error condition.
+                    </t>
+                </section>
+                <section title="Dereferencing">
                     <t>
                         Schemas can be identified by any URI that has been given to them, including
-                        a JSON Pointer or their URI given directly by "$id".
+                        a JSON Pointer or their URI given directly by "$id".  In all cases,
+                        dereferencing a "$ref" reference involves first resolving its value as a
+                        URI reference against the current base URI per
+                        <xref target="RFC3986">RFC 3986</xref>.
                     </t>
                     <t>
-                        Tools SHOULD take note of the URIs that schemas, including subschemas,
-                        provide for themselves using "$id". This is known as "Internal referencing".
+                        If the resulting URI identifies a schema within the current document, or
+                        within another schema document that has been made available to the implementation,
+                        then that schema SHOULD be used automatically.
                     </t>
-
                     <t>
                         For example, consider this schema:
                     </t>
@@ -678,7 +760,8 @@
     "definitions": {
         "single": {
             "$id": "#item",
-            "type": "integer"
+            "type": "object",
+            "additionalProperties": { "$ref": "other.json" }
         }
     }
 }
@@ -693,28 +776,22 @@
                     <t>
                         When an implementation then looks inside the &lt;#/items&gt; schema, it
                         encounters the &lt;#item&gt; reference, and resolves this to
-                        &lt;http://example.net/root.json#item&gt; which is understood as the schema
-                        defined elsewhere in the same document without needing to
-                        resolve the fragment against the base URI.
-                    </t>
-                </section>
-                <section title="External References">
-                    <t>
-                        To differentiate schemas between each other in a vast ecosystem, schemas are
-                        identified by URI. As specified above, this does not necessarily mean
-                        anything is downloaded, but instead JSON Schema implementations SHOULD
-                        already understand the schemas they will be using, including the URIs that
-                        identify them.
+                        &lt;http://example.net/root.json#item&gt;, which it has seen defined in
+                        this same document and can therefore use automatically.
                     </t>
                     <t>
-                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
-                        schema and/or automatically associate a schema's "$id"-given URI, depending
-                        on the trust that the validator has in the schema.
-                    </t>
-                    <t>
-                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
-                        URI to identify more than one schema. When multiple schemas try to identify
-                        with the same URI, validators SHOULD raise an error condition.
+                        When an implementation encounters the reference to "other.json", it resolves
+                        this to &lt;http://example.net/other.json&gt;, which is not defined in this
+                        document.  If a schema with that identifier has otherwise been supplied to
+                        the implementation, it can also be used automatically.
+                        <cref>
+                            What should implementations do when the referenced schema is not known?
+                            Are there circumstances in which automatic network dereferencing is
+                            allowed?  A same origin policy?  A user-configurable option?  In the
+                            case of an evolving API described by Hyper-Schema, it is expected that
+                            new schemas will be added to the system dynamically, so placing an
+                            absolute requirement of pre-loading schema documents is not feasible.
+                        </cref>
                     </t>
                 </section>
             </section>
