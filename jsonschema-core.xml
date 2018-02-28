@@ -554,36 +554,54 @@
                     This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt;
                     or an empty string &lt;&gt;.
                 </t>
-                <t>
-                    The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
-                    a URI (containing a scheme).  This URI SHOULD either not have a fragment, or
-                    have one that is an empty string.
-                    <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
-                    <cref>
-                        How should an "$id" URI reference containing a fragment with other components
-                        be interpreted?  There are two cases:  when the other components match
-                        the current base URI and when they change the base URI.
-                    </cref>
-                </t>
-                <t>
-                    To name subschemas in a JSON Schema document,
-                    subschemas can use "$id" to give themselves a document-local identifier.
-                    This is done by setting "$id" to a URI reference consisting
-                    only of a plain name fragment (not a JSON Pointer fragment).
-                    The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
-                    any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
-                    (":"), or periods (".").
-                </t>
-                <t>
-                    Providing a plain name fragment enables a subschema to be
-                    relocated within a schema without requiring that JSON
-                    Pointer references are updated.
-                </t>
-                <t>
-                    The effect of defining a fragment-only "$id" URI reference that neither
-                    matches the above requirements nor is a valid JSON pointer
-                    is not defined.
-                </t>
+                <section title="Identifying the root schema">
+                    <t>
+                        The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
+                        a URI (containing a scheme).  This URI SHOULD either not have a fragment, or
+                        have one that is an empty string.
+                        <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
+                    </t>
+                </section>
+                <section title="Changing the base URI within a schema file">
+                    <t>
+                        When an "$id" sets the base URI, the object containing that "$id" and all of
+                        its subschemas can be identified by using a JSON Pointer fragment starting
+                        from that location.  This is true even of subschemas that further change the
+                        base URI.  Therefore, a single subschema may be accessible by multiple URIs,
+                        each consisting of base URI declared in the subschema or a parent, along with
+                        a JSON Pointer fragment identifying the path from the schema object that
+                        declares the base to the subschema being identified.  Examples of this are
+                        shown in section <xref target="idExamples" format="counter"></xref>.
+                    </t>
+                </section>
+                <section title="Location-independent identifiers">
+                    <t>
+                        Using JSON Pointer fragments requires knowledge of the structure of the schema.
+                        When writing schema documents with the intention to provide re-usable
+                        schemas, it is preferable to use a plain name fragment that is not tied to
+                        any particular structural location.  This allows a subschema to be relocated
+                        without requiring JSON Pointer references to be updated.
+                    </t>
+                    <t>
+                        To name subschemas in a JSON Schema document,
+                        subschemas can use "$id" to give themselves a document-local identifier.
+                        This is done by setting "$id" to a URI reference consisting
+                        only of a plain name fragment (not a JSON Pointer fragment).
+                        The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
+                        any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
+                        (":"), or periods (".").
+                    </t>
+                    <t>
+                        The effect of defining a fragment-only "$id" URI reference that neither
+                        matches the above requirements nor is a valid JSON pointer
+                        is not defined.
+                        <cref>
+                            How should an "$id" URI reference containing a fragment with other components
+                            be interpreted?  There are two cases:  when the other components match
+                            the current base URI and when they change the base URI.
+                        </cref>
+                    </t>
+                </section>
                 <section title="Schema identification examples" anchor="idExamples">
                     <figure>
                         <preamble>
