@@ -759,12 +759,13 @@
                     <t>
                         Instances that fail to validate against this
                         keyword's subschema MUST also be valid against
-                        the subschema value of the "else" keyword.
+                        the subschema value of the "else" keyword, if
+                        present.
                     </t>
                     <t>
                         Validation of the instance against this keyword
                         on its own always succeeds, regardless of the
-                        validation outcome of against its subschema.
+                        validation outcome of the instance against its subschema.
                     </t>
                 </section>
                 <section title="then">
@@ -780,8 +781,9 @@
                     <t>
                         When "if" is absent, or the instance fails to
                         validate against its subschema, validation against
-                        this keyword always succeeds.  Implementations
-                        SHOULD avoid attempting to validate against
+                        this keyword always succeeds, regardless of the
+                        validation outcome of the instance against its subschema.
+                        Implementations SHOULD avoid attempting to validate against
                         the subschema in these cases.
                     </t>
                 </section>
@@ -799,8 +801,9 @@
                     <t>
                         When "if" is absent, or the instance successfully
                         validates against its subschema, validation against
-                        this keyword always succeeds.  Implementations
-                        SHOULD avoid attempting to validate against
+                        this keyword always succeeds, regardless of the
+                        validation outcome of the instance against its subschema.
+                        Implementations SHOULD avoid attempting to validate against
                         the subschema in these cases.
                     </t>
                 </section>
