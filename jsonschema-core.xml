@@ -528,6 +528,11 @@
         </section>
 
         <section title="Base URI and Dereferencing">
+            <t>
+                To differentiate between schemas in a vast ecosystem, schemas are
+                identified by URI, and can embed references to other schemas by specifying their URI.
+            </t>
+
             <section title="Initial Base URI">
                 <t>
                     <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
@@ -709,11 +714,14 @@
                 </t>
                 <section title="Loading a referenced schema">
                     <t>
-                        To differentiate between schemas in a vast ecosystem, schemas are
-                        identified by URI. As specified above, this does not necessarily mean
-                        anything is downloaded, but instead JSON Schema implementations SHOULD
-                        understand ahead of time which schemas they will be using, and the URIs that
-                        identify them.
+                        The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
+                        but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
+                        and the URIs that identify them.
+                    </t>
+                    <t>
+                        When schemas are downloaded,
+                        for example by a generic user-agent that doesn't know until runtime which schemas to download,
+                        see <xref target="http-usage">Usage over HTTP</xref>.
                     </t>
                     <t>
                         Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
@@ -928,7 +936,7 @@ Link: </alice>;rel="schema", </bob>;rel="schema"
 
             </section>
 
-             <section title="Usage Over HTTP">
+             <section title="Usage Over HTTP" anchor="http-usage">
                 <t>
                     When used for hypermedia systems over a network,
                     <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for
