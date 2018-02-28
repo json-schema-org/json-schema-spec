@@ -557,8 +557,8 @@
                 <section title="Identifying the root schema">
                     <t>
                         The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
-                        a URI (containing a scheme).  This URI SHOULD either not have a fragment, or
-                        have one that is an empty string.
+                        an <xref target="RFC3986">absolute-URI</xref> (containing a scheme, but no fragment),
+                        or this absolute URI but with an empty fragment.
                         <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
                     </t>
                 </section>
@@ -583,18 +583,16 @@
                         without requiring JSON Pointer references to be updated.
                     </t>
                     <t>
-                        To name subschemas in a JSON Schema document,
-                        subschemas can use "$id" to give themselves a document-local identifier.
-                        This is done by setting "$id" to a URI reference consisting
-                        only of a plain name fragment (not a JSON Pointer fragment).
-                        The fragment identifier MUST begin with a letter ([A-Za-z]), followed by
-                        any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons
-                        (":"), or periods (".").
+                        To specify such a subschema identifier,
+                        the "$id" keyword is set to a URI reference with a name fragment (not a JSON Pointer fragment).
+                        This value MUST begin with the number sign that specifies a fragment ("#"),
+                        then a letter ([A-Za-z]),
+                        followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"),
+                        colons (":"), or periods (".").
                     </t>
                     <t>
-                        The effect of defining a fragment-only "$id" URI reference that neither
-                        matches the above requirements nor is a valid JSON pointer
-                        is not defined.
+                        The effect of using a fragment in "$id" that isn't blank or doesn't follow the
+                        name syntax is undefined.
                         <cref>
                             How should an "$id" URI reference containing a fragment with other components
                             be interpreted?  There are two cases:  when the other components match
@@ -711,10 +709,10 @@
                 </t>
                 <section title="Loading a referenced schema">
                     <t>
-                        To differentiate schemas between each other in a vast ecosystem, schemas are
+                        To differentiate between schemas in a vast ecosystem, schemas are
                         identified by URI. As specified above, this does not necessarily mean
                         anything is downloaded, but instead JSON Schema implementations SHOULD
-                        already understand the schemas they will be using, including the URIs that
+                        understand ahead of time which schemas they will be using, and the URIs that
                         identify them.
                     </t>
                     <t>
@@ -728,7 +726,7 @@
                     <t>
                         A schema MAY (and likely will) have multiple URIs, but there is no way for a
                         URI to identify more than one schema. When multiple schemas try to identify
-                        with the same URI, validators SHOULD raise an error condition.
+                        as the same URI, validators SHOULD raise an error condition.
                     </t>
                 </section>
                 <section title="Dereferencing">
