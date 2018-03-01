@@ -589,7 +589,7 @@
                     </t>
                     <t>
                         To specify such a subschema identifier,
-                        the "$id" keyword is set to a URI reference with a name fragment (not a JSON Pointer fragment).
+                        the "$id" keyword is set to a URI reference with a plain name fragment (not a JSON Pointer fragment).
                         This value MUST begin with the number sign that specifies a fragment ("#"),
                         then a letter ([A-Za-z]),
                         followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"),
@@ -597,7 +597,7 @@
                     </t>
                     <t>
                         The effect of using a fragment in "$id" that isn't blank or doesn't follow the
-                        name syntax is undefined.
+                        plain name syntax is undefined.
                         <cref>
                             How should an "$id" URI reference containing a fragment with other components
                             be interpreted?  There are two cases:  when the other components match
