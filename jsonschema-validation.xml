@@ -686,14 +686,14 @@
                 <section title="dependencies">
                     <t>
                         <cref>
-                            Now that "if", "then", and "else" are keywords, it is not clear whether
-                            there is any benefit in keeping the schema form of "dependencies".
-                            It is frequently misunderstood, and having a form that takes a subschema
-                            as well as a form that takes a primitive value is particularly
-                            confusing.  And it seems to be rarely used.  Depending on feedback
-                            with "if", "then", and "else", the schema form of this keyword may
-                            well be removed in a future draft.  Current thought is that the string
-                            form (giving property names in an array) is a useful shortcut.
+                            This keyword may be split into two, with the variation that uses
+                            an array of property names rather than a subschema getting a new
+                            name.  The dual behavior is confusing and relatively difficult to
+                            implement.  In the previous draft, we proposed dropping the keyword
+                            altogether, or dropping one of its forms, but we received feedback
+                            in support of keeping it.  See issues #442 and #528 at
+                            &lt;https://github.com/json-schema-org/json-schema-spec/issues&gt;
+                            for further discussion.  Further feedback is encouraged.
                         </cref>
                     </t>
                     <t>
