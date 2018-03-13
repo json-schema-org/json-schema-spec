@@ -746,9 +746,22 @@
                     branch of an "allOf" MUST NOT have an impact on a "then"
                     or "else" in another branch.
                 </t>
+                <t>
+                    There is no default behavior for any of these keywords
+                    when they are not present.  In particular, they MUST NOT
+                    be treated as if present with an empty schema, and when
+                    "if" is not present, both "then" and "else" MUST be
+                    entirely ignored.
+                </t>
                 <section title="if">
                     <t>
                         This keyword's value MUST be a valid JSON Schema.
+                    </t>
+                    <t>
+                        This validation outcome of this keyword's subschema
+                        has no direct effect on the overall validation
+                        result.  Rather, it controls which of the "then"
+                        or "else" keywords are evaluated.
                     </t>
                     <t>
                         Instances that successfully validate against this
@@ -763,9 +776,10 @@
                         present.
                     </t>
                     <t>
-                        Validation of the instance against this keyword
-                        on its own always succeeds, regardless of the
-                        validation outcome of the instance against its subschema.
+                        If <xref target="annotations">annotations</xref>
+                        are being collected, they are collected from this
+                        keyword's subschema in the usual way, including when
+                        the keyword is present without either "then" or "else".
                     </t>
                 </section>
                 <section title="then">
@@ -773,18 +787,17 @@
                         This keyword's value MUST be a valid JSON Schema.
                     </t>
                     <t>
-                        When present alongside of "if", the instance
-                        successfully validates against this keyword if
-                        it validates against both the "if"'s subschema
-                        and this keyword's subschema.
+                        When "if" is present, and the instance successfully
+                        validates against its subschema, then valiation
+                        succeeds against this keyword if the instance also
+                        successfully validates against this keyword's subschema.
                     </t>
                     <t>
-                        When "if" is absent, or the instance fails to
-                        validate against its subschema, validation against
-                        this keyword always succeeds, regardless of the
-                        validation outcome of the instance against its subschema.
-                        Implementations SHOULD avoid attempting to validate against
-                        the subschema in these cases.
+                        This keyword has no effect when "if" is absent, or
+                        when the instance fails to validate against its
+                        subschema.  Implementations MUST NOT evaluate
+                        the instance against this keyword, for either validation
+                        or annotation collection purposes, in such cases.
                     </t>
                 </section>
                 <section title="else">
@@ -792,19 +805,17 @@
                         This keyword's value MUST be a valid JSON Schema.
                     </t>
                     <t>
-                        When present alongside of "if", the instance
-                        successfully validates against this keyword if
-                        it fails to validate against the "if"'s
-                        subschema, and successfully validates against
-                        this keyword's subschema.
+                        When "if" is present, and the instance fails to
+                        validate against its subschema, then valiation
+                        succeeds against this keyword if the instance
+                        successfully validates against this keyword's subschema.
                     </t>
                     <t>
-                        When "if" is absent, or the instance successfully
-                        validates against its subschema, validation against
-                        this keyword always succeeds, regardless of the
-                        validation outcome of the instance against its subschema.
-                        Implementations SHOULD avoid attempting to validate against
-                        the subschema in these cases.
+                        This keyword has no effect when "if" is absent, or
+                        when the instance successfully validates against its
+                        subschema.  Implementations MUST NOT evaluate
+                        the instance against this keyword, for either validation
+                        or annotation collection purposes, in such cases.
                     </t>
                 </section>
             </section>
