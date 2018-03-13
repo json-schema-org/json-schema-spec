@@ -246,12 +246,22 @@
                     Additional vocabularies SHOULD make use of this mechanism for applying
                     their own annotations to instances.
                 </t>
-                <section title="Negated Schemas">
+                <section title="Annotations and Validation Outcomes">
                     <t>
-                        Annotations in a subschema contained within a "not", at any depth,
-                        including any number of intervening additional "not" subschemas, MUST be
-                        ignored.  Similarly, annotations within a failing branch of a "oneOf",
-                        "anyOf", "then", or "else" MUST be ignored.
+                        Annotations are collected whenever an instance is valid against
+                        a schema object, and all of that schema object's parent schemas.
+                    </t>
+                    <t>
+                        In particular, annotations in a subschema contained within a "not",
+                        at any depth, including any number of intervening additional "not"
+                        subschemas, MUST be ignored.  If the instance was valid against the
+                        "not" subschema, then by definition it is not valid against the schema
+                        that contains the "not", so the "not" subschema's annotations are not used.
+                    </t>
+                    <t>
+                        Similarly, annotations within a failing branch of a "oneOf", "anyOf",
+                        "then", or "else" MUST be ignored even when the instance successfully
+                        validates against the complete schema document.
                     </t>
                 </section>
                 <section title="Annotations and Short-Circuit Validation">
@@ -1480,8 +1490,9 @@
                     <t hangText="draft-handrews-json-schema-validation-01">
                         <list style="symbols">
                             <t>This draft is purely a clarification with no functional changes</t>
-                            <t>Restored ommitted "if present" clause for "else" under "if"</t>
-                            <t>Clarified that when "if" is absent, the results of "then" and "else" are ignored</t>
+                            <t>Provided the general principle behind ignoring annotations under "not" and similar cases</t>
+                            <t>Clarified "if"/"then"/"else" validation interactions</t>
+                            <t>Clarified "if"/"then"/"else" behavior for annotation</t>
                             <t>Minor formatting and cross-referencing improvements</t>
                         </list>
                     </t>
