@@ -26,7 +26,7 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-handrews-json-schema-validation-00" ipr="trust200902">
+<rfc category="info" docName="draft-handrews-json-schema-validation-01" ipr="trust200902">
     <front>
         <title abbrev="JSON Schema Validation">
             JSON Schema Validation: A Vocabulary for Structural Validation of JSON
@@ -686,14 +686,14 @@
                 <section title="dependencies">
                     <t>
                         <cref>
-                            Now that "if", "then", and "else" are keywords, it is not clear whether
-                            there is any benefit in keeping the schema form of "dependencies".
-                            It is frequently misunderstood, and having a form that takes a subschema
-                            as well as a form that takes a primitive value is particularly
-                            confusing.  And it seems to be rarely used.  Depending on feedback
-                            with "if", "then", and "else", the schema form of this keyword may
-                            well be removed in a future draft.  Current thought is that the string
-                            form (giving property names in an array) is a useful shortcut.
+                            This keyword may be split into two, with the variation that uses
+                            an array of property names rather than a subschema getting a new
+                            name.  The dual behavior is confusing and relatively difficult to
+                            implement.  In the previous draft, we proposed dropping the keyword
+                            altogether, or dropping one of its forms, but we received feedback
+                            in support of keeping it.  See issues #442 and #528 at
+                            &lt;https://github.com/json-schema-org/json-schema-spec/issues&gt;
+                            for further discussion.  Further feedback is encouraged.
                         </cref>
                     </t>
                     <t>
@@ -926,15 +926,15 @@
                         Implementations supporting formats SHOULD implement support for
                         the following attributes:
                         <list style="hanging">
-                            <t hangText="date-time">
+                            <t hangText="date-time:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "date-time" production.
                             </t>
-                            <t hangText="date">
+                            <t hangText="date:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "full-date" production.
                             </t>
-                            <t hangText="time">
+                            <t hangText="time:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "full-time" production.
                             </t>
@@ -967,10 +967,10 @@
                         A string instance is valid against these attributes if it is a valid
                         Internet email address as follows:
                         <list style="hanging">
-                            <t hangText="email">
+                            <t hangText="email:">
                                 As defined by <xref target="RFC5322">RFC 5322, section 3.4.1</xref>.
                             </t>
-                            <t hangText="idn-email">
+                            <t hangText="idn-email:">
                                 As defined by <xref target="RFC6531">RFC 6531</xref>
                             </t>
                         </list>
@@ -986,12 +986,12 @@
                         A string instance is valid against these attributes if it is a valid
                         representation for an Internet hostname as follows:
                         <list style="hanging">
-                            <t hangText="hostname">
+                            <t hangText="hostname:">
                                 As defined by <xref target="RFC1034">RFC 1034, section 3.1</xref>,
                                 including host names produced using the Punycode algorithm
                                 specified in <xref target="RFC5891">RFC 5891, section 4.4</xref>.
                             </t>
-                            <t hangText="idn-hostname">
+                            <t hangText="idn-hostname:">
                                 As defined by either RFC 1034 as for hostname, or an
                                 internationalized hostname as defined by
                                 <xref target="RFC5890">RFC 5890, section 2.3.2.3</xref>.
@@ -1010,12 +1010,12 @@
                         A string instance is valid against these attributes if it is a valid
                         representation of an IP address as follows:
                         <list style="hanging">
-                            <t hangText="ipv4">
+                            <t hangText="ipv4:">
                                 An IPv4 address according to the "dotted-quad" ABNF
                                 syntax as defined in
                                 <xref target="RFC2673">RFC 2673, section 3.2</xref>.
                             </t>
-                            <t hangText="ipv6">
+                            <t hangText="ipv6:">
                                 An IPv6 address as defined in
                                 <xref target="RFC4291">RFC 4291, section 2.2</xref>.
                             </t>
@@ -1029,20 +1029,20 @@
                     </t>
                     <t>
                         <list style="hanging">
-                            <t hangText="uri">
+                            <t hangText="uri:">
                                 A string instance is valid against this attribute if it is
                                 a valid URI, according to <xref target="RFC3986"/>.
                             </t>
-                            <t hangText="uri-reference">
+                            <t hangText="uri-reference:">
                                 A string instance is valid against this attribute if it is a valid URI
                                 Reference (either a URI or a relative-reference),
                                 according to <xref target="RFC3986"/>.
                             </t>
-                            <t hangText="iri">
+                            <t hangText="iri:">
                                 A string instance is valid against this attribute if it is
                                 a valid IRI, according to <xref target="RFC3987"/>.
                             </t>
-                            <t hangText="iri-reference">
+                            <t hangText="iri-reference:">
                                 A string instance is valid against this attribute if it is a valid IRI
                                 Reference (either an IRI or a relative-reference),
                                 according to <xref target="RFC3987"/>.
@@ -1073,12 +1073,12 @@
                     </t>
                     <t>
                         <list style="hanging">
-                            <t hangText="json-pointer">
+                            <t hangText="json-pointer:">
                                 A string instance is valid against this attribute if it
                                 is a valid JSON string representation of a JSON Pointer,
                                 according to <xref target="RFC6901">RFC 6901, section 5</xref>.
                             </t>
-                            <t hangText="relative-json-pointer">
+                            <t hangText="relative-json-pointer:">
                                 A string instance is valid against this attribute if it is a valid
                                 <xref target="relative-json-pointer">Relative JSON Pointer</xref>.
                             </t>
@@ -1261,8 +1261,8 @@
             <t>
                 Schema validation is a useful mechanism for annotating instance data
                 with additional information.  The rules for determining when and how
-                annotations are associated with an instance are outlined in this specification's
-                overview.
+                annotations are associated with an instance are outlined in section
+                <xref target="annotations" format="counter"></xref>.
             </t>
             <t>
                 These general-purpose annotation keywords provide commonly used information
@@ -1439,7 +1439,7 @@
                     </author>
                     <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-relative-json-pointer-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-relative-json-pointer-01" />
             </reference>
             <reference anchor="json-schema">
                 <front>
@@ -1452,7 +1452,7 @@
                     </author>
                     <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-01" />
             </reference>
         </references>
 
@@ -1491,6 +1491,14 @@
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-handrews-json-schema-validation-01">
+                        <list style="symbols">
+                            <t>This draft is purely a clarification with no functional changes</t>
+                            <t>Restored ommitted "if present" clause for "else" under "if"</t>
+                            <t>Clarified that when "if" is absent, the results of "then" and "else" are ignored</t>
+                            <t>Minor formatting and cross-referencing improvements</t>
+                        </list>
+                    </t>
                     <t hangText="draft-handrews-json-schema-validation-00">
                         <list style="symbols">
                             <t>Added "if"/"then"/"else"</t>
@@ -1511,7 +1519,7 @@
                     </t>
                     <t hangText="draft-wright-json-schema-validation-01">
                         <list style="symbols">
-                            <t>Standardized on hyphenated format names ("uriref" becomes "uri-ref")</t>
+                            <t>Standardized on hyphenated format names with full words ("uriref" becomes "uri-reference")</t>
                             <t>Add the formats "uri-template" and "json-pointer"</t>
                             <t>Changed "exclusiveMaximum"/"exclusiveMinimum" from boolean modifiers of "maximum"/"minimum" to independent numeric fields.</t>
                             <t>Split the additionalItems/items into two sections</t>

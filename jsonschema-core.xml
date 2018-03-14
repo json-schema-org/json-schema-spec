@@ -19,7 +19,7 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-handrews-json-schema-00" ipr="trust200902">
+<rfc category="info" docName="draft-handrews-json-schema-01" ipr="trust200902">
     <front>
         <title abbrev="JSON Schema">JSON Schema: A Media Type for Describing JSON Documents</title>
 
@@ -185,12 +185,12 @@
                         depending on the type:
 
                         <list style="hanging">
-                            <t hangText="null">A JSON "null" production</t>
-                            <t hangText="boolean">A "true" or "false" value, from the JSON "true" or "false" productions</t>
-                            <t hangText="object">An unordered set of properties mapping a string to an instance, from the JSON "object" production</t>
-                            <t hangText="array">An ordered list of instances, from the JSON "array" production</t>
-                            <t hangText="number">An arbitrary-precision, base-10 decimal number value, from the JSON "number" production</t>
-                            <t hangText="string">A string of Unicode code points, from the JSON "string" production</t>
+                            <t hangText="null:">A JSON "null" production</t>
+                            <t hangText="boolean:">A "true" or "false" value, from the JSON "true" or "false" productions</t>
+                            <t hangText="object:">An unordered set of properties mapping a string to an instance, from the JSON "object" production</t>
+                            <t hangText="array:">An ordered list of instances, from the JSON "array" production</t>
+                            <t hangText="number:">An arbitrary-precision, base-10 decimal number value, from the JSON "number" production</t>
+                            <t hangText="string:">A string of Unicode code points, from the JSON "string" production</t>
                         </list>
                     </t>
                     <t>
@@ -284,10 +284,10 @@
                         or schema keywords.  Broadly speaking, keywords fall into one or both
                         of two categories:
                         <list style="hanging">
-                            <t hangText="assertions">
+                            <t hangText="assertions:">
                                 produce a boolean result when applied to an instance
                             </t>
-                            <t hangText="annotations">
+                            <t hangText="annotations:">
                                 attach information to an instance for application use
                             </t>
                         </list>
@@ -303,10 +303,10 @@
                         in terms of the validation vocabulary, boolean schemas are equivalent to
                         the following behaviors:
                         <list style="hanging">
-                            <t hangText="true">
+                            <t hangText="true:">
                                 Always passes validation, as if the empty schema {}
                             </t>
-                            <t hangText="false">
+                            <t hangText="false:">
                                 Always fails validation, as if the schema { "not":{} }
                             </t>
                         </list>
@@ -1045,7 +1045,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <t>
                             Required parameters:
                             <list style="hanging">
-                                <t hangText="schema">
+                                <t hangText="schema:">
                                     A non-empty list of space-separated URIs, each identifying
                                     a JSON Schema resource.  The instance SHOULD successfully
                                     validate against at least one of these schemas.
@@ -1110,7 +1110,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     </author>
                     <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-validation-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-validation-01" />
             </reference>
             <reference anchor="json-hyper-schema">
                 <front>
@@ -1123,7 +1123,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     </author>
                     <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-hyperschema-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-hyperschema-01" />
             </reference>
         </references>
 
@@ -1157,6 +1157,17 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-handrews-json-schema-01">
+                        <list style="symbols">
+                            <t>This draft is purely a clarification with no functional changes</t>
+                            <t>Clarified $id by use cases</t>
+                            <t>Exhaustive schema identification examples</t>
+                            <t>Replaced "external referencing" with how and when an implementation might know of a schema from another doucment</t>
+                            <t>Replaced "internal referencing" with how an implementation should recognized schema identifiers during parsing</t>
+                            <t>Dereferencing the former "internal" or "external" references is always the same process</t>
+                            <t>Minor formatting improvements</t>
+                        </list>
+                    </t>
                     <t hangText="draft-handrews-json-schema-00">
                         <list style="symbols">
                             <t>Make the concept of a schema keyword vocabulary more clear</t>
