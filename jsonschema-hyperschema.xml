@@ -24,7 +24,7 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-handrews-json-schema-hyperschema-01" ipr="trust200902">
+<rfc category="info" docName="draft-handrews-json-schema-hyperschema-02" ipr="trust200902">
     <front>
         <title abbrev="JSON Hyper-Schema">
             JSON Hyper-Schema: A Vocabulary for Hypermedia Annotation of JSON
@@ -286,14 +286,14 @@
         <section title="Meta-Schemas and Output Schema">
             <t>
                 The current URI for the JSON Hyper-Schema meta-schema is
-                <eref target="http://json-schema.org/draft-07/hyper-schema#"/>.
+                <eref target="http://json-schema.org/draft-08/hyper-schema#"/>.
             </t>
             <t>
                 The <xref target="ldo">link description format</xref> can be used without JSON
                 Schema, and use of this format can be declared by referencing the normative
                 link description schema as the schema for the data structure that uses the links.
                 The URI of the normative link description schema is:
-                <eref target="http://json-schema.org/draft-07/links#"/>.
+                <eref target="http://json-schema.org/draft-08/links#"/>.
             </t>
             <t>
                 JSON Hyper-Schema implementations are free to provide output in any format.
@@ -304,7 +304,7 @@
                 It is RECOMMENDED that implementations be capable of producing output
                 in this format to facilitated testing.  The URI of the JSON Schema
                 describing the recommended output format is
-                <eref target="http://json-schema.org/draft-07/hyper-schema-output#"/>.
+                <eref target="http://json-schema.org/draft-08/hyper-schema-output#"/>.
             </t>
         </section>
         <section title="Schema Keywords">
@@ -1569,7 +1569,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
 <![CDATA[
 {
     "$id": "https://schema.example.com/entry",
-    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "base": "https://api.example.com/",
     "links": [
         {
@@ -1623,7 +1623,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "base": "https://api.example.com/",
     "type": "object",
     "required": ["data"],
@@ -1739,7 +1739,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/interesting-stuff",
-    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "required": ["stuffWorthEmailingAbout", "email", "title"],
     "properties": {
         "title": {
@@ -1926,7 +1926,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/tree-node",
-    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "base": "trees/{treeId}/",
     "properties": {
         "id": {"type": "integer"},
@@ -1988,7 +1988,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "base": "https://api.example.com/",
     "type": "object",
     "required": ["data"],
@@ -2041,7 +2041,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing-collection",
-    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "base": "https://api.example.com/",
     "type": "object",
     "required": ["elements"],
@@ -2674,6 +2674,11 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-handrews-json-schema-hyperschema-02">
+                        <list style="symbols">
+                            <t></t>
+                        </list>
+                    </t>
                     <t hangText="draft-handrews-json-schema-hyperschema-01">
                         <list style="symbols">
                             <t>This draft is purely a bug fix with no functional changes</t>
