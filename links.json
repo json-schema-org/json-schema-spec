@@ -4,9 +4,9 @@
     "title": "Link Description Object",
     "allOf": [
         { "required": [ "rel", "href" ] },
-        { "$ref": "#/definitions/noRequiredFields" }
+        { "$ref": "#/$defs/noRequiredFields" }
     ],
-    "definitions": {
+    "$defs": {
         "noRequiredFields": {
             "type": "object",
             "properties": {
