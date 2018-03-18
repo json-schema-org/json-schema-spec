@@ -1436,6 +1436,23 @@
             &RFC4329;
         </references>
 
+        <section title="Keywords Moved from Validation to Core">
+            <t>
+                Several keywords have been moved from this document into the
+                <xref target="json-schema">Core Specification</xref> as of this draft, in some
+                cases with re-naming or other changes.  This affects the following former
+                validation keywords:
+                <list style="hanging">
+                    <t hangText='"definitions"'>
+                        Renamed to "$defs" to match "$ref" and be shorter to type.
+                        Schema vocabulary authors SHOULD NOT define a "definitions" keyword
+                        with different behavior in order to avoid invalidating schemas that
+                        still use the older name.
+                    </t>
+                </list>
+            </t>
+        </section>
+
         <section title="Acknowledgments">
             <t>
                 Thanks to
