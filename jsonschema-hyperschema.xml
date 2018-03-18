@@ -1628,7 +1628,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
     "type": "object",
     "required": ["data"],
     "properties": {
-        "id": {"$ref": "#/definitions/id"},
+        "id": {"$ref": "#/$defs/id"},
         "data": true
     },
     "links": [
@@ -1639,7 +1639,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
             "targetSchema": {"$ref": "#"}
         }
     ],
-    "definitions": {
+    "$defs": {
         "id": {
             "type": "integer",
             "minimum": 1,
@@ -1652,7 +1652,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
                 <t>
                     Our "thing" has a server-assigned id, which is required in order to
                     construct the "self" link.  It also has a "data" field which can be
-                    of any type.  The reason for the "definitions" section will be clear
+                    of any type.  The reason for the "$defs" section will be clear
                     in the next example.
                 </t>
                 <t>
@@ -1678,7 +1678,7 @@ Link: <https://schema.example.com/entry> rel=describedBy
     "hrefSchema": {
         "required": ["id"],
         "properties": {
-            "id": {"$ref": "thing#/definitions/id"}
+            "id": {"$ref": "thing#/$defs/id"}
         }
     },
     "targetSchema": {"$ref": "thing#"}
@@ -1993,7 +1993,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
     "type": "object",
     "required": ["data"],
     "properties": {
-        "id": {"$ref": "#/definitions/id"},
+        "id": {"$ref": "#/$defs/id"},
         "data": true
     },
     "links": [
@@ -2009,7 +2009,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             "submissionSchema": {"$ref": "#"}
         }
     ],
-    "definitions": {
+    "$defs": {
         "id": {
             "type": "integer",
             "minimum": 1,
@@ -2206,9 +2206,9 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         "meta": {
             "type": "object",
             "properties": {
-                "prev": {"$ref": "#/definitions/pagination"},
-                "current": {"$ref": "#/definitions/pagination"},
-                "next": {"$ref": "#/definitions/pagination"}
+                "prev": {"$ref": "#/$defs/pagination"},
+                "current": {"$ref": "#/$defs/pagination"},
+                "next": {"$ref": "#/$defs/pagination"}
             }
         }
     },
@@ -2242,7 +2242,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
             "targetSchema": {"$ref": "#"}
         }
     ],
-    "definitions": {
+    "$defs": {
         "pagination": {
             "type": "object",
             "properties": {
@@ -2348,7 +2348,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
     "rel": "tag:rel.example.com,2017:thing-collection",
     "href": "/things{?offset,limit}",
     "hrefSchema": {
-        "$ref": "thing-collection#/definitions/pagination"
+        "$ref": "thing-collection#/$defs/pagination"
     },
     "submissionSchema": {
         "$ref": "thing#"

@@ -629,11 +629,11 @@
 <![CDATA[
 {
     "$id": "http://example.com/root.json",
-    "definitions": {
+    "$defs": {
         "A": { "$id": "#foo" },
         "B": {
             "$id": "other.json",
-            "definitions": {
+            "$defs": {
                 "X": { "$id": "#bar" },
                 "Y": { "$id": "t/inner.json" }
             }
@@ -660,39 +660,39 @@
                                     <t>http://example.com/root.json#</t>
                                 </list>
                             </t>
-                            <t hangText="#/definitions/A">
+                            <t hangText="#/$defs/A">
                                 <list>
                                     <t>http://example.com/root.json#foo</t>
-                                    <t>http://example.com/root.json#/definitions/A</t>
+                                    <t>http://example.com/root.json#/$defs/A</t>
                                 </list>
                             </t>
-                            <t hangText="#/definitions/B">
+                            <t hangText="#/$defs/B">
                                 <list>
                                     <t>http://example.com/other.json</t>
                                     <t>http://example.com/other.json#</t>
-                                    <t>http://example.com/root.json#/definitions/B</t>
+                                    <t>http://example.com/root.json#/$defs/B</t>
                                 </list>
                             </t>
-                            <t hangText="#/definitions/B/definitions/X">
+                            <t hangText="#/$defs/B/$defs/X">
                                 <list>
                                     <t>http://example.com/other.json#bar</t>
-                                    <t>http://example.com/other.json#/definitions/X</t>
-                                    <t>http://example.com/root.json#/definitions/B/definitions/X</t>
+                                    <t>http://example.com/other.json#/$defs/X</t>
+                                    <t>http://example.com/root.json#/$defs/B/$defs/X</t>
                                 </list>
                             </t>
-                            <t hangText="#/definitions/B/definitions/Y">
+                            <t hangText="#/$defs/B/$defs/Y">
                                 <list>
                                     <t>http://example.com/t/inner.json</t>
                                     <t>http://example.com/t/inner.json#</t>
-                                    <t>http://example.com/other.json#/definitions/Y</t>
-                                    <t>http://example.com/root.json#/definitions/B/definitions/Y</t>
+                                    <t>http://example.com/other.json#/$defs/Y</t>
+                                    <t>http://example.com/root.json#/$defs/B/$defs/Y</t>
                                 </list>
                             </t>
-                            <t hangText="#/definitions/C">
+                            <t hangText="#/$defs/C">
                                 <list>
                                     <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                                     <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
-                                    <t>http://example.com/root.json#/definitions/C</t>
+                                    <t>http://example.com/root.json#/$defs/C</t>
                                 </list>
                             </t>
                         </list>
@@ -776,7 +776,7 @@
         "type": "array",
         "items": { "$ref": "#item" }
     },
-    "definitions": {
+    "$defs": {
         "single": {
             "$id": "#item",
             "type": "object",
@@ -788,7 +788,7 @@
                         </artwork>
                     </figure>
                     <t>
-                        When an implementation encounters the &lt;#/definitions/single&gt; schema,
+                        When an implementation encounters the &lt;#/$defs/single&gt; schema,
                         it resolves the "$id" URI reference against the current base URI to form
                         &lt;http://example.net/root.json#item&gt;.
                     </t>
