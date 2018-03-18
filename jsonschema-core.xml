@@ -814,6 +814,40 @@
                     </t>
                 </section>
             </section>
+
+            <section title='Schema Re-Use With "$defs"'>
+                <t>
+                    The "$defs" keyword provides a standardized location for schema
+                    authors to inline re-usable JSON Schemas into a more general schema.
+                    The keyword does not directly affect the validation result.
+                </t>
+                <t>
+                    This keyword's value MUST be an object.
+                    Each member value of this object MUST be a valid JSON Schema.
+                </t>
+                <t>
+                    As an example, here is a schema describing an array of positive
+                    integers, where the positive integer constraint is a subschema in
+                    "$defs":
+
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "type": "array",
+    "items": { "$ref": "#/$defs/positiveInteger" },
+    "$defs": {
+        "positiveInteger": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+        }
+    }
+}
+]]>
+                        </artwork>
+                    </figure>
+                </t>
+            </section>
         </section>
 
         <section title='Comments With "$comment"'>
@@ -1172,7 +1206,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 <list style="hanging">
                     <t hangText="draft-handrews-json-schema-02">
                         <list style="symbols">
-                            <t></t>
+                            <t>Moved "definitions" from the Validation specification here as "$defs"</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-01">
