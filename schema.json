@@ -53,6 +53,17 @@
         "$comment": {
             "type": "string"
         },
+        "$defs": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#" },
+            "default": {}
+        },
+        "definitions": {
+            "$comment": "While no longer an official keyword as it is replaced by $defs, this keyword is retained in the meta-schema to prevent incompatible extensions as it remains in common use.",
+            "type": "object",
+            "additionalProperties": { "$ref": "#" },
+            "default": {}
+        },
         "title": {
             "type": "string"
         },
@@ -109,11 +120,6 @@
         "minProperties": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
         "required": { "$ref": "#/definitions/stringArray" },
         "additionalProperties": { "$ref": "#" },
-        "definitions": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
-        },
         "properties": {
             "type": "object",
             "additionalProperties": { "$ref": "#" },
