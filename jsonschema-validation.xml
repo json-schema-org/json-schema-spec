@@ -1272,40 +1272,6 @@
 
         </section>
 
-        <section title='Schema Re-Use With "definitions"'>
-            <t>
-                The "definitions" keywords provides a standardized location for schema
-                authors to inline re-usable JSON Schemas into a more general schema.
-                The keyword does not directly affect the validation result.
-            </t>
-            <t>
-                This keyword's value MUST be an object.
-                Each member value of this object MUST be a valid JSON Schema.
-            </t>
-            <t>
-                As an example, here is a schema describing an array of positive
-                integers, where the positive integer constraint is a subschema in
-                "definitions":
-
-                <figure>
-                    <artwork>
-<![CDATA[
-{
-    "type": "array",
-    "items": { "$ref": "#/definitions/positiveInteger" },
-    "definitions": {
-        "positiveInteger": {
-            "type": "integer",
-            "exclusiveMinimum": 0
-        }
-    }
-}
-]]>
-                    </artwork>
-                </figure>
-            </t>
-        </section>
-
         <section title="Schema Annotations">
             <t>
                 Schema validation is a useful mechanism for annotating instance data
@@ -1542,7 +1508,7 @@
                 <list style="hanging">
                     <t hangText="draft-handrews-json-schema-validation-02">
                         <list style="symbols">
-                            <t></t>
+                            <t>Moved "definitions" to the core spec as "$defs"</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-validation-01">
