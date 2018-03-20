@@ -973,38 +973,27 @@
 
         <section title="A Vocabulary for Applying Subschemas">
             <t>
-                Validation begins by applying the root schema to the complete instance
-                document.  From there, various keywords are used to determine which additional
-                subschemas are applied to either the current location, or a child location.
-                These keywords also define whether and how subschema assertion results are
-                modified and/or combined.  Such keywords do not assert conditions on their
-                own.  Rather, they control how assertions are applied and evaluated.
+                Evaluation of an instance against a schema begins by applying the root schema
+                to the complete instance document.  From there, various keywords are used
+                to determine which additional subschemas are applied to either the current
+                location, or a child location.  These keywords also define how subschema
+                assertion results are modified and/or combined.  Annotation results are
+                combined according to the rules specified by each annotation keyword.
             </t>
             <t>
-                The keywords in the <xref target="logic">boolean logic</xref> and
-                <xref target="conditional">conditional</xref> sections of this specification
-                apply subschemas to the same location as the parent schema.  The former group
-                defines boolean operations on the subschema assertion results, while the
-                latter evaluates one subschema and uses its assertion results to determine
-                which of two other subschemas to apply as well.
-            </t>
-            <t>
-                Several keywords determine which subschemas are applied to array items,
-                object property values, and object property names.  They are:
-                "items", "additionalItems", "contains", "properties", "patternProperties",
-                "additionalProperties", and "propertyNames".  The "contains" keyword only
-                requires its subschema to be valid against at least one child instance, while
-                the other keywords require that all subschemas are valid against all child
-                instances to which they apply.
+                Keyword that apply subschemas are called applicators, and do not assert
+                conditions on their own.  Rather, they control how assertions are applied
+                and evaluated.  This section defines a set of applicator keywords that
+                are RECOMMENDED for use as the basis of other vocabularies.
             </t>
             <section title="Keyword Independence">
                 <t>
-                    Validation keywords typically operate independently, without
+                    Schema keywords typically operate independently, without
                     affecting each other's outcomes.
                 </t>
                 <t>
                     For schema author convenience, there are some exceptions among the
-                    keywords that control subschema applicability:
+                    keywords in this vocabulary:
                     <list>
                         <t>
                             "additionalProperties", whose behavior is defined in terms of
@@ -1018,8 +1007,20 @@
             </section>
 
             <section title="Keywords for Applying Subschemas in Place">
+                <t>
+                    These keywords apply subschemas to the same location in the instance
+                    as the parent schema is being applied.  They allow combining
+                    or modifying the subschema results in various ways.
+                </t>
 
                 <section title="Keywords for Applying Subschemas With Boolean Logic" anchor="logic">
+                    <t>
+                        These keywords correspond to logical operators for combining or modifying
+                        the boolean assertion results of the subschemas.  They have no direct
+                        impact on annotation collection, although they enable the same annotation
+                        keyword to be applied to an instance location with different values.
+                        Annotation keywords define their own rules for combining such values.
+                    </t>
                     <section title="allOf">
                         <t>
                             This keyword's value MUST be a non-empty array.
@@ -1118,7 +1119,7 @@
                         </t>
                         <t>
                             When "if" is present, and the instance successfully
-                            validates against its subschema, then valiation
+                            validates against its subschema, then validation
                             succeeds against this keyword if the instance also
                             successfully validates against this keyword's subschema.
                         </t>
@@ -1136,7 +1137,7 @@
                         </t>
                         <t>
                             When "if" is present, and the instance fails to
-                            validate against its subschema, then valiation
+                            validate against its subschema, then validation
                             succeeds against this keyword if the instance
                             successfully validates against this keyword's subschema.
                         </t>
@@ -1151,6 +1152,11 @@
                 </section>
             </section>
             <section title="Keywords for Applying Subschemas to Child Instances">
+                <t>
+                    Each of these keywords defines a rule for applying its
+                    subschema(s) to child instances, specifically object
+                    properties and array items, and combining their results.
+                </t>
                 <section title="Keywords for Applying Subschemas to Arrays">
                     <section title="items">
                         <t>
