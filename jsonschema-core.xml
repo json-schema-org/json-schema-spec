@@ -182,10 +182,14 @@
                 </t>
             </section>
 
-            <section title="Schema Vocabularies">
+            <section title="Schema Vocabularies" anchor="vocabulary">
                 <t>
-                    JSON Schema keywords are grouped into vocabularies to encourage
-                    modularity and re-use.  Several vocabularies are provided as
+                    A JSON Schema vocabulary is a set of keywords defined for a particular
+                    purpose.  The vocabulary specifies the meaning of its keywords as
+                    assertions, annotations, and/or any vocabulary-defined keyword category.
+                </t>
+                <t>
+                    Several vocabularies are provided as
                     standards in this and closely related documents.  These vocabularies
                     are used with the core keywords defined as fundamental to the
                     "application/schema+json" media type.
@@ -435,46 +439,6 @@
                         and implementations.
                     </t>
                 </section>
-                <section title="JSON Schema Vocabularies" anchor="vocabulary">
-                    <t>
-                        A JSON Schema vocabulary is a set of keywords defined for a particular
-                        purpose.  The vocabulary specifies the meaning of its keywords as
-                        assertions, annotations, and/or any vocabulary-defined keyword category.
-                        The two companion standards to this document each define a vocabulary:
-                        One for instance validation, and one for hypermedia annotations.
-                        Vocabularies are the primary mechanism for extensibility within
-                        the JSON Schema media type.
-                    </t>
-                    <t>
-                        Vocabularies may be defined by any entity.  Vocabulary authors SHOULD
-                        take care to avoid keyword name collisions if the vocabulary is intended
-                        for broad use, and potentially combined with other vocabularies.  JSON
-                        Schema does not provide any formal namespacing system, but also does
-                        not constrain keyword names, allowing for any number of namespacing
-                        approaches.
-                    </t>
-                    <t>
-                        Vocabularies may build on each other, such as by defining the behavior
-                        of their keywords with respect to the behavior of keywords from another
-                        vocabulary, or by using a keyword from another vocabulary with
-                        a restricted or expanded set of acceptable values.  Not all such
-                        vocabulary re-use will result in a new vocabulary that is compatible
-                        with the vocabulary on which it is built.  Vocabulary authors SHOULD
-                        clearly document what level of compatibility, if any, is expected.
-                    </t>
-                    <t>
-                        A schema that itself describes a schema is called a meta-schema.
-                        Meta-schemas are used to validate JSON Schemas and specify which vocabulary
-                        it is using.
-                        <cref>
-                            Currently, only a single meta-schema may be specified per schema,
-                            meaning that in order to use multiple vocabularies, a meta-schema
-                            must be written that encompasses all of them.  The hyper-schema
-                            meta-schema is an example of this, as it encompasses the validation
-                            vocabulary as well as the hypermedia vocabulary.
-                        </cref>
-                    </t>
-                </section>
                 <section title="Root Schema and Subschemas">
                     <t>
                         The root schema is the schema that comprises the entire JSON document
@@ -577,10 +541,33 @@
 
             <section title="Extending JSON Schema">
                 <t>
-                    Implementations MAY define additional keywords to JSON Schema. Save
-                    for explicit agreement, schema authors SHALL NOT expect these additional
-                    keywords to be supported by peer implementations. Implementations SHOULD ignore
-                    keywords they do not support.
+                    Additional schema keywords and schema vocabularies MAY be defined
+                    by any entity.  Save for explicit agreement, schema authors SHALL NOT
+                    expect these additional keywords and vocabularies to be supported by
+                    implementations that do not explicitly document such support.
+                    Implementations SHOULD ignore keywords they do not support.
+                </t>
+                <t>
+                    Vocabulary authors SHOULD
+                    take care to avoid keyword name collisions if the vocabulary is intended
+                    for broad use, and potentially combined with other vocabularies.  JSON
+                    Schema does not provide any formal namespacing system, but also does
+                    not constrain keyword names, allowing for any number of namespacing
+                    approaches.
+                </t>
+                <t>
+                    Vocabularies may build on each other, such as by defining the behavior
+                    of their keywords with respect to the behavior of keywords from another
+                    vocabulary, or by using a keyword from another vocabulary with
+                    a restricted or expanded set of acceptable values.  Not all such
+                    vocabulary re-use will result in a new vocabulary that is compatible
+                    with the vocabulary on which it is built.  Vocabulary authors SHOULD
+                    clearly document what level of compatibility, if any, is expected.
+                </t>
+                <t>
+                    A schema that itself describes a schema is called a meta-schema.
+                    Meta-schemas are used to validate JSON Schemas and specify which vocabulary
+                    it is using.
                 </t>
                 <t>
                     Authors of extensions to JSON Schema are encouraged to write their own
