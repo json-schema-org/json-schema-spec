@@ -370,14 +370,14 @@
                     fragment identifier syntax and semantics provided by
                     "application/schema-instance+json".
                 </t>
-                <section title="JSON Schema Values and Keywords">
-                    <t>
-                        A JSON Schema MUST be an object or a boolean.
-                    </t>
+                <t>
+                    A JSON Schema MUST be an object or a boolean.
+                </t>
+                <section title="JSON Schema Objects and Keywords">
                     <t>
                         Object properties that are applied to the instance are called keywords,
-                        or schema keywords.  Broadly speaking, keywords fall into one or both
-                        of two categories:
+                        or schema keywords.  Broadly speaking, keywords fall into one
+                        of three categories:
                         <list style="hanging">
                             <t hangText="assertions:">
                                 produce a boolean result when applied to an instance
@@ -385,26 +385,21 @@
                             <t hangText="annotations:">
                                 attach information to an instance for application use
                             </t>
+                            <t hangText="applicators:">
+                                apply one or more subschemas to a particular location
+                                in the instance, and combine or modify their results
+                            </t>
                         </list>
                     </t>
                     <t>
-                        Keywords may fall into either or both categories.  Extension keywords,
-                        meaning those defined outside of this document and its companions,
-                        are free to define other behaviors as well.
+                        Keywords may fall into multiple categories, although applicators
+                        SHOULD only produce assertion results based on their subschemas'
+                        results.  They should not define additional constraints independent
+                        of their subschemas.
                     </t>
                     <t>
-                        The boolean schema values "true" and "false" are trivial assertions that
-                        always return themselves regardless of the instance value.  As an example,
-                        in terms of the validation vocabulary, boolean schemas are equivalent to
-                        the following behaviors:
-                        <list style="hanging">
-                            <t hangText="true:">
-                                Always passes validation, as if the empty schema {}
-                            </t>
-                            <t hangText="false:">
-                                Always fails validation, as if the schema { "not":{} }
-                            </t>
-                        </list>
+                        Extension keywords, meaning those defined outside of this document
+                        and its companions, are free to define other behaviors as well.
                     </t>
                     <t>
                         A JSON Schema MAY contain properties which are not schema keywords.
@@ -413,6 +408,31 @@
                     <t>
                         An empty schema is a JSON Schema with no properties, or only unknown
                         properties.
+                    </t>
+                </section>
+                <section title="Boolean JSON Schemas">
+                    <t>
+                        The boolean schema values "true" and "false" are trivial schemas that
+                        always produce themselves as assertions results, regardless of the
+                        instance value.  They never produce annotation results.
+                    </t>
+                    <t>
+                        These boolean schemas exist to clarify schema author intent and
+                        facilitate schema processing optimizations.  They behave identically
+                        to the following schema objects (where "not" is part of the
+                        subschema application vocabulary defined in this document).
+                        <list style="hanging">
+                            <t hangText="true:">
+                                Always passes validation, as if the empty schema {}
+                            </t>
+                            <t hangText="false:">
+                                Always fails validation, as if the schema { "not":{} }
+                            </t>
+                        </list>
+                        While the empty schema object is unambiguous, there are many
+                        possible equivalents to the "false" schema.  Using the boolean
+                        values ensures that the intent is clear to both human readers
+                        and implementations.
                     </t>
                 </section>
                 <section title="JSON Schema Vocabularies" anchor="vocabulary">
