@@ -1295,6 +1295,24 @@
                             Omitting this keyword has the same behavior as an empty schema.
                         </t>
                     </section>
+
+                    <section title="dependencies">
+                        <t>
+                            This keyword specifies subschemas that are evaluated if the instance
+                            is an object and contains a certain property.
+                        </t>
+                        <t>
+                            This keyword's value MUST be an object.
+                            Each value in the object MUST be a valid JSON Schema.
+                        </t>
+                        <t>
+                            If the object key is a property in the instance, the entire
+                            instance must validate against the dependency value.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same behavior as an empty object.
+                        </t>
+                    </section>
                 </section>
             </section>
         </section>
@@ -1625,6 +1643,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <list style="symbols">
                             <t>Moved "definitions" from the Validation specification here as "$defs"</t>
                             <t>Moved applicator keywords from the Validation specification as their own vocabulary</t>
+                            <t>Moved "dependencies" from the Validation specification, but only the schema form</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-01">
