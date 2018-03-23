@@ -223,10 +223,6 @@
             <t>
                 Validation keywords in a schema impose requirements for successful validation of an
                 instance.  These keywords are all assertions without any annotation behavior.
-                <cref>
-                    "dependencies" has applicator behavior, but this keyword will be split
-                    into separate assertion and applicator keywords before the next draft publication.
-                </cref>
             </t>
 
             <section title="Validation Keywords for Any Instance Type" anchor="general">
@@ -454,36 +450,17 @@
                     </t>
                 </section>
 
-                <section title="dependencies">
+                <section title="requiredDependencies">
                     <t>
-                        <cref>
-                            This keyword may be split into two, with the variation that uses
-                            an array of property names rather than a subschema getting a new
-                            name.  The dual behavior is confusing and relatively difficult to
-                            implement.  In the previous draft, we proposed dropping the keyword
-                            altogether, or dropping one of its forms, but we received feedback
-                            in support of keeping it.  See issues #442 and #528 at
-                            &lt;https://github.com/json-schema-org/json-schema-spec/issues&gt;
-                            for further discussion.  Further feedback is encouraged.
-                        </cref>
+                        This keyword specifies property requirements that are conditional
+                        based on the presence of other properties.
                     </t>
                     <t>
-                        This keyword specifies rules that are evaluated if the instance is an object and
-                        contains a certain property.
-                    </t>
-                    <t>
-                        This keyword's value MUST be an object. Each property specifies a dependency.
-                        Each dependency value MUST be an array or a valid JSON Schema.
-                    </t>
-                    <t>
-                        If the dependency value is a subschema, and the dependency key is a property
-                        in the instance, the entire instance must validate against the dependency value.
-                    </t>
-                    <t>
-                        If the dependency value is an array, each element in the array,
-                        if any, MUST be a string, and MUST be unique. If the dependency key is
-                        a property in the instance, each of the items in the dependency
-                        value must be a property that exists in the instance.
+                        This keyword's value MUST be an object. Each property specifies
+                        a dependent requirement, which MUST be an array.  Each element
+                        in the array, if any, MUST be a string, and MUST be unique.
+                        If the dependency key is a property in the instance, each of the items
+                        in the dependency value MUST be a property that exists in the instance.
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as an empty object.
@@ -1067,6 +1044,18 @@
                         as a generic mechanism on which validation, hyper-schema, and extension
                         vocabularies can all be based
                     </t>
+                    <t hangText='"dependencies"'>
+                        This keyword had two different modes of behavior, which made it
+                        relatively challenging to implement and reason about.
+                        The schema form has been moved to Core under the original
+                        "dependencies" keyword, as part of the applicator vocabulary.
+                        It is analogous to "properties", except that instead of applying
+                        its subschema to the property value, it applies it to the object
+                        containing the property.
+                        The property name array form is retained here and renamed to
+                        "requiredDependencies", as it is an assertion which is a shortcut
+                        for the conditional use of the "required" assertion keyword.
+                    </t>
                 </list>
             </t>
         </section>
@@ -1106,6 +1095,7 @@
                         <list style="symbols">
                             <t>Moved "definitions" to the core spec as "$defs"</t>
                             <t>Moved applicator keywords to the core spec</t>
+                            <t>Renamed the array form of "dependencies" to "requiredDependencies", moved the schema form to the core spec</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-validation-01">
