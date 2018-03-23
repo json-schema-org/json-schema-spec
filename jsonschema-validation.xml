@@ -1096,6 +1096,17 @@
                         with different behavior in order to avoid invalidating schemas that
                         still use the older name.
                     </t>
+                    <t hangText='"allOf", "anyOf", "oneOf", "not", "if", "then", "else",
+                                 "items", "additionalItems", "contains", "propertyNames",
+                                 "properties", "patternProperties", "additionalProperties"'>
+                        All of these keywords apply subschemas to the instance and combine
+                        their results, without asserting any conditions of their own.
+                        Without assertion keywords, these applicators can only cause assertion
+                        failures by using the false boolean schema, or by inverting the result
+                        of the true boolean schema.  For this reason, they are better defined
+                        as a generic mechanism on which validation, hyper-schema, and extension
+                        vocabularies can all be based
+                    </t>
                 </list>
             </t>
         </section>
@@ -1134,6 +1145,7 @@
                     <t hangText="draft-handrews-json-schema-validation-02">
                         <list style="symbols">
                             <t>Moved "definitions" to the core spec as "$defs"</t>
+                            <t>Moved applicator keywords to the core spec</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-validation-01">
