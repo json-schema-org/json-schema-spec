@@ -203,6 +203,7 @@
                     All of the keywords in the <xref target="general">general</xref>,
                     <xref target="numeric">numeric</xref>, and <xref target="string">string</xref>
                     sections are assertions, as well as "minItems", "maxItems", "uniqueItems",
+                    "minContains", "maxContains",
                     "minProperties", "maxProperties", and "required".  Additionally, "dependencies"
                     is shorthand for a combination of conditional and assertion keywords.
                 </t>
@@ -583,6 +584,44 @@
                     <t>
                         An array instance is valid against "contains" if at least one of
                         its elements is valid against the given schema.
+                    </t>
+                </section>
+
+                <section title="maxContains">
+                    <t>
+                        The value of this keyword MUST be a non-negative integer.
+                    </t>
+                    <t>
+                        An array instance is valid against "maxContains" if the number of
+                        elements that are valid against the schema for "contains" is
+                        less than, or equal to, the value of this keyword.
+                    </t>
+                    <t>
+                        If "contains" is not present within the same schema object,
+                        then this keyword has no effect.
+                    </t>
+                </section>
+
+                <section title="minContains">
+                    <t>
+                        The value of this keyword MUST be a non-negative integer.
+                    </t>
+                    <t>
+                        An array instance is valid against "minContains" if the number of
+                        elements that are valid against the schema for "contains" is
+                        greater than, or equal to, the value of this keyword.
+                    </t>
+                    <t>
+                        A value of 0 is allowed, but is only useful for setting a range
+                        of occurrences from 0 to the value of "maxContains".  A value of
+                        0 with no "maxContains" causes "contains" to always pass validation.
+                    </t>
+                    <t>
+                        If "contains" is not present within the same schema object,
+                        then this keyword has no effect.
+                    </t>
+                    <t>
+                        Omitting this keyword has the same behavior as a value of 1.
                     </t>
                 </section>
             </section>
