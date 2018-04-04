@@ -452,15 +452,19 @@
 
                 <section title="requiredDependencies">
                     <t>
-                        This keyword specifies property requirements that are conditional
-                        based on the presence of other properties.
+                        The value of this keyword MUST be an object.  Properties in
+                        this object, if any, MUST be arrays.  Elements in each array,
+                        if any, MUST be strings, and MUST be unique.
                     </t>
                     <t>
-                        This keyword's value MUST be an object. Each property specifies
-                        a dependent requirement, which MUST be an array.  Each element
-                        in the array, if any, MUST be a string, and MUST be unique.
-                        If the dependency key is a property in the instance, each of the items
-                        in the dependency value MUST be a property that exists in the instance.
+                        This keyword specifies properties that are required if a specific
+                        other property is present.
+                    </t>
+                    <t>
+                        Validation succeeds if, for each name that appears in both
+                        the instance and as a name within this keyword's value, every
+                        item in the corresponding array is also the name of a property
+                        in the instance.
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as an empty object.
