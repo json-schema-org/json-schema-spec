@@ -540,6 +540,39 @@
                 </t>
             </section>
 
+            <section title="Regular Expressions" anchor="regex">
+                <t>
+                    Keywords MAY use regular expressions to express constraints, or constrain
+                    the instance value to be a regular expression.
+                     These regular expressions SHOULD be valid according to the
+                    <xref target="ecma262">ECMA 262</xref> regular expression dialect.
+                </t>
+                <t>
+                    Furthermore, given the high disparity in regular expression constructs support,
+                    schema authors SHOULD limit themselves to the following regular expression
+                    tokens:
+
+                    <list>
+                        <t>individual Unicode characters, as defined by the <xref
+                        target="RFC7159">JSON specification</xref>;</t>
+                        <t>simple character classes ([abc]), range character classes ([a-z]);</t>
+                        <t>complemented character classes ([^abc], [^a-z]);</t>
+                        <t>simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or
+                        one), and their lazy versions ("+?", "*?", "??");</t>
+                        <t>range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at
+                        most y, occurrences), {x,} (x occurrences or more), and their lazy
+                        versions;</t>
+                        <t>the beginning-of-input ("^") and end-of-input ("$") anchors;</t>
+                        <t>simple grouping ("(...)") and alternation ("|").</t>
+                    </list>
+                </t>
+                <t>
+                    Finally, implementations MUST NOT take regular expressions to be
+                    anchored, neither at the beginning nor at the end. This means, for instance,
+                    the pattern "es" matches "expression".
+                </t>
+            </section>
+
             <section title="Extending JSON Schema">
                 <t>
                     Additional schema keywords and schema vocabularies MAY be defined
@@ -1489,8 +1522,9 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         </t>
                         <t>
                             Interoperability considerations: See Sections
-                            <xref target="language" format="counter"></xref> and
-                            <xref target="integers" format="counter"></xref> above.
+                            <xref target="language" format="counter"></xref>,
+                            <xref target="integers" format="counter"></xref>, and
+                            <xref target="regex" format="counter"></xref>above.
                         </t>
                         <t>
                             Fragment identifier considerations: See Section
@@ -1532,8 +1566,9 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         </t>
                         <t>
                             Interoperability considerations: See Sections
-                            <xref target="language" format="counter"></xref> and
-                            <xref target="integers" format="counter"></xref> above.
+                            <xref target="language" format="counter"></xref>,
+                            <xref target="integers" format="counter"></xref>, and
+                            <xref target="regex" format="counter"></xref>above.
                         </t>
                         <t>
                             Fragment identifier considerations: See Section
@@ -1554,6 +1589,14 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             &RFC6901;
             &RFC7159;
             &ldp;
+            <reference anchor="ecma262"
+            target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
+                <front>
+                    <title>ECMA 262 specification</title>
+                    <author/>
+                    <date/>
+                </front>
+            </reference>
         </references>
 
         <references title="Informative References">
