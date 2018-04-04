@@ -136,7 +136,7 @@
                 <t>
                     An instance can only fail an assertion that is present in the schema.
                     In some cases, this no-op behavior is identical to a keyword that exists with
-                    certain values, and keyword defintions SHOULD note such values where known.
+                    certain values, and keyword definitions SHOULD note such values where known.
                     These default behaviors MUST NOT result in assertion failures.
                 </t>
                 <section title="Assertions and Instance Primitive Types">
@@ -204,7 +204,8 @@
                 <section title="Subschema Application">
                     <t>
                         This vocabulary provides keywords for applying subschemas to the
-                        instance in various ways.  It is defined in this document, and
+                        instance in various ways.  It is defined in section
+                        <xref target="subschemas" format="counter" />, and
                         it is RECOMMENDED that all JSON Schema implementations support it.
                         All other vocabularies in this section are designed to be used
                         alongside the subschema application vocabulary.
@@ -971,7 +972,7 @@
             </t>
         </section>
 
-        <section title="A Vocabulary for Applying Subschemas">
+        <section title="A Vocabulary for Applying Subschemas" anchor="subschemas">
             <t>
                 Evaluation of an instance against a schema begins by applying the root schema
                 to the complete instance document.  From there, various keywords are used
