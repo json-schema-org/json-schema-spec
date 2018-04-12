@@ -1,9 +1,23 @@
 8. Schema References With "$ref"
 
-The "$ref" keyword is used to reference a schema, and provides the ability to validate recursive structures through self-reference.
+The "$ref" keyword can be used to reference a schema which is to be applied to the current instance location. "$ref" is an assertion key word, which MUST result in a boolean assertion when the resolved schema is applied.
 
-An object schema with a "$ref" property MUST be interpreted as a "$ref" reference. The value of the "$ref" property MUST be a URI Reference. Resolved against the current URI base, it identifies the URI of a schema to use. All other properties in a "$ref" object MUST be ignored.
+The use of "$ref" MUST NOT effect adjacent keywords.
 
-The URI is not a network locator, only an identifier. A schema need not be downloadable from the address if it is a network-addressable URL, and implementations SHOULD NOT assume they should perform a network operation when they encounter a network-addressable URI.
+A schema with a "$ref" property where the value of the property is a string MUST be interpreted as a "$ref" reference. The value of the "$ref" property MUST be a URI reference.
 
-A schema MUST NOT be run into an infinite loop against a schema. For example, if two schemas "#alice" and "#bob" both have an "allOf" property that refers to the other, a naive validator might get stuck in an infinite recursive loop trying to validate the instance. Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is undefined. 
+According to RFC 3986, a URI may be a locator, a name, or both. 
+
+A URI reference without a protocol MUST be considered a plain name fragment, and the URI reference location resolved according to section 9.2. The "$id" Keyword.
+
+A URI reference with a network addressable locator defined MUST be provided with an interface to retrieve the network accessible resource.
+
+Any URI may be resolvable by use of externally defined references as per section 9.2.2. External References.
+
+
+Implementations SHOULD NOT attempt to dereference a schema by replacing any "$ref" keyword and value with a resolved reference schema. A schema author may want to reference schemas that they cannot control, which may be annotated to indicate a specific version of JSON Schema. Implementations MAY offer to dereference a schema by inclusion, however, it SHOULD NOT be the default behaviour, and by offering such, MUST comply with the following requirements when doing so:
+
+- They MUST be able to re-evaluate the use of "$id" and "$ref" from external schemas
+- They MUST throw an error if a resolved schema defines a different schema version to the base JSON Schema document
+- They MUST be able to detect cyclical references (infinite loops), and MUST throw an error if encountered or allow only non cyclical references to be dereferenced
+- The result MUST NOT effect previously adjacent keywords to the original "$ref" keyword
