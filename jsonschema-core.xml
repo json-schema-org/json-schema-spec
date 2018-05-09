@@ -928,6 +928,24 @@
                     </t>
                 </section>
             </section>
+            <section title="Dereferencing By Inclusion">
+                <t>
+                    It MUST NOT be expected that any schema can be dereferenced by the means of replacing any object that
+                    uses the "$ref" keyword with the resolved referenced schema (inclusion). An interface MAY be provided
+                    to dereference a schema by means of inclusion, however it MUST NOT be the default behaviour.
+                </t>
+                <t>
+                    The use of "$id" and "$ref" from external schemas MUST be evaluate correctly, and not evaluated after
+                    any inclusion process.
+                </t>
+                <t>
+                    The result of any inclusion process MUST NOT effect previously adjacent keywords to the original "$ref" keyword
+                </t>
+                <t>
+                    A behaviour when a resolved schema which defines a schema version which is different to that of the base JSON Schema document
+                    is not defined.
+                </t>
+            </section>
 
             <section title='Schema Re-Use With "$defs"'>
                 <t>
