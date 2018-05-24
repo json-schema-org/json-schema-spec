@@ -571,9 +571,10 @@
                 </t>
                 <t>
                     Authors of extensions to JSON Schema are encouraged to write their own
-                    meta-schemas, which extend the existing meta-schemas using "allOf".
+                    meta-schemas, which MAY extend the existing meta-schemas using "allOf".
                     This extended meta-schema SHOULD be referenced using the "$schema" keyword, to
-                    allow tools to follow the correct behaviour.
+                    allow tools to follow the correct behaviour.  The "$recurse" keyword is
+                    provided to facilitate this usage.
                 </t>
                 <t>
                     Note that the recursive nature of meta-schemas requires re-defining
@@ -902,6 +903,86 @@
                         </cref>
                     </t>
                 </section>
+            </section>
+
+            <section title='Recursive references with "$recurse"'>
+                <t>
+                    This keyword's value MUST be the boolean literal true.
+                    <cref>
+                        Future drafts may extend the usage with other values.  The immediate
+                        use case does not require any targets other than the entry point
+                        root, and a regular fragment URI reference does not provide the
+                        correct semantics.  Should other values be added in the future,
+                        it is expected that a boolean true value will remain an alias for
+                        this original use case.
+                    </cref>
+                </t>
+                <t>
+                    The presence of this keyword with a boolean true value indicates that,
+                    during processing, it MUST be treated as a reference to the schema document
+                    where processing was initiated.
+                </t>
+                <t>
+                    This document, known as the entry point schema, is the schema document that
+                    was initially supplied to the implementation, as opposed to schema documents
+                    that were processed as a result of following a "$ref" reference.  Note that
+                    even if processing began at a subschema within a document, the "$recurse"
+                    target MUST be the root of the document.
+                </t>
+                <t>
+                    Aside from the dynamic definition of the reference target, a "$recurse"
+                    reference MUST behave identically to a "$ref" reference.
+                </t>
+                <figure>
+                    <preamble>
+                        Given the following schemas:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "$id": "https://example.com/base",
+    "properties": {
+        "local": {
+            "$ref": "#",
+        },
+        "recursive": {
+            "$recurse": true
+        }
+    }
+}
+
+{
+    "$schema": "
+    "$id": "https://example.com/extension",
+    "properties": {
+        "extended": {
+            "$ref": "https://example.com/base",
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    When an implementation begins processing with the
+                    "https://example.com/base" schema, both the "local" and "recursive"
+                    references resolve to "https://example.com/base".  The entry point
+                    schema and the schema being processed are the same.
+                </t>
+                <t>
+                    However, when an implementation begins processing with the
+                    "https://example.com/extension" schema, and processes the
+                    "https://example.com/base" schema as a result of following the "$ref"
+                    within the "extended" property, now the entry point schema is
+                    "https://example.com/extension".
+                </t>
+                <t>
+                    Therefore the "local" property's reference
+                    still resolves to "https://example.com/base" while the "recursive" property's
+                    reference now resolves to "https://example.com/extension".
+                    This behavior remains the same even if the implementation begins processing
+                    at "https://example.com/extension#/properties/extended".
+                </t>
             </section>
 
             <section title='Schema Re-Use With "$defs"'>
