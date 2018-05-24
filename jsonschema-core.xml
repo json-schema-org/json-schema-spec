@@ -363,7 +363,7 @@
                 </section>
             </section>
 
-            <section title="JSON Schema Documents">
+            <section title="JSON Schema Documents" anchor="schema-documents">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe
                     an instance.
@@ -919,8 +919,9 @@
                 </t>
                 <t>
                     The presence of this keyword with a boolean true value indicates that,
-                    during processing, it MUST be treated as a reference to the schema document
-                    where processing was initiated.
+                    during processing, it MUST be treated as a reference to the
+                    <xref target="schema-documents">schema document</xref> where processing
+                    was initiated.
                 </t>
                 <t>
                     This document, known as the entry point schema, is the schema document that
@@ -940,6 +941,7 @@
                     <artwork>
 <![CDATA[
 {
+    "$schema": "http://json-schema.org/draft-08/schema#",
     "$id": "https://example.com/base",
     "properties": {
         "local": {
@@ -952,7 +954,7 @@
 }
 
 {
-    "$schema": "
+    "$schema": "http://json-schema.org/draft-08/schema#",
     "$id": "https://example.com/extension",
     "properties": {
         "extended": {
