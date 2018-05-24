@@ -790,11 +790,19 @@
                 </section>
             </section>
 
-            <section title='Schema References With "$ref"'>
+            <section title="Schema References">
+                <t>
+                    Two keywords are provided for referencing one schema from another, and
+                    for validating recursive structures through self-reference.
+                    Both of these keywords behave as
+                    <xref target="in-place">in-place applicators</xref>, except that the schema
+                    being applied is identified rather than appearing as all or part of the
+                    keyword's value.
+                </t>
+
                 <section title='Direct References with "$ref"'>
                     <t>
-                        The "$ref" keyword is used to reference a schema, and provides the ability
-                        to validate recursive structures through self-reference.
+                        The "$ref" keyword is used to reference a statically identified schema.
                     </t>
                     <t>
                         An object schema with a "$ref" property MUST be interpreted as a "$ref"
@@ -809,7 +817,7 @@
                         when they encounter a network-addressable URI.
                     </t>
                     <t>
-                        A schema MUST NOT be run into an infinite loop against a schema. For
+                        A schema MUST NOT be run into an infinite loop against an instance. For
                         example, if two schemas "#alice" and "#bob" both have an "allOf" property
                         that refers to the other, a naive validator might get stuck in an infinite
                         recursive loop trying to validate the instance.  Schemas SHOULD NOT make
@@ -817,7 +825,10 @@
                     </t>
                 </section>
 
-                <section title='Recursive references with "$recurse"'>
+                <section title='Recursive References with "$recurse"'>
+                    <t>
+                        The "$recurse" keyword is used to construct extensible recursive schemas.
+                    </t>
                     <t>
                         This keyword's value MUST be the boolean literal true.
                         <cref>
@@ -831,16 +842,16 @@
                     </t>
                     <t>
                         The presence of this keyword with a boolean true value indicates that,
-                        during processing, it MUST be treated as a reference to the
+                        during processing, it MUST be treated as a reference to the root of the
                         <xref target="schema-documents">schema document</xref> where processing
-                        was initiated.
+                        was initiated.  The current base URI is not relevant to "$recurse".
                     </t>
                     <t>
                         This document, known as the entry point schema, is the schema document that
                         was initially supplied to the implementation, as opposed to schema documents
                         that were processed as a result of following a "$ref" reference.  Note that
                         even if processing began at a subschema within a document, the "$recurse"
-                        target MUST be the root of the document.
+                        target MUST be the root schema.
                     </t>
                     <t>
                         Aside from the dynamic definition of the reference target, a "$recurse"
@@ -1092,7 +1103,8 @@
                 </t>
             </section>
 
-            <section title="Keywords for Applying Subschemas in Place">
+            <section title="Keywords for Applying Subschemas in Place"
+                     anchor="in-place">
                 <t>
                     These keywords apply subschemas to the same location in the instance
                     as the parent schema is being applied.  They allow combining
