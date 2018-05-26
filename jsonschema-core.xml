@@ -124,6 +124,20 @@
             </t>
 
             <section title="Keyword Behaviors">
+                <t>
+                    JSON Schema keywords fall into several general behavior categories.
+                    Assertions validate that an instance satisfies constraints, annotations
+                    attach information that applications may use in any way they see fit,
+                    and applicators allow for building more complex schemas than a single
+                    schema object would allow.
+                </t>
+                <t>
+                    Extension keywords SHOULD stay within these categories, keeping in mind
+                    that annotations in particular are extremely flexible.  Complex behavior
+                    is usually better delegated to applications on the basis of annotation
+                    data than implemented directly as schema keywords.  However, extension
+                    keywords MAY define other behaviors for specialized purposes.
+                </t>
                 <section title="Applicators" anchor="applicators">
                     <t>
                         Evaluation of an instance against a
