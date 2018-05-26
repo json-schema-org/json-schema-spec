@@ -123,93 +123,95 @@
                 data in several ways.
             </t>
 
-            <section title="Applicators" anchor="applicators">
-                <t>
-                    Evaluation of an instance against a
-                    <xref target="schema-document">schema document</xref> begins by applying
-                    the <xref target="root">root schema</xref> to the complete instance document.
-                    From there, keywords known as applicators are used to determine which
-                    additional subschemas are applied.  Subschema may be applied in-place
-                    to the current location, or to a child location.  The subschemas may be all
-                    or part of the keyword's value, or the keyword's value may identify one
-                    or more schemas in a way defined by the keyword.
-                </t>
-                <t>
-                    Applicator keywords also define how subschema booolean
-                    <xref target="assertions">assertion</xref>
-                    results are modified and/or combined to produce the boolean result
-                    of the applicator.  Applicators may apply any boolean logic operation
-                    to the assertion results of subschemas, but MUST NOT introduce new
-                    assertion conditions of their own.
-                </t>
-                <t>
-                    <xref target="annotations">Annotation</xref> results are
-                    combined according to the rules specified by each annotation keyword.
-                </t>
-            </section>
-
-            <section title="Assertions" anchor="assertions">
-                <t>
-                    JSON Schema can be used to assert constraints on a JSON document, which
-                    either passes or fails the assertions.  This approach can be used to validate
-                    conformance with the constraints, or document what is needed to satisfy them.
-                </t>
-                <t>
-                    JSON Schema implementations produce a single boolean result when evaluating
-                    an instance against schema assertions.
-                </t>
-                <t>
-                    An instance can only fail an assertion that is present in the schema.
-                    In some cases, this no-op behavior is identical to a keyword that exists with
-                    certain values, and keyword defintions SHOULD note such values where known.
-                    These default behaviors MUST NOT result in assertion failures.
-                </t>
-                <section title="Assertions and Instance Primitive Types">
+            <section title="Keyword Behaviors">
+                <section title="Applicators" anchor="applicators">
                     <t>
-                        Most assertions only constrain values within a certain
-                        primitive type.  When the type of the instance is not of the type
-                        targeted by the keyword, the instance is considered to conform
-                        to the assertion.
+                        Evaluation of an instance against a
+                        <xref target="schema-document">schema document</xref> begins by applying
+                        the <xref target="root">root schema</xref> to the complete instance
+                        document.  From there, keywords known as applicators are used to determine
+                        which additional subschemas are applied.  Subschema may be applied in-place
+                        to the current location, or to a child location.  The subschemas may be all
+                        or part of the keyword's value, or the keyword's value may identify one
+                        or more schemas in a way defined by the keyword.
                     </t>
                     <t>
-                        For example, the "maxLength" keyword from the companion validation
-                        vocabulary will only restrict certain strings
-                        (that are too long) from being valid.  If the instance is a number,
-                        boolean, null, array, or object, then it is valid against this assertion.
+                        Applicator keywords also define how subschema booolean
+                        <xref target="assertions">assertion</xref>
+                        results are modified and/or combined to produce the boolean result
+                        of the applicator.  Applicators may apply any boolean logic operation
+                        to the assertion results of subschemas, but MUST NOT introduce new
+                        assertion conditions of their own.
+                    </t>
+                    <t>
+                        <xref target="annotations">Annotation</xref> results are
+                        combined according to the rules specified by each annotation keyword.
                     </t>
                 </section>
-            </section>
 
-            <section title="Annotations" anchor="annotations">
-                <t>
-                    JSON Schema can annotate an instance with information, whenever the instance
-                    validates against the schema object containing the annotation, and all of its
-                    parent schema objects.  The information can be a simple value, or can be
-                    calculated based on the instance contents.
-                </t>
-                <t>
-                    Annotations are attached to specific locations in an instance.
-                    Since many subschemas can be applied to any single
-                    location, annotation keywords need to specify any unusual handling of
-                    multiple applicable occurrences of the keyword with different values.
-                </t>
-                <t>
-                    The default behavior is simply to collect all values in a list in
-                    indeterminate order.  Given the extensibility of keywords, including
-                    applicators, it is not possible to define a universally predictable
-                    order of processing.
-                </t>
-                <t>
-                    Unlike assertion results, annotation data can take a wide variety of forms,
-                    which are provided to applications to use as they see fit.  JSON Schema
-                    implementations are not expected to make use of the collected information
-                    on behalf of applications.
-                </t>
-                <t>
-                    While "short-circuit" evaluation is possible for assertions, collecting
-                    annotations requires examining all schemas that apply to an instance
-                    location, even if they cannot change the overall assertion result.
-                </t>
+                <section title="Assertions" anchor="assertions">
+                    <t>
+                        JSON Schema can be used to assert constraints on a JSON document, which
+                        either passes or fails the assertions.  This approach can be used to validate
+                        conformance with the constraints, or document what is needed to satisfy them.
+                    </t>
+                    <t>
+                        JSON Schema implementations produce a single boolean result when evaluating
+                        an instance against schema assertions.
+                    </t>
+                    <t>
+                        An instance can only fail an assertion that is present in the schema.
+                        In some cases, this no-op behavior is identical to a keyword that exists with
+                        certain values, and keyword defintions SHOULD note such values where known.
+                        These default behaviors MUST NOT result in assertion failures.
+                    </t>
+                    <section title="Assertions and Instance Primitive Types">
+                        <t>
+                            Most assertions only constrain values within a certain
+                            primitive type.  When the type of the instance is not of the type
+                            targeted by the keyword, the instance is considered to conform
+                            to the assertion.
+                        </t>
+                        <t>
+                            For example, the "maxLength" keyword from the companion validation
+                            vocabulary will only restrict certain strings
+                            (that are too long) from being valid.  If the instance is a number,
+                            boolean, null, array, or object, then it is valid against this assertion.
+                        </t>
+                    </section>
+                </section>
+
+                <section title="Annotations" anchor="annotations">
+                    <t>
+                        JSON Schema can annotate an instance with information, whenever the instance
+                        validates against the schema object containing the annotation, and all of its
+                        parent schema objects.  The information can be a simple value, or can be
+                        calculated based on the instance contents.
+                    </t>
+                    <t>
+                        Annotations are attached to specific locations in an instance.
+                        Since many subschemas can be applied to any single
+                        location, annotation keywords need to specify any unusual handling of
+                        multiple applicable occurrences of the keyword with different values.
+                    </t>
+                    <t>
+                        The default behavior is simply to collect all values in a list in
+                        indeterminate order.  Given the extensibility of keywords, including
+                        applicators, it is not possible to define a universally predictable
+                        order of processing.
+                    </t>
+                    <t>
+                        Unlike assertion results, annotation data can take a wide variety of forms,
+                        which are provided to applications to use as they see fit.  JSON Schema
+                        implementations are not expected to make use of the collected information
+                        on behalf of applications.
+                    </t>
+                    <t>
+                        While "short-circuit" evaluation is possible for assertions, collecting
+                        annotations requires examining all schemas that apply to an instance
+                        location, even if they cannot change the overall assertion result.
+                    </t>
+                </section>
             </section>
 
             <section title="Schema Vocabularies" anchor="vocabulary">
