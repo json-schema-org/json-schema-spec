@@ -176,7 +176,10 @@
                     that depend on annotation results MUST then be treated as errors, unless
                     an alternate implementation producing the same behavior is available.
                     Keywords of this sort SHOULD describe reasonable alternate approaches
-                    when appropriate.
+                    when appropriate.  This approach is demonstrated by the
+                    "<xref target="additionalItems" format="title"/>" and
+                    "<xref target="additionalProperties" format="title"/>" keywords in this
+                    document.
                 </t>
                 <t>
                     Extension keywords SHOULD stay within these categories, keeping in mind
@@ -1242,8 +1245,8 @@
                 <section title="Keywords for Applying Subschemas to Arrays">
                     <section title="items">
                         <t>
-                            The value of "items" MUST be either a valid JSON Schema or an array of valid
-                            JSON Schemas.
+                            The value of "items" MUST be either a valid JSON Schema or
+                            an array of valid JSON Schemas.
                         </t>
                         <t>
                             If "items" is a schema, validation succeeds if all elements
@@ -1255,26 +1258,52 @@
                             same position, if any.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            This keyword produces an annotation value which is the largest
+                            index to which this keyword applied a subschema.  The value
+                            MAY be a boolean true if a subschema was applied to every
+                            index of the instance, such as when "items" is a schema.
+                        </t>
+                        <t>
+                            Annotation results from multiple "items" keyword are combined
+                            by setting the combined result to true if any of the values
+                            are true, and otherwise retaining the larges numerical value.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
                         </t>
                     </section>
 
-                    <section title="additionalItems">
+                    <section title="additionalItems" anchor="additionalItems">
                         <t>
                             The value of "additionalItems" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            If "items" is an array of schemas, validation succeeds
-                            if every instance element at a position greater than the size
-                            of "items" validates against "additionalItems".
+                            The behavior of this keyword depends on the presence and
+                            annotation result of "items" within the same schema object.
+                            If "items" is present, and its annotation result is a number,
+                            validation succeeds if every instance element at an index
+                            greater than that number validates against "additionalItems".
                         </t>
                         <t>
-                            Otherwise, "additionalItems" MUST be ignored, as the "items"
-                            schema (possibly the default value of an empty schema) is
-                            applied to all elements.
+                            Otherwise, if "items" is absent or its annotation result
+                            is the boolean true, "additionalItems" MUST be ignored.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            If the "additionalItems" subschema is applied to any
+                            positions within the instance array, it produces an
+                            annotation result of boolean true, analogous to the
+                            single schema behavior of "items".
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementation MAY choose to implement or optimize this keyword
+                            in another way that produces the same effect, such as by directly
+                            checking for the presence and size of an "items" array.
+                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
@@ -1284,7 +1313,16 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema.
+                            its elements is valid against the given schema.  This keyword
+                            does not produce annotation results.
+                            <cref>
+                                Should it produce a set of the indices for which the
+                                array element is valid against the subschema?  "contains"
+                                does not affect "additionalItems" or any other current
+                                or proposed keyword, but the information could be useful,
+                                and implementation that collect annotations need to
+                                apply "contains" to every element anyway.
+                            </cref>
                         </t>
                     </section>
                 </section>
@@ -1302,7 +1340,14 @@
                             corresponding schema.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty object.
+                            The annotation result of this keyword is the set of instance
+                            property names matched by this keyword.  Multiple annotation
+                            results for "properties" are combined by taking the union
+                            of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty object.
                         </t>
                     </section>
 
@@ -1320,25 +1365,47 @@
                             schema that corresponds to a matching regular expression.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty object.
+                            The annotation result of this keyword is the set of instance
+                            property names matched by this keyword.  Multiple annotation
+                            results for "patternProperties" are combined by taking the union
+                            of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty object.
                         </t>
                     </section>
 
-                    <section title="additionalProperties">
+                    <section title="additionalProperties" anchor="additionalProperties">
                         <t>
                             The value of "additionalProperties" MUST be a valid JSON Schema.
                         </t>
                         <t>
+                            The behavior of this keyword depends on the presence and
+                            annotation results of "properties" and "patternProperties"
+                            within the same schema object.
                             Validation with "additionalProperties" applies only to the child
-                            values of instance names that do not match any names in "properties",
-                            and do not match any regular expression in "patternProperties".
+                            values of instance names that do not appear in the annotation
+                            results of either "properties" or "patternProperties".
                         </t>
                         <t>
                             For all such properties, validation succeeds if the child instance
                             validates against the "additionalProperties" schema.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            The annotation result of this keyword is the set of instance
+                            property names validated by this keyword's subschema.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementation MAY choose to implement or optimize this keyword
+                            in another way that produces the same effect, such as by directly
+                            checking the names in "properties" and the patterns in
+                            "patternProperties" against the instance property set.
+                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
