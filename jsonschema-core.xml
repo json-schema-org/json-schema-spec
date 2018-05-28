@@ -1246,10 +1246,6 @@
                             JSON Schemas.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for arrays,
-                            and does not directly validate the immediate instance itself.
-                        </t>
-                        <t>
                             If "items" is a schema, validation succeeds if all elements
                             in the array successfully validate against that schema.
                         </t>
@@ -1266,10 +1262,6 @@
                     <section title="additionalItems">
                         <t>
                             The value of "additionalItems" MUST be a valid JSON Schema.
-                        </t>
-                        <t>
-                            This keyword determines how child instances validate for arrays,
-                            and does not directly validate the immediate instance itself.
                         </t>
                         <t>
                             If "items" is an array of schemas, validation succeeds
@@ -1304,10 +1296,6 @@
                             Each value of this object MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                        </t>
-                        <t>
                             Validation succeeds if, for each name that appears in both
                             the instance and as a name within this keyword's value, the child
                             instance for that name successfully validates against the
@@ -1326,12 +1314,6 @@
                             MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                            Validation of the primitive instance type against this keyword
-                            always succeeds.
-                        </t>
-                        <t>
                             Validation succeeds if, for each instance name that matches any
                             regular expressions that appear as a property name in this keyword's value,
                             the child instance for that name successfully validates against each
@@ -1345,10 +1327,6 @@
                     <section title="additionalProperties">
                         <t>
                             The value of "additionalProperties" MUST be a valid JSON Schema.
-                        </t>
-                        <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
                         </t>
                         <t>
                             Validation with "additionalProperties" applies only to the child
