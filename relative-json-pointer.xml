@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
-<!ENTITY RFC4627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml">
+<!ENTITY RFC8259 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8259.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -12,7 +12,7 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-handrews-relative-json-pointer-01" ipr="trust200902">
+<rfc category="info" docName="draft-handrews-relative-json-pointer-02" ipr="trust200902">
     <front>
         <title abbrev="Relative JSON Pointers">Relative JSON Pointers</title>
 
@@ -28,7 +28,6 @@
         </author>
 
         <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
-            <organization>Cloudflare, Inc.</organization>
             <address>
                 <postal>
                     <street></street>
@@ -36,7 +35,7 @@
                     <region>CA</region>
                     <country>USA</country>
                 </postal>
-                <email>henry@cloudflare.com</email>
+                <email>andrews_henry@yahoo.com</email>
             </address>
         </author>
 
@@ -81,8 +80,8 @@
 
         <section title="Syntax">
             <t>
-                A Relative JSON Pointer is a Unicode string (see RFC 4627,
-                <xref target="RFC4627">Section 3</xref>), comprising a non-negative integer,
+                A Relative JSON Pointer is a Unicode string in UTF-8 encoding (see RFC 8259,
+                <xref target="RFC8259">Section 8</xref>), comprising a non-negative integer,
                 followed by either a '#' (%x23) character or a JSON Pointer
                 (<xref target="RFC6901">RFC 6901</xref>).
             </t>
@@ -295,7 +294,7 @@
         </references>
 
         <references title="Informative References">
-            &RFC4627;
+            &RFC8259;
         </references>
 
         <section title="ChangeLog">
@@ -304,6 +303,11 @@
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-handrews-relative-json-pointer-02">
+                        <list style="symbols">
+                            <t>Update to the latest JSON RFC</t>
+                        </list>
+                    </t>
                     <t hangText="draft-handrews-relative-json-pointer-01">
                         <list style="symbols">
                             <t>The initial number is "non-negative", not "positive"</t>
