@@ -6,7 +6,7 @@
         "schemaArray": {
             "type": "array",
             "minItems": 1,
-            "items": { "$ref": "#" }
+            "items": { "$recurse": true }
         },
         "nonNegativeInteger": {
             "type": "integer",
@@ -50,18 +50,22 @@
             "type": "string",
             "format": "uri-reference"
         },
+        "$recurse": {
+            "type": "boolean",
+            "const": true
+        },
         "$comment": {
             "type": "string"
         },
         "$defs": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recurse": true },
             "default": {}
         },
         "definitions": {
             "$comment": "While no longer an official keyword as it is replaced by $defs, this keyword is retained in the meta-schema to prevent incompatible extensions as it remains in common use.",
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recurse": true },
             "default": {}
         },
         "title": {
@@ -101,10 +105,10 @@
             "type": "string",
             "format": "regex"
         },
-        "additionalItems": { "$ref": "#" },
+        "additionalItems": { "$recurse": true },
         "items": {
             "anyOf": [
-                { "$ref": "#" },
+                { "$recurse": true },
                 { "$ref": "#/$defs/schemaArray" }
             ],
             "default": true
@@ -115,19 +119,19 @@
             "type": "boolean",
             "default": false
         },
-        "contains": { "$ref": "#" },
+        "contains": { "$recurse": true },
         "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
         "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
         "required": { "$ref": "#/$defs/stringArray" },
-        "additionalProperties": { "$ref": "#" },
+        "additionalProperties": { "$recurse": true },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recurse": true },
             "default": {}
         },
         "patternProperties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recurse": true },
             "propertyNames": { "format": "regex" },
             "default": {}
         },
@@ -135,12 +139,12 @@
             "type": "object",
             "additionalProperties": {
                 "anyOf": [
-                    { "$ref": "#" },
+                    { "$recurse": true },
                     { "$ref": "#/$defs/stringArray" }
                 ]
             }
         },
-        "propertyNames": { "$ref": "#" },
+        "propertyNames": { "$recurse": true },
         "const": true,
         "enum": {
             "type": "array",
@@ -162,13 +166,13 @@
         "format": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": {"$recurse": true},
+        "then": {"$recurse": true},
+        "else": {"$recurse": true},
         "allOf": { "$ref": "#/$defs/schemaArray" },
         "anyOf": { "$ref": "#/$defs/schemaArray" },
         "oneOf": { "$ref": "#/$defs/schemaArray" },
-        "not": { "$ref": "#" }
+        "not": { "$recurse": true }
     },
     "default": true
 }

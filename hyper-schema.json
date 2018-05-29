@@ -2,57 +2,8 @@
     "$schema": "http://json-schema.org/draft-08/hyper-schema#",
     "$id": "http://json-schema.org/draft-08/hyper-schema#",
     "title": "JSON Hyper-Schema",
-    "$defs": {
-        "schemaArray": {
-            "allOf": [
-                { "$ref": "http://json-schema.org/draft-08/schema#/$defs/schemaArray" },
-                {
-                    "items": { "$ref": "#" }
-                }
-            ]
-        }
-    },
     "allOf": [ { "$ref": "http://json-schema.org/draft-08/schema#" } ],
     "properties": {
-        "additionalItems": { "$ref": "#" },
-        "additionalProperties": { "$ref": "#"},
-        "dependencies": {
-            "additionalProperties": {
-                "anyOf": [
-                    { "$ref": "#" },
-                    { "type": "array" }
-                ]
-            }
-        },
-        "items": {
-            "anyOf": [
-                { "$ref": "#" },
-                { "$ref": "#/$defs/schemaArray" }
-            ]
-        },
-        "$defs": {
-            "additionalProperties": { "$ref": "#" }
-        },
-        "definitions": {
-            "$comment": "Renamed to $defs, but retained here to ensure compatibility",
-            "additionalProperties": { "$ref": "#" }
-        },
-        "patternProperties": {
-            "additionalProperties": { "$ref": "#" }
-        },
-        "properties": {
-            "additionalProperties": { "$ref": "#" }
-        },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
-        "allOf": { "$ref": "#/$defs/schemaArray" },
-        "anyOf": { "$ref": "#/$defs/schemaArray" },
-        "oneOf": { "$ref": "#/$defs/schemaArray" },
-        "not": { "$ref": "#" },
-        "contains": { "$ref": "#" },
-        "propertyNames": { "$ref": "#" },
-
         "base": {
             "type": "string",
             "format": "uri-template"
