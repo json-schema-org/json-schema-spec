@@ -126,10 +126,24 @@
             <section title="Keyword Behaviors">
                 <t>
                     JSON Schema keywords fall into several general behavior categories.
-                    Assertions validate that an instance satisfies constraints, annotations
-                    attach information that applications may use in any way they see fit,
-                    and applicators allow for building more complex schemas than a single
-                    schema object would allow.
+                    Assertions validate that an instance satisfies constraints.  Annotations
+                    attach information that applications may use in any way they see fit.
+                    Applicators apply subschemas to parts of the instance and combine
+                    their results.
+                </t>
+                <t>
+                    Evaluating an instance against a schema involves processing all of the
+                    keywords in the schema against the appropriate locations within the instance.
+                    Typically, applicator keywords are processed until a schema object with no
+                    applicators (and therefore no subschemas) is reached.  The appropriate
+                    location in the instance is evaluated against the assertion and
+                    annotation keywords in the schema object, and their results are gathered
+                    into the parent schema according to the rules of the applicator.
+                </t>
+                <t>
+                    Evaluation of a parent schema object can complete once all of its
+                    subschemas have been evaluated, although in some circumstance evaluation
+                    may be short-circuited due to assertion results.
                 </t>
                 <t>
                     Extension keywords SHOULD stay within these categories, keeping in mind
@@ -140,7 +154,8 @@
                 </t>
                 <section title="Applicators" anchor="applicators">
                     <t>
-                        Evaluation of an instance against a
+                        Applicators allow for building more complex schemas than can be accomplished
+                        with a single schema object.  Evaluation of an instance against a
                         <xref target="schema-document">schema document</xref> begins by applying
                         the <xref target="root">root schema</xref> to the complete instance
                         document.  From there, keywords known as applicators are used to determine
