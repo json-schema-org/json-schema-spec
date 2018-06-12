@@ -1140,6 +1140,94 @@
             </t>
         </section>
 
+        <section title="Collecting Annotations">
+            <t>
+                <cref>
+                    The exact structure and format of the information collected is TBD,
+                    but will be defined before the next draft.  Some details of this
+                    section may change as a result, but the overall process is expected
+                    to remain the same.  See GitHub issue #396 to track progress.
+                </cref>
+            </t>
+            <t>
+                Annotations are collected by keywords that explicitly define
+                annotation-collecting behavior.  Note that boolean schemas cannot
+                produce annotations as they do not make use of keywords.
+            </t>
+            <t>
+                A collected annotation MUST include the following information:
+                <list>
+                    <t>
+                        The name of the annotation, which MUST be identical to the keyword
+                        that defines that annotation.
+                    </t>
+                    <t>
+                        The instance location to which it is attached, as a JSON Pointer
+                    </t>
+                    <t>
+                        The schema location of the attaching keyword, as a list of URIs
+                        constructed as described below
+                    </t>
+                    <t>
+                        The attached value(s)
+                    </t>
+                </list>
+            </t>
+            <t>
+                If multiple schema locations attach values to the same instance location,
+                and the annotation defines a process for combining such values, then the
+                combined value MUST also be associated with the instance location.
+            </t>
+            <t>
+                Applications MAY make decisions on which of multiple annotation values
+                to use based on the schema location that contributed the value.
+                This is intended to allow flexible usage.  Collecting the schema location
+                facilites such usage.
+            </t>
+            <t>
+                For example, one application may consider a "description" annotation that is
+                in the same schema object as a "$ref" to override any "description" in the
+                reference's target schema.  A different application may prefer to concatenate
+                all "description" annotations based on whatever ordering it defines.
+            </t>
+            <section title="Annotations and Assertions">
+                <t>
+                    If any keyword in a schema object produces a false assertion
+                    result, then all annotations from all keywords in that schema
+                    object, and any of its subschemas or referenced schemas, MUST
+                    be discarded.
+                </t>
+                <t>
+                    This may be due to an assertion keyword directly producing
+                    a false result, or an applicator keyword producing a false
+                    assertion result as the aggregate assertion result of
+                    its subschema(s).
+                </t>
+            </section>
+            <section title="Annotations and Applicators">
+                <t>
+                    In addition to possibly defining annotation results of their own,
+                    applicator keywords aggregate the annotations collected in their
+                    subschema(s) or referenced schema(s).  The rules for aggregating
+                    annotation values are defined by each annotation keyword, and are
+                    not directly affected by the logic used for combining assertion
+                    results.
+                </t>
+                <t>
+                    If, in the process of aggregating subscheama results, an applicator
+                    keyword modifies a subschema's assertion result to be false, all
+                    annotation keywords from that subschema MUST be discarded.
+                </t>
+                <t>
+                    Note that this means that an applicator such as <xref target="not">"not"</xref>
+                    will never produce annotation results:  Either the subschema failed an
+                    assertion and discarded its annotations before "not" processes them, or if
+                    the subschema passed all assertions, "not" will invert that to a failure,
+                    and then discard the annotations before producing its own result.
+                </t>
+            </section>
+        </section>
+
         <section title="A Vocabulary for Applying Subschemas">
             <t>
                 This section defines a vocabulary of applicator keywords that
@@ -1213,7 +1301,7 @@
                         </t>
                     </section>
 
-                    <section title="not">
+                    <section title="not" anchor="not">
                         <t>
                             This keyword's value MUST be a valid JSON Schema.
                         </t>
