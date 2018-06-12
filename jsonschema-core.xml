@@ -1264,9 +1264,10 @@
                             index of the instance, such as when "items" is a schema.
                         </t>
                         <t>
-                            Annotation results from multiple "items" keyword are combined
+                            Annotation results for "items" keywords from multiple
+                            schemas applied to the same instance location are combined
                             by setting the combined result to true if any of the values
-                            are true, and otherwise retaining the larges numerical value.
+                            are true, and otherwise retaining the largest numerical value.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -1293,14 +1294,17 @@
                             If the "additionalItems" subschema is applied to any
                             positions within the instance array, it produces an
                             annotation result of boolean true, analogous to the
-                            single schema behavior of "items".
+                            single schema behavior of "items".  If any "additionalItems"
+                            keyword from any subschema applied to the same instance
+                            location produces an annotation value of true, then
+                            the combined result from these keywords is also true.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
                             an empty schema.
                         </t>
                         <t>
-                            Implementation MAY choose to implement or optimize this keyword
+                            Implementations MAY choose to implement or optimize this keyword
                             in another way that produces the same effect, such as by directly
                             checking for the presence and size of an "items" array.
                             Implementations that do not support annotation collection MUST do so.
@@ -1341,8 +1345,9 @@
                         </t>
                         <t>
                             The annotation result of this keyword is the set of instance
-                            property names matched by this keyword.  Multiple annotation
-                            results for "properties" are combined by taking the union
+                            property names matched by this keyword.  Annotation results
+                            for "properties" keywords from multiple schemas applied to
+                            the same instance location are combined by taking the union
                             of the sets.
                         </t>
                         <t>
@@ -1366,8 +1371,9 @@
                         </t>
                         <t>
                             The annotation result of this keyword is the set of instance
-                            property names matched by this keyword.  Multiple annotation
-                            results for "patternProperties" are combined by taking the union
+                            property names matched by this keyword.  Annotation results
+                            for "patternProperties" keywords from multiple schemas applied to
+                            the same instance location are combined by taking the union
                             of the sets.
                         </t>
                         <t>
@@ -1395,6 +1401,9 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names validated by this keyword's subschema.
+                            Annotation results for "additionalProperties" keywords from
+                            multiple schemas applied to the same instance location are combined
+                            by taking the union of the sets.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
