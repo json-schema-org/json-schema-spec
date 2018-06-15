@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "$id": "http://json-schema.org/draft-08/links#",
+    "$id": "http://json-schema.org/draft-08/links",
     "title": "Link Description Object",
     "allOf": [
         { "required": [ "rel", "href" ] },
@@ -29,7 +29,7 @@
                     "format": "uri-template"
                 },
                 "hrefSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$recursiveRef": "http://json-schema.org/draft-08/hyper-schema"
                 },
                 "templatePointers": {
                     "type": "object",
@@ -55,21 +55,21 @@
                     "type": "string"
                 },
                 "targetSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$recursiveRef": "http://json-schema.org/draft-08/hyper-schema"
                 },
                 "targetMediaType": {
                     "type": "string"
                 },
                 "targetHints": { },
                 "headerSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$recursiveRef": "http://json-schema.org/draft-08/hyper-schema"
                 },
                 "submissionMediaType": {
                     "type": "string",
                     "default": "application/json"
                 },
                 "submissionSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$recursiveRef": "http://json-schema.org/draft-08/hyper-schema"
                 },
                 "$comment": {
                     "type": "string"

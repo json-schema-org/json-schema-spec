@@ -1,12 +1,14 @@
 {
     "$schema": "http://json-schema.org/draft-08/schema#",
     "$id": "http://json-schema.org/draft-08/schema#",
+    "$recursiveRoot": true,
+
     "title": "Core schema meta-schema",
     "$defs": {
         "schemaArray": {
             "type": "array",
             "minItems": 1,
-            "items": { "$ref": "#" }
+            "items": { "$recursiveRef": "#" }
         },
         "nonNegativeInteger": {
             "type": "integer",
@@ -55,13 +57,13 @@
         },
         "$defs": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recursiveRef": "#" },
             "default": {}
         },
         "definitions": {
             "$comment": "While no longer an official keyword as it is replaced by $defs, this keyword is retained in the meta-schema to prevent incompatible extensions as it remains in common use.",
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recursiveRef": "#" },
             "default": {}
         },
         "title": {
@@ -101,10 +103,10 @@
             "type": "string",
             "format": "regex"
         },
-        "additionalItems": { "$ref": "#" },
+        "additionalItems": { "$recursiveRef": "#" },
         "items": {
             "anyOf": [
-                { "$ref": "#" },
+                { "$recursiveRef": "#" },
                 { "$ref": "#/$defs/schemaArray" }
             ],
             "default": true
@@ -115,32 +117,37 @@
             "type": "boolean",
             "default": false
         },
-        "contains": { "$ref": "#" },
+        "contains": { "$recursiveRef": "#" },
         "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
         "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
         "required": { "$ref": "#/$defs/stringArray" },
-        "additionalProperties": { "$ref": "#" },
+        "additionalProperties": { "$recursiveRef": "#" },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recursiveRef": "#" },
             "default": {}
         },
         "patternProperties": {
             "type": "object",
-            "additionalProperties": { "$ref": "#" },
+            "additionalProperties": { "$recursiveRef": "#" },
             "propertyNames": { "format": "regex" },
             "default": {}
         },
         "dependencies": {
             "type": "object",
             "additionalProperties": {
-                "anyOf": [
-                    { "$ref": "#" },
-                    { "$ref": "#/$defs/stringArray" }
-                ]
+                "$recursiveRef": "#"
             }
         },
-        "propertyNames": { "$ref": "#" },
+        "requiredDependencies": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/stringArray"
+            }
+        },
+        "propertyNames": {
+            "additionalProperties": { "$recursiveRef": "#" }
+        },
         "const": true,
         "enum": {
             "type": "array",
@@ -162,13 +169,13 @@
         "format": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": { "$recursiveRef": "#" },
+        "then": { "$recursiveRef": "#" },
+        "else": { "$recursiveRef": "#" },
         "allOf": { "$ref": "#/$defs/schemaArray" },
         "anyOf": { "$ref": "#/$defs/schemaArray" },
         "oneOf": { "$ref": "#/$defs/schemaArray" },
-        "not": { "$ref": "#" }
+        "not": { "$recursiveRef": "#" }
     },
     "default": true
 }

@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-08/hyper-operations-FAKE#",
+    "$id": "http://json-schema.org/draft-08/hyper-operations-FAKE",
+    "$recursiveRoot": true,
+
+    "title": "FAKE DEMO JSON Hypermedia Operations FOR RECURSION EXAMPLE",
+    "$ref": "http://json-schema.org/draft-08/hyper-schema",
+    "properties": {
+        "base": {
+            "type": "string",
+            "format": "uri-template"
+        },
+        "links": {
+            "items": {
+                "operations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "someKindOfSchema": { "$recursiveRef": "#" }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "{+%24id}"
+        }
+    ]
+}
