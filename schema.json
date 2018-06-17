@@ -106,8 +106,7 @@
             "anyOf": [
                 { "$ref": "#" },
                 { "$ref": "#/$defs/schemaArray" }
-            ],
-            "default": true
+            ]
         },
         "maxItems": { "$ref": "#/$defs/nonNegativeInteger" },
         "minItems": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
@@ -162,13 +161,12 @@
         "format": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": { "$ref": "#" },
+        "then": { "$ref": "#" },
+        "else": { "$ref": "#" },
         "allOf": { "$ref": "#/$defs/schemaArray" },
         "anyOf": { "$ref": "#/$defs/schemaArray" },
         "oneOf": { "$ref": "#/$defs/schemaArray" },
         "not": { "$ref": "#" }
-    },
-    "default": true
+    }
 }
