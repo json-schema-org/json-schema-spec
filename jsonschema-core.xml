@@ -195,14 +195,19 @@
                         <xref target="schema-document">schema document</xref> begins by applying
                         the <xref target="root">root schema</xref> to the complete instance
                         document.  From there, keywords known as applicators are used to determine
-                        which additional subschemas are applied.  Subschema may be applied in-place
-                        to the current location, or to a child location.  The subschemas may be all
-                        or part of the keyword's value, or the keyword's value may identify one
-                        or more schemas in a way defined by the keyword.
+                        which additional schemas are applied.  Such schemas may be applied in-place
+                        to the current location, or to a child location.
                     </t>
                     <t>
-                        Applicator keywords also define how subschema boolean
-                        <xref target="assertions">assertion</xref>
+                        The schemas to be applied may be present as subschemas comprising all or
+                        part of the keyword's value.  Alternatively, an applicator may refer to
+                        a schema elsewhere in the same schema document, or in a different one.
+                        The mechanism for identifying such referred schemas is defined by the
+                        keyword.
+                    </t>
+                    <t>
+                        Applicator keywords also define how subschema or referred schema
+                        boolean <xref target="assertions">assertion</xref>
                         results are modified and/or combined to produce the boolean result
                         of the applicator.  Applicators may apply any boolean logic operation
                         to the assertion results of subschemas, but MUST NOT introduce new
@@ -562,6 +567,34 @@
                         As with the root schema, a subschema is either an object or a boolean.
                     </t>
                 </section>
+                <section title="Referred and Referring Schemas" anchor="referred">
+                    <t>
+                        As noted in <xref target="applicators" />, an applicator keyword may
+                        refer to a schema to be applied, rather than including it as a
+                        subschema in the applicator's value.  In such situations, the
+                        schema being applied is known as the referred schema, while
+                        the schema containing the applicator keyword is the referring schema.
+                    </t>
+                    <t>
+                        While root schemas and subschemas are static concepts based on a
+                        schema's position within a schema document, referred and referring
+                        schemas are dynamic.  Different pairs of schemas may find themselves
+                        in various referred and referring arrangements during the evaluation
+                        of an instance against a schema.
+                    </t>
+                    <t>
+                        For some by-reference applicators, such as
+                        <xref target="ref">"$ref"</xref>, the referred schema can be determined
+                        by static analysis of the schema document.  Others may take evaluation
+                        context into account, and only be resolvable in the process of evaluating
+                        with an instance.
+                        <cref>
+                            Assuming some form of dynamic reference keyword is introduced
+                            related to GitHub issue #558, this section will be updated
+                            to make a concrete reference to that keyword for clarification.
+                        </cref>
+                    </t>
+                </section>
             </section>
 
         </section>
@@ -884,7 +917,7 @@
                 </section>
             </section>
 
-            <section title='Schema References With "$ref"'>
+            <section title='Schema References With "$ref"' anchor="ref">
                 <t>
                     The "$ref" keyword is used to reference a schema, and provides the ability to
                     validate recursive structures through self-reference.
