@@ -29,7 +29,8 @@
                     "format": "uri-template"
                 },
                 "hrefSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$ref": "http://json-schema.org/draft-08/hyper-schema#",
+                    "default": false
                 },
                 "templatePointers": {
                     "type": "object",
@@ -55,21 +56,24 @@
                     "type": "string"
                 },
                 "targetSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$ref": "http://json-schema.org/draft-08/hyper-schema#",
+                    "default": true
                 },
                 "targetMediaType": {
                     "type": "string"
                 },
                 "targetHints": { },
                 "headerSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$ref": "http://json-schema.org/draft-08/hyper-schema#",
+                    "default": true
                 },
                 "submissionMediaType": {
                     "type": "string",
                     "default": "application/json"
                 },
                 "submissionSchema": {
-                    "$ref": "http://json-schema.org/draft-08/hyper-schema#"
+                    "$ref": "http://json-schema.org/draft-08/hyper-schema#",
+                    "default": true
                 },
                 "$comment": {
                     "type": "string"
