@@ -131,7 +131,20 @@
             "propertyNames": { "format": "regex" },
             "default": {}
         },
+        "schemaDependencies": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#"
+            }
+        },
+        "requiredDependencies": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/stringArray"
+            }
+        },
         "dependencies": {
+            "$comment": "\"dependencies\" is no longer a keyword, but schema authors should avoid redefining it to facilitate a smooth transition to \"schemaDependencies\" and \"requiredDependencies\"",
             "type": "object",
             "additionalProperties": {
                 "anyOf": [
