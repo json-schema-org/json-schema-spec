@@ -1099,18 +1099,18 @@
 
                 <section title="Keywords for Applying Subschemas Conditionally" anchor="conditional">
                     <t>
-                        These keywords work together to implement conditional
-                        application of a subschema based on the outcome of
-                        another subschema.
+                        Three of these keywords work together to implement conditional
+                        application of a subschema based on the outcome of another subschema.
+                        The fourth is a shortcut for a specific conditional case.
                     </t>
                     <t>
-                        These keywords MUST NOT interact with each other across
+                        "if", "then", and "else" MUST NOT interact with each other across
                         subschema boundaries.  In other words, an "if" in one
                         branch of an "allOf" MUST NOT have an impact on a "then"
                         or "else" in another branch.
                     </t>
                     <t>
-                        There is no default behavior for any of these keywords
+                        There is no default behavior for "if", "then", or "else"
                         when they are not present.  In particular, they MUST NOT
                         be treated as if present with an empty schema, and when
                         "if" is not present, both "then" and "else" MUST be
@@ -1179,6 +1179,24 @@
                             subschema.  Implementations MUST NOT evaluate
                             the instance against this keyword, for either validation
                             or annotation collection purposes, in such cases.
+                        </t>
+                    </section>
+                    <section title="dependentSchemas">
+                        <t>
+                            This keyword specifies subschemas that are evaluated if the instance
+                            is an object and contains a certain property.
+                        </t>
+                        <t>
+                            This keyword's value MUST be an object.
+                            Each value in the object MUST be a valid JSON Schema.
+                        </t>
+                        <t>
+                            If the object key is a property in the instance, the entire
+                            instance must validate against the susbschema.  Its use is
+                            dependent on the presence of the property.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same behavior as an empty object.
                         </t>
                     </section>
                 </section>
@@ -1325,24 +1343,6 @@
                         </t>
                         <t>
                             Omitting this keyword has the same behavior as an empty schema.
-                        </t>
-                    </section>
-
-                    <section title="dependencies">
-                        <t>
-                            This keyword specifies subschemas that are evaluated if the instance
-                            is an object and contains a certain property.
-                        </t>
-                        <t>
-                            This keyword's value MUST be an object.
-                            Each value in the object MUST be a valid JSON Schema.
-                        </t>
-                        <t>
-                            If the object key is a property in the instance, the entire
-                            instance must validate against the dependency value.
-                        </t>
-                        <t>
-                            Omitting this keyword has the same behavior as an empty object.
                         </t>
                     </section>
                 </section>
@@ -1685,7 +1685,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <list style="symbols">
                             <t>Moved "definitions" from the Validation specification here as "$defs"</t>
                             <t>Moved applicator keywords from the Validation specification as their own vocabulary</t>
-                            <t>Moved "dependencies" from the Validation specification, but only the schema form</t>
+                            <t>Moved the schema form of "dependencies" from the Validation specification as "dependentSchemas"</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-01">
