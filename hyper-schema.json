@@ -16,7 +16,9 @@
     "properties": {
         "additionalItems": { "$ref": "#" },
         "additionalProperties": { "$ref": "#"},
+        "schemaDependencies": { "$ref": "#" },
         "dependencies": {
+            "$comment": "\"dependencies\" is no longer a keyword, but schema authors should avoid redefining it to facilitate a smooth transition to \"schemaDependencies\" and \"requiredDependencies\"",
             "additionalProperties": {
                 "anyOf": [
                     { "$ref": "#" },
