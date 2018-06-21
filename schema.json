@@ -122,7 +122,10 @@
                 ]
             }
         },
-        "propertyNames": { "$ref": "#" },
+        "propertyNames": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#" }
+        },
         "const": {},
         "enum": {
             "type": "array",

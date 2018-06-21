@@ -95,6 +95,11 @@
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" },
 
+        "contains": { "$ref": "#" },
+        "propertyNames": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#" }
+        },
         "base": {
             "description": "URI Template resolved as for the 'href' keyword in the Link Description Object.  The resulting URI Reference is resolved against the current URI base and sets the new URI base for URI references within the instance.",
             "type": "string"
