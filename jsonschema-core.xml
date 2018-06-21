@@ -125,8 +125,9 @@
             <section title="Keyword Behaviors">
                 <t>
                     JSON Schema keywords fall into several general behavior categories.
-                    Assertions validate that an instance satisfies constraints.  Annotations
-                    attach information that applications may use in any way they see fit.
+                    Assertions validate that an instance satisfies constraints, producing
+                    a boolean result.  Annotations attach information that applications
+                    may use in any way they see fit.
                     Applicators apply subschemas to parts of the instance and combine
                     their results.
                 </t>
@@ -143,6 +144,41 @@
                     Evaluation of a parent schema object can complete once all of its
                     subschemas have been evaluated, although in some circumstance evaluation
                     may be short-circuited due to assertion results.
+                </t>
+                <t>
+                    Keyword behavior MAY be defined in terms of the annotation results
+                    of <xref target="root">subschemas</xref> and/or adjacent keywords.
+                    Such keywords MUST NOT result in a circular dependency.
+                    Keywords MAY modify their behavior based on the presence or absence
+                    of another keyword in the same
+                    <xref target="schema-document">schema object</xref>.
+                </t>
+                <t>
+                    A missing keyword MUST NOT produce a false assertion result, MUST
+                    NOT produce annotation results, and MUST NOT cause any other schema
+                    to be evaluated as part of its own behavioral definition.
+                    However, given that missing keywords do not contribute annotations,
+                    the lack of annotation results may indirectly change the behavior
+                    of other keywords.
+                </t>
+                <t>
+                    In some cases, the missing keyword assertion behavior of a keyword is
+                    identical to that produced by a certain value, and keyword definitions
+                    SHOULD note such values where known.  However, even if the value which
+                    produces the default behavior would produce annotation results if
+                    present, the default behavior still MUST NOT result in annotations.
+                </t>
+                <t>
+                    Because annotation collection can add significant cost in terms of both
+                    computation and memory, implementations MAY opt out of this feature.
+                    Keywords known to an implementation to have assertion or applicator behavior
+                    that depend on annotation results MUST then be treated as errors, unless
+                    an alternate implementation producing the same behavior is available.
+                    Keywords of this sort SHOULD describe reasonable alternate approaches
+                    when appropriate.  This approach is demonstrated by the
+                    "<xref target="additionalItems" format="title"/>" and
+                    "<xref target="additionalProperties" format="title"/>" keywords in this
+                    document.
                 </t>
                 <t>
                     Extension keywords SHOULD stay within these categories, keeping in mind
@@ -189,9 +225,7 @@
                     </t>
                     <t>
                         An instance can only fail an assertion that is present in the schema.
-                        In some cases, this no-op behavior is identical to a keyword that exists with
-                        certain values, and keyword definitions SHOULD note such values where known.
-                        These default behaviors MUST NOT result in assertion failures.
+
                     </t>
                     <section title="Assertions and Instance Primitive Types">
                         <t>
@@ -1243,12 +1277,8 @@
                 <section title="Keywords for Applying Subschemas to Arrays">
                     <section title="items">
                         <t>
-                            The value of "items" MUST be either a valid JSON Schema or an array of valid
-                            JSON Schemas.
-                        </t>
-                        <t>
-                            This keyword determines how child instances validate for arrays,
-                            and does not directly validate the immediate instance itself.
+                            The value of "items" MUST be either a valid JSON Schema or
+                            an array of valid JSON Schemas.
                         </t>
                         <t>
                             If "items" is a schema, validation succeeds if all elements
@@ -1260,30 +1290,56 @@
                             same position, if any.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            This keyword produces an annotation value which is the largest
+                            index to which this keyword applied a subschema.  The value
+                            MAY be a boolean true if a subschema was applied to every
+                            index of the instance, such as when "items" is a schema.
+                        </t>
+                        <t>
+                            Annotation results for "items" keywords from multiple
+                            schemas applied to the same instance location are combined
+                            by setting the combined result to true if any of the values
+                            are true, and otherwise retaining the largest numerical value.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
                         </t>
                     </section>
 
-                    <section title="additionalItems">
+                    <section title="additionalItems" anchor="additionalItems">
                         <t>
                             The value of "additionalItems" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for arrays,
-                            and does not directly validate the immediate instance itself.
+                            The behavior of this keyword depends on the presence and
+                            annotation result of "items" within the same schema object.
+                            If "items" is present, and its annotation result is a number,
+                            validation succeeds if every instance element at an index
+                            greater than that number validates against "additionalItems".
                         </t>
                         <t>
-                            If "items" is an array of schemas, validation succeeds
-                            if every instance element at a position greater than the size
-                            of "items" validates against "additionalItems".
+                            Otherwise, if "items" is absent or its annotation result
+                            is the boolean true, "additionalItems" MUST be ignored.
                         </t>
                         <t>
-                            Otherwise, "additionalItems" MUST be ignored, as the "items"
-                            schema (possibly the default value of an empty schema) is
-                            applied to all elements.
+                            If the "additionalItems" subschema is applied to any
+                            positions within the instance array, it produces an
+                            annotation result of boolean true, analogous to the
+                            single schema behavior of "items".  If any "additionalItems"
+                            keyword from any subschema applied to the same instance
+                            location produces an annotation value of true, then
+                            the combined result from these keywords is also true.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementations MAY choose to implement or optimize this keyword
+                            in another way that produces the same effect, such as by directly
+                            checking for the presence and size of an "items" array.
+                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
@@ -1293,7 +1349,16 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema.
+                            its elements is valid against the given schema.  This keyword
+                            does not produce annotation results.
+                            <cref>
+                                Should it produce a set of the indices for which the
+                                array element is valid against the subschema?  "contains"
+                                does not affect "additionalItems" or any other current
+                                or proposed keyword, but the information could be useful,
+                                and implementation that collect annotations need to
+                                apply "contains" to every element anyway.
+                            </cref>
                         </t>
                     </section>
                 </section>
@@ -1305,17 +1370,21 @@
                             Each value of this object MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                        </t>
-                        <t>
                             Validation succeeds if, for each name that appears in both
                             the instance and as a name within this keyword's value, the child
                             instance for that name successfully validates against the
                             corresponding schema.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty object.
+                            The annotation result of this keyword is the set of instance
+                            property names matched by this keyword.  Annotation results
+                            for "properties" keywords from multiple schemas applied to
+                            the same instance location are combined by taking the union
+                            of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty object.
                         </t>
                     </section>
 
@@ -1327,41 +1396,57 @@
                             MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                            Validation of the primitive instance type against this keyword
-                            always succeeds.
-                        </t>
-                        <t>
                             Validation succeeds if, for each instance name that matches any
                             regular expressions that appear as a property name in this keyword's value,
                             the child instance for that name successfully validates against each
                             schema that corresponds to a matching regular expression.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty object.
+                            The annotation result of this keyword is the set of instance
+                            property names matched by this keyword.  Annotation results
+                            for "patternProperties" keywords from multiple schemas applied to
+                            the same instance location are combined by taking the union
+                            of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty object.
                         </t>
                     </section>
 
-                    <section title="additionalProperties">
+                    <section title="additionalProperties" anchor="additionalProperties">
                         <t>
                             The value of "additionalProperties" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                        </t>
-                        <t>
+                            The behavior of this keyword depends on the presence and
+                            annotation results of "properties" and "patternProperties"
+                            within the same schema object.
                             Validation with "additionalProperties" applies only to the child
-                            values of instance names that do not match any names in "properties",
-                            and do not match any regular expression in "patternProperties".
+                            values of instance names that do not appear in the annotation
+                            results of either "properties" or "patternProperties".
                         </t>
                         <t>
                             For all such properties, validation succeeds if the child instance
                             validates against the "additionalProperties" schema.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            The annotation result of this keyword is the set of instance
+                            property names validated by this keyword's subschema.
+                            Annotation results for "additionalProperties" keywords from
+                            multiple schemas applied to the same instance location are combined
+                            by taking the union of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementation MAY choose to implement or optimize this keyword
+                            in another way that produces the same effect, such as by directly
+                            checking the names in "properties" and the patterns in
+                            "patternProperties" against the instance property set.
+                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
