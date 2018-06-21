@@ -792,17 +792,16 @@
             <section title='Schema References With "$ref"'>
                 <t>
                     The "$ref" keyword can be used to reference a schema which is to be applied to the
-                    current instance location. "$ref" is an assertion key word, which MUST produce a boolean
-                    assertion result when the resolved schema is applied.
+                    current instance location. "$ref" is an applicator key word, applying the referenced
+                    schema to the instance.
                 </t>
-                <cref anchor="REF1" source="BH">
-                    The use of "$ref" MUST NOT effect adjacent keywords.
-                    Given previously the use of "$ref" would negate the use of other keywords in that object,
-                    it seems like a good thing to mention.
-                    Should be removed before leaving Internet Draft
-                </cref>
                 <t>
-                    The value of the "$ref" property MUST be a URI Reference.
+                    By being an applicator key word, "$ref" allows the posibility to externalise or
+                    segment a schema across multiple files, and provides the ability to validate recursive structures
+                    through self-reference.
+                </t>
+                <t>
+                    The value of the "$ref" property MUST be a string URI Reference.
                     Resolved against the current URI base, it identifies the URI of a schema to use.
                 </t>
                 <t>
@@ -820,22 +819,12 @@
                     A URI reference without a protocol MUST be considered a plain name fragment,
                     and the URI reference location resolved according to <xref target="id-keyword">"$id" keyword</xref> section.
                 </t>
-                    A URI reference with a network addressable locator defined MAY be provided with an interface to retrieve
-                    the network accessible resource.
+                    A URI reference with a network addressable locator defined MAY be provided with an interface to resolve
+                    the reference as a network accessible resource.
                 <t>
-                <cref anchor="REF2" source="BH">
-                    A schema author wants to define a means to retrieve a specific URI protocol. An implementation may allow
-                    the user to specify a method to perform a network operation (or other operation) to retrieve the reference
-                    content. For example, the behaviour of a URI with a protocol of "file" is not defined. The implementation
-                    provides an interface to define a function which is called when it encounters a URI which uses the specified
-                    URI protocol (which is "file" in this case). The user defines "file" as the protocol, and includes a function
-                    (or some form of instruction) using the interface, which will be triggered to retrieve any reference defined
-                    with a URI that uses a protocol of "file". This is similar to "adding a schema" where implementations track
-                    added schema's $id, allowing them to be later used in reference.
-                </cref>
                 </t>
-                Any URI may be resolvable by use of externally defined references provided to the implementation as per the
-                <xref target="loading-references">Loading a referenced schema</xref> section.
+                    Any URI may be resolvable by use of externally defined references provided to the implementation as per the
+                    <xref target="loading-references">Loading a referenced schema</xref> section.
                 <t>
 
                 </t>
