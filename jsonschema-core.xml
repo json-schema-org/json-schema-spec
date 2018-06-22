@@ -132,6 +132,13 @@
                     their results.
                 </t>
                 <t>
+                    Extension keywords SHOULD stay within these categories, keeping in mind
+                    that annotations in particular are extremely flexible.  Complex behavior
+                    is usually better delegated to applications on the basis of annotation
+                    data than implemented directly as schema keywords.  However, extension
+                    keywords MAY define other behaviors for specialized purposes.
+                </t>
+                <t>
                     Evaluating an instance against a schema involves processing all of the
                     keywords in the schema against the appropriate locations within the instance.
                     Typically, applicator keywords are processed until a schema object with no
@@ -145,48 +152,45 @@
                     subschemas have been evaluated, although in some circumstance evaluation
                     may be short-circuited due to assertion results.
                 </t>
-                <t>
-                    Keyword behavior MAY be defined in terms of the annotation results
-                    of <xref target="root">subschemas</xref> and/or adjacent keywords.
-                    Such keywords MUST NOT result in a circular dependency.
-                    Keywords MAY modify their behavior based on the presence or absence
-                    of another keyword in the same
-                    <xref target="schema-document">schema object</xref>.
-                </t>
-                <t>
-                    A missing keyword MUST NOT produce a false assertion result, MUST
-                    NOT produce annotation results, and MUST NOT cause any other schema
-                    to be evaluated as part of its own behavioral definition.
-                    However, given that missing keywords do not contribute annotations,
-                    the lack of annotation results may indirectly change the behavior
-                    of other keywords.
-                </t>
-                <t>
-                    In some cases, the missing keyword assertion behavior of a keyword is
-                    identical to that produced by a certain value, and keyword definitions
-                    SHOULD note such values where known.  However, even if the value which
-                    produces the default behavior would produce annotation results if
-                    present, the default behavior still MUST NOT result in annotations.
-                </t>
-                <t>
-                    Because annotation collection can add significant cost in terms of both
-                    computation and memory, implementations MAY opt out of this feature.
-                    Keywords known to an implementation to have assertion or applicator behavior
-                    that depend on annotation results MUST then be treated as errors, unless
-                    an alternate implementation producing the same behavior is available.
-                    Keywords of this sort SHOULD describe reasonable alternate approaches
-                    when appropriate.  This approach is demonstrated by the
-                    "<xref target="additionalItems" format="title"/>" and
-                    "<xref target="additionalProperties" format="title"/>" keywords in this
-                    document.
-                </t>
-                <t>
-                    Extension keywords SHOULD stay within these categories, keeping in mind
-                    that annotations in particular are extremely flexible.  Complex behavior
-                    is usually better delegated to applications on the basis of annotation
-                    data than implemented directly as schema keywords.  However, extension
-                    keywords MAY define other behaviors for specialized purposes.
-                </t>
+                <section title="Keyword Interactions">
+                    <t>
+                        Keyword behavior MAY be defined in terms of the annotation results
+                        of <xref target="root">subschemas</xref> and/or adjacent keywords.
+                        Such keywords MUST NOT result in a circular dependency.
+                        Keywords MAY modify their behavior based on the presence or absence
+                        of another keyword in the same
+                        <xref target="schema-document">schema object</xref>.
+                    </t>
+                </section>
+                <section title="Default Behaviors">
+                    <t>
+                        A missing keyword MUST NOT produce a false assertion result, MUST
+                        NOT produce annotation results, and MUST NOT cause any other schema
+                        to be evaluated as part of its own behavioral definition.
+                        However, given that missing keywords do not contribute annotations,
+                        the lack of annotation results may indirectly change the behavior
+                        of other keywords.
+                    </t>
+                    <t>
+                        In some cases, the missing keyword assertion behavior of a keyword is
+                        identical to that produced by a certain value, and keyword definitions
+                        SHOULD note such values where known.  However, even if the value which
+                        produces the default behavior would produce annotation results if
+                        present, the default behavior still MUST NOT result in annotations.
+                    </t>
+                    <t>
+                        Because annotation collection can add significant cost in terms of both
+                        computation and memory, implementations MAY opt out of this feature.
+                        Keywords known to an implementation to have assertion or applicator behavior
+                        that depend on annotation results MUST then be treated as errors, unless
+                        an alternate implementation producing the same behavior is available.
+                        Keywords of this sort SHOULD describe reasonable alternate approaches
+                        when appropriate.  This approach is demonstrated by the
+                        "<xref target="additionalItems" format="title"/>" and
+                        "<xref target="additionalProperties" format="title"/>" keywords in this
+                        document.
+                    </t>
+                </section>
                 <section title="Applicators" anchor="applicators">
                     <t>
                         Applicators allow for building more complex schemas than can be accomplished
