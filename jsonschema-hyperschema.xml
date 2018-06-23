@@ -1552,7 +1552,7 @@ GET https://api.example.com HTTP/1.1
 
 200 OK
 Content-Type: application/json
-Link: <https://schema.example.com/entry>; rel=describedBy
+Link: <https://schema.example.com/entry>; rel="describedBy"
 {}
 ]]>
                     </artwork>
@@ -1896,10 +1896,10 @@ GET https://api.example.com/trees/1/nodes/123 HTTP/1.1
 
 200 OK
 Content-Type: application/json
-Link: <https://api.example.com/trees/1/nodes/123>; rel=self
-Link: <https://api.example.com/trees/1/nodes/123>; rel=up;
+Link: <https://api.example.com/trees/1/nodes/123>; rel="self"
+Link: <https://api.example.com/trees/1/nodes/123>; rel="up";
         anchor="https://api.example.com/trees/1/nodes/456"
-Link: <https://api.example.com/trees/1/nodes/456>; rev=up
+Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
 {
     "id": 123,
     "treeId": 1,
