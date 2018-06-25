@@ -39,16 +39,18 @@
         "properties": {
             "additionalProperties": { "$ref": "#" }
         },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": { "$ref": "#" },
+        "then": { "$ref": "#" },
+        "else": { "$ref": "#" },
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" },
         "contains": { "$ref": "#" },
-        "propertyNames": { "$ref": "#" },
-
+        "propertyNames": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#" }
+        },
         "base": {
             "type": "string",
             "format": "uri-template"
