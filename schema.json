@@ -140,7 +140,10 @@
                 ]
             }
         },
-        "propertyNames": { "$ref": "#" },
+        "propertyNames": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#" }
+        },
         "const": true,
         "enum": {
             "type": "array",
@@ -162,9 +165,9 @@
         "format": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": { "$ref": "#" },
+        "then": { "$ref": "#" },
+        "else": { "$ref": "#" },
         "allOf": { "$ref": "#/$defs/schemaArray" },
         "anyOf": { "$ref": "#/$defs/schemaArray" },
         "oneOf": { "$ref": "#/$defs/schemaArray" },
