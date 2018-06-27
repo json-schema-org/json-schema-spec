@@ -10,13 +10,14 @@
 <!ENTITY RFC3987 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3987.xml">
 <!ENTITY RFC4291 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4291.xml">
 <!ENTITY RFC4329 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4329.xml">
+<!ENTITY RFC4648 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC5891 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5891.xml">
 <!ENTITY RFC6531 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6531.xml">
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
-<!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC8259 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8259.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -39,7 +40,6 @@
         </author>
 
         <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
-            <organization>Cloudflare, Inc.</organization>
             <address>
                 <postal>
                     <street></street>
@@ -173,35 +173,10 @@
 
             <section title="Regular Expressions" anchor="regexInterop">
                 <t>
-                    Two validation keywords, "pattern" and "patternProperties", use regular
-                    expressions to express constraints, and the "regex" value for the
-                    "format" keyword constrains the instance value to be a regular expression.
-                     These regular expressions SHOULD be valid according to the
-                    <xref target="ecma262">ECMA 262</xref> regular expression dialect.
-                </t>
-                <t>
-                    Furthermore, given the high disparity in regular expression constructs support,
-                    schema authors SHOULD limit themselves to the following regular expression
-                    tokens:
-
-                    <list>
-                        <t>individual Unicode characters, as defined by the <xref
-                        target="RFC7159">JSON specification</xref>;</t>
-                        <t>simple character classes ([abc]), range character classes ([a-z]);</t>
-                        <t>complemented character classes ([^abc], [^a-z]);</t>
-                        <t>simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or
-                        one), and their lazy versions ("+?", "*?", "??");</t>
-                        <t>range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at
-                        most y, occurrences), {x,} (x occurrences or more), and their lazy
-                        versions;</t>
-                        <t>the beginning-of-input ("^") and end-of-input ("$") anchors;</t>
-                        <t>simple grouping ("(...)") and alternation ("|").</t>
-                    </list>
-                </t>
-                <t>
-                    Finally, implementations MUST NOT take regular expressions to be
-                    anchored, neither at the beginning nor at the end. This means, for instance,
-                    the pattern "es" matches "expression".
+                    Keywords that use regular expressions, or constrain the instance value
+                    to be a regular expression, are subject to the interoperability
+                    considerations for regular expressions in the
+                    <xref target="json-schema">JSON Schema Core</xref> specification.
                 </t>
             </section>
 
@@ -334,7 +309,7 @@
                     </t>
                     <t>
                         The length of a string instance is defined as the number of its
-                        characters as defined by <xref target="RFC7159">RFC 7159</xref>.
+                        characters as defined by <xref target="RFC8259">RFC 8259</xref>.
                     </t>
                 </section>
 
@@ -349,14 +324,14 @@
 
                     <t>
                         The length of a string instance is defined as the number of its
-                        characters as defined by <xref target="RFC7159">RFC 7159</xref>.
+                        characters as defined by <xref target="RFC8259">RFC 8259</xref>.
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as a value of 0.
                     </t>
                 </section>
 
-                <section title="pattern">
+                <section title="pattern" anchor="pattern">
                     <t>
                         The value of this keyword MUST be a string. This string SHOULD be a
                         valid regular expression, according to the ECMA 262 regular expression
@@ -785,8 +760,16 @@
                     If the instance value is a string, this property defines that the string
                     SHOULD be interpreted as binary data and decoded using the encoding
                     named by this property.
-                    <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible
-                    values for this property.
+                </t>
+
+                <t>
+                    Possible values for this property are listed in
+                    <xref target="RFC2045">RFC 2045, Sec 6.1</xref> and
+                    <xref target="RFC4648">RFC 4548</xref>.  For "base64", which is defined
+                    in both RFCs, the definition in RFC 4648, which removes line length
+                    limitations, SHOULD be used, as various other specifications have
+                    mandated different lengths.  Note that line lengths within a string
+                    can be constrained using the <xref target="pattern">"pattern"</xref> keyword.
                 </t>
 
                 <t>
@@ -1017,13 +1000,14 @@
             &RFC3986;
             &RFC3987;
             &RFC4291;
+            &RFC4648;
             &RFC5322;
             &RFC5890;
             &RFC5891;
             &RFC6570;
             &RFC6531;
             &RFC6901;
-            &RFC7159;
+            &RFC8259;
             <reference anchor="ecma262"
             target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
                 <front>
@@ -1052,7 +1036,7 @@
                         <organization/>
                     </author>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <date year="2017" month="November"/>
                 </front>

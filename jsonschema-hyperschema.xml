@@ -31,7 +31,6 @@
         </title>
 
         <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
-            <organization>Cloudflare, Inc.</organization>
             <address>
                 <postal>
                     <street></street>
@@ -945,9 +944,9 @@
                     </t>
                     <t hangText="attachmentPointer">
                         The JSON Pointer for the location within the instance to which the
-                        link is attached.  By default, "contextUri" and "attachmentUri" are
+                        link is attached.  By default, "contextUri" and "attachmentPointer" are
                         the same, but "contextUri" can be changed by LDO keywords, while
-                        "attachmentUri" cannot.
+                        "attachmentPointer" cannot.
                     </t>
                 </list>
                 Other LDO keywords that are not involved in producing the above information
@@ -1553,7 +1552,7 @@ GET https://api.example.com HTTP/1.1
 
 200 OK
 Content-Type: application/json
-Link: <https://schema.example.com/entry> rel=describedBy
+Link: <https://schema.example.com/entry>; rel="describedBy"
 {}
 ]]>
                     </artwork>
@@ -1897,10 +1896,10 @@ GET https://api.example.com/trees/1/nodes/123 HTTP/1.1
 
 200 OK
 Content-Type: application/json
-Link: <https://api.example.com/trees/1/nodes/123> rel=self
-Link: <https://api.example.com/trees/1/nodes/123> rel=up
-        anchor=<https://api.example.com/trees/1/nodes/456>
-Link: <https://api.example.com/trees/1/nodes/456> rev=up
+Link: <https://api.example.com/trees/1/nodes/123>; rel="self"
+Link: <https://api.example.com/trees/1/nodes/123>; rel="up";
+        anchor="https://api.example.com/trees/1/nodes/456"
+Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
 {
     "id": 123,
     "treeId": 1,
@@ -2305,7 +2304,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         "contextPointer": "",
         "rel": "self",
         "targetUri":
-            "https://api.example.com/things?offset=20,limit=2",
+            "https://api.example.com/things?offset=0&limit=2",
         "attachmentPointer": ""
     },
     {
@@ -2313,7 +2312,7 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
         "contextPointer": "",
         "rel": "next",
         "targetUri":
-            "https://api.example.com/things?offset=22,limit=2",
+            "https://api.example.com/things?offset=3&limit=2",
         "attachmentPointer": ""
     }
 ]]]>
@@ -2546,11 +2545,11 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                         <organization/>
                     </author>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <date year="2018" month="January"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-relative-json-pointer-01" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-relative-json-pointer-02" />
             </reference>
             <reference anchor="json-schema">
                 <front>
@@ -2559,11 +2558,11 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                         <organization/>
                     </author>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-02" />
             </reference>
             <reference anchor="json-schema-validation">
                 <front>
@@ -2572,14 +2571,14 @@ Link: <https://api.example.com/trees/1/nodes/456> rev=up
                         <organization/>
                     </author>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <author initials="G." surname="Luff">
                         <organization/>
                     </author>
                     <date year="2017" month="November"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-validation-00" />
+                <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-validation-02" />
             </reference>
         </references>
         <references title="Informative References">
