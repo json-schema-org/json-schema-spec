@@ -955,20 +955,21 @@
 
             <section title='Schema References With "$ref"' anchor="ref">
                 <t>
-                    The "$ref" keyword is used to reference a schema, and provides the ability to
-                    validate recursive structures through self-reference.
+                    The "$ref" keyword can be used to reference a schema which is to be applied to the
+                    current instance location. "$ref" is an applicator key word, applying the referenced
+                    schema to the instance.
                 </t>
                 <t>
-                    An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
-                    The value of the "$ref" property MUST be a URI Reference.
+                    By being an applicator key word, "$ref" allows the posibility to externalise or
+                    segment a schema across multiple files, and provides the ability to validate recursive structures
+                    through self-reference.
+                </t>
+                <t>
+                    The value of the "$ref" property MUST be a string URI Reference.
                     Resolved against the current URI base, it identifies the URI of a schema to use.
-                    All other properties in a "$ref" object MUST be ignored.
                 </t>
                 <t>
-                    The URI is not a network locator, only an identifier. A schema need not be
-                    downloadable from the address if it is a network-addressable URL, and
-                    implementations SHOULD NOT assume they should perform a network operation when they
-                    encounter a network-addressable URI.
+                    A URI may be a locator, a name, or both, per <xref target="RFC3986">RFC 3986</xref>.
                 </t>
                 <t>
                     A schema MUST NOT be run into an infinite loop against a schema. For example, if two
@@ -978,7 +979,19 @@
                     Schemas SHOULD NOT make use of infinite recursive nesting like this; the behavior is
                     undefined.
                 </t>
-                <section title="Loading a referenced schema">
+                <t>
+                    A URI reference without a protocol MUST be considered a plain name fragment,
+                    and the URI reference location resolved according to <xref target="id-keyword">"$id" keyword</xref> section.
+                </t>
+                <t>
+                    A URI reference with a network addressable locator defined MAY be provided with an interface to resolve
+                    the reference as a network accessible resource.
+                </t>
+                <t>
+                    Any URI may be resolvable by use of externally defined references provided to the implementation as per the
+                    <xref target="loading-references">Loading a referenced schema</xref> section.
+                </t>
+                <section title="Loading a referenced schema" anchor="loading-references">
                     <t>
                         The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
                         but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
@@ -1066,6 +1079,24 @@
                         </cref>
                     </t>
                 </section>
+            </section>
+            <section title="Dereferencing By Inclusion">
+                <t>
+                    It MUST NOT be expected that any schema can be dereferenced by the means of replacing any object that
+                    uses the "$ref" keyword with the resolved referenced schema (inclusion). An interface MAY be provided
+                    to dereference a schema by means of inclusion, however it MUST NOT be the default behaviour.
+                </t>
+                <t>
+                    The use of "$id" and "$ref" from external schemas MUST be evaluate correctly, and not evaluated after
+                    any inclusion process.
+                </t>
+                <t>
+                    The result of any inclusion process MUST NOT effect previously adjacent keywords to the original "$ref" keyword
+                </t>
+                <t>
+                    A behaviour when a resolved schema which defines a schema version which is different to that of the base JSON Schema document
+                    is not defined.
+                </t>
             </section>
 
             <section title='Schema Re-Use With "$defs"'>
