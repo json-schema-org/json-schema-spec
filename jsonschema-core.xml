@@ -955,15 +955,19 @@
 
             <section title='Schema References With "$ref"' anchor="ref">
                 <t>
-                    The "$ref" keyword is used to reference a schema, and provides the ability to
-                    validate recursive structures through self-reference.
+                    The "$ref" keyword can be used to reference a schema which is to be applied to the
+                    current instance location. "$ref" is an applicator key word, applying the referred
+                    schema to the instance.
+                </t>
++                <t>
++                   The value of the "$ref" property MUST be a string which is a URI Reference.
+                    Resolved against the current URI base, it identifies the URI of a schema to use.
                 </t>
                 <t>
-                    An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
-                    The value of the "$ref" property MUST be a URI Reference.
-                    Resolved against the current URI base, it identifies the URI of a schema to use.
-                    All other properties in a "$ref" object MUST be ignored.
-                </t>
+                    As the value of "$ref" is a URI Reference, this allows the posibility to externalise or
++                   shard a schema across multiple files, and provides the ability to validate recursive structures
++                   through self-reference.
++                </t>
                 <t>
                     The URI is not a network locator, only an identifier. A schema need not be
                     downloadable from the address if it is a network-addressable URL, and
