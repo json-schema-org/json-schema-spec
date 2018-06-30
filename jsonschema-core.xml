@@ -1158,15 +1158,18 @@
                 A collected annotation MUST include the following information:
                 <list>
                     <t>
-                        The name of the annotation, which MUST be identical to the keyword
-                        that defines that annotation.
+                        The name of the keyword that produces the annotation
                     </t>
                     <t>
                         The instance location to which it is attached, as a JSON Pointer
                     </t>
                     <t>
-                        The schema location of the attaching keyword, as a list of URIs
-                        constructed as described below
+                        The absolute schema location of the attaching keyword, as a URI
+                    </t>
+                    <t>
+                        The schema location path, indicating how reference keywords
+                        such as "$ref" were followed to reach the absolute schema location
+                        <cref>The exact format of this path is TBD, again see issue #396</cref>
                     </t>
                     <t>
                         The attached value(s)
@@ -1174,34 +1177,140 @@
                 </list>
             </t>
             <t>
-                If multiple schema locations attach values to the same instance location,
-                and the annotation defines a process for combining such values, then the
-                combined value MUST also be associated with the instance location.
+                If the same keyword attaches values from multiple schema locations
+                to the same instance location, and the annotation defines a process
+                for combining such values, then the combined value MUST also be associated
+                with the instance location.
             </t>
-            <t>
-                Applications MAY make decisions on which of multiple annotation values
-                to use based on the schema location that contributed the value.
-                This is intended to allow flexible usage.  Collecting the schema location
-                facilites such usage.
-            </t>
-            <t>
-                For example, one application may consider a "description" annotation that is
-                in the same schema object as a "$ref" to override any "description" in the
-                reference's target schema.  A different application may prefer to concatenate
-                all "description" annotations based on whatever ordering it defines.
-            </t>
-            <section title="Annotations and Assertions">
+            <section title="Distinguishing Among Multiple Values">
                 <t>
-                    If any keyword in a schema object produces a false assertion
-                    result, then all annotations from all keywords in that schema
-                    object, and any of its subschemas or referenced schemas, MUST
-                    be discarded.
+                    Applications MAY make decisions on which of multiple annotation values
+                    to use based on the schema location that contributed the value.
+                    This is intended to allow flexible usage.  Collecting the schema location
+                    facilitates such usage.
                 </t>
                 <t>
-                    This may be due to an assertion keyword directly producing
-                    a false result, or an applicator keyword producing a false
-                    assertion result as the aggregate assertion result of
-                    its subschema(s).
+                    For example, consider this schema, which uses annotations and assertions from
+                    the <xref target="json-schema-validation">Validation specification</xref>:
+                </t>
+                <figure>
+                    <preamble>
+                        Note that some lines are wrapped for clarity.
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "title": "Feature list",
+    "type": "array",
+        "items": [
+            {
+                "title": "Feature A",
+                "properties": {
+                    "enabled": {
+                        "$ref": "#/$defs/enabledToggle",
+                        "default": true
+                    }
+                }
+            },
+            {
+                "title": "Feature B",
+                "properties": {
+                    "enabled": {
+                        "description": "If set to null, Feature B
+                                        inherits the enabled
+                                        value from Feature A",
+                        "$ref": "#/$defs/enabledToggle"
+                    }
+                }
+            }
+        ]
+    },
+    "$defs": {
+        "enabledToggle": {
+            "title": "Enabled",
+            "description": "Whether the feature is enabled (true),
+                            disabled (false), or under
+                            automatic control (null)",
+            "type": ["boolean", "null"],
+            "default": null
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    In this example, both Feature A and Feature B make use of the re-usable
+                    "enabledToggle" schema.  That schema uses the "title", "description",
+                    and "default" annotations, none of which define special behavior for
+                    handling multiple values.  Therefore the application has to decide how
+                    to handle the additional "default" value for Feature A, and the additional
+                    "description" value for Feature B.
+                </t>
+                <t>
+                    The application programmer and the schema author need to agree on the
+                    usage.  For this example, let's assume that they agree that the most
+                    specific "default" value will be used, and any additional, more generic
+                    "default" values will be silently ignored.  Let's also assume that they
+                    agree that all "description" text is to be used, starting with the most
+                    generic, and ending with the most specific.  This requires the schema
+                    author to write descriptions that work when combined in this way.
+                </t>
+                <t>
+                    The application can use the schema location path to determine which
+                    values are which.  The values in the feature's immediate "enabled"
+                    property schema are more specific, while the values under the re-usable
+                    schema that is referred to with "$ref" are more generic.  The schema
+                    location path will show whether each value was found by crossing a
+                    "$ref" or not.
+                </t>
+                <t>
+                    Feature A will therefore use a default value of true, while Feature B
+                    will use the generic default value of null.  Feature A will only
+                    have the generic description from the "enabledToggle" schema, while
+                    Feature B will use that description, and also append its locally
+                    defined description that explains how to interpret a null value.
+                </t>
+                <t>
+                    Note that there are other reasonable approaches that a different application
+                    might take.  For example, an application may consider the presence of
+                    two different values for "default" to be an error, regardless of their
+                    schema locations.
+                </t>
+            </section>
+            <section title="Annotations and Assertions">
+                <t>
+                    Schema objects that produce a false assertion result MUST NOT
+                    produce any annotation results, whether from their own keywords
+                    or from keywords in subschemas.
+                </t>
+                <t>
+                    Note that the overall schema results may still include annotations
+                    collected from other schema locations.  Given this schema:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "oneOf": [
+        {
+            "title": "Integer Value",
+            "type": "integer"
+        },
+        {
+            "title": "String Value",
+            "type": "string"
+        }
+    ]
+}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    And the instance <spanx style="verb">"This is a string"</spanx>, the
+                    title annotation "Integer Value" is discarded because the type assertion
+                    in that schema object fails.  The title annotation "String Value"
+                    is kept, as the instance passes the string type assertions.
                 </t>
             </section>
             <section title="Annotations and Applicators">
@@ -1212,18 +1321,6 @@
                     annotation values are defined by each annotation keyword, and are
                     not directly affected by the logic used for combining assertion
                     results.
-                </t>
-                <t>
-                    If, in the process of aggregating subscheama results, an applicator
-                    keyword modifies a subschema's assertion result to be false, all
-                    annotation keywords from that subschema MUST be discarded.
-                </t>
-                <t>
-                    Note that this means that an applicator such as <xref target="not">"not"</xref>
-                    will never produce annotation results:  Either the subschema failed an
-                    assertion and discarded its annotations before "not" processes them, or if
-                    the subschema passed all assertions, "not" will invert that to a failure,
-                    and then discard the annotations before producing its own result.
                 </t>
             </section>
         </section>
