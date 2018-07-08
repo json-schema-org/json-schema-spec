@@ -465,7 +465,7 @@
                     </t>
                 </section>
 
-                <section title="requiredDependencies">
+                <section title="dependentRequired">
                     <t>
                         The value of this keyword MUST be an object.  Properties in
                         this object, if any, MUST be arrays.  Elements in each array,
@@ -473,7 +473,8 @@
                     </t>
                     <t>
                         This keyword specifies properties that are required if a specific
-                        other property is present.
+                        other property is present.  Their requirement is dependent on the
+                        presence of the other property.
                     </t>
                     <t>
                         Validation succeeds if, for each name that appears in both
@@ -1075,13 +1076,13 @@
                     <t hangText='"dependencies"'>
                         This keyword had two different modes of behavior, which made it
                         relatively challenging to implement and reason about.
-                        The schema form has been moved to Core under the original
-                        "dependencies" keyword, as part of the applicator vocabulary.
+                        The schema form has been moved to Core and renamed to
+                        "dependentSchemas", as part of the applicator vocabulary.
                         It is analogous to "properties", except that instead of applying
                         its subschema to the property value, it applies it to the object
                         containing the property.
                         The property name array form is retained here and renamed to
-                        "requiredDependencies", as it is an assertion which is a shortcut
+                        "dependentRequired", as it is an assertion which is a shortcut
                         for the conditional use of the "required" assertion keyword.
                     </t>
                 </list>
@@ -1123,7 +1124,7 @@
                         <list style="symbols">
                             <t>Moved "definitions" to the core spec as "$defs"</t>
                             <t>Moved applicator keywords to the core spec</t>
-                            <t>Renamed the array form of "dependencies" to "requiredDependencies", moved the schema form to the core spec</t>
+                            <t>Renamed the array form of "dependencies" to "dependentRequired", moved the schema form to the core spec</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-validation-01">
