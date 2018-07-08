@@ -456,8 +456,15 @@
                 </t>
                 <section title="rel" anchor="rel">
                     <t>
-                        The value of this property MUST be a string, and MUST be a single
-                        Link Relation Type as defined in RFC 8288, Section 2.1.
+                        The value of this property MUST be either a string or
+                        an array of strings.  If the value is an array,
+                        it MUST contain at least one string.
+                    </t>
+                    <t>
+                        Each string MUST be a single Link Relation Type as defined
+                        in RFC 8288, Section 2.1, including the restriction that
+                        additional semantics SHOULD NOT be inferred based upon the
+                        presence or absence of another link relation type.
                     </t>
                     <t>
                         This property is required.
@@ -921,7 +928,10 @@
                         fragment of the "contextUri" field.
                     </t>
                     <t hangText="rel">
-                        The link relation type, as it appears in the LDO.
+                        The link relation type.  When multiple link relation types appear
+                        in the LDO, for the purpose of producing output, they are to be
+                        treated as multiple LDOs, each with a single link relation type
+                        but otherwise identical.
                     </t>
                     <t hangText="targetUri">
                         The fully resolved URI (with a scheme) of the target resource.  If the
