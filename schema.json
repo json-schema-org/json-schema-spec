@@ -99,7 +99,8 @@
         "minLength": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
         "pattern": {
             "type": "string",
-            "format": "regex"
+            "format": "regex",
+            "pattern": "^(\\^(.[^\\$]*)\\$)$"
         },
         "additionalItems": { "$ref": "#" },
         "items": {

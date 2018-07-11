@@ -173,6 +173,39 @@
 
             <section title="Regular Expressions" anchor="regexInterop">
                 <t>
+                    Two validation keywords, "pattern" and "patternProperties", use regular
+                    expressions to express constraints, and the "regex" value for the
+                    "format" keyword constrains the instance value to be a regular expression.
+                     These regular expressions SHOULD be valid according to the
+                    <xref target="ecma262">ECMA 262</xref> regular expression dialect.
+                </t>
+                <t>
+                    Furthermore, given the high disparity in regular expression constructs support,
+                    schema authors SHOULD limit themselves to the following regular expression
+                    tokens:
+
+                    <list>
+                        <t>individual Unicode characters, as defined by the <xref
+                        target="RFC7159">JSON specification</xref>;</t>
+                        <t>simple character classes ([abc]), range character classes ([a-z]);</t>
+                        <t>complemented character classes ([^abc], [^a-z]);</t>
+                        <t>simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or
+                        one), and their lazy versions ("+?", "*?", "??");</t>
+                        <t>range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at
+                        most y, occurrences), {x,} (x occurrences or more), and their lazy
+                        versions;</t>
+                        <t>the beginning-of-input ("^") and end-of-input ("$") anchors;</t>
+                        <t>simple grouping ("(...)") and alternation ("|").</t>
+                    </list>
+                </t>
+                <t>
+                     Validation rules should make sure they validate the complete input.
+                    <list>
+                        <t>Validation rules should begin with "^"</t>
+                        <t>Validation rules should terminate with "$"</t>
+                    </list>
+                </t>
+                <t>
                     Keywords that use regular expressions, or constrain the instance value
                     to be a regular expression, are subject to the interoperability
                     considerations for regular expressions in the
