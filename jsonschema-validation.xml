@@ -10,13 +10,14 @@
 <!ENTITY RFC3987 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3987.xml">
 <!ENTITY RFC4291 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4291.xml">
 <!ENTITY RFC4329 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4329.xml">
+<!ENTITY RFC4648 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC5891 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5891.xml">
 <!ENTITY RFC6531 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6531.xml">
 <!ENTITY RFC6570 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
-<!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC8259 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8259.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -39,7 +40,6 @@
         </author>
 
         <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
-            <organization>Cloudflare, Inc.</organization>
             <address>
                 <postal>
                     <street></street>
@@ -205,10 +205,10 @@
                         <t>Validation rules should terminate with "$"</t>
                     </list>
                 </t>
-                <t>
-                    Finally, implementations MUST NOT take regular expressions to be
-                    anchored, neither at the beginning nor at the end. This means, for instance,
-                    the pattern "es" matches "expression".
+                    Keywords that use regular expressions, or constrain the instance value
+                    to be a regular expression, are subject to the interoperability
+                    considerations for regular expressions in the
+                    <xref target="json-schema">JSON Schema Core</xref> specification.
                 </t>
             </section>
 
@@ -341,7 +341,7 @@
                     </t>
                     <t>
                         The length of a string instance is defined as the number of its
-                        characters as defined by <xref target="RFC7159">RFC 7159</xref>.
+                        characters as defined by <xref target="RFC8259">RFC 8259</xref>.
                     </t>
                 </section>
 
@@ -356,14 +356,14 @@
 
                     <t>
                         The length of a string instance is defined as the number of its
-                        characters as defined by <xref target="RFC7159">RFC 7159</xref>.
+                        characters as defined by <xref target="RFC8259">RFC 8259</xref>.
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as a value of 0.
                     </t>
                 </section>
 
-                <section title="pattern">
+                <section title="pattern" anchor="pattern">
                     <t>
                         The value of this keyword MUST be a string. This string SHOULD be a
                         valid regular expression, according to the ECMA 262 regular expression
@@ -497,7 +497,7 @@
                     </t>
                 </section>
 
-                <section title="requiredDependencies">
+                <section title="dependentRequired">
                     <t>
                         The value of this keyword MUST be an object.  Properties in
                         this object, if any, MUST be arrays.  Elements in each array,
@@ -505,7 +505,8 @@
                     </t>
                     <t>
                         This keyword specifies properties that are required if a specific
-                        other property is present.
+                        other property is present.  Their requirement is dependent on the
+                        presence of the other property.
                     </t>
                     <t>
                         Validation succeeds if, for each name that appears in both
@@ -792,8 +793,16 @@
                     If the instance value is a string, this property defines that the string
                     SHOULD be interpreted as binary data and decoded using the encoding
                     named by this property.
-                    <xref target="RFC2045">RFC 2045, Sec 6.1</xref> lists the possible
-                    values for this property.
+                </t>
+
+                <t>
+                    Possible values for this property are listed in
+                    <xref target="RFC2045">RFC 2045, Sec 6.1</xref> and
+                    <xref target="RFC4648">RFC 4648</xref>.  For "base64", which is defined
+                    in both RFCs, the definition in RFC 4648, which removes line length
+                    limitations, SHOULD be used, as various other specifications have
+                    mandated different lengths.  Note that line lengths within a string
+                    can be constrained using the <xref target="pattern">"pattern"</xref> keyword.
                 </t>
 
                 <t>
@@ -1024,13 +1033,14 @@
             &RFC3986;
             &RFC3987;
             &RFC4291;
+            &RFC4648;
             &RFC5322;
             &RFC5890;
             &RFC5891;
             &RFC6570;
             &RFC6531;
             &RFC6901;
-            &RFC7159;
+            &RFC8259;
             <reference anchor="ecma262"
             target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
                 <front>
@@ -1059,7 +1069,7 @@
                         <organization/>
                     </author>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <date year="2017" month="November"/>
                 </front>
@@ -1098,13 +1108,13 @@
                     <t hangText='"dependencies"'>
                         This keyword had two different modes of behavior, which made it
                         relatively challenging to implement and reason about.
-                        The schema form has been moved to Core under the original
-                        "dependencies" keyword, as part of the applicator vocabulary.
+                        The schema form has been moved to Core and renamed to
+                        "dependentSchemas", as part of the applicator vocabulary.
                         It is analogous to "properties", except that instead of applying
                         its subschema to the property value, it applies it to the object
                         containing the property.
                         The property name array form is retained here and renamed to
-                        "requiredDependencies", as it is an assertion which is a shortcut
+                        "dependentRequired", as it is an assertion which is a shortcut
                         for the conditional use of the "required" assertion keyword.
                     </t>
                 </list>
@@ -1146,7 +1156,7 @@
                         <list style="symbols">
                             <t>Moved "definitions" to the core spec as "$defs"</t>
                             <t>Moved applicator keywords to the core spec</t>
-                            <t>Renamed the array form of "dependencies" to "requiredDependencies", moved the schema form to the core spec</t>
+                            <t>Renamed the array form of "dependencies" to "dependentRequired", moved the schema form to the core spec</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-validation-01">

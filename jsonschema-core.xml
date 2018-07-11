@@ -5,7 +5,7 @@
 <!ENTITY RFC6839 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6839.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
-<!ENTITY RFC7159 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7159.xml">
+<!ENTITY RFC8259 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8259.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 <!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
@@ -30,7 +30,6 @@
         </author>
 
         <author fullname="Henry Andrews" initials="H" surname="Andrews" role="editor">
-            <organization>Cloudflare, Inc.</organization>
             <address>
                 <postal>
                     <street></street>
@@ -108,7 +107,7 @@
             <t>
                 The terms "JSON", "JSON text", "JSON value", "member", "element", "object", "array",
                 "number", "string", "boolean", "true", "false", and "null" in this document are to
-                be interpreted as defined in <xref target="RFC7159">RFC 7159</xref>.
+                be interpreted as defined in <xref target="RFC8259">RFC 8259</xref>.
             </t>
         </section>
 
@@ -123,63 +122,167 @@
                 data in several ways.
             </t>
 
-            <section title="Assertions">
+            <section title="Keyword Behaviors">
                 <t>
-                    JSON Schema can be used to assert constraints on a JSON document, which
-                    either passes or fails the assertions.  This approach can be used to validate
-                    conformance with the constraints, or document what is needed to satisfy them.
+                    JSON Schema keywords fall into several general behavior categories.
+                    Assertions validate that an instance satisfies constraints, producing
+                    a boolean result.  Annotations attach information that applications
+                    may use in any way they see fit.
+                    Applicators apply subschemas to parts of the instance and combine
+                    their results.
                 </t>
                 <t>
-                    JSON Schema implementations produce a single boolean result when evaluating
-                    an instance against schema assertions.
+                    Extension keywords SHOULD stay within these categories, keeping in mind
+                    that annotations in particular are extremely flexible.  Complex behavior
+                    is usually better delegated to applications on the basis of annotation
+                    data than implemented directly as schema keywords.  However, extension
+                    keywords MAY define other behaviors for specialized purposes.
                 </t>
                 <t>
-                    An instance can only fail an assertion that is present in the schema.
-                    In some cases, this no-op behavior is identical to a keyword that exists with
-                    certain values, and keyword defintions SHOULD note such values where known.
-                    These default behaviors MUST NOT result in assertion failures.
+                    Evaluating an instance against a schema involves processing all of the
+                    keywords in the schema against the appropriate locations within the instance.
+                    Typically, applicator keywords are processed until a schema object with no
+                    applicators (and therefore no subschemas) is reached.  The appropriate
+                    location in the instance is evaluated against the assertion and
+                    annotation keywords in the schema object, and their results are gathered
+                    into the parent schema according to the rules of the applicator.
                 </t>
-                <section title="Assertions and Instance Primitive Types">
+                <t>
+                    Evaluation of a parent schema object can complete once all of its
+                    subschemas have been evaluated, although in some circumstance evaluation
+                    may be short-circuited due to assertion results.
+                </t>
+                <section title="Keyword Interactions">
                     <t>
-                        Most assertions only constrain values within a certain
-                        primitive type.  When the type of the instance is not of the type
-                        targeted by the keyword, the instance is considered to conform
-                        to the assertion.
-                    </t>
-                    <t>
-                        For example, the "maxLength" keyword from the companion validation
-                        vocabulary will only restrict certain strings
-                        (that are too long) from being valid.  If the instance is a number,
-                        boolean, null, array, or object, then it is valid against this assertion.
+                        Keyword behavior MAY be defined in terms of the annotation results
+                        of <xref target="root">subschemas</xref> and/or adjacent keywords.
+                        Such keywords MUST NOT result in a circular dependency.
+                        Keywords MAY modify their behavior based on the presence or absence
+                        of another keyword in the same
+                        <xref target="schema-document">schema object</xref>.
                     </t>
                 </section>
-            </section>
+                <section title="Default Behaviors">
+                    <t>
+                        A missing keyword MUST NOT produce a false assertion result, MUST
+                        NOT produce annotation results, and MUST NOT cause any other schema
+                        to be evaluated as part of its own behavioral definition.
+                        However, given that missing keywords do not contribute annotations,
+                        the lack of annotation results may indirectly change the behavior
+                        of other keywords.
+                    </t>
+                    <t>
+                        In some cases, the missing keyword assertion behavior of a keyword is
+                        identical to that produced by a certain value, and keyword definitions
+                        SHOULD note such values where known.  However, even if the value which
+                        produces the default behavior would produce annotation results if
+                        present, the default behavior still MUST NOT result in annotations.
+                    </t>
+                    <t>
+                        Because annotation collection can add significant cost in terms of both
+                        computation and memory, implementations MAY opt out of this feature.
+                        Keywords known to an implementation to have assertion or applicator behavior
+                        that depend on annotation results MUST then be treated as errors, unless
+                        an alternate implementation producing the same behavior is available.
+                        Keywords of this sort SHOULD describe reasonable alternate approaches
+                        when appropriate.  This approach is demonstrated by the
+                        "<xref target="additionalItems" format="title"/>" and
+                        "<xref target="additionalProperties" format="title"/>" keywords in this
+                        document.
+                    </t>
+                </section>
+                <section title="Applicators" anchor="applicators">
+                    <t>
+                        Applicators allow for building more complex schemas than can be accomplished
+                        with a single schema object.  Evaluation of an instance against a
+                        <xref target="schema-document">schema document</xref> begins by applying
+                        the <xref target="root">root schema</xref> to the complete instance
+                        document.  From there, keywords known as applicators are used to determine
+                        which additional schemas are applied.  Such schemas may be applied in-place
+                        to the current location, or to a child location.
+                    </t>
+                    <t>
+                        The schemas to be applied may be present as subschemas comprising all or
+                        part of the keyword's value.  Alternatively, an applicator may refer to
+                        a schema elsewhere in the same schema document, or in a different one.
+                        The mechanism for identifying such referred schemas is defined by the
+                        keyword.
+                    </t>
+                    <t>
+                        Applicator keywords also define how subschema or referred schema
+                        boolean <xref target="assertions">assertion</xref>
+                        results are modified and/or combined to produce the boolean result
+                        of the applicator.  Applicators may apply any boolean logic operation
+                        to the assertion results of subschemas, but MUST NOT introduce new
+                        assertion conditions of their own.
+                    </t>
+                    <t>
+                        <xref target="annotations">Annotation</xref> results are
+                        combined according to the rules specified by each annotation keyword.
+                    </t>
+                </section>
 
-            <section title="Annotations" anchor="annotations">
-                <t>
-                    JSON Schema can annotate an instance with information, whenever the instance
-                    validates against the schema object containing the annotation, and all of its
-                    parent schema objects.  The information can be a simple value, or can be
-                    calculated based on the instance contents.
-                </t>
-                <t>
-                    Annotations are attached to specific locations in an instance.
-                    Since many subschemas can be applied to any single
-                    location, annotation keywords need to specify any unusual handling of
-                    multiple applicable occurrences of the keyword with different values.
-                    The default behavior is simply to collect all values.
-                </t>
-                <t>
-                    Unlike assertion results, annotation data can take a wide variety of forms,
-                    which are provided to applications to use as they see fit.  JSON Schema
-                    implementations are not expected to make use of the collected information
-                    on behalf of applications.
-                </t>
-                <t>
-                    While "short-circuit" evaluation is possible for assertions, collecting
-                    annotations requires examining all schemas that apply to an instance
-                    location, even if they cannot change the overall assertion result.
-                </t>
+                <section title="Assertions" anchor="assertions">
+                    <t>
+                        JSON Schema can be used to assert constraints on a JSON document, which
+                        either passes or fails the assertions.  This approach can be used to validate
+                        conformance with the constraints, or document what is needed to satisfy them.
+                    </t>
+                    <t>
+                        JSON Schema implementations produce a single boolean result when evaluating
+                        an instance against schema assertions.
+                    </t>
+                    <t>
+                        An instance can only fail an assertion that is present in the schema.
+
+                    </t>
+                    <section title="Assertions and Instance Primitive Types">
+                        <t>
+                            Most assertions only constrain values within a certain
+                            primitive type.  When the type of the instance is not of the type
+                            targeted by the keyword, the instance is considered to conform
+                            to the assertion.
+                        </t>
+                        <t>
+                            For example, the "maxLength" keyword from the companion validation
+                            vocabulary will only restrict certain strings
+                            (that are too long) from being valid.  If the instance is a number,
+                            boolean, null, array, or object, then it is valid against this assertion.
+                        </t>
+                    </section>
+                </section>
+
+                <section title="Annotations" anchor="annotations">
+                    <t>
+                        JSON Schema can annotate an instance with information, whenever the instance
+                        validates against the schema object containing the annotation, and all of its
+                        parent schema objects.  The information can be a simple value, or can be
+                        calculated based on the instance contents.
+                    </t>
+                    <t>
+                        Annotations are attached to specific locations in an instance.
+                        Since many subschemas can be applied to any single
+                        location, annotation keywords need to specify any unusual handling of
+                        multiple applicable occurrences of the keyword with different values.
+                    </t>
+                    <t>
+                        The default behavior is simply to collect all values in a list in
+                        indeterminate order.  Given the extensibility of keywords, including
+                        applicators, it is not possible to define a universally predictable
+                        order of processing.
+                    </t>
+                    <t>
+                        Unlike assertion results, annotation data can take a wide variety of forms,
+                        which are provided to applications to use as they see fit.  JSON Schema
+                        implementations are not expected to make use of the collected information
+                        on behalf of applications.
+                    </t>
+                    <t>
+                        While "short-circuit" evaluation is possible for assertions, collecting
+                        annotations requires examining all schemas that apply to an instance
+                        location, even if they cannot change the overall assertion result.
+                    </t>
+                </section>
             </section>
 
             <section title="Schema Vocabularies" anchor="vocabulary">
@@ -363,7 +466,7 @@
                 </section>
             </section>
 
-            <section title="JSON Schema Documents">
+            <section title="JSON Schema Documents" anchor="schema-document">
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe
                     an instance.
@@ -439,7 +542,7 @@
                         and implementations.
                     </t>
                 </section>
-                <section title="Root Schema and Subschemas">
+                <section title="Root Schema and Subschemas" anchor="root">
                     <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.
@@ -465,6 +568,34 @@
                     </t>
                     <t>
                         As with the root schema, a subschema is either an object or a boolean.
+                    </t>
+                </section>
+                <section title="Referred and Referring Schemas" anchor="referred">
+                    <t>
+                        As noted in <xref target="applicators" />, an applicator keyword may
+                        refer to a schema to be applied, rather than including it as a
+                        subschema in the applicator's value.  In such situations, the
+                        schema being applied is known as the referred schema, while
+                        the schema containing the applicator keyword is the referring schema.
+                    </t>
+                    <t>
+                        While root schemas and subschemas are static concepts based on a
+                        schema's position within a schema document, referred and referring
+                        schemas are dynamic.  Different pairs of schemas may find themselves
+                        in various referred and referring arrangements during the evaluation
+                        of an instance against a schema.
+                    </t>
+                    <t>
+                        For some by-reference applicators, such as
+                        <xref target="ref">"$ref"</xref>, the referred schema can be determined
+                        by static analysis of the schema document.  Others may take evaluation
+                        context into account, and only be resolvable in the process of evaluating
+                        with an instance.
+                        <cref>
+                            Assuming some form of dynamic reference keyword is introduced
+                            related to GitHub issue #558, this section will be updated
+                            to make a concrete reference to that keyword for clarification.
+                        </cref>
                     </t>
                 </section>
             </section>
@@ -513,7 +644,7 @@
 
             <section title="Range of JSON Values">
                 <t>
-                    An instance may be any valid JSON value as defined by <xref target="RFC7159">JSON</xref>.
+                    An instance may be any valid JSON value as defined by <xref target="RFC8259">JSON</xref>.
                     JSON Schema imposes no restrictions on type: JSON Schema can describe any JSON
                     value, including, for example, null.
                 </t>
@@ -536,6 +667,39 @@
                 <t>
                     For consistency, integer JSON numbers SHOULD NOT be encoded with a fractional
                     part.
+                </t>
+            </section>
+
+            <section title="Regular Expressions" anchor="regex">
+                <t>
+                    Keywords MAY use regular expressions to express constraints, or constrain
+                    the instance value to be a regular expression.
+                     These regular expressions SHOULD be valid according to the
+                    <xref target="ecma262">ECMA 262</xref> regular expression dialect.
+                </t>
+                <t>
+                    Furthermore, given the high disparity in regular expression constructs support,
+                    schema authors SHOULD limit themselves to the following regular expression
+                    tokens:
+
+                    <list>
+                        <t>individual Unicode characters, as defined by the <xref
+                        target="RFC8259">JSON specification</xref>;</t>
+                        <t>simple character classes ([abc]), range character classes ([a-z]);</t>
+                        <t>complemented character classes ([^abc], [^a-z]);</t>
+                        <t>simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or
+                        one), and their lazy versions ("+?", "*?", "??");</t>
+                        <t>range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at
+                        most y, occurrences), {x,} (x occurrences or more), and their lazy
+                        versions;</t>
+                        <t>the beginning-of-input ("^") and end-of-input ("$") anchors;</t>
+                        <t>simple grouping ("(...)") and alternation ("|").</t>
+                    </list>
+                </t>
+                <t>
+                    Finally, implementations MUST NOT take regular expressions to be
+                    anchored, neither at the beginning nor at the end. This means, for instance,
+                    the pattern "es" matches "expression".
                 </t>
             </section>
 
@@ -789,16 +953,20 @@
                 </section>
             </section>
 
-            <section title='Schema References With "$ref"'>
+            <section title='Schema References With "$ref"' anchor="ref">
                 <t>
-                    The "$ref" keyword is used to reference a schema, and provides the ability to
-                    validate recursive structures through self-reference.
+                    The "$ref" keyword can be used to reference a schema which is to be applied to the
+                    current instance location. "$ref" is an applicator key word, applying the referred
+                    schema to the instance.
                 </t>
                 <t>
-                    An object schema with a "$ref" property MUST be interpreted as a "$ref" reference.
-                    The value of the "$ref" property MUST be a URI Reference.
+                    The value of the "$ref" property MUST be a string which is a URI Reference.
                     Resolved against the current URI base, it identifies the URI of a schema to use.
-                    All other properties in a "$ref" object MUST be ignored.
+                </t>
+                <t>
+                    As the value of "$ref" is a URI Reference, this allows the possibility to externalise or
+                    divide a schema across multiple files, and provides the ability to validate recursive structures
+                    through self-reference.
                 </t>
                 <t>
                     The URI is not a network locator, only an identifier. A schema need not be
@@ -967,23 +1135,199 @@
                 schemas is a concern.
 
                 Implementations MUST NOT take any other action based on the presence, absence,
-                or contents of "$comment" properties.
+                or contents of "$comment" properties.  In particular, the value of "$comment"
+                MUST NOT be collected as an annotation result.
             </t>
+        </section>
+
+        <section title="Collecting Annotations">
+            <t>
+                <cref>
+                    The exact structure and format of the information collected is TBD,
+                    but will be defined before the next draft.  Some details of this
+                    section may change as a result, but the overall process is expected
+                    to remain the same.  See GitHub issue #396 to track progress.
+                </cref>
+            </t>
+            <t>
+                Annotations are collected by keywords that explicitly define
+                annotation-collecting behavior.  Note that boolean schemas cannot
+                produce annotations as they do not make use of keywords.
+            </t>
+            <t>
+                A collected annotation MUST include the following information:
+                <list>
+                    <t>
+                        The name of the keyword that produces the annotation
+                    </t>
+                    <t>
+                        The instance location to which it is attached, as a JSON Pointer
+                    </t>
+                    <t>
+                        The absolute schema location of the attaching keyword, as a URI
+                    </t>
+                    <t>
+                        The schema location path, indicating how reference keywords
+                        such as "$ref" were followed to reach the absolute schema location
+                        <cref>The exact format of this path is TBD, again see issue #396</cref>
+                    </t>
+                    <t>
+                        The attached value(s)
+                    </t>
+                </list>
+            </t>
+            <t>
+                If the same keyword attaches values from multiple schema locations
+                to the same instance location, and the annotation defines a process
+                for combining such values, then the combined value MUST also be associated
+                with the instance location.
+            </t>
+            <section title="Distinguishing Among Multiple Values">
+                <t>
+                    Applications MAY make decisions on which of multiple annotation values
+                    to use based on the schema location that contributed the value.
+                    This is intended to allow flexible usage.  Collecting the schema location
+                    facilitates such usage.
+                </t>
+                <t>
+                    For example, consider this schema, which uses annotations and assertions from
+                    the <xref target="json-schema-validation">Validation specification</xref>:
+                </t>
+                <figure>
+                    <preamble>
+                        Note that some lines are wrapped for clarity.
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "title": "Feature list",
+    "type": "array",
+        "items": [
+            {
+                "title": "Feature A",
+                "properties": {
+                    "enabled": {
+                        "$ref": "#/$defs/enabledToggle",
+                        "default": true
+                    }
+                }
+            },
+            {
+                "title": "Feature B",
+                "properties": {
+                    "enabled": {
+                        "description": "If set to null, Feature B
+                                        inherits the enabled
+                                        value from Feature A",
+                        "$ref": "#/$defs/enabledToggle"
+                    }
+                }
+            }
+        ]
+    },
+    "$defs": {
+        "enabledToggle": {
+            "title": "Enabled",
+            "description": "Whether the feature is enabled (true),
+                            disabled (false), or under
+                            automatic control (null)",
+            "type": ["boolean", "null"],
+            "default": null
+        }
+    }
+}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    In this example, both Feature A and Feature B make use of the re-usable
+                    "enabledToggle" schema.  That schema uses the "title", "description",
+                    and "default" annotations, none of which define special behavior for
+                    handling multiple values.  Therefore the application has to decide how
+                    to handle the additional "default" value for Feature A, and the additional
+                    "description" value for Feature B.
+                </t>
+                <t>
+                    The application programmer and the schema author need to agree on the
+                    usage.  For this example, let's assume that they agree that the most
+                    specific "default" value will be used, and any additional, more generic
+                    "default" values will be silently ignored.  Let's also assume that they
+                    agree that all "description" text is to be used, starting with the most
+                    generic, and ending with the most specific.  This requires the schema
+                    author to write descriptions that work when combined in this way.
+                </t>
+                <t>
+                    The application can use the schema location path to determine which
+                    values are which.  The values in the feature's immediate "enabled"
+                    property schema are more specific, while the values under the re-usable
+                    schema that is referred to with "$ref" are more generic.  The schema
+                    location path will show whether each value was found by crossing a
+                    "$ref" or not.
+                </t>
+                <t>
+                    Feature A will therefore use a default value of true, while Feature B
+                    will use the generic default value of null.  Feature A will only
+                    have the generic description from the "enabledToggle" schema, while
+                    Feature B will use that description, and also append its locally
+                    defined description that explains how to interpret a null value.
+                </t>
+                <t>
+                    Note that there are other reasonable approaches that a different application
+                    might take.  For example, an application may consider the presence of
+                    two different values for "default" to be an error, regardless of their
+                    schema locations.
+                </t>
+            </section>
+            <section title="Annotations and Assertions">
+                <t>
+                    Schema objects that produce a false assertion result MUST NOT
+                    produce any annotation results, whether from their own keywords
+                    or from keywords in subschemas.
+                </t>
+                <t>
+                    Note that the overall schema results may still include annotations
+                    collected from other schema locations.  Given this schema:
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+    "oneOf": [
+        {
+            "title": "Integer Value",
+            "type": "integer"
+        },
+        {
+            "title": "String Value",
+            "type": "string"
+        }
+    ]
+}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    And the instance <spanx style="verb">"This is a string"</spanx>, the
+                    title annotation "Integer Value" is discarded because the type assertion
+                    in that schema object fails.  The title annotation "String Value"
+                    is kept, as the instance passes the string type assertions.
+                </t>
+            </section>
+            <section title="Annotations and Applicators">
+                <t>
+                    In addition to possibly defining annotation results of their own,
+                    applicator keywords aggregate the annotations collected in their
+                    subschema(s) or referenced schema(s).  The rules for aggregating
+                    annotation values are defined by each annotation keyword, and are
+                    not directly affected by the logic used for combining assertion
+                    results.
+                </t>
+            </section>
         </section>
 
         <section title="A Vocabulary for Applying Subschemas">
             <t>
-                Evaluation of an instance against a schema begins by applying the root schema
-                to the complete instance document.  From there, various keywords are used
-                to determine which additional subschemas are applied to either the current
-                location, or a child location.  These keywords also define how subschema
-                assertion results are modified and/or combined.  Annotation results are
-                combined according to the rules specified by each annotation keyword.
-            </t>
-            <t>
-                Keyword that apply subschemas are called applicators, and do not assert
-                conditions on their own.  Rather, they control how assertions are applied
-                and evaluated.  This section defines a set of applicator keywords that
+                This section defines a vocabulary of applicator keywords that
                 are RECOMMENDED for use as the basis of other vocabularies.
             </t>
             <section title="Keyword Independence">
@@ -1054,7 +1398,7 @@
                         </t>
                     </section>
 
-                    <section title="not">
+                    <section title="not" anchor="not">
                         <t>
                             This keyword's value MUST be a valid JSON Schema.
                         </t>
@@ -1067,18 +1411,18 @@
 
                 <section title="Keywords for Applying Subschemas Conditionally" anchor="conditional">
                     <t>
-                        These keywords work together to implement conditional
-                        application of a subschema based on the outcome of
-                        another subschema.
+                        Three of these keywords work together to implement conditional
+                        application of a subschema based on the outcome of another subschema.
+                        The fourth is a shortcut for a specific conditional case.
                     </t>
                     <t>
-                        These keywords MUST NOT interact with each other across
+                        "if", "then", and "else" MUST NOT interact with each other across
                         subschema boundaries.  In other words, an "if" in one
                         branch of an "allOf" MUST NOT have an impact on a "then"
                         or "else" in another branch.
                     </t>
                     <t>
-                        There is no default behavior for any of these keywords
+                        There is no default behavior for "if", "then", or "else"
                         when they are not present.  In particular, they MUST NOT
                         be treated as if present with an empty schema, and when
                         "if" is not present, both "then" and "else" MUST be
@@ -1149,6 +1493,24 @@
                             or annotation collection purposes, in such cases.
                         </t>
                     </section>
+                    <section title="dependentSchemas">
+                        <t>
+                            This keyword specifies subschemas that are evaluated if the instance
+                            is an object and contains a certain property.
+                        </t>
+                        <t>
+                            This keyword's value MUST be an object.
+                            Each value in the object MUST be a valid JSON Schema.
+                        </t>
+                        <t>
+                            If the object key is a property in the instance, the entire
+                            instance must validate against the susbschema.  Its use is
+                            dependent on the presence of the property.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same behavior as an empty object.
+                        </t>
+                    </section>
                 </section>
             </section>
             <section title="Keywords for Applying Subschemas to Child Instances">
@@ -1160,12 +1522,8 @@
                 <section title="Keywords for Applying Subschemas to Arrays">
                     <section title="items">
                         <t>
-                            The value of "items" MUST be either a valid JSON Schema or an array of valid
-                            JSON Schemas.
-                        </t>
-                        <t>
-                            This keyword determines how child instances validate for arrays,
-                            and does not directly validate the immediate instance itself.
+                            The value of "items" MUST be either a valid JSON Schema or
+                            an array of valid JSON Schemas.
                         </t>
                         <t>
                             If "items" is a schema, validation succeeds if all elements
@@ -1177,30 +1535,56 @@
                             same position, if any.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            This keyword produces an annotation value which is the largest
+                            index to which this keyword applied a subschema.  The value
+                            MAY be a boolean true if a subschema was applied to every
+                            index of the instance, such as when "items" is a schema.
+                        </t>
+                        <t>
+                            Annotation results for "items" keywords from multiple
+                            schemas applied to the same instance location are combined
+                            by setting the combined result to true if any of the values
+                            are true, and otherwise retaining the largest numerical value.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
                         </t>
                     </section>
 
-                    <section title="additionalItems">
+                    <section title="additionalItems" anchor="additionalItems">
                         <t>
                             The value of "additionalItems" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for arrays,
-                            and does not directly validate the immediate instance itself.
+                            The behavior of this keyword depends on the presence and
+                            annotation result of "items" within the same schema object.
+                            If "items" is present, and its annotation result is a number,
+                            validation succeeds if every instance element at an index
+                            greater than that number validates against "additionalItems".
                         </t>
                         <t>
-                            If "items" is an array of schemas, validation succeeds
-                            if every instance element at a position greater than the size
-                            of "items" validates against "additionalItems".
+                            Otherwise, if "items" is absent or its annotation result
+                            is the boolean true, "additionalItems" MUST be ignored.
                         </t>
                         <t>
-                            Otherwise, "additionalItems" MUST be ignored, as the "items"
-                            schema (possibly the default value of an empty schema) is
-                            applied to all elements.
+                            If the "additionalItems" subschema is applied to any
+                            positions within the instance array, it produces an
+                            annotation result of boolean true, analogous to the
+                            single schema behavior of "items".  If any "additionalItems"
+                            keyword from any subschema applied to the same instance
+                            location produces an annotation value of true, then
+                            the combined result from these keywords is also true.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementations MAY choose to implement or optimize this keyword
+                            in another way that produces the same effect, such as by directly
+                            checking for the presence and size of an "items" array.
+                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
@@ -1210,7 +1594,16 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema.
+                            its elements is valid against the given schema.  This keyword
+                            does not produce annotation results.
+                            <cref>
+                                Should it produce a set of the indices for which the
+                                array element is valid against the subschema?  "contains"
+                                does not affect "additionalItems" or any other current
+                                or proposed keyword, but the information could be useful,
+                                and implementation that collect annotations need to
+                                apply "contains" to every element anyway.
+                            </cref>
                         </t>
                     </section>
                 </section>
@@ -1222,17 +1615,21 @@
                             Each value of this object MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                        </t>
-                        <t>
                             Validation succeeds if, for each name that appears in both
                             the instance and as a name within this keyword's value, the child
                             instance for that name successfully validates against the
                             corresponding schema.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty object.
+                            The annotation result of this keyword is the set of instance
+                            property names matched by this keyword.  Annotation results
+                            for "properties" keywords from multiple schemas applied to
+                            the same instance location are combined by taking the union
+                            of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty object.
                         </t>
                     </section>
 
@@ -1244,41 +1641,57 @@
                             MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                            Validation of the primitive instance type against this keyword
-                            always succeeds.
-                        </t>
-                        <t>
                             Validation succeeds if, for each instance name that matches any
                             regular expressions that appear as a property name in this keyword's value,
                             the child instance for that name successfully validates against each
                             schema that corresponds to a matching regular expression.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty object.
+                            The annotation result of this keyword is the set of instance
+                            property names matched by this keyword.  Annotation results
+                            for "patternProperties" keywords from multiple schemas applied to
+                            the same instance location are combined by taking the union
+                            of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty object.
                         </t>
                     </section>
 
-                    <section title="additionalProperties">
+                    <section title="additionalProperties" anchor="additionalProperties">
                         <t>
                             The value of "additionalProperties" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            This keyword determines how child instances validate for objects,
-                            and does not directly validate the immediate instance itself.
-                        </t>
-                        <t>
+                            The behavior of this keyword depends on the presence and
+                            annotation results of "properties" and "patternProperties"
+                            within the same schema object.
                             Validation with "additionalProperties" applies only to the child
-                            values of instance names that do not match any names in "properties",
-                            and do not match any regular expression in "patternProperties".
+                            values of instance names that do not appear in the annotation
+                            results of either "properties" or "patternProperties".
                         </t>
                         <t>
                             For all such properties, validation succeeds if the child instance
                             validates against the "additionalProperties" schema.
                         </t>
                         <t>
-                            Omitting this keyword has the same behavior as an empty schema.
+                            The annotation result of this keyword is the set of instance
+                            property names validated by this keyword's subschema.
+                            Annotation results for "additionalProperties" keywords from
+                            multiple schemas applied to the same instance location are combined
+                            by taking the union of the sets.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementation MAY choose to implement or optimize this keyword
+                            in another way that produces the same effect, such as by directly
+                            checking the names in "properties" and the patterns in
+                            "patternProperties" against the instance property set.
+                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
@@ -1293,24 +1706,6 @@
                         </t>
                         <t>
                             Omitting this keyword has the same behavior as an empty schema.
-                        </t>
-                    </section>
-
-                    <section title="dependencies">
-                        <t>
-                            This keyword specifies subschemas that are evaluated if the instance
-                            is an object and contains a certain property.
-                        </t>
-                        <t>
-                            This keyword's value MUST be an object.
-                            Each value in the object MUST be a valid JSON Schema.
-                        </t>
-                        <t>
-                            If the object key is a property in the instance, the entire
-                            instance must validate against the dependency value.
-                        </t>
-                        <t>
-                            Omitting this keyword has the same behavior as an empty object.
                         </t>
                     </section>
                 </section>
@@ -1457,7 +1852,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
         <section title="Security Considerations" anchor="security">
             <t>
                 Both schemas and instances are JSON values. As such, all security considerations
-                defined in <xref target="RFC7159">RFC 7159</xref> apply.
+                defined in <xref target="RFC8259">RFC 8259</xref> apply.
             </t>
             <t>
                 Instances and schemas are both frequently written by untrusted third parties, to be
@@ -1498,7 +1893,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
-                            media type.  See <xref target="RFC7159">JSON</xref>.
+                            media type.  See <xref target="RFC8259">JSON</xref>.
                         </t>
                         <t>
                             Security considerations: See Section
@@ -1506,8 +1901,9 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         </t>
                         <t>
                             Interoperability considerations: See Sections
-                            <xref target="language" format="counter"></xref> and
-                            <xref target="integers" format="counter"></xref> above.
+                            <xref target="language" format="counter"></xref>,
+                            <xref target="integers" format="counter"></xref>, and
+                            <xref target="regex" format="counter"></xref> above.
                         </t>
                         <t>
                             Fragment identifier considerations: See Section
@@ -1541,7 +1937,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
-                            media type.  See <xref target="RFC7159">JSON</xref>.
+                            media type.  See <xref target="RFC8259">JSON</xref>.
                         </t>
                         <t>
                             Security considerations: See Section
@@ -1549,8 +1945,9 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         </t>
                         <t>
                             Interoperability considerations: See Sections
-                            <xref target="language" format="counter"></xref> and
-                            <xref target="integers" format="counter"></xref> above.
+                            <xref target="language" format="counter"></xref>,
+                            <xref target="integers" format="counter"></xref>, and
+                            <xref target="regex" format="counter"></xref> above.
                         </t>
                         <t>
                             Fragment identifier considerations: See Section
@@ -1569,8 +1966,16 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             &RFC3986;
             &RFC6839;
             &RFC6901;
-            &RFC7159;
+            &RFC8259;
             &ldp;
+            <reference anchor="ecma262"
+            target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
+                <front>
+                    <title>ECMA 262 specification</title>
+                    <author/>
+                    <date/>
+                </front>
+            </reference>
         </references>
 
         <references title="Informative References">
@@ -1585,7 +1990,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <organization/>
                     </author>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <author initials="G." surname="Luff">
                         <organization/>
@@ -1598,7 +2003,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 <front>
                     <title>JSON Hyper-Schema: A Vocabulary for Hypermedia Annotation of JSON</title>
                     <author initials="H." surname="Andrews">
-                        <organization>Cloudflare, Inc.</organization>
+                        <organization/>
                     </author>
                     <author initials="A." surname="Wright">
                         <organization/>
@@ -1643,7 +2048,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <list style="symbols">
                             <t>Moved "definitions" from the Validation specification here as "$defs"</t>
                             <t>Moved applicator keywords from the Validation specification as their own vocabulary</t>
-                            <t>Moved "dependencies" from the Validation specification, but only the schema form</t>
+                            <t>Moved the schema form of "dependencies" from the Validation specification as "dependentSchemas"</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-01">

@@ -107,8 +107,7 @@
             "anyOf": [
                 { "$ref": "#" },
                 { "$ref": "#/$defs/schemaArray" }
-            ],
-            "default": true
+            ]
         },
         "maxItems": { "$ref": "#/$defs/nonNegativeInteger" },
         "minItems": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
@@ -132,7 +131,20 @@
             "propertyNames": { "format": "regex" },
             "default": {}
         },
+        "dependentSchemas": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#"
+            }
+        },
+        "dependentRequired": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/stringArray"
+            }
+        },
         "dependencies": {
+            "$comment": "\"dependencies\" is no longer a keyword, but schema authors should avoid redefining it to facilitate a smooth transition to \"dependentSchemas\" and \"dependentRequired\"",
             "type": "object",
             "additionalProperties": {
                 "anyOf": [
@@ -163,13 +175,12 @@
         "format": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "if": {"$ref": "#"},
-        "then": {"$ref": "#"},
-        "else": {"$ref": "#"},
+        "if": { "$ref": "#" },
+        "then": { "$ref": "#" },
+        "else": { "$ref": "#" },
         "allOf": { "$ref": "#/$defs/schemaArray" },
         "anyOf": { "$ref": "#/$defs/schemaArray" },
         "oneOf": { "$ref": "#/$defs/schemaArray" },
         "not": { "$ref": "#" }
-    },
-    "default": true
+    }
 }
