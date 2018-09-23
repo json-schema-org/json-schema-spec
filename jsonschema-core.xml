@@ -1346,10 +1346,14 @@
                         <t>
                             "unevaluatedProperties", whose behavior is defined in terms of
                             annotations from "properties", "patternProperties",
-                            "additionalProperties" and itself.
+                            "additionalProperties" and itself
                         </t>
                         <t>
-                            "additionalItems", whose behavior is defined in terms of "items".
+                            "additionalItems", whose behavior is defined in terms of "items"
+                        </t>
+                        <t>
+                            "unevaluatedItems", whose behavior is defined in terms of annotations
+                            from "items", "additionalItems" and itself
                         </t>
                     </list>
                 </t>
@@ -1593,6 +1597,60 @@
                         </t>
                     </section>
 
+                    <section title="unevaluatedItems" anchor="unevaluatedItems">
+                        <t>
+                            The value of "unevaluatedItems" MUST be a valid JSON Schema.
+                        </t>
+                        <t>
+                            The behavior of this keyword depends on the annotation results of
+                            adjacent keywords that apply to the instance location being validated.
+                            Specifically, the annotations from "items" and  "additionalItems",
+                            which can come from those keywords when they are adjacent to the
+                            "unevaluatedItems" keyword.  Those two annotations, as well as
+                            "unevaluatedItems", can also result from any and all adjacent
+                            <xref target="in-place">in-place applicator</xref> keywords.
+                            This includes but is not limited to the in-place applicators
+                            defined in this document.
+                        </t>
+                        <t>
+                            If an "items" annotation is present, and its annotation result
+                            is a number, and no "additionalItems" or "unevaluatedItems"
+                            annotation is present, then validation succeeds if every instance
+                            element at an index greater than the "items" annotation validates
+                            against "unevaluatedItems".
+                        </t>
+                        <t>
+                            Otherwise, if any "items", "additionalItems", or "unevaluatedItems"
+                            annotations are present with a value of boolean true, then
+                            "unevaluatedItems" MUST be ignored.  However, if none of these
+                            annotations are present, "unevaluatedItems" MUST be applied to
+                            all locations in the array.
+                        </t>
+                        <t>
+                            This means that "items", "additionalItems", and all in-place applicators
+                            MUST be evaluated before this keyword can be evaluated.  Authors of
+                            extension keywords MUST NOT define an in-place applicator that would need
+                            to be evaluated before this keyword.
+                        </t>
+                        <t>
+                            If the "unevaluatedItems" subschema is applied to any
+                            positions within the instance array, it produces an
+                            annotation result of boolean true, analogous to the
+                            single schema behavior of "items".  If any "unevaluatedItems"
+                            keyword from any subschema applied to the same instance
+                            location produces an annotation value of true, then
+                            the combined result from these keywords is also true.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same assertion behavior as
+                            an empty schema.
+                        </t>
+                        <t>
+                            Implementations that do not collect annotations MUST raise an error
+                            upon encountering this keyword.
+                        </t>
+                    </section>
+
                     <section title="contains">
                         <t>
                             The value of this keyword MUST be a valid JSON Schema.
@@ -1709,7 +1767,7 @@
                             adjacent keywords that apply to the instance location being validated.
                             Specifically, the annotations from "properties", "patternProperties",
                             and "additionalProperties", which can come from those keywords when
-                            they are adjacent to the "unvevaluatedProperties" keyword.  Those
+                            they are adjacent to the "unevaluatedProperties" keyword.  Those
                             three annotations, as well as "unevaluatedProperties", can also
                             result from any and all adjacent
                             <xref target="in-place">in-place applicator</xref> keywords.
