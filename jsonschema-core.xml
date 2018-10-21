@@ -570,13 +570,70 @@
                         As with the root schema, a subschema is either an object or a boolean.
                     </t>
                 </section>
+                <section title="Lexical Scope and Dynamic Scope">
+                    <t>
+                        While most JSON Schema keywords can be evaluated on their own,
+                        or at most need to take into account the values or results of
+                        adjacent keywords in the same schema object, a few have more
+                        complex behavior.
+                    </t>
+                    <t>
+                        The lexical scope of a keyword is deterimined by the nested JSON
+                        data structure of objects and arrays.  The largest such scope
+                        is an entire schema document.  The smallest scope is a single
+                        schema object with no subschemas.
+                    </t>
+                    <t>
+                        Keywords MAY be defined with a partial value, such as a URI-reference,
+                        which must be resolved against another value, such as another
+                        URI-reference or a full URI, which is found through the lexical
+                        structure of the JSON document.  The "$id" core keyword and
+                        the "base" JSON Hyper-Schema keyword are examples of this sort
+                        of behavior.  Additionally, "$ref" and "$recursiveRef" from
+                        this specification resolve their values in this way, although
+                        they do not change how further values are resolved.
+                    </t>
+                    <t>
+                        Note that some keywords, such as "$schema", apply to the lexical
+                        scope of the entire schema document, and therefore MUST only
+                        appear in the document's root schema.
+                    </t>
+                    <t>
+                        Other keywords may take into account the dynamic scope that
+                        exists during the evaluation of a schema, typically together
+                        with an instance document.  The outermost dynamic scope is the
+                        root schema of the schema document in which processing begins.
+                        <cref>
+                            Or should this be the schema object at which processing
+                            begins, even if it is not a root?  This has some implications
+                            for the case where "$recursiveAnchor" is only allowed in the
+                            root schema but processing begins in a subschema.
+                        </cref>
+                    </t>
+                    <t>
+                        Lexical and dynamic scopes align until a reference keyword
+                        is encountered.  While following the reference keyword jumps
+                        from one lexical scope into a different one, from the perspective
+                        of dynamic scope, following reference is no different from descending
+                        into a subschema present as a value.  A keyword on the far side of
+                        that reference that resolves information through the dynamic scope
+                        will consider the originating side of the reference to be their
+                        dynamic parent, rather than examining the local lexically enclosing parent.
+                    </t>
+                    <t>
+                        The concept of dynamic scope is primarily used with "$recursiveRef"
+                        and "$recursiveAnchor", and should be considered and advanced feature
+                        and used with caution when defining additional keywords.
+                    </t>
+                </section>
                 <section title="Referred and Referring Schemas" anchor="referred">
                     <t>
                         As noted in <xref target="applicators" />, an applicator keyword may
                         refer to a schema to be applied, rather than including it as a
                         subschema in the applicator's value.  In such situations, the
-                        schema being applied is known as the referred schema, while
-                        the schema containing the applicator keyword is the referring schema.
+                        schema being applied is known as the referred (or referenced) schema,
+                        while the schema containing the applicator keyword is the referring
+                        (or referencing) schema.
                     </t>
                     <t>
                         While root schemas and subschemas are static concepts based on a
@@ -587,15 +644,11 @@
                     </t>
                     <t>
                         For some by-reference applicators, such as
-                        <xref target="ref">"$ref"</xref>, the referred schema can be determined
-                        by static analysis of the schema document.  Others may take evaluation
-                        context into account, and only be resolvable in the process of evaluating
-                        with an instance.
-                        <cref>
-                            Assuming some form of dynamic reference keyword is introduced
-                            related to GitHub issue #558, this section will be updated
-                            to make a concrete reference to that keyword for clarification.
-                        </cref>
+                        <xref target="ref">"$ref"</xref>, the referenced schema can be determined
+                        by static analysis of the schema document's lexical scope.  Others,
+                        such as "$recursiveRef" and "$recursiveAnchor",  may make use of dynamic
+                        scoping, and therefore only be resolvable in the process of evaluating
+                        the schema with an instance.
                     </t>
                 </section>
             </section>
@@ -740,9 +793,9 @@
                     allow tools to follow the correct behaviour.
                 </t>
                 <t>
-                    Note that the recursive nature of meta-schemas requires re-defining
-                    recursive keywords in the extended meta-schema, as can be seen in
-                    the JSON Hyper-Schema meta-schema.
+                    The recursive nature of meta-schemas makes the "$recursiveAnchor"
+                    and "$recursiveRef" keywords particularly useful for such extensions,
+                    as can be seen in the JSON Hyper-Schema meta-schema.
                 </t>
             </section>
 
