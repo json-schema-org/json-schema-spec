@@ -808,6 +808,44 @@
         </section>
 
         <section title="Meta-Schemas and Vocabularies">
+            <t>
+                Two concepts, meta-schemas and vocabularies, are used to inform an implementation
+                how to interpret a schema.  A schema S declares its meta-schema M with the "$schema"
+                keyword, and meta-schemas declare vocabularies with the "$vocabulary" keyword.
+                The vocabularies declared in M are those that are expected to be used in S.
+                The meta-schema M may itself use a different set of vocabularies, which are
+                declared in its own meta-schema, M'.
+            </t>
+            <t>
+                The role of the meta-schema is to constrain the structure of conforming schemas,
+                as well as simplify the process of composing multiple vocabularies into a usable
+                feature set.  Schema authoring is obviously expected to be a common activity, so
+                schema authors need only understand how to reference a single meta-schema.
+            </t>
+            <t>
+                Meta-schema authoring is an advanced usage of JSON Schema, so the design of
+                meta-schema features emphasizes flexibility over simplicity.
+            </t>
+            <t>
+                The role of a vocabulary is to declare which keywords (including sub-keywords
+                such as those in JSON Hyper-Schema's Link Description Object) are in use,
+                and with which semantics.  The semantics are indicated by the document
+                that publicizes the vocabulary URI.  At this time, there is no machine-readable
+                description of keywords other than validation rules, which appear in the
+                meta-schema.
+            </t>
+            <t>
+                Meta-schemas are separate from vocabularies to allow for the same sets of
+                vocabularies to be combined in different ways, and for meta-schema authors
+                to impose additional constraints such as forbidding certain keywords, or
+                performing unusually strict syntactical validation, as might be done
+                during a development and testing cycle.
+            </t>
+            <t>
+                A schema is considered to be processed as meta-schema if it was
+                identified as such in a schema's "$schema".  Implementations MAY
+                also offer alternate ways to process schemas using meta-schema rules.
+            </t>
             <section title='The "$schema" Keyword'>
                 <t>
                     The "$schema" keyword is both used as a JSON Schema feature set identifier and
@@ -830,7 +868,7 @@
                 <t>
                     <cref>
                         Using multiple "$schema" keywords in the same document would imply that the
-                        vocabulary and therefore behavior can change within a document.  This would
+                        feature set and therefore behavior can change within a document.  This would
                         necessitate resolving a number of implementation concerns that have not yet
                         been clearly defined.  So, while the pattern of using "$schema" only in root
                         schemas is likely to remain the best practice for schema authoring,
@@ -850,6 +888,175 @@
                     JSON Schema implementations SHOULD implement support for current and previous
                     published drafts of JSON Schema vocabularies as deemed reasonable.
                 </t>
+            </section>
+            <section title='The "$vocabulary" Keyword'>
+                <t>
+                    The "$vocabulary" keyword is used within meta-schemas to declare
+                    the sets of keywords that schemas described by the meta-schema are
+                    expected to use.
+                </t>
+                <t>
+                    The value of this keyword MUST be an object.  The property names in the
+                    object MUST be URIs, (containing a scheme) and this URI MUST be normalized.
+                    The URI MAY be a URL, but the nature of the retrievable resources is
+                    currently undefined, and reserved for future use.  Vocabulary authors
+                    SHOULD NOT serve a document at that URL.  A server MAY respond with
+                    the relevant protocol's successful "no content" message, such as
+                    an HTTP 204 status.
+                    <cref>
+                        Vocabulary documents may be added shortly, or in the next draft.
+                        For now, identifying the keyword set is deemed sufficient as that,
+                        along with meta-schema validation, is how the current "vocabularies"
+                        work today.
+                    </cref>
+                </t>
+                <t>
+                    The values of the object properties MUST be booleans.
+                    If the value is true, then implementations that do not recognize
+                    the vocabulary MUST refuse to process any schemas that declare
+                    this meta-schema with "$schema".  If the value is false, implementations
+                    that do not recognize the vocabulary MAY choose to proceed with processing
+                    such schemas.
+                </t>
+                <t>
+                    When processing a schema that uses unrecognized vocabularies, keywords
+                    declared by those vocabularies are treated like any other unrecognized
+                    keyword, and ignored.
+                </t>
+                <t>
+                    The "$vocabulary" keyword SHOULD be used in the root schema of any schema
+                    document intended for use as a meta-schema.  It MUST NOT appear in subschemas.
+                </t>
+                <t>
+                    The "$vocabulary" keyword MUST be ignored in a schema documents that
+                    is not being processed as a meta-schema.  This allows validating
+                    a meta-schema M against its own meta-schema M' without requiring
+                    the validator to understand the vocabularies declared by M.
+                </t>
+                <t>
+                    Note that the processing restrictions on "$vocabulary" mean that
+                    meta-schemas that reference other meta-schemas, for example to
+                    provide a meta-schema that extends or composes other meta-schemas,
+                    do not automatically declare the vocabularies of those other
+                    meta-schemas.  All such declarations must be repeated in the root
+                    of each schema document intended for use as a meta-schema.
+                </t>
+                <section title="Best Practices for Vocabulary and Meta-Schema Authors">
+                    <t>
+                        Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
+                        vocabularies that define conflicting syntax or semantics for the same
+                        keyword.  As semantic conflicts are not generally detectable through
+                        schema validation, implementations are not expected to detect such
+                        conflicts.  If conflicting vocabularies are declared, the resulting
+                        behavior is undefined.
+                    </t>
+                    <t>
+                        Vocabulary authors SHOULD provide a meta-schema that validates the
+                        expected usage of the vocabulary's keywords.  Such meta-schemas
+                        SHOULD NOT forbid additional keywords, and MUST NOT forbid
+                        the "$id", "$schema", or "$vocabulary" keywords in the root schema.
+                    </t>
+                    <t>
+                        It is RECOMMENDED that meta-schema authors reference each vocabulary's
+                        meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
+                        although other mechanisms for constructing the meta-schema may be
+                        appropriate for certain use cases.
+                    </t>
+                    <t>
+                        Meta-schemas MAY impose additional constraints, including describing
+                        keywords not present in any vocabulary, beyond what the meta-schemas
+                        associated with the declared vocabularies describe.  This allows for
+                        restricting usage to a subset of a vocabulary, and for validating
+                        locally defined keywords not intended for re-use.
+                    </t>
+                    <t>
+                        Meta-schemas intended for local use, with no need to test for
+                        vocabulary support in arbitrary implementations, can safely omit
+                        "$vocabulary" entirely.
+                    </t>
+                </section>
+                <section title="The JSON Schema Core Vocabulary">
+                    <t>
+                        Keywords declared in in this specification that begin with "$" make up
+                        the JSON Schema Core vocabulary.  These keywords are either required in
+                        order process any schema or meta-schema, including those split across
+                        multiple documents, or exist to reserve keywords for purposes that
+                        require guaranteed interoperability.
+                    </t>
+                    <t>
+                        The Core vocabulary MUST be considered mandatory at all times, in order
+                        to bootstrap the processing of further vocabularies.  Meta-schema
+                        authors MAY explicitly list the Core vocabulary, but do not need
+                        to do so.  If present, the Core vocabulary entry MUST have a value
+                        of true indicating that it is required.  The behavior of a value
+                        of false is undefined.
+                    </t>
+                    <t>
+                        The current URI for the Core vocabulary is:
+                        <eref target="https://json-schema.org/draft-08/vocabularies/core"/>.
+                    </t>
+                    <t>
+                        The current URI for the corresponding meta-schema is:
+                        <eref target="https://json-schema.org/draft-08/core"/>.
+                    </t>
+                </section>
+                <section title="Example Meta-Schema With Vocabulary Declarations">
+                    <figure>
+                        <preamble>
+                            This meta-schema explicitly declares both the Core and Applicator
+                            vocabularies, and combines their meta-schemas with an "allOf".
+                            It additional restricts the usage of the Applicator vocabulary
+                            by forbidding the keyword prefixed with "unevaluated".  It also
+                            describes a keyword, "localKeyord", that is not part of either
+                            vocabulary.  Note that it is its own meta-schema,
+                            as it relies on both the Core vocabulary (as all schemas do)
+                            and the Applicator vocabulary (for "allOf"0.
+                        </preamble>
+                        <artwork>
+<![CDATA[
+{
+  "$schema": "https://json-schema.org/draft-08/core-app-example#",
+  "$id": "https://json-schema.org/draft-08/core-app-example",
+  "$recursiveAnchor": true,
+  "$vocabulary": {
+    "https://json-schema.org/draft-08/vocabularies/core": true,
+    "https://json-schema.org/draft-08/vocabularies/applicator": true
+  }.
+  "allOf": [
+    {"$ref": "https://json-schema.org/draft-08/core"},
+    {"$ref": "https://json-schema.org/draft-08/applicator"}
+  ],
+  "patternProperties": {
+    "^unevaluated.*$": false
+  },
+  "properties": {
+    "$comment": "Not in vocabulary, but validated if used",
+    "localKeyword": {
+      "type": "string"
+    }
+  }
+}
+]]>
+                        </artwork>
+                        <postamble>
+                            As shown above, even though each of the referenced standard
+                            meta-schemas declares its corresponding vocabulary, this new
+                            meta-schema must re-declare them for itself.  It would be
+                            valid to leave the core vocabulary out of the "$vocabulary" keyword,
+                            but it MUST be referenced through the "allOf" keyword in order
+                            for its terms to be validated.  There is no special case for
+                            validation of core keywords.
+                        </postamble>
+                    </figure>
+                    <t>
+                        The standard meta-schemas that combine all vocabularies defined by
+                        the Core and Validation specification, and that combine all vocabularies
+                        defined by those specifications as well as the Hyper-Schema specification,
+                        demonstrate additional complex combinations.  These URIs for these
+                        meta-schemas may be found in the Validation and Hyper-Schema specifications,
+                        respectively.
+                    </t>
+                </section>
             </section>
         </section>
 
@@ -1616,6 +1823,14 @@
                 This section defines a vocabulary of applicator keywords that
                 are RECOMMENDED for use as the basis of other vocabularies.
             </t>
+            <t>
+                The current URI for this vocabulary, known as the Applicator vocabulary, is:
+                <eref target="https://json-schema.org/draft-08/vocabularies/applicator"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft-08/applicator"/>.
+            </t>
             <section title="Keyword Independence">
                 <t>
                     Schema keywords typically operate independently, without
@@ -1660,7 +1875,7 @@
                         keyword to be applied to an instance location with different values.
                         Annotation keywords define their own rules for combining such values.
                     </t>
-                    <section title="allOf">
+                    <section title="allOf" anchor="allOf">
                         <t>
                             This keyword's value MUST be a non-empty array.
                             Each item of the array MUST be a valid JSON Schema.
