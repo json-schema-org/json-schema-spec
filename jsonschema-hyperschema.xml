@@ -1470,6 +1470,29 @@ for varname in templateData:
                     In general, headers that are likely to have different values at different
                     times SHOULD NOT be included in "targetHints".
                 </t>
+                <figure>
+                    <preamble>
+                        As an example, an Allow header allowing HEAD, GET, and POST
+                        would be shown as follows:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "targetHints": {
+        "allow": ["HEAD", "GET", "POST]
+    }
+}
+]]>
+                    </artwork>
+                    <postamble>
+                        Note that this is represented identically whether there is
+                        a single-line Allow header with comma-separated values,
+                        multiple Allow headers on separate lines, each with one value,
+                        or any combination of such arrangements.  As is generally true
+                        with HTTP headers, comma-separated values and multiple occurrences
+                        of the header are treated the same way.
+                    </postamble>
+                </figure>
             </section>
             <section title='Advertising HTTP Features With "headerSchema"'>
                 <t>
