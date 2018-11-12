@@ -887,9 +887,11 @@
             </section>
             <section title='The "$vocabulary" Keyword'>
                 <t>
-                    The "$vocabulary" keyword is used within meta-schemas to declare
-                    the sets of keywords that schemas described by the meta-schema are
-                    expected to use.
+                    The "$vocabulary" keyword, like all keywords in meta-schemas,
+                    relates to the schema described by the meta-schema, rather than
+                    to the meta-schema itself.  Specifically, "$vocabulary" declares
+                    what sets of keywords are expected to be used in schemas described
+                    by this meta-schema.
                 </t>
                 <t>
                     The value of this keyword MUST be an object.  The property names in the
