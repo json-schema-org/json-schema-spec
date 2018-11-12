@@ -879,9 +879,10 @@
                     -->
                 </t>
                 <t>
-                    Values for this property are defined in this and other documents and by other
-                    parties.  JSON Schema implementations SHOULD implement support for current
-                    and previous published drafts of JSON Schema vocabularies as deemed reasonable.
+                    Values for this property are defined elsewhere in this and other documents,
+                    and by other parties.  JSON Schema implementations SHOULD implement support
+                    for current and previous published drafts of JSON Schema vocabularies
+                    as deemed reasonable.
                 </t>
             </section>
             <section title='The "$vocabulary" Keyword'>
@@ -1037,7 +1038,7 @@
                     <preamble>
                         This meta-schema explicitly declares both the Core and Applicator
                         vocabularies, and combines their meta-schemas with an "allOf".
-                        It additional restricts the usage of the Applicator vocabulary
+                        It additionally restricts the usage of the Applicator vocabulary
                         by forbidding the keyword prefixed with "unevaluated".  It also
                         describes a keyword, "localKeyord", that is not part of either
                         vocabulary.  Note that it is its own meta-schema,
