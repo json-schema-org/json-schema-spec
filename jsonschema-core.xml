@@ -841,11 +841,6 @@
                 performing unusually strict syntactical validation, as might be done
                 during a development and testing cycle.
             </t>
-            <t>
-                A schema is considered to be processed as meta-schema if it was
-                identified as such in a schema's "$schema".  Implementations MAY
-                also offer alternate ways to process schemas using meta-schema rules.
-            </t>
             <section title='The "$schema" Keyword'>
                 <t>
                     The "$schema" keyword is both used as a JSON Schema feature set identifier and
@@ -928,8 +923,8 @@
                     document intended for use as a meta-schema.  It MUST NOT appear in subschemas.
                 </t>
                 <t>
-                    The "$vocabulary" keyword MUST be ignored in a schema documents that
-                    is not being processed as a meta-schema.  This allows validating
+                    The "$vocabulary" keyword MUST be ignored in schema documents that
+                    are not being processed as a meta-schema.  This allows validating
                     a meta-schema M against its own meta-schema M' without requiring
                     the validator to understand the vocabularies declared by M.
                 </t>
@@ -940,6 +935,30 @@
                     do not automatically declare the vocabularies of those other
                     meta-schemas.  All such declarations must be repeated in the root
                     of each schema document intended for use as a meta-schema.
+                </t>
+            </section>
+            <section title="Detecting a Meta-Schema">
+                <t>
+                    Implementations MUST recognize a schema as a meta-schema if it
+                    is being examined because it was identified as such by another
+                    schema's "$schema" keyword.  This means that a single schema
+                    document might sometimes be considered a regular schema, and
+                    other times be considered a meta-schema.
+                </t>
+                <t>
+                    In the case of examining a schema which is its own meta-schema,
+                    when an implementation begins processing it as a regular schema,
+                    it is processed under those rules.  However, when loaded a second
+                    time as a result of checking its own "$schema" value, it is treated
+                    as a meta-schema.  So the same document is processed both ways in
+                    the course of one session.
+                </t>
+                <t>
+                    Implementations MAY allow a schema to be passed as a meta-schema,
+                    for implementation-specific purposes, such as pre-loading a commonly
+                    used meta-schema and checking its vocabulary support requirements
+                    up front.  Meta-schema authors MUST NOT expect such features to be
+                    interoperable across implementations.
                 </t>
             </section>
             <section title="Best Practices for Vocabulary and Meta-Schema Authors">
