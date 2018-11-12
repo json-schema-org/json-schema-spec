@@ -930,11 +930,12 @@
                 </t>
                 <t>
                     Note that the processing restrictions on "$vocabulary" mean that
-                    meta-schemas that reference other meta-schemas, for example to
-                    provide a meta-schema that extends or composes other meta-schemas,
-                    do not automatically declare the vocabularies of those other
-                    meta-schemas.  All such declarations must be repeated in the root
-                    of each schema document intended for use as a meta-schema.
+                    meta-schemas that reference other meta-schemas using "$ref" or
+                    similar keywords do not automatically inherit the vocabulary
+                    declarations of those other meta-schemas.  All such declarations
+                    must be repeated in the root of each schema document intended
+                    for use as a meta-schema.  This is demonstrated in
+                    <xref target="example-meta-schema">the example meta-schema</xref>.
                 </t>
             </section>
             <section title="Detecting a Meta-Schema">
@@ -1005,11 +1006,21 @@
                 </t>
                 <t>
                     The Core vocabulary MUST be considered mandatory at all times, in order
-                    to bootstrap the processing of further vocabularies.  Meta-schema
-                    authors MAY explicitly list the Core vocabulary, but do not need
-                    to do so.  If present, the Core vocabulary entry MUST have a value
-                    of true indicating that it is required.  The behavior of a value
-                    of false is undefined.
+                    to bootstrap the processing of further vocabularies.  Meta-schemas
+                    that use "$vocabulary" MUST explicitly list the Core vocabulary,
+                    which MUST have a value of true indicating that it is required.
+                </t>
+                <t>
+                    The behavior of a false value for this vocabulary (and only this
+                    vocabulary) is undefined, as is the behavior when "$vocabulary"
+                    is present but the Core vocabulary is not included.  However, it
+                    is RECOMMENDED that implementations detect these cases and raise
+                    an error when they occur.
+                </t>
+                <t>
+                    Meta-schemas that do not use "$vocabulary" MUST be considered to
+                    require the Core vocabulary just as if "$vocabulary" were used
+                    with only the Core vocabulary present with a value of true.
                 </t>
                 <t>
                     The current URI for the Core vocabulary is:
@@ -1020,7 +1031,8 @@
                     <eref target="https://json-schema.org/draft-08/core"/>.
                 </t>
             </section>
-            <section title="Example Meta-Schema With Vocabulary Declarations">
+            <section title="Example Meta-Schema With Vocabulary Declarations"
+                     anchor="example-meta-schema">
                 <figure>
                     <preamble>
                         This meta-schema explicitly declares both the Core and Applicator
@@ -1041,7 +1053,7 @@
   "$vocabulary": {
     "https://json-schema.org/draft-08/vocabularies/core": true,
     "https://json-schema.org/draft-08/vocabularies/applicator": true
-  }.
+  },
   "allOf": [
     {"$ref": "https://json-schema.org/draft-08/core"},
     {"$ref": "https://json-schema.org/draft-08/applicator"}
