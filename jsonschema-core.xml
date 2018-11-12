@@ -941,78 +941,79 @@
                     meta-schemas.  All such declarations must be repeated in the root
                     of each schema document intended for use as a meta-schema.
                 </t>
-                <section title="Best Practices for Vocabulary and Meta-Schema Authors">
-                    <t>
-                        Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
-                        vocabularies that define conflicting syntax or semantics for the same
-                        keyword.  As semantic conflicts are not generally detectable through
-                        schema validation, implementations are not expected to detect such
-                        conflicts.  If conflicting vocabularies are declared, the resulting
-                        behavior is undefined.
-                    </t>
-                    <t>
-                        Vocabulary authors SHOULD provide a meta-schema that validates the
-                        expected usage of the vocabulary's keywords.  Such meta-schemas
-                        SHOULD NOT forbid additional keywords, and MUST NOT forbid
-                        the "$id", "$schema", or "$vocabulary" keywords in the root schema.
-                    </t>
-                    <t>
-                        It is RECOMMENDED that meta-schema authors reference each vocabulary's
-                        meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
-                        although other mechanisms for constructing the meta-schema may be
-                        appropriate for certain use cases.
-                    </t>
-                    <t>
-                        Meta-schemas MAY impose additional constraints, including describing
-                        keywords not present in any vocabulary, beyond what the meta-schemas
-                        associated with the declared vocabularies describe.  This allows for
-                        restricting usage to a subset of a vocabulary, and for validating
-                        locally defined keywords not intended for re-use.
-                    </t>
-                    <t>
-                        Meta-schemas intended for local use, with no need to test for
-                        vocabulary support in arbitrary implementations, can safely omit
-                        "$vocabulary" entirely.
-                    </t>
-                </section>
-                <section title="The JSON Schema Core Vocabulary">
-                    <t>
-                        Keywords declared in in this specification that begin with "$" make up
-                        the JSON Schema Core vocabulary.  These keywords are either required in
-                        order process any schema or meta-schema, including those split across
-                        multiple documents, or exist to reserve keywords for purposes that
-                        require guaranteed interoperability.
-                    </t>
-                    <t>
-                        The Core vocabulary MUST be considered mandatory at all times, in order
-                        to bootstrap the processing of further vocabularies.  Meta-schema
-                        authors MAY explicitly list the Core vocabulary, but do not need
-                        to do so.  If present, the Core vocabulary entry MUST have a value
-                        of true indicating that it is required.  The behavior of a value
-                        of false is undefined.
-                    </t>
-                    <t>
-                        The current URI for the Core vocabulary is:
-                        <eref target="https://json-schema.org/draft-08/vocabularies/core"/>.
-                    </t>
-                    <t>
-                        The current URI for the corresponding meta-schema is:
-                        <eref target="https://json-schema.org/draft-08/core"/>.
-                    </t>
-                </section>
-                <section title="Example Meta-Schema With Vocabulary Declarations">
-                    <figure>
-                        <preamble>
-                            This meta-schema explicitly declares both the Core and Applicator
-                            vocabularies, and combines their meta-schemas with an "allOf".
-                            It additional restricts the usage of the Applicator vocabulary
-                            by forbidding the keyword prefixed with "unevaluated".  It also
-                            describes a keyword, "localKeyord", that is not part of either
-                            vocabulary.  Note that it is its own meta-schema,
-                            as it relies on both the Core vocabulary (as all schemas do)
-                            and the Applicator vocabulary (for "allOf"0.
-                        </preamble>
-                        <artwork>
+            </section>
+            <section title="Best Practices for Vocabulary and Meta-Schema Authors">
+                <t>
+                    Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
+                    vocabularies that define conflicting syntax or semantics for the same
+                    keyword.  As semantic conflicts are not generally detectable through
+                    schema validation, implementations are not expected to detect such
+                    conflicts.  If conflicting vocabularies are declared, the resulting
+                    behavior is undefined.
+                </t>
+                <t>
+                    Vocabulary authors SHOULD provide a meta-schema that validates the
+                    expected usage of the vocabulary's keywords.  Such meta-schemas
+                    SHOULD NOT forbid additional keywords, and MUST NOT forbid
+                    the "$id", "$schema", or "$vocabulary" keywords in the root schema.
+                </t>
+                <t>
+                    It is RECOMMENDED that meta-schema authors reference each vocabulary's
+                    meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
+                    although other mechanisms for constructing the meta-schema may be
+                    appropriate for certain use cases.
+                </t>
+                <t>
+                    Meta-schemas MAY impose additional constraints, including describing
+                    keywords not present in any vocabulary, beyond what the meta-schemas
+                    associated with the declared vocabularies describe.  This allows for
+                    restricting usage to a subset of a vocabulary, and for validating
+                    locally defined keywords not intended for re-use.
+                </t>
+                <t>
+                    Meta-schemas intended for local use, with no need to test for
+                    vocabulary support in arbitrary implementations, can safely omit
+                    "$vocabulary" entirely.
+                </t>
+            </section>
+            <section title="The JSON Schema Core Vocabulary">
+                <t>
+                    Keywords declared in in this specification that begin with "$" make up
+                    the JSON Schema Core vocabulary.  These keywords are either required in
+                    order process any schema or meta-schema, including those split across
+                    multiple documents, or exist to reserve keywords for purposes that
+                    require guaranteed interoperability.
+                </t>
+                <t>
+                    The Core vocabulary MUST be considered mandatory at all times, in order
+                    to bootstrap the processing of further vocabularies.  Meta-schema
+                    authors MAY explicitly list the Core vocabulary, but do not need
+                    to do so.  If present, the Core vocabulary entry MUST have a value
+                    of true indicating that it is required.  The behavior of a value
+                    of false is undefined.
+                </t>
+                <t>
+                    The current URI for the Core vocabulary is:
+                    <eref target="https://json-schema.org/draft-08/vocabularies/core"/>.
+                </t>
+                <t>
+                    The current URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft-08/core"/>.
+                </t>
+            </section>
+            <section title="Example Meta-Schema With Vocabulary Declarations">
+                <figure>
+                    <preamble>
+                        This meta-schema explicitly declares both the Core and Applicator
+                        vocabularies, and combines their meta-schemas with an "allOf".
+                        It additional restricts the usage of the Applicator vocabulary
+                        by forbidding the keyword prefixed with "unevaluated".  It also
+                        describes a keyword, "localKeyord", that is not part of either
+                        vocabulary.  Note that it is its own meta-schema,
+                        as it relies on both the Core vocabulary (as all schemas do)
+                        and the Applicator vocabulary (for "allOf"0.
+                    </preamble>
+                    <artwork>
 <![CDATA[
 {
   "$schema": "https://json-schema.org/draft-08/core-app-example#",
@@ -1037,26 +1038,25 @@
   }
 }
 ]]>
-                        </artwork>
-                        <postamble>
-                            As shown above, even though each of the referenced standard
-                            meta-schemas declares its corresponding vocabulary, this new
-                            meta-schema must re-declare them for itself.  It would be
-                            valid to leave the core vocabulary out of the "$vocabulary" keyword,
-                            but it MUST be referenced through the "allOf" keyword in order
-                            for its terms to be validated.  There is no special case for
-                            validation of core keywords.
-                        </postamble>
-                    </figure>
-                    <t>
-                        The standard meta-schemas that combine all vocabularies defined by
-                        the Core and Validation specification, and that combine all vocabularies
-                        defined by those specifications as well as the Hyper-Schema specification,
-                        demonstrate additional complex combinations.  These URIs for these
-                        meta-schemas may be found in the Validation and Hyper-Schema specifications,
-                        respectively.
-                    </t>
-                </section>
+                    </artwork>
+                    <postamble>
+                        As shown above, even though each of the referenced standard
+                        meta-schemas declares its corresponding vocabulary, this new
+                        meta-schema must re-declare them for itself.  It would be
+                        valid to leave the core vocabulary out of the "$vocabulary" keyword,
+                        but it MUST be referenced through the "allOf" keyword in order
+                        for its terms to be validated.  There is no special case for
+                        validation of core keywords.
+                    </postamble>
+                </figure>
+                <t>
+                    The standard meta-schemas that combine all vocabularies defined by
+                    the Core and Validation specification, and that combine all vocabularies
+                    defined by those specifications as well as the Hyper-Schema specification,
+                    demonstrate additional complex combinations.  These URIs for these
+                    meta-schemas may be found in the Validation and Hyper-Schema specifications,
+                    respectively.
+                </t>
             </section>
         </section>
 
