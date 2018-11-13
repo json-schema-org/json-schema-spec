@@ -4,8 +4,6 @@ about: Redirect usage questions to the web site and slack workspace.
 
 ---
 
-_This repository is for issues with the **specifications themselves**._
+_This repository is for issues with the specifications.  For help with using JSON Schema, please visit json-schema.org and look for the "Discussion" tab in the upper right corner.  To find or propose more examples or tutorials, please look at the https://github.com/json-schema-org/understanding-json-schema repository._
 
-_For **help with using JSON Schema**, please go to json-schema.org, or [join our slack workspace](https://join.slack.com/t/json-schema/shared_invite/enQtMjk1NDcyNDI2NTAwLTcyYmYwMjdmMmUxNzZjYzIxNGU2YjdkNzdlOGZiNjIwNDI2M2Y3NmRkYjA4YmMwODMwYjgyOTFlNWZjZjAyNjg)_.
-
-_If you would like to help with examples and tutorials, please [join our slack workspace] or visit the [Understanding JSON Schema repository].  **Do not** file generic "please add more examples" issues in this repository._
+_Please delete this boilerplate before submitting your issue._
