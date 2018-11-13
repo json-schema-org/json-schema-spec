@@ -1,7 +1,6 @@
 ---
-name: JSON Schema Specification issue template
-about: Redirect usage questions to the web site and slack workspace.
-labels: 
+name: JSON Schema Specification issue
+about: Feature proposals or bugs for the specifications.
 
 ---
 
