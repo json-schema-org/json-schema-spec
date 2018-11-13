@@ -1,6 +1,7 @@
 ---
 name: JSON Schema Specification issue
 about: Feature proposals or bugs for the specifications.
+labels: 
 
 ---
 
