@@ -176,7 +176,7 @@
                 <postamble>
                     If the instance is {"id": 1234}, and its base URI according to
                     <xref target="RFC3986">RFC 3986 section 5.1</xref>, is
-                    "https://api.example.com/", then "https://api.example.com/thing/1234"
+                    "https://example.com/api/", then "https://example.com/api/thing/1234"
                     is the resulting link's target URI.
                 </postamble>
             </figure>
@@ -1551,14 +1551,14 @@ for varname in templateData:
             <section title="Entry Point Links, No Templates" anchor="entryPoint">
                 <t>
                     For this example, we will assume an example API with a documented
-                    entry point URI of https://api.example.com, which is an empty JSON object
+                    entry point URI of https://example.com/api, which is an empty JSON object
                     with a link to a schema.  Here, the entry point has no data of its
                     own and exists only to provide an initial set of links:
                 </t>
                 <figure>
                     <artwork>
 <![CDATA[
-GET https://api.example.com HTTP/1.1
+GET https://example.com/api HTTP/1.1
 
 200 OK
 Content-Type: application/json
@@ -1570,8 +1570,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                 <t>
                     The linked hyper-schema defines the API's base URI and provides
                     two links:  an "about" link to API documentation, and a "self"
-                    link indicating that this is a schema for the base URI.  In this
-                    case the base URI is also the entry point URI.
+                    link indicating that this is a schema for the base URI.
                 </t>
                 <figure>
                     <artwork>
@@ -1579,14 +1578,14 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
 {
     "$id": "https://schema.example.com/entry",
     "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "base": "https://example.com/api/",
     "links": [
         {
             "rel": "self",
-            "href": ""
+            "href": "../api",
         }, {
             "rel": "about",
-            "href": "/docs"
+            "href": "docs"
         }
     ]
 }]]>
@@ -1596,21 +1595,41 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     These are the simplest possible links, with only a relation type and
                     an "href" with no template variables.  They resolve as follows:
                 </t>
+                <t>
+                    The duplication of "api" in both the base and the "../api"
+                    href in the "self" link is due to quirks of the RFC 3986
+                    URI-reference resolution algorithm.  In order for relative
+                    URI-references to work well in general, the base URI needs
+                    to include a trailing slash.  The "about" link with its "docs"
+                    href shows the common case of relative references, which is
+                    used in the other examples in this document.
+                </t>
+                <t>
+                    However, if an API uses URIs without trailing slashes for its resources,
+                    there is no way to provide a relative reference that just removes a
+                    trailing slash without duplicating the path component above it.
+                    Which makes the case of the entry point resource, which differs
+                    from the base URI only in terms of the trailing slash, somewhat awkward.
+                </t>
+                <t>
+                    Resource URIs, of course, may have trailing slashes, but this example
+                    is intended to highlight this frequently confusing special case.
+                </t>
                 <figure>
                     <artwork>
 <![CDATA[[
     {
-        "contextUri": "https://api.example.com",
+        "contextUri": "https://example.com/api",
         "contextPointer": "",
         "rel": "self",
-        "targetUri": "https://api.example.com",
+        "targetUri": "https://example.com/api",
         "attachmentPointer": ""
     },
     {
-        "contextUri": "https://api.example.com",
+        "contextUri": "https://example.com/api",
         "contextPointer": "",
         "rel": "about",
-        "targetUri": "https://api.example.com/docs",
+        "targetUri": "https://example.com/api/docs",
         "attachmentPointer": ""
     }
 ]]]>
@@ -1633,7 +1652,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
     "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "base": "https://example.com/api/",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -1830,7 +1849,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     </list>
                 </t>
                 <t>
-                    So, given the following instance retrieved from "https://api.example.com/stuff":
+                    So, given the following instance retrieved from "https://example.com/api/stuff":
                 </t>
                 <figure>
                     <artwork>
@@ -1848,7 +1867,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                 <figure>
                     <artwork>
 <![CDATA[{
-    "contextUri": "https://api.example.com/stuff",
+    "contextUri": "https://example.com/api/stuff",
     "contextPointer": "",
     "rel": "author",
     "hrefInputTemplates": [
@@ -1902,14 +1921,14 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     </preamble>
                     <artwork>
 <![CDATA[
-GET https://api.example.com/trees/1/nodes/123 HTTP/1.1
+GET https://example.com/api/trees/1/nodes/123 HTTP/1.1
 
 200 OK
 Content-Type: application/json
-Link: <https://api.example.com/trees/1/nodes/123>; rel="self"
-Link: <https://api.example.com/trees/1/nodes/123>; rel="up";
-        anchor="https://api.example.com/trees/1/nodes/456"
-Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
+Link: <https://example.com/api/trees/1/nodes/123>; rel="self"
+Link: <https://example.com/api/trees/1/nodes/123>; rel="up";
+        anchor="https://example.com/api/trees/1/nodes/456"
+Link: <https://example.com/api/trees/1/nodes/456>; rev="up"
 {
     "id": 123,
     "treeId": 1,
@@ -1998,7 +2017,7 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
     "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "base": "https://example.com/api/",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -2051,7 +2070,7 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
 <![CDATA[{
     "$id": "https://schema.example.com/thing-collection",
     "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "base": "https://example.com/api/",
     "type": "object",
     "required": ["elements"],
     "properties": {
@@ -2104,52 +2123,52 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[[
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "self",
-        "targetUri": "https://api.example.com/things",
+        "targetUri": "https://example.com/api/things",
         "attachmentPointer": ""
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/0",
         "rel": "self",
-        "targetUri": "https://api.example.com/things/12345",
+        "targetUri": "https://example.com/api/things/12345",
         "attachmentPointer": "/elements/0"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/1",
         "rel": "self",
-        "targetUri": "https://api.example.com/things/67890",
+        "targetUri": "https://example.com/api/things/67890",
         "attachmentPointer": "/elements/1"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "item",
-        "targetUri": "https://api.example.com/things/12345",
+        "targetUri": "https://example.com/api/things/12345",
         "attachmentPointer": "/elements/0"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "item",
-        "targetUri": "https://api.example.com/things/67890",
+        "targetUri": "https://example.com/api/things/67890",
         "attachmentPointer": "/elements/1"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/0",
         "rel": "collection",
-        "targetUri": "https://api.example.com/things",
+        "targetUri": "https://example.com/api/things",
         "attachmentPointer": "/elements/0"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/1",
         "rel": "collection",
-        "targetUri": "https://api.example.com/things",
+        "targetUri": "https://example.com/api/things",
         "attachmentPointer": "/elements/1"
     }
 ]]]>
@@ -2310,19 +2329,19 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                         <artwork>
 <![CDATA[[
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "self",
         "targetUri":
-            "https://api.example.com/things?offset=0&limit=2",
+            "https://example.com/api/things?offset=0&limit=2",
         "attachmentPointer": ""
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "next",
         "targetUri":
-            "https://api.example.com/things?offset=3&limit=2",
+            "https://example.com/api/things?offset=3&limit=2",
         "attachmentPointer": ""
     }
 ]]]>
