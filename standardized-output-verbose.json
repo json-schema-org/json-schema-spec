@@ -1,0 +1,153 @@
+{
+  "valid": false,
+  "keywordLocation": "#",
+  "instanceLocation": "#",
+  "errors": [
+    {
+      "valid": true,
+      "keywordLocation": "#/definitions",
+      "instanceLocation": "#",
+      "keyword": "definitions"
+    },
+    {
+      "valid": true,
+      "keywordLocation": "#/type",
+      "instanceLocation": "#",
+      "keyword": "type"
+    },
+    {
+      "valid": false,
+      "keywordLocation": "#/items",
+      "instanceLocation": "#",
+      "keyword": "items",
+      "errors": [
+        {
+          "valid": true,
+          "keywordLocation": "#/items/$ref",
+          "absoluteKeywordLocation":
+            "http://example.com/polygon#/items/$ref",
+          "instanceLocation": "#/0",
+          "keyword": "$ref",
+          "annotations": [
+            {
+              "valid": true,
+              "keywordLocation": "#/items/$ref",
+              "absoluteKeywordLocation":
+                "http://example.com/polygon#/definitions/point",
+              "instanceLocation": "#/0",
+              "annotations": [
+                {
+                  "valid": true,
+                  "keywordLocation": "#/items/$ref/type",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/type",
+                  "instanceLocation": "#/0",
+                  "keyword": "type"
+                },
+                {
+                  "valid": true,
+                  "keywordLocation": "#/items/$ref/properties",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/properties",
+                  "instanceLocation": "#/0",
+                  "keyword": "properties"
+                },
+                {
+                  "valid": true,
+                  "keywordLocation": "#/items/$ref/required",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/required",
+                  "instanceLocation": "#/0",
+                  "keyword": "required"
+                },
+                {
+                  "valid": true,
+                  "keywordLocation": "#/items/$ref/additionalProperties",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/additionalProperties",
+                  "instanceLocation": "#/0",
+                  "keyword": "additionalProperties"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "valid": false,
+          "keywordLocation": "#/items/$ref",
+          "absoluteKeywordLocation":
+            "http://example.com/polygon#/items/$ref",
+          "instanceLocation": "#/1",
+          "keyword": "$ref",
+          "errors": [
+            {
+              "valid": false,
+              "keywordLocation": "#/items/$ref",
+              "absoluteKeywordLocation":
+                "http://example.com/polygon#/definitions/point",
+              "instanceLocation": "#/1",
+              "errors": [
+                {
+                  "valid": true,
+                  "keywordLocation": "#/items/$ref/type",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/type",
+                  "instanceLocation": "#/1",
+                  "keyword": "type"
+                },
+                {
+                  "valid": true,
+                  "keywordLocation": "#/items/$ref/properties",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/properties",
+                  "instanceLocation": "#/1",
+                  "keyword": "properties"
+                },
+                {
+                  "valid": false,
+                  "keywordLocation": "#/items/$ref/required",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/required",
+                  "instanceLocation": "#/1",
+                  "keyword": "required",
+                  "additionalInfo": {
+                    "missing": [
+                      "y"
+                    ]
+                  }
+                },
+                {
+                  "valid": false,
+                  "keywordLocation": "#/items/$ref/additionalProperties",
+                  "absoluteKeywordLocation":
+                    "http://example.com/polygon#/definitions/point/additionalProperties",
+                  "instanceLocation": "#/1",
+                  "keyword": "additionalProperties",
+                  "errors": [
+                    {
+                      "valid": false,
+                      "keywordLocation": "#/items/$ref/additionalProperties",
+                      "absoluteKeywordLocation":
+                        "http://example.com/polygon#/definitions/point/additionalProperties",
+                      "instanceLocation": "#/1/z"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "valid": false,
+      "keywordLocation": "#/minItems",
+      "instanceLocation": "#",
+      "keyword": "minItems",
+      "additionalInfo": {
+        "expected": 3,
+        "actual": 2
+      }
+    }
+  ]
+}
