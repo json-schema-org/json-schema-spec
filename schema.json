@@ -119,7 +119,16 @@
         "contains": { "$recursiveRef": "#" },
         "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
         "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
-        "required": { "$ref": "#/$defs/stringArray" },
+        "required": { 
+            "$comment": "This keyword is deprecated, schema authors should use \"requiredProperties\" instead",
+            "$ref": "#/$defs/stringArray"
+        },
+        "requiredProperties": {
+            "anyOf": [
+                { "type": "boolean" },
+                { "$ref": "#/$defs/stringArray" }
+            ]
+        },
         "additionalProperties": { "$recursiveRef": "#" },
         "properties": {
             "type": "object",
