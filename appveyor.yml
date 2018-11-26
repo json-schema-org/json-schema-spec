@@ -1,0 +1,24 @@
+version: draft-08.build-{build}
+
+image: Visual Studio 2017
+
+environment:
+  OUTPUT_DIR: output
+  DOCS: jsonschema-core jsonschema-validation jsonschema-hyperschema
+
+cache:
+- '%LOCALAPPDATA%\pip\Cache'
+  
+install:
+- pip install xml2rfc
+
+before_build:
+- ps: if ($Env:APPVEYOR_REPO_TAG_NAME) { $Env:TAG = $Env:APPVEYOR_REPO_TAG_NAME } else { $Env:TAG = "latest" }
+
+build_script:
+- cmd: mkdir %OUTPUT_DIR%
+- cmd: FOR %%x IN (%DOCS%) DO xml2rfc %%x.xml -o %OUTPUT_DIR%\%%x-%TAG%.txt --text
+- cmd: FOR %%x IN (%DOCS%) DO xml2rfc %%x.xml -o %OUTPUT_DIR%\%%x-%TAG%.html --html
+
+artifacts:
+- path: $(OUTPUT_DIR)\*.*
