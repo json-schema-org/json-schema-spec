@@ -726,7 +726,7 @@
             </section>
         </section>
 
-        <section title='String-Encoding Non-JSON Data' anchor="content">
+        <section title='String-Encoded Data' anchor="content">
 
             <section title="Foreword">
                 <t>
@@ -774,6 +774,12 @@
                 </t>
 
                 <t>
+                    If this keyword is absent, but "contentMediaType" is present, this
+                    indicates that the media type could be encoded into UTF-8 like any
+                    other JSON string value, and does not require additional decoding.
+                </t>
+
+                <t>
                     The value of this property MUST be a string.
                 </t>
 
@@ -786,25 +792,33 @@
 
             <section title="contentMediaType">
                 <t>
-                    The value of this property must be a media type, as defined by
-                    <xref target="RFC2046">RFC 2046</xref>. This property defines the media
-                    type of instances which this schema defines.
+                    If the instance is a string, this property defines the media type
+                    of the contents of the string.  If "contentEncoding" is present,
+                    this property describes the decoded string.
                 </t>
-
                 <t>
-                    The value of this property MUST be a string.
+                    The value of this property MUST be a string, which MUST be a media type,
+                    as defined by <xref target="RFC2046">RFC 2046</xref>.
                 </t>
 
                 <t>
                     The value of this property SHOULD be ignored if the instance described is not a
                     string.
                 </t>
+            </section>
 
+            <section title="contentSchema">
                 <t>
-                    If the "contentEncoding" property is not present, but the instance value is a
-                    string, then the value of this property SHOULD specify a text document type,
-                    and the character set SHOULD be the character set into which the JSON string
-                    value was decoded (for which the default is Unicode).
+                    If the instance is a string, and if "contentMediaType" is present, this
+                    property contains a schema which describes the structure of the string.
+                </t>
+                <t>
+                    This keyword MAY be used with any media type that can be mapped into
+                    JSON Schema's data model.
+                </t>
+                <t>
+                    The value of this property SHOULD be ignored if the instance described is not a
+                    string, or if "contentMediaType" is not present.
                 </t>
             </section>
 
@@ -845,6 +859,48 @@
                         Instances described by this schema should be strings containing HTML, using
                         whatever character set the JSON string was decoded into (default is
                         Unicode).
+                    </postamble>
+                </figure>
+
+                <figure>
+                    <preamble>
+                        This example describes a JWT that is MACed using the HMAC SHA-256
+                        algorithm, and requires the "iss" and "exp" fields in its claim set.
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "type": "string",
+    "contentMediaType": "application/jwt",
+    "contentSchema": {
+        "type": "array",
+        "minItems": 2,
+        "items": [
+            {
+                "const": {
+                    "typ": "JWT",
+                    "alg": "HS256"
+                }   
+            },
+            {
+                "type": "object",
+                "required": ["iss", "exp"],
+                "properties": {
+                    "iss": {"type": "string"},
+                    "exp": {"type": "integer"}
+                }
+            }
+        ]
+    }   
+}]]>
+                    </artwork>
+                    <postamble>
+                        Note that "contentEncoding" does not appear.  While the "application/jwt"
+                        media type makes use of base64url encoding, that is defined by the media
+                        type, which determines how the JWT string is decoded into a list of two
+                        JSON data structures: first the header, and then the payload.  Since the
+                        JWT media type ensures that the JWT can be represented in a JSON string,
+                        there is no need for further encoding or decoding.
                     </postamble>
                 </figure>
             </section>
