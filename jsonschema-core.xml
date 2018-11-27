@@ -2139,6 +2139,14 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
                     parameter MUST be supplied.
                 </t>
                 <t>
+                    When using the media type application/schema+json, the "schema" parameter
+                    MAY be supplied, If supplied, it SHOULD contain the same URI as identified
+                    by the "$schema" keyword, and MAY contain additional URIs.  The "$schema"
+                    URI MUST be considered the schema's canonical meta-schema, regardless
+                    of the presence of alternative or additional meta-schemas as a media type
+                    parameter.
+                </t>
+                <t>
                     The schema URI is opaque and SHOULD NOT automatically be dereferenced.
                     If the implementation does not understand the semantics of the provided schema,
                     the implementation can instead follow the "describedby" links, if any, which may
@@ -2272,7 +2280,21 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     <list>
                         <t>Type name: application</t>
                         <t>Subtype name: schema+json</t>
-                        <t>Required parameters: N/A</t>
+                        <t>>Required parameters: N/A</t>
+                        <t>
+                            Optional parameters:
+                            <list style="hanging">
+                                <t hangText="schema:">
+                                    A non-empty list of space-separated URIs, each identifying
+                                    a JSON Schema resource.  The instance SHOULD successfully
+                                    validate against at least one of these meta-schemas.
+                                    Non-validating meta-schemas MAY be included for purposes such
+                                    as allowing clients to make use of older versions of
+                                    a meta-schema as long as the runtime instance validates
+                                    against that older version.
+                                </t>
+                            </list>
+                        </t>
                         <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
