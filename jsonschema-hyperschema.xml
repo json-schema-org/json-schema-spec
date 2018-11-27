@@ -215,7 +215,10 @@
                         <t hangText="link validity">
                             A valid link for an instance is one that is applicable to that
                             instance and does not fail any requirement imposed by the keywords
-                            in the Link Description Object.
+                            in the Link Description Object.  Note that invalid links can
+                            occur when using keywords such as "if" or "oneOf" (from the
+                            Core specification) to describe links that are conditional on
+                            the representation's structure or value.
                         </t>
                         <t hangText="generic user agent">
                             A user agent which can be used to interact with any resource, from
