@@ -790,7 +790,7 @@
                 <t>
                     A schema that itself describes a schema is called a meta-schema.
                     Meta-schemas are used to validate JSON Schemas and specify which vocabulary
-                    it is using.
+                    they are using.
                 </t>
                 <t>
                     Authors of extensions to JSON Schema are encouraged to write their own
@@ -819,7 +819,7 @@
             <t>
                 The role of the meta-schema is to constrain the structure of conforming schemas,
                 as well as simplify the process of composing multiple vocabularies into a usable
-                feature set.  Schema authoring is obviously expected to be a common activity, so
+                feature set.  Schema authoring is expected to be a common activity, so
                 schema authors need only understand how to reference a single meta-schema.
             </t>
             <t>
@@ -880,18 +880,16 @@
                 </t>
                 <t>
                     Values for this property are defined elsewhere in this and other documents,
-                    and by other parties.  JSON Schema implementations SHOULD implement support
-                    for current and previous published drafts of JSON Schema vocabularies
-                    as deemed reasonable.
+                    and by other parties.
                 </t>
             </section>
             <section title='The "$vocabulary" Keyword'>
                 <t>
-                    The "$vocabulary" keyword, like all keywords in meta-schemas,
-                    relates to the schema described by the meta-schema, rather than
-                    to the meta-schema itself.  Specifically, "$vocabulary" declares
+                    The "$vocabulary" keyword, which appears in a meta-schema, declares
                     what sets of keywords are expected to be used in schemas described
-                    by this meta-schema.
+                    by that meta-schema, and with what semantics.  This is conceptually
+                    analogous to how most other keywords used in meta-schemas describe
+                    the syntax of keywords used in schemas described by that meta-schema.
                 </t>
                 <t>
                     The value of this keyword MUST be an object.  The property names in the
@@ -939,6 +937,14 @@
                     must be repeated in the root of each schema document intended
                     for use as a meta-schema.  This is demonstrated in
                     <xref target="example-meta-schema">the example meta-schema</xref>.
+                </t>
+                <t>
+                    If "$vocabulary" is absent, an implementation MAY determine
+                    behavior based on the meta-schema if it is recognized from the
+                    URI value of the referring schema's "$schema" keyword.
+                    If the meta-schema, as referenced by the schema, is not recognized,
+                    then implementations MAY assume the use of all vocabularies in this
+                    specification and the companion Validation specification.
                 </t>
             </section>
             <section title="Detecting a Meta-Schema">
@@ -992,6 +998,11 @@
                     associated with the declared vocabularies describe.  This allows for
                     restricting usage to a subset of a vocabulary, and for validating
                     locally defined keywords not intended for re-use.
+                </t>
+                <t>
+                    However, meta-schemas SHOULD NOT contradict any vocabularies that
+                    they declare, such as by requiring a different JSON type than
+                    the vocabulary expects.  The resulting behavior is undefined.
                 </t>
                 <t>
                     Meta-schemas intended for local use, with no need to test for
