@@ -848,7 +848,8 @@
         <section title="Base URI and Dereferencing">
             <t>
                 To differentiate between schemas in a vast ecosystem, schemas are
-                identified by <xref target="RFC3986">URI</xref>, and can embed references to other schemas by specifying their URI.
+                identified by <xref target="RFC3986">URI</xref>, and can embed references
+                to other schemas by specifying their URI.
             </t>
 
             <section title="Initial Base URI">
@@ -858,7 +859,14 @@
                 </t>
                 <t>
                     Informatively, the initial base URI of a schema is the URI at which it was
-                    found, or a suitable substitute URI if none is known.
+                    found, whether that was a network location, a local filesystem, or any other
+                    situation identifiable by a URI of any known scheme.
+                </t>
+                <t>
+                    If no source is known, or no URI scheme is known for the source, a suitable
+                    implementation-specific default URI MAY be used as described in
+                    <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
+                    that implementations document any default base URI that they assume.
                 </t>
             </section>
 
