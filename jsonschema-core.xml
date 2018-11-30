@@ -2124,7 +2124,7 @@
                     section for the requirements of each level.
                     <list>
                         <t>
-                            Pass/Fail - A boolean which simply indicates whether the schema was
+                            Flag - A boolean which simply indicates whether the schema was
                             validated.
                         </t>
                         <t>
@@ -2146,7 +2146,7 @@
 
             <section title="Minimum Information">
                 <t>
-                    Beyond a simplistic pass/fail, additional information is useful to aid in
+                    Beyond the simplistic "Flag" output, additional information is useful to aid in
                     debugging a schema or instance.  Each sub-result SHOULD contain the information
                     contained within this section at a minimum.
                 </t>
@@ -2237,7 +2237,9 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
 
             <section title="Output Structure">
                 <t>
-                    The output MUST be an object containing two properties
+                    The output MUST be an object containing a boolean property named "valid".  When
+                    additional information about the result is required, the output MUST also contain
+                    "errors" or "annotations" as described below.
                     <list>
                         <t>
                             "valid" - a boolean value indicating the overall validation success or
@@ -2311,7 +2313,7 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
                     tailored for their audience.
                 </t>
 
-                <section title="Pass/Fail">
+                <section title="Flag">
                     <t>
                         In the simplest case, merely the boolean result for the "valid" valid property
                         needs to be fulfilled.
