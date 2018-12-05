@@ -41,7 +41,7 @@
             </address>
         </author>
 
-        <author fullname="Greg Dennis" initials="G" surname="Dennis" role="editor">
+        <author fullname="Greg Dennis" initials="G" surname="Dennis">
             <address>
                 <postal>
                     <street></street>
@@ -616,6 +616,9 @@
                         exists during the evaluation of a schema, typically together
                         with an instance document.  The outermost dynamic scope is the
                         root schema of the schema document in which processing begins.
+                        The path from this root schema to any particular keyword (that
+                        includes any "$ref" and "$recursiveRef" keywords that may have
+                        been resolved) is considered the keyword's "validation path."
                         <cref>
                             Or should this be the schema object at which processing
                             begins, even if it is not a root?  This has some implications
@@ -634,8 +637,8 @@
                         dynamic parent, rather than examining the local lexically enclosing parent.
                     </t>
                     <t>
-                        The concept of dynamic scope is primarily used with "$recursiveRef"
-                        and "$recursiveAnchor", and should be considered and advanced feature
+                        The concept of dynamic scope is primarily used with "$recursiveRef",
+                        "$recursiveAnchor", and should be considered an advanced feature
                         and used with caution when defining additional keywords.
                     </t>
                 </section>
@@ -2111,10 +2114,10 @@
 
             <section title="Format">
                 <t>
-                    JSON Schema output is defined using JSON.  Implementations MAY deviate from this
-                    as supported by their specific languages and platforms, however it is RECOMMENDED
-                    that the output be convertible to the JSON format defined herein via serialization
-                    or other means.
+                    JSON Schema output is defined using the JSON Schema data instance model as described
+                    in section 4.2.1.  Implementations MAY deviate from this as supported by their
+                    specific languages and platforms, however it is RECOMMENDED that the output be
+                    convertible to the JSON format defined herein via serialization or other means.
                 </t>
             </section>
 
@@ -2179,8 +2182,8 @@
                 <section title="Keyword Absolute Location">
                     <t>
                         The absolute, dereferenced location of the validating keyword.  The value MUST
-                        be expressed as an absolute URI, and it MUST NOT include "$ref" or
-                        "$recursiveRef" segments.
+                        be expressed as an absolute URI, and it MUST NOT include by-reference applicators
+                        such as "$ref" or "$recursiveRef".
                     </t>
                     <figure>
                         <artwork>
@@ -2858,8 +2861,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 Brad Bowman,
                 Gowry Sankar,
                 Donald Pipowitch,
-                Dave Finlay,
-                and Greg Dennis
+                and Dave Finlay
                 for their submissions and patches to the document.
             </t>
         </section>
