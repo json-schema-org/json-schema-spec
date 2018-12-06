@@ -2311,9 +2311,9 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
                             There are only two vertices, but three are required.
                         </t>
                     </list>
-                    Note that the wording in the error messages depicted in these examples is not a
-                    requirement of this specification.  Implementations SHOULD craft error messages
-                    tailored for their audience.
+                    Note that neither the error message property nor its wording as depicted in these
+                    examples is not a requirement of this specification.  Implementations SHOULD craft
+                    error messages tailored for their audience.
                 </t>
 
                 <section title="Flag">
@@ -2367,7 +2367,6 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
       "absoluteKeywordLocation":
         "http://example.com/polygon#/definitions/point/required",
       "instanceLocation": "#/1",
-      "keyword": "required",
       "error": "Required property 'y' not found."
     },
     {
@@ -2380,7 +2379,6 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
     {
       "keywordLocation": "#/minItems",
       "instanceLocation": "#",
-      "keyword": "minItems",
       "error": "Expected at least 3 items but found 2"
     }
   ]
@@ -2534,6 +2532,13 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
 ]]>
                         </artwork>
                     </figure>
+                </section>
+
+                <section title="Output validation schema">
+                    <t>
+                        For convenience, a JSON Schema has been provided to validate output generated
+                        by implementations.  It can be found [here](schema-output.json).
+                    </t>
                 </section>
 
             </section>
