@@ -2127,8 +2127,8 @@
                     section for the requirements of each format.
                     <list>
                         <t>
-                            Flag - A boolean which simply indicates whether the schema was
-                            validated.
+                            Flag - A boolean which simply indicates the overall validation result
+                            with no further details.
                         </t>
                         <t>
                             Basic - Provides validation information in a flat list structure.
@@ -2168,7 +2168,7 @@
                     <t>
                         The relative location of the validating keyword that follows the validation
                         path.  The value MUST be expressed as a JSON Pointer, and it MUST include
-                        "$ref" or "$recursiveRef" segments for any reference jumps.
+                        any by-reference applicators such as "$ref" or "$recursiveRef".
                     </t>
                     <figure>
                         <artwork>
