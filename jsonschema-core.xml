@@ -2121,10 +2121,10 @@
                 </t>
             </section>
 
-            <section title="Output Levels">
+            <section title="Output Formats">
                 <t>
-                    This specification defines four levels of output.  See the *Output Structure*
-                    section for the requirements of each level.
+                    This specification defines four output formats.  See the *Output Structure*
+                    section for the requirements of each format.
                     <list>
                         <t>
                             Flag - A boolean which simply indicates whether the schema was
@@ -2142,7 +2142,10 @@
                             structure that matches the exact structure of the schema.
                         </t>
                     </list>
-                    Implementations SHOULD specify which levels of validation they support.
+                    Implementations SHOULD specify which formats of validation they support.  Each
+                    format is independent of the others.  For example, if an implementation decides
+                    to support the "detailed" format, it is not also required to support the "basic"
+                    or "flag" formats, and vice versa.
                 </t>
 
             </section>
