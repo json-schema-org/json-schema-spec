@@ -15,10 +15,8 @@
             "minimum": 0
         },
         "nonNegativeIntegerDefault0": {
-            "allOf": [
-                { "$ref": "#/$defs/nonNegativeInteger" },
-                { "default": 0 }
-            ]
+            "$ref": "#/$defs/nonNegativeInteger",
+            "default": 0
         },
         "simpleTypes": {
             "enum": [
@@ -117,6 +115,11 @@
             "default": false
         },
         "contains": { "$recursiveRef": "#" },
+        "maxContains": { "$ref": "#/$defs/nonNegativeInteger" },
+        "minContains": {
+            "$ref": "#/$defs/nonNegativeInteger",
+            "default": 1
+        },
         "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
         "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
         "required": { "$ref": "#/$defs/stringArray" },
