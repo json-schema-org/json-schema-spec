@@ -2123,7 +2123,7 @@
 
             <section title="Output Formats">
                 <t>
-                    This specification defines four output formats.  See the *Output Structure*
+                    This specification defines four output formats.  See the "Output Structure"
                     section for the requirements of each format.
                     <list>
                         <t>
@@ -2178,6 +2178,10 @@
                         </artwork>
                     </figure>
                     <t>
+                    Note that this pointer may not be resolvable due to the inclusion of these
+                    applicator keywords.
+                    </t>
+                    <t>
                         The JSON key for this information is "keywordLocation".
                     </t>
                 </section>
@@ -2196,8 +2200,8 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
                         </artwork>
                     </figure>
                     <t>
-                        This information MAY be omitted if either the relative location contains no
-                        references or if the schema does not declare an absolute URI as its "$id".
+                        This information MAY be omitted only if either the relative location contains
+                        no references or if the schema does not declare an absolute URI as its "$id".
                     </t>
                     <t>
                         The JSON key for this information is "absoluteKeywordLocation".
@@ -2464,13 +2468,13 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
 
                 <section title="Verbose">
                     <t>
-                        The **Verbose** structure is a fully realized hierarchy that exactly matches
+                        The "Verbose" structure is a fully realized hierarchy that exactly matches
                         that of the schema.  This structure has applications in form generation and
                         validation where the error's location is important.
                     </t>
                     <t>
-                        The primary difference between this and the **Detailed** structure is that
-                        *all* results are returned.  This includes sub-schema validation results that
+                        The primary difference between this and the "Detailed" structure is that
+                        all results are returned.  This includes sub-schema validation results that
                         would otherwise be removed (e.g. annotations for failed validations,
                         successful validations inside a `not` keyword, etc.).  Because of this, it
                         is RECOMMENDED that each node also carry a `valid` property to indicate the
@@ -2479,7 +2483,7 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
                     <t>
                         Because this output structure can be quite large, a smaller example is given
                         here for brevity.  The full output structure of the example above can be found
-                        [here](standardized-output-verbose.json)
+                        <eref target="standardized-output-verbose.json">here</eref>.
                     </t>
                     <figure>
                         <artwork>
@@ -2540,7 +2544,7 @@ http://json-schema.org/draft-08/schema#/$defs/nonNegativeInteger/minimum
                 <section title="Output validation schema">
                     <t>
                         For convenience, a JSON Schema has been provided to validate output generated
-                        by implementations.  It can be found [here](schema-output.json).
+                        by implementations.  It can be found <eref target="schema-output.json">here</eref>.
                     </t>
                 </section>
 
