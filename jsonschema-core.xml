@@ -1038,8 +1038,7 @@
                 </t>
                 <t>
                     Meta-schemas that do not use "$vocabulary" MUST be considered to
-                    require the Core vocabulary just as if "$vocabulary" were used
-                    with only the Core vocabulary present with a value of true.
+                    require the Core vocabulary as if its URI were present with a value of true.
                 </t>
                 <t>
                     The current URI for the Core vocabulary is:
@@ -1883,7 +1882,7 @@
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                use this vocabulary as if its URI were present with a value of false.
+                require this vocabulary as if its URI were present with a value of true.
             </t>
             <section title="Keyword Independence">
                 <t>
