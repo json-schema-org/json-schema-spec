@@ -885,7 +885,7 @@
             </section>
             <section title='The "$vocabulary" Keyword'>
                 <t>
-                    The "$vocabulary" keyword, which appears in a meta-schema, declares
+                    The "$vocabulary" keyword, which appears in a meta-schema, identifies
                     what sets of keywords are expected to be used in schemas described
                     by that meta-schema, and with what semantics.  This is conceptually
                     analogous to how most other keywords used in meta-schemas describe
@@ -893,7 +893,11 @@
                 </t>
                 <t>
                     The value of this keyword MUST be an object.  The property names in the
-                    object MUST be URIs, (containing a scheme) and this URI MUST be normalized.
+                    object MUST be URIs (containing a scheme) and this URI MUST be normalized.
+                    Each URI that appears as a property name identifies a specific set of
+                    keywords and their semantics.
+                </t>
+                <t>
                     The URI MAY be a URL, but the nature of the retrievable resources is
                     currently undefined, and reserved for future use.  Vocabulary authors
                     SHOULD NOT serve a document at that URL.  A server MAY respond with
@@ -943,7 +947,8 @@
                     behavior based on the meta-schema if it is recognized from the
                     URI value of the referring schema's "$schema" keyword.
                     If the meta-schema, as referenced by the schema, is not recognized,
-                    then implementations MAY assume the use of all vocabularies in this
+                    then implementations MUST assume the use of the core vocabulary,
+                    and SHOULD assume the use of all vocabularies in this
                     specification and the companion Validation specification.
                 </t>
             </section>
@@ -1875,6 +1880,10 @@
             <t>
                 The current URI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft-08/applicator"/>.
+            </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                use this vocabulary as if its URI were present with a value of false.
             </t>
             <section title="Keyword Independence">
                 <t>
