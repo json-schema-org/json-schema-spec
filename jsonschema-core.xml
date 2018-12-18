@@ -2142,17 +2142,19 @@
                             structure that matches the exact structure of the schema.
                         </t>
                     </list>
-                    Implementations SHOULD specify which formats of validation they support.  Each
+                    Implementations MUST provide support for the "flag" format.  It is RECOMMENDED
+                    that implementations support at least one of the complex formats as well.  Each
                     format is independent of the others.  For example, if an implementation decides
                     to support the "detailed" format, it is not also required to support the "basic"
-                    or "flag" formats, and vice versa.
+                    or "verbose" formats, and vice versa.  Implementations SHOULD specify in their
+                    documentation which formats of validation they support.
                 </t>
 
             </section>
 
             <section title="Minimum Information">
                 <t>
-                    Beyond the simplistic "Flag" output, additional information is useful to aid in
+                    Beyond the simplistic "flag" output, additional information is useful to aid in
                     debugging a schema or instance.  Each sub-result SHOULD contain the information
                     contained within this section at a minimum.
                 </t>
