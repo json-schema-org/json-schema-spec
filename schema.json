@@ -2,8 +2,9 @@
     "$schema": "http://json-schema.org/draft-08/schema#",
     "$id": "http://json-schema.org/draft-08/schema#",
     "$recursiveAnchor": true,
+    "$recursiveRef": "core",
 
-    "title": "Core schema meta-schema",
+    "title": "Core and Validation specifications meta-schema",
     "$defs": {
         "schemaArray": {
             "type": "array",
@@ -38,34 +39,6 @@
     },
     "type": ["object", "boolean"],
     "properties": {
-        "$id": {
-            "type": "string",
-            "format": "uri-reference"
-        },
-        "$schema": {
-            "type": "string",
-            "format": "uri"
-        },
-        "$ref": {
-            "type": "string",
-            "format": "uri-reference"
-        },
-        "$recursiveRef": {
-            "type": "string",
-            "format": "uri-reference"
-        },
-        "$recursiveAnchor": {
-            "const": true,
-            "default": false
-        },
-        "$comment": {
-            "type": "string"
-        },
-        "$defs": {
-            "type": "object",
-            "additionalProperties": { "$recursiveRef": "#" },
-            "default": {}
-        },
         "definitions": {
             "$comment": "While no longer an official keyword as it is replaced by $defs, this keyword is retained in the meta-schema to prevent incompatible extensions as it remains in common use.",
             "type": "object",
