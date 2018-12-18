@@ -1057,10 +1057,10 @@
                         vocabularies, and combines their meta-schemas with an "allOf".
                         It additionally restricts the usage of the Applicator vocabulary
                         by forbidding the keyword prefixed with "unevaluated".  It also
-                        describes a keyword, "localKeyord", that is not part of either
+                        describes a keyword, "localKeyword", that is not part of either
                         vocabulary.  Note that it is its own meta-schema,
                         as it relies on both the Core vocabulary (as all schemas do)
-                        and the Applicator vocabulary (for "allOf"0.
+                        and the Applicator vocabulary (for "allOf").
                     </preamble>
                     <artwork>
 <![CDATA[
@@ -2424,7 +2424,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
                 </t>
                 <t>
                     When using the media type application/schema+json, the "schema" parameter
-                    MAY be supplied, If supplied, it SHOULD contain the same URI as identified
+                    MAY be supplied. If supplied, it SHOULD contain the same URI as identified
                     by the "$schema" keyword, and MAY contain additional URIs.  The "$schema"
                     URI MUST be considered the schema's canonical meta-schema, regardless
                     of the presence of alternative or additional meta-schemas as a media type
@@ -2564,7 +2564,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     <list>
                         <t>Type name: application</t>
                         <t>Subtype name: schema+json</t>
-                        <t>>Required parameters: N/A</t>
+                        <t>Required parameters: N/A</t>
                         <t>
                             Optional parameters:
                             <list style="hanging">
