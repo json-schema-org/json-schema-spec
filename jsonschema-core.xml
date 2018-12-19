@@ -585,7 +585,7 @@
                         complex behavior.
                     </t>
                     <t>
-                        The lexical scope of a keyword is deterimined by the nested JSON
+                        The lexical scope of a keyword is determined by the nested JSON
                         data structure of objects and arrays.  The largest such scope
                         is an entire schema document.  The smallest scope is a single
                         schema object with no subschemas.
@@ -1280,7 +1280,7 @@
             <section title="Schema References">
                 <t>
                     Several keywords can be used to reference a schema which is to be applied to the
-                    current instance location. "$ref" and "$recursiveRef" are an applicator
+                    current instance location. "$ref" and "$recursiveRef" are applicator
                     keywords, applying the referenced schema to the instance.  "$recursiveAnchor"
                     is a helper keyword that controls how the referenced schema of "$recursiveRef"
                     is determined.
@@ -1514,7 +1514,7 @@
                     </section>
                 </section>
 
-                <section title="Guarding Against Inifinite Recursion">
+                <section title="Guarding Against Infinite Recursion">
                     <t>
                         A schema MUST NOT be run into an infinite loop against an instance. For
                         example, if two schemas "#alice" and "#bob" both have an "allOf" property
@@ -2067,7 +2067,7 @@
                         </t>
                         <t>
                             If the object key is a property in the instance, the entire
-                            instance must validate against the susbschema.  Its use is
+                            instance must validate against the subschema.  Its use is
                             dependent on the presence of the property.
                         </t>
                         <t>
@@ -2746,7 +2746,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                             <t>Emphasized annotations as a primary usage of JSON Schema</t>
                             <t>Clarified $id by use cases</t>
                             <t>Exhaustive schema identification examples</t>
-                            <t>Replaced "external referencing" with how and when an implementation might know of a schema from another doucment</t>
+                            <t>Replaced "external referencing" with how and when an implementation might know of a schema from another document</t>
                             <t>Replaced "internal referencing" with how an implementation should recognized schema identifiers during parsing</t>
                             <t>Dereferencing the former "internal" or "external" references is always the same process</t>
                             <t>Minor formatting improvements</t>
