@@ -2142,10 +2142,10 @@
                             structure that matches the exact structure of the schema.
                         </t>
                     </list>
-                    Implementations MUST provide support for the "flag" format and SHOULD provide the
-                    "basic" and "detailed" formats, and MAY provide the "verbose" format.
-                    Implementations SHOULD specify in their documentation which formats of validation
-                    they support.
+                    An implementation SHOULD provide at least the "flag", "basic", or "detailed"
+                    format and MAY provide the "verbose" format.  If it provides one or more of the
+                    complex formats, it MUST also provide the "flag" format. Implementations SHOULD
+                    specify in their documentation which formats they support.
                 </t>
 
             </section>
