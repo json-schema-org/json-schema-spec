@@ -812,8 +812,12 @@
                         The exact mapping of the JSON data model into the headers is
                         protocol-dependent.  However, in most cases this schema SHOULD
                         specify a type of "object", and the property names SHOULD be
-                        lower-cased forms of the control data field names.  See the
-                        <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> section
+                        lower-cased forms of the control data field names.  As with
+                        "targetHints", the values SHOULD be described as arrays to
+                        allow for multiple values, even if only one value is expected.
+                    </t>
+                    <t>
+                        See the <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> section
                         for detailed guidance on using this keyword with HTTP and
                         analogous protocols.
                     </t>
