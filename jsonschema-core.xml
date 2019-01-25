@@ -2912,7 +2912,8 @@ Content-Type: application/json;
                 </figure>
 
                 <t>
-                    Multiple schemas are whitespace separated:
+                    Multiple schemas are whitespace separated, and indicate that the
+                    instance conforms to all of the listed schemas:
                 </t>
 
                 <figure>
@@ -2923,6 +2924,35 @@ Content-Type: application/json;
 ]]>
                     </artwork>
                 </figure>
+
+                <t>
+                    Media type parameters are also used in HTTP's Accept request header:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Accept: application/json;
+          schema="http://example.com/qiang http://example.com/li",
+        application/json;
+          schema="http://example.com/kumar"
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    As with Content-Type, multiple schema parameters in the same string
+                    requests an instance that conforms to all of the listed schemas.
+                </t>
+
+                <t>
+                    Unlike Content-Type, Accept can contain multiple values to
+                    indicate that the client can accept several media types.
+                    In the above example, note that the two media types differ
+                    only by their schema parameter values.  This requests an
+                    application/json representation that conforms to at least one
+                    of the identified schemas.
+                </t>
 
                 <t>
                     <cref>
