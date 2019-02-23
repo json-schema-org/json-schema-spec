@@ -887,8 +887,9 @@
                     </artwork>
                     <postamble>
                         Instances described by this schema should be strings containing HTML, using
-                        whatever character set the JSON string was decoded into (default is
-                        Unicode).
+                        whatever character set the JSON string was decoded into.  Per section 8.1 of
+                        <xref target="RFC8259">RFC 8259</xref>, outside of an entirely closed
+                        system, this MUST be UTF-8.
                     </postamble>
                 </figure>
 

@@ -1540,6 +1540,29 @@
                     </t>
                 </section>
 
+                <section title="References to Possible Non-Schemas">
+                    <t>
+                        Subschema objects (or booleans) are recognized by their use with known
+                        applicator keywords.  These keywords may be the standard applicators
+                        from this document, or extension keywords from a known vocabulary, or
+                        implementation-specific custom keywords.
+                    </t>
+                    <t>
+                        Multi-level structures of unknown keywords are capable of introducing
+                        nested subschemas, which would be subject to the processing rules for
+                        "$id".  Therefore, having a reference target in such an unrecognized
+                        structure cannot be reliably implemented, and the resulting behavior
+                        is undefined.
+                    </t>
+                    <t>
+                        Note that single-level custom keywords with identical syntax and
+                        semantics to "$defs" do not allow for any intervening "$id" keywords,
+                        and therefore will behave correctly under implementations that attempt
+                        to use any reference target as a schema.  However, this behavior is
+                        implementation-specific and MUST NOT be relied upon for interoperability.
+                    </t>
+                </section>
+
                 <section title="Loading a referenced schema">
                     <t>
                         The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
