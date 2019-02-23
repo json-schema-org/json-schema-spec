@@ -192,19 +192,37 @@
         <section title="Meta-Schema">
             <t>
                 The current URI for the JSON Schema Validation meta-schema is
-                <eref target="http://json-schema.org/draft-08/schema#"/>.
-                This meta-schema describes the core keywords, the subschema application
-                vocabulary from the core specification, and all keywords
-                defined by this specification.  All implementations of this specification
-                SHOULD support the subschema application vocabulary, and MUST NOT
-                implement behavior that contradicts that vocabulary.
+                <eref target="http://json-schema.org/draft/2019-03/schenma#"/>.
+                For schema author convenience, this meta-schema describes all vocabularies
+                defined in this specification and the JSON Schema Core specification.
+                Individual vocabulary and vocabulary meta-schema URIs are given for
+                each section below.
+            </t>
+            <t>
+                Updated vocabulary and meta-schema URIs MAY be published between
+                specification drafts in order to correct errors.  Implementations
+                SHOULD consider URIs dated after this specification draft and
+                before the next to indicate the same syntax and semantics
+                as those listed here.
             </t>
         </section>
 
-        <section title="Validation Keywords">
+        <section title="A Vocabulary for Structural Validation">
             <t>
                 Validation keywords in a schema impose requirements for successful validation of an
                 instance.  These keywords are all assertions without any annotation behavior.
+            </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                require this vocabulary as if its URI were present with a value of true.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Validation vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-03/vocab/validation"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft/2019-03/meta/validation"/>.
             </t>
 
             <section title="Validation Keywords for Any Instance Type" anchor="general">
@@ -496,7 +514,7 @@
             </section>
         </section>
 
-        <section title='Semantic Validation With "format"' anchor="format">
+        <section title='A Vocabulary for Semantic Validation With "format"' anchor="format">
 
             <section title="Foreword">
                 <t>
@@ -512,6 +530,20 @@
                     format attribute can generally only validate a given set of instance types. If
                     the type of the instance to validate is not in this set, validation for this
                     format attribute and instance SHOULD succeed.
+                </t>
+
+                <t>
+                    Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                    require this vocabulary as if its URI were present with a value of true,
+                    although see the Implementation Requirements below for details.
+                </t>
+                <t>
+                    The current URI for this vocabulary, known as the Format vocabulary, is:
+                    <eref target="https://json-schema.org/draft/2019-03/vocab/format"/>.
+                </t>
+                <t>
+                    The current URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2019-03/meta/format"/>.
                 </t>
 
             </section>
@@ -733,7 +765,7 @@
             </section>
         </section>
 
-        <section title='String-Encoded Data' anchor="content">
+        <section title='A Vocabulary for the Contents of String-Encoded Data' anchor="content">
 
             <section title="Foreword">
                 <t>
@@ -744,6 +776,19 @@
                 <t>
                     These properties provide additional information required to interpret JSON data
                     as rich multimedia documents.
+                </t>
+                <t>
+                    Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                    require this vocabulary as if its URI were present with a value of true,
+                    although see the Implementation Requirements below for details.
+                </t>
+                <t>
+                    The current URI for this vocabulary, known as the Content vocabulary, is:
+                    <eref target="https://json-schema.org/draft/2019-03/vocab/content"/>.
+                </t>
+                <t>
+                    The current URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2019-03/meta/content"/>.
                 </t>
             </section>
 
@@ -914,13 +959,26 @@
 
         </section>
 
-        <section title="Basic Meta-Data Annotations">
+        <section title="A Vocabulary for Basic Meta-Data Annotations">
             <t>
                 These general-purpose annotation keywords provide commonly used information
                 for documentation and user interface display purposes.  They are not intended
                 to form a comprehensive set of features.  Rather, additional vocabularies
                 can be defined for more complex annotation-based applications.
             </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                require this vocabulary as if its URI were present with a value of true.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Meta-Data vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-03/vocab/meta-data"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft/2019-03/meta/meta-data"/>.
+            </t>
+
             <section title='"title" and "description"'>
                 <t>
                     The value of both of these keywords MUST be a string.
