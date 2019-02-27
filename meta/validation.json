@@ -7,33 +7,6 @@
     "$recursiveAnchor": true,
 
     "title": "Validation vocabulary meta-schema",
-    "$defs": {
-        "nonNegativeInteger": {
-            "type": "integer",
-            "minimum": 0
-        },
-        "nonNegativeIntegerDefault0": {
-            "$ref": "#/$defs/nonNegativeInteger",
-            "default": 0
-        },
-        "simpleTypes": {
-            "enum": [
-                "array",
-                "boolean",
-                "integer",
-                "null",
-                "number",
-                "object",
-                "string"
-            ]
-        },
-        "stringArray": {
-            "type": "array",
-            "items": { "type": "string" },
-            "uniqueItems": true,
-            "default": []
-        }
-    },
     "type": ["object", "boolean"],
     "properties": {
         "multipleOf": {
@@ -96,6 +69,33 @@
                     "uniqueItems": true
                 }
             ]
+        }
+    },
+    "$defs": {
+        "nonNegativeInteger": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "nonNegativeIntegerDefault0": {
+            "$ref": "#/$defs/nonNegativeInteger",
+            "default": 0
+        },
+        "simpleTypes": {
+            "enum": [
+                "array",
+                "boolean",
+                "integer",
+                "null",
+                "number",
+                "object",
+                "string"
+            ]
+        },
+        "stringArray": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true,
+            "default": []
         }
     }
 }
