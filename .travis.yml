@@ -4,6 +4,7 @@ install:
 before_script:
 - TAG=$(git tag -l --points-at HEAD)
 script:
+- xml2rfc -V
 - xml2rfc jsonschema-core.xml --basename=jsonschema-core-$TAG --text --html
 - xml2rfc jsonschema-validation.xml --basename=jsonschema-validation-$TAG --text --html
 - xml2rfc jsonschema-hyperschema.xml --basename=jsonschema-hyperschema-$TAG --text --html
