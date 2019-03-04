@@ -1552,7 +1552,19 @@
                         nested subschemas, which would be subject to the processing rules for
                         "$id".  Therefore, having a reference target in such an unrecognized
                         structure cannot be reliably implemented, and the resulting behavior
-                        is undefined.
+                        is undefined.  Similarly, a reference target under a known keyword,
+                        for which the value is known not to be a schema, results in undefined
+                        behavior in order to avoid burdening implementations with the need
+                        to detect such targets.
+                        <cref>
+                            These scenarios are analogous to fetching a schema over HTTP
+                            but receiving a response with a Content-Type other than
+                            application/schema+json.  An implementation can certainly
+                            try to interpret it as a schema, but the origin server
+                            offered no guarantee that it actually is any such thing.
+                            Therefore, interpreting it as such has security implications
+                            and may produce unpredictable results.
+                        </cref>
                     </t>
                     <t>
                         Note that single-level custom keywords with identical syntax and
