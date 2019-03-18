@@ -1058,11 +1058,11 @@
                 </t>
                 <t>
                     The current URI for the Core vocabulary is:
-                    <eref target="https://json-schema.org/draft/2019-03/vocab/core"/>.
+                    <eref target="https://json-schema.org/draft/2019-04/vocab/core"/>.
                 </t>
                 <t>
                     The current URI for the corresponding meta-schema is:
-                    <eref target="https://json-schema.org/draft/2019/03/meta/core"/>.
+                    <eref target="https://json-schema.org/draft/2019-04/meta/core"/>.
                 </t>
                 <t>
                     Updated vocabulary and meta-schema URIs MAY be published between
@@ -1088,16 +1088,16 @@
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-03/core-app-example#",
-  "$id": "https://json-schema.org/draft/2019-03/core-app-example",
+  "$schema": "https://json-schema.org/draft/2019-04/core-app-example#",
+  "$id": "https://json-schema.org/draft/2019-04/core-app-example",
   "$recursiveAnchor": true,
   "$vocabulary": {
-    "https://json-schema.org/draft/2019-03/vocab/core": true,
-    "https://json-schema.org/draft/2019-03/vocab/applicator": true
+    "https://json-schema.org/draft/2019-04/vocab/core": true,
+    "https://json-schema.org/draft/2019-04/vocab/applicator": true
   },
   "allOf": [
-    {"$ref": "https://json-schema.org/draft/2019-03/meta/core"},
-    {"$ref": "https://json-schema.org/draft/2019-03/meta/applicator"}
+    {"$ref": "https://json-schema.org/draft/2019-04/meta/core"},
+    {"$ref": "https://json-schema.org/draft/2019-04/meta/applicator"}
   ],
   "patternProperties": {
     "^unevaluated.*$": false
@@ -1359,7 +1359,7 @@
                         <artwork>
 <![CDATA[
 {
-    "$schema": "http://json-schema.org/draft/2019-03/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/original",
 
     "properties": {
@@ -1373,7 +1373,7 @@
 }
 
 {
-    "$schema": "http://json-schema.org/draft/2019-03/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/extension",
 
     "$ref": "original",
@@ -1472,7 +1472,7 @@
                             <artwork>
 <![CDATA[
 {
-    "$schema": "http://json-schema.org/draft/2019-03/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/original",
     "$recursiveAnchor": true,
 
@@ -1487,7 +1487,7 @@
 }
 
 {
-    "$schema": "http://json-schema.org/draft/2019-03/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/extension",
     "$recursiveAnchor": true,
 
@@ -1894,11 +1894,11 @@
             </t>
             <t>
                 The current URI for this vocabulary, known as the Applicator vocabulary, is:
-                <eref target="https://json-schema.org/draft/2019-03/vocab/applicator"/>.
+                <eref target="https://json-schema.org/draft/2019-04/vocab/applicator"/>.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-03/meta/applicator"/>.
+                <eref target="https://json-schema.org/draft/2019-04/meta/applicator"/>.
             </t>
             <t>
                 Updated vocabulary and meta-schema URIs MAY be published between
@@ -2493,7 +2493,7 @@
                     <figure>
                         <artwork>
 <![CDATA[
-http://json-schema.org/draft/2019-03/schema#/$defs/nonNegativeInteger/minimum
+http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
 ]]>
                         </artwork>
                     </figure>
@@ -2569,7 +2569,7 @@ http://json-schema.org/draft/2019-03/schema#/$defs/nonNegativeInteger/minimum
 <![CDATA[
 {
   "$id": "http://example.com/polygon#",
-  "$schema": "http://json-schema.org/draft/2019-03/schema#",
+  "$schema": "http://json-schema.org/draft/2019-04/schema#",
   "$defs": {
     "point": {
       "type": "object",
@@ -2781,7 +2781,7 @@ http://json-schema.org/draft/2019-03/schema#/$defs/nonNegativeInteger/minimum
                     <t>
                         Because this output structure can be quite large, a smaller example is given
                         here for brevity.  The URI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/2019-03/output/verbose-example"/>.
+                        <eref target="https://json-schema.org/draft/2019-04/output/verbose-example"/>.
                     </t>
                     <figure>
                         <artwork>
@@ -2789,7 +2789,7 @@ http://json-schema.org/draft/2019-03/schema#/$defs/nonNegativeInteger/minimum
 // schema
 {
   "$id": "http://example.com/polygon#",
-  "$schema": "http://json-schema.org/draft/2019-03/schema#",
+  "$schema": "http://json-schema.org/draft/2019-04/schema#",
   "type": "object",
   "properties": {
     "validProp": true,
@@ -2843,7 +2843,7 @@ http://json-schema.org/draft/2019-03/schema#/$defs/nonNegativeInteger/minimum
                     <t>
                         For convenience, JSON Schema has been provided to validate output generated
                         by implementations.  Its URI is:
-                        <eref target="https://json-schema.org/draft/2019-03/output/schema"/>.
+                        <eref target="https://json-schema.org/draft/2019-04/output/schema"/>.
                     </t>
                 </section>
 
