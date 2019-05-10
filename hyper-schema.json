@@ -1,22 +1,22 @@
 {
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "$id": "http://json-schema.org/draft-08/hyper-schema",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
+    "$id": "http://json-schema.org/draft/2019-04/hyper-schema",
+    "$vocabulary": {
+        "https://json-schema.org/draft/2019-04/vocab/core": true,
+        "https://json-schema.org/draft/2019-04/vocab/applicator": true,
+        "https://json-schema.org/draft/2019-04/vocab/validation": true,
+        "https://json-schema.org/draft/2019-04/vocab/meta-data": true,
+        "https://json-schema.org/draft/2019-04/vocab/format": true,
+        "https://json-schema.org/draft/2019-04/vocab/content": true,
+        "https://json-schema.org/draft/2019-04/vocab/hyper-schema": true
+    },
     "$recursiveAnchor": true,
 
     "title": "JSON Hyper-Schema",
-    "$ref": "http://json-schema.org/draft-08/schema",
-    "properties": {
-        "base": {
-            "type": "string",
-            "format": "uri-template"
-        },
-        "links": {
-            "type": "array",
-            "items": {
-                "$ref": "http://json-schema.org/draft-08/links"
-            }
-        }
-    },
+    "allOf": [
+        {"$ref": "http://json-schema.org/draft/2019-04/schema"},
+        {"$ref": "http://json-schema.org/draft/2019-04/meta/hyper-schema"}
+    ],
     "links": [
         {
             "rel": "self",

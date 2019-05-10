@@ -1,7 +1,14 @@
 {
-  "$schema": "http://json-schema.org/draft-08/schema#",
-  "$id": "http://json-schema.org/draft-08/schema-output#",
+  "$schema": "http://json-schema.org/draft/2019-04/schema#",
+  "$id": "http://json-schema.org/draft/2019-04/output/schema",
   "description": "A schema that validates the minimum requirements for validation output",
+
+  "oneOf": [
+    { "$ref": "#/$defs/flag" },
+    { "$ref": "#/$defs/basic" },
+    { "$ref": "#/$defs/detailed" },
+    { "$ref": "#/$defs/verbose" }
+  ],
   "$defs": {
     "outputUnit":{
       "properties": {
@@ -75,11 +82,5 @@
     "basic": { "$ref": "#/outputUnit" },
     "detailed": { "$ref": "#/outputUnit" },
     "verbose": { "$ref": "#/outputUnit" }
-  },
-  "oneOf": [
-    { "$ref": "#/$defs/flag" },
-    { "$ref": "#/$defs/basic" },
-    { "$ref": "#/$defs/detailed" },
-    { "$ref": "#/$defs/verbose" }
-  ]
+  }
 }

@@ -288,14 +288,24 @@
         <section title="Meta-Schemas and Output Schema">
             <t>
                 The current URI for the JSON Hyper-Schema meta-schema is
-                <eref target="http://json-schema.org/draft-08/hyper-schema#"/>.
+                <eref target="http://json-schema.org/draft/2019-04/hyper-schema#"/>.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Hyper-Schema vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-04/vocab/hyper-schema"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema, which differs from the
+                convenience meta-schema above in that it describes only the hyper-schema
+                keywords ("base" and "link") is:
+                <eref target="https://json-schema.org/draft/2019-04/meta/hyper-schema"/>.
             </t>
             <t>
                 The <xref target="ldo">link description format</xref> can be used without JSON
                 Schema, and use of this format can be declared by referencing the normative
                 link description schema as the schema for the data structure that uses the links.
                 The URI of the normative link description schema is:
-                <eref target="http://json-schema.org/draft-08/links#"/>.
+                <eref target="http://json-schema.org/draft/2019-04/links#"/>.
             </t>
             <t>
                 JSON Hyper-Schema implementations are free to provide output in any format.
@@ -306,7 +316,14 @@
                 It is RECOMMENDED that implementations be capable of producing output
                 in this format to facilitated testing.  The URI of the JSON Schema
                 describing the recommended output format is
-                <eref target="http://json-schema.org/draft-08/hyper-schema-output#"/>.
+                <eref target="http://json-schema.org/draft/2019-04/output/hyper-schema#"/>.
+            </t>
+            <t>
+                Updated vocabulary and meta-schema URIs MAY be published between
+                specification drafts in order to correct errors.  Implementations
+                SHOULD consider URIs dated after this specification draft and
+                before the next to indicate the same syntax and semantics
+                as those listed here.
             </t>
         </section>
         <section title="Schema Keywords">
@@ -1607,7 +1624,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
 <![CDATA[
 {
     "$id": "https://schema.example.com/entry",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "base": "https://example.com/api/",
     "links": [
         {
@@ -1681,7 +1698,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "base": "https://example.com/api/",
     "type": "object",
     "required": ["data"],
@@ -1797,7 +1814,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/interesting-stuff",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "required": ["stuffWorthEmailingAbout", "email", "title"],
     "properties": {
         "title": {
@@ -1984,7 +2001,7 @@ Link: <https://example.com/api/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/tree-node",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "base": "trees/{treeId}/",
     "properties": {
         "id": {"type": "integer"},
@@ -2046,7 +2063,7 @@ Link: <https://example.com/api/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "base": "https://example.com/api/",
     "type": "object",
     "required": ["data"],
@@ -2099,7 +2116,7 @@ Link: <https://example.com/api/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing-collection",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "base": "https://example.com/api/",
     "type": "object",
     "required": ["elements"],
