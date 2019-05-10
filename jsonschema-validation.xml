@@ -51,7 +51,7 @@
                 <email>henry@cloudflare.com</email>
             </address>
         </author>
-        
+
         <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
             <organization>Wellcome Sanger Institute</organization>
             <address>
@@ -956,7 +956,7 @@
                 "const": {
                     "typ": "JWT",
                     "alg": "HS256"
-                }   
+                }
             },
             {
                 "type": "object",
@@ -967,7 +967,7 @@
                 }
             }
         ]
-    }   
+    }
 }]]>
                     </artwork>
                     <postamble>
@@ -1025,6 +1025,26 @@
                     This keyword can be used to supply a default JSON value associated with a
                     particular schema. It is RECOMMENDED that a default value be valid against
                     the associated schema.
+                </t>
+            </section>
+
+            <section title='"deprecated"'>
+                <t>
+                    The value of this keyword MUST be a boolean.  When multiple occurrences
+                    of this keyword are applicable to a single sub-instance, the resulting
+                    value MUST be true if any occurrence specifies a true value, and MUST
+                    be false otherwise.
+                </t>
+                <t>
+                    If "deprecated" has a value of boolean true, it indicates that the property
+                    MAY be removed from the document in the future.
+                </t>
+                <t>
+                    An instance document that is marked as "deprecated" for the entire document
+                    means the entire document MAY be removed in the future.
+                </t>
+                <t>
+                    Omitting this keyword has the same behavior as a value of false.
                 </t>
             </section>
 
