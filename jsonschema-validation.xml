@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC1034 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034.xml">
+<!ENTITY RFC1123 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1123.xml">
 <!ENTITY RFC2045 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2045.xml">
 <!ENTITY RFC2046 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2046.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
@@ -8,6 +8,7 @@
 <!ENTITY RFC3339 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3339.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC3987 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3987.xml">
+<!ENTITY RFC4122 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4122.xml">
 <!ENTITY RFC4291 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4291.xml">
 <!ENTITY RFC4329 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4329.xml">
 <!ENTITY RFC4648 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
@@ -51,6 +52,13 @@
             </address>
         </author>
 
+        <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
+            <organization>Wellcome Sanger Institute</organization>
+            <address>
+                <email>bh7@sanger.ac.uk</email>
+            </address>
+        </author>
+
         <author fullname="Geraint Luff" initials="G" surname="Luff">
             <address>
                 <postal>
@@ -62,7 +70,7 @@
             </address>
         </author>
 
-        <date year="2018"/>
+        <date year="2019"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -185,19 +193,37 @@
         <section title="Meta-Schema">
             <t>
                 The current URI for the JSON Schema Validation meta-schema is
-                <eref target="http://json-schema.org/draft-08/schema#"/>.
-                This meta-schema describes the core keywords, the subschema application
-                vocabulary from the core specification, and all keywords
-                defined by this specification.  All implementations of this specification
-                SHOULD support the subschema application vocabulary, and MUST NOT
-                implement behavior that contradicts that vocabulary.
+                <eref target="http://json-schema.org/draft/2019-04/schenma#"/>.
+                For schema author convenience, this meta-schema describes all vocabularies
+                defined in this specification and the JSON Schema Core specification.
+                Individual vocabulary and vocabulary meta-schema URIs are given for
+                each section below.
+            </t>
+            <t>
+                Updated vocabulary and meta-schema URIs MAY be published between
+                specification drafts in order to correct errors.  Implementations
+                SHOULD consider URIs dated after this specification draft and
+                before the next to indicate the same syntax and semantics
+                as those listed here.
             </t>
         </section>
 
-        <section title="Validation Keywords">
+        <section title="A Vocabulary for Structural Validation">
             <t>
                 Validation keywords in a schema impose requirements for successful validation of an
                 instance.  These keywords are all assertions without any annotation behavior.
+            </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                require this vocabulary as if its URI were present with a value of true.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Validation vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-04/vocab/validation"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft/2019-04/meta/validation"/>.
             </t>
 
             <section title="Validation Keywords for Any Instance Type" anchor="general">
@@ -234,6 +260,10 @@
                 <section title="const">
                     <t>
                         The value of this keyword MAY be of any type, including null.
+                    </t>
+                    <t>
+                        Use of this keyword is functionally equivalent to an
+                        <xref target="json-schema">"enum"</xref> with a single value.
                     </t>
                     <t>
                         An instance validates successfully against this keyword if its value is
@@ -489,7 +519,7 @@
             </section>
         </section>
 
-        <section title='Semantic Validation With "format"' anchor="format">
+        <section title='A Vocabulary for Semantic Validation With "format"' anchor="format">
 
             <section title="Foreword">
                 <t>
@@ -505,6 +535,20 @@
                     format attribute can generally only validate a given set of instance types. If
                     the type of the instance to validate is not in this set, validation for this
                     format attribute and instance SHOULD succeed.
+                </t>
+
+                <t>
+                    Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                    require this vocabulary as if its URI were present with a value of true,
+                    although see the Implementation Requirements below for details.
+                </t>
+                <t>
+                    The current URI for this vocabulary, known as the Format vocabulary, is:
+                    <eref target="https://json-schema.org/draft/2019-04/vocab/format"/>.
+                </t>
+                <t>
+                    The current URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2019-04/meta/format"/>.
                 </t>
 
             </section>
@@ -536,13 +580,15 @@
 
             <section title="Defined Formats">
 
-                <section title="Dates and Times">
+                <section title="Dates, Times, and Duration">
                     <t>
                         These attributes apply to string instances.
                     </t>
                     <t>
                         Date and time format names are derived from
                         <xref target="RFC3339">RFC 3339, section 5.6</xref>.
+                        The duration format is from the ISO 8601 ABNF as given
+                        in Appendix A of RFC 3339.
                     </t>
                     <t>
                         Implementations supporting formats SHOULD implement support for
@@ -559,6 +605,10 @@
                             <t hangText="time:">
                                 A string instance is valid against this attribute if it is
                                 a valid representation according to the "full-time" production.
+                            </t>
+                            <t hangText="duration:">
+                                A string instance is valid against this attribute if it is
+                                a valid representation according to the "duration" production.
                             </t>
                         </list>
                     </t>
@@ -609,12 +659,12 @@
                         representation for an Internet hostname as follows:
                         <list style="hanging">
                             <t hangText="hostname:">
-                                As defined by <xref target="RFC1034">RFC 1034, section 3.1</xref>,
+                                As defined by <xref target="RFC1123">RFC 1123, section 2.1</xref>,
                                 including host names produced using the Punycode algorithm
                                 specified in <xref target="RFC5891">RFC 5891, section 4.4</xref>.
                             </t>
                             <t hangText="idn-hostname:">
-                                As defined by either RFC 1034 as for hostname, or an
+                                As defined by either RFC 1123 as for hostname, or an
                                 internationalized hostname as defined by
                                 <xref target="RFC5890">RFC 5890, section 2.3.2.3</xref>.
                             </t>
@@ -669,9 +719,21 @@
                                 Reference (either an IRI or a relative-reference),
                                 according to <xref target="RFC3987"/>.
                             </t>
+                            <t hangText="uuid:">
+                                A string instance is valid against this attribute if it is a valid
+                                string representation of a UUID, according to <xref target="RFC4122"/>.
+                            </t>
                         </list>
+                    </t>
+                    <t>
                         Note that all valid URIs are valid IRIs, and all valid URI References are
                         also valid IRI References.
+                    </t>
+                    <t>
+                        Note also that the "uuid" format is for plain UUIDs, not UUIDs in URNs.  An example
+                        is "f81d4fae-7dec-11d0-a765-00a0c91e6bf6".  For UUIDs as URNs, use the "uri" format,
+                        with a "pattern" regular expression of "^urn:uuid:" to indicate the URI scheme and
+                        URN namespace.
                     </t>
                 </section>
 
@@ -726,7 +788,7 @@
             </section>
         </section>
 
-        <section title='String-Encoding Non-JSON Data' anchor="content">
+        <section title='A Vocabulary for the Contents of String-Encoded Data' anchor="content">
 
             <section title="Foreword">
                 <t>
@@ -737,6 +799,19 @@
                 <t>
                     These properties provide additional information required to interpret JSON data
                     as rich multimedia documents.
+                </t>
+                <t>
+                    Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                    require this vocabulary as if its URI were present with a value of true,
+                    although see the Implementation Requirements below for details.
+                </t>
+                <t>
+                    The current URI for this vocabulary, known as the Content vocabulary, is:
+                    <eref target="https://json-schema.org/draft/2019-04/vocab/content"/>.
+                </t>
+                <t>
+                    The current URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2019-04/meta/content"/>.
                 </t>
             </section>
 
@@ -774,6 +849,12 @@
                 </t>
 
                 <t>
+                    If this keyword is absent, but "contentMediaType" is present, this
+                    indicates that the media type could be encoded into UTF-8 like any
+                    other JSON string value, and does not require additional decoding.
+                </t>
+
+                <t>
                     The value of this property MUST be a string.
                 </t>
 
@@ -786,25 +867,33 @@
 
             <section title="contentMediaType">
                 <t>
-                    The value of this property must be a media type, as defined by
-                    <xref target="RFC2046">RFC 2046</xref>. This property defines the media
-                    type of instances which this schema defines.
+                    If the instance is a string, this property defines the media type
+                    of the contents of the string.  If "contentEncoding" is present,
+                    this property describes the decoded string.
                 </t>
-
                 <t>
-                    The value of this property MUST be a string.
+                    The value of this property MUST be a string, which MUST be a media type,
+                    as defined by <xref target="RFC2046">RFC 2046</xref>.
                 </t>
 
                 <t>
                     The value of this property SHOULD be ignored if the instance described is not a
                     string.
                 </t>
+            </section>
 
+            <section title="contentSchema">
                 <t>
-                    If the "contentEncoding" property is not present, but the instance value is a
-                    string, then the value of this property SHOULD specify a text document type,
-                    and the character set SHOULD be the character set into which the JSON string
-                    value was decoded (for which the default is Unicode).
+                    If the instance is a string, and if "contentMediaType" is present, this
+                    property contains a schema which describes the structure of the string.
+                </t>
+                <t>
+                    This keyword MAY be used with any media type that can be mapped into
+                    JSON Schema's data model.
+                </t>
+                <t>
+                    The value of this property SHOULD be ignored if the instance described is not a
+                    string, or if "contentMediaType" is not present.
                 </t>
             </section>
 
@@ -843,21 +932,77 @@
                     </artwork>
                     <postamble>
                         Instances described by this schema should be strings containing HTML, using
-                        whatever character set the JSON string was decoded into (default is
-                        Unicode).
+                        whatever character set the JSON string was decoded into.  Per section 8.1 of
+                        <xref target="RFC8259">RFC 8259</xref>, outside of an entirely closed
+                        system, this MUST be UTF-8.
+                    </postamble>
+                </figure>
+
+                <figure>
+                    <preamble>
+                        This example describes a JWT that is MACed using the HMAC SHA-256
+                        algorithm, and requires the "iss" and "exp" fields in its claim set.
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "type": "string",
+    "contentMediaType": "application/jwt",
+    "contentSchema": {
+        "type": "array",
+        "minItems": 2,
+        "items": [
+            {
+                "const": {
+                    "typ": "JWT",
+                    "alg": "HS256"
+                }
+            },
+            {
+                "type": "object",
+                "required": ["iss", "exp"],
+                "properties": {
+                    "iss": {"type": "string"},
+                    "exp": {"type": "integer"}
+                }
+            }
+        ]
+    }
+}]]>
+                    </artwork>
+                    <postamble>
+                        Note that "contentEncoding" does not appear.  While the "application/jwt"
+                        media type makes use of base64url encoding, that is defined by the media
+                        type, which determines how the JWT string is decoded into a list of two
+                        JSON data structures: first the header, and then the payload.  Since the
+                        JWT media type ensures that the JWT can be represented in a JSON string,
+                        there is no need for further encoding or decoding.
                     </postamble>
                 </figure>
             </section>
 
         </section>
 
-        <section title="Basic Meta-Data Annotations">
+        <section title="A Vocabulary for Basic Meta-Data Annotations">
             <t>
                 These general-purpose annotation keywords provide commonly used information
                 for documentation and user interface display purposes.  They are not intended
                 to form a comprehensive set of features.  Rather, additional vocabularies
                 can be defined for more complex annotation-based applications.
             </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                require this vocabulary as if its URI were present with a value of true.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Meta-Data vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-04/vocab/meta-data"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft/2019-04/meta/meta-data"/>.
+            </t>
+
             <section title='"title" and "description"'>
                 <t>
                     The value of both of these keywords MUST be a string.
@@ -880,6 +1025,27 @@
                     This keyword can be used to supply a default JSON value associated with a
                     particular schema. It is RECOMMENDED that a default value be valid against
                     the associated schema.
+                </t>
+            </section>
+
+            <section title='"deprecated"'>
+                <t>
+                    The value of this keyword MUST be a boolean.  When multiple occurrences
+                    of this keyword are applicable to a single sub-instance, the resulting
+                    value MUST be true if any occurrence specifies a true value, and MUST
+                    be false otherwise.
+                </t>
+                <t>
+                    If "deprecated" has a value of boolean true, it indicates that applications
+                    SHOULD refrain from usage of the declared property. It MAY mean the property
+                    is going to be removed in the future.
+                </t>
+                <t>
+                    A root schema containing "deprecated" with a value of true indicates the entire
+                    root schema MAY be removed in the future.
+                </t>
+                <t>
+                    Omitting this keyword has the same behavior as a value of false.
                 </t>
             </section>
 
@@ -993,13 +1159,14 @@
         <!-- References Section -->
         <references title="Normative References">
             &RFC2119;
-            &RFC1034;
+            &RFC1123;
             &RFC2045;
             &RFC2046;
             &RFC2673;
             &RFC3339;
             &RFC3986;
             &RFC3987;
+            &RFC4122;
             &RFC4291;
             &RFC4648;
             &RFC5322;

@@ -41,7 +41,26 @@
             </address>
         </author>
 
-        <date year="2018"/>
+      <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
+            <organization>Wellcome Sanger Institute</organization>
+            <address>
+                <email>bh7@sanger.ac.uk</email>
+            </address>
+        </author>
+
+        <author fullname="Greg Dennis" initials="G" surname="Dennis">
+            <address>
+                <postal>
+                    <street></street>
+                    <city>Auckland</city>
+                    <region></region>
+                    <country>NZ</country>
+                </postal>
+                <email>gregsdennis@yahoo.com</email>
+            </address>
+        </author>
+
+        <date year="2019"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -86,7 +105,8 @@
                 This specification defines JSON Schema core terminology and mechanisms, including
                 pointing to another JSON Schema by reference,
                 dereferencing a JSON Schema reference,
-                and specifying the vocabulary being used.
+                specifying the vocabulary being used,
+                and defining the expected output.
             </t>
             <t>
                 Other specifications define the vocabularies that perform assertions about validation,
@@ -149,7 +169,7 @@
                 </t>
                 <t>
                     Evaluation of a parent schema object can complete once all of its
-                    subschemas have been evaluated, although in some circumstance evaluation
+                    subschemas have been evaluated, although in some circumstances evaluation
                     may be short-circuited due to assertion results.
                 </t>
                 <section title="Keyword Interactions">
@@ -578,7 +598,7 @@
                         complex behavior.
                     </t>
                     <t>
-                        The lexical scope of a keyword is deterimined by the nested JSON
+                        The lexical scope of a keyword is determined by the nested JSON
                         data structure of objects and arrays.  The largest such scope
                         is an entire schema document.  The smallest scope is a single
                         schema object with no subschemas.
@@ -603,6 +623,9 @@
                         exists during the evaluation of a schema, typically together
                         with an instance document.  The outermost dynamic scope is the
                         root schema of the schema document in which processing begins.
+                        The path from this root schema to any particular keyword (that
+                        includes any "$ref" and "$recursiveRef" keywords that may have
+                        been resolved) is considered the keyword's "validation path."
                         <cref>
                             Or should this be the schema object at which processing
                             begins, even if it is not a root?  This has some implications
@@ -621,8 +644,8 @@
                         dynamic parent, rather than examining the local lexically enclosing parent.
                     </t>
                     <t>
-                        The concept of dynamic scope is primarily used with "$recursiveRef"
-                        and "$recursiveAnchor", and should be considered and advanced feature
+                        The concept of dynamic scope is primarily used with "$recursiveRef",
+                        "$recursiveAnchor", and should be considered an advanced feature
                         and used with caution when defining additional keywords.
                     </t>
                 </section>
@@ -783,7 +806,7 @@
                 <t>
                     A schema that itself describes a schema is called a meta-schema.
                     Meta-schemas are used to validate JSON Schemas and specify which vocabulary
-                    it is using.
+                    they are using.
                 </t>
                 <t>
                     Authors of extensions to JSON Schema are encouraged to write their own
@@ -800,55 +823,320 @@
 
         </section>
 
-        <section title='The "$schema" Keyword'>
-            <!-- TODO a custom $schema keyword might also be used to enforce minimum required functionality of a validator -->
+        <section title="Meta-Schemas and Vocabularies">
             <t>
-                The "$schema" keyword is both used as a JSON Schema version identifier and the
-                location of a resource which is itself a JSON Schema, which describes any schema
-                written for this particular version.
+                Two concepts, meta-schemas and vocabularies, are used to inform an implementation
+                how to interpret a schema.  A schema S declares its meta-schema M with the "$schema"
+                keyword, and meta-schemas declare vocabularies with the "$vocabulary" keyword.
+                The vocabularies declared in M are those that are expected to be used in S.
+                The meta-schema M may itself use a different set of vocabularies, which are
+                declared in its own meta-schema, M'.
             </t>
             <t>
-                The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
-                (containing a scheme) and this URI MUST be normalized.
-                The current schema MUST be valid against the meta-schema identified by this URI.
+                The role of the meta-schema is to constrain the structure of conforming schemas,
+                as well as simplify the process of composing multiple vocabularies into a usable
+                feature set.  Schema authoring is expected to be a common activity, so
+                schema authors need only understand how to reference a single meta-schema.
             </t>
             <t>
-                If this URI identifies a retrievable resource, that resource SHOULD be of
-                media type "application/schema+json".
+                Meta-schema authoring is an advanced usage of JSON Schema, so the design of
+                meta-schema features emphasizes flexibility over simplicity.
             </t>
             <t>
-                The "$schema" keyword SHOULD be used in a root schema.
-                It MUST NOT appear in subschemas.
+                The role of a vocabulary is to declare which keywords (including sub-keywords
+                such as those in JSON Hyper-Schema's Link Description Object) are in use,
+                and with which semantics.  The semantics are indicated by the document
+                that publicizes the vocabulary URI.  At this time, there is no machine-readable
+                description of keywords other than validation rules, which appear in the
+                meta-schema.
             </t>
             <t>
-                <cref>
-                    Using multiple "$schema" keywords in the same document would imply that the
-                    vocabulary and therefore behavior can change within a document.  This would
-                    necessitate resolving a number of implementation concerns that have not yet
-                    been clearly defined.  So, while the pattern of using "$schema" only in root
-                    schemas is likely to remain the best practice for schema authoring,
-                    implementation behavior is subject to be revised or liberalized in
-                    future drafts.
-                </cref>
-                <!--
-                    In particular, the process of validating an instance, including validating a
-                    schema as an instance against its meta-schema, only allows for a single set
-                    of rules across the entire instance document.  There is no equivalent of
-                    changing the meta-schema partway through the validation for non-schema
-                    instances.
-                  -->
+                Meta-schemas are separate from vocabularies to allow for the same sets of
+                vocabularies to be combined in different ways, and for meta-schema authors
+                to impose additional constraints such as forbidding certain keywords, or
+                performing unusually strict syntactical validation, as might be done
+                during a development and testing cycle.
             </t>
-            <t>
-                Values for this property are defined in other documents and by other parties.
-                JSON Schema implementations SHOULD implement support for current and previous
-                published drafts of JSON Schema vocabularies as deemed reasonable.
-            </t>
+            <section title='The "$schema" Keyword'>
+                <t>
+                    The "$schema" keyword is both used as a JSON Schema feature set identifier and
+                    the location of a resource which is itself a JSON Schema, which describes any
+                    schema written for this particular feature set.
+                </t>
+                <t>
+                    The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
+                    (containing a scheme) and this URI MUST be normalized.
+                    The current schema MUST be valid against the meta-schema identified by this URI.
+                </t>
+                <t>
+                    If this URI identifies a retrievable resource, that resource SHOULD be of
+                    media type "application/schema+json".
+                </t>
+                <t>
+                    The "$schema" keyword SHOULD be used in a root schema.
+                    It MUST NOT appear in subschemas.
+                </t>
+                <t>
+                    <cref>
+                        Using multiple "$schema" keywords in the same document would imply that the
+                        feature set and therefore behavior can change within a document.  This would
+                        necessitate resolving a number of implementation concerns that have not yet
+                        been clearly defined.  So, while the pattern of using "$schema" only in root
+                        schemas is likely to remain the best practice for schema authoring,
+                        implementation behavior is subject to be revised or liberalized in
+                        future drafts.
+                    </cref>
+                    <!--
+                        In particular, the process of validating an instance, including validating a
+                        schema as an instance against its meta-schema, only allows for a single set
+                        of rules across the entire instance document.  There is no equivalent of
+                        changing the meta-schema partway through the validation for non-schema
+                        instances.
+                    -->
+                </t>
+                <t>
+                    Values for this property are defined elsewhere in this and other documents,
+                    and by other parties.
+                </t>
+            </section>
+            <section title='The "$vocabulary" Keyword'>
+                <t>
+                    The "$vocabulary" keyword, which appears in a meta-schema, identifies
+                    what sets of keywords are expected to be used in schemas described
+                    by that meta-schema, and with what semantics.  This is conceptually
+                    analogous to how most other keywords used in meta-schemas describe
+                    the syntax of keywords used in schemas described by that meta-schema.
+                </t>
+                <t>
+                    The value of this keyword MUST be an object.  The property names in the
+                    object MUST be URIs (containing a scheme) and this URI MUST be normalized.
+                    Each URI that appears as a property name identifies a specific set of
+                    keywords and their semantics.
+                </t>
+                <t>
+                    The URI MAY be a URL, but the nature of the retrievable resources is
+                    currently undefined, and reserved for future use.  Vocabulary authors
+                    SHOULD NOT serve a document at that URL.  A server MAY respond with
+                    the relevant protocol's successful "no content" message, such as
+                    an HTTP 204 status.
+                    <cref>
+                        Vocabulary documents may be added shortly, or in the next draft.
+                        For now, identifying the keyword set is deemed sufficient as that,
+                        along with meta-schema validation, is how the current "vocabularies"
+                        work today.
+                    </cref>
+                </t>
+                <t>
+                    The values of the object properties MUST be booleans.
+                    If the value is true, then implementations that do not recognize
+                    the vocabulary MUST refuse to process any schemas that declare
+                    this meta-schema with "$schema".  If the value is false, implementations
+                    that do not recognize the vocabulary MAY choose to proceed with processing
+                    such schemas.
+                </t>
+                <t>
+                    When processing a schema that uses unrecognized vocabularies, keywords
+                    declared by those vocabularies are treated like any other unrecognized
+                    keyword, and ignored.
+                </t>
+                <t>
+                    The "$vocabulary" keyword SHOULD be used in the root schema of any schema
+                    document intended for use as a meta-schema.  It MUST NOT appear in subschemas.
+                </t>
+                <t>
+                    The "$vocabulary" keyword MUST be ignored in schema documents that
+                    are not being processed as a meta-schema.  This allows validating
+                    a meta-schema M against its own meta-schema M' without requiring
+                    the validator to understand the vocabularies declared by M.
+                </t>
+                <t>
+                    Note that the processing restrictions on "$vocabulary" mean that
+                    meta-schemas that reference other meta-schemas using "$ref" or
+                    similar keywords do not automatically inherit the vocabulary
+                    declarations of those other meta-schemas.  All such declarations
+                    must be repeated in the root of each schema document intended
+                    for use as a meta-schema.  This is demonstrated in
+                    <xref target="example-meta-schema">the example meta-schema</xref>.
+                </t>
+                <t>
+                    If "$vocabulary" is absent, an implementation MAY determine
+                    behavior based on the meta-schema if it is recognized from the
+                    URI value of the referring schema's "$schema" keyword.
+                    If the meta-schema, as referenced by the schema, is not recognized,
+                    then implementations MUST assume the use of the core vocabulary,
+                    and SHOULD assume the use of all vocabularies in this
+                    specification and the companion Validation specification.
+                </t>
+            </section>
+            <section title="Detecting a Meta-Schema">
+                <t>
+                    Implementations MUST recognize a schema as a meta-schema if it
+                    is being examined because it was identified as such by another
+                    schema's "$schema" keyword.  This means that a single schema
+                    document might sometimes be considered a regular schema, and
+                    other times be considered a meta-schema.
+                </t>
+                <t>
+                    In the case of examining a schema which is its own meta-schema,
+                    when an implementation begins processing it as a regular schema,
+                    it is processed under those rules.  However, when loaded a second
+                    time as a result of checking its own "$schema" value, it is treated
+                    as a meta-schema.  So the same document is processed both ways in
+                    the course of one session.
+                </t>
+                <t>
+                    Implementations MAY allow a schema to be passed as a meta-schema,
+                    for implementation-specific purposes, such as pre-loading a commonly
+                    used meta-schema and checking its vocabulary support requirements
+                    up front.  Meta-schema authors MUST NOT expect such features to be
+                    interoperable across implementations.
+                </t>
+            </section>
+            <section title="Best Practices for Vocabulary and Meta-Schema Authors">
+                <t>
+                    Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
+                    vocabularies that define conflicting syntax or semantics for the same
+                    keyword.  As semantic conflicts are not generally detectable through
+                    schema validation, implementations are not expected to detect such
+                    conflicts.  If conflicting vocabularies are declared, the resulting
+                    behavior is undefined.
+                </t>
+                <t>
+                    Vocabulary authors SHOULD provide a meta-schema that validates the
+                    expected usage of the vocabulary's keywords.  Such meta-schemas
+                    SHOULD NOT forbid additional keywords, and MUST NOT forbid
+                    the "$id", "$schema", or "$vocabulary" keywords in the root schema.
+                </t>
+                <t>
+                    It is RECOMMENDED that meta-schema authors reference each vocabulary's
+                    meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
+                    although other mechanisms for constructing the meta-schema may be
+                    appropriate for certain use cases.
+                </t>
+                <t>
+                    Meta-schemas MAY impose additional constraints, including describing
+                    keywords not present in any vocabulary, beyond what the meta-schemas
+                    associated with the declared vocabularies describe.  This allows for
+                    restricting usage to a subset of a vocabulary, and for validating
+                    locally defined keywords not intended for re-use.
+                </t>
+                <t>
+                    However, meta-schemas SHOULD NOT contradict any vocabularies that
+                    they declare, such as by requiring a different JSON type than
+                    the vocabulary expects.  The resulting behavior is undefined.
+                </t>
+                <t>
+                    Meta-schemas intended for local use, with no need to test for
+                    vocabulary support in arbitrary implementations, can safely omit
+                    "$vocabulary" entirely.
+                </t>
+            </section>
+            <section title="The JSON Schema Core Vocabulary">
+                <t>
+                    Keywords declared in in this specification that begin with "$" make up
+                    the JSON Schema Core vocabulary.  These keywords are either required in
+                    order process any schema or meta-schema, including those split across
+                    multiple documents, or exist to reserve keywords for purposes that
+                    require guaranteed interoperability.
+                </t>
+                <t>
+                    The Core vocabulary MUST be considered mandatory at all times, in order
+                    to bootstrap the processing of further vocabularies.  Meta-schemas
+                    that use "$vocabulary" MUST explicitly list the Core vocabulary,
+                    which MUST have a value of true indicating that it is required.
+                </t>
+                <t>
+                    The behavior of a false value for this vocabulary (and only this
+                    vocabulary) is undefined, as is the behavior when "$vocabulary"
+                    is present but the Core vocabulary is not included.  However, it
+                    is RECOMMENDED that implementations detect these cases and raise
+                    an error when they occur.
+                </t>
+                <t>
+                    Meta-schemas that do not use "$vocabulary" MUST be considered to
+                    require the Core vocabulary as if its URI were present with a value of true.
+                </t>
+                <t>
+                    The current URI for the Core vocabulary is:
+                    <eref target="https://json-schema.org/draft/2019-04/vocab/core"/>.
+                </t>
+                <t>
+                    The current URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2019-04/meta/core"/>.
+                </t>
+                <t>
+                    Updated vocabulary and meta-schema URIs MAY be published between
+                    specification drafts in order to correct errors.  Implementations
+                    SHOULD consider URIs dated after this specification draft and
+                    before the next to indicate the same syntax and semantics
+                    as those listed here.
+                </t>
+            </section>
+            <section title="Example Meta-Schema With Vocabulary Declarations"
+                     anchor="example-meta-schema">
+                <figure>
+                    <preamble>
+                        This meta-schema explicitly declares both the Core and Applicator
+                        vocabularies, and combines their meta-schemas with an "allOf".
+                        It additionally restricts the usage of the Applicator vocabulary
+                        by forbidding the keyword prefixed with "unevaluated".  It also
+                        describes a keyword, "localKeyword", that is not part of either
+                        vocabulary.  Note that it is its own meta-schema,
+                        as it relies on both the Core vocabulary (as all schemas do)
+                        and the Applicator vocabulary (for "allOf").
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+  "$schema": "https://json-schema.org/draft/2019-04/core-app-example#",
+  "$id": "https://json-schema.org/draft/2019-04/core-app-example",
+  "$recursiveAnchor": true,
+  "$vocabulary": {
+    "https://json-schema.org/draft/2019-04/vocab/core": true,
+    "https://json-schema.org/draft/2019-04/vocab/applicator": true
+  },
+  "allOf": [
+    {"$ref": "https://json-schema.org/draft/2019-04/meta/core"},
+    {"$ref": "https://json-schema.org/draft/2019-04/meta/applicator"}
+  ],
+  "patternProperties": {
+    "^unevaluated.*$": false
+  },
+  "properties": {
+    "$comment": "Not in vocabulary, but validated if used",
+    "localKeyword": {
+      "type": "string"
+    }
+  }
+}
+]]>
+                    </artwork>
+                    <postamble>
+                        As shown above, even though each of the referenced standard
+                        meta-schemas declares its corresponding vocabulary, this new
+                        meta-schema must re-declare them for itself.  It would be
+                        valid to leave the core vocabulary out of the "$vocabulary" keyword,
+                        but it needs to be referenced through the "allOf" keyword in order
+                        for its terms to be validated.  There is no special case for
+                        validation of core keywords.
+                    </postamble>
+                </figure>
+                <t>
+                    The standard meta-schemas that combine all vocabularies defined by
+                    the Core and Validation specification, and that combine all vocabularies
+                    defined by those specifications as well as the Hyper-Schema specification,
+                    demonstrate additional complex combinations.  These URIs for these
+                    meta-schemas may be found in the Validation and Hyper-Schema specifications,
+                    respectively.
+                </t>
+            </section>
         </section>
 
         <section title="Base URI and Dereferencing">
             <t>
                 To differentiate between schemas in a vast ecosystem, schemas are
-                identified by <xref target="RFC3986">URI</xref>, and can embed references to other schemas by specifying their URI.
+                identified by <xref target="RFC3986">URI</xref>, and can embed references
+                to other schemas by specifying their URI.
             </t>
 
             <section title="Initial Base URI">
@@ -858,7 +1146,14 @@
                 </t>
                 <t>
                     Informatively, the initial base URI of a schema is the URI at which it was
-                    found, or a suitable substitute URI if none is known.
+                    found, whether that was a network location, a local filesystem, or any other
+                    situation identifiable by a URI of any known scheme.
+                </t>
+                <t>
+                    If no source is known, or no URI scheme is known for the source, a suitable
+                    implementation-specific default URI MAY be used as described in
+                    <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
+                    that implementations document any default base URI that they assume.
                 </t>
             </section>
 
@@ -1008,7 +1303,7 @@
             <section title="Schema References">
                 <t>
                     Several keywords can be used to reference a schema which is to be applied to the
-                    current instance location. "$ref" and "$recursiveRef" are an applicator
+                    current instance location. "$ref" and "$recursiveRef" are applicator
                     keywords, applying the referenced schema to the instance.  "$recursiveAnchor"
                     is a helper keyword that controls how the referenced schema of "$recursiveRef"
                     is determined.
@@ -1064,7 +1359,7 @@
                         <artwork>
 <![CDATA[
 {
-    "$schema": "http://json-schema.org/draft-08/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/original",
 
     "properties": {
@@ -1078,7 +1373,7 @@
 }
 
 {
-    "$schema": "http://json-schema.org/draft-08/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/extension",
 
     "$ref": "original",
@@ -1177,7 +1472,7 @@
                             <artwork>
 <![CDATA[
 {
-    "$schema": "http://json-schema.org/draft-08/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/original",
     "$recursiveAnchor": true,
 
@@ -1192,7 +1487,7 @@
 }
 
 {
-    "$schema": "http://json-schema.org/draft-08/schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
     "$id": "https://example.com/extension",
     "$recursiveAnchor": true,
 
@@ -1242,13 +1537,48 @@
                     </section>
                 </section>
 
-                <section title="Guarding Against Inifinite Recursion">
+                <section title="Guarding Against Infinite Recursion">
                     <t>
                         A schema MUST NOT be run into an infinite loop against an instance. For
                         example, if two schemas "#alice" and "#bob" both have an "allOf" property
                         that refers to the other, a naive validator might get stuck in an infinite
                         recursive loop trying to validate the instance.  Schemas SHOULD NOT make
                         use of infinite recursive nesting like this; the behavior is undefined.
+                    </t>
+                </section>
+
+                <section title="References to Possible Non-Schemas">
+                    <t>
+                        Subschema objects (or booleans) are recognized by their use with known
+                        applicator keywords.  These keywords may be the standard applicators
+                        from this document, or extension keywords from a known vocabulary, or
+                        implementation-specific custom keywords.
+                    </t>
+                    <t>
+                        Multi-level structures of unknown keywords are capable of introducing
+                        nested subschemas, which would be subject to the processing rules for
+                        "$id".  Therefore, having a reference target in such an unrecognized
+                        structure cannot be reliably implemented, and the resulting behavior
+                        is undefined.  Similarly, a reference target under a known keyword,
+                        for which the value is known not to be a schema, results in undefined
+                        behavior in order to avoid burdening implementations with the need
+                        to detect such targets.
+                        <cref>
+                            These scenarios are analogous to fetching a schema over HTTP
+                            but receiving a response with a Content-Type other than
+                            application/schema+json.  An implementation can certainly
+                            try to interpret it as a schema, but the origin server
+                            offered no guarantee that it actually is any such thing.
+                            Therefore, interpreting it as such has security implications
+                            and may produce unpredictable results.
+                        </cref>
+                    </t>
+                    <t>
+                        Note that single-level custom keywords with identical syntax and
+                        semantics to "$defs" do not allow for any intervening "$id" keywords,
+                        and therefore will behave correctly under implementations that attempt
+                        to use any reference target as a schema.  However, this behavior is
+                        implementation-specific and MUST NOT be relied upon for interoperability.
                     </t>
                 </section>
 
@@ -1412,14 +1742,6 @@
 
         <section title="Collecting Annotations">
             <t>
-                <cref>
-                    The exact structure and format of the information collected is TBD,
-                    but will be defined before the next draft.  Some details of this
-                    section may change as a result, but the overall process is expected
-                    to remain the same.  See GitHub issue #396 to track progress.
-                </cref>
-            </t>
-            <t>
                 Annotations are collected by keywords that explicitly define
                 annotation-collecting behavior.  Note that boolean schemas cannot
                 produce annotations as they do not make use of keywords.
@@ -1434,12 +1756,13 @@
                         The instance location to which it is attached, as a JSON Pointer
                     </t>
                     <t>
-                        The absolute schema location of the attaching keyword, as a URI
+                        The schema location path, indicating how reference keywords
+                        such as "$ref" were followed to reach the absolute schema location.
                     </t>
                     <t>
-                        The schema location path, indicating how reference keywords
-                        such as "$ref" were followed to reach the absolute schema location
-                        <cref>The exact format of this path is TBD, again see issue #396</cref>
+                        The absolute schema location of the attaching keyword, as a URI.
+                        This MAY be omitted if it is the same as the schema location path
+                        from above.
                     </t>
                     <t>
                         The attached value(s)
@@ -1600,6 +1923,25 @@
                 This section defines a vocabulary of applicator keywords that
                 are RECOMMENDED for use as the basis of other vocabularies.
             </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" SHOULD be considered to
+                require this vocabulary as if its URI were present with a value of true.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Applicator vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-04/vocab/applicator"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft/2019-04/meta/applicator"/>.
+            </t>
+            <t>
+                Updated vocabulary and meta-schema URIs MAY be published between
+                specification drafts in order to correct errors.  Implementations
+                SHOULD consider URIs dated after this specification draft and
+                before the next to indicate the same syntax and semantics
+                as those listed here.
+            </t>
             <section title="Keyword Independence">
                 <t>
                     Schema keywords typically operate independently, without
@@ -1644,7 +1986,7 @@
                         keyword to be applied to an instance location with different values.
                         Annotation keywords define their own rules for combining such values.
                     </t>
-                    <section title="allOf">
+                    <section title="allOf" anchor="allOf">
                         <t>
                             This keyword's value MUST be a non-empty array.
                             Each item of the array MUST be a valid JSON Schema.
@@ -1783,7 +2125,7 @@
                         </t>
                         <t>
                             If the object key is a property in the instance, the entire
-                            instance must validate against the susbschema.  Its use is
+                            instance must validate against the subschema.  Its use is
                             dependent on the presence of the property.
                         </t>
                         <t>
@@ -2095,6 +2437,455 @@
             </section>
         </section>
 
+        <section title="Output Formatting" anchor="output">
+            <t>
+                JSON Schema is defined to be platform-independent.  As such, to increase compatibility
+                across platforms, implementations SHOULD conform to a standard validation output
+                format.  This section describes the minimum requirements that consumers will need to
+                properly interpret validation results.
+            </t>
+
+            <section title="Format">
+                <t>
+                    JSON Schema output is defined using the JSON Schema data instance model as described
+                    in section 4.2.1.  Implementations MAY deviate from this as supported by their
+                    specific languages and platforms, however it is RECOMMENDED that the output be
+                    convertible to the JSON format defined herein via serialization or other means.
+                </t>
+            </section>
+
+            <section title="Output Formats">
+                <t>
+                    This specification defines four output formats.  See the "Output Structure"
+                    section for the requirements of each format.
+                    <list>
+                        <t>
+                            Flag - A boolean which simply indicates the overall validation result
+                            with no further details.
+                        </t>
+                        <t>
+                            Basic - Provides validation information in a flat list structure.
+                        </t>
+                        <t>
+                            Detailed - Provides validation information in a condensed hierarchical
+                            structure based on the structure of the schema.
+                        </t>
+                        <t>
+                            Verbose - Provides validation information in an uncondensed hierarchical
+                            structure that matches the exact structure of the schema.
+                        </t>
+                    </list>
+                    An implementation SHOULD provide at least the "flag", "basic", or "detailed"
+                    format and MAY provide the "verbose" format.  If it provides one or more of the
+                    complex formats, it MUST also provide the "flag" format. Implementations SHOULD
+                    specify in their documentation which formats they support.
+                </t>
+
+            </section>
+
+            <section title="Minimum Information">
+                <t>
+                    Beyond the simplistic "flag" output, additional information is useful to aid in
+                    debugging a schema or instance.  Each sub-result SHOULD contain the information
+                    contained within this section at a minimum.
+                </t>
+                <t>
+                    A single object that contains all of these components is considered an
+                    output unit.
+                </t>
+                <t>
+                    Implementations MAY elect to provide additional information.
+                </t>
+
+                <section title="Keyword Relative Location">
+                    <t>
+                        The relative location of the validating keyword that follows the validation
+                        path.  The value MUST be expressed as a JSON Pointer, and it MUST include
+                        any by-reference applicators such as "$ref" or "$recursiveRef".
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+#/properties/minLength/$ref/minimum
+]]>
+                        </artwork>
+                    </figure>
+                    <t>
+                    Note that this pointer may not be resolvable due to the inclusion of these
+                    applicator keywords.
+                    </t>
+                    <t>
+                        The JSON key for this information is "keywordLocation".
+                    </t>
+                </section>
+
+                <section title="Keyword Absolute Location">
+                    <t>
+                        The absolute, dereferenced location of the validating keyword.  The value MUST
+                        be expressed as an absolute URI, and it MUST NOT include by-reference applicators
+                        such as "$ref" or "$recursiveRef".
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
+]]>
+                        </artwork>
+                    </figure>
+                    <t>
+                        This information MAY be omitted only if either the relative location contains
+                        no references or if the schema does not declare an absolute URI as its "$id".
+                    </t>
+                    <t>
+                        The JSON key for this information is "absoluteKeywordLocation".
+                    </t>
+                </section>
+
+                <section title="Instance Location">
+                    <t>
+                        The location of the JSON value within the instance being validated.  The
+                        value MUST be expressed as a JSON Pointer.
+                    </t>
+                    <t>
+                        The JSON key for this information is "instanceLocation".
+                    </t>
+                </section>
+
+                <section title="Error or Annotation">
+                    <t>
+                        The error or annotation that is produced by the validation.
+                    </t>
+                    <t>
+                        For errors, the specific wording for the message is not defined by this
+                        specification.  Implementations will need to provide this.
+                    </t>
+                    <t>
+                        The JSON key for failed validations is "error"; for successful validations
+                        it is "annotation".
+                    </t>
+                </section>
+
+                <section title="Nested Results">
+                    <t>
+                        For the two hierarchical structures, this property will hold nested errors
+                        and annotations.
+                    </t>
+                    <t>
+                        The JSON key for nested results in failed validations is "errors"; for
+                        successful validations it is "annotations".
+                    </t>
+                </section>
+
+            </section>
+
+            <section title="Output Structure">
+                <t>
+                    The output MUST be an object containing a boolean property named "valid".  When
+                    additional information about the result is required, the output MUST also contain
+                    "errors" or "annotations" as described below.
+                    <list>
+                        <t>
+                            "valid" - a boolean value indicating the overall validation success or
+                            failure
+                        </t>
+                        <t>
+                            "errors" - the collection of errors or annotations produced by a failed
+                            validation
+                        </t>
+                        <t>
+                            "annotations" - the collection of errors or annotations produced by a
+                            successful validation
+                        </t>
+                    </list>
+                    For these examples, the following schema and instance will be used.
+                </t>
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+  "$id": "http://example.com/polygon#",
+  "$schema": "http://json-schema.org/draft/2019-04/schema#",
+  "$defs": {
+    "point": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" }
+      },
+      "additionalProperties": false,
+      "required": [ "x", "y" ]
+    }
+  },
+  "type": "array",
+  "items": { "$ref": "#/$defs/point" },
+  "minItems": 3
+}
+
+[
+  {
+    "x": 2.5,
+    "y": 1.3,
+  },
+  {
+    "x": 1,
+    "z": 6.7
+  }
+]
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    This instance will fail validation and produce errors, but it's trivial to deduce
+                    examples for passing schemas that produce annotations.
+                </t>
+                <t>
+                    Specifically, the errors it will produce are:
+                    <list>
+                        <t>
+                            The second element in the "vertices" property is missing a "y" property.
+                        </t>
+                        <t>
+                            The second element in the "vertices" property has a disallowed "z" property.
+                        </t>
+                        <t>
+                            There are only two vertices, but three are required.
+                        </t>
+                    </list>
+                    Note that neither the error message property nor its wording as depicted in these
+                    examples is not a requirement of this specification.  Implementations SHOULD craft
+                    error messages tailored for their audience.
+                </t>
+
+                <section title="Flag">
+                    <t>
+                        In the simplest case, merely the boolean result for the "valid" valid property
+                        needs to be fulfilled.
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+  "valid": false
+}
+]]>
+                        </artwork>
+                    </figure>
+                    <t>
+                        Because no errors or annotations are returned with this format, it is
+                        RECOMMENDED that implementations use short-circuiting logic to return
+                        failure or success as soon as the outcome can be determined.  For example,
+                        if an "anyOf" keyword contains five sub-schemas, and the second one
+                        passes, there is no need to check the other three.  The logic can simply
+                        return with success.
+                    </t>
+                </section>
+
+                <section title="Basic">
+                    <t>
+                        The "Basic" structure is a flat list of output units.
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+  "valid": false,
+  "errors": [
+    {
+      "keywordLocation": "#",
+      "instanceLocation": "#",
+      "error": "A subschema had errors."
+    },
+    {
+      "keywordLocation": "#/items/$ref",
+      "absoluteKeywordLocation":
+        "http://example.com/polygon#/definitions/point",
+      "instanceLocation": "#/1",
+      "error": "A subschema had errors."
+    },
+    {
+      "keywordLocation": "#/items/$ref/required",
+      "absoluteKeywordLocation":
+        "http://example.com/polygon#/definitions/point/required",
+      "instanceLocation": "#/1",
+      "error": "Required property 'y' not found."
+    },
+    {
+      "keywordLocation": "#/items/$ref/additionalProperties",
+      "absoluteKeywordLocation":
+        "http://example.com/polygon#/definitions/point/additionalProperties",
+      "instanceLocation": "#/1/z",
+      "error": "Additional property 'z' found but was invalid."
+    },
+    {
+      "keywordLocation": "#/minItems",
+      "instanceLocation": "#",
+      "error": "Expected at least 3 items but found 2"
+    }
+  ]
+}
+]]>
+                        </artwork>
+                    </figure>
+                </section>
+
+                <section title="Detailed">
+                    <t>
+                        The "Detailed" structure is based on the schema and can be more readable
+                        for both humans and machines.  Having the structure organized this way makes
+                        associations between the errors more apparent.  For example, the fact that
+                        the missing "y" property and the extra "z" property both stem from the same
+                        location in the instance is not immediately obvious in the "Basic" structure.
+                        In a hierarchy, the correllation is more easily identified.
+                    </t>
+                    <t>
+                        The following rules govern the construction of the results object:
+                        <list>
+                            <t>
+                                All applicator keywords ("*Of", "$ref", "if"/"then"/"else", etc.) require
+                                a node.
+                            </t>
+                            <t>
+                                Nodes that have no children are removed.
+                            </t>
+                            <t>
+                                Nodes that have a single child are replaced by the child.
+                            </t>
+                        </list>
+                        Branch nodes do not require an error message or an annotation.
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+  "valid": false,
+  "keywordLocation": "#",
+  "instanceLocation": "#",
+  "errors": [
+    {
+      "valid": false,
+      "keywordLocation": "#/items/$ref",
+      "absoluteKeywordLocation":
+        "http://example.com/polygon#/definitions/point",
+      "instanceLocation": "#/1",
+      "errors": [
+        {
+          "valid": false,
+          "keywordLocation": "#/items/$ref/required",
+          "absoluteKeywordLocation":
+            "http://example.com/polygon#/definitions/point/required",
+          "instanceLocation": "#/1",
+          "error": "Required property 'y' not found."
+        },
+        {
+          "valid": false,
+          "keywordLocation": "#/items/$ref/additionalProperties",
+          "absoluteKeywordLocation":
+            "http://example.com/polygon#/definitions/point/additionalProperties",
+          "instanceLocation": "#/1/z",
+          "error": "Additional property 'z' found but was invalid."
+        }
+      ]
+    },
+    {
+      "valid": false,
+      "keywordLocation": "#/minItems",
+      "instanceLocation": "#",
+      "error": "Expected at least 3 items but found 2"
+    }
+  ]
+}
+]]>
+                        </artwork>
+                    </figure>
+                </section>
+
+                <section title="Verbose">
+                    <t>
+                        The "Verbose" structure is a fully realized hierarchy that exactly matches
+                        that of the schema.  This structure has applications in form generation and
+                        validation where the error's location is important.
+                    </t>
+                    <t>
+                        The primary difference between this and the "Detailed" structure is that
+                        all results are returned.  This includes sub-schema validation results that
+                        would otherwise be removed (e.g. annotations for failed validations,
+                        successful validations inside a `not` keyword, etc.).  Because of this, it
+                        is RECOMMENDED that each node also carry a `valid` property to indicate the
+                        validation result for that node.
+                    </t>
+                    <t>
+                        Because this output structure can be quite large, a smaller example is given
+                        here for brevity.  The URI of the full output structure of the example above is:
+                        <eref target="https://json-schema.org/draft/2019-04/output/verbose-example"/>.
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+// schema
+{
+  "$id": "http://example.com/polygon#",
+  "$schema": "http://json-schema.org/draft/2019-04/schema#",
+  "type": "object",
+  "properties": {
+    "validProp": true,
+  },
+  "additionalProperties": false
+}
+
+// instance
+{
+  "validProp": 5,
+  "disallowedProp": "value"
+}
+
+// result
+{
+  "valid": false,
+  "keywordLocation": "#",
+  "instanceLocation": "#",
+  "errors": [
+    {
+      "valid": true,
+      "keywordLocation": "#/type",
+      "instanceLocation": "#"
+    },
+    {
+      "valid": true,
+      "keywordLocation": "#/properties",
+      "instanceLocation": "#"
+    },
+    {
+      "valid": false,
+      "keywordLocation": "#/additionalProperties",
+      "instanceLocation": "#",
+      "errors": [
+        {
+          "valid": false,
+          "keywordLocation": "#/additionalProperties",
+          "instanceLocation": "#/disallowedProp",
+          "error": "Additional property 'disallowedProp' found but was invalid."
+        }
+      ]
+    }
+  ]
+}
+]]>
+                        </artwork>
+                    </figure>
+                </section>
+
+                <section title="Output validation schemas">
+                    <t>
+                        For convenience, JSON Schema has been provided to validate output generated
+                        by implementations.  Its URI is:
+                        <eref target="https://json-schema.org/draft/2019-04/output/schema"/>.
+                    </t>
+                </section>
+
+            </section>
+
+        </section>
+
         <section title="Usage for Hypermedia" anchor="hypermedia">
 
             <t>
@@ -2139,6 +2930,14 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
                     parameter MUST be supplied.
                 </t>
                 <t>
+                    When using the media type application/schema+json, the "schema" parameter
+                    MAY be supplied. If supplied, it SHOULD contain the same URI as identified
+                    by the "$schema" keyword, and MAY contain additional URIs.  The "$schema"
+                    URI MUST be considered the schema's canonical meta-schema, regardless
+                    of the presence of alternative or additional meta-schemas as a media type
+                    parameter.
+                </t>
+                <t>
                     The schema URI is opaque and SHOULD NOT automatically be dereferenced.
                     If the implementation does not understand the semantics of the provided schema,
                     the implementation can instead follow the "describedby" links, if any, which may
@@ -2163,7 +2962,8 @@ Content-Type: application/json;
                 </figure>
 
                 <t>
-                    Multiple schemas are whitespace separated:
+                    Multiple schemas are whitespace separated, and indicate that the
+                    instance conforms to all of the listed schemas:
                 </t>
 
                 <figure>
@@ -2174,6 +2974,35 @@ Content-Type: application/json;
 ]]>
                     </artwork>
                 </figure>
+
+                <t>
+                    Media type parameters are also used in HTTP's Accept request header:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+Accept: application/json;
+          schema="http://example.com/qiang http://example.com/li",
+        application/json;
+          schema="http://example.com/kumar"
+]]>
+                    </artwork>
+                </figure>
+
+                <t>
+                    As with Content-Type, multiple schema parameters in the same string
+                    requests an instance that conforms to all of the listed schemas.
+                </t>
+
+                <t>
+                    Unlike Content-Type, Accept can contain multiple values to
+                    indicate that the client can accept several media types.
+                    In the above example, note that the two media types differ
+                    only by their schema parameter values.  This requests an
+                    application/json representation that conforms to at least one
+                    of the identified schemas.
+                </t>
 
                 <t>
                     <cref>
@@ -2273,6 +3102,20 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                         <t>Type name: application</t>
                         <t>Subtype name: schema+json</t>
                         <t>Required parameters: N/A</t>
+                        <t>
+                            Optional parameters:
+                            <list style="hanging">
+                                <t hangText="schema:">
+                                    A non-empty list of space-separated URIs, each identifying
+                                    a JSON Schema resource.  The instance SHOULD successfully
+                                    validate against at least one of these meta-schemas.
+                                    Non-validating meta-schemas MAY be included for purposes such
+                                    as allowing clients to make use of older versions of
+                                    a meta-schema as long as the runtime instance validates
+                                    against that older version.
+                                </t>
+                            </list>
+                        </t>
                         <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
@@ -2440,7 +3283,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                             <t>Emphasized annotations as a primary usage of JSON Schema</t>
                             <t>Clarified $id by use cases</t>
                             <t>Exhaustive schema identification examples</t>
-                            <t>Replaced "external referencing" with how and when an implementation might know of a schema from another doucment</t>
+                            <t>Replaced "external referencing" with how and when an implementation might know of a schema from another document</t>
                             <t>Replaced "internal referencing" with how an implementation should recognized schema identifiers during parsing</t>
                             <t>Dereferencing the former "internal" or "external" references is always the same process</t>
                             <t>Minor formatting improvements</t>

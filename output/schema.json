@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft/2019-04/schema#",
+  "$id": "http://json-schema.org/draft/2019-04/output/schema",
+  "description": "A schema that validates the minimum requirements for validation output",
+
+  "oneOf": [
+    { "$ref": "#/$defs/flag" },
+    { "$ref": "#/$defs/basic" },
+    { "$ref": "#/$defs/detailed" },
+    { "$ref": "#/$defs/verbose" }
+  ],
+  "$defs": {
+    "outputUnit":{
+      "properties": {
+        "valid": { "type": "boolean" },
+        "keywordLocation": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "absoluteKeywordLocation": {
+          "type": "string",
+          "format": "uri"
+        },
+        "instanceLocation": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "errors": {
+          "$ref": "#/$defs/outputUnitArray"
+        },
+        "annotations": {
+          "$ref": "#/$defs/outputUnitArray"
+        }
+      },
+      "required": [ "valid", "keywordLocation", "instanceLocation" ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "valid": { "const": false }
+            }
+          },
+          "then": {
+            "required": [ "errors" ]
+          }
+        },
+        {
+          "if": {
+            "oneOf": [
+              {
+                "properties": {
+                  "keywordLocation": {
+                    "pattern": ".*/$ref/.*"
+                  }
+                }    
+              },
+              {
+                "properties": {
+                  "keywordLocation": {
+                    "pattern": ".*/$recursiveRef/.*"
+                  }
+                }    
+              }
+            ]
+          },
+          "then": {
+            "required": [ "absoluteKeywordLocation" ]
+          }
+        }
+      ]
+    },
+    "outputUnitArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/outputUnit" }
+    },
+    "flag": {
+      "properties": {
+        "valid": { "type": "boolean" }
+      },
+      "required": [ "valid" ]
+    },
+    "basic": { "$ref": "#/outputUnit" },
+    "detailed": { "$ref": "#/outputUnit" },
+    "verbose": { "$ref": "#/outputUnit" }
+  }
+}

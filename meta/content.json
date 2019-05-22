@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
+    "$id": "http://json-schema.org/draft/2019-04/meta/content",
+    "$vocabulary": {
+        "https://json-schema.org/draft/2019-04/vocab/content": true
+    },
+    "$recursiveAnchor": true,
+
+    "title": "Content vocabulary meta-schema",
+
+    "type": ["object", "boolean"],
+    "properties": {
+        "contentMediaType": { "type": "string" },
+        "contentEncoding": { "type": "string" },
+        "contentSchema": { "$recursiveRef": "#" }
+    }
+}

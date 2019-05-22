@@ -48,7 +48,7 @@
             </address>
         </author>
 
-        <date year="2018" />
+        <date year="2019" />
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -176,7 +176,7 @@
                 <postamble>
                     If the instance is {"id": 1234}, and its base URI according to
                     <xref target="RFC3986">RFC 3986 section 5.1</xref>, is
-                    "https://api.example.com/", then "https://api.example.com/thing/1234"
+                    "https://example.com/api/", then "https://example.com/api/thing/1234"
                     is the resulting link's target URI.
                 </postamble>
             </figure>
@@ -215,7 +215,10 @@
                         <t hangText="link validity">
                             A valid link for an instance is one that is applicable to that
                             instance and does not fail any requirement imposed by the keywords
-                            in the Link Description Object.
+                            in the Link Description Object.  Note that invalid links can
+                            occur when using keywords such as "if" or "oneOf" (from the
+                            Core specification) to describe links that are conditional on
+                            the representation's structure or value.
                         </t>
                         <t hangText="generic user agent">
                             A user agent which can be used to interact with any resource, from
@@ -285,14 +288,24 @@
         <section title="Meta-Schemas and Output Schema">
             <t>
                 The current URI for the JSON Hyper-Schema meta-schema is
-                <eref target="http://json-schema.org/draft-08/hyper-schema#"/>.
+                <eref target="http://json-schema.org/draft/2019-04/hyper-schema#"/>.
+            </t>
+            <t>
+                The current URI for this vocabulary, known as the Hyper-Schema vocabulary, is:
+                <eref target="https://json-schema.org/draft/2019-04/vocab/hyper-schema"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema, which differs from the
+                convenience meta-schema above in that it describes only the hyper-schema
+                keywords ("base" and "link") is:
+                <eref target="https://json-schema.org/draft/2019-04/meta/hyper-schema"/>.
             </t>
             <t>
                 The <xref target="ldo">link description format</xref> can be used without JSON
                 Schema, and use of this format can be declared by referencing the normative
                 link description schema as the schema for the data structure that uses the links.
                 The URI of the normative link description schema is:
-                <eref target="http://json-schema.org/draft-08/links#"/>.
+                <eref target="http://json-schema.org/draft/2019-04/links#"/>.
             </t>
             <t>
                 JSON Hyper-Schema implementations are free to provide output in any format.
@@ -303,7 +316,14 @@
                 It is RECOMMENDED that implementations be capable of producing output
                 in this format to facilitated testing.  The URI of the JSON Schema
                 describing the recommended output format is
-                <eref target="http://json-schema.org/draft-08/hyper-schema-output#"/>.
+                <eref target="http://json-schema.org/draft/2019-04/output/hyper-schema#"/>.
+            </t>
+            <t>
+                Updated vocabulary and meta-schema URIs MAY be published between
+                specification drafts in order to correct errors.  Implementations
+                SHOULD consider URIs dated after this specification draft and
+                before the next to indicate the same syntax and semantics
+                as those listed here.
             </t>
         </section>
         <section title="Schema Keywords">
@@ -809,8 +829,12 @@
                         The exact mapping of the JSON data model into the headers is
                         protocol-dependent.  However, in most cases this schema SHOULD
                         specify a type of "object", and the property names SHOULD be
-                        lower-cased forms of the control data field names.  See the
-                        <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> section
+                        lower-cased forms of the control data field names.  As with
+                        "targetHints", the values SHOULD be described as arrays to
+                        allow for multiple values, even if only one value is expected.
+                    </t>
+                    <t>
+                        See the <xref target="HTTP">"JSON Hyper-Schema and HTTP"</xref> section
                         for detailed guidance on using this keyword with HTTP and
                         analogous protocols.
                     </t>
@@ -1470,6 +1494,29 @@ for varname in templateData:
                     In general, headers that are likely to have different values at different
                     times SHOULD NOT be included in "targetHints".
                 </t>
+                <figure>
+                    <preamble>
+                        As an example, an Allow header allowing HEAD, GET, and POST
+                        would be shown as follows:
+                    </preamble>
+                    <artwork>
+<![CDATA[
+{
+    "targetHints": {
+        "allow": ["HEAD", "GET", "POST"]
+    }
+}
+]]>
+                    </artwork>
+                    <postamble>
+                        Note that this is represented identically whether there is
+                        a single-line Allow header with comma-separated values,
+                        multiple Allow headers on separate lines, each with one value,
+                        or any combination of such arrangements.  As is generally true
+                        with HTTP headers, comma-separated values and multiple occurrences
+                        of the header are treated the same way.
+                    </postamble>
+                </figure>
             </section>
             <section title='Advertising HTTP Features With "headerSchema"'>
                 <t>
@@ -1551,14 +1598,14 @@ for varname in templateData:
             <section title="Entry Point Links, No Templates" anchor="entryPoint">
                 <t>
                     For this example, we will assume an example API with a documented
-                    entry point URI of https://api.example.com, which is an empty JSON object
+                    entry point URI of https://example.com/api, which is an empty JSON object
                     with a link to a schema.  Here, the entry point has no data of its
                     own and exists only to provide an initial set of links:
                 </t>
                 <figure>
                     <artwork>
 <![CDATA[
-GET https://api.example.com HTTP/1.1
+GET https://example.com/api HTTP/1.1
 
 200 OK
 Content-Type: application/json
@@ -1570,23 +1617,22 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                 <t>
                     The linked hyper-schema defines the API's base URI and provides
                     two links:  an "about" link to API documentation, and a "self"
-                    link indicating that this is a schema for the base URI.  In this
-                    case the base URI is also the entry point URI.
+                    link indicating that this is a schema for the base URI.
                 </t>
                 <figure>
                     <artwork>
 <![CDATA[
 {
     "$id": "https://schema.example.com/entry",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
+    "base": "https://example.com/api/",
     "links": [
         {
             "rel": "self",
-            "href": ""
+            "href": "../api",
         }, {
             "rel": "about",
-            "href": "/docs"
+            "href": "docs"
         }
     ]
 }]]>
@@ -1596,21 +1642,41 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     These are the simplest possible links, with only a relation type and
                     an "href" with no template variables.  They resolve as follows:
                 </t>
+                <t>
+                    The duplication of "api" in both the base and the "../api"
+                    href in the "self" link is due to quirks of the RFC 3986
+                    URI-reference resolution algorithm.  In order for relative
+                    URI-references to work well in general, the base URI needs
+                    to include a trailing slash.  The "about" link with its "docs"
+                    href shows the common case of relative references, which is
+                    used in the other examples in this document.
+                </t>
+                <t>
+                    However, if an API uses URIs without trailing slashes for its resources,
+                    there is no way to provide a relative reference that just removes a
+                    trailing slash without duplicating the path component above it.
+                    Which makes the case of the entry point resource, which differs
+                    from the base URI only in terms of the trailing slash, somewhat awkward.
+                </t>
+                <t>
+                    Resource URIs, of course, may have trailing slashes, but this example
+                    is intended to highlight this frequently confusing special case.
+                </t>
                 <figure>
                     <artwork>
 <![CDATA[[
     {
-        "contextUri": "https://api.example.com",
+        "contextUri": "https://example.com/api",
         "contextPointer": "",
         "rel": "self",
-        "targetUri": "https://api.example.com",
+        "targetUri": "https://example.com/api",
         "attachmentPointer": ""
     },
     {
-        "contextUri": "https://api.example.com",
+        "contextUri": "https://example.com/api",
         "contextPointer": "",
         "rel": "about",
-        "targetUri": "https://api.example.com/docs",
+        "targetUri": "https://example.com/api/docs",
         "attachmentPointer": ""
     }
 ]]]>
@@ -1632,8 +1698,8 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
+    "base": "https://example.com/api/",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -1748,7 +1814,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/interesting-stuff",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "required": ["stuffWorthEmailingAbout", "email", "title"],
     "properties": {
         "title": {
@@ -1830,7 +1896,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     </list>
                 </t>
                 <t>
-                    So, given the following instance retrieved from "https://api.example.com/stuff":
+                    So, given the following instance retrieved from "https://example.com/api/stuff":
                 </t>
                 <figure>
                     <artwork>
@@ -1848,7 +1914,7 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                 <figure>
                     <artwork>
 <![CDATA[{
-    "contextUri": "https://api.example.com/stuff",
+    "contextUri": "https://example.com/api/stuff",
     "contextPointer": "",
     "rel": "author",
     "hrefInputTemplates": [
@@ -1902,14 +1968,14 @@ Link: <https://schema.example.com/entry>; rel="describedBy"
                     </preamble>
                     <artwork>
 <![CDATA[
-GET https://api.example.com/trees/1/nodes/123 HTTP/1.1
+GET https://example.com/api/trees/1/nodes/123 HTTP/1.1
 
 200 OK
 Content-Type: application/json
-Link: <https://api.example.com/trees/1/nodes/123>; rel="self"
-Link: <https://api.example.com/trees/1/nodes/123>; rel="up";
-        anchor="https://api.example.com/trees/1/nodes/456"
-Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
+Link: <https://example.com/api/trees/1/nodes/123>; rel="self"
+Link: <https://example.com/api/trees/1/nodes/123>; rel="up";
+        anchor="https://example.com/api/trees/1/nodes/456"
+Link: <https://example.com/api/trees/1/nodes/456>; rev="up"
 {
     "id": 123,
     "treeId": 1,
@@ -1935,7 +2001,7 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/tree-node",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
     "base": "trees/{treeId}/",
     "properties": {
         "id": {"type": "integer"},
@@ -1997,8 +2063,8 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
+    "base": "https://example.com/api/",
     "type": "object",
     "required": ["data"],
     "properties": {
@@ -2050,8 +2116,8 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[{
     "$id": "https://schema.example.com/thing-collection",
-    "$schema": "http://json-schema.org/draft-08/hyper-schema#",
-    "base": "https://api.example.com/",
+    "$schema": "http://json-schema.org/draft/2019-04/hyper-schema#",
+    "base": "https://example.com/api/",
     "type": "object",
     "required": ["elements"],
     "properties": {
@@ -2104,52 +2170,52 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                     <artwork>
 <![CDATA[[
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "self",
-        "targetUri": "https://api.example.com/things",
+        "targetUri": "https://example.com/api/things",
         "attachmentPointer": ""
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/0",
         "rel": "self",
-        "targetUri": "https://api.example.com/things/12345",
+        "targetUri": "https://example.com/api/things/12345",
         "attachmentPointer": "/elements/0"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/1",
         "rel": "self",
-        "targetUri": "https://api.example.com/things/67890",
+        "targetUri": "https://example.com/api/things/67890",
         "attachmentPointer": "/elements/1"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "item",
-        "targetUri": "https://api.example.com/things/12345",
+        "targetUri": "https://example.com/api/things/12345",
         "attachmentPointer": "/elements/0"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "item",
-        "targetUri": "https://api.example.com/things/67890",
+        "targetUri": "https://example.com/api/things/67890",
         "attachmentPointer": "/elements/1"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/0",
         "rel": "collection",
-        "targetUri": "https://api.example.com/things",
+        "targetUri": "https://example.com/api/things",
         "attachmentPointer": "/elements/0"
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "/elements/1",
         "rel": "collection",
-        "targetUri": "https://api.example.com/things",
+        "targetUri": "https://example.com/api/things",
         "attachmentPointer": "/elements/1"
     }
 ]]]>
@@ -2310,19 +2376,19 @@ Link: <https://api.example.com/trees/1/nodes/456>; rev="up"
                         <artwork>
 <![CDATA[[
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "self",
         "targetUri":
-            "https://api.example.com/things?offset=0&limit=2",
+            "https://example.com/api/things?offset=0&limit=2",
         "attachmentPointer": ""
     },
     {
-        "contextUri": "https://api.example.com/things",
+        "contextUri": "https://example.com/api/things",
         "contextPointer": "",
         "rel": "next",
         "targetUri":
-            "https://api.example.com/things?offset=3&limit=2",
+            "https://example.com/api/things?offset=3&limit=2",
         "attachmentPointer": ""
     }
 ]]]>

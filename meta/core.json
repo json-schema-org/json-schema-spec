@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/draft/2019-04/schema#",
+    "$id": "https://json-schema.org/draft/2019-04/meta/core",
+    "$vocabulary": {
+        "https://json-schema.org/draft/2019-04/vocab/core": true
+    },
+    "$recursiveAnchor": true,
+
+    "title": "Core vocabulary meta-schema",
+    "type": ["object", "boolean"],
+    "properties": {
+        "$id": {
+            "type": "string",
+            "format": "uri-reference"
+        },
+        "$schema": {
+            "type": "string",
+            "format": "uri"
+        },
+        "$ref": {
+            "type": "string",
+            "format": "uri-reference"
+        },
+        "$recursiveRef": {
+            "type": "string",
+            "format": "uri-reference"
+        },
+        "$recursiveAnchor": {
+            "type": "boolean",
+            "const": true,
+            "default": false
+        },
+        "$vocabulary": {
+            "type": "object",
+            "propertyNames": {
+                "type": "string",
+                "format": "uri"
+            },
+            "additionalProperties": {
+                "type": "boolean"
+            }
+        },
+        "$comment": {
+            "type": "string"
+        },
+        "$defs": {
+            "type": "object",
+            "additionalProperties": { "$recursiveRef": "#" },
+            "default": {}
+        }
+    }
+}
