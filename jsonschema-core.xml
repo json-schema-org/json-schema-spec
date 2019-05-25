@@ -3273,9 +3273,22 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 <list style="hanging">
                     <t hangText="draft-handrews-json-schema-02">
                         <list style="symbols">
+                            <t>Update to RFC 8359 for JSON specification</t>
                             <t>Moved "definitions" from the Validation specification here as "$defs"</t>
                             <t>Moved applicator keywords from the Validation specification as their own vocabulary</t>
                             <t>Moved the schema form of "dependencies" from the Validation specification as "dependentSchemas"</t>
+                            <t>Formalized annotation collection</t>
+                            <t>Specified recommended output formats</t>
+                            <t>Defined keyword interactions in terms of annotation and assertion results</t>
+                            <t>Added "unevaluatedProperties" and "unevaluatedItems"</t>
+                            <t>Define "$ref" behavior in terms of the assertion, applicator, and annotation model</t>
+                            <t>Allow keywords adjacent to "$ref"</t>
+                            <t>Note undefined behavior for "$ref" targets involving unknown keywords</t>
+                            <t>Add recursive referencing, primarily for meta-schema extension</t>
+                            <t>Add the concept of formal vocabularies, and how they can be recognized through meta-schemas</t>
+                            <t>Additional guidance on initial base URIs beyond network retrieval</t>
+                            <t>Allow "schema" media type parameter for "application/schema+json"</t>
+                            <t>Better explanation of media type parameters and the HTTP Accept header</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-01">
