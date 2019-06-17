@@ -2701,21 +2701,21 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
     {
       "keywordLocation": "#/items/$ref",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/definitions/point",
+        "http://example.com/polygon#/$defs/point",
       "instanceLocation": "#/1",
       "error": "A subschema had errors."
     },
     {
       "keywordLocation": "#/items/$ref/required",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/definitions/point/required",
+        "http://example.com/polygon#/$defs/point/required",
       "instanceLocation": "#/1",
       "error": "Required property 'y' not found."
     },
     {
       "keywordLocation": "#/items/$ref/additionalProperties",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/definitions/point/additionalProperties",
+        "http://example.com/polygon#/$defs/point/additionalProperties",
       "instanceLocation": "#/1/z",
       "error": "Additional property 'z' found but was invalid."
     },
@@ -2768,14 +2768,14 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
       "valid": false,
       "keywordLocation": "#/items/$ref",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/definitions/point",
+        "http://example.com/polygon#/$defs/point",
       "instanceLocation": "#/1",
       "errors": [
         {
           "valid": false,
           "keywordLocation": "#/items/$ref/required",
           "absoluteKeywordLocation":
-            "http://example.com/polygon#/definitions/point/required",
+            "http://example.com/polygon#/$defs/point/required",
           "instanceLocation": "#/1",
           "error": "Required property 'y' not found."
         },
@@ -2783,7 +2783,7 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
           "valid": false,
           "keywordLocation": "#/items/$ref/additionalProperties",
           "absoluteKeywordLocation":
-            "http://example.com/polygon#/definitions/point/additionalProperties",
+            "http://example.com/polygon#/$defs/point/additionalProperties",
           "instanceLocation": "#/1/z",
           "error": "Additional property 'z' found but was invalid."
         }
