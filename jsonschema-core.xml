@@ -1152,6 +1152,11 @@
                     situation identifiable by a URI of any known scheme.
                 </t>
                 <t>
+                    If a schema document defines no explicit base URI with "$id" (embedded in content),
+                    the base URI is that determined per
+                    <xref target="RFC3986">RFC 3986 section 5</xref>.
+                </t>
+                <t>
                     If no source is known, or no URI scheme is known for the source, a suitable
                     implementation-specific default URI MAY be used as described in
                     <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
@@ -1164,8 +1169,8 @@
                     The "$id" keyword defines a URI for the schema, and the base URI that
                     other URI references within the schema are resolved against.
                     A subschema's "$id" is resolved against the base URI of its parent schema.
-                    If no parent sets an explicit base with "$id", the base URI is that of the
-                    entire document, as determined per
+                    If no parent schema defines an explicit base URI with "$id", the base URI
+                    is that of the entire document, as determined per
                     <xref target="RFC3986">RFC 3986 section 5</xref>.
                 </t>
                 <t>
