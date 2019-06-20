@@ -1047,12 +1047,10 @@
                     the entire resource beng described MAY be removed in the future.
                 </t>
                 <t>
-                    When the "deprecated" keyword is used to describe an array, it can be used
-                    in the tuple form to deprecate positional schemas. If "deprecated" is used
-                    in the list form it can mark regular "items" as deprecated, whilst allowing
-                    "additionalItems". Vice verse, setting "deprecated" to true inside
-                    "additionalItems" would mark the additional items as deprecated, but not
-                    effect list usage.
+                    When the "deprecated" keyword is used to describe an array, it's meaning will
+                    vary depending on how "items" is used. If "items" is a single schema, it will
+                    deprecate the contents of an array, but if "items" is an array of schemas it
+                    can be used to deprecate positional schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same behavior as a value of false.
