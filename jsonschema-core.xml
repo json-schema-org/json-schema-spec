@@ -935,9 +935,10 @@
                     such schemas.
                 </t>
                 <t>
-                    When processing a schema that uses an unrecognized vocabulary (the value for
-                    the vocabulary is false), keywords declared by that vocabulary are
-                    treated like any other unrecognized keyword, and ignored.
+                    When processing a schema that uses an unrecognized vocabulary
+                    (implying that the value for the vocabulary must be false), keywords
+                    declared by that vocabulary are treated like any other unrecognized
+                    keyword, and ignored.
                 </t>
                 <t>
                     The "$vocabulary" keyword SHOULD be used in the root schema of any schema
@@ -1084,7 +1085,7 @@
                     <list>
                         <t>
                             It restricts the usage of the Applicator vocabulary
-                            by forbidding the keyword prefixed with "unevaluated".
+                            by forbidding the keywords prefixed with "unevaluated".
                         </t>
                         <t>
                             It describes a keyword, "startDate", that is defined by
@@ -1152,7 +1153,7 @@
                     Although the meta-schema can validate the syntax of "startDate"
                     within a schema, it is the vocabulary that defines the logic behind
                     the semantic meaning of "startDate".  Without an understanding of
-                    the semantics (that the value should represent a date prior that
+                    the semantics (that the instance value should represent a date after that
                     given in the schema), an implementation can only validate the syntactic
                     usage of "startDate" (that it is a date-formatted string).  This is why
                     a schema MUST refuse to validate a schema which uses a meta-schema
