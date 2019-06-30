@@ -1074,32 +1074,32 @@
             </section>
             <section title="Example Meta-Schema With Vocabulary Declarations"
                      anchor="example-meta-schema">
+                <t>
+                    This meta-schema explicitly declares both the Core and Applicator
+                    vocabularies with its own vocabulary and combines the
+                    Core and Applicator meta-schemas with an "allOf".  It does not
+                    need to include itself in the "allOf" since it is its own
+                    meta-schema.  It additionally applies three modifications to the
+                    combination of these vocabularies:
+                    <list>
+                        <t>
+                            It restricts the usage of the Applicator vocabulary
+                            by forbidding the keyword prefixed with "unevaluated".
+                        </t>
+                        <t>
+                            It describes a keyword, "pastDate", that is defined by
+                            its own vocabulary.
+                        </t>
+                        <t>
+                            It describes a keyword, "localKeyword", that is not
+                            part of any vocabulary.
+                        </t>
+                    </list>
+                    Note that it is its own meta-schema, as it relies on both the Core
+                    vocabulary (as all schemas do) and the Applicator vocabulary (for
+                    "allOf", "properties", and "patternProperties").
+                </t>
                 <figure>
-                    <preamble>
-                        This meta-schema explicitly declares both the Core and Applicator
-                        vocabularies with its own vocabulary and combines the
-                        Core and Applicator meta-schemas with an "allOf".  It does not
-                        need to include itself in the "allOf" since it is its own
-                        meta-schema.  It additionally applies three modifications to the
-                        combination of these vocabularies:
-                        <list>
-                            <t>
-                                It restricts the usage of the Applicator vocabulary
-                                by forbidding the keyword prefixed with "unevaluated".
-                            </t>
-                            <t>
-                                It describes a keyword, "pastDate", that is defined by
-                                its own vocabulary.
-                            </t>
-                            <t>
-                                It describes a keyword, "localKeyword", that is not
-                                part of any vocabulary.
-                            </t>
-                        </list>
-                        Note that it is its own meta-schema, as it relies on both the Core
-                        vocabulary (as all schemas do) and the Applicator vocabulary (for
-                        "allOf", "properties", and "patternProperties").
-                    </preamble>
                     <artwork>
 <![CDATA[
 {
