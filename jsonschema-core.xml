@@ -1087,7 +1087,7 @@
                             by forbidding the keyword prefixed with "unevaluated".
                         </t>
                         <t>
-                            It describes a keyword, "pastDate", that is defined by
+                            It describes a keyword, "startDate", that is defined by
                             its own vocabulary.
                         </t>
                         <t>
@@ -1119,7 +1119,7 @@
     "^unevaluated.*$": false
   },
   "properties": {
-    "pastDate": {
+    "startDate": {
       "$comment": "Defined by vocabulary"
       "type": "string",
       "format": "date"
@@ -1143,18 +1143,18 @@
                     </postamble>
                 </figure>
                 <t>
-                    "localKeyword" and "pastDate" are now valid for any schema that
+                    "localKeyword" and "startDate" are now valid for any schema that
                     declares this meta-schema for their "$schema".  Note that defining
                     it in this way does not imply the new keywords are valid within an
                     instance to be validated by such a schema.
                 </t>
                 <t>
-                    Although the meta-schema can validate the syntax of "pastDate"
+                    Although the meta-schema can validate the syntax of "startDate"
                     within a schema, it is the vocabulary that defines the logic behind
-                    the semantic meaning of "pastDate".  Without an understanding of
-                    the semantics (that the value should represent a date prior to the
-                    moment of validation), an implementation can only validate the syntactic
-                    usage of "pastDate" (that it is a date-formatted string).  This is why
+                    the semantic meaning of "startDate".  Without an understanding of
+                    the semantics (that the value should represent a date prior that
+                    given in the schema), an implementation can only validate the syntactic
+                    usage of "startDate" (that it is a date-formatted string).  This is why
                     a schema MUST refuse to validate a schema which uses a meta-schema
                     that declares a required unknown vocabulary.
                 </t>
