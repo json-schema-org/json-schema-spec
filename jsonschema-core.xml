@@ -1152,9 +1152,11 @@
                     Although the meta-schema can validate the syntax of "pastDate"
                     within a schema, it is the vocabulary that defines the logic behind
                     the semantic meaning of "pastDate".  Without an understanding of
-                    the semantics, an implementation can only validate the syntactic usage
-                    of "pastDate".  This is why a schema MUST refuse to validate a schema
-                    which uses a meta-schema that declares a required unknown vocabulary.
+                    the semantics (that the value should represent a date prior to the
+                    moment of validation), an implementation can only validate the syntactic
+                    usage of "pastDate" (that it is a date-formatted string).  This is why
+                    a schema MUST refuse to validate a schema which uses a meta-schema
+                    that declares a required unknown vocabulary.
                 </t>
                 <t>
                     In order for an implementation to understand the keywords defined by
