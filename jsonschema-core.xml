@@ -920,7 +920,7 @@
                     the relevant protocol's successful "no content" message, such as
                     an HTTP 204 status.
                     <cref>
-                        Vocabulary documents may be added shortly, or in the next draft.
+                        Vocabulary documents may be added in forthcoming drafts.
                         For now, identifying the keyword set is deemed sufficient as that,
                         along with meta-schema validation, is how the current "vocabularies"
                         work today.
@@ -935,9 +935,9 @@
                     such schemas.
                 </t>
                 <t>
-                    When processing a schema that uses unrecognized vocabularies, keywords
-                    declared by those vocabularies are treated like any other unrecognized
-                    keyword, and ignored.
+                    When processing a schema that uses an unrecognized vocabulary (the value for
+                    the vocabulary is false), keywords declared by that vocabulary are
+                    treated like any other unrecognized keyword, and ignored.
                 </t>
                 <t>
                     The "$vocabulary" keyword SHOULD be used in the root schema of any schema
@@ -1077,13 +1077,28 @@
                 <figure>
                     <preamble>
                         This meta-schema explicitly declares both the Core and Applicator
-                        vocabularies, and combines their meta-schemas with an "allOf".
-                        It additionally restricts the usage of the Applicator vocabulary
-                        by forbidding the keyword prefixed with "unevaluated".  It also
-                        describes a keyword, "localKeyword", that is not part of either
-                        vocabulary.  Note that it is its own meta-schema,
-                        as it relies on both the Core vocabulary (as all schemas do)
-                        and the Applicator vocabulary (for "allOf").
+                        vocabularies with its own vocabulary and combines the
+                        Core and Applicator meta-schemas with an "allOf".  It does not
+                        need to include itself in the "allOf" since it is its own
+                        meta-schema.  It additionally applies three modifications to the
+                        combination of these vocabularies:
+                        <list>
+                            <t>
+                                It restricts the usage of the Applicator vocabulary
+                                by forbidding the keyword prefixed with "unevaluated".
+                            </t>
+                            <t>
+                                It describes a keyword, "pastDate", that is defined by
+                                its own vocabulary.
+                            </t>
+                            <t>
+                                It describes a keyword, "localKeyword", that is not
+                                part of any vocabulary.
+                            </t>
+                        </list>
+                        Note that it is its own meta-schema, as it relies on both the Core
+                        vocabulary (as all schemas do) and the Applicator vocabulary (for
+                        "allOf", "properties", and "patternProperties").
                     </preamble>
                     <artwork>
 <![CDATA[
@@ -1093,7 +1108,8 @@
   "$recursiveAnchor": true,
   "$vocabulary": {
     "https://json-schema.org/draft/2019-04/vocab/core": true,
-    "https://json-schema.org/draft/2019-04/vocab/applicator": true
+    "https://json-schema.org/draft/2019-04/vocab/applicator": true,
+    "https://json-schema.org/draft/2019-04/vocab/core-app-example": true
   },
   "allOf": [
     {"$ref": "https://json-schema.org/draft/2019-04/meta/core"},
@@ -1103,8 +1119,13 @@
     "^unevaluated.*$": false
   },
   "properties": {
-    "$comment": "Not in vocabulary, but validated if used",
+    "pastDate": {
+      "$comment": "Defined by vocabulary"
+      "type": "string",
+      "format": "date"
+    },
     "localKeyword": {
+      "$comment": "Not in vocabulary, but validated if used",
       "type": "string"
     }
   }
@@ -1121,6 +1142,29 @@
                         validation of core keywords.
                     </postamble>
                 </figure>
+                <t>
+                    "localKeyword" and "pastDate" are now valid for any schema that
+                    declares this meta-schema for their "$schema".  Note that defining
+                    it in this way does not imply the new keywords are valid within an
+                    instance to be validated by such a schema.
+                </t>
+                <t>
+                    Although the meta-schema can validate the syntax of "pastDate"
+                    within a schema, it is the vocabulary that defines the logic behind
+                    the semantic meaning of "pastDate".  Without an understanding of
+                    the semantics, an implementation can only validate the syntactic usage
+                    of "pastDate".  This is why a schema MUST refuse to validate a schema
+                    which uses a meta-schema that declares a required unknown vocabulary.
+                </t>
+                <t>
+                    In order for an implementation to understand the keywords defined by
+                    vocabulary, it may be necessary for the user to augment the
+                    implementation by writing a plug-in or other extension that the
+                    implementation can use to execute the new validation logic.  The
+                    mechanisms by which an implementation supports this are not covered
+                    by this specification, however it is RECOMMENDED that implementations
+                    provide such support.
+                </t>
                 <t>
                     The standard meta-schemas that combine all vocabularies defined by
                     the Core and Validation specification, and that combine all vocabularies
