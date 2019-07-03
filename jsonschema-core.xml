@@ -931,15 +931,23 @@
                     If the value is true, then implementations that do not recognize
                     the vocabulary MUST refuse to process any schemas that declare
                     this meta-schema with "$schema".  If the value is false, implementations
-                    that do not recognize the vocabulary MAY choose to proceed with processing
+                    that do not recognize the vocabulary SHOULD proceed with processing
                     such schemas.
                 </t>
                 <t>
-                    When processing a schema that uses an unrecognized vocabulary
-                    (implying that the value for the vocabulary must be false), keywords
-                    declared by that vocabulary are treated like any other unrecognized
+                    Processing a schema with an unrecognized vocabulary (where the value of
+                    the associated vocabulary key is "false") SHOULD result in keywords
+                    declared by that vocabulary (if known) being treated like any other unrecognized
                     keyword, and ignored.
                 </t>
+                <cref>
+                    Opted for SHOULD here, because it's not possible to know what keywords
+                    WERE included in the unkown vocabulary. If another known
+                    vocabulary uses one of the same keywords as the unkown vocabulary, this
+                    shouldn't result in THAT keyword being ignored. (And it's unlikely that it
+                    is possble to tell this anyway. Unless it's a known but unsupported vocabulary,
+                    however I think here the phrase "known" is equivilent to "supported.)
+                </cref>
                 <t>
                     The "$vocabulary" keyword SHOULD be used in the root schema of any schema
                     document intended for use as a meta-schema.  It MUST NOT appear in subschemas.
