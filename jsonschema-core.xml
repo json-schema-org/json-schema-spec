@@ -143,236 +143,44 @@
                 This, and related specifications, define keywords allowing authors to describe JSON
                 data in several ways.
             </t>
-
-            <section title="Keyword Behaviors">
-                <t>
-                    JSON Schema keywords fall into several general behavior categories.
-                    Assertions validate that an instance satisfies constraints, producing
-                    a boolean result.  Annotations attach information that applications
-                    may use in any way they see fit.
-                    Applicators apply subschemas to parts of the instance and combine
-                    their results.
-                </t>
-                <t>
-                    Extension keywords SHOULD stay within these categories, keeping in mind
-                    that annotations in particular are extremely flexible.  Complex behavior
-                    is usually better delegated to applications on the basis of annotation
-                    data than implemented directly as schema keywords.  However, extension
-                    keywords MAY define other behaviors for specialized purposes.
-                </t>
-                <t>
-                    Evaluating an instance against a schema involves processing all of the
-                    keywords in the schema against the appropriate locations within the instance.
-                    Typically, applicator keywords are processed until a schema object with no
-                    applicators (and therefore no subschemas) is reached.  The appropriate
-                    location in the instance is evaluated against the assertion and
-                    annotation keywords in the schema object, and their results are gathered
-                    into the parent schema according to the rules of the applicator.
-                </t>
-                <t>
-                    Evaluation of a parent schema object can complete once all of its
-                    subschemas have been evaluated, although in some circumstances evaluation
-                    may be short-circuited due to assertion results.
-                </t>
-                <section title="Keyword Interactions">
-                    <t>
-                        Keyword behavior MAY be defined in terms of the annotation results
-                        of <xref target="root">subschemas</xref> and/or adjacent keywords.
-                        Such keywords MUST NOT result in a circular dependency.
-                        Keywords MAY modify their behavior based on the presence or absence
-                        of another keyword in the same
-                        <xref target="schema-document">schema object</xref>.
-                    </t>
-                </section>
-                <section title="Default Behaviors">
-                    <t>
-                        A missing keyword MUST NOT produce a false assertion result, MUST
-                        NOT produce annotation results, and MUST NOT cause any other schema
-                        to be evaluated as part of its own behavioral definition.
-                        However, given that missing keywords do not contribute annotations,
-                        the lack of annotation results may indirectly change the behavior
-                        of other keywords.
-                    </t>
-                    <t>
-                        In some cases, the missing keyword assertion behavior of a keyword is
-                        identical to that produced by a certain value, and keyword definitions
-                        SHOULD note such values where known.  However, even if the value which
-                        produces the default behavior would produce annotation results if
-                        present, the default behavior still MUST NOT result in annotations.
-                    </t>
-                    <t>
-                        Because annotation collection can add significant cost in terms of both
-                        computation and memory, implementations MAY opt out of this feature.
-                        Keywords known to an implementation to have assertion or applicator behavior
-                        that depend on annotation results MUST then be treated as errors, unless
-                        an alternate implementation producing the same behavior is available.
-                        Keywords of this sort SHOULD describe reasonable alternate approaches
-                        when appropriate.  This approach is demonstrated by the
-                        "<xref target="additionalItems" format="title"/>" and
-                        "<xref target="additionalProperties" format="title"/>" keywords in this
-                        document.
-                    </t>
-                </section>
-                <section title="Applicators" anchor="applicators">
-                    <t>
-                        Applicators allow for building more complex schemas than can be accomplished
-                        with a single schema object.  Evaluation of an instance against a
-                        <xref target="schema-document">schema document</xref> begins by applying
-                        the <xref target="root">root schema</xref> to the complete instance
-                        document.  From there, keywords known as applicators are used to determine
-                        which additional schemas are applied.  Such schemas may be applied in-place
-                        to the current location, or to a child location.
-                    </t>
-                    <t>
-                        The schemas to be applied may be present as subschemas comprising all or
-                        part of the keyword's value.  Alternatively, an applicator may refer to
-                        a schema elsewhere in the same schema document, or in a different one.
-                        The mechanism for identifying such referenced schemas is defined by the
-                        keyword.
-                    </t>
-                    <t>
-                        Applicator keywords also define how subschema or referenced schema
-                        boolean <xref target="assertions">assertion</xref>
-                        results are modified and/or combined to produce the boolean result
-                        of the applicator.  Applicators may apply any boolean logic operation
-                        to the assertion results of subschemas, but MUST NOT introduce new
-                        assertion conditions of their own.
-                    </t>
-                    <t>
-                        <xref target="annotations">Annotation</xref> results are
-                        combined according to the rules specified by each annotation keyword.
-                    </t>
-                </section>
-
-                <section title="Assertions" anchor="assertions">
-                    <t>
-                        JSON Schema can be used to assert constraints on a JSON document, which
-                        either passes or fails the assertions.  This approach can be used to validate
-                        conformance with the constraints, or document what is needed to satisfy them.
-                    </t>
-                    <t>
-                        JSON Schema implementations produce a single boolean result when evaluating
-                        an instance against schema assertions.
-                    </t>
-                    <t>
-                        An instance can only fail an assertion that is present in the schema.
-
-                    </t>
-                    <section title="Assertions and Instance Primitive Types">
-                        <t>
-                            Most assertions only constrain values within a certain
-                            primitive type.  When the type of the instance is not of the type
-                            targeted by the keyword, the instance is considered to conform
-                            to the assertion.
-                        </t>
-                        <t>
-                            For example, the "maxLength" keyword from the companion validation
-                            vocabulary will only restrict certain strings
-                            (that are too long) from being valid.  If the instance is a number,
-                            boolean, null, array, or object, then it is valid against this assertion.
-                        </t>
-                    </section>
-                </section>
-
-                <section title="Annotations" anchor="annotations">
-                    <t>
-                        JSON Schema can annotate an instance with information, whenever the instance
-                        validates against the schema object containing the annotation, and all of its
-                        parent schema objects.  The information can be a simple value, or can be
-                        calculated based on the instance contents.
-                    </t>
-                    <t>
-                        Annotations are attached to specific locations in an instance.
-                        Since many subschemas can be applied to any single
-                        location, annotation keywords need to specify any unusual handling of
-                        multiple applicable occurrences of the keyword with different values.
-                    </t>
-                    <t>
-                        The default behavior is simply to collect all values in a list in
-                        indeterminate order.  Given the extensibility of keywords, including
-                        applicators, it is not possible to define a universally predictable
-                        order of processing.
-                    </t>
-                    <t>
-                        Unlike assertion results, annotation data can take a wide variety of forms,
-                        which are provided to applications to use as they see fit.  JSON Schema
-                        implementations are not expected to make use of the collected information
-                        on behalf of applications.
-                    </t>
-                    <t>
-                        While "short-circuit" evaluation is possible for assertions, collecting
-                        annotations requires examining all schemas that apply to an instance
-                        location, even if they cannot change the overall assertion result.
-                    </t>
-                </section>
-            </section>
-
-            <section title="Schema Vocabularies" anchor="vocabulary">
-                <t>
-                    A JSON Schema vocabulary is a set of keywords defined for a particular
-                    purpose.  The vocabulary specifies the meaning of its keywords as
-                    assertions, annotations, and/or any vocabulary-defined keyword category.
-                </t>
-                <t>
-                    Several vocabularies are provided as
-                    standards in this and closely related documents.  These vocabularies
-                    are used with the core keywords defined as fundamental to the
-                    "application/schema+json" media type.
-                </t>
-                <t>
-                    Schema authors are encouraged to define their own vocabularies for
-                    domain-specific concepts.  A vocabulary need not be a standard to
-                    be re-usable, although users of extension vocabularies MUST NOT
-                    assume that any JSON Schema implementation can support the vocabulary
-                    unless it specifically documents such support.
-                </t>
-                <section title="Subschema Application">
-                    <t>
-                        This vocabulary provides keywords for applying subschemas to the
-                        instance in various ways.  It is defined in this document, and
-                        it is RECOMMENDED that all JSON Schema implementations support it.
-                        All other vocabularies in this section are designed to be used
-                        alongside the subschema application vocabulary.
-                    </t>
-                    <t>
-                        Without this vocabulary or an equivalent one, JSON Schema can only
-                        be applied to a JSON document as a whole.  In most cases, schema
-                        keywords need to be applied to specific object properties or array items.
-                    </t>
-                </section>
-                <section title="Validation">
-                    <t>
-                        This vocabulary describes the structure of a JSON document
-                        (for instance, required properties and length limitations).
-                        Applications can use this information to validate instances (check that
-                        constraints are met), or inform interfaces to collect user input
-                        such that the constraints are satisfied.
-                    </t>
-                    <t>
-                        Validation behaviour and keywords are specified in
-                        <xref target="json-schema-validation">a separate document</xref>.
-                    </t>
-                </section>
-                <section title="Basic Meta-Data">
-                    <t>
-                        A small set of annotation keywords are defined in
-                        <xref target="json-schema-validation">the validation specification</xref>
-                        to allow associating common kinds of meta-data with an instance.
-                    </t>
-                </section>
-                <section title="Hypermedia and Linking">
-                    <t>
-                        JSON Hyper-Schema produces hyperlinks as annotations available for
-                        use with a JSON document.  It supports resolving URI Templates
-                        and describing the resource and data submission formats required
-                        to use an API.
-                    </t>
-                    <t>
-                        Hyper-schema behaviour and keywords are specified in
-                        <xref target="json-hyper-schema">a separate document</xref>.
-                    </t>
-                </section>
-            </section>
+            <t>
+                JSON Schema uses keywords to assert constraints on JSON instances or annotate those
+                instances with additional information.  Additional keywords are used to apply
+                assertions and annotations to more complex JSON data structures, or based on
+                some sort of condition.
+            </t>
+            <t>
+                To facilitate re-use, keywords can be organized into vocabularies.  A vocabulary
+                consists of a list of keywords, together with their syntax and semantics.
+            </t>
+            <t>
+                JSON Schema can be extended either by defining additional vocabularies,
+                or less formally by defining additional keywords outside of any vocabulary.
+                Unrecognized individual keywords are ignored, while the behavior with respect
+                to an unrecognized vocabulary can be controlled when declaring which
+                vocabularies are in use.
+            </t>
+            <t>
+                This document defines a core vocabulary that MUST be supported by any
+                implementation, and cannot be disabled.  Its keywords are each prefixed
+                with a "$" character to emphasize their required nature.  This vocabulary
+                is essential to the functioning of the "application/schema+json" media
+                type, and is used to bootstrap the loading of other vocabularies.
+            </t>
+            <t>
+                Additionally, this document defines a RECOMMENDED vocabulary of keywords
+                for applying subschemas conditionally, and for applying subschemas to
+                the contents of objects and arrays.  Either this vocabulary or one very
+                much like it is required to write schemas for non-trivial JSON instances,
+                whether those schemas are intended for assertion validation, annotation,
+                or both.  While not part of the required core vocabulary, for maximum
+                interoperability this additional vocabulary is included in this document
+                and its use is strongly encouraged.
+            </t>
+            <t>
+                Further vocabularies for purposes such as structural validation or
+                hypermedia annotation are defined in other documents.
+            </t>
         </section>
 
         <section title="Definitions">
@@ -825,7 +633,170 @@
 
         </section>
 
-        <section title="Meta-Schemas and Vocabularies">
+        <section title="Keyword Behaviors">
+            <t>
+                JSON Schema keywords fall into several general behavior categories.
+                Assertions validate that an instance satisfies constraints, producing
+                a boolean result.  Annotations attach information that applications
+                may use in any way they see fit.
+                Applicators apply subschemas to parts of the instance and combine
+                their results.
+            </t>
+            <t>
+                Extension keywords SHOULD stay within these categories, keeping in mind
+                that annotations in particular are extremely flexible.  Complex behavior
+                is usually better delegated to applications on the basis of annotation
+                data than implemented directly as schema keywords.  However, extension
+                keywords MAY define other behaviors for specialized purposes.
+            </t>
+            <t>
+                Evaluating an instance against a schema involves processing all of the
+                keywords in the schema against the appropriate locations within the instance.
+                Typically, applicator keywords are processed until a schema object with no
+                applicators (and therefore no subschemas) is reached.  The appropriate
+                location in the instance is evaluated against the assertion and
+                annotation keywords in the schema object, and their results are gathered
+                into the parent schema according to the rules of the applicator.
+            </t>
+            <t>
+                Evaluation of a parent schema object can complete once all of its
+                subschemas have been evaluated, although in some circumstances evaluation
+                may be short-circuited due to assertion results.
+            </t>
+            <section title="Keyword Interactions">
+                <t>
+                    Keyword behavior MAY be defined in terms of the annotation results
+                    of <xref target="root">subschemas</xref> and/or adjacent keywords.
+                    Such keywords MUST NOT result in a circular dependency.
+                    Keywords MAY modify their behavior based on the presence or absence
+                    of another keyword in the same
+                    <xref target="schema-document">schema object</xref>.
+                </t>
+            </section>
+            <section title="Default Behaviors">
+                <t>
+                    A missing keyword MUST NOT produce a false assertion result, MUST
+                    NOT produce annotation results, and MUST NOT cause any other schema
+                    to be evaluated as part of its own behavioral definition.
+                    However, given that missing keywords do not contribute annotations,
+                    the lack of annotation results may indirectly change the behavior
+                    of other keywords.
+                </t>
+                <t>
+                    In some cases, the missing keyword assertion behavior of a keyword is
+                    identical to that produced by a certain value, and keyword definitions
+                    SHOULD note such values where known.  However, even if the value which
+                    produces the default behavior would produce annotation results if
+                    present, the default behavior still MUST NOT result in annotations.
+                </t>
+                <t>
+                    Because annotation collection can add significant cost in terms of both
+                    computation and memory, implementations MAY opt out of this feature.
+                    Keywords known to an implementation to have assertion or applicator behavior
+                    that depend on annotation results MUST then be treated as errors, unless
+                    an alternate implementation producing the same behavior is available.
+                    Keywords of this sort SHOULD describe reasonable alternate approaches
+                    when appropriate.  This approach is demonstrated by the
+                    "<xref target="additionalItems" format="title"/>" and
+                    "<xref target="additionalProperties" format="title"/>" keywords in this
+                    document.
+                </t>
+            </section>
+            <section title="Applicators" anchor="applicators">
+                <t>
+                    Applicators allow for building more complex schemas than can be accomplished
+                    with a single schema object.  Evaluation of an instance against a
+                    <xref target="schema-document">schema document</xref> begins by applying
+                    the <xref target="root">root schema</xref> to the complete instance
+                    document.  From there, keywords known as applicators are used to determine
+                    which additional schemas are applied.  Such schemas may be applied in-place
+                    to the current location, or to a child location.
+                </t>
+                <t>
+                    The schemas to be applied may be present as subschemas comprising all or
+                    part of the keyword's value.  Alternatively, an applicator may refer to
+                    a schema elsewhere in the same schema document, or in a different one.
+                    The mechanism for identifying such referenced schemas is defined by the
+                    keyword.
+                </t>
+                <t>
+                    Applicator keywords also define how subschema or referenced schema
+                    boolean <xref target="assertions">assertion</xref>
+                    results are modified and/or combined to produce the boolean result
+                    of the applicator.  Applicators may apply any boolean logic operation
+                    to the assertion results of subschemas, but MUST NOT introduce new
+                    assertion conditions of their own.
+                </t>
+                <t>
+                    <xref target="annotations">Annotation</xref> results are
+                    combined according to the rules specified by each annotation keyword.
+                </t>
+            </section>
+
+            <section title="Assertions" anchor="assertions">
+                <t>
+                    JSON Schema can be used to assert constraints on a JSON document, which
+                    either passes or fails the assertions.  This approach can be used to validate
+                    conformance with the constraints, or document what is needed to satisfy them.
+                </t>
+                <t>
+                    JSON Schema implementations produce a single boolean result when evaluating
+                    an instance against schema assertions.
+                </t>
+                <t>
+                    An instance can only fail an assertion that is present in the schema.
+
+                </t>
+                <section title="Assertions and Instance Primitive Types">
+                    <t>
+                        Most assertions only constrain values within a certain
+                        primitive type.  When the type of the instance is not of the type
+                        targeted by the keyword, the instance is considered to conform
+                        to the assertion.
+                    </t>
+                    <t>
+                        For example, the "maxLength" keyword from the companion validation
+                        vocabulary will only restrict certain strings
+                        (that are too long) from being valid.  If the instance is a number,
+                        boolean, null, array, or object, then it is valid against this assertion.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Annotations" anchor="annotations">
+                <t>
+                    JSON Schema can annotate an instance with information, whenever the instance
+                    validates against the schema object containing the annotation, and all of its
+                    parent schema objects.  The information can be a simple value, or can be
+                    calculated based on the instance contents.
+                </t>
+                <t>
+                    Annotations are attached to specific locations in an instance.
+                    Since many subschemas can be applied to any single
+                    location, annotation keywords need to specify any unusual handling of
+                    multiple applicable occurrences of the keyword with different values.
+                </t>
+                <t>
+                    The default behavior is simply to collect all values in a list in
+                    indeterminate order.  Given the extensibility of keywords, including
+                    applicators, it is not possible to define a universally predictable
+                    order of processing.
+                </t>
+                <t>
+                    Unlike assertion results, annotation data can take a wide variety of forms,
+                    which are provided to applications to use as they see fit.  JSON Schema
+                    implementations are not expected to make use of the collected information
+                    on behalf of applications.
+                </t>
+                <t>
+                    While "short-circuit" evaluation is possible for assertions, collecting
+                    annotations requires examining all schemas that apply to an instance
+                    location, even if they cannot change the overall assertion result.
+                </t>
+            </section>
+        </section>
+
+        <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
             <t>
                 Two concepts, meta-schemas and vocabularies, are used to inform an implementation
                 how to interpret a schema.  A schema S declares its meta-schema M with the "$schema"
@@ -843,6 +814,11 @@
             <t>
                 Meta-schema authoring is an advanced usage of JSON Schema, so the design of
                 meta-schema features emphasizes flexibility over simplicity.
+            </t>
+            <t>
+                A JSON Schema vocabulary is a set of keywords defined for a particular
+                purpose.  The vocabulary specifies the meaning of its keywords as
+                assertions, annotations, and/or any vocabulary-defined keyword category.
             </t>
             <t>
                 The role of a vocabulary is to declare which keywords (including sub-keywords
