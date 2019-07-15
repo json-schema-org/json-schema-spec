@@ -87,7 +87,7 @@
                 <eref target="https://github.com/json-schema-org/json-schema-spec/issues"/>.
             </t>
             <t>
-                For additional information, see <eref target="http://json-schema.org/"/>.
+                For additional information, see <eref target="https://json-schema.org/"/>.
             </t>
             <t>
                 To provide feedback, use this issue tracker, the communication methods listed on the
@@ -1036,11 +1036,11 @@
                 </t>
                 <t>
                     The current URI for the Core vocabulary is:
-                    <eref target="https://json-schema.org/draft/2019-04/vocab/core"/>.
+                    <eref target="https://json-schema.org/draft/2019-08/vocab/core"/>.
                 </t>
                 <t>
                     The current URI for the corresponding meta-schema is:
-                    <eref target="https://json-schema.org/draft/2019-04/meta/core"/>.
+                    <eref target="https://json-schema.org/draft/2019-08/meta/core"/>.
                 </t>
                 <t>
                     Updated vocabulary and meta-schema URIs MAY be published between
@@ -1066,16 +1066,16 @@
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-04/core-app-example#",
-  "$id": "https://json-schema.org/draft/2019-04/core-app-example",
+  "$schema": "https://json-schema.org/draft/2019-08/core-app-example#",
+  "$id": "https://json-schema.org/draft/2019-08/core-app-example",
   "$recursiveAnchor": true,
   "$vocabulary": {
-    "https://json-schema.org/draft/2019-04/vocab/core": true,
-    "https://json-schema.org/draft/2019-04/vocab/applicator": true
+    "https://json-schema.org/draft/2019-08/vocab/core": true,
+    "https://json-schema.org/draft/2019-08/vocab/applicator": true
   },
   "allOf": [
-    {"$ref": "https://json-schema.org/draft/2019-04/meta/core"},
-    {"$ref": "https://json-schema.org/draft/2019-04/meta/applicator"}
+    {"$ref": "https://json-schema.org/draft/2019-08/meta/core"},
+    {"$ref": "https://json-schema.org/draft/2019-08/meta/applicator"}
   ],
   "patternProperties": {
     "^unevaluated.*$": false
@@ -1211,7 +1211,7 @@
                         <artwork>
 <![CDATA[
 {
-    "$id": "http://example.com/root.json",
+    "$id": "https://example.com/root.json",
     "$defs": {
         "A": { "$id": "#foo" },
         "B": {
@@ -1239,43 +1239,43 @@
                         <list style="hanging">
                             <t hangText="# (document root)">
                                 <list>
-                                    <t>http://example.com/root.json</t>
-                                    <t>http://example.com/root.json#</t>
+                                    <t>https://example.com/root.json</t>
+                                    <t>https://example.com/root.json#</t>
                                 </list>
                             </t>
                             <t hangText="#/$defs/A">
                                 <list>
-                                    <t>http://example.com/root.json#foo</t>
-                                    <t>http://example.com/root.json#/$defs/A</t>
+                                    <t>https://example.com/root.json#foo</t>
+                                    <t>https://example.com/root.json#/$defs/A</t>
                                 </list>
                             </t>
                             <t hangText="#/$defs/B">
                                 <list>
-                                    <t>http://example.com/other.json</t>
-                                    <t>http://example.com/other.json#</t>
-                                    <t>http://example.com/root.json#/$defs/B</t>
+                                    <t>https://example.com/other.json</t>
+                                    <t>https://example.com/other.json#</t>
+                                    <t>https://example.com/root.json#/$defs/B</t>
                                 </list>
                             </t>
                             <t hangText="#/$defs/B/$defs/X">
                                 <list>
-                                    <t>http://example.com/other.json#bar</t>
-                                    <t>http://example.com/other.json#/$defs/X</t>
-                                    <t>http://example.com/root.json#/$defs/B/$defs/X</t>
+                                    <t>https://example.com/other.json#bar</t>
+                                    <t>https://example.com/other.json#/$defs/X</t>
+                                    <t>https://example.com/root.json#/$defs/B/$defs/X</t>
                                 </list>
                             </t>
                             <t hangText="#/$defs/B/$defs/Y">
                                 <list>
-                                    <t>http://example.com/t/inner.json</t>
-                                    <t>http://example.com/t/inner.json#</t>
-                                    <t>http://example.com/other.json#/$defs/Y</t>
-                                    <t>http://example.com/root.json#/$defs/B/$defs/Y</t>
+                                    <t>https://example.com/t/inner.json</t>
+                                    <t>https://example.com/t/inner.json#</t>
+                                    <t>https://example.com/other.json#/$defs/Y</t>
+                                    <t>https://example.com/root.json#/$defs/B/$defs/Y</t>
                                 </list>
                             </t>
                             <t hangText="#/$defs/C">
                                 <list>
                                     <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
                                     <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
-                                    <t>http://example.com/root.json#/$defs/C</t>
+                                    <t>https://example.com/root.json#/$defs/C</t>
                                 </list>
                             </t>
                         </list>
@@ -1342,7 +1342,7 @@
                         <artwork>
 <![CDATA[
 {
-    "$schema": "http://json-schema.org/draft/2019-04/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema#",
     "$id": "https://example.com/original",
 
     "properties": {
@@ -1356,7 +1356,7 @@
 }
 
 {
-    "$schema": "http://json-schema.org/draft/2019-04/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema#",
     "$id": "https://example.com/extension",
 
     "$ref": "original",
@@ -1455,7 +1455,7 @@
                             <artwork>
 <![CDATA[
 {
-    "$schema": "http://json-schema.org/draft/2019-04/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema#",
     "$id": "https://example.com/original",
     "$recursiveAnchor": true,
 
@@ -1470,7 +1470,7 @@
 }
 
 {
-    "$schema": "http://json-schema.org/draft/2019-04/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema#",
     "$id": "https://example.com/extension",
     "$recursiveAnchor": true,
 
@@ -1611,7 +1611,7 @@
                         <artwork>
 <![CDATA[
 {
-    "$id": "http://example.net/root.json",
+    "$id": "https://example.net/root.json",
     "items": {
         "type": "array",
         "items": { "$ref": "#item" }
@@ -1630,17 +1630,17 @@
                     <t>
                         When an implementation encounters the &lt;#/$defs/single&gt; schema,
                         it resolves the "$id" URI reference against the current base URI to form
-                        &lt;http://example.net/root.json#item&gt;.
+                        &lt;https://example.net/root.json#item&gt;.
                     </t>
                     <t>
                         When an implementation then looks inside the &lt;#/items&gt; schema, it
                         encounters the &lt;#item&gt; reference, and resolves this to
-                        &lt;http://example.net/root.json#item&gt;, which it has seen defined in
+                        &lt;https://example.net/root.json#item&gt;, which it has seen defined in
                         this same document and can therefore use automatically.
                     </t>
                     <t>
                         When an implementation encounters the reference to "other.json", it resolves
-                        this to &lt;http://example.net/other.json&gt;, which is not defined in this
+                        this to &lt;https://example.net/other.json&gt;, which is not defined in this
                         document.  If a schema with that identifier has otherwise been supplied to
                         the implementation, it can also be used automatically.
                         <cref>
@@ -1912,11 +1912,11 @@
             </t>
             <t>
                 The current URI for this vocabulary, known as the Applicator vocabulary, is:
-                <eref target="https://json-schema.org/draft/2019-04/vocab/applicator"/>.
+                <eref target="https://json-schema.org/draft/2019-08/vocab/applicator"/>.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-04/meta/applicator"/>.
+                <eref target="https://json-schema.org/draft/2019-08/meta/applicator"/>.
             </t>
             <t>
                 Updated vocabulary and meta-schema URIs MAY be published between
@@ -2511,7 +2511,7 @@
                     <figure>
                         <artwork>
 <![CDATA[
-http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
+https://json-schema.org/draft/2019-08/schema#/$defs/nonNegativeInteger/minimum
 ]]>
                         </artwork>
                     </figure>
@@ -2586,8 +2586,8 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
                     <artwork>
 <![CDATA[
 {
-  "$id": "http://example.com/polygon#",
-  "$schema": "http://json-schema.org/draft/2019-04/schema#",
+  "$id": "https://example.com/polygon#",
+  "$schema": "https://json-schema.org/draft/2019-08/schema#",
   "$defs": {
     "point": {
       "type": "object",
@@ -2682,21 +2682,21 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
     {
       "keywordLocation": "#/items/$ref",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/$defs/point",
+        "https://example.com/polygon#/$defs/point",
       "instanceLocation": "#/1",
       "error": "A subschema had errors."
     },
     {
       "keywordLocation": "#/items/$ref/required",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/$defs/point/required",
+        "https://example.com/polygon#/$defs/point/required",
       "instanceLocation": "#/1",
       "error": "Required property 'y' not found."
     },
     {
       "keywordLocation": "#/items/$ref/additionalProperties",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/$defs/point/additionalProperties",
+        "https://example.com/polygon#/$defs/point/additionalProperties",
       "instanceLocation": "#/1/z",
       "error": "Additional property 'z' found but was invalid."
     },
@@ -2749,14 +2749,14 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
       "valid": false,
       "keywordLocation": "#/items/$ref",
       "absoluteKeywordLocation":
-        "http://example.com/polygon#/$defs/point",
+        "https://example.com/polygon#/$defs/point",
       "instanceLocation": "#/1",
       "errors": [
         {
           "valid": false,
           "keywordLocation": "#/items/$ref/required",
           "absoluteKeywordLocation":
-            "http://example.com/polygon#/$defs/point/required",
+            "https://example.com/polygon#/$defs/point/required",
           "instanceLocation": "#/1",
           "error": "Required property 'y' not found."
         },
@@ -2764,7 +2764,7 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
           "valid": false,
           "keywordLocation": "#/items/$ref/additionalProperties",
           "absoluteKeywordLocation":
-            "http://example.com/polygon#/$defs/point/additionalProperties",
+            "https://example.com/polygon#/$defs/point/additionalProperties",
           "instanceLocation": "#/1/z",
           "error": "Additional property 'z' found but was invalid."
         }
@@ -2800,15 +2800,15 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
                     <t>
                         Because this output structure can be quite large, a smaller example is given
                         here for brevity.  The URI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/2019-04/output/verbose-example"/>.
+                        <eref target="https://json-schema.org/draft/2019-08/output/verbose-example"/>.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
 // schema
 {
-  "$id": "http://example.com/polygon#",
-  "$schema": "http://json-schema.org/draft/2019-04/schema#",
+  "$id": "https://example.com/polygon#",
+  "$schema": "https://json-schema.org/draft/2019-08/schema#",
   "type": "object",
   "properties": {
     "validProp": true,
@@ -2862,7 +2862,7 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
                     <t>
                         For convenience, JSON Schema has been provided to validate output generated
                         by implementations.  Its URI is:
-                        <eref target="https://json-schema.org/draft/2019-04/output/schema"/>.
+                        <eref target="https://json-schema.org/draft/2019-08/output/schema"/>.
                     </t>
                 </section>
 
@@ -2894,7 +2894,7 @@ http://json-schema.org/draft/2019-04/schema#/$defs/nonNegativeInteger/minimum
                 <figure>
                     <artwork>
 <![CDATA[
-Link: <http://example.com/my-hyper-schema#>; rel="describedby"
+Link: <https://example.com/my-hyper-schema#>; rel="describedby"
 ]]>
                     </artwork>
                 </figure>
@@ -2940,7 +2940,7 @@ Link: <http://example.com/my-hyper-schema#>; rel="describedby"
                     <artwork>
 <![CDATA[
 Content-Type: application/json;
-          schema="http://example.com/my-hyper-schema#"
+          schema="https://example.com/my-hyper-schema#"
 ]]>
                     </artwork>
                 </figure>
@@ -2954,7 +2954,7 @@ Content-Type: application/json;
                     <artwork>
 <![CDATA[
 Content-Type: application/json;
-          schema="http://example.com/alice http://example.com/bob"
+          schema="https://example.com/alice https://example.com/bob"
 ]]>
                     </artwork>
                 </figure>
@@ -2967,9 +2967,9 @@ Content-Type: application/json;
                     <artwork>
 <![CDATA[
 Accept: application/json;
-          schema="http://example.com/qiang http://example.com/li",
+          schema="https://example.com/qiang https://example.com/li",
         application/json;
-          schema="http://example.com/kumar"
+          schema="https://example.com/kumar"
 ]]>
                     </artwork>
                 </figure>
