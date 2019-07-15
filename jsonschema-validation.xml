@@ -174,14 +174,15 @@
 
         </section>
 
-        <section title="Meta-Schema">
+        <section title="Meta-Schema" anchor="meta-schema">
             <t>
                 The current URI for the JSON Schema Validation meta-schema is
                 <eref target="http://json-schema.org/draft/2019-08/schema#"/>.
                 For schema author convenience, this meta-schema describes all vocabularies
                 defined in this specification and the JSON Schema Core specification.
                 Individual vocabulary and vocabulary meta-schema URIs are given for
-                each section below.
+                each section below.  Certain vocabularies are optional to support, which
+                is explained in detail in the relevant sections.
             </t>
             <t>
                 Updated vocabulary and meta-schema URIs MAY be published between
@@ -503,28 +504,42 @@
             </section>
         </section>
 
-        <section title='A Vocabulary for Semantic Validation With "format"' anchor="format">
+        <section title='A Vocabulary for Semantic Content With "format"' anchor="format">
 
             <section title="Foreword">
                 <t>
-                    Structural validation alone may be insufficient to validate that an instance
-                    meets all the requirements of an application. The "format" keyword is defined to
-                    allow interoperable semantic validation for a fixed subset of values which are
+                    Structural validation alone may be insufficient to allow an application to correctly
+                    utilize certain values.  The "format" annotation keyword is defined to allow schema
+                    authors to convey semantic information for a fixed subset of values which are
                     accurately described by authoritative resources, be they RFCs or other external
                     specifications.
+                </t>
+
+                <t>
+                    Implementations MAY treat "format" as an assertion in addition to an annotation,
+                    and attempt to validate the values conformance to the specified semantics.
+                    See the Implementation Requirements below for details.
                 </t>
 
                 <t>
                     The value of this keyword is called a format attribute. It MUST be a string. A
                     format attribute can generally only validate a given set of instance types. If
                     the type of the instance to validate is not in this set, validation for this
-                    format attribute and instance SHOULD succeed.
+                    format attribute and instance SHOULD succeed.  All format attributes defined
+                    in this section apply to strings, but a format attribute can be specified
+                    to apply to any instance types defined in the data model defined in the
+                    <xref target="json-schema">core JSON Schema.</xref>
+                    <cref>
+                        Note that the "type" keyword in this specification defines an "integer" type
+                        which is not part of the data model.  Therefore a format attribute can be
+                        limited to numbers, but not specifically to integers.
+                    </cref>
                 </t>
 
                 <t>
                     Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                    require this vocabulary as if its URI were present with a value of true,
-                    although see the Implementation Requirements below for details.
+                    utilize this vocabulary as if its URI were present with a value of false.
+                    See the Implementation Requirements below for details.
                 </t>
                 <t>
                     The current URI for this vocabulary, known as the Format vocabulary, is:
@@ -539,26 +554,60 @@
 
             <section title="Implementation Requirements">
                 <t>
-                    The "format" keyword functions as both an annotation
-                    and as an assertion.  While no special effort is required to
-                    implement it as an annotation conveying semantic meaning, implementing
-                    validation is non-trivial.
-                </t>
-                <t>
-                    Implementations MAY support the "format" keyword as a validation assertion.
-                    Should they choose to do so:
-
+                    The "format" keyword functions as an annotation, and optionally as an assertion.
+                    Declaring the format vocabulary in "$vocabulary" with a value of true indicates
+                    that an implementation MUST treat the keyword as an assertion.
+                    This means that:
                     <list>
                         <t>they SHOULD implement validation for attributes defined below;</t>
                         <t>they SHOULD offer an option to disable validation for this keyword.</t>
                     </list>
-
                 </t>
 
                 <t>
-                    Implementations MAY add custom format attributes. Save for agreement between
-                    parties, schema authors SHALL NOT expect a peer implementation to support this
-                    keyword and/or custom format attributes.
+                    Due to the complexity involved in fully validating some format attributes
+                    defined in this specification, implementations MAY provide only limited
+                    validation support for some format attributes.  Implementations SHOULD
+                    document any such intentional limitations.
+                </t>
+
+                <t>
+                    The <xref target="meta-schema">standard core and validation meta-schema</xref>
+                    includes this vocabulary in its "$vocabulary" keyword with a value of false,
+                    since by default implementations are not required to support this keyword
+                    as an assertion.
+                </t>
+
+                <t>
+                    When the format vocabulary is declared with a value of false, an implementation
+                    SHOULD treat "format" as an annotation keyword, to facilitate applications which
+                    wish to do their own semantic validation.
+                    <cref>
+                        This is not the normal behavior for a vocabulary declared with false, which is
+                        why the requirement is a SHOULD.  Implementations MAY ignore "format" entirely
+                        as is allowed by false vocabulary declarations.  However, due to the long history
+                        of this keyword, treating it as something of a special case seems reasonable.
+                        This may be revised in future drafts based on feedback.
+                    </cref>
+                </t>
+                <t>
+                    Implementations MAY treat "format" as an assertion when the vocabulary is declared
+                    with false, as false vocabularies are optional rather than forbidden.  However,
+                    as noted above, implementations SHOULD provide a way to disable such validation.
+                </t>
+                <t>
+                    Implementations MAY support custom format attributes. Save for agreement between
+                    parties, schema authors SHALL NOT expect a peer implementation to support such
+                    custom format attributes.  An implementation MUST NOT fail
+                    validation or cease processing due to an unknown format attribute.
+                    If treating "format" as an annotation, implementations SHOULD collect both
+                    known and unknown format attribute values.
+                </t>
+                <t>
+                    Vocabularies do not support specifically declaring different value sets for keywords.
+                    Due to this limitation, and the historically uneven implementation of this keyword,
+                    it is RECOMMENDED to define additional keywords in a vocabulary rather than
+                    additional format attributes if interoperability is desired.
                 </t>
             </section>
 
@@ -1273,6 +1322,8 @@
                 <list style="hanging">
                     <t hangText="draft-handrews-json-schema-validation-02">
                         <list style="symbols">
+                            <t>Update "format" implementation requirements in terms of vocabularies</t>
+                            <t>Grouped keywords into formal vocabuarlies</t>
                             <t>Moved "definitions" to the core spec as "$defs"</t>
                             <t>Moved applicator keywords to the core spec</t>
                             <t>Renamed the array form of "dependencies" to "dependentRequired", moved the schema form to the core spec</t>
