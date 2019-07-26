@@ -816,9 +816,13 @@
                     Implementations MAY offer the ability to decode, parse, and/or validate
                     the string contents automatically.  However, it MUST NOT perform these
                     operations by default, and MUST provide the validation result of each
-                    string-encoded document separately from the enclosing document.
+                    string-encoded document separately from the enclosing document.  This
+                    process SHOULD be equivalent to fully evaluating the instance against
+                    the original schema, followed by using the annotations to decode, parse,
+                    and/or validate each string-encoded document.
                     <cref>
-                        For now, the exact mechanism of any such automatic decoding, parsing,
+                        For now, the exact mechanism of performing and returning parsed
+                        data and/or validation results from such an automatic decoding, parsing,
                         and validating feature is left unspecified.  Should such a feature
                         prove popular, it may be specified more thoroughly in a future draft.
                     </cref>
