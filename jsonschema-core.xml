@@ -748,11 +748,38 @@
                         to the assertion.
                     </t>
                     <t>
-                        For example, the "maxLength" keyword from the companion validation
-                        vocabulary will only restrict certain strings
+                        For example, the "maxLength" keyword from the companion
+                        <xref target="json-schema-validation">validation vocabulary</xref>:
+                        will only restrict certain strings
                         (that are too long) from being valid.  If the instance is a number,
                         boolean, null, array, or object, then it is valid against this assertion.
                     </t>
+                    <t>
+                        This behavior allows keywords to be used more easily with instances
+                        that can be of multiple primitive types.  The companion validation
+                        vocabulary also includes a "type" keyword which can independently
+                        restrict the instance to one or more primitive types.  This allows
+                        for a concise expression of use cases such as a function that might
+                        return either a string of a certain length or a null value:
+                    </t>
+                    <figure>
+                        <artwork>
+<![CDATA[
+{
+    "type": ["string", "null"],
+    "maxLength": 255
+}
+]]>
+                        </artwork>
+                        <postamble>
+                            If "maxLength" also restricted the instance type to be a string,
+                            then this would be substantially more cumbersome to express because
+                            the example as written would not actually allow null values.
+                            Each keyword is evaluated separately unless explicitly specified
+                            otherwise, so if "maxLength" restricted the instance to strings,
+                            then including "null" in "type" would not have any useful effect.
+                        </postamble>
+                    </figure>
                 </section>
             </section>
 
