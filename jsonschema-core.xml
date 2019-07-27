@@ -656,7 +656,7 @@
                 subschemas have been evaluated, although in some circumstances evaluation
                 may be short-circuited due to assertion results.  When annotations are
                 being collected, some assertion result short-circuiting is not possible
-                due to the need to collect annotations from all subschemas, including
+                due to the need to examine all subschemas for annotation collection, including
                 those that cannot further change the assertion result.
             </t>
             <section title="Keyword Interactions">
@@ -1984,8 +1984,9 @@
                         <t>
                             An instance validates successfully against this keyword if it validates
                             successfully against at least one schema defined by this keyword's value.
-                            Note that when annotations are being collected, they MUST be collected
-                            from all subschemas if any subschema validates successfully.
+                            Note that when annotations are being collected, all subschemas MUST
+                            be examined so that annotations are collected from each subschema
+                            that validates successfully.
                         </t>
                     </section>
 
