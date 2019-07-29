@@ -293,7 +293,7 @@
                 <t>
                     A JSON Schema document, or simply a schema, is a JSON document used to describe
                     an instance.
-                    A schema is itself interpreted as an instance, but SHOULD always be given
+                    A schema can itself be interpreted as an instance, but SHOULD always be given
                     the media type "application/schema+json" rather than
                     "application/schema-instance+json".  The "application/schema+json" media
                     type is defined to offer a superset of the media type parameter and
@@ -356,13 +356,43 @@
                                 Always passes validation, as if the empty schema {}
                             </t>
                             <t hangText="false:">
-                                Always fails validation, as if the schema { "not":{} }
+                                Always fails validation, as if the schema { "not": {} }
                             </t>
                         </list>
                         While the empty schema object is unambiguous, there are many
                         possible equivalents to the "false" schema.  Using the boolean
                         values ensures that the intent is clear to both human readers
                         and implementations.
+                    </t>
+                </section>
+                <section title="Schema Vocabularies">
+                    <t>
+                        A schema vocabulary, or simply a vocabulary, is a set of keywords,
+                        their syntax, and their semantics.  A vocabulary is generally organized
+                        around a particular purpose.  Different uses of JSON Schema will
+                        involve different sets of vocabularies.
+                    </t>
+                    <t>
+                        Vocabularies are the primary unit of re-use in JSON Schema, as schema
+                        authors can indicate what vocabularies are required or optional in
+                        order to process the schema.  While keywords can be supported outside
+                        of any vocabulary, there is no analogous mechanism to indicate individual
+                        keyword usage.
+                    </t>
+                </section>
+                <section title="Meta-Schemas">
+                    <t>
+                        A schema that itself describes a schema is called a meta-schema.
+                        Meta-schemas are used to validate JSON Schemas and specify which vocabularies
+                        they are using.
+                    </t>
+                    <t>
+                        Typically, a meta-schema will specify a set of vocabularies, and validate
+                        schemas that conform to the syntax of those vocabularies.  However, meta-schemas
+                        and vocabularies are separate in order to allow meta-schemas to validate
+                        schema conformance more strictly or more loosely than the vocabularies'
+                        specifications call for.  Meta-schemas may also describe and validate
+                        additional keywords that are not part of a formal vocabulary.
                     </t>
                 </section>
                 <section title="Root Schema and Subschemas" anchor="root">
@@ -438,7 +468,7 @@
                     </t>
                     <t>
                         Lexical and dynamic scopes align until a reference keyword
-                        is encountered.  While following the reference keyword jumps
+                        is encountered.  While following the reference keyword moves processing
                         from one lexical scope into a different one, from the perspective
                         of dynamic scope, following reference is no different from descending
                         into a subschema present as a value.  A keyword on the far side of
@@ -447,9 +477,13 @@
                         dynamic parent, rather than examining the local lexically enclosing parent.
                     </t>
                     <t>
-                        The concept of dynamic scope is primarily used with "$recursiveRef",
+                        The concept of dynamic scope is primarily used with "$recursiveRef" and
                         "$recursiveAnchor", and should be considered an advanced feature
-                        and used with caution when defining additional keywords.
+                        and used with caution when defining additional keywords.  It also appears
+                        when reporting errors and collected annotations, as it may be possible
+                        to revisit the same lexical scope repeatedly with different dynamic
+                        scopes.  In such cases, it is important to inform the user of the
+                        dynamic path that produced the error or annotation.
                     </t>
                 </section>
                 <section title="Referenced and Referencing Schemas" anchor="referenced">
@@ -590,37 +624,9 @@
                     Implementations SHOULD ignore keywords they do not support.
                 </t>
                 <t>
-                    Vocabulary authors SHOULD
-                    take care to avoid keyword name collisions if the vocabulary is intended
-                    for broad use, and potentially combined with other vocabularies.  JSON
-                    Schema does not provide any formal namespacing system, but also does
-                    not constrain keyword names, allowing for any number of namespacing
-                    approaches.
-                </t>
-                <t>
-                    Vocabularies may build on each other, such as by defining the behavior
-                    of their keywords with respect to the behavior of keywords from another
-                    vocabulary, or by using a keyword from another vocabulary with
-                    a restricted or expanded set of acceptable values.  Not all such
-                    vocabulary re-use will result in a new vocabulary that is compatible
-                    with the vocabulary on which it is built.  Vocabulary authors SHOULD
-                    clearly document what level of compatibility, if any, is expected.
-                </t>
-                <t>
-                    A schema that itself describes a schema is called a meta-schema.
-                    Meta-schemas are used to validate JSON Schemas and specify which vocabulary
-                    they are using.
-                </t>
-                <t>
-                    Authors of extensions to JSON Schema are encouraged to write their own
-                    meta-schemas, which extend the existing meta-schemas using "allOf".
-                    This extended meta-schema SHOULD be referenced using the "$schema" keyword, to
-                    allow tools to follow the correct behaviour.
-                </t>
-                <t>
-                    The recursive nature of meta-schemas makes the "$recursiveAnchor"
-                    and "$recursiveRef" keywords particularly useful for such extensions,
-                    as can be seen in the JSON Hyper-Schema meta-schema.
+                    Implementations MAY provide the ability to register or load handlers
+                    for vocabularies that they do not support directly.  The exact mechanism
+                    for registering and implementing such handlers is implementation-dependent.
                 </t>
             </section>
 
@@ -792,47 +798,43 @@
         <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
             <t>
                 Two concepts, meta-schemas and vocabularies, are used to inform an implementation
-                how to interpret a schema.  A schema S declares its meta-schema M with the "$schema"
-                keyword, and meta-schemas declare vocabularies with the "$vocabulary" keyword.
-                The vocabularies declared in M are those that are expected to be used in S.
-                The meta-schema M may itself use a different set of vocabularies, which are
-                declared in its own meta-schema, M'.
+                how to interpret a schema.  Every schema has a meta-schema, typically identified
+                using the "$schema" keyword.
             </t>
             <t>
-                The role of the meta-schema is to constrain the structure of conforming schemas,
-                as well as simplify the process of composing multiple vocabularies into a usable
-                feature set.  Schema authoring is expected to be a common activity, so
-                schema authors need only understand how to reference a single meta-schema.
+                The meta-schema serves two purposes:
+                <list style="hanging">
+                    <t hangText="Declaring the vocabularies in use">
+                        The "$vocabulary" keyword, when it appears in a meta-schema, declares
+                        which vocabularies are available to be used in schemas that refer
+                        to that meta-schema.  Vocabularies define keyword semantics,
+                        as well as their general syntax.
+                    </t>
+                    <t hangText="Describing valid schema syntax">
+                        A schema MUST successfully validate against its meta-schema, which
+                        constrains the syntax of the available keywords.  The syntax described
+                        is expected to be compatible with the vocabularies declared; while
+                        it is possible to describe an incompatible syntax, such a meta-schema
+                        would be unlikely to be useful.
+                    </t>
+                </list>
             </t>
             <t>
-                Meta-schema authoring is an advanced usage of JSON Schema, so the design of
-                meta-schema features emphasizes flexibility over simplicity.
-            </t>
-            <t>
-                A JSON Schema vocabulary is a set of keywords defined for a particular
-                purpose.  The vocabulary specifies the meaning of its keywords as
-                assertions, annotations, and/or any vocabulary-defined keyword category.
-            </t>
-            <t>
-                The role of a vocabulary is to declare which keywords (including sub-keywords
-                such as those in JSON Hyper-Schema's Link Description Object) are in use,
-                and with which semantics.  The semantics are indicated by the document
-                that publicizes the vocabulary URI.  At this time, there is no machine-readable
-                description of keywords other than validation rules, which appear in the
-                meta-schema.
-            </t>
-            <t>
-                Meta-schemas are separate from vocabularies to allow for the same sets of
+                Meta-schemas are separate from vocabularies to allow for
                 vocabularies to be combined in different ways, and for meta-schema authors
                 to impose additional constraints such as forbidding certain keywords, or
                 performing unusually strict syntactical validation, as might be done
                 during a development and testing cycle.
             </t>
+            <t>
+                Meta-schema authoring is an advanced usage of JSON Schema, so the design of
+                meta-schema features emphasizes flexibility over simplicity.
+            </t>
             <section title='The "$schema" Keyword'>
                 <t>
                     The "$schema" keyword is both used as a JSON Schema feature set identifier and
-                    the location of a resource which is itself a JSON Schema, which describes any
-                    schema written for this particular feature set.
+                    as the identifier of a resource which is itself a JSON Schema, which describes the
+                    set of valid schemas written for this particular feature set.
                 </t>
                 <t>
                     The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
@@ -845,7 +847,8 @@
                 </t>
                 <t>
                     The "$schema" keyword SHOULD be used in a root schema.
-                    It MUST NOT appear in subschemas.
+                    It MUST NOT appear in subschemas.  If absent from the root schema, the
+                    resulting behavior is implementation-defined.
                 </t>
                 <t>
                     <cref>
@@ -872,11 +875,11 @@
             </section>
             <section title='The "$vocabulary" Keyword'>
                 <t>
-                    The "$vocabulary" keyword, which appears in a meta-schema, identifies
-                    what sets of keywords are expected to be used in schemas described
-                    by that meta-schema, and with what semantics.  This is conceptually
-                    analogous to how most other keywords used in meta-schemas describe
-                    the syntax of keywords used in schemas described by that meta-schema.
+                    The "$vocabulary" keyword is used in meta-schemas to identify the
+                    vocabularies available for use in schemas described by that meta-schema.
+                    It is also used to indicate whether each vocabulary is required or optional,
+                    in the sense that an implementation MUST understand the required vocabularies
+                    in order to successfully process the schema.
                 </t>
                 <t>
                     The value of this keyword MUST be an object.  The property names in the
@@ -885,16 +888,17 @@
                     keywords and their semantics.
                 </t>
                 <t>
-                    The URI MAY be a URL, but the nature of the retrievable resources is
+                    The URI MAY be a URL, but the nature of the retrievable resource is
                     currently undefined, and reserved for future use.  Vocabulary authors
-                    SHOULD NOT serve a document at that URL.  A server MAY respond with
-                    the relevant protocol's successful "no content" message, such as
-                    an HTTP 204 status.
+                    MAY use the URL of the vocabulary specification, in a human-readable
+                    media type such as text/html or text/plain, as the vocabulary URI.
                     <cref>
                         Vocabulary documents may be added shortly, or in the next draft.
                         For now, identifying the keyword set is deemed sufficient as that,
                         along with meta-schema validation, is how the current "vocabularies"
-                        work today.
+                        work today.  Any future vocabulary document format will be specified
+                        as a JSON document, so using text/html or other non-JSON formats
+                        in the meantime will not produce any future ambiguity.
                     </cref>
                 </t>
                 <t>
@@ -920,24 +924,40 @@
                     a meta-schema M against its own meta-schema M' without requiring
                     the validator to understand the vocabularies declared by M.
                 </t>
-                <t>
-                    Note that the processing restrictions on "$vocabulary" mean that
-                    meta-schemas that reference other meta-schemas using "$ref" or
-                    similar keywords do not automatically inherit the vocabulary
-                    declarations of those other meta-schemas.  All such declarations
-                    must be repeated in the root of each schema document intended
-                    for use as a meta-schema.  This is demonstrated in
-                    <xref target="example-meta-schema">the example meta-schema</xref>.
-                </t>
-                <t>
-                    If "$vocabulary" is absent, an implementation MAY determine
-                    behavior based on the meta-schema if it is recognized from the
-                    URI value of the referring schema's "$schema" keyword.
-                    If the meta-schema, as referenced by the schema, is not recognized,
-                    then implementations MUST assume the use of the core vocabulary,
-                    and SHOULD assume the use of all vocabularies in this
-                    specification and the companion Validation specification.
-                </t>
+                <section title="Default vocabularies">
+                    <t>
+                        If "$vocabulary" is absent, an implementation MAY determine
+                        behavior based on the meta-schema if it is recognized from the
+                        URI value of the referring schema's "$schema" keyword.
+                        This is how behavior (such as Hyper-Schema usage) has been
+                        recognized prior to the existence of vocabularies.
+                    </t>
+                    <t>
+                        If the meta-schema, as referenced by the schema, is not recognized,
+                        or is missing, then the behavior is implementation-defined.
+                        If the implementation
+                        proceeds with processing the schema, it MUST assume the use of the
+                        core vocabulary.  If the implementation is built for a specific purpose,
+                        then it SHOULD assume the use of all of the most relevant vocabularies
+                        for that purpose.
+                    </t>
+                    <t>
+                        For example, an implementation that is a validator
+                        SHOULD assume the use of all vocabularies in this
+                        specification and the companion Validation specification.
+                    </t>
+                </section>
+                <section title="Non-inheritability of vocabularies ">
+                    <t>
+                        Note that the processing restrictions on "$vocabulary" mean that
+                        meta-schemas that reference other meta-schemas using "$ref" or
+                        similar keywords do not automatically inherit the vocabulary
+                        declarations of those other meta-schemas.  All such declarations
+                        must be repeated in the root of each schema document intended
+                        for use as a meta-schema.  This is demonstrated in
+                        <xref target="example-meta-schema">the example meta-schema</xref>.
+                    </t>
+                </section>
             </section>
             <section title="Detecting a Meta-Schema">
                 <t>
@@ -956,7 +976,7 @@
                     the course of one session.
                 </t>
                 <t>
-                    Implementations MAY allow a schema to be passed as a meta-schema,
+                    Implementations MAY allow a schema to be explicitly passed as a meta-schema,
                     for implementation-specific purposes, such as pre-loading a commonly
                     used meta-schema and checking its vocabulary support requirements
                     up front.  Meta-schema authors MUST NOT expect such features to be
@@ -964,6 +984,23 @@
                 </t>
             </section>
             <section title="Best Practices for Vocabulary and Meta-Schema Authors">
+                <t>
+                    Vocabulary authors SHOULD
+                    take care to avoid keyword name collisions if the vocabulary is intended
+                    for broad use, and potentially combined with other vocabularies.  JSON
+                    Schema does not provide any formal namespacing system, but also does
+                    not constrain keyword names, allowing for any number of namespacing
+                    approaches.
+                </t>
+                <t>
+                    Vocabularies may build on each other, such as by defining the behavior
+                    of their keywords with respect to the behavior of keywords from another
+                    vocabulary, or by using a keyword from another vocabulary with
+                    a restricted or expanded set of acceptable values.  Not all such
+                    vocabulary re-use will result in a new vocabulary that is compatible
+                    with the vocabulary on which it is built.  Vocabulary authors SHOULD
+                    clearly document what level of compatibility, if any, is expected.
+                </t>
                 <t>
                     Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
                     vocabularies that define conflicting syntax or semantics for the same
@@ -974,15 +1011,21 @@
                 </t>
                 <t>
                     Vocabulary authors SHOULD provide a meta-schema that validates the
-                    expected usage of the vocabulary's keywords.  Such meta-schemas
-                    SHOULD NOT forbid additional keywords, and MUST NOT forbid
-                    the "$id", "$schema", or "$vocabulary" keywords in the root schema.
+                    expected usage of the vocabulary's keywords on their own.  Such meta-schemas
+                    SHOULD NOT forbid additional keywords, and MUST NOT forbid any
+                    keywords from the Core vocabulary.
                 </t>
                 <t>
                     It is RECOMMENDED that meta-schema authors reference each vocabulary's
                     meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
                     although other mechanisms for constructing the meta-schema may be
                     appropriate for certain use cases.
+                </t>
+                <t>
+                    The recursive nature of meta-schemas makes the "$recursiveAnchor"
+                    and "$recursiveRef" keywords particularly useful for extending
+                    existing meta-schemas, as can be seen in the JSON Hyper-Schema meta-schema
+                    which extends the Validation meta-schema.
                 </t>
                 <t>
                     Meta-schemas MAY impose additional constraints, including describing
