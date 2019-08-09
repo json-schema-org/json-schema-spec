@@ -369,13 +369,16 @@
                     <t>
                         A schema vocabulary, or simply a vocabulary, is a set of keywords,
                         their syntax, and their semantics.  A vocabulary is generally organized
-                        around a particular purpose.  Different uses of JSON Schema will
+                        around a particular purpose.  Different uses of JSON Schema, such
+                        as validation, hypermedia, or user interface generation, will
                         involve different sets of vocabularies.
                     </t>
                     <t>
                         Vocabularies are the primary unit of re-use in JSON Schema, as schema
                         authors can indicate what vocabularies are required or optional in
-                        order to process the schema.  While keywords can be supported outside
+                        order to process the schema.  Since vocabularies are identified by URIs
+                        in the meta-schema, generic implementations can load extensions to support
+                        previously unkonw vocabularies.  While keywords can be supported outside
                         of any vocabulary, there is no analogous mechanism to indicate individual
                         keyword usage.
                     </t>
@@ -798,7 +801,7 @@
         <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
             <t>
                 Two concepts, meta-schemas and vocabularies, are used to inform an implementation
-                how to interpret a schema.  Every schema has a meta-schema, typically identified
+                how to interpret a schema.  Every schema has a meta-schema, which can be declared
                 using the "$schema" keyword.
             </t>
             <t>
@@ -824,7 +827,8 @@
                 vocabularies to be combined in different ways, and for meta-schema authors
                 to impose additional constraints such as forbidding certain keywords, or
                 performing unusually strict syntactical validation, as might be done
-                during a development and testing cycle.
+                during a development and testing cycle.  Each vocabulary typically identifies
+                a meta-schema consisting only of the vocabulary's keywords.
             </t>
             <t>
                 Meta-schema authoring is an advanced usage of JSON Schema, so the design of
