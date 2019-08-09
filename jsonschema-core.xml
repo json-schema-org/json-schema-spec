@@ -1007,7 +1007,7 @@
         </section>
         <section title="The JSON Schema Core Vocabulary">
             <t>
-                Keywords declared in in this specification that begin with "$" make up
+                Keywords declared in in this section, which all begin with "$", make up
                 the JSON Schema Core vocabulary.  These keywords are either required in
                 order process any schema or meta-schema, including those split across
                 multiple documents, or exist to reserve keywords for purposes that
@@ -1016,7 +1016,8 @@
             <t>
                 The Core vocabulary MUST be considered mandatory at all times, in order
                 to bootstrap the processing of further vocabularies.  Meta-schemas
-                that use "$vocabulary" MUST explicitly list the Core vocabulary,
+                that use the <xref target="vocabulary">"$vocabulary"</xref> keyword
+                to declare the vocabularies in use MUST explicitly list the Core vocabulary,
                 which MUST have a value of true indicating that it is required.
             </t>
             <t>
@@ -1024,7 +1025,8 @@
                 vocabulary) is undefined, as is the behavior when "$vocabulary"
                 is present but the Core vocabulary is not included.  However, it
                 is RECOMMENDED that implementations detect these cases and raise
-                an error when they occur.
+                an error when they occur.  It is not meaningful to declare that
+                a meta-schema optionally uses Core.
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" MUST be considered to
@@ -1039,11 +1041,9 @@
                 <eref target="https://json-schema.org/draft/2019-08/meta/core"/>.
             </t>
             <t>
-                Updated vocabulary and meta-schema URIs MAY be published between
-                specification drafts in order to correct errors.  Implementations
-                SHOULD consider URIs dated after this specification draft and
-                before the next to indicate the same syntax and semantics
-                as those listed here.
+                While the "$" prefix is not formally reserved for the Core vocabulary,
+                it is RECOMMENDED that extension keywords (in vocabularies or otherwise)
+                begin with a character other than "$" to avoid possible future collisions.
             </t>
 
             <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
@@ -1210,6 +1210,15 @@
                             <xref target="example-meta-schema">the example meta-schema</xref>.
                         </t>
                     </section>
+                </section>
+                <section title="Updates to Meta-Schema and Vocabulary URIs">
+                    <t>
+                        Updated vocabulary and meta-schema URIs MAY be published between
+                        specification drafts in order to correct errors.  Implementations
+                        SHOULD consider URIs dated after this specification draft and
+                        before the next to indicate the same syntax and semantics
+                        as those listed here.
+                    </t>
                 </section>
                 <section title="Detecting a Meta-Schema">
                     <t>
