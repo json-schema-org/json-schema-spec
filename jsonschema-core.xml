@@ -654,7 +654,10 @@
             <t>
                 Evaluation of a parent schema object can complete once all of its
                 subschemas have been evaluated, although in some circumstances evaluation
-                may be short-circuited due to assertion results.
+                may be short-circuited due to assertion results.  When annotations are
+                being collected, some assertion result short-circuiting is not possible
+                due to the need to examine all subschemas for annotation collection, including
+                those that cannot further change the assertion result.
             </t>
             <section title="Keyword Interactions">
                 <t>
@@ -1981,6 +1984,9 @@
                         <t>
                             An instance validates successfully against this keyword if it validates
                             successfully against at least one schema defined by this keyword's value.
+                            Note that when annotations are being collected, all subschemas MUST
+                            be examined so that annotations are collected from each subschema
+                            that validates successfully.
                         </t>
                     </section>
 
@@ -2245,16 +2251,10 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema.  This keyword
-                            does not produce annotation results.
-                            <cref>
-                                Should it produce a set of the indices for which the
-                                array element is valid against the subschema?  "contains"
-                                does not affect "additionalItems" or any other current
-                                or proposed keyword, but the information could be useful,
-                                and implementation that collect annotations need to
-                                apply "contains" to every element anyway.
-                            </cref>
+                            its elements is valid against the given schema.  Note that when
+                            collecting annotations, the subschema MUST be applied to every
+                            array element even after the first match has been found.  This
+                            is to ensure that all possible annotations are collected.
                         </t>
                     </section>
                 </section>
