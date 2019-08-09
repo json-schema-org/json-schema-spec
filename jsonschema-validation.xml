@@ -776,18 +776,19 @@
 
             <section title="Foreword">
                 <t>
-                    Properties defined in this section indicate that an instance contains
+                    Annotations defined in this section indicate that an instance contains
                     non-JSON data encoded in a JSON string.
-                    They describe the type of content and how it is encoded.
                 </t>
                 <t>
                     These properties provide additional information required to interpret JSON data
-                    as rich multimedia documents.
+                    as rich multimedia documents.  They describe the type of content, how it is encoded,
+                    and/or how it may be validated.  They do not function as validation assertions;
+                    a malformed string-encoded document MUST NOT cause the containing instance
+                    to be considered invalid.
                 </t>
                 <t>
                     Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                    require this vocabulary as if its URI were present with a value of true,
-                    although see the Implementation Requirements below for details.
+                    require this vocabulary as if its URI were present with a value of true.
                 </t>
                 <t>
                     The current URI for this vocabulary, known as the Content vocabulary, is:
@@ -801,16 +802,35 @@
 
             <section title="Implementation Requirements">
                 <t>
-                    The content keywords function as both annotations and as assertions.
-                    While no special effort is required to implement them as annotations conveying
-                    how applications can interpret the data in the string, implementing
-                    validation of conformance to the media type and encoding is non-trivial.
+                    Due to security and performance concerns, as well as the open-ended nature of
+                    possible content types, implementations MUST NOT automatically decode, parse,
+                    and/or validate the string contents by default.  This additionally supports
+                    the use case of embedded documents intended for processing by a different
+                    consumer than that which processed the containing document.
                 </t>
                 <t>
-                    Implementations MAY support the "contentMediaType" and "contentEncoding"
-                    keywords as validation assertions.
-                    Should they choose to do so, they SHOULD offer an option to disable validation
-                    for these keywords.
+                    All keywords in this section apply only to strings, and have no
+                    effect on other data types.
+                </t>
+                <t>
+                    Implementations MAY offer the ability to decode, parse, and/or validate
+                    the string contents automatically.  However, it MUST NOT perform these
+                    operations by default, and MUST provide the validation result of each
+                    string-encoded document separately from the enclosing document.  This
+                    process SHOULD be equivalent to fully evaluating the instance against
+                    the original schema, followed by using the annotations to decode, parse,
+                    and/or validate each string-encoded document.
+                    <cref>
+                        For now, the exact mechanism of performing and returning parsed
+                        data and/or validation results from such an automatic decoding, parsing,
+                        and validating feature is left unspecified.  Should such a feature
+                        prove popular, it may be specified more thoroughly in a future draft.
+                    </cref>
+                </t>
+                <t>
+                    See also the <xref target="security">Security Considerations</xref>
+                    sections for possible vulnerabilities introduced by automatically
+                    processing the instance string according to these keywords.
                 </t>
             </section>
 
@@ -841,28 +861,17 @@
                 <t>
                     The value of this property MUST be a string.
                 </t>
-
-                <t>
-                    The value of this property SHOULD be ignored if the instance described is not a
-                    string.
-                </t>
-
             </section>
 
             <section title="contentMediaType">
                 <t>
-                    If the instance is a string, this property defines the media type
+                    If the instance is a string, this property indicates the media type
                     of the contents of the string.  If "contentEncoding" is present,
                     this property describes the decoded string.
                 </t>
                 <t>
                     The value of this property MUST be a string, which MUST be a media type,
                     as defined by <xref target="RFC2046">RFC 2046</xref>.
-                </t>
-
-                <t>
-                    The value of this property SHOULD be ignored if the instance described is not a
-                    string.
                 </t>
             </section>
 
@@ -876,8 +885,7 @@
                     JSON Schema's data model.
                 </t>
                 <t>
-                    The value of this property SHOULD be ignored if the instance described is not a
-                    string, or if "contentMediaType" is not present.
+                    The value of this property SHOULD be ignored if "contentMediaType" is not present.
                 </t>
             </section>
 
@@ -897,8 +905,8 @@
 ]]>
                     </artwork>
                     <postamble>
-                        Instances described by this schema should be strings, and their values
-                        should be interpretable as base64-encoded PNG images.
+                        Instances described by this schema are expected to be strings,
+                        and their values should be interpretable as base64-encoded PNG images.
                     </postamble>
                 </figure>
 
@@ -915,8 +923,9 @@
 ]]>
                     </artwork>
                     <postamble>
-                        Instances described by this schema should be strings containing HTML, using
-                        whatever character set the JSON string was decoded into.  Per section 8.1 of
+                        Instances described by this schema are expected to be strings containing HTML,
+                        using whatever character set the JSON string was decoded into.
+                        Per section 8.1 of
                         <xref target="RFC8259">RFC 8259</xref>, outside of an entirely closed
                         system, this MUST be UTF-8.
                     </postamble>
@@ -1100,7 +1109,7 @@
             </section>
         </section>
 
-        <section title="Security Considerations">
+        <section title="Security Considerations" anchor="security">
             <t>
                 JSON Schema validation defines a vocabulary for JSON Schema core and concerns all
                 the security considerations listed there.
@@ -1276,6 +1285,7 @@
                             <t>Moved "definitions" to the core spec as "$defs"</t>
                             <t>Moved applicator keywords to the core spec</t>
                             <t>Renamed the array form of "dependencies" to "dependentRequired", moved the schema form to the core spec</t>
+                            <t>Specified all "content*" keywords as annotations, not assertions</t>
                             <t>Added "contentSchema" to allow applying a schema to a string-encoded document</t>
                             <t>Also allow RFC 4648 encodings in "contentEncoding"</t>
                             <t>Added "minContains" and "maxContains"</t>
