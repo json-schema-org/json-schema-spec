@@ -1005,313 +1005,312 @@
                 </section>
             </section>
         </section>
+        <section title="The JSON Schema Core Vocabulary">
+            <t>
+                Keywords declared in in this specification that begin with "$" make up
+                the JSON Schema Core vocabulary.  These keywords are either required in
+                order process any schema or meta-schema, including those split across
+                multiple documents, or exist to reserve keywords for purposes that
+                require guaranteed interoperability.
+            </t>
+            <t>
+                The Core vocabulary MUST be considered mandatory at all times, in order
+                to bootstrap the processing of further vocabularies.  Meta-schemas
+                that use "$vocabulary" MUST explicitly list the Core vocabulary,
+                which MUST have a value of true indicating that it is required.
+            </t>
+            <t>
+                The behavior of a false value for this vocabulary (and only this
+                vocabulary) is undefined, as is the behavior when "$vocabulary"
+                is present but the Core vocabulary is not included.  However, it
+                is RECOMMENDED that implementations detect these cases and raise
+                an error when they occur.
+            </t>
+            <t>
+                Meta-schemas that do not use "$vocabulary" MUST be considered to
+                require the Core vocabulary as if its URI were present with a value of true.
+            </t>
+            <t>
+                The current URI for the Core vocabulary is:
+                <eref target="https://json-schema.org/draft/2019-08/vocab/core"/>.
+            </t>
+            <t>
+                The current URI for the corresponding meta-schema is:
+                <eref target="https://json-schema.org/draft/2019-08/meta/core"/>.
+            </t>
+            <t>
+                Updated vocabulary and meta-schema URIs MAY be published between
+                specification drafts in order to correct errors.  Implementations
+                SHOULD consider URIs dated after this specification draft and
+                before the next to indicate the same syntax and semantics
+                as those listed here.
+            </t>
 
-        <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
-            <t>
-                Two concepts, meta-schemas and vocabularies, are used to inform an implementation
-                how to interpret a schema.  Every schema has a meta-schema, which can be declared
-                using the "$schema" keyword.
-            </t>
-            <t>
-                The meta-schema serves two purposes:
-                <list style="hanging">
-                    <t hangText="Declaring the vocabularies in use">
-                        The "$vocabulary" keyword, when it appears in a meta-schema, declares
-                        which vocabularies are available to be used in schemas that refer
-                        to that meta-schema.  Vocabularies define keyword semantics,
-                        as well as their general syntax.
-                    </t>
-                    <t hangText="Describing valid schema syntax">
-                        A schema MUST successfully validate against its meta-schema, which
-                        constrains the syntax of the available keywords.  The syntax described
-                        is expected to be compatible with the vocabularies declared; while
-                        it is possible to describe an incompatible syntax, such a meta-schema
-                        would be unlikely to be useful.
-                    </t>
-                </list>
-            </t>
-            <t>
-                Meta-schemas are separate from vocabularies to allow for
-                vocabularies to be combined in different ways, and for meta-schema authors
-                to impose additional constraints such as forbidding certain keywords, or
-                performing unusually strict syntactical validation, as might be done
-                during a development and testing cycle.  Each vocabulary typically identifies
-                a meta-schema consisting only of the vocabulary's keywords.
-            </t>
-            <t>
-                Meta-schema authoring is an advanced usage of JSON Schema, so the design of
-                meta-schema features emphasizes flexibility over simplicity.
-            </t>
-            <section title='The "$schema" Keyword'>
+            <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
                 <t>
-                    The "$schema" keyword is both used as a JSON Schema feature set identifier and
-                    as the identifier of a resource which is itself a JSON Schema, which describes the
-                    set of valid schemas written for this particular feature set.
+                    Two concepts, meta-schemas and vocabularies, are used to inform an implementation
+                    how to interpret a schema.  Every schema has a meta-schema, which can be declared
+                    using the "$schema" keyword.
                 </t>
                 <t>
-                    The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
-                    (containing a scheme) and this URI MUST be normalized.
-                    The current schema MUST be valid against the meta-schema identified by this URI.
+                    The meta-schema serves two purposes:
+                    <list style="hanging">
+                        <t hangText="Declaring the vocabularies in use">
+                            The "$vocabulary" keyword, when it appears in a meta-schema, declares
+                            which vocabularies are available to be used in schemas that refer
+                            to that meta-schema.  Vocabularies define keyword semantics,
+                            as well as their general syntax.
+                        </t>
+                        <t hangText="Describing valid schema syntax">
+                            A schema MUST successfully validate against its meta-schema, which
+                            constrains the syntax of the available keywords.  The syntax described
+                            is expected to be compatible with the vocabularies declared; while
+                            it is possible to describe an incompatible syntax, such a meta-schema
+                            would be unlikely to be useful.
+                        </t>
+                    </list>
                 </t>
                 <t>
-                    If this URI identifies a retrievable resource, that resource SHOULD be of
-                    media type "application/schema+json".
+                    Meta-schemas are separate from vocabularies to allow for
+                    vocabularies to be combined in different ways, and for meta-schema authors
+                    to impose additional constraints such as forbidding certain keywords, or
+                    performing unusually strict syntactical validation, as might be done
+                    during a development and testing cycle.  Each vocabulary typically identifies
+                    a meta-schema consisting only of the vocabulary's keywords.
                 </t>
                 <t>
-                    The "$schema" keyword SHOULD be used in a root schema.
-                    It MUST NOT appear in subschemas.  If absent from the root schema, the
-                    resulting behavior is implementation-defined.
+                    Meta-schema authoring is an advanced usage of JSON Schema, so the design of
+                    meta-schema features emphasizes flexibility over simplicity.
                 </t>
-                <t>
-                    <cref>
-                        Using multiple "$schema" keywords in the same document would imply that the
-                        feature set and therefore behavior can change within a document.  This would
-                        necessitate resolving a number of implementation concerns that have not yet
-                        been clearly defined.  So, while the pattern of using "$schema" only in root
-                        schemas is likely to remain the best practice for schema authoring,
-                        implementation behavior is subject to be revised or liberalized in
-                        future drafts.
-                    </cref>
-                    <!--
-                        In particular, the process of validating an instance, including validating a
-                        schema as an instance against its meta-schema, only allows for a single set
-                        of rules across the entire instance document.  There is no equivalent of
-                        changing the meta-schema partway through the validation for non-schema
-                        instances.
-                    -->
-                </t>
-                <t>
-                    Values for this property are defined elsewhere in this and other documents,
-                    and by other parties.
-                </t>
-            </section>
-            <section title='The "$vocabulary" Keyword'>
-                <t>
-                    The "$vocabulary" keyword is used in meta-schemas to identify the
-                    vocabularies available for use in schemas described by that meta-schema.
-                    It is also used to indicate whether each vocabulary is required or optional,
-                    in the sense that an implementation MUST understand the required vocabularies
-                    in order to successfully process the schema.
-                </t>
-                <t>
-                    The value of this keyword MUST be an object.  The property names in the
-                    object MUST be URIs (containing a scheme) and this URI MUST be normalized.
-                    Each URI that appears as a property name identifies a specific set of
-                    keywords and their semantics.
-                </t>
-                <t>
-                    The URI MAY be a URL, but the nature of the retrievable resource is
-                    currently undefined, and reserved for future use.  Vocabulary authors
-                    MAY use the URL of the vocabulary specification, in a human-readable
-                    media type such as text/html or text/plain, as the vocabulary URI.
-                    <cref>
-                        Vocabulary documents may be added shortly, or in the next draft.
-                        For now, identifying the keyword set is deemed sufficient as that,
-                        along with meta-schema validation, is how the current "vocabularies"
-                        work today.  Any future vocabulary document format will be specified
-                        as a JSON document, so using text/html or other non-JSON formats
-                        in the meantime will not produce any future ambiguity.
-                    </cref>
-                </t>
-                <t>
-                    The values of the object properties MUST be booleans.
-                    If the value is true, then implementations that do not recognize
-                    the vocabulary MUST refuse to process any schemas that declare
-                    this meta-schema with "$schema".  If the value is false, implementations
-                    that do not recognize the vocabulary MAY choose to proceed with processing
-                    such schemas.
-                </t>
-                <t>
-                    When processing a schema that uses unrecognized vocabularies, keywords
-                    declared by those vocabularies are treated like any other unrecognized
-                    keyword, and ignored.
-                </t>
-                <t>
-                    The "$vocabulary" keyword SHOULD be used in the root schema of any schema
-                    document intended for use as a meta-schema.  It MUST NOT appear in subschemas.
-                </t>
-                <t>
-                    The "$vocabulary" keyword MUST be ignored in schema documents that
-                    are not being processed as a meta-schema.  This allows validating
-                    a meta-schema M against its own meta-schema M' without requiring
-                    the validator to understand the vocabularies declared by M.
-                </t>
-                <section title="Default vocabularies">
+                <section title='The "$schema" Keyword'>
                     <t>
-                        If "$vocabulary" is absent, an implementation MAY determine
-                        behavior based on the meta-schema if it is recognized from the
-                        URI value of the referring schema's "$schema" keyword.
-                        This is how behavior (such as Hyper-Schema usage) has been
-                        recognized prior to the existence of vocabularies.
+                        The "$schema" keyword is both used as a JSON Schema feature set identifier and
+                        as the identifier of a resource which is itself a JSON Schema, which describes the
+                        set of valid schemas written for this particular feature set.
                     </t>
                     <t>
-                        If the meta-schema, as referenced by the schema, is not recognized,
-                        or is missing, then the behavior is implementation-defined.
-                        If the implementation
-                        proceeds with processing the schema, it MUST assume the use of the
-                        core vocabulary.  If the implementation is built for a specific purpose,
-                        then it SHOULD assume the use of all of the most relevant vocabularies
-                        for that purpose.
+                        The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
+                        (containing a scheme) and this URI MUST be normalized.
+                        The current schema MUST be valid against the meta-schema identified by this URI.
                     </t>
                     <t>
-                        For example, an implementation that is a validator
-                        SHOULD assume the use of all vocabularies in this
-                        specification and the companion Validation specification.
+                        If this URI identifies a retrievable resource, that resource SHOULD be of
+                        media type "application/schema+json".
+                    </t>
+                    <t>
+                        The "$schema" keyword SHOULD be used in a root schema.
+                        It MUST NOT appear in subschemas.  If absent from the root schema, the
+                        resulting behavior is implementation-defined.
+                    </t>
+                    <t>
+                        <cref>
+                            Using multiple "$schema" keywords in the same document would imply that the
+                            feature set and therefore behavior can change within a document.  This would
+                            necessitate resolving a number of implementation concerns that have not yet
+                            been clearly defined.  So, while the pattern of using "$schema" only in root
+                            schemas is likely to remain the best practice for schema authoring,
+                            implementation behavior is subject to be revised or liberalized in
+                            future drafts.
+                        </cref>
+                        <!--
+                            In particular, the process of validating an instance, including validating a
+                            schema as an instance against its meta-schema, only allows for a single set
+                            of rules across the entire instance document.  There is no equivalent of
+                            changing the meta-schema partway through the validation for non-schema
+                            instances.
+                        -->
+                    </t>
+                    <t>
+                        Values for this property are defined elsewhere in this and other documents,
+                        and by other parties.
                     </t>
                 </section>
-                <section title="Non-inheritability of vocabularies ">
+                <section title='The "$vocabulary" Keyword'>
                     <t>
-                        Note that the processing restrictions on "$vocabulary" mean that
-                        meta-schemas that reference other meta-schemas using "$ref" or
-                        similar keywords do not automatically inherit the vocabulary
-                        declarations of those other meta-schemas.  All such declarations
-                        must be repeated in the root of each schema document intended
-                        for use as a meta-schema.  This is demonstrated in
-                        <xref target="example-meta-schema">the example meta-schema</xref>.
+                        The "$vocabulary" keyword is used in meta-schemas to identify the
+                        vocabularies available for use in schemas described by that meta-schema.
+                        It is also used to indicate whether each vocabulary is required or optional,
+                        in the sense that an implementation MUST understand the required vocabularies
+                        in order to successfully process the schema.
+                    </t>
+                    <t>
+                        The value of this keyword MUST be an object.  The property names in the
+                        object MUST be URIs (containing a scheme) and this URI MUST be normalized.
+                        Each URI that appears as a property name identifies a specific set of
+                        keywords and their semantics.
+                    </t>
+                    <t>
+                        The URI MAY be a URL, but the nature of the retrievable resource is
+                        currently undefined, and reserved for future use.  Vocabulary authors
+                        MAY use the URL of the vocabulary specification, in a human-readable
+                        media type such as text/html or text/plain, as the vocabulary URI.
+                        <cref>
+                            Vocabulary documents may be added shortly, or in the next draft.
+                            For now, identifying the keyword set is deemed sufficient as that,
+                            along with meta-schema validation, is how the current "vocabularies"
+                            work today.  Any future vocabulary document format will be specified
+                            as a JSON document, so using text/html or other non-JSON formats
+                            in the meantime will not produce any future ambiguity.
+                        </cref>
+                    </t>
+                    <t>
+                        The values of the object properties MUST be booleans.
+                        If the value is true, then implementations that do not recognize
+                        the vocabulary MUST refuse to process any schemas that declare
+                        this meta-schema with "$schema".  If the value is false, implementations
+                        that do not recognize the vocabulary MAY choose to proceed with processing
+                        such schemas.
+                    </t>
+                    <t>
+                        When processing a schema that uses unrecognized vocabularies, keywords
+                        declared by those vocabularies are treated like any other unrecognized
+                        keyword, and ignored.
+                    </t>
+                    <t>
+                        The "$vocabulary" keyword SHOULD be used in the root schema of any schema
+                        document intended for use as a meta-schema.  It MUST NOT appear in subschemas.
+                    </t>
+                    <t>
+                        The "$vocabulary" keyword MUST be ignored in schema documents that
+                        are not being processed as a meta-schema.  This allows validating
+                        a meta-schema M against its own meta-schema M' without requiring
+                        the validator to understand the vocabularies declared by M.
+                    </t>
+                    <section title="Default vocabularies">
+                        <t>
+                            If "$vocabulary" is absent, an implementation MAY determine
+                            behavior based on the meta-schema if it is recognized from the
+                            URI value of the referring schema's "$schema" keyword.
+                            This is how behavior (such as Hyper-Schema usage) has been
+                            recognized prior to the existence of vocabularies.
+                        </t>
+                        <t>
+                            If the meta-schema, as referenced by the schema, is not recognized,
+                            or is missing, then the behavior is implementation-defined.
+                            If the implementation
+                            proceeds with processing the schema, it MUST assume the use of the
+                            core vocabulary.  If the implementation is built for a specific purpose,
+                            then it SHOULD assume the use of all of the most relevant vocabularies
+                            for that purpose.
+                        </t>
+                        <t>
+                            For example, an implementation that is a validator
+                            SHOULD assume the use of all vocabularies in this
+                            specification and the companion Validation specification.
+                        </t>
+                    </section>
+                    <section title="Non-inheritability of vocabularies ">
+                        <t>
+                            Note that the processing restrictions on "$vocabulary" mean that
+                            meta-schemas that reference other meta-schemas using "$ref" or
+                            similar keywords do not automatically inherit the vocabulary
+                            declarations of those other meta-schemas.  All such declarations
+                            must be repeated in the root of each schema document intended
+                            for use as a meta-schema.  This is demonstrated in
+                            <xref target="example-meta-schema">the example meta-schema</xref>.
+                        </t>
+                    </section>
+                </section>
+                <section title="Detecting a Meta-Schema">
+                    <t>
+                        Implementations MUST recognize a schema as a meta-schema if it
+                        is being examined because it was identified as such by another
+                        schema's "$schema" keyword.  This means that a single schema
+                        document might sometimes be considered a regular schema, and
+                        other times be considered a meta-schema.
+                    </t>
+                    <t>
+                        In the case of examining a schema which is its own meta-schema,
+                        when an implementation begins processing it as a regular schema,
+                        it is processed under those rules.  However, when loaded a second
+                        time as a result of checking its own "$schema" value, it is treated
+                        as a meta-schema.  So the same document is processed both ways in
+                        the course of one session.
+                    </t>
+                    <t>
+                        Implementations MAY allow a schema to be explicitly passed as a meta-schema,
+                        for implementation-specific purposes, such as pre-loading a commonly
+                        used meta-schema and checking its vocabulary support requirements
+                        up front.  Meta-schema authors MUST NOT expect such features to be
+                        interoperable across implementations.
                     </t>
                 </section>
-            </section>
-            <section title="Detecting a Meta-Schema">
-                <t>
-                    Implementations MUST recognize a schema as a meta-schema if it
-                    is being examined because it was identified as such by another
-                    schema's "$schema" keyword.  This means that a single schema
-                    document might sometimes be considered a regular schema, and
-                    other times be considered a meta-schema.
-                </t>
-                <t>
-                    In the case of examining a schema which is its own meta-schema,
-                    when an implementation begins processing it as a regular schema,
-                    it is processed under those rules.  However, when loaded a second
-                    time as a result of checking its own "$schema" value, it is treated
-                    as a meta-schema.  So the same document is processed both ways in
-                    the course of one session.
-                </t>
-                <t>
-                    Implementations MAY allow a schema to be explicitly passed as a meta-schema,
-                    for implementation-specific purposes, such as pre-loading a commonly
-                    used meta-schema and checking its vocabulary support requirements
-                    up front.  Meta-schema authors MUST NOT expect such features to be
-                    interoperable across implementations.
-                </t>
-            </section>
-            <section title="Best Practices for Vocabulary and Meta-Schema Authors">
-                <t>
-                    Vocabulary authors SHOULD
-                    take care to avoid keyword name collisions if the vocabulary is intended
-                    for broad use, and potentially combined with other vocabularies.  JSON
-                    Schema does not provide any formal namespacing system, but also does
-                    not constrain keyword names, allowing for any number of namespacing
-                    approaches.
-                </t>
-                <t>
-                    Vocabularies may build on each other, such as by defining the behavior
-                    of their keywords with respect to the behavior of keywords from another
-                    vocabulary, or by using a keyword from another vocabulary with
-                    a restricted or expanded set of acceptable values.  Not all such
-                    vocabulary re-use will result in a new vocabulary that is compatible
-                    with the vocabulary on which it is built.  Vocabulary authors SHOULD
-                    clearly document what level of compatibility, if any, is expected.
-                </t>
-                <t>
-                    Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
-                    vocabularies that define conflicting syntax or semantics for the same
-                    keyword.  As semantic conflicts are not generally detectable through
-                    schema validation, implementations are not expected to detect such
-                    conflicts.  If conflicting vocabularies are declared, the resulting
-                    behavior is undefined.
-                </t>
-                <t>
-                    Vocabulary authors SHOULD provide a meta-schema that validates the
-                    expected usage of the vocabulary's keywords on their own.  Such meta-schemas
-                    SHOULD NOT forbid additional keywords, and MUST NOT forbid any
-                    keywords from the Core vocabulary.
-                </t>
-                <t>
-                    It is RECOMMENDED that meta-schema authors reference each vocabulary's
-                    meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
-                    although other mechanisms for constructing the meta-schema may be
-                    appropriate for certain use cases.
-                </t>
-                <t>
-                    The recursive nature of meta-schemas makes the "$recursiveAnchor"
-                    and "$recursiveRef" keywords particularly useful for extending
-                    existing meta-schemas, as can be seen in the JSON Hyper-Schema meta-schema
-                    which extends the Validation meta-schema.
-                </t>
-                <t>
-                    Meta-schemas MAY impose additional constraints, including describing
-                    keywords not present in any vocabulary, beyond what the meta-schemas
-                    associated with the declared vocabularies describe.  This allows for
-                    restricting usage to a subset of a vocabulary, and for validating
-                    locally defined keywords not intended for re-use.
-                </t>
-                <t>
-                    However, meta-schemas SHOULD NOT contradict any vocabularies that
-                    they declare, such as by requiring a different JSON type than
-                    the vocabulary expects.  The resulting behavior is undefined.
-                </t>
-                <t>
-                    Meta-schemas intended for local use, with no need to test for
-                    vocabulary support in arbitrary implementations, can safely omit
-                    "$vocabulary" entirely.
-                </t>
-            </section>
-            <section title="The JSON Schema Core Vocabulary">
-                <t>
-                    Keywords declared in in this specification that begin with "$" make up
-                    the JSON Schema Core vocabulary.  These keywords are either required in
-                    order process any schema or meta-schema, including those split across
-                    multiple documents, or exist to reserve keywords for purposes that
-                    require guaranteed interoperability.
-                </t>
-                <t>
-                    The Core vocabulary MUST be considered mandatory at all times, in order
-                    to bootstrap the processing of further vocabularies.  Meta-schemas
-                    that use "$vocabulary" MUST explicitly list the Core vocabulary,
-                    which MUST have a value of true indicating that it is required.
-                </t>
-                <t>
-                    The behavior of a false value for this vocabulary (and only this
-                    vocabulary) is undefined, as is the behavior when "$vocabulary"
-                    is present but the Core vocabulary is not included.  However, it
-                    is RECOMMENDED that implementations detect these cases and raise
-                    an error when they occur.
-                </t>
-                <t>
-                    Meta-schemas that do not use "$vocabulary" MUST be considered to
-                    require the Core vocabulary as if its URI were present with a value of true.
-                </t>
-                <t>
-                    The current URI for the Core vocabulary is:
-                    <eref target="https://json-schema.org/draft/2019-08/vocab/core"/>.
-                </t>
-                <t>
-                    The current URI for the corresponding meta-schema is:
-                    <eref target="https://json-schema.org/draft/2019-08/meta/core"/>.
-                </t>
-                <t>
-                    Updated vocabulary and meta-schema URIs MAY be published between
-                    specification drafts in order to correct errors.  Implementations
-                    SHOULD consider URIs dated after this specification draft and
-                    before the next to indicate the same syntax and semantics
-                    as those listed here.
-                </t>
-            </section>
-            <section title="Example Meta-Schema With Vocabulary Declarations"
-                     anchor="example-meta-schema">
-                <figure>
-                    <preamble>
-                        This meta-schema explicitly declares both the Core and Applicator
-                        vocabularies, and combines their meta-schemas with an "allOf".
-                        It additionally restricts the usage of the Applicator vocabulary
-                        by forbidding the keyword prefixed with "unevaluated".  It also
-                        describes a keyword, "localKeyword", that is not part of either
-                        vocabulary.  Note that it is its own meta-schema,
-                        as it relies on both the Core vocabulary (as all schemas do)
-                        and the Applicator vocabulary (for "allOf").
-                    </preamble>
-                    <artwork>
+                <section title="Best Practices for Vocabulary and Meta-Schema Authors">
+                    <t>
+                        Vocabulary authors SHOULD
+                        take care to avoid keyword name collisions if the vocabulary is intended
+                        for broad use, and potentially combined with other vocabularies.  JSON
+                        Schema does not provide any formal namespacing system, but also does
+                        not constrain keyword names, allowing for any number of namespacing
+                        approaches.
+                    </t>
+                    <t>
+                        Vocabularies may build on each other, such as by defining the behavior
+                        of their keywords with respect to the behavior of keywords from another
+                        vocabulary, or by using a keyword from another vocabulary with
+                        a restricted or expanded set of acceptable values.  Not all such
+                        vocabulary re-use will result in a new vocabulary that is compatible
+                        with the vocabulary on which it is built.  Vocabulary authors SHOULD
+                        clearly document what level of compatibility, if any, is expected.
+                    </t>
+                    <t>
+                        Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
+                        vocabularies that define conflicting syntax or semantics for the same
+                        keyword.  As semantic conflicts are not generally detectable through
+                        schema validation, implementations are not expected to detect such
+                        conflicts.  If conflicting vocabularies are declared, the resulting
+                        behavior is undefined.
+                    </t>
+                    <t>
+                        Vocabulary authors SHOULD provide a meta-schema that validates the
+                        expected usage of the vocabulary's keywords on their own.  Such meta-schemas
+                        SHOULD NOT forbid additional keywords, and MUST NOT forbid any
+                        keywords from the Core vocabulary.
+                    </t>
+                    <t>
+                        It is RECOMMENDED that meta-schema authors reference each vocabulary's
+                        meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
+                        although other mechanisms for constructing the meta-schema may be
+                        appropriate for certain use cases.
+                    </t>
+                    <t>
+                        The recursive nature of meta-schemas makes the "$recursiveAnchor"
+                        and "$recursiveRef" keywords particularly useful for extending
+                        existing meta-schemas, as can be seen in the JSON Hyper-Schema meta-schema
+                        which extends the Validation meta-schema.
+                    </t>
+                    <t>
+                        Meta-schemas MAY impose additional constraints, including describing
+                        keywords not present in any vocabulary, beyond what the meta-schemas
+                        associated with the declared vocabularies describe.  This allows for
+                        restricting usage to a subset of a vocabulary, and for validating
+                        locally defined keywords not intended for re-use.
+                    </t>
+                    <t>
+                        However, meta-schemas SHOULD NOT contradict any vocabularies that
+                        they declare, such as by requiring a different JSON type than
+                        the vocabulary expects.  The resulting behavior is undefined.
+                    </t>
+                    <t>
+                        Meta-schemas intended for local use, with no need to test for
+                        vocabulary support in arbitrary implementations, can safely omit
+                        "$vocabulary" entirely.
+                    </t>
+                </section>
+                <section title="Example Meta-Schema With Vocabulary Declarations"
+                         anchor="example-meta-schema">
+                    <figure>
+                        <preamble>
+                            This meta-schema explicitly declares both the Core and Applicator
+                            vocabularies, and combines their meta-schemas with an "allOf".
+                            It additionally restricts the usage of the Applicator vocabulary
+                            by forbidding the keyword prefixed with "unevaluated".  It also
+                            describes a keyword, "localKeyword", that is not part of either
+                            vocabulary.  Note that it is its own meta-schema,
+                            as it relies on both the Core vocabulary (as all schemas do)
+                            and the Applicator vocabulary (for "allOf").
+                        </preamble>
+                        <artwork>
 <![CDATA[
 {
   "$schema": "https://json-schema.org/draft/2019-08/core-app-example#",
@@ -1336,127 +1335,127 @@
   }
 }
 ]]>
-                    </artwork>
-                    <postamble>
-                        As shown above, even though each of the referenced standard
-                        meta-schemas declares its corresponding vocabulary, this new
-                        meta-schema must re-declare them for itself.  It would be
-                        valid to leave the core vocabulary out of the "$vocabulary" keyword,
-                        but it needs to be referenced through the "allOf" keyword in order
-                        for its terms to be validated.  There is no special case for
-                        validation of core keywords.
-                    </postamble>
-                </figure>
-                <t>
-                    The standard meta-schemas that combine all vocabularies defined by
-                    the Core and Validation specification, and that combine all vocabularies
-                    defined by those specifications as well as the Hyper-Schema specification,
-                    demonstrate additional complex combinations.  These URIs for these
-                    meta-schemas may be found in the Validation and Hyper-Schema specifications,
-                    respectively.
-                </t>
-            </section>
-        </section>
-
-        <section title="Base URI and Dereferencing">
-            <t>
-                To differentiate between schemas in a vast ecosystem, schemas are
-                identified by <xref target="RFC3986">URI</xref>, and can embed references
-                to other schemas by specifying their URI.
-            </t>
-
-            <section title="Initial Base URI">
-                <t>
-                    <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
-                    default base URI of a document.
-                </t>
-                <t>
-                    Informatively, the initial base URI of a schema is the URI at which it was
-                    found, whether that was a network location, a local filesystem, or any other
-                    situation identifiable by a URI of any known scheme.
-                </t>
-                <t>
-                    If a schema document defines no explicit base URI with "$id" (embedded in content),
-                    the base URI is that determined per
-                    <xref target="RFC3986">RFC 3986 section 5</xref>.
-                </t>
-                <t>
-                    If no source is known, or no URI scheme is known for the source, a suitable
-                    implementation-specific default URI MAY be used as described in
-                    <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
-                    that implementations document any default base URI that they assume.
-                </t>
+                        </artwork>
+                        <postamble>
+                            As shown above, even though each of the referenced standard
+                            meta-schemas declares its corresponding vocabulary, this new
+                            meta-schema must re-declare them for itself.  It would be
+                            valid to leave the core vocabulary out of the "$vocabulary" keyword,
+                            but it needs to be referenced through the "allOf" keyword in order
+                            for its terms to be validated.  There is no special case for
+                            validation of core keywords.
+                        </postamble>
+                    </figure>
+                    <t>
+                        The standard meta-schemas that combine all vocabularies defined by
+                        the Core and Validation specification, and that combine all vocabularies
+                        defined by those specifications as well as the Hyper-Schema specification,
+                        demonstrate additional complex combinations.  These URIs for these
+                        meta-schemas may be found in the Validation and Hyper-Schema specifications,
+                        respectively.
+                    </t>
+                </section>
             </section>
 
-            <section title='The "$id" Keyword' anchor="id-keyword">
+            <section title="Base URI and Dereferencing">
                 <t>
-                    The "$id" keyword defines a URI for the schema, and the base URI that
-                    other URI references within the schema are resolved against.
-                    A subschema's "$id" is resolved against the base URI of its parent schema.
-                    If no parent schema defines an explicit base URI with "$id", the base URI
-                    is that of the entire document, as determined per
-                    <xref target="RFC3986">RFC 3986 section 5</xref>.
+                    To differentiate between schemas in a vast ecosystem, schemas are
+                    identified by <xref target="RFC3986">URI</xref>, and can embed references
+                    to other schemas by specifying their URI.
                 </t>
-                <t>
-                    If present, the value for this keyword MUST be a string, and MUST represent a
-                    valid <xref target="RFC3986">URI-reference</xref>.
-                    This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt;
-                    or an empty string &lt;&gt;.
-                </t>
-                <section title="Identifying the root schema">
+
+                <section title="Initial Base URI">
                     <t>
-                        The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
-                        an <xref target="RFC3986">absolute-URI</xref> (containing a scheme, but no fragment),
-                        or this absolute URI but with an empty fragment.
-                        <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
+                        <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
+                        default base URI of a document.
+                    </t>
+                    <t>
+                        Informatively, the initial base URI of a schema is the URI at which it was
+                        found, whether that was a network location, a local filesystem, or any other
+                        situation identifiable by a URI of any known scheme.
+                    </t>
+                    <t>
+                        If a schema document defines no explicit base URI with "$id" (embedded in content),
+                        the base URI is that determined per
+                        <xref target="RFC3986">RFC 3986 section 5</xref>.
+                    </t>
+                    <t>
+                        If no source is known, or no URI scheme is known for the source, a suitable
+                        implementation-specific default URI MAY be used as described in
+                        <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
+                        that implementations document any default base URI that they assume.
                     </t>
                 </section>
-                <section title="Changing the base URI within a schema file">
+
+                <section title='The "$id" Keyword' anchor="id-keyword">
                     <t>
-                        When an "$id" sets the base URI, the object containing that "$id" and all of
-                        its subschemas can be identified by using a JSON Pointer fragment starting
-                        from that location.  This is true even of subschemas that further change the
-                        base URI.  Therefore, a single subschema may be accessible by multiple URIs,
-                        each consisting of base URI declared in the subschema or a parent, along with
-                        a JSON Pointer fragment identifying the path from the schema object that
-                        declares the base to the subschema being identified.  Examples of this are
-                        shown in section <xref target="idExamples" format="counter"></xref>.
-                    </t>
-                </section>
-                <section title="Location-independent identifiers">
-                    <t>
-                        Using JSON Pointer fragments requires knowledge of the structure of the schema.
-                        When writing schema documents with the intention to provide re-usable
-                        schemas, it may be preferable to use a plain name fragment that is not tied to
-                        any particular structural location.  This allows a subschema to be relocated
-                        without requiring JSON Pointer references to be updated.
+                        The "$id" keyword defines a URI for the schema, and the base URI that
+                        other URI references within the schema are resolved against.
+                        A subschema's "$id" is resolved against the base URI of its parent schema.
+                        If no parent schema defines an explicit base URI with "$id", the base URI
+                        is that of the entire document, as determined per
+                        <xref target="RFC3986">RFC 3986 section 5</xref>.
                     </t>
                     <t>
-                        To specify such a subschema identifier,
-                        the "$id" keyword is set to a URI reference with a plain name fragment (not a JSON Pointer fragment).
-                        This value MUST begin with the number sign that specifies a fragment ("#"),
-                        then a letter ([A-Za-z]),
-                        followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"),
-                        colons (":"), or periods (".").
+                        If present, the value for this keyword MUST be a string, and MUST represent a
+                        valid <xref target="RFC3986">URI-reference</xref>.
+                        This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt;
+                        or an empty string &lt;&gt;.
                     </t>
-                    <t>
-                        The effect of using a fragment in "$id" that isn't blank or doesn't follow the
-                        plain name syntax is undefined.
-                        <cref>
-                            How should an "$id" URI reference containing a fragment with other components
-                            be interpreted?  There are two cases:  when the other components match
-                            the current base URI and when they change the base URI.
-                        </cref>
-                    </t>
-                </section>
-                <section title="Schema identification examples" anchor="idExamples">
-                    <figure>
-                        <preamble>
-                            Consider the following schema, which shows "$id" being used to identify
-                            the root schema, change the base URI for subschemas, and assign plain
-                            name fragments to subschemas:
-                        </preamble>
-                        <artwork>
+                    <section title="Identifying the root schema">
+                        <t>
+                            The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
+                            an <xref target="RFC3986">absolute-URI</xref> (containing a scheme, but no fragment),
+                            or this absolute URI but with an empty fragment.
+                            <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
+                        </t>
+                    </section>
+                    <section title="Changing the base URI within a schema file">
+                        <t>
+                            When an "$id" sets the base URI, the object containing that "$id" and all of
+                            its subschemas can be identified by using a JSON Pointer fragment starting
+                            from that location.  This is true even of subschemas that further change the
+                            base URI.  Therefore, a single subschema may be accessible by multiple URIs,
+                            each consisting of base URI declared in the subschema or a parent, along with
+                            a JSON Pointer fragment identifying the path from the schema object that
+                            declares the base to the subschema being identified.  Examples of this are
+                            shown in section <xref target="idExamples" format="counter"></xref>.
+                        </t>
+                    </section>
+                    <section title="Location-independent identifiers">
+                        <t>
+                            Using JSON Pointer fragments requires knowledge of the structure of the schema.
+                            When writing schema documents with the intention to provide re-usable
+                            schemas, it may be preferable to use a plain name fragment that is not tied to
+                            any particular structural location.  This allows a subschema to be relocated
+                            without requiring JSON Pointer references to be updated.
+                        </t>
+                        <t>
+                            To specify such a subschema identifier,
+                            the "$id" keyword is set to a URI reference with a plain name fragment (not a JSON Pointer fragment).
+                            This value MUST begin with the number sign that specifies a fragment ("#"),
+                            then a letter ([A-Za-z]),
+                            followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"),
+                            colons (":"), or periods (".").
+                        </t>
+                        <t>
+                            The effect of using a fragment in "$id" that isn't blank or doesn't follow the
+                            plain name syntax is undefined.
+                            <cref>
+                                How should an "$id" URI reference containing a fragment with other components
+                                be interpreted?  There are two cases:  when the other components match
+                                the current base URI and when they change the base URI.
+                            </cref>
+                        </t>
+                    </section>
+                    <section title="Schema identification examples" anchor="idExamples">
+                        <figure>
+                            <preamble>
+                                Consider the following schema, which shows "$id" being used to identify
+                                the root schema, change the base URI for subschemas, and assign plain
+                                name fragments to subschemas:
+                            </preamble>
+                            <artwork>
 <![CDATA[
 {
     "$id": "https://example.com/root.json",
@@ -1475,119 +1474,119 @@
     }
 }
 ]]>
-                        </artwork>
-                    </figure>
-                    <t>
-                        The schemas at the following URI-encoded <xref target="RFC6901">JSON
-                        Pointers</xref> (relative to the root schema) have the following
-                        base URIs, and are identifiable by any listed URI in accordance with
-                        Section <xref target="fragments" format="counter"></xref> above:
-                    </t>
-                    <t>
-                        <list style="hanging">
-                            <t hangText="# (document root)">
-                                <list>
-                                    <t>https://example.com/root.json</t>
-                                    <t>https://example.com/root.json#</t>
-                                </list>
-                            </t>
-                            <t hangText="#/$defs/A">
-                                <list>
-                                    <t>https://example.com/root.json#foo</t>
-                                    <t>https://example.com/root.json#/$defs/A</t>
-                                </list>
-                            </t>
-                            <t hangText="#/$defs/B">
-                                <list>
-                                    <t>https://example.com/other.json</t>
-                                    <t>https://example.com/other.json#</t>
-                                    <t>https://example.com/root.json#/$defs/B</t>
-                                </list>
-                            </t>
-                            <t hangText="#/$defs/B/$defs/X">
-                                <list>
-                                    <t>https://example.com/other.json#bar</t>
-                                    <t>https://example.com/other.json#/$defs/X</t>
-                                    <t>https://example.com/root.json#/$defs/B/$defs/X</t>
-                                </list>
-                            </t>
-                            <t hangText="#/$defs/B/$defs/Y">
-                                <list>
-                                    <t>https://example.com/t/inner.json</t>
-                                    <t>https://example.com/t/inner.json#</t>
-                                    <t>https://example.com/other.json#/$defs/Y</t>
-                                    <t>https://example.com/root.json#/$defs/B/$defs/Y</t>
-                                </list>
-                            </t>
-                            <t hangText="#/$defs/C">
-                                <list>
-                                    <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
-                                    <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
-                                    <t>https://example.com/root.json#/$defs/C</t>
-                                </list>
-                            </t>
-                        </list>
-                    </t>
-                </section>
-            </section>
-
-            <section title="Schema References">
-                <t>
-                    Several keywords can be used to reference a schema which is to be applied to the
-                    current instance location. "$ref" and "$recursiveRef" are applicator
-                    keywords, applying the referenced schema to the instance.  "$recursiveAnchor"
-                    is a helper keyword that controls how the referenced schema of "$recursiveRef"
-                    is determined.
-                </t>
-                <t>
-                    As the value of "$ref" and "$recursiveRef" are URI References, this allows
-                    the possibility to externalise or divide a schema across multiple files,
-                    and provides the ability to validate recursive structures through
-                    self-reference.
-                </t>
-                <t>
-                    The resolved URI produced by these keywords is not necessarily a network
-                    locator, only an identifier. A schema need not be downloadable from the
-                    address if it is a network-addressable URL, and implementations SHOULD NOT
-                    assume they should perform a network operation when they encounter
-                    a network-addressable URI.
-                </t>
-
-                <section title='Direct References with "$ref"' anchor="ref">
-                    <t>
-                        The "$ref" keyword is used to reference a statically identified schema.
-                    </t>
-                    <t>
-                        The value of the "$ref" property MUST be a string which is a URI Reference.
-                        Resolved against the current URI base, it identifies the URI of a schema
-                        to use.
-                    </t>
+                            </artwork>
+                        </figure>
+                        <t>
+                            The schemas at the following URI-encoded <xref target="RFC6901">JSON
+                            Pointers</xref> (relative to the root schema) have the following
+                            base URIs, and are identifiable by any listed URI in accordance with
+                            Section <xref target="fragments" format="counter"></xref> above:
+                        </t>
+                        <t>
+                            <list style="hanging">
+                                <t hangText="# (document root)">
+                                    <list>
+                                        <t>https://example.com/root.json</t>
+                                        <t>https://example.com/root.json#</t>
+                                    </list>
+                                </t>
+                                <t hangText="#/$defs/A">
+                                    <list>
+                                        <t>https://example.com/root.json#foo</t>
+                                        <t>https://example.com/root.json#/$defs/A</t>
+                                    </list>
+                                </t>
+                                <t hangText="#/$defs/B">
+                                    <list>
+                                        <t>https://example.com/other.json</t>
+                                        <t>https://example.com/other.json#</t>
+                                        <t>https://example.com/root.json#/$defs/B</t>
+                                    </list>
+                                </t>
+                                <t hangText="#/$defs/B/$defs/X">
+                                    <list>
+                                        <t>https://example.com/other.json#bar</t>
+                                        <t>https://example.com/other.json#/$defs/X</t>
+                                        <t>https://example.com/root.json#/$defs/B/$defs/X</t>
+                                    </list>
+                                </t>
+                                <t hangText="#/$defs/B/$defs/Y">
+                                    <list>
+                                        <t>https://example.com/t/inner.json</t>
+                                        <t>https://example.com/t/inner.json#</t>
+                                        <t>https://example.com/other.json#/$defs/Y</t>
+                                        <t>https://example.com/root.json#/$defs/B/$defs/Y</t>
+                                    </list>
+                                </t>
+                                <t hangText="#/$defs/C">
+                                    <list>
+                                        <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
+                                        <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
+                                        <t>https://example.com/root.json#/$defs/C</t>
+                                    </list>
+                                </t>
+                            </list>
+                        </t>
+                    </section>
                 </section>
 
-                <section title='Recursive References with "$recursiveRef" and "$recursiveAnchor"'>
+                <section title="Schema References">
                     <t>
-                        The "$recursiveRef" and "$recursiveAnchor" keywords are used to construct
-                        extensible recursive schemas.  A recursive schema is one that has
-                        a reference to its own root, identified by the empty fragment
-                        URI reference ("#").
+                        Several keywords can be used to reference a schema which is to be applied to the
+                        current instance location. "$ref" and "$recursiveRef" are applicator
+                        keywords, applying the referenced schema to the instance.  "$recursiveAnchor"
+                        is a helper keyword that controls how the referenced schema of "$recursiveRef"
+                        is determined.
                     </t>
                     <t>
-                        Extending a recursive schema with "$ref" alone involves redefining all
-                        recursive references in the source schema to point to the root of the
-                        extension.  This produces the correct recursive behavior in the extension,
-                        which is that all recursion should reference the root of the extension.
+                        As the value of "$ref" and "$recursiveRef" are URI References, this allows
+                        the possibility to externalise or divide a schema across multiple files,
+                        and provides the ability to validate recursive structures through
+                        self-reference.
                     </t>
-                    <figure>
-                        <preamble>
-                            Consider the following two schemas.  The first schema, identified
-                            as "original" as it is the schema to be extended, describes
-                            an object with one string property and one recursive reference
-                            property, "r".  The second schema, identified as "extension",
-                            references the first, and describes an additional "things" property,
-                            which is an array of recursive references.
-                            It also repeats the description of "r" from the original schema.
-                        </preamble>
-                        <artwork>
+                    <t>
+                        The resolved URI produced by these keywords is not necessarily a network
+                        locator, only an identifier. A schema need not be downloadable from the
+                        address if it is a network-addressable URL, and implementations SHOULD NOT
+                        assume they should perform a network operation when they encounter
+                        a network-addressable URI.
+                    </t>
+
+                    <section title='Direct References with "$ref"' anchor="ref">
+                        <t>
+                            The "$ref" keyword is used to reference a statically identified schema.
+                        </t>
+                        <t>
+                            The value of the "$ref" property MUST be a string which is a URI Reference.
+                            Resolved against the current URI base, it identifies the URI of a schema
+                            to use.
+                        </t>
+                    </section>
+
+                    <section title='Recursive References with "$recursiveRef" and "$recursiveAnchor"'>
+                        <t>
+                            The "$recursiveRef" and "$recursiveAnchor" keywords are used to construct
+                            extensible recursive schemas.  A recursive schema is one that has
+                            a reference to its own root, identified by the empty fragment
+                            URI reference ("#").
+                        </t>
+                        <t>
+                            Extending a recursive schema with "$ref" alone involves redefining all
+                            recursive references in the source schema to point to the root of the
+                            extension.  This produces the correct recursive behavior in the extension,
+                            which is that all recursion should reference the root of the extension.
+                        </t>
+                        <figure>
+                            <preamble>
+                                Consider the following two schemas.  The first schema, identified
+                                as "original" as it is the schema to be extended, describes
+                                an object with one string property and one recursive reference
+                                property, "r".  The second schema, identified as "extension",
+                                references the first, and describes an additional "things" property,
+                                which is an array of recursive references.
+                                It also repeats the description of "r" from the original schema.
+                            </preamble>
+                            <artwork>
 <![CDATA[
 {
     "$schema": "https://json-schema.org/draft/2019-08/schema#",
@@ -1621,86 +1620,86 @@
     }
 }
 ]]>
-                        </artwork>
-                        <postamble>
-                            This apparent duplication is important because
-                            it resolves to "https://example.com/extension#", meaning that
-                            for instance validated against the extension schema, the value
-                            of "r" must be valid according to the extension, and not just the
-                            original schema as "r" was described there.
-                        </postamble>
-                    </figure>
-                    <t>
-                        This approach is fine for a single recursive field, but the more
-                        complicated the original schema, the more redefinitions are necessary
-                        in the extension.  This leads to a verbose and error-prone extension,
-                        which must be kept synchronized with the original schema if the
-                        original changes its recursive fields.
-                        This approach can be seen in the meta-schema for JSON Hyper-Schema
-                        in all prior drafts.
-                    </t>
-                    <section title='Enabling Recursion with "$recursiveAnchor"'>
+                            </artwork>
+                            <postamble>
+                                This apparent duplication is important because
+                                it resolves to "https://example.com/extension#", meaning that
+                                for instance validated against the extension schema, the value
+                                of "r" must be valid according to the extension, and not just the
+                                original schema as "r" was described there.
+                            </postamble>
+                        </figure>
                         <t>
-                            The desired behavior is for the recursive reference, "r", in the
-                            original schema to resolve to the original schema when that
-                            is the only schema being used, but to resolve to the extension
-                            schema when using the extension.  Then there would be no need
-                            to redefine the "r" property, or others like it, in the extension.
+                            This approach is fine for a single recursive field, but the more
+                            complicated the original schema, the more redefinitions are necessary
+                            in the extension.  This leads to a verbose and error-prone extension,
+                            which must be kept synchronized with the original schema if the
+                            original changes its recursive fields.
+                            This approach can be seen in the meta-schema for JSON Hyper-Schema
+                            in all prior drafts.
                         </t>
-                        <t>
-                            In order to create a recursive reference, we must do three things:
-                            <list>
-                                <t>
-                                    In our original schema, indicate that the schema author
-                                    intends for it to be extensible recursively.
-                                </t>
-                                <t>
-                                    In our extension schema, indicate that it is intended
-                                    to be a recursive extension.
-                                </t>
-                                <t>
-                                    Use a reference keyword that explicitly activates the
-                                    recursive behavior at the point of reference.
-                                </t>
-                            </list>
-                            These three things together ensure that all schema authors
-                            are intentionally constructing a recursive extension, which in
-                            turn gives all uses of the regular "$ref" keyword confidence
-                            that it only behaves as it appears to, using lexical scoping.
-                        </t>
-                        <t>
-                            The "$recursiveAnchor" keyword is how schema authors indicate
-                            that a schema can be extended recursively, and be a recursive
-                            schema.  This keyword MAY appear in the root schema of a
-                            schema document, and MUST NOT appear in any subschema.
-                        </t>
-                        <t>
-                            The value of "$recursiveAnchor" MUST be of type boolean, and
-                            MUST be true.  The value false is reserved for possible future use.
-                        </t>
-                    </section>
-                    <section title='Dynamically recursive references with "$recursiveRef"'>
-                        <t>
-                            The "$recursiveRef" keyword behaves identically to "$ref", except
-                            that if the referenced schema has "$recursiveAnchor" set to true,
-                            then the implementation MUST examine the dynamic scope for the
-                            outermost (first seen) schema document with "$recursiveAnchor"
-                            set to true.  If such a schema document exists, then the target
-                            of the "$recursiveRef" MUST be set to that document's URI, in
-                            place of the URI produced by the rules for "$ref".
-                        </t>
-                        <t>
-                            Note that if the schema referenced by "$recursiveRef" does not
-                            contain "$recursiveAnchor" set to true, or if there are no other
-                            "$recursiveAnchor" keywords set to true anywhere further back in
-                            the dynamic scope, then "$recursiveRef"'s behavior is identical
-                            to that of "$ref".
-                        </t>
-                        <figure>
-                            <preamble>
-                                With this in mind, we can rewrite the previous example:
-                            </preamble>
-                            <artwork>
+                        <section title='Enabling Recursion with "$recursiveAnchor"'>
+                            <t>
+                                The desired behavior is for the recursive reference, "r", in the
+                                original schema to resolve to the original schema when that
+                                is the only schema being used, but to resolve to the extension
+                                schema when using the extension.  Then there would be no need
+                                to redefine the "r" property, or others like it, in the extension.
+                            </t>
+                            <t>
+                                In order to create a recursive reference, we must do three things:
+                                <list>
+                                    <t>
+                                        In our original schema, indicate that the schema author
+                                        intends for it to be extensible recursively.
+                                    </t>
+                                    <t>
+                                        In our extension schema, indicate that it is intended
+                                        to be a recursive extension.
+                                    </t>
+                                    <t>
+                                        Use a reference keyword that explicitly activates the
+                                        recursive behavior at the point of reference.
+                                    </t>
+                                </list>
+                                These three things together ensure that all schema authors
+                                are intentionally constructing a recursive extension, which in
+                                turn gives all uses of the regular "$ref" keyword confidence
+                                that it only behaves as it appears to, using lexical scoping.
+                            </t>
+                            <t>
+                                The "$recursiveAnchor" keyword is how schema authors indicate
+                                that a schema can be extended recursively, and be a recursive
+                                schema.  This keyword MAY appear in the root schema of a
+                                schema document, and MUST NOT appear in any subschema.
+                            </t>
+                            <t>
+                                The value of "$recursiveAnchor" MUST be of type boolean, and
+                                MUST be true.  The value false is reserved for possible future use.
+                            </t>
+                        </section>
+                        <section title='Dynamically recursive references with "$recursiveRef"'>
+                            <t>
+                                The "$recursiveRef" keyword behaves identically to "$ref", except
+                                that if the referenced schema has "$recursiveAnchor" set to true,
+                                then the implementation MUST examine the dynamic scope for the
+                                outermost (first seen) schema document with "$recursiveAnchor"
+                                set to true.  If such a schema document exists, then the target
+                                of the "$recursiveRef" MUST be set to that document's URI, in
+                                place of the URI produced by the rules for "$ref".
+                            </t>
+                            <t>
+                                Note that if the schema referenced by "$recursiveRef" does not
+                                contain "$recursiveAnchor" set to true, or if there are no other
+                                "$recursiveAnchor" keywords set to true anywhere further back in
+                                the dynamic scope, then "$recursiveRef"'s behavior is identical
+                                to that of "$ref".
+                            </t>
+                            <figure>
+                                <preamble>
+                                    With this in mind, we can rewrite the previous example:
+                                </preamble>
+                                <artwork>
 <![CDATA[
 {
     "$schema": "https://json-schema.org/draft/2019-08/schema#",
@@ -1733,130 +1732,130 @@
     }
 }
 ]]>
-                            </artwork>
-                            <postamble>
-                                Note that the "r" property no longer appears in the
-                                extension schema.  Instead, all "$ref"s have been changed
-                                to "$recursiveRef"s, and both schemas have "$recursiveAnchor"
-                                set to true in their root schema.
-                            </postamble>
-                        </figure>
+                                </artwork>
+                                <postamble>
+                                    Note that the "r" property no longer appears in the
+                                    extension schema.  Instead, all "$ref"s have been changed
+                                    to "$recursiveRef"s, and both schemas have "$recursiveAnchor"
+                                    set to true in their root schema.
+                                </postamble>
+                            </figure>
+                            <t>
+                                When using the original schema on its own, there is no change
+                                in behavior.  The "$recursiveRef" does lead to a schema where
+                                "$recursiveAnchor" is set to true, but since the original schema
+                                is the only schema document in the dynamics scope (it references
+                                itself, and does not reference any other schema documents), the
+                                behavior is effectively the same as "$ref".
+                            </t>
+                            <t>
+                                When using the extension schema, the "$recursiveRef" within
+                                that schema (for the array items within "things") also effectively
+                                behaves like "$ref".  The extension schema is the outermost
+                                dynamic scope, so the reference target is not changed.
+                            </t>
+                            <t>
+                                In contrast, when using the extension schema, the "$recursiveRef"
+                                for "r" in the original schema now behaves differently.  Its
+                                initial target is the root schema of the original schema document,
+                                which has "$recursiveAnchor" set to true. In this case, the
+                                outermost dynamic scope that also has "$recursiveAnchor" set to
+                                true is the extension schema.  So when using the extensions schema,
+                                "r"'s reference in the original schema will resolve to
+                                "https://example.com/extension#", not "https://example.com/original#".
+                            </t>
+                        </section>
+                    </section>
+
+                    <section title="Guarding Against Infinite Recursion">
                         <t>
-                            When using the original schema on its own, there is no change
-                            in behavior.  The "$recursiveRef" does lead to a schema where
-                            "$recursiveAnchor" is set to true, but since the original schema
-                            is the only schema document in the dynamics scope (it references
-                            itself, and does not reference any other schema documents), the
-                            behavior is effectively the same as "$ref".
-                        </t>
-                        <t>
-                            When using the extension schema, the "$recursiveRef" within
-                            that schema (for the array items within "things") also effectively
-                            behaves like "$ref".  The extension schema is the outermost
-                            dynamic scope, so the reference target is not changed.
-                        </t>
-                        <t>
-                            In contrast, when using the extension schema, the "$recursiveRef"
-                            for "r" in the original schema now behaves differently.  Its
-                            initial target is the root schema of the original schema document,
-                            which has "$recursiveAnchor" set to true. In this case, the
-                            outermost dynamic scope that also has "$recursiveAnchor" set to
-                            true is the extension schema.  So when using the extensions schema,
-                            "r"'s reference in the original schema will resolve to
-                            "https://example.com/extension#", not "https://example.com/original#".
+                            A schema MUST NOT be run into an infinite loop against an instance. For
+                            example, if two schemas "#alice" and "#bob" both have an "allOf" property
+                            that refers to the other, a naive validator might get stuck in an infinite
+                            recursive loop trying to validate the instance.  Schemas SHOULD NOT make
+                            use of infinite recursive nesting like this; the behavior is undefined.
                         </t>
                     </section>
-                </section>
 
-                <section title="Guarding Against Infinite Recursion">
-                    <t>
-                        A schema MUST NOT be run into an infinite loop against an instance. For
-                        example, if two schemas "#alice" and "#bob" both have an "allOf" property
-                        that refers to the other, a naive validator might get stuck in an infinite
-                        recursive loop trying to validate the instance.  Schemas SHOULD NOT make
-                        use of infinite recursive nesting like this; the behavior is undefined.
-                    </t>
-                </section>
+                    <section title="References to Possible Non-Schemas">
+                        <t>
+                            Subschema objects (or booleans) are recognized by their use with known
+                            applicator keywords.  These keywords may be the standard applicators
+                            from this document, or extension keywords from a known vocabulary, or
+                            implementation-specific custom keywords.
+                        </t>
+                        <t>
+                            Multi-level structures of unknown keywords are capable of introducing
+                            nested subschemas, which would be subject to the processing rules for
+                            "$id".  Therefore, having a reference target in such an unrecognized
+                            structure cannot be reliably implemented, and the resulting behavior
+                            is undefined.  Similarly, a reference target under a known keyword,
+                            for which the value is known not to be a schema, results in undefined
+                            behavior in order to avoid burdening implementations with the need
+                            to detect such targets.
+                            <cref>
+                                These scenarios are analogous to fetching a schema over HTTP
+                                but receiving a response with a Content-Type other than
+                                application/schema+json.  An implementation can certainly
+                                try to interpret it as a schema, but the origin server
+                                offered no guarantee that it actually is any such thing.
+                                Therefore, interpreting it as such has security implications
+                                and may produce unpredictable results.
+                            </cref>
+                        </t>
+                        <t>
+                            Note that single-level custom keywords with identical syntax and
+                            semantics to "$defs" do not allow for any intervening "$id" keywords,
+                            and therefore will behave correctly under implementations that attempt
+                            to use any reference target as a schema.  However, this behavior is
+                            implementation-specific and MUST NOT be relied upon for interoperability.
+                        </t>
+                    </section>
 
-                <section title="References to Possible Non-Schemas">
-                    <t>
-                        Subschema objects (or booleans) are recognized by their use with known
-                        applicator keywords.  These keywords may be the standard applicators
-                        from this document, or extension keywords from a known vocabulary, or
-                        implementation-specific custom keywords.
-                    </t>
-                    <t>
-                        Multi-level structures of unknown keywords are capable of introducing
-                        nested subschemas, which would be subject to the processing rules for
-                        "$id".  Therefore, having a reference target in such an unrecognized
-                        structure cannot be reliably implemented, and the resulting behavior
-                        is undefined.  Similarly, a reference target under a known keyword,
-                        for which the value is known not to be a schema, results in undefined
-                        behavior in order to avoid burdening implementations with the need
-                        to detect such targets.
-                        <cref>
-                            These scenarios are analogous to fetching a schema over HTTP
-                            but receiving a response with a Content-Type other than
-                            application/schema+json.  An implementation can certainly
-                            try to interpret it as a schema, but the origin server
-                            offered no guarantee that it actually is any such thing.
-                            Therefore, interpreting it as such has security implications
-                            and may produce unpredictable results.
-                        </cref>
-                    </t>
-                    <t>
-                        Note that single-level custom keywords with identical syntax and
-                        semantics to "$defs" do not allow for any intervening "$id" keywords,
-                        and therefore will behave correctly under implementations that attempt
-                        to use any reference target as a schema.  However, this behavior is
-                        implementation-specific and MUST NOT be relied upon for interoperability.
-                    </t>
-                </section>
+                    <section title="Loading a referenced schema">
+                        <t>
+                            The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
+                            but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
+                            and the URIs that identify them.
+                        </t>
+                        <t>
+                            When schemas are downloaded,
+                            for example by a generic user-agent that doesn't know until runtime which schemas to download,
+                            see <xref target="hypermedia">Usage for Hypermedia</xref>.
+                        </t>
+                        <t>
+                            Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
+                            schema and/or automatically associate a schema's "$id"-given URI, depending
+                            on the trust that the validator has in the schema.  Such URIs and schemas
+                            can be supplied to an implementation prior to processing instances, or may
+                            be noted within a schema document as it is processed, producing associations
+                            as shown in section <xref target="idExamples" format="counter"></xref>.
+                        </t>
+                        <t>
+                            A schema MAY (and likely will) have multiple URIs, but there is no way for a
+                            URI to identify more than one schema. When multiple schemas try to identify
+                            as the same URI, validators SHOULD raise an error condition.
+                        </t>
+                    </section>
+                    <section title="Dereferencing">
+                        <t>
+                            Schemas can be identified by any URI that has been given to them, including
+                            a JSON Pointer or their URI given directly by "$id".  In all cases,
+                            dereferencing a "$ref" reference involves first resolving its value as a
+                            URI reference against the current base URI per
+                            <xref target="RFC3986">RFC 3986</xref>.
+                        </t>
+                        <t>
+                            If the resulting URI identifies a schema within the current document, or
+                            within another schema document that has been made available to the implementation,
+                            then that schema SHOULD be used automatically.
+                        </t>
+                        <t>
+                            For example, consider this schema:
+                        </t>
 
-                <section title="Loading a referenced schema">
-                    <t>
-                        The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
-                        but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
-                        and the URIs that identify them.
-                    </t>
-                    <t>
-                        When schemas are downloaded,
-                        for example by a generic user-agent that doesn't know until runtime which schemas to download,
-                        see <xref target="hypermedia">Usage for Hypermedia</xref>.
-                    </t>
-                    <t>
-                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
-                        schema and/or automatically associate a schema's "$id"-given URI, depending
-                        on the trust that the validator has in the schema.  Such URIs and schemas
-                        can be supplied to an implementation prior to processing instances, or may
-                        be noted within a schema document as it is processed, producing associations
-                        as shown in section <xref target="idExamples" format="counter"></xref>.
-                    </t>
-                    <t>
-                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
-                        URI to identify more than one schema. When multiple schemas try to identify
-                        as the same URI, validators SHOULD raise an error condition.
-                    </t>
-                </section>
-                <section title="Dereferencing">
-                    <t>
-                        Schemas can be identified by any URI that has been given to them, including
-                        a JSON Pointer or their URI given directly by "$id".  In all cases,
-                        dereferencing a "$ref" reference involves first resolving its value as a
-                        URI reference against the current base URI per
-                        <xref target="RFC3986">RFC 3986</xref>.
-                    </t>
-                    <t>
-                        If the resulting URI identifies a schema within the current document, or
-                        within another schema document that has been made available to the implementation,
-                        then that schema SHOULD be used automatically.
-                    </t>
-                    <t>
-                        For example, consider this schema:
-                    </t>
-
-                    <figure>
-                        <artwork>
+                        <figure>
+                            <artwork>
 <![CDATA[
 {
     "$id": "https://example.net/root.json",
@@ -1873,53 +1872,53 @@
     }
 }
 ]]>
-                        </artwork>
-                    </figure>
-                    <t>
-                        When an implementation encounters the &lt;#/$defs/single&gt; schema,
-                        it resolves the "$id" URI reference against the current base URI to form
-                        &lt;https://example.net/root.json#item&gt;.
-                    </t>
-                    <t>
-                        When an implementation then looks inside the &lt;#/items&gt; schema, it
-                        encounters the &lt;#item&gt; reference, and resolves this to
-                        &lt;https://example.net/root.json#item&gt;, which it has seen defined in
-                        this same document and can therefore use automatically.
-                    </t>
-                    <t>
-                        When an implementation encounters the reference to "other.json", it resolves
-                        this to &lt;https://example.net/other.json&gt;, which is not defined in this
-                        document.  If a schema with that identifier has otherwise been supplied to
-                        the implementation, it can also be used automatically.
-                        <cref>
-                            What should implementations do when the referenced schema is not known?
-                            Are there circumstances in which automatic network dereferencing is
-                            allowed?  A same origin policy?  A user-configurable option?  In the
-                            case of an evolving API described by Hyper-Schema, it is expected that
-                            new schemas will be added to the system dynamically, so placing an
-                            absolute requirement of pre-loading schema documents is not feasible.
-                        </cref>
-                    </t>
+                            </artwork>
+                        </figure>
+                        <t>
+                            When an implementation encounters the &lt;#/$defs/single&gt; schema,
+                            it resolves the "$id" URI reference against the current base URI to form
+                            &lt;https://example.net/root.json#item&gt;.
+                        </t>
+                        <t>
+                            When an implementation then looks inside the &lt;#/items&gt; schema, it
+                            encounters the &lt;#item&gt; reference, and resolves this to
+                            &lt;https://example.net/root.json#item&gt;, which it has seen defined in
+                            this same document and can therefore use automatically.
+                        </t>
+                        <t>
+                            When an implementation encounters the reference to "other.json", it resolves
+                            this to &lt;https://example.net/other.json&gt;, which is not defined in this
+                            document.  If a schema with that identifier has otherwise been supplied to
+                            the implementation, it can also be used automatically.
+                            <cref>
+                                What should implementations do when the referenced schema is not known?
+                                Are there circumstances in which automatic network dereferencing is
+                                allowed?  A same origin policy?  A user-configurable option?  In the
+                                case of an evolving API described by Hyper-Schema, it is expected that
+                                new schemas will be added to the system dynamically, so placing an
+                                absolute requirement of pre-loading schema documents is not feasible.
+                            </cref>
+                        </t>
+                    </section>
                 </section>
-            </section>
 
-            <section title='Schema Re-Use With "$defs"'>
-                <t>
-                    The "$defs" keyword provides a standardized location for schema
-                    authors to inline re-usable JSON Schemas into a more general schema.
-                    The keyword does not directly affect the validation result.
-                </t>
-                <t>
-                    This keyword's value MUST be an object.
-                    Each member value of this object MUST be a valid JSON Schema.
-                </t>
-                <t>
-                    As an example, here is a schema describing an array of positive
-                    integers, where the positive integer constraint is a subschema in
-                    "$defs":
+                <section title='Schema Re-Use With "$defs"'>
+                    <t>
+                        The "$defs" keyword provides a standardized location for schema
+                        authors to inline re-usable JSON Schemas into a more general schema.
+                        The keyword does not directly affect the validation result.
+                    </t>
+                    <t>
+                        This keyword's value MUST be an object.
+                        Each member value of this object MUST be a valid JSON Schema.
+                    </t>
+                    <t>
+                        As an example, here is a schema describing an array of positive
+                        integers, where the positive integer constraint is a subschema in
+                        "$defs":
 
-                    <figure>
-                        <artwork>
+                        <figure>
+                            <artwork>
 <![CDATA[
 {
     "type": "array",
@@ -1932,43 +1931,44 @@
     }
 }
 ]]>
-                        </artwork>
-                    </figure>
+                            </artwork>
+                        </figure>
+                    </t>
+                </section>
+            </section>
+
+            <section title='Comments With "$comment"'>
+                <t>
+                    This keyword is reserved for comments from schema authors to readers or
+                    maintainers of the schema.
+
+                    The value of this keyword MUST be a string. Implementations MUST NOT present this
+                    string to end users.  Tools for editing schemas SHOULD support displaying and
+                    editing this keyword.  The value of this keyword MAY be used in debug or error
+                    output which is intended for developers making use of schemas.
+
+                    Schema vocabularies SHOULD allow "$comment" within any object containing
+                    vocabulary keywords.  Implementations MAY assume "$comment" is allowed
+                    unless the vocabulary specifically forbids it.  Vocabularies MUST NOT
+                    specify any effect of "$comment" beyond what is described in this
+                    specification.
+
+                    Tools that translate other media types or programming languages
+                    to and from application/schema+json MAY choose to convert that media type or
+                    programming language's native comments to or from "$comment" values.
+                    The behavior of such translation when both native comments and "$comment"
+                    properties are present is implementation-dependent.
+
+                    Implementations SHOULD treat "$comment" identically to an unknown extension
+                    keyword.  They MAY strip "$comment" values at any point during processing.
+                    In particular, this allows for shortening schemas when the size of deployed
+                    schemas is a concern.
+
+                    Implementations MUST NOT take any other action based on the presence, absence,
+                    or contents of "$comment" properties.  In particular, the value of "$comment"
+                    MUST NOT be collected as an annotation result.
                 </t>
             </section>
-        </section>
-
-        <section title='Comments With "$comment"'>
-            <t>
-                This keyword is reserved for comments from schema authors to readers or
-                maintainers of the schema.
-
-                The value of this keyword MUST be a string. Implementations MUST NOT present this
-                string to end users.  Tools for editing schemas SHOULD support displaying and
-                editing this keyword.  The value of this keyword MAY be used in debug or error
-                output which is intended for developers making use of schemas.
-
-                Schema vocabularies SHOULD allow "$comment" within any object containing
-                vocabulary keywords.  Implementations MAY assume "$comment" is allowed
-                unless the vocabulary specifically forbids it.  Vocabularies MUST NOT
-                specify any effect of "$comment" beyond what is described in this
-                specification.
-
-                Tools that translate other media types or programming languages
-                to and from application/schema+json MAY choose to convert that media type or
-                programming language's native comments to or from "$comment" values.
-                The behavior of such translation when both native comments and "$comment"
-                properties are present is implementation-dependent.
-
-                Implementations SHOULD treat "$comment" identically to an unknown extension
-                keyword.  They MAY strip "$comment" values at any point during processing.
-                In particular, this allows for shortening schemas when the size of deployed
-                schemas is a concern.
-
-                Implementations MUST NOT take any other action based on the presence, absence,
-                or contents of "$comment" properties.  In particular, the value of "$comment"
-                MUST NOT be collected as an annotation result.
-            </t>
         </section>
 
         <section title="A Vocabulary for Applying Subschemas">
