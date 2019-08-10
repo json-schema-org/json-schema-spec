@@ -426,93 +426,6 @@
                         As with the root schema, a subschema is either an object or a boolean.
                     </t>
                 </section>
-                <section title="Lexical Scope and Dynamic Scope">
-                    <t>
-                        While most JSON Schema keywords can be evaluated on their own,
-                        or at most need to take into account the values or results of
-                        adjacent keywords in the same schema object, a few have more
-                        complex behavior.
-                    </t>
-                    <t>
-                        The lexical scope of a keyword is determined by the nested JSON
-                        data structure of objects and arrays.  The largest such scope
-                        is an entire schema document.  The smallest scope is a single
-                        schema object with no subschemas.
-                    </t>
-                    <t>
-                        Keywords MAY be defined with a partial value, such as a URI-reference,
-                        which must be resolved against another value, such as another
-                        URI-reference or a full URI, which is found through the lexical
-                        structure of the JSON document.  The "$id" core keyword and
-                        the "base" JSON Hyper-Schema keyword are examples of this sort
-                        of behavior.  Additionally, "$ref" and "$recursiveRef" from
-                        this specification resolve their values in this way, although
-                        they do not change how further values are resolved.
-                    </t>
-                    <t>
-                        Note that some keywords, such as "$schema", apply to the lexical
-                        scope of the entire schema document, and therefore MUST only
-                        appear in the document's root schema.
-                    </t>
-                    <t>
-                        Other keywords may take into account the dynamic scope that
-                        exists during the evaluation of a schema, typically together
-                        with an instance document.  The outermost dynamic scope is the
-                        root schema of the schema document in which processing begins.
-                        The path from this root schema to any particular keyword (that
-                        includes any "$ref" and "$recursiveRef" keywords that may have
-                        been resolved) is considered the keyword's "validation path."
-                        <cref>
-                            Or should this be the schema object at which processing
-                            begins, even if it is not a root?  This has some implications
-                            for the case where "$recursiveAnchor" is only allowed in the
-                            root schema but processing begins in a subschema.
-                        </cref>
-                    </t>
-                    <t>
-                        Lexical and dynamic scopes align until a reference keyword
-                        is encountered.  While following the reference keyword moves processing
-                        from one lexical scope into a different one, from the perspective
-                        of dynamic scope, following reference is no different from descending
-                        into a subschema present as a value.  A keyword on the far side of
-                        that reference that resolves information through the dynamic scope
-                        will consider the originating side of the reference to be their
-                        dynamic parent, rather than examining the local lexically enclosing parent.
-                    </t>
-                    <t>
-                        The concept of dynamic scope is primarily used with "$recursiveRef" and
-                        "$recursiveAnchor", and should be considered an advanced feature
-                        and used with caution when defining additional keywords.  It also appears
-                        when reporting errors and collected annotations, as it may be possible
-                        to revisit the same lexical scope repeatedly with different dynamic
-                        scopes.  In such cases, it is important to inform the user of the
-                        dynamic path that produced the error or annotation.
-                    </t>
-                </section>
-                <section title="Referenced and Referencing Schemas" anchor="referenced">
-                    <t>
-                        As noted in <xref target="applicators" />, an applicator keyword may
-                        refer to a schema to be applied, rather than including it as a
-                        subschema in the applicator's value.  In such situations, the
-                        schema being applied is known as the referenced schema, while
-                        the schema containing the applicator keyword is the referencing schema.
-                    </t>
-                    <t>
-                        While root schemas and subschemas are static concepts based on a
-                        schema's position within a schema document, referenced and referencing
-                        schemas are dynamic.  Different pairs of schemas may find themselves
-                        in various referenced and referencing arrangements during the evaluation
-                        of an instance against a schema.
-                    </t>
-                    <t>
-                        For some by-reference applicators, such as
-                        <xref target="ref">"$ref"</xref>, the referenced schema can be determined
-                        by static analysis of the schema document's lexical scope.  Others,
-                        such as "$recursiveRef" and "$recursiveAnchor",  may make use of dynamic
-                        scoping, and therefore only be resolvable in the process of evaluating
-                        the schema with an instance.
-                    </t>
-                </section>
             </section>
 
         </section>
@@ -668,6 +581,69 @@
                 due to the need to examine all subschemas for annotation collection, including
                 those that cannot further change the assertion result.
             </t>
+            <section title="Lexical Scope and Dynamic Scope">
+                <t>
+                    While most JSON Schema keywords can be evaluated on their own,
+                    or at most need to take into account the values or results of
+                    adjacent keywords in the same schema object, a few have more
+                    complex behavior.
+                </t>
+                <t>
+                    The lexical scope of a keyword is determined by the nested JSON
+                    data structure of objects and arrays.  The largest such scope
+                    is an entire schema document.  The smallest scope is a single
+                    schema object with no subschemas.
+                </t>
+                <t>
+                    Keywords MAY be defined with a partial value, such as a URI-reference,
+                    which must be resolved against another value, such as another
+                    URI-reference or a full URI, which is found through the lexical
+                    structure of the JSON document.  The "$id" core keyword and
+                    the "base" JSON Hyper-Schema keyword are examples of this sort
+                    of behavior.  Additionally, "$ref" and "$recursiveRef" from
+                    this specification resolve their values in this way, although
+                    they do not change how further values are resolved.
+                </t>
+                <t>
+                    Note that some keywords, such as "$schema", apply to the lexical
+                    scope of the entire schema document, and therefore MUST only
+                    appear in the document's root schema.
+                </t>
+                <t>
+                    Other keywords may take into account the dynamic scope that
+                    exists during the evaluation of a schema, typically together
+                    with an instance document.  The outermost dynamic scope is the
+                    root schema of the schema document in which processing begins.
+                    The path from this root schema to any particular keyword (that
+                    includes any "$ref" and "$recursiveRef" keywords that may have
+                    been resolved) is considered the keyword's "validation path."
+                    <cref>
+                        Or should this be the schema object at which processing
+                        begins, even if it is not a root?  This has some implications
+                        for the case where "$recursiveAnchor" is only allowed in the
+                        root schema but processing begins in a subschema.
+                    </cref>
+                </t>
+                <t>
+                    Lexical and dynamic scopes align until a reference keyword
+                    is encountered.  While following the reference keyword moves processing
+                    from one lexical scope into a different one, from the perspective
+                    of dynamic scope, following reference is no different from descending
+                    into a subschema present as a value.  A keyword on the far side of
+                    that reference that resolves information through the dynamic scope
+                    will consider the originating side of the reference to be their
+                    dynamic parent, rather than examining the local lexically enclosing parent.
+                </t>
+                <t>
+                    The concept of dynamic scope is primarily used with "$recursiveRef" and
+                    "$recursiveAnchor", and should be considered an advanced feature
+                    and used with caution when defining additional keywords.  It also appears
+                    when reporting errors and collected annotations, as it may be possible
+                    to revisit the same lexical scope repeatedly with different dynamic
+                    scopes.  In such cases, it is important to inform the user of the
+                    dynamic path that produced the error or annotation.
+                </t>
+            </section>
             <section title="Keyword Interactions">
                 <t>
                     Keyword behavior MAY be defined in terms of the annotation results
@@ -736,6 +712,30 @@
                     <xref target="annotations">Annotation</xref> results are
                     combined according to the rules specified by each annotation keyword.
                 </t>
+                <section title="Referenced and Referencing Schemas" anchor="referenced">
+                    <t>
+                        As noted in <xref target="applicators" />, an applicator keyword may
+                        refer to a schema to be applied, rather than including it as a
+                        subschema in the applicator's value.  In such situations, the
+                        schema being applied is known as the referenced schema, while
+                        the schema containing the applicator keyword is the referencing schema.
+                    </t>
+                    <t>
+                        While root schemas and subschemas are static concepts based on a
+                        schema's position within a schema document, referenced and referencing
+                        schemas are dynamic.  Different pairs of schemas may find themselves
+                        in various referenced and referencing arrangements during the evaluation
+                        of an instance against a schema.
+                    </t>
+                    <t>
+                        For some by-reference applicators, such as
+                        <xref target="ref">"$ref"</xref>, the referenced schema can be determined
+                        by static analysis of the schema document's lexical scope.  Others,
+                        such as "$recursiveRef" and "$recursiveAnchor",  may make use of dynamic
+                        scoping, and therefore only be resolvable in the process of evaluating
+                        the schema with an instance.
+                    </t>
+                </section>
             </section>
 
             <section title="Assertions" anchor="assertions">
@@ -798,6 +798,184 @@
                     annotations requires examining all schemas that apply to an instance
                     location, even if they cannot change the overall assertion result.
                 </t>
+
+                <section title="Collecting Annotations">
+                    <t>
+                        Annotations are collected by keywords that explicitly define
+                        annotation-collecting behavior.  Note that boolean schemas cannot
+                        produce annotations as they do not make use of keywords.
+                    </t>
+                    <t>
+                        A collected annotation MUST include the following information:
+                        <list>
+                            <t>
+                                The name of the keyword that produces the annotation
+                            </t>
+                            <t>
+                                The instance location to which it is attached, as a JSON Pointer
+                            </t>
+                            <t>
+                                The schema location path, indicating how reference keywords
+                                such as "$ref" were followed to reach the absolute schema location.
+                            </t>
+                            <t>
+                                The absolute schema location of the attaching keyword, as a URI.
+                                This MAY be omitted if it is the same as the schema location path
+                                from above.
+                            </t>
+                            <t>
+                                The attached value(s)
+                            </t>
+                        </list>
+                    </t>
+                    <t>
+                        If the same keyword attaches values from multiple schema locations
+                        to the same instance location, and the annotation defines a process
+                        for combining such values, then the combined value MUST also be associated
+                        with the instance location.
+                    </t>
+                    <section title="Distinguishing Among Multiple Values">
+                        <t>
+                            Applications MAY make decisions on which of multiple annotation values
+                            to use based on the schema location that contributed the value.
+                            This is intended to allow flexible usage.  Collecting the schema location
+                            facilitates such usage.
+                        </t>
+                        <t>
+                            For example, consider this schema, which uses annotations and assertions from
+                            the <xref target="json-schema-validation">Validation specification</xref>:
+                        </t>
+                        <figure>
+                            <preamble>
+                                Note that some lines are wrapped for clarity.
+                            </preamble>
+                            <artwork>
+<![CDATA[
+{
+    "title": "Feature list",
+    "type": "array",
+        "items": [
+            {
+                "title": "Feature A",
+                "properties": {
+                    "enabled": {
+                        "$ref": "#/$defs/enabledToggle",
+                        "default": true
+                    }
+                }
+            },
+            {
+                "title": "Feature B",
+                "properties": {
+                    "enabled": {
+                        "description": "If set to null, Feature B
+                                        inherits the enabled
+                                        value from Feature A",
+                        "$ref": "#/$defs/enabledToggle"
+                    }
+                }
+            }
+        ]
+    },
+    "$defs": {
+        "enabledToggle": {
+            "title": "Enabled",
+            "description": "Whether the feature is enabled (true),
+                            disabled (false), or under
+                            automatic control (null)",
+            "type": ["boolean", "null"],
+            "default": null
+        }
+    }
+}
+]]>
+                            </artwork>
+                        </figure>
+                        <t>
+                            In this example, both Feature A and Feature B make use of the re-usable
+                            "enabledToggle" schema.  That schema uses the "title", "description",
+                            and "default" annotations, none of which define special behavior for
+                            handling multiple values.  Therefore the application has to decide how
+                            to handle the additional "default" value for Feature A, and the additional
+                            "description" value for Feature B.
+                        </t>
+                        <t>
+                            The application programmer and the schema author need to agree on the
+                            usage.  For this example, let's assume that they agree that the most
+                            specific "default" value will be used, and any additional, more generic
+                            "default" values will be silently ignored.  Let's also assume that they
+                            agree that all "description" text is to be used, starting with the most
+                            generic, and ending with the most specific.  This requires the schema
+                            author to write descriptions that work when combined in this way.
+                        </t>
+                        <t>
+                            The application can use the schema location path to determine which
+                            values are which.  The values in the feature's immediate "enabled"
+                            property schema are more specific, while the values under the re-usable
+                            schema that is referenced to with "$ref" are more generic.  The schema
+                            location path will show whether each value was found by crossing a
+                            "$ref" or not.
+                        </t>
+                        <t>
+                            Feature A will therefore use a default value of true, while Feature B
+                            will use the generic default value of null.  Feature A will only
+                            have the generic description from the "enabledToggle" schema, while
+                            Feature B will use that description, and also append its locally
+                            defined description that explains how to interpret a null value.
+                        </t>
+                        <t>
+                            Note that there are other reasonable approaches that a different application
+                            might take.  For example, an application may consider the presence of
+                            two different values for "default" to be an error, regardless of their
+                            schema locations.
+                        </t>
+                    </section>
+                    <section title="Annotations and Assertions">
+                        <t>
+                            Schema objects that produce a false assertion result MUST NOT
+                            produce any annotation results, whether from their own keywords
+                            or from keywords in subschemas.
+                        </t>
+                        <t>
+                            Note that the overall schema results may still include annotations
+                            collected from other schema locations.  Given this schema:
+                        </t>
+                        <figure>
+                            <artwork>
+<![CDATA[
+{
+    "oneOf": [
+        {
+            "title": "Integer Value",
+            "type": "integer"
+        },
+        {
+            "title": "String Value",
+            "type": "string"
+        }
+    ]
+}
+]]>
+                            </artwork>
+                        </figure>
+                        <t>
+                            And the instance <spanx style="verb">"This is a string"</spanx>, the
+                            title annotation "Integer Value" is discarded because the type assertion
+                            in that schema object fails.  The title annotation "String Value"
+                            is kept, as the instance passes the string type assertions.
+                        </t>
+                    </section>
+                    <section title="Annotations and Applicators">
+                        <t>
+                            In addition to possibly defining annotation results of their own,
+                            applicator keywords aggregate the annotations collected in their
+                            subschema(s) or referenced schema(s).  The rules for aggregating
+                            annotation values are defined by each annotation keyword, and are
+                            not directly affected by the logic used for combining assertion
+                            results.
+                        </t>
+                    </section>
+                </section>
             </section>
         </section>
 
@@ -1764,184 +1942,6 @@
                 or contents of "$comment" properties.  In particular, the value of "$comment"
                 MUST NOT be collected as an annotation result.
             </t>
-        </section>
-
-        <section title="Collecting Annotations">
-            <t>
-                Annotations are collected by keywords that explicitly define
-                annotation-collecting behavior.  Note that boolean schemas cannot
-                produce annotations as they do not make use of keywords.
-            </t>
-            <t>
-                A collected annotation MUST include the following information:
-                <list>
-                    <t>
-                        The name of the keyword that produces the annotation
-                    </t>
-                    <t>
-                        The instance location to which it is attached, as a JSON Pointer
-                    </t>
-                    <t>
-                        The schema location path, indicating how reference keywords
-                        such as "$ref" were followed to reach the absolute schema location.
-                    </t>
-                    <t>
-                        The absolute schema location of the attaching keyword, as a URI.
-                        This MAY be omitted if it is the same as the schema location path
-                        from above.
-                    </t>
-                    <t>
-                        The attached value(s)
-                    </t>
-                </list>
-            </t>
-            <t>
-                If the same keyword attaches values from multiple schema locations
-                to the same instance location, and the annotation defines a process
-                for combining such values, then the combined value MUST also be associated
-                with the instance location.
-            </t>
-            <section title="Distinguishing Among Multiple Values">
-                <t>
-                    Applications MAY make decisions on which of multiple annotation values
-                    to use based on the schema location that contributed the value.
-                    This is intended to allow flexible usage.  Collecting the schema location
-                    facilitates such usage.
-                </t>
-                <t>
-                    For example, consider this schema, which uses annotations and assertions from
-                    the <xref target="json-schema-validation">Validation specification</xref>:
-                </t>
-                <figure>
-                    <preamble>
-                        Note that some lines are wrapped for clarity.
-                    </preamble>
-                    <artwork>
-<![CDATA[
-{
-    "title": "Feature list",
-    "type": "array",
-        "items": [
-            {
-                "title": "Feature A",
-                "properties": {
-                    "enabled": {
-                        "$ref": "#/$defs/enabledToggle",
-                        "default": true
-                    }
-                }
-            },
-            {
-                "title": "Feature B",
-                "properties": {
-                    "enabled": {
-                        "description": "If set to null, Feature B
-                                        inherits the enabled
-                                        value from Feature A",
-                        "$ref": "#/$defs/enabledToggle"
-                    }
-                }
-            }
-        ]
-    },
-    "$defs": {
-        "enabledToggle": {
-            "title": "Enabled",
-            "description": "Whether the feature is enabled (true),
-                            disabled (false), or under
-                            automatic control (null)",
-            "type": ["boolean", "null"],
-            "default": null
-        }
-    }
-}
-]]>
-                    </artwork>
-                </figure>
-                <t>
-                    In this example, both Feature A and Feature B make use of the re-usable
-                    "enabledToggle" schema.  That schema uses the "title", "description",
-                    and "default" annotations, none of which define special behavior for
-                    handling multiple values.  Therefore the application has to decide how
-                    to handle the additional "default" value for Feature A, and the additional
-                    "description" value for Feature B.
-                </t>
-                <t>
-                    The application programmer and the schema author need to agree on the
-                    usage.  For this example, let's assume that they agree that the most
-                    specific "default" value will be used, and any additional, more generic
-                    "default" values will be silently ignored.  Let's also assume that they
-                    agree that all "description" text is to be used, starting with the most
-                    generic, and ending with the most specific.  This requires the schema
-                    author to write descriptions that work when combined in this way.
-                </t>
-                <t>
-                    The application can use the schema location path to determine which
-                    values are which.  The values in the feature's immediate "enabled"
-                    property schema are more specific, while the values under the re-usable
-                    schema that is referenced to with "$ref" are more generic.  The schema
-                    location path will show whether each value was found by crossing a
-                    "$ref" or not.
-                </t>
-                <t>
-                    Feature A will therefore use a default value of true, while Feature B
-                    will use the generic default value of null.  Feature A will only
-                    have the generic description from the "enabledToggle" schema, while
-                    Feature B will use that description, and also append its locally
-                    defined description that explains how to interpret a null value.
-                </t>
-                <t>
-                    Note that there are other reasonable approaches that a different application
-                    might take.  For example, an application may consider the presence of
-                    two different values for "default" to be an error, regardless of their
-                    schema locations.
-                </t>
-            </section>
-            <section title="Annotations and Assertions">
-                <t>
-                    Schema objects that produce a false assertion result MUST NOT
-                    produce any annotation results, whether from their own keywords
-                    or from keywords in subschemas.
-                </t>
-                <t>
-                    Note that the overall schema results may still include annotations
-                    collected from other schema locations.  Given this schema:
-                </t>
-                <figure>
-                    <artwork>
-<![CDATA[
-{
-    "oneOf": [
-        {
-            "title": "Integer Value",
-            "type": "integer"
-        },
-        {
-            "title": "String Value",
-            "type": "string"
-        }
-    ]
-}
-]]>
-                    </artwork>
-                </figure>
-                <t>
-                    And the instance <spanx style="verb">"This is a string"</spanx>, the
-                    title annotation "Integer Value" is discarded because the type assertion
-                    in that schema object fails.  The title annotation "String Value"
-                    is kept, as the instance passes the string type assertions.
-                </t>
-            </section>
-            <section title="Annotations and Applicators">
-                <t>
-                    In addition to possibly defining annotation results of their own,
-                    applicator keywords aggregate the annotations collected in their
-                    subschema(s) or referenced schema(s).  The rules for aggregating
-                    annotation values are defined by each annotation keyword, and are
-                    not directly affected by the logic used for combining assertion
-                    results.
-                </t>
-            </section>
         </section>
 
         <section title="A Vocabulary for Applying Subschemas">
