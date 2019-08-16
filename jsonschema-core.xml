@@ -2,6 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC6596 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6596.xml">
 <!ENTITY RFC6839 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6839.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
@@ -402,10 +403,22 @@
                         additional keywords that are not part of a formal vocabulary.
                     </t>
                 </section>
-                <section title="Root Schema and Subschemas" anchor="root">
+                <section title="Root Schema and Subschemas and Resources" anchor="root">
+                    <t>
+                        A JSON Schema resource is a schema which is
+                        <xref target="RFC6596">canonically</xref> identified by an
+                        <xref target="RFC3986">absolute URI</xref>.
+                    </t>
+                    <t>
+                        As discussed in section
+                        <xref target="id-keyword" format="counter"></xref>, a JSON Schema document
+                        can contain multiple JSON Schema resources.
+                    </t>
                     <t>
                         The root schema is the schema that comprises the entire JSON document
-                        in question.
+                        in question.  The root schema is always a schema resource, where the
+                        URI is determined as described in section
+                        <xref target="initial-base" format="counter"></xref>.
                     </t>
                     <t>
                         Some keywords take schemas themselves, allowing JSON Schemas to be nested:
@@ -1455,7 +1468,7 @@
                     to other schemas by specifying their URI.
                 </t>
 
-                <section title="Initial Base URI">
+                <section title="Initial Base URI" anchor="initial-base">
                     <t>
                         <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
                         default base URI of a document.
@@ -1466,8 +1479,8 @@
                         situation identifiable by a URI of any known scheme.
                     </t>
                     <t>
-                        If a schema document defines no explicit base URI with "$id" (embedded in content),
-                        the base URI is that determined per
+                        If a schema document defines no explicit base URI with "$id"
+                        (embedded in content), the base URI is that determined per
                         <xref target="RFC3986">RFC 3986 section 5</xref>.
                     </t>
                     <t>
@@ -1475,6 +1488,11 @@
                         implementation-specific default URI MAY be used as described in
                         <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
                         that implementations document any default base URI that they assume.
+                    </t>
+                    <t>
+                        Unless the "$id" keyword described in the next section is present in the
+                        root schema, this base URI SHOULD be considered the canonical URI of the
+                        schema document's root schema resource.
                     </t>
                 </section>
 
@@ -3349,6 +3367,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
         </references>
 
         <references title="Informative References">
+            &RFC6596;
             &RFC7049;
             &RFC7231;
             &RFC8288;
