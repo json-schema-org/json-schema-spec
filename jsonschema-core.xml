@@ -1515,7 +1515,21 @@
                         If present, the value for this keyword MUST be a string, and MUST represent a
                         valid <xref target="RFC3986">URI-reference</xref>.  This URI-reference
                         SHOULD be normalized, and MUST resolve to an
-                        <xref target="RFC3986">absolute-URI</xref> (without a fragment).
+                        <xref target="RFC3986">absolute-URI</xref> (without a fragment).  Therefore,
+                        "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT contain an
+                        empty fragment.
+                    </t>
+                    <t>
+                        Since an empty fragment in the context of the application/schema+json media
+                        type refers to the same resource as the base URI without a fragment,
+                        an implementation MAY normalize a URI ending with an empty fragment by removing
+                        the fragment.  However, schema authors SHOULD NOT rely on this behavior
+                        across implementations.
+                        <cref>
+                            This is primarily allowed because older meta-schemas have an empty
+                            fragment in their $id (or previously, id).  A future draft may outright
+                            forbid even empty fragments in "$id".
+                        </cref>
                     </t>
                     <t>
                         This URI also serves as the base URI for relative URI-references in keywords
@@ -1543,7 +1557,8 @@
                             but no fragment).
                         </t>
                     </section>
-                    <section title="JSON Pointer fragments and embedded schema resources">
+                    <section title="JSON Pointer fragments and embedded schema resources"
+                             anchor="embedded">
                         <t>
                             Since JSON Pointer URI fragments are constructed based on the structure
                             of the schema document, an embedded schema resource and its subschemas
@@ -1576,12 +1591,24 @@
                             schema resource's URI cease to be valid when the embedded schema
                             is moved to a separate document and referenced, applications and schemas
                             SHOULD NOT use such URIs to identify embedded schema resources or
-                            locations within them.  The effect of using such URIs is undefined.
-                            Implementations MAY produce an error requiring that the canonical
-                            URI for the embedded resource be used.
+                            locations within them.
                         </t>
                         <t>
-                            Examples of such URIs with undefined behavior, as well as the appropriate
+                            Using such URIs is unreliable, and an implementation MAY choose not to
+                            support them.  If an embedded schema were to be replaced with a reference,
+                            then the JSON Pointer fragment URI for that schema relative to its
+                            parent's base URI would then identify the reference, while JSON Pointers
+                            to locations within the formerly embedded resource would become invalid.
+                            <cref>
+                                If the change regarding reference replacement noted in the previous
+                                CREF were to be implemented, the pointer behavior would be more
+                                consistent.  Really it is the pointers to deeper locations within
+                                embedded schemas which should be strongly discouraged and
+                                need not be supported.
+                            </cref>
+                        </t>
+                        <t>
+                            Examples of such non-canonical URIs, as well as the appropriate
                             canonical URIs to use instead, are provided in section
                             <xref target="idExamples" format="counter"></xref>.
                         </t>
@@ -1654,7 +1681,9 @@
                         The schemas at the following URI-encoded <xref target="RFC6901">JSON
                         Pointers</xref> (relative to the root schema) have the following
                         base URIs, and are identifiable by any listed URI in accordance with
-                        Section <xref target="fragments" format="counter"></xref> above:
+                        sections <xref target="fragments" format="counter"></xref> and
+                        <xref target="embedded" format="counter"></xref> above.  As previously
+                        noted, support for non-canonical URIs is OPTIONAL.
                     </t>
                     <t>
                         <list style="hanging">
@@ -1685,7 +1714,7 @@
                                     <t hangText="canonical URI with pointer fragment">
                                         https://example.com/other.json#
                                     </t>
-                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
                                         https://example.com/root.json#/$defs/B
                                     </t>
                                 </list>
@@ -1699,7 +1728,7 @@
                                     <t hangText="canonical URI with pointer fragment">
                                         https://example.com/other.json#/$defs/X
                                     </t>
-                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
                                         https://example.com/root.json#/$defs/B/$defs/X
                                     </t>
                                 </list>
@@ -1713,10 +1742,10 @@
                                     <t hangText="canonical URI with pointer fragment">
                                         https://example.com/t/inner.json#
                                     </t>
-                                    <t hangText="Fragment relative to other.json (undefined behavior)">
+                                    <t hangText="non-canonical URI with fragment relative to other.json">
                                         https://example.com/other.json#/$defs/Y
                                     </t>
-                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
                                         https://example.com/root.json#/$defs/B/$defs/Y
                                     </t>
                                 </list>
@@ -1729,7 +1758,7 @@
                                     <t hangText="canonical URI with pointer fragment">
                                         urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#
                                     </t>
-                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
                                         https://example.com/root.json#/$defs/C
                                     </t>
                                 </list>
