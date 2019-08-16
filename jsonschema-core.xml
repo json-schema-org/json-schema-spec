@@ -1461,7 +1461,7 @@
                 </section>
             </section>
 
-            <section title="Base URI and Dereferencing">
+            <section title="Base URI, Anchors, and Dereferencing">
                 <t>
                     To differentiate between schemas in a vast ecosystem, schemas are
                     identified by <xref target="RFC3986">URI</xref>, and can embed references
@@ -1586,24 +1586,60 @@
                             <xref target="idExamples" format="counter"></xref>.
                         </t>
                     </section>
-                    <section title="Schema identification examples" anchor="idExamples">
-                        <figure>
-                            <preamble>
-                                Consider the following schema, which shows "$id" being used to identify
-                                the root schema, change the base URI for subschemas, and assign plain
-                                name fragments to subschemas:
-                            </preamble>
-                            <artwork>
+                </section>
+                <section title='Defining location-independent identifiers with "$anchor"'
+                         anchor="anchor">
+                    <t>
+                        Using JSON Pointer fragments requires knowledge of the structure of the schema.
+                        When writing schema documents with the intention to provide re-usable
+                        schemas, it may be preferable to use a plain name fragment that is not tied to
+                        any particular structural location.  This allows a subschema to be relocated
+                        without requiring JSON Pointer references to be updated.
+                    </t>
+                    <t>
+                        The "$anchor" keyword is used to specify such a fragment.
+                    </t>
+                    <t>
+                        If present, the value of this keyword MUST be a string, which MUST start with
+                        a letter ([A-Za-z]), followed by any number of letters, digits ([0-9]),
+                        hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                        <cref>
+                            Note that the anchor string does not include the "#" character,
+                            as it is not a URI-reference.  An "$anchor": "foo" becomes the
+                            fragment "#foo" when used in a URI.  See below for full examples.
+                        </cref>
+                    </t>
+                    <t>
+                        The base URI to which the resulting fragment is appended is determined
+                        by the "$id" keyword as explained in the previous section.
+                        Two "$anchor" keywords in the same schema document MAY have the same
+                        value if they apply to different base URIs, as the resulting full URIs
+                        will be distinct.  However, the effect of two "$anchor" keywords with the
+                        same value and the same base URI is undefined.  Implementations MAY
+                        raise an error if such usage is detected.
+                    </t>
+                </section>
+                <section title="Schema identification examples" anchor="idExamples">
+                    <figure>
+                        <preamble>
+                            Consider the following schema, which shows "$id" being used to identify
+                            both the root schema and various subschemas, and "$anchor" being used
+                            to define plain name fragment identifiers.
+                        </preamble>
+                        <artwork>
 <![CDATA[
 {
     "$id": "https://example.com/root.json",
     "$defs": {
-        "A": { "$id": "#foo" },
+        "A": { "$anchor": "foo" },
         "B": {
             "$id": "other.json",
             "$defs": {
-                "X": { "$id": "#bar" },
-                "Y": { "$id": "t/inner.json" }
+                "X": { "$anchor": "bar" },
+                "Y": {
+                    "$id": "t/inner.json",
+                    "$anchor": "bar"
+                }
             }
         },
         "C": {
@@ -1612,60 +1648,94 @@
     }
 }
 ]]>
-                            </artwork>
-                        </figure>
-                        <t>
-                            The schemas at the following URI-encoded <xref target="RFC6901">JSON
-                            Pointers</xref> (relative to the root schema) have the following
-                            base URIs, and are identifiable by any listed URI in accordance with
-                            Section <xref target="fragments" format="counter"></xref> above:
-                        </t>
-                        <t>
-                            <list style="hanging">
-                                <t hangText="# (document root)">
-                                    <list>
-                                        <t>https://example.com/root.json</t>
-                                        <t>https://example.com/root.json#</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/A">
-                                    <list>
-                                        <t>https://example.com/root.json#foo</t>
-                                        <t>https://example.com/root.json#/$defs/A</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/B">
-                                    <list>
-                                        <t>https://example.com/other.json</t>
-                                        <t>https://example.com/other.json#</t>
-                                        <t>https://example.com/root.json#/$defs/B</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/B/$defs/X">
-                                    <list>
-                                        <t>https://example.com/other.json#bar</t>
-                                        <t>https://example.com/other.json#/$defs/X</t>
-                                        <t>https://example.com/root.json#/$defs/B/$defs/X</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/B/$defs/Y">
-                                    <list>
-                                        <t>https://example.com/t/inner.json</t>
-                                        <t>https://example.com/t/inner.json#</t>
-                                        <t>https://example.com/other.json#/$defs/Y</t>
-                                        <t>https://example.com/root.json#/$defs/B/$defs/Y</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/C">
-                                    <list>
-                                        <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
-                                        <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
-                                        <t>https://example.com/root.json#/$defs/C</t>
-                                    </list>
-                                </t>
-                            </list>
-                        </t>
-                    </section>
+                        </artwork>
+                    </figure>
+                    <t>
+                        The schemas at the following URI-encoded <xref target="RFC6901">JSON
+                        Pointers</xref> (relative to the root schema) have the following
+                        base URIs, and are identifiable by any listed URI in accordance with
+                        Section <xref target="fragments" format="counter"></xref> above:
+                    </t>
+                    <t>
+                        <list style="hanging">
+                            <t hangText="# (document root)">
+                                <list style="hanging">
+                                    <t hangText="canonical absolute-URI (and also base URI)">
+                                        https://example.com/root.json
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/root.json#
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/A">
+                                <list>
+                                    <t hangText="base URI">https://example.com/root.json</t>
+                                    <t hangText="canonical URI with plain fragment">
+                                        https://example.com/root.json#foo
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/root.json#/$defs/A
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/B">
+                                <list style="hanging">
+                                    <t hangText="base URI">https://example.com/other.json</t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/other.json#
+                                    </t>
+                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                        https://example.com/root.json#/$defs/B
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/B/$defs/X">
+                                <list style="hanging">
+                                    <t hangText="base URI">https://example.com/other.json</t>
+                                    <t hangText="canonical URI with plain fragment">
+                                        https://example.com/other.json#bar
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/other.json#/$defs/X
+                                    </t>
+                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                        https://example.com/root.json#/$defs/B/$defs/X
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/B/$defs/Y">
+                                <list style="hanging">
+                                    <t hangText="base URI">https://example.com/t/inner.json</t>
+                                    <t hangText="canonical URI with plain fragment">
+                                        https://example.com/t/inner.json#bar
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/t/inner.json#
+                                    </t>
+                                    <t hangText="Fragment relative to other.json (undefined behavior)">
+                                        https://example.com/other.json#/$defs/Y
+                                    </t>
+                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                        https://example.com/root.json#/$defs/B/$defs/Y
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/C">
+                                <list style="hanging">
+                                    <t hangText="base URI">
+                                        urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#
+                                    </t>
+                                    <t hangText="Fragment relative to root.json (undefined behavior)">
+                                        https://example.com/root.json#/$defs/C
+                                    </t>
+                                </list>
+                            </t>
+                        </list>
+                    </t>
                 </section>
 
                 <section title="Schema References" anchor="references">
