@@ -531,7 +531,7 @@
                 </t>
             </section>
 
-            <section title="Extending JSON Schema">
+            <section title="Extending JSON Schema" anchor="extending">
                 <t>
                     Additional schema keywords and schema vocabularies MAY be defined
                     by any entity.  Save for explicit agreement, schema authors SHALL NOT
@@ -1145,7 +1145,7 @@
                         MAY use the URL of the vocabulary specification, in a human-readable
                         media type such as text/html or text/plain, as the vocabulary URI.
                         <cref>
-                            Vocabulary documents may be added shortly, or in the next draft.
+                            Vocabulary documents may be added in forthcoming drafts.
                             For now, identifying the keyword set is deemed sufficient as that,
                             along with meta-schema validation, is how the current "vocabularies"
                             work today.  Any future vocabulary document format will be specified
@@ -1158,13 +1158,15 @@
                         If the value is true, then implementations that do not recognize
                         the vocabulary MUST refuse to process any schemas that declare
                         this meta-schema with "$schema".  If the value is false, implementations
-                        that do not recognize the vocabulary MAY choose to proceed with processing
+                        that do not recognize the vocabulary SHOULD proceed with processing
                         such schemas.
                     </t>
                     <t>
-                        When processing a schema that uses unrecognized vocabularies, keywords
-                        declared by those vocabularies are treated like any other unrecognized
-                        keyword, and ignored.
+                        Per <xref target="extending" format="counter"></xref>, unrecognized
+                        keywords SHOULD be ignored.  This remains the case for keywords defined
+                        by unrecognized vocabularies.  It is not currently possible to distinguish
+                        between unrecognized keywords that are defined in vocabularies from
+                        those that are not part of any vocabulary.
                     </t>
                     <t>
                         The "$vocabulary" keyword SHOULD be used in the root schema of any schema
