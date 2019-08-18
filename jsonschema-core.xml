@@ -1851,7 +1851,9 @@
                     <section title="References to Possible Non-Schemas">
                         <t>
                             Subschema objects (or booleans) are recognized by their use with known
-                            applicator keywords.  These keywords may be the standard applicators
+                            applicator keywords, or with placeholder keywords such as
+                            <xref target="defs">"$defs"</xref> that take one or more subschemas
+                            as a value.  These keywords may be "$defs" and the standard applicators
                             from this document, or extension keywords from a known vocabulary, or
                             implementation-specific custom keywords.
                         </t>
@@ -1973,7 +1975,7 @@
                     </section>
                 </section>
 
-                <section title='Schema Re-Use With "$defs"'>
+                <section title='Schema Re-Use With "$defs"' anchor="defs">
                     <t>
                         The "$defs" keyword provides a standardized location for schema
                         authors to inline re-usable JSON Schemas into a more general schema.
