@@ -1050,7 +1050,7 @@
                     When the "deprecated" keyword is applicable to an array, it's meaning will
                     vary depending on how "items" is used. If "items" is a single schema, it will
                     deprecate the contents of an array, but if "items" is an array of schemas it
-                    can be used to deprecate positional schemas.
+                    should be defined in the sub-schema targetted for deprecation.
                 </t>
                 <t>
                     Omitting this keyword has the same behavior as a value of false.
