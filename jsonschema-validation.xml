@@ -179,7 +179,8 @@
                 The current URI for the JSON Schema Validation meta-schema is
                 <eref target="http://json-schema.org/draft/2019-08/schema#"/>.
                 For schema author convenience, this meta-schema describes all vocabularies
-                defined in this specification and the JSON Schema Core specification.
+                defined in this specification and the JSON Schema Core specification,
+                as well as two former keywords which are reserved for a transitional period.
                 Individual vocabulary and vocabulary meta-schema URIs are given for
                 each section below.  Certain vocabularies are optional to support, which
                 is explained in detail in the relevant sections.
@@ -1352,7 +1353,11 @@
                         Renamed to "$defs" to match "$ref" and be shorter to type.
                         Schema vocabulary authors SHOULD NOT define a "definitions" keyword
                         with different behavior in order to avoid invalidating schemas that
-                        still use the older name.
+                        still use the older name.  While "definitions" is absent in the
+                        single-vocabulary meta-schemas referenced by this document, it
+                        remains present in the default meta-schema, and implementations
+                        SHOULD assume that "$defs" and "definitions" have the same
+                        behavior when that meta-schema is used.
                     </t>
                     <t hangText='"allOf", "anyOf", "oneOf", "not", "if", "then", "else",
                                  "items", "additionalItems", "contains", "propertyNames",
