@@ -1353,13 +1353,13 @@
     "https://json-schema.org/draft/2019-08/vocab/core": true,
     "https://json-schema.org/draft/2019-08/vocab/applicator": true,
     "https://json-schema.org/draft/2019-08/vocab/validation": true,
-    "https://example.com/vocab/core-app-example": true
+    "https://example.com/vocab/example-vocab": true
   },
   "allOf": [
     {"$ref": "https://json-schema.org/draft/2019-08/meta/core"},
     {"$ref": "https://json-schema.org/draft/2019-08/meta/applicator"},
     {"$ref": "https://json-schema.org/draft/2019-08/meta/validation"},
-    {"$ref": "https://example.com/meta/core-app-example-vocab",
+    {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
     "^unevaluated.*$": false
@@ -1382,10 +1382,10 @@
 <![CDATA[
 {
   "$schema": "https://json-schema.org/draft/2019-08/schema",
-  "$id": "https://example.com/meta/core-app-example-vocab",
+  "$id": "https://example.com/meta/example-vocab",
   "$recursiveAnchor": true,
   "$vocabulary": {
-    "https://example.com/vocab/core-app-example": true,
+    "https://example.com/vocab/example-vocab": true,
   },
   "type": ["object", "boolean"],
   "properties": {
