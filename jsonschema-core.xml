@@ -1210,6 +1210,15 @@
                             must be repeated in the root of each schema document intended
                             for use as a meta-schema.  This is demonstrated in
                             <xref target="example-meta-schema">the example meta-schema</xref>.
+                            <cref>
+                                This requirement allows implementations to find all vocabulary
+                                requirement information in a single place for each meta-schema.
+                                As schema extensibility means that there are endless potential
+                                ways to combine more fine-grained meta-schemas by reference,
+                                requiring implementations to anticipate all possibilities and
+                                search for vocabularies in referenced meta-schemas would
+                                be overly burdensome.
+                            </cref>
                         </t>
                     </section>
                 </section>
@@ -1310,53 +1319,93 @@
                 </section>
                 <section title="Example Meta-Schema With Vocabulary Declarations"
                          anchor="example-meta-schema">
+                    <t>
+                        This meta-schema explicitly declares both the Core and Applicator vocabularies,
+                        together with an extension vocabulary, and combines their meta-schemas with
+                        an "allOf".  The extension vocabulary's meta-schema, which describes only the
+                        keywords in that vocabulary, is shown after the main example meta-schema.
+                    </t>
+                    <t>
+                        The main example meta-schema also restricts the usage of the Applicator
+                        vocabulary by forbidding the keywords prefixed with "unevaluated", which
+                        are particularly complex to implement.  This does not change the semantics
+                        or set of keywords defined by the Applicator vocabulary.  It just ensures
+                        that schemas using this meta-schema that attempt to use the keywords
+                        prefixed with "unevaluted" will fail validation against this meta-schema.
+                    </t>
+                    <t>
+                        Finally, this meta-schema describes the syntax of a keyword, "localKeyword",
+                        that is not part of any vocabulary.  Presumably, the implementors and users
+                        of this meta-schema will understand the semantics of "localKeyword".
+                        JSON Schema does not define any mechanism for expressing keyword semantics
+                        outside of vocabularies, making them unsuitable for use except in a
+                        specific environment in which they are understood.
+                    </t>
                     <figure>
                         <preamble>
-                            This meta-schema explicitly declares both the Core and Applicator
-                            vocabularies, and combines their meta-schemas with an "allOf".
-                            It additionally restricts the usage of the Applicator vocabulary
-                            by forbidding the keyword prefixed with "unevaluated".  It also
-                            describes a keyword, "localKeyword", that is not part of either
-                            vocabulary.  Note that it is its own meta-schema,
-                            as it relies on both the Core vocabulary (as all schemas do)
-                            and the Applicator vocabulary (for "allOf").
+                            This meta-schema combines several vocabularies for general use.
                         </preamble>
                         <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-08/core-app-example#",
-  "$id": "https://json-schema.org/draft/2019-08/core-app-example",
+  "$schema": "https://json-schema.org/draft/2019-08/schema",
+  "$id": "https://example.com/meta/general-use-example",
   "$recursiveAnchor": true,
   "$vocabulary": {
     "https://json-schema.org/draft/2019-08/vocab/core": true,
-    "https://json-schema.org/draft/2019-08/vocab/applicator": true
+    "https://json-schema.org/draft/2019-08/vocab/applicator": true,
+    "https://json-schema.org/draft/2019-08/vocab/validation": true,
+    "https://example.com/vocab/example-vocab": true
   },
   "allOf": [
     {"$ref": "https://json-schema.org/draft/2019-08/meta/core"},
-    {"$ref": "https://json-schema.org/draft/2019-08/meta/applicator"}
+    {"$ref": "https://json-schema.org/draft/2019-08/meta/applicator"},
+    {"$ref": "https://json-schema.org/draft/2019-08/meta/validation"},
+    {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
     "^unevaluated.*$": false
   },
   "properties": {
-    "$comment": "Not in vocabulary, but validated if used",
     "localKeyword": {
+      "$comment": "Not in vocabulary, but validated if used",
       "type": "string"
     }
   }
 }
 ]]>
                         </artwork>
-                        <postamble>
-                            As shown above, even though each of the referenced standard
-                            meta-schemas declares its corresponding vocabulary, this new
-                            meta-schema must re-declare them for itself.  It would be
-                            valid to leave the core vocabulary out of the "$vocabulary" keyword,
-                            but it needs to be referenced through the "allOf" keyword in order
-                            for its terms to be validated.  There is no special case for
-                            validation of core keywords.
-                        </postamble>
                     </figure>
+                    <figure>
+                        <preamble>
+                            This meta-schema describes only a single extension vocabulary.
+                        </preamble>
+                        <artwork>
+<![CDATA[
+{
+  "$schema": "https://json-schema.org/draft/2019-08/schema",
+  "$id": "https://example.com/meta/example-vocab",
+  "$recursiveAnchor": true,
+  "$vocabulary": {
+    "https://example.com/vocab/example-vocab": true,
+  },
+  "type": ["object", "boolean"],
+  "properties": {
+    "minDate": {
+      "type": "string",
+      "pattern": "\d\d\d\d-\d\d-\d\d",
+      "format": "date",
+    }
+  }
+}
+]]>
+                        </artwork>
+                    </figure>
+                    <t>
+                        As shown above, even though each of the single-vocabulary meta-schemas
+                        referenced in the general-use meta-schema's "allOf" declares its
+                        corresponding vocabulary, this new meta-schema must re-declare them.
+                    </t>
                     <t>
                         The standard meta-schemas that combine all vocabularies defined by
                         the Core and Validation specification, and that combine all vocabularies
@@ -1364,6 +1413,17 @@
                         demonstrate additional complex combinations.  These URIs for these
                         meta-schemas may be found in the Validation and Hyper-Schema specifications,
                         respectively.
+                    </t>
+                    <t>
+                        While the general-use meta-schema can validate the syntax of "minDate",
+                        it is the vocabulary that defines the logic behind the semantic meaning
+                        of "minDate".  Without an understanding of the semantics (in this example,
+                        that the instance value must be a date equal to or after the date
+                        provided as the keyword's value in the schema), an implementation can
+                        only validate the syntactic usage.  In this case, that means validating
+                        that it is a date-formatted string (using "pattern" to ensure that it is
+                        validated even when "format" functions purely as an annotation, as explained
+                        in the <xref target="json-schema-validation">Validation specification</xref>.
                     </t>
                 </section>
             </section>
@@ -1600,7 +1660,7 @@
                             <artwork>
 <![CDATA[
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
     "$id": "https://example.com/original",
 
     "properties": {
@@ -1614,7 +1674,7 @@
 }
 
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
     "$id": "https://example.com/extension",
 
     "$ref": "original",
@@ -1713,7 +1773,7 @@
                                 <artwork>
 <![CDATA[
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
     "$id": "https://example.com/original",
     "$recursiveAnchor": true,
 
@@ -1728,7 +1788,7 @@
 }
 
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
     "$id": "https://example.com/extension",
     "$recursiveAnchor": true,
 
