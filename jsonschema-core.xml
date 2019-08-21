@@ -307,7 +307,7 @@
                     <t>
                         Object properties that are applied to the instance are called keywords,
                         or schema keywords.  Broadly speaking, keywords fall into one
-                        of three categories:
+                        of four categories:
                         <list style="hanging">
                             <t hangText="assertions:">
                                 produce a boolean result when applied to an instance
@@ -318,6 +318,10 @@
                             <t hangText="applicators:">
                                 apply one or more subschemas to a particular location
                                 in the instance, and combine or modify their results
+                            </t>
+                            <t hangText="reserved locations:">
+                                do not directly affect results, but reserve a place
+                                for a specific purpose to ensure interoperability
                             </t>
                         </list>
                     </t>
@@ -1003,6 +1007,22 @@
                         </t>
                     </section>
                 </section>
+            </section>
+            <section title="Reserved Locations">
+                <t>
+                    A fourth category of keywords simply reserve a location to hold re-usable
+                    components or data of interest to schema authors that is not suitable
+                    for re-use.  These keywords do not affect validation or annotation results.
+                    Their purpose in the core vocabulary is to ensure that locations are
+                    available for certain purposes and will not be redefined by extension
+                    keywords.
+                </t>
+                <t>
+                    While these keywords do not directly affect results, as explained in section
+                    <xref target="non-schemas" format="counter"></xref> unrecognized
+                    extension keywords that reserve locations for re-usable schemas may have
+                    undesirable interactions with references in certain circumstances.
+                </t>
             </section>
         </section>
         <section title="The JSON Schema Core Vocabulary">
@@ -1848,10 +1868,12 @@
                         </t>
                     </section>
 
-                    <section title="References to Possible Non-Schemas">
+                    <section title="References to Possible Non-Schemas" anchor="non-schemas">
                         <t>
                             Subschema objects (or booleans) are recognized by their use with known
-                            applicator keywords.  These keywords may be the standard applicators
+                            applicator keywords or with location-reserving keywords such as
+                            <xref target="defs">"$defs"</xref> that take one or more subschemas
+                            as a value.  These keywords may be "$defs" and the standard applicators
                             from this document, or extension keywords from a known vocabulary, or
                             implementation-specific custom keywords.
                         </t>
@@ -1973,9 +1995,9 @@
                     </section>
                 </section>
 
-                <section title='Schema Re-Use With "$defs"'>
+                <section title='Schema Re-Use With "$defs"' anchor="defs">
                     <t>
-                        The "$defs" keyword provides a standardized location for schema
+                        The "$defs" keyword reserves a location for schema
                         authors to inline re-usable JSON Schemas into a more general schema.
                         The keyword does not directly affect the validation result.
                     </t>
@@ -2010,8 +2032,8 @@
 
             <section title='Comments With "$comment"'>
                 <t>
-                    This keyword is reserved for comments from schema authors to readers or
-                    maintainers of the schema.
+                    This keyword reserves a location for comments from schema authors
+                    to readers or maintainers of the schema.
 
                     The value of this keyword MUST be a string. Implementations MUST NOT present this
                     string to end users.  Tools for editing schemas SHOULD support displaying and
