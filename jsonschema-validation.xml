@@ -137,9 +137,10 @@
             <t>
                 This specification defines a set of assertion keywords, as well as a small vocabulary
                 of metadata keywords that can be used to annotate the JSON instance with
-                useful information.  The <xref target="format" /> and <xref target="content" />
-                keywords are also useful as annotations as well as being optional assertions,
-                as they convey additional usage guidance for the instance data.
+                useful information.  The <xref target="format" /> keyword is intended primarily
+                as an annotation, but can optionally be used as an assertion.  The
+                <xref target="content" /> keywords are annotations for working with documents
+                embedded as JSON strings.
             </t>
         </section>
 
@@ -1157,9 +1158,9 @@
             <section title='"deprecated"'>
                 <t>
                     The value of this keyword MUST be a boolean.  When multiple occurrences
-                    of this keyword are applicable to a single sub-instance, the resulting
-                    value MUST be true if any occurrence specifies a true value, and MUST
-                    be false otherwise.
+                    of this keyword are applicable to a single sub-instance, applications
+                    SHOULD consider the instance location to be deprecated if any occurrence
+                    specifies a true value.
                 </t>
                 <t>
                     If "deprecated" has a value of boolean true, it indicates that applications
@@ -1179,8 +1180,8 @@
                 <t>
                     The value of these keywords MUST be a boolean.  When multiple occurrences
                     of these keywords are applicable to a single sub-instance, the resulting
-                    value MUST be true if any occurrence specifies a true value, and MUST
-                    be false otherwise.
+                    behavior SHOULD be as for a true value if any occurrence specifies a true value,
+                    and SHOULD be as for a false value otherwise.
                 </t>
                 <t>
                     If "readOnly" has a value of boolean true, it indicates that the value
