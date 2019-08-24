@@ -410,11 +410,6 @@
                         <xref target="RFC3986">absolute URI</xref>.
                     </t>
                     <t>
-                        As discussed in section
-                        <xref target="id-keyword" format="counter"></xref>, a JSON Schema document
-                        can contain multiple JSON Schema resources.
-                    </t>
-                    <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.  The root schema is always a schema resource, where the
                         URI is determined as described in section
@@ -441,6 +436,15 @@
                     </t>
                     <t>
                         As with the root schema, a subschema is either an object or a boolean.
+                    </t>
+                    <t>
+                        As discussed in section
+                        <xref target="id-keyword" format="counter"></xref>, a JSON Schema document
+                        can contain multiple JSON Schema resources.  When used without qualification,
+                        the term "root schema" refers to the document's root schema.  In some
+                        cases, resource root schemas are discussed.  A resource's root schema
+                        is its top-level schema object, which would also be a document root schema
+                        if the resource were to be extracted to a standalone JSON Schema document.
                     </t>
                 </section>
             </section>
@@ -624,7 +628,7 @@
                 <t>
                     Note that some keywords, such as "$schema", apply to the lexical
                     scope of the entire schema document, and therefore MUST only
-                    appear in the document's root schema.
+                    appear in a schema resource's root schema.
                 </t>
                 <t>
                     Other keywords may take into account the dynamic scope that
@@ -1131,11 +1135,15 @@
                         media type "application/schema+json".
                     </t>
                     <t>
-                        The "$schema" keyword SHOULD be used in a root schema.
-                        It MUST NOT appear in subschemas.  If absent from the root schema, the
+                        The "$schema" keyword SHOULD be used in a resource root schema.
+                        It MUST NOT appear in resource subschemas.  If absent from the root schema, the
                         resulting behavior is implementation-defined.
                     </t>
                     <t>
+                        If multiple schema resources are present in a single document, then all
+                        schema resources SHOULD Have the same value for "$schema".  The result of
+                        differing values for "$schema" within the same schema document is
+                        implementation-defined.
                         <cref>
                             Using multiple "$schema" keywords in the same document would imply that the
                             feature set and therefore behavior can change within a document.  This would
@@ -1144,6 +1152,12 @@
                             schemas is likely to remain the best practice for schema authoring,
                             implementation behavior is subject to be revised or liberalized in
                             future drafts.
+                        </cref>
+                        <cref>
+                            The exception made for embedded schema resources is to
+                            allow bundling multiple schema resources into a single schema document
+                            without needing to change their contents, as described later in this
+                            specification.
                         </cref>
                         <!--
                             In particular, the process of validating an instance, including validating a
@@ -1566,25 +1580,11 @@
                             canonical URI, or relative to the containing resource's URI.
                         </t>
                         <t>
-                            Conceptually, a set of linked schemas should behave identically whether
-                            each schema is a separate document connected with
+                            Conceptually, a set of linked schema resources should behave
+                            identically whether each resource is a separate document connected with
                             <xref target="references">schema references</xref>, or is structured as
                             a single document with one or more schema resources embedded as
                             subschemas.
-                            <cref>
-                                Note that when using schema references, the reference keyword
-                                appears in the runtime path in the standard output format for
-                                errors and annotations.  This means that while the validation
-                                outcome is unchanged when switching between an embedded schema
-                                resource and a referenced one, the runtime paths of annotations
-                                do change.  A future draft may allow directly replacing the value
-                                of the reference keyword with its target while leaving the keyword
-                                itself in place in order to make embedding vs referencing transparent
-                                to annotation collection.  This would allow replacing
-                                {"$ref": "/foo"} with {"$ref": {"type": "string"}}, assuming
-                                the schema at "verb">"/foo" consists of just a "type" keyword with
-                                value "string".  Feedback on this topic is highly encouraged.
-                            </cref>
                         </t>
                         <t>
                             Since URIs involving JSON Pointer fragments relative to the parent
@@ -1593,22 +1593,78 @@
                             SHOULD NOT use such URIs to identify embedded schema resources or
                             locations within them.
                         </t>
+                        <figure>
+                            <preamble>
+                                Consider the following schema document that contains another
+                                schema resource embedded within it:
+                            </preamble>
+                            <artwork>
+<![CDATA[
+{
+  "$id": "https://example.com/foo",
+  "items": {
+    "$id": "https://example.com/bar",
+    "additionalProperties": { }
+  }
+}
+]]>
+                            </artwork>
+                            <postamble>
+                                The URI "https://example.com/foo#/items/additionalProperties"
+                                points to the schema of the "additionalProperties" keyword in
+                                the embedded resource.  The canonical URI of that schema, however,
+                                is "https://example.com/bar#/additionalProperties".
+                            </postamble>
+                        </figure>
+                        <figure>
+                            <preamble>
+                                Now consider the following two schema resources linked by reference
+                                using a URI value for "$ref":
+                            </preamble>
+                            <artwork>
+<![CDATA[
+{
+  "$id": "https://example.com/foo",
+  "items": {
+    "$ref": "bar"
+  }
+}
+
+{
+  "$id": "https://example.com/bar",
+  "additionalProperties": { }
+}
+]]>
+                            </artwork>
+                            <postamble>
+                                Here we see that the canonical URI for that "additionalProperties"
+                                subschema is still valid, while the non-canonical URI with the fragment
+                                beginning with "#/items/$ref" now resolves to nothing.
+                            </postamble>
+                        </figure>
                         <t>
-                            Using such URIs is unreliable, and an implementation MAY choose not to
-                            support them.  If an embedded schema were to be replaced with a reference,
-                            then the JSON Pointer fragment URI for that schema relative to its
-                            parent's base URI would then identify the reference, while JSON Pointers
-                            to locations within the formerly embedded resource would become invalid.
+                            Note also that "https://example.com/foo#/items" is valid in both
+                            arrangments, but resolves to a different value.  This URI ends up
+                            functioning similarly to a retrieval URI for a resource.  While valid,
+                            examining the resolved value and either using the "$id" (if the value
+                            is a subschema), or resolving the reference and using the "$id" of the
+                            reference target, is preferable.
+                        </t>
+                        <t>
+                            An implementation MAY choose not to support addressing schemas
+                            by non-canonical URIs.
                             <cref>
-                                If the change regarding reference replacement noted in the previous
-                                CREF were to be implemented, the pointer behavior would be more
-                                consistent.  Really it is the pointers to deeper locations within
-                                embedded schemas which should be strongly discouraged and
-                                need not be supported.
+                                This is to avoid requiring implementations to keep track of a whole
+                                stack of possible base URIs and JSON Pointer fragments for each,
+                                given that all but one will be fragile if the schema resources
+                                are reorganized.  Some have argued that this is easy so there is
+                                no point in forbidding it, while others have argued that it complicates
+                                schema identification and should be forbidden.  Feedback on this
+                                topic is encouraged.
                             </cref>
                         </t>
                         <t>
-                            Examples of such non-canonical URIs, as well as the appropriate
+                            Further examples of such non-canonical URIs, as well as the appropriate
                             canonical URIs to use instead, are provided in section
                             <xref target="idExamples" format="counter"></xref>.
                         </t>
@@ -1792,11 +1848,9 @@
                     <section title='Direct References with "$ref"' anchor="ref">
                         <t>
                             The "$ref" keyword is used to reference a statically identified schema.
-                        </t>
-                        <t>
-                            The value of the "$ref" property MUST be a string which is a URI Reference.
-                            Resolved against the current URI base, it identifies the URI of a schema
-                            to use.
+                            The value of the "$ref" property MUST be a string which is a URI-Reference.
+                            Resolved against the current URI base, it produces the URI of the schema
+                            to apply.
                         </t>
                     </section>
 
