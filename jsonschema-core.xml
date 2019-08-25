@@ -3435,6 +3435,57 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             </t>
         </section>
 
+        <section title="Manipulating schema documents and references">
+            <t>
+                Various tools have been created to rearrange schema documents
+                based on how and where references ("$ref") appear.  This appendix discusses
+                which use cases and actions are compliant with this specification.
+            </t>
+            <section title="Bundling schema resources into a single document">
+                <t>
+                    A set of schema resources intended for use together can be organized
+                    with each in its own schema document, all in the same schema document,
+                    or any granularity of document grouping in between.
+                </t>
+                <t>
+                    Numerous tools exist to perform various sorts of reference removal.
+                    A common case of this is producing a single file where all references
+                    can be resolved within that file.  This is typically done to simplify
+                    distribution, or to simplify coding so that various invocations
+                    of JSON Schema libraries do not have to keep track of and load
+                    a large number of resources.
+                </t>
+                <t>
+                    This transformation can be safely and reversibly done as long as
+                    all static references (e.g. "$ref") use URI-references that resolve
+                    to canonical URIs, and all schema resources have an absolute-URI
+                    as the "$id" in their root schema.
+                </t>
+                <t>
+                    With these conditions met, each external resource can be copied
+                    under "$defs", without breaking any references among the resources'
+                    schema objects, and without changing any aspect of validation or
+                    annotation results.  The names of the schemas under "$defs" do
+                    not affect behavior, assuming they are each unique, as they
+                    do not appear in canonical URIs for the embedded resources.
+                </t>
+            </section>
+            <section title="Reference removal is not always safe">
+                <t>
+                    Attempting to remove all references and produce a single schema document does not,
+                    in all cases, produce a schema with identical behavior to the original form.
+                </t>
+                <t>
+                    Since "$ref" is now treated like any other keyword, with other keywords allowed
+                    in the same schema objects, fully supporting non-recursive "$ref" removal in
+                    all cases can require relatively complex schema manipulations.  It is beyond
+                    the scope of this specification to determine or provide a set of safe "$ref"
+                    removal transformations, as they depend not only on the schema structure
+                    but also on the intende usage.
+                </t>
+            </section>
+        </section>
+
         <section title="Working with vocabularies">
             <section title="Best practices for vocabulary and meta-schema authors">
                 <t>
