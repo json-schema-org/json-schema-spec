@@ -1502,7 +1502,7 @@
                         </t>
                         <t>
                             Further examples of such non-canonical URIs, as well as the appropriate
-                            canonical URIs to use instead, are provided in section
+                            canonical URIs to use instead, are provided in appendix
                             <xref target="idExamples" format="counter"></xref>.
                         </t>
                     </section>
@@ -1839,7 +1839,7 @@
                             on the trust that the validator has in the schema.  Such URIs and schemas
                             can be supplied to an implementation prior to processing instances, or may
                             be noted within a schema document as it is processed, producing associations
-                            as shown in section <xref target="idExamples" format="counter"></xref>.
+                            as shown in appendix <xref target="idExamples" format="counter"></xref>.
                         </t>
                         <t>
                             A schema MAY (and likely will) have multiple URIs, but there is no way for a
@@ -3351,8 +3351,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 Pointers</xref> (relative to the root schema) have the following
                 base URIs, and are identifiable by any listed URI in accordance with
                 sections <xref target="fragments" format="counter"></xref> and
-                <xref target="embedded" format="counter"></xref> above.  As previously
-                noted, support for non-canonical URIs is OPTIONAL.
+                <xref target="embedded" format="counter"></xref> above.
             </t>
             <t>
                 <list style="hanging">
@@ -3439,7 +3438,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
         <section title="Working with vocabularies">
             <section title="Best practices for vocabulary and meta-schema authors">
                 <t>
-                    Vocabulary authors SHOULD
+                    Vocabulary authors should
                     take care to avoid keyword name collisions if the vocabulary is intended
                     for broad use, and potentially combined with other vocabularies.  JSON
                     Schema does not provide any formal namespacing system, but also does
@@ -3452,11 +3451,11 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     vocabulary, or by using a keyword from another vocabulary with
                     a restricted or expanded set of acceptable values.  Not all such
                     vocabulary re-use will result in a new vocabulary that is compatible
-                    with the vocabulary on which it is built.  Vocabulary authors SHOULD
+                    with the vocabulary on which it is built.  Vocabulary authors should
                     clearly document what level of compatibility, if any, is expected.
                 </t>
                 <t>
-                    Meta-schema authors SHOULD NOT use "$vocabulary" to combine multiple
+                    Meta-schema authors should not use "$vocabulary" to combine multiple
                     vocabularies that define conflicting syntax or semantics for the same
                     keyword.  As semantic conflicts are not generally detectable through
                     schema validation, implementations are not expected to detect such
@@ -3464,13 +3463,13 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     behavior is undefined.
                 </t>
                 <t>
-                    Vocabulary authors SHOULD provide a meta-schema that validates the
+                    Vocabulary authors should provide a meta-schema that validates the
                     expected usage of the vocabulary's keywords on their own.  Such meta-schemas
-                    SHOULD NOT forbid additional keywords, and MUST NOT forbid any
+                    should not forbid additional keywords, and must not forbid any
                     keywords from the Core vocabulary.
                 </t>
                 <t>
-                    It is RECOMMENDED that meta-schema authors reference each vocabulary's
+                    It is recommended that meta-schema authors reference each vocabulary's
                     meta-schema using the <xref target="allOf">"allOf"</xref> keyword,
                     although other mechanisms for constructing the meta-schema may be
                     appropriate for certain use cases.
@@ -3482,14 +3481,14 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     which extends the Validation meta-schema.
                 </t>
                 <t>
-                    Meta-schemas MAY impose additional constraints, including describing
+                    Meta-schemas may impose additional constraints, including describing
                     keywords not present in any vocabulary, beyond what the meta-schemas
                     associated with the declared vocabularies describe.  This allows for
                     restricting usage to a subset of a vocabulary, and for validating
                     locally defined keywords not intended for re-use.
                 </t>
                 <t>
-                    However, meta-schemas SHOULD NOT contradict any vocabularies that
+                    However, meta-schemas should not contradict any vocabularies that
                     they declare, such as by requiring a different JSON type than
                     the vocabulary expects.  The resulting behavior is undefined.
                 </t>
