@@ -3610,6 +3610,68 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
             </section>
         </section>
 
+        <section title="References and generative use cases">
+            <t>
+                While the presence of references is expected to be transparent
+                to validation results, generative use cases such as code generators
+                and UI renderers often consider references to be semantically significant.
+            </t>
+            <t>
+                To make such use case-specific semantics explicit, the best practice
+                is to create an annotation keyword can be created for use in the same
+                schema object alongside of a reference keyword such as "$ref".
+            </t>
+            <figure>
+                <preamble>
+                    For example, here is a hypothetical keyword for determining
+                    whether a code generator should consider the reference
+                    target to be a distinct class, and how those classes are related.
+                    Note that this example is solely for illustrative purposes, and is
+                    not intended to propose a functional code generation keyword.
+                </preamble>
+                <artwork>
+<![CDATA[
+{
+    "allOf": [
+        {
+            "classRelation": "is-a",
+            "$ref": "classes/base.json"
+        },
+        {
+            "$ref": "fields/common.json"
+        }
+    ],
+    "properties": {
+        "foo": {
+            "classRelation": "has-a",
+            "$ref": "classes/foo.json"
+        },
+        "date": {
+            "$ref": "types/dateStruct.json",
+        }
+    }
+}
+]]>
+                </artwork>
+            </figure>
+            <t>
+                Here, this schema represents some sort of object-oriented class.
+                The first reference in the "allOf" is noted as the base class.
+                The second is not assigned a class relationship, meaning that the
+                code generator should combine the target's definition with this
+                one as if no reference were involved.
+            </t>
+            <t>
+                Looking at the properties, "foo" is flagged as object composition,
+                while the "date" property is not.  It is simply a field with
+                sub-fields, rather than an instance of a distinct class.
+            </t>
+            <t>
+                This style of usage requires the annotation to be in the same object
+                as the reference, which must be recognizable as a reference.
+            </t>
+        </section>
+
         <section title="Acknowledgments">
             <t>
                 Thanks to
