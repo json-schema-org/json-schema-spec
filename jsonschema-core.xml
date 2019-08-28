@@ -310,6 +310,10 @@
                         or schema keywords.  Broadly speaking, keywords fall into one
                         of four categories:
                         <list style="hanging">
+                            <t hangText="identifiers:">
+                                control schema identification through setting the schema's
+                                canonical URI and/or changing how the base URI is determined
+                            </t>
                             <t hangText="assertions:">
                                 produce a boolean result when applied to an instance
                             </t>
@@ -702,6 +706,25 @@
                     "<xref target="additionalItems" format="title"/>" and
                     "<xref target="additionalProperties" format="title"/>" keywords in this
                     document.
+                </t>
+            </section>
+            <section title="Identifiers" anchor="identifiers">
+                <t>
+                    Identifiers set the canonical URI of a schema, or affect how such URIs are
+                    resolved in <xref target="references">references</xref>, or both.
+                    The Core vocabulary defined in this document defines several
+                    identifying keywords, most notably "$id".
+                </t>
+                <t>
+                    Canonical schema URIs MUST NOT change while processing an instance, but
+                    keywords that affect URI-reference resolution MAY have behavior that
+                    is only fully determined at runtime.
+                </t>
+                <t>
+                    While custom identifier keywords are possible, vocabulary designers should
+                    take care not to disrupt the functioning of core keywords. For example,
+                    the "$recursiveAnchor" keyword in this specification limits its URI resolution
+                    effects to the matching "$recursiveRef" keyword, leaving "$ref" undisturbed.
                 </t>
             </section>
             <section title="Applicators" anchor="applicators">
@@ -1517,7 +1540,8 @@
                         without requiring JSON Pointer references to be updated.
                     </t>
                     <t>
-                        The "$anchor" keyword is used to specify such a fragment.
+                        The "$anchor" keyword is used to specify such a fragment.  It is an
+                        identifier keyword that can only be used to create plain name fragments.
                     </t>
                     <t>
                         If present, the value of this keyword MUST be a string, which MUST start with
@@ -1545,11 +1569,11 @@
                         Several keywords can be used to reference a schema which is to be applied to the
                         current instance location. "$ref" and "$recursiveRef" are applicator
                         keywords, applying the referenced schema to the instance.  "$recursiveAnchor"
-                        is a helper keyword that controls how the referenced schema of "$recursiveRef"
-                        is determined.
+                        is an identifier keyword that controls how the base URI for resolving
+                        the URI-reference value of "$recursiveRef is determined.
                     </t>
                     <t>
-                        As the value of "$ref" and "$recursiveRef" are URI References, this allows
+                        As the values of "$ref" and "$recursiveRef" are URI References, this allows
                         the possibility to externalise or divide a schema across multiple files,
                         and provides the ability to validate recursive structures through
                         self-reference.
