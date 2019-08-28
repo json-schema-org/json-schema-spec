@@ -1603,6 +1603,15 @@
                             a reference to its own root, identified by the empty fragment
                             URI reference ("#").
                         </t>
+                        <t>
+                            For an example using these keyword, see appendix
+                            <xref target="recursive-example" format="counter" />.
+                            <cref>
+                                The difference between the hyper-schema meta-schema in previous
+                                drafts and an this draft dramatically demonstrates the utility
+                                of these keywords.
+                            </cref>
+                        </t>
                         <section title='Dynamically recursive references with "$recursiveRef"'>
                             <t>
                                 The value of the "$recursiveRef" property MUST be a string which is
@@ -3377,6 +3386,81 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     but also on the intended usage.
                 </t>
             </section>
+        </section>
+
+        <section title="Example of recursive schema extension" anchor="recursive-example">
+            <figure>
+                <preamble>
+                    Consider the following two schemas describing a simple
+                    recursive tree structure, where each node in the tree
+                    can have a "data" field of any type.  The first schema
+                    allows and ignores other instance properties.  The second is
+                    more strict and only allows the "data" and "children" properties.
+                    An example instance with "data" misspelled as "daat" is also shown.
+                </preamble>
+                <artwork>
+<![CDATA[
+// tree schema, extensible
+{
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
+    "$id": "https://example.com/tree",
+    "$recursiveAnchor": true,
+
+    "type": "object",
+    "properties": {
+        "data": true,
+        "children": {
+            "type": "array",
+            "items": {
+                "$recursiveRef": "#"
+            }
+        }
+    }
+}
+
+// strict-tree schema, guards against misspelled properties
+{
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
+    "$id": "https://example.com/strict-tree",
+    "$recursiveAnchor": true,
+
+    "$ref": "tree",
+    "unevaluatedProperties": false
+}
+
+// instance with misspelled field
+{
+    "children": [ { "daat": 1 } ]
+}
+]]>
+                </artwork>
+            </figure>
+            <t>
+                If we apply the "strict-tree" schema to the instance, we will follow
+                the "$ref" to the "tree" schema, examine its "children" subschema,
+                and find the "$recursiveAnchor" in its "items" subschema.
+                At this point, the dynamic path is
+                "#/$ref/properties/children/items/$recursiveRef".
+            </t>
+            <t>
+                The base URI at this point is "https://example.com/tree", so the
+                "$recursiveRef" initially resolves to "https://example.com/tree#".
+                Since "$recursiveAnchor" is true, we examine the dynamic path to
+                see if there is a different base URI to use.  We find
+                "$recursiveAnchor" with a true value at the dynamic paths of
+                "#" and "#/$ref".
+            </t>
+            <t>
+                The outermost is "#", which is the root schema of the "strict-tree"
+                schema, so we use its base URI of "https://example.com/strict-tree",
+                which produces a final resolved URI of
+                "https://example.com/strict-tree#" for the "$recursiveRef".
+            </t>
+            <t>
+                This way, the recursion in the "tree" schema recurses to the root
+                of "strict-tree", instead of only applying "strict-tree" to the
+                instance root, but applying "tree" to instance children.
+            </t>
         </section>
 
         <section title="Working with vocabularies">
