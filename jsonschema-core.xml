@@ -606,7 +606,7 @@
                 due to the need to examine all subschemas for annotation collection, including
                 those that cannot further change the assertion result.
             </t>
-            <section title="Lexical Scope and Dynamic Scope">
+            <section title="Lexical Scope and Dynamic Scope" anchor="scopes">
                 <t>
                     While most JSON Schema keywords can be evaluated on their own,
                     or at most need to take into account the values or results of
@@ -1595,206 +1595,75 @@
                         </t>
                     </section>
 
-                    <section title='Recursive References with "$recursiveRef" and "$recursiveAnchor"'>
+                    <section title='Recursive References with "$recursiveRef" and "$recursiveAnchor"'
+                             anchor="recursive-ref">
                         <t>
                             The "$recursiveRef" and "$recursiveAnchor" keywords are used to construct
                             extensible recursive schemas.  A recursive schema is one that has
                             a reference to its own root, identified by the empty fragment
                             URI reference ("#").
                         </t>
-                        <t>
-                            Extending a recursive schema with "$ref" alone involves redefining all
-                            recursive references in the source schema to point to the root of the
-                            extension.  This produces the correct recursive behavior in the extension,
-                            which is that all recursion should reference the root of the extension.
-                        </t>
-                        <figure>
-                            <preamble>
-                                Consider the following two schemas.  The first schema, identified
-                                as "original" as it is the schema to be extended, describes
-                                an object with one string property and one recursive reference
-                                property, "r".  The second schema, identified as "extension",
-                                references the first, and describes an additional "things" property,
-                                which is an array of recursive references.
-                                It also repeats the description of "r" from the original schema.
-                            </preamble>
-                            <artwork>
-<![CDATA[
-{
-    "$schema": "https://json-schema.org/draft/2019-08/schema",
-    "$id": "https://example.com/original",
-
-    "properties": {
-        "name": {
-            "type": "string"
-        },
-        "r": {
-            "$ref": "#"
-        }
-    }
-}
-
-{
-    "$schema": "https://json-schema.org/draft/2019-08/schema",
-    "$id": "https://example.com/extension",
-
-    "$ref": "original",
-    "properties": {
-        "r": {
-            "$ref": "#"
-        },
-        "things": {
-            "type": "array"
-            "items": {
-                "$ref": "#"
-            }
-        }
-    }
-}
-]]>
-                            </artwork>
-                            <postamble>
-                                This apparent duplication is important because
-                                it resolves to "https://example.com/extension#", meaning that
-                                for instance validated against the extension schema, the value
-                                of "r" must be valid according to the extension, and not just the
-                                original schema as "r" was described there.
-                            </postamble>
-                        </figure>
-                        <t>
-                            This approach is fine for a single recursive field, but the more
-                            complicated the original schema, the more redefinitions are necessary
-                            in the extension.  This leads to a verbose and error-prone extension,
-                            which must be kept synchronized with the original schema if the
-                            original changes its recursive fields.
-                            This approach can be seen in the meta-schema for JSON Hyper-Schema
-                            in all prior drafts.
-                        </t>
-                        <section title='Enabling Recursion with "$recursiveAnchor"'>
-                            <t>
-                                The desired behavior is for the recursive reference, "r", in the
-                                original schema to resolve to the original schema when that
-                                is the only schema being used, but to resolve to the extension
-                                schema when using the extension.  Then there would be no need
-                                to redefine the "r" property, or others like it, in the extension.
-                            </t>
-                            <t>
-                                In order to create a recursive reference, we must do three things:
-                                <list>
-                                    <t>
-                                        In our original schema, indicate that the schema author
-                                        intends for it to be extensible recursively.
-                                    </t>
-                                    <t>
-                                        In our extension schema, indicate that it is intended
-                                        to be a recursive extension.
-                                    </t>
-                                    <t>
-                                        Use a reference keyword that explicitly activates the
-                                        recursive behavior at the point of reference.
-                                    </t>
-                                </list>
-                                These three things together ensure that all schema authors
-                                are intentionally constructing a recursive extension, which in
-                                turn gives all uses of the regular "$ref" keyword confidence
-                                that it only behaves as it appears to, using lexical scoping.
-                            </t>
-                            <t>
-                                The "$recursiveAnchor" keyword is how schema authors indicate
-                                that a schema can be extended recursively, and be a recursive
-                                schema.  This keyword MAY appear in the root schema of a
-                                schema document, and MUST NOT appear in any subschema.
-                            </t>
-                            <t>
-                                The value of "$recursiveAnchor" MUST be of type boolean, and
-                                MUST be true.  The value false is reserved for possible future use.
-                            </t>
-                        </section>
                         <section title='Dynamically recursive references with "$recursiveRef"'>
                             <t>
-                                The "$recursiveRef" keyword behaves identically to "$ref", except
-                                that if the referenced schema has "$recursiveAnchor" set to true,
-                                then the implementation MUST examine the dynamic scope for the
-                                outermost (first seen) schema document with "$recursiveAnchor"
-                                set to true.  If such a schema document exists, then the target
-                                of the "$recursiveRef" MUST be set to that document's URI, in
-                                place of the URI produced by the rules for "$ref".
+                                The value of the "$recursiveRef" property MUST be a string which is
+                                a URI-reference.  It is a by-reference applicator that uses
+                                a dynamically calculated base URI to resolve its value.
                             </t>
                             <t>
-                                Note that if the schema referenced by "$recursiveRef" does not
-                                contain "$recursiveAnchor" set to true, or if there are no other
-                                "$recursiveAnchor" keywords set to true anywhere further back in
-                                the dynamic scope, then "$recursiveRef"'s behavior is identical
-                                to that of "$ref".
-                            </t>
-                            <figure>
-                                <preamble>
-                                    With this in mind, we can rewrite the previous example:
-                                </preamble>
-                                <artwork>
-<![CDATA[
-{
-    "$schema": "https://json-schema.org/draft/2019-08/schema",
-    "$id": "https://example.com/original",
-    "$recursiveAnchor": true,
-
-    "properties": {
-        "name": {
-            "type": "string"
-        },
-        "r": {
-            "$recursiveRef": "#"
-        }
-    }
-}
-
-{
-    "$schema": "https://json-schema.org/draft/2019-08/schema",
-    "$id": "https://example.com/extension",
-    "$recursiveAnchor": true,
-
-    "$ref": "original",
-    "properties": {
-        "things": {
-            "type": "array"
-            "items": {
-                "$recursiveRef": "#"
-            }
-        }
-    }
-}
-]]>
-                                </artwork>
-                                <postamble>
-                                    Note that the "r" property no longer appears in the
-                                    extension schema.  Instead, all "$ref"s have been changed
-                                    to "$recursiveRef"s, and both schemas have "$recursiveAnchor"
-                                    set to true in their root schema.
-                                </postamble>
-                            </figure>
-                            <t>
-                                When using the original schema on its own, there is no change
-                                in behavior.  The "$recursiveRef" does lead to a schema where
-                                "$recursiveAnchor" is set to true, but since the original schema
-                                is the only schema document in the dynamics scope (it references
-                                itself, and does not reference any other schema documents), the
-                                behavior is effectively the same as "$ref".
+                                The behavior of this keyword is defined only for the value "#".
+                                Implementations MAY choose to consider other values to be errors.
+                                <cref>
+                                    This restriction may be relaxed in the future, but to date only
+                                    the value "#" has a clear use case.
+                                </cref>
                             </t>
                             <t>
-                                When using the extension schema, the "$recursiveRef" within
-                                that schema (for the array items within "things") also effectively
-                                behaves like "$ref".  The extension schema is the outermost
-                                dynamic scope, so the reference target is not changed.
+                                The value of "$recursiveRef" is initially resolved against the
+                                current base URI, in the same manner as for "$ref".
                             </t>
                             <t>
-                                In contrast, when using the extension schema, the "$recursiveRef"
-                                for "r" in the original schema now behaves differently.  Its
-                                initial target is the root schema of the original schema document,
-                                which has "$recursiveAnchor" set to true. In this case, the
-                                outermost dynamic scope that also has "$recursiveAnchor" set to
-                                true is the extension schema.  So when using the extensions schema,
-                                "r"'s reference in the original schema will resolve to
-                                "https://example.com/extension#", not "https://example.com/original#".
+                                The schema identified by the resulting URI is examined for the
+                                presence of "$recursiveAnchor", and a new base URI is calculated
+                                as described for that keyword in the following section.
+                            </t>
+                            <t>
+                                Finally, the value of "$recursiveRef" is resolved against the
+                                new base URI determined according to "$recursiveAnchor" producing
+                                the final resolved reference URI.
+                            </t>
+                            <t>
+                                Note that in the absence of "$recursiveAnchor" (and in some cases
+                                when it is present", "$recursiveRef"'s behavior is identical to
+                                that of "$ref".
+                            </t>
+                        </section>
+                        <section title='Enabling Recursion with "$recursiveAnchor"'>
+                            <t>
+                                The value of the "$recursiveAnchor" property MUST be a boolean.
+                            </t>
+                            <t>
+                                "$recursiveAnchor" is used to dynamically identify a base URI
+                                at runtime for "$recursiveRef" by marking where such a calculation
+                                can start, and where it stops.  This keyword MUST NOT affect the
+                                base URI of other keywords, unless they are explicitly defined
+                                to rely on it.
+                            </t>
+                            <t>
+                                If set to true, then when the containing schema object is used
+                                as a dynamic reference target, a new base URI is determined
+                                by examining the <xref target="scopes">dynamic scope</xref> for
+                                the outermost schema that also contains "$recursiveAnchor"
+                                with a value of true.  The base URI of that schema is then used
+                                as the dynamic base URI.
+                            </t>
+                            <t>
+                                If no such schema exists, then the base URI is unchanged.
+                            </t>
+                            <t>
+                                If this keyword is set to false, the base URI is unchanged.
+                            </t>
+                            <t>
+                                Omitting this keyword has the same behavior as a value of false.
                             </t>
                         </section>
                     </section>
