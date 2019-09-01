@@ -35,7 +35,7 @@
             </address>
         </author>
 
-      <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
+        <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
             <organization>Wellcome Sanger Institute</organization>
             <address>
                 <email>bh7@sanger.ac.uk</email>
@@ -382,7 +382,7 @@
                         authors can indicate what vocabularies are required or optional in
                         order to process the schema.  Since vocabularies are identified by URIs
                         in the meta-schema, generic implementations can load extensions to support
-                        previously unkonw vocabularies.  While keywords can be supported outside
+                        previously unknown vocabularies.  While keywords can be supported outside
                         of any vocabulary, there is no analogous mechanism to indicate individual
                         keyword usage.
                     </t>
@@ -1027,7 +1027,7 @@
         </section>
         <section title="The JSON Schema Core Vocabulary">
             <t>
-                Keywords declared in in this section, which all begin with "$", make up
+                Keywords declared in this section, which all begin with "$", make up
                 the JSON Schema Core vocabulary.  These keywords are either required in
                 order process any schema or meta-schema, including those split across
                 multiple documents, or exist to reserve keywords for purposes that
@@ -1351,7 +1351,7 @@
                         are particularly complex to implement.  This does not change the semantics
                         or set of keywords defined by the Applicator vocabulary.  It just ensures
                         that schemas using this meta-schema that attempt to use the keywords
-                        prefixed with "unevaluted" will fail validation against this meta-schema.
+                        prefixed with "unevaluated" will fail validation against this meta-schema.
                     </t>
                     <t>
                         Finally, this meta-schema describes the syntax of a keyword, "localKeyword",
@@ -2884,7 +2884,7 @@ https://json-schema.org/draft/2019-08/schema#/$defs/nonNegativeInteger/minimum
                         associations between the errors more apparent.  For example, the fact that
                         the missing "y" property and the extra "z" property both stem from the same
                         location in the instance is not immediately obvious in the "Basic" structure.
-                        In a hierarchy, the correllation is more easily identified.
+                        In a hierarchy, the correlation is more easily identified.
                     </t>
                     <t>
                         The following rules govern the construction of the results object:
@@ -3174,7 +3174,7 @@ Link: </alice>;rel="schema", </bob>;rel="schema"
 
             </section>
 
-             <section title="Usage Over HTTP">
+            <section title="Usage Over HTTP">
                 <t>
                     When used for hypermedia systems over a network,
                     <xref target="RFC7231">HTTP</xref> is frequently the protocol of choice for
@@ -3208,7 +3208,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                 </t>
             </section>
 
-       </section>
+        </section>
 
         <section title="Security Considerations" anchor="security">
             <t>
