@@ -1167,8 +1167,14 @@
                     is going to be removed in the future.
                 </t>
                 <t>
-                    A root schema containing "deprecated" with a value of true indicates the entire
-                    root schema MAY be removed in the future.
+                    A root schema containing "deprecated" with a value of true indicates that
+                    the entire resource being described MAY be removed in the future.
+                </t>
+                <t>
+                    When the "deprecated" keyword is applied to an item in an array by means of 
+                    "items", if "items" is a single schema, the deprecation relates to the whole 
+                    array, while if "items" is an array of schemas, the deprecation relates to 
+                    the corrosponding item according to the subschemas position.
                 </t>
                 <t>
                     Omitting this keyword has the same behavior as a value of false.
