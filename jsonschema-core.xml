@@ -813,21 +813,25 @@
                     multiple applicable occurrences of the keyword with different values.
                 </t>
                 <t>
-                    The default behavior is simply to collect all values in a list in
-                    indeterminate order.  Given the extensibility of keywords, including
-                    applicators, it is not possible to define a universally predictable
-                    order of processing.
-                </t>
-                <t>
                     Unlike assertion results, annotation data can take a wide variety of forms,
                     which are provided to applications to use as they see fit.  JSON Schema
                     implementations are not expected to make use of the collected information
                     on behalf of applications.
                 </t>
                 <t>
+                    Unless otherwise specified, the value of an annotation keyword's
+                    annotation is the keyword's value.  However, other behaviors are possible.
+                    For example, <xref target="json-hyper-schema">JSON Hyper-Schema's</xref>
+                    "links" keyword is a complex annotation that produces a value based
+                    in part on the instance data.
+                </t>
+                <t>
                     While "short-circuit" evaluation is possible for assertions, collecting
                     annotations requires examining all schemas that apply to an instance
                     location, even if they cannot change the overall assertion result.
+                    The only exception is that subschemas of a schema object that has
+                    failed validation MAY be skipped, as annotations are not retained
+                    for failing schemas.
                 </t>
 
                 <section title="Collecting Annotations">
@@ -863,7 +867,9 @@
                         If the same keyword attaches values from multiple schema locations
                         to the same instance location, and the annotation defines a process
                         for combining such values, then the combined value MUST also be associated
-                        with the instance location.
+                        with the instance location.  The <xref target="output">output formats</xref>
+                        described in this specification that include annotation information
+                        meet this requirement.
                     </t>
                     <section title="Distinguishing Among Multiple Values">
                         <t>
@@ -2654,13 +2660,13 @@
                     <figure>
                         <artwork>
 <![CDATA[
-#/properties/minLength/$ref/minimum
+#/properties/width/$ref/minimum
 ]]>
                         </artwork>
                     </figure>
                     <t>
-                    Note that this pointer may not be resolvable due to the inclusion of these
-                    applicator keywords.
+                    Note that this pointer may not be resolvable by the normal JSON Pointer process
+                    due to the inclusion of these by-reference applicator keywords.
                     </t>
                     <t>
                         The JSON key for this information is "keywordLocation".
@@ -2670,13 +2676,16 @@
                 <section title="Keyword Absolute Location">
                     <t>
                         The absolute, dereferenced location of the validating keyword.  The value MUST
-                        be expressed as an absolute URI, and it MUST NOT include by-reference applicators
-                        such as "$ref" or "$recursiveRef".
+                        be expressed as an absolute URI using the canonical URI of the relevant
+                        schema object, and it MUST NOT include by-reference applicators
+                        such as "$ref" or "$recursiveRef" as non-terminal path components.
+                        It MAY end in such keywords if the error or annotation is for that
+                        keyword, such as an unresolvable reference.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
-https://json-schema.org/draft/2019-08/schema#/$defs/nonNegativeInteger/minimum
+https://example.com/schemas/common#/$defs/count/minimum
 ]]>
                         </artwork>
                     </figure>
@@ -2692,7 +2701,7 @@ https://json-schema.org/draft/2019-08/schema#/$defs/nonNegativeInteger/minimum
                 <section title="Instance Location">
                     <t>
                         The location of the JSON value within the instance being validated.  The
-                        value MUST be expressed as a JSON Pointer.
+                        value MUST be expressed as a URI fragment-encoded JSON Pointer.
                     </t>
                     <t>
                         The JSON key for this information is "instanceLocation".
@@ -2708,6 +2717,10 @@ https://json-schema.org/draft/2019-08/schema#/$defs/nonNegativeInteger/minimum
                         specification.  Implementations will need to provide this.
                     </t>
                     <t>
+                        For annotations, each keyword that produces an annotation specifies its
+                        format.  By default, it is the keyword's value.
+                    </t>
+                    <t>
                         The JSON key for failed validations is "error"; for successful validations
                         it is "annotation".
                     </t>
@@ -2720,7 +2733,8 @@ https://json-schema.org/draft/2019-08/schema#/$defs/nonNegativeInteger/minimum
                     </t>
                     <t>
                         The JSON key for nested results in failed validations is "errors"; for
-                        successful validations it is "annotations".
+                        successful validations it is "annotations".  Note the plural forms, as
+                        a keyword with nested results can also have a local error or annotation.
                     </t>
                 </section>
 
