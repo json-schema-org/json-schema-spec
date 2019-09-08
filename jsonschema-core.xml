@@ -1596,6 +1596,15 @@
                             URI reference ("#").
                         </t>
                         <t>
+                            Simply stated, a "$recursiveRef" behaves identically to "$ref", except
+                            when its target schema contains "$recursiveAnchor" with a value of true.
+                            In that case, the dynamic scope is examined to determine a new base URI,
+                            and the URI-reference in "$recursiveRef" is re-evaluated against that
+                            base URI.  Unlike base URI changes with "$id", changes with
+                            "$recursiveAnchor" are calculated each time a "$recursiveRef" is
+                            resolved, and do not impact any other keywords.
+                        </t>
+                        <t>
                             For an example using these keyword, see appendix
                             <xref target="recursive-example" format="counter" />.
                             <cref>
@@ -1634,7 +1643,7 @@
                             </t>
                             <t>
                                 Note that in the absence of "$recursiveAnchor" (and in some cases
-                                when it is present", "$recursiveRef"'s behavior is identical to
+                                when it is present), "$recursiveRef"'s behavior is identical to
                                 that of "$ref".
                             </t>
                         </section>
@@ -1651,7 +1660,7 @@
                             </t>
                             <t>
                                 If set to true, then when the containing schema object is used
-                                as a dynamic reference target, a new base URI is determined
+                                as a target of "$recursiveRef", a new base URI is determined
                                 by examining the <xref target="scopes">dynamic scope</xref> for
                                 the outermost schema that also contains "$recursiveAnchor"
                                 with a value of true.  The base URI of that schema is then used
