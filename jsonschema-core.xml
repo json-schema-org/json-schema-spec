@@ -1100,11 +1100,11 @@
             </t>
             <t>
                 The current URI for the Core vocabulary is:
-                <eref target="https://json-schema.org/draft/2019-08/vocab/core"/>.
+                <eref target="https://json-schema.org/draft/2019-09/vocab/core"/>.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-08/meta/core"/>.
+                <eref target="https://json-schema.org/draft/2019-09/meta/core"/>.
             </t>
             <t>
                 While the "$" prefix is not formally reserved for the Core vocabulary,
@@ -1908,11 +1908,11 @@
             </t>
             <t>
                 The current URI for this vocabulary, known as the Applicator vocabulary, is:
-                <eref target="https://json-schema.org/draft/2019-08/vocab/applicator"/>.
+                <eref target="https://json-schema.org/draft/2019-09/vocab/applicator"/>.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-08/meta/applicator"/>.
+                <eref target="https://json-schema.org/draft/2019-09/meta/applicator"/>.
             </t>
             <t>
                 Updated vocabulary and meta-schema URIs MAY be published between
@@ -2588,7 +2588,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/2019-08/schema",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$defs": {
     "point": {
       "type": "object",
@@ -2801,7 +2801,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         Because this output structure can be quite large, a smaller example is given
                         here for brevity.  The URI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/2019-08/output/verbose-example"/>.
+                        <eref target="https://json-schema.org/draft/2019-09/output/verbose-example"/>.
                     </t>
                     <figure>
                         <artwork>
@@ -2809,7 +2809,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 // schema
 {
   "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/2019-08/schema",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "type": "object",
   "properties": {
     "validProp": true,
@@ -2863,7 +2863,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         For convenience, JSON Schema has been provided to validate output generated
                         by implementations.  Its URI is:
-                        <eref target="https://json-schema.org/draft/2019-08/output/schema"/>.
+                        <eref target="https://json-schema.org/draft/2019-09/output/schema"/>.
                     </t>
                 </section>
 
@@ -3411,7 +3411,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
 <![CDATA[
 // tree schema, extensible
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://example.com/tree",
     "$recursiveAnchor": true,
 
@@ -3429,7 +3429,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
 
 // strict-tree schema, guards against misspelled properties
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://example.com/strict-tree",
     "$recursiveAnchor": true,
 
@@ -3567,19 +3567,19 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-08/schema",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://example.com/meta/general-use-example",
   "$recursiveAnchor": true,
   "$vocabulary": {
-    "https://json-schema.org/draft/2019-08/vocab/core": true,
-    "https://json-schema.org/draft/2019-08/vocab/applicator": true,
-    "https://json-schema.org/draft/2019-08/vocab/validation": true,
+    "https://json-schema.org/draft/2019-09/vocab/core": true,
+    "https://json-schema.org/draft/2019-09/vocab/applicator": true,
+    "https://json-schema.org/draft/2019-09/vocab/validation": true,
     "https://example.com/vocab/example-vocab": true
   },
   "allOf": [
-    {"$ref": "https://json-schema.org/draft/2019-08/meta/core"},
-    {"$ref": "https://json-schema.org/draft/2019-08/meta/applicator"},
-    {"$ref": "https://json-schema.org/draft/2019-08/meta/validation"},
+    {"$ref": "https://json-schema.org/draft/2019-09/meta/core"},
+    {"$ref": "https://json-schema.org/draft/2019-09/meta/applicator"},
+    {"$ref": "https://json-schema.org/draft/2019-09/meta/validation"},
     {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
@@ -3602,7 +3602,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-08/schema",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://example.com/meta/example-vocab",
   "$recursiveAnchor": true,
   "$vocabulary": {
