@@ -1587,7 +1587,14 @@
 
                     <section title='Direct References with "$ref"' anchor="ref">
                         <t>
-                            The "$ref" keyword is used to reference a statically identified schema.
+                            The "$ref" keyword is an applicator that is used to reference a statically
+                            identified schema.  Its results are the results of the referenced schema.
+                            <cref>
+                                Note that this definition of how the results are determined means that
+                                other keywords can appear alongside of "$ref" in the same schema object.
+                            </cref>
+                        </t>
+                        <t>
                             The value of the "$ref" property MUST be a string which is a URI-Reference.
                             Resolved against the current URI base, it produces the URI of the schema
                             to apply.
@@ -1652,6 +1659,10 @@
                                 Note that in the absence of "$recursiveAnchor" (and in some cases
                                 when it is present), "$recursiveRef"'s behavior is identical to
                                 that of "$ref".
+                            </t>
+                            <t>
+                                As with "$ref", the results of this keyword are the results of the
+                                referenced schema.
                             </t>
                         </section>
                         <section title='Enabling Recursion with "$recursiveAnchor"'>
