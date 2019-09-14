@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/draft/2019-08/schema#",
+    "$schema": "https://json-schema.org/draft/2019-08/schema",
     "$id": "https://json-schema.org/draft/2019-08/meta/core",
     "$vocabulary": {
         "https://json-schema.org/draft/2019-08/vocab/core": true
@@ -11,11 +11,17 @@
     "properties": {
         "$id": {
             "type": "string",
-            "format": "uri-reference"
+            "format": "uri-reference",
+            "$comment": "Non-empty fragments not allowed.",
+            "pattern": "^[^#]#?$"
         },
         "$schema": {
             "type": "string",
             "format": "uri"
+        },
+        "$anchor": {
+            "type": "string",
+            "pattern": "^[A-Za-z][-A-Za-z0-9.:_]*$"
         },
         "$ref": {
             "type": "string",

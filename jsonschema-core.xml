@@ -2,6 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC6596 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6596.xml">
 <!ENTITY RFC6839 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6839.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
 <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
@@ -402,10 +403,17 @@
                         additional keywords that are not part of a formal vocabulary.
                     </t>
                 </section>
-                <section title="Root Schema and Subschemas" anchor="root">
+                <section title="Root Schema and Subschemas and Resources" anchor="root">
+                    <t>
+                        A JSON Schema resource is a schema which is
+                        <xref target="RFC6596">canonically</xref> identified by an
+                        <xref target="RFC3986">absolute URI</xref>.
+                    </t>
                     <t>
                         The root schema is the schema that comprises the entire JSON document
-                        in question.
+                        in question.  The root schema is always a schema resource, where the
+                        URI is determined as described in section
+                        <xref target="initial-base" format="counter"></xref>.
                     </t>
                     <t>
                         Some keywords take schemas themselves, allowing JSON Schemas to be nested:
@@ -428,6 +436,15 @@
                     </t>
                     <t>
                         As with the root schema, a subschema is either an object or a boolean.
+                    </t>
+                    <t>
+                        As discussed in section
+                        <xref target="id-keyword" format="counter"></xref>, a JSON Schema document
+                        can contain multiple JSON Schema resources.  When used without qualification,
+                        the term "root schema" refers to the document's root schema.  In some
+                        cases, resource root schemas are discussed.  A resource's root schema
+                        is its top-level schema object, which would also be a document root schema
+                        if the resource were to be extracted to a standalone JSON Schema document.
                     </t>
                 </section>
             </section>
@@ -466,7 +483,7 @@
             <t>
                 Defining and referencing a plain name fragment identifier within an
                 "application/schema+json" document are specified
-                in the <xref target="id-keyword">"$id" keyword</xref> section.
+                in the <xref target="anchor">"$anchor" keyword</xref> section.
             </t>
             <t>
             </t>
@@ -611,7 +628,7 @@
                 <t>
                     Note that some keywords, such as "$schema", apply to the lexical
                     scope of the entire schema document, and therefore MUST only
-                    appear in the document's root schema.
+                    appear in a schema resource's root schema.
                 </t>
                 <t>
                     Other keywords may take into account the dynamic scope that
@@ -1124,11 +1141,15 @@
                         media type "application/schema+json".
                     </t>
                     <t>
-                        The "$schema" keyword SHOULD be used in a root schema.
-                        It MUST NOT appear in subschemas.  If absent from the root schema, the
+                        The "$schema" keyword SHOULD be used in a resource root schema.
+                        It MUST NOT appear in resource subschemas.  If absent from the root schema, the
                         resulting behavior is implementation-defined.
                     </t>
                     <t>
+                        If multiple schema resources are present in a single document, then all
+                        schema resources SHOULD Have the same value for "$schema".  The result of
+                        differing values for "$schema" within the same schema document is
+                        implementation-defined.
                         <cref>
                             Using multiple "$schema" keywords in the same document would imply that the
                             feature set and therefore behavior can change within a document.  This would
@@ -1137,6 +1158,12 @@
                             schemas is likely to remain the best practice for schema authoring,
                             implementation behavior is subject to be revised or liberalized in
                             future drafts.
+                        </cref>
+                        <cref>
+                            The exception made for embedded schema resources is to
+                            allow bundling multiple schema resources into a single schema document
+                            without needing to change their contents, as described later in this
+                            specification.
                         </cref>
                         <!--
                             In particular, the process of validating an instance, including validating a
@@ -1454,14 +1481,19 @@
                 </section>
             </section>
 
-            <section title="Base URI and Dereferencing">
+            <section title="Base URI, Anchors, and Dereferencing">
                 <t>
                     To differentiate between schemas in a vast ecosystem, schemas are
                     identified by <xref target="RFC3986">URI</xref>, and can embed references
                     to other schemas by specifying their URI.
                 </t>
+                <t>
+                    Several keywords can accept a relative <xref target="RFC3986">URI-reference</xref>,
+                    or a value used to construct a relative URI-reference.  For these keywords,
+                    it is necessary to establish a base URI in order to resolve the reference.
+                </t>
 
-                <section title="Initial Base URI">
+                <section title="Initial Base URI" anchor="initial-base">
                     <t>
                         <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
                         default base URI of a document.
@@ -1472,8 +1504,8 @@
                         situation identifiable by a URI of any known scheme.
                     </t>
                     <t>
-                        If a schema document defines no explicit base URI with "$id" (embedded in content),
-                        the base URI is that determined per
+                        If a schema document defines no explicit base URI with "$id"
+                        (embedded in content), the base URI is that determined per
                         <xref target="RFC3986">RFC 3986 section 5</xref>.
                     </t>
                     <t>
@@ -1482,87 +1514,223 @@
                         <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
                         that implementations document any default base URI that they assume.
                     </t>
+                    <t>
+                        Unless the "$id" keyword described in the next section is present in the
+                        root schema, this base URI SHOULD be considered the canonical URI of the
+                        schema document's root schema resource.
+                    </t>
                 </section>
 
                 <section title='The "$id" Keyword' anchor="id-keyword">
                     <t>
-                        The "$id" keyword defines a URI for the schema, and the base URI that
-                        other URI references within the schema are resolved against.
-                        A subschema's "$id" is resolved against the base URI of its parent schema.
-                        If no parent schema defines an explicit base URI with "$id", the base URI
-                        is that of the entire document, as determined per
-                        <xref target="RFC3986">RFC 3986 section 5</xref>.
+                        The "$id" keyword identifies a schema resource with its
+                        <xref target="RFC6596">canonical</xref> URI.
+                    </t>
+                    <t>
+                        Note that this URI is an identifier and not necessarily a network locator.
+                        In the case of a network-addressable URL, a schema need not be downloadable
+                        from its canonical URI.
                     </t>
                     <t>
                         If present, the value for this keyword MUST be a string, and MUST represent a
-                        valid <xref target="RFC3986">URI-reference</xref>.
-                        This value SHOULD be normalized, and SHOULD NOT be an empty fragment &lt;#&gt;
-                        or an empty string &lt;&gt;.
+                        valid <xref target="RFC3986">URI-reference</xref>.  This URI-reference
+                        SHOULD be normalized, and MUST resolve to an
+                        <xref target="RFC3986">absolute-URI</xref> (without a fragment).  Therefore,
+                        "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT contain an
+                        empty fragment.
+                    </t>
+                    <t>
+                        Since an empty fragment in the context of the application/schema+json media
+                        type refers to the same resource as the base URI without a fragment,
+                        an implementation MAY normalize a URI ending with an empty fragment by removing
+                        the fragment.  However, schema authors SHOULD NOT rely on this behavior
+                        across implementations.
+                        <cref>
+                            This is primarily allowed because older meta-schemas have an empty
+                            fragment in their $id (or previously, id).  A future draft may outright
+                            forbid even empty fragments in "$id".
+                        </cref>
+                    </t>
+                    <t>
+                        This URI also serves as the base URI for relative URI-references in keywords
+                        within the schema resource, in accordance with
+                        <xref target="RFC3986">RFC 3986 section 5.1.1</xref> regarding base URIs
+                        embedded in content.
+                    </t>
+                    <t>
+                        The presence of "$id" in a subschema indicates that the subschema constitutes
+                        a distinct schema resource within a single schema document.  Furthermore,
+                        in accordance with <xref target="RFC3986">RFC 3986 section 5.1.2</xref>
+                        regarding encapsulating entities, if an "$id" in a subschema is a relative
+                        URI-reference, the base URI for resolving that reference is the URI of
+                        the parent schema resource.
+                    </t>
+                    <t>
+                        If no parent schema object explicitly identifies itself as a resource
+                        with "$id", the base URI is that of the entire document, as established
+                        by the steps given in the <xref target="initial-base">previous section.</xref>
                     </t>
                     <section title="Identifying the root schema">
                         <t>
-                            The root schema of a JSON Schema document SHOULD contain an "$id" keyword with
-                            an <xref target="RFC3986">absolute-URI</xref> (containing a scheme, but no fragment),
-                            or this absolute URI but with an empty fragment.
-                            <!-- All of the standard meta-schemas use an empty fragment in their id/$id values. -->
+                            The root schema of a JSON Schema document SHOULD contain an "$id" keyword
+                            with an <xref target="RFC3986">absolute-URI</xref> (containing a scheme,
+                            but no fragment).
                         </t>
                     </section>
-                    <section title="Changing the base URI within a schema file">
+                    <section title="JSON Pointer fragments and embedded schema resources"
+                             anchor="embedded">
                         <t>
-                            When an "$id" sets the base URI, the object containing that "$id" and all of
-                            its subschemas can be identified by using a JSON Pointer fragment starting
-                            from that location.  This is true even of subschemas that further change the
-                            base URI.  Therefore, a single subschema may be accessible by multiple URIs,
-                            each consisting of base URI declared in the subschema or a parent, along with
-                            a JSON Pointer fragment identifying the path from the schema object that
-                            declares the base to the subschema being identified.  Examples of this are
-                            shown in section <xref target="idExamples" format="counter"></xref>.
-                        </t>
-                    </section>
-                    <section title="Location-independent identifiers">
-                        <t>
-                            Using JSON Pointer fragments requires knowledge of the structure of the schema.
-                            When writing schema documents with the intention to provide re-usable
-                            schemas, it may be preferable to use a plain name fragment that is not tied to
-                            any particular structural location.  This allows a subschema to be relocated
-                            without requiring JSON Pointer references to be updated.
+                            Since JSON Pointer URI fragments are constructed based on the structure
+                            of the schema document, an embedded schema resource and its subschemas
+                            can be identified by JSON Pointer fragments relative to either its own
+                            canonical URI, or relative to the containing resource's URI.
                         </t>
                         <t>
-                            To specify such a subschema identifier,
-                            the "$id" keyword is set to a URI reference with a plain name fragment (not a JSON Pointer fragment).
-                            This value MUST begin with the number sign that specifies a fragment ("#"),
-                            then a letter ([A-Za-z]),
-                            followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"),
-                            colons (":"), or periods (".").
+                            Conceptually, a set of linked schema resources should behave
+                            identically whether each resource is a separate document connected with
+                            <xref target="references">schema references</xref>, or is structured as
+                            a single document with one or more schema resources embedded as
+                            subschemas.
                         </t>
                         <t>
-                            The effect of using a fragment in "$id" that isn't blank or doesn't follow the
-                            plain name syntax is undefined.
-                            <cref>
-                                How should an "$id" URI reference containing a fragment with other components
-                                be interpreted?  There are two cases:  when the other components match
-                                the current base URI and when they change the base URI.
-                            </cref>
+                            Since URIs involving JSON Pointer fragments relative to the parent
+                            schema resource's URI cease to be valid when the embedded schema
+                            is moved to a separate document and referenced, applications and schemas
+                            SHOULD NOT use such URIs to identify embedded schema resources or
+                            locations within them.
                         </t>
-                    </section>
-                    <section title="Schema identification examples" anchor="idExamples">
                         <figure>
                             <preamble>
-                                Consider the following schema, which shows "$id" being used to identify
-                                the root schema, change the base URI for subschemas, and assign plain
-                                name fragments to subschemas:
+                                Consider the following schema document that contains another
+                                schema resource embedded within it:
                             </preamble>
                             <artwork>
 <![CDATA[
 {
+  "$id": "https://example.com/foo",
+  "items": {
+    "$id": "https://example.com/bar",
+    "additionalProperties": { }
+  }
+}
+]]>
+                            </artwork>
+                            <postamble>
+                                The URI "https://example.com/foo#/items/additionalProperties"
+                                points to the schema of the "additionalProperties" keyword in
+                                the embedded resource.  The canonical URI of that schema, however,
+                                is "https://example.com/bar#/additionalProperties".
+                            </postamble>
+                        </figure>
+                        <figure>
+                            <preamble>
+                                Now consider the following two schema resources linked by reference
+                                using a URI value for "$ref":
+                            </preamble>
+                            <artwork>
+<![CDATA[
+{
+  "$id": "https://example.com/foo",
+  "items": {
+    "$ref": "bar"
+  }
+}
+
+{
+  "$id": "https://example.com/bar",
+  "additionalProperties": { }
+}
+]]>
+                            </artwork>
+                            <postamble>
+                                Here we see that the canonical URI for that "additionalProperties"
+                                subschema is still valid, while the non-canonical URI with the fragment
+                                beginning with "#/items/$ref" now resolves to nothing.
+                            </postamble>
+                        </figure>
+                        <t>
+                            Note also that "https://example.com/foo#/items" is valid in both
+                            arrangments, but resolves to a different value.  This URI ends up
+                            functioning similarly to a retrieval URI for a resource.  While valid,
+                            examining the resolved value and either using the "$id" (if the value
+                            is a subschema), or resolving the reference and using the "$id" of the
+                            reference target, is preferable.
+                        </t>
+                        <t>
+                            An implementation MAY choose not to support addressing schemas
+                            by non-canonical URIs. As such, it is RECOMENDED that schema authors only 
+                            use canonical URIs, as using non-canonical URIs may reduce
+                            schema interoperability.
+                            <cref>
+                                This is to avoid requiring implementations to keep track of a whole
+                                stack of possible base URIs and JSON Pointer fragments for each,
+                                given that all but one will be fragile if the schema resources
+                                are reorganized.  Some have argued that this is easy so there is
+                                no point in forbidding it, while others have argued that it complicates
+                                schema identification and should be forbidden.  Feedback on this
+                                topic is encouraged.
+                            </cref>
+                        </t>
+                        <t>
+                            Further examples of such non-canonical URIs, as well as the appropriate
+                            canonical URIs to use instead, are provided in section
+                            <xref target="idExamples" format="counter"></xref>.
+                        </t>
+                    </section>
+                </section>
+                <section title='Defining location-independent identifiers with "$anchor"'
+                         anchor="anchor">
+                    <t>
+                        Using JSON Pointer fragments requires knowledge of the structure of the schema.
+                        When writing schema documents with the intention to provide re-usable
+                        schemas, it may be preferable to use a plain name fragment that is not tied to
+                        any particular structural location.  This allows a subschema to be relocated
+                        without requiring JSON Pointer references to be updated.
+                    </t>
+                    <t>
+                        The "$anchor" keyword is used to specify such a fragment.
+                    </t>
+                    <t>
+                        If present, the value of this keyword MUST be a string, which MUST start with
+                        a letter ([A-Za-z]), followed by any number of letters, digits ([0-9]),
+                        hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                        <cref>
+                            Note that the anchor string does not include the "#" character,
+                            as it is not a URI-reference.  An "$anchor": "foo" becomes the
+                            fragment "#foo" when used in a URI.  See below for full examples.
+                        </cref>
+                    </t>
+                    <t>
+                        The base URI to which the resulting fragment is appended is determined
+                        by the "$id" keyword as explained in the previous section.
+                        Two "$anchor" keywords in the same schema document MAY have the same
+                        value if they apply to different base URIs, as the resulting full URIs
+                        will be distinct.  However, the effect of two "$anchor" keywords with the
+                        same value and the same base URI is undefined.  Implementations MAY
+                        raise an error if such usage is detected.
+                    </t>
+                </section>
+                <section title="Schema identification examples" anchor="idExamples">
+                    <figure>
+                        <preamble>
+                            Consider the following schema, which shows "$id" being used to identify
+                            both the root schema and various subschemas, and "$anchor" being used
+                            to define plain name fragment identifiers.
+                        </preamble>
+                        <artwork>
+<![CDATA[
+{
     "$id": "https://example.com/root.json",
     "$defs": {
-        "A": { "$id": "#foo" },
+        "A": { "$anchor": "foo" },
         "B": {
             "$id": "other.json",
             "$defs": {
-                "X": { "$id": "#bar" },
-                "Y": { "$id": "t/inner.json" }
+                "X": { "$anchor": "bar" },
+                "Y": {
+                    "$id": "t/inner.json",
+                    "$anchor": "bar"
+                }
             }
         },
         "C": {
@@ -1571,63 +1739,99 @@
     }
 }
 ]]>
-                            </artwork>
-                        </figure>
-                        <t>
-                            The schemas at the following URI-encoded <xref target="RFC6901">JSON
-                            Pointers</xref> (relative to the root schema) have the following
-                            base URIs, and are identifiable by any listed URI in accordance with
-                            Section <xref target="fragments" format="counter"></xref> above:
-                        </t>
-                        <t>
-                            <list style="hanging">
-                                <t hangText="# (document root)">
-                                    <list>
-                                        <t>https://example.com/root.json</t>
-                                        <t>https://example.com/root.json#</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/A">
-                                    <list>
-                                        <t>https://example.com/root.json#foo</t>
-                                        <t>https://example.com/root.json#/$defs/A</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/B">
-                                    <list>
-                                        <t>https://example.com/other.json</t>
-                                        <t>https://example.com/other.json#</t>
-                                        <t>https://example.com/root.json#/$defs/B</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/B/$defs/X">
-                                    <list>
-                                        <t>https://example.com/other.json#bar</t>
-                                        <t>https://example.com/other.json#/$defs/X</t>
-                                        <t>https://example.com/root.json#/$defs/B/$defs/X</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/B/$defs/Y">
-                                    <list>
-                                        <t>https://example.com/t/inner.json</t>
-                                        <t>https://example.com/t/inner.json#</t>
-                                        <t>https://example.com/other.json#/$defs/Y</t>
-                                        <t>https://example.com/root.json#/$defs/B/$defs/Y</t>
-                                    </list>
-                                </t>
-                                <t hangText="#/$defs/C">
-                                    <list>
-                                        <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</t>
-                                        <t>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</t>
-                                        <t>https://example.com/root.json#/$defs/C</t>
-                                    </list>
-                                </t>
-                            </list>
-                        </t>
-                    </section>
+                        </artwork>
+                    </figure>
+                    <t>
+                        The schemas at the following URI-encoded <xref target="RFC6901">JSON
+                        Pointers</xref> (relative to the root schema) have the following
+                        base URIs, and are identifiable by any listed URI in accordance with
+                        sections <xref target="fragments" format="counter"></xref> and
+                        <xref target="embedded" format="counter"></xref> above.  As previously
+                        noted, support for non-canonical URIs is OPTIONAL.
+                    </t>
+                    <t>
+                        <list style="hanging">
+                            <t hangText="# (document root)">
+                                <list style="hanging">
+                                    <t hangText="canonical absolute-URI (and also base URI)">
+                                        https://example.com/root.json
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/root.json#
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/A">
+                                <list>
+                                    <t hangText="base URI">https://example.com/root.json</t>
+                                    <t hangText="canonical URI with plain fragment">
+                                        https://example.com/root.json#foo
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/root.json#/$defs/A
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/B">
+                                <list style="hanging">
+                                    <t hangText="base URI">https://example.com/other.json</t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/other.json#
+                                    </t>
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
+                                        https://example.com/root.json#/$defs/B
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/B/$defs/X">
+                                <list style="hanging">
+                                    <t hangText="base URI">https://example.com/other.json</t>
+                                    <t hangText="canonical URI with plain fragment">
+                                        https://example.com/other.json#bar
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/other.json#/$defs/X
+                                    </t>
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
+                                        https://example.com/root.json#/$defs/B/$defs/X
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/B/$defs/Y">
+                                <list style="hanging">
+                                    <t hangText="base URI">https://example.com/t/inner.json</t>
+                                    <t hangText="canonical URI with plain fragment">
+                                        https://example.com/t/inner.json#bar
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        https://example.com/t/inner.json#
+                                    </t>
+                                    <t hangText="non-canonical URI with fragment relative to other.json">
+                                        https://example.com/other.json#/$defs/Y
+                                    </t>
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
+                                        https://example.com/root.json#/$defs/B/$defs/Y
+                                    </t>
+                                </list>
+                            </t>
+                            <t hangText="#/$defs/C">
+                                <list style="hanging">
+                                    <t hangText="base URI">
+                                        urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f
+                                    </t>
+                                    <t hangText="canonical URI with pointer fragment">
+                                        urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#
+                                    </t>
+                                    <t hangText="non-canonical URI with fragment relative to root.json">
+                                        https://example.com/root.json#/$defs/C
+                                    </t>
+                                </list>
+                            </t>
+                        </list>
+                    </t>
                 </section>
 
-                <section title="Schema References">
+                <section title="Schema References" anchor="references">
                     <t>
                         Several keywords can be used to reference a schema which is to be applied to the
                         current instance location. "$ref" and "$recursiveRef" are applicator
@@ -1652,11 +1856,9 @@
                     <section title='Direct References with "$ref"' anchor="ref">
                         <t>
                             The "$ref" keyword is used to reference a statically identified schema.
-                        </t>
-                        <t>
-                            The value of the "$ref" property MUST be a string which is a URI Reference.
-                            Resolved against the current URI base, it identifies the URI of a schema
-                            to use.
+                            The value of the "$ref" property MUST be a string which is a URI-Reference.
+                            Resolved against the current URI base, it produces the URI of the schema
+                            to apply.
                         </t>
                     </section>
 
@@ -1964,7 +2166,7 @@
     },
     "$defs": {
         "single": {
-            "$id": "#item",
+            "$anchor": "item",
             "type": "object",
             "additionalProperties": { "$ref": "other.json" }
         }
@@ -2765,8 +2967,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <artwork>
 <![CDATA[
 {
-  "$id": "https://example.com/polygon#",
-  "$schema": "https://json-schema.org/draft/2019-08/schema#",
+  "$id": "https://example.com/polygon",
+  "$schema": "https://json-schema.org/draft/2019-08/schema",
   "$defs": {
     "point": {
       "type": "object",
@@ -2986,8 +3188,8 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 // schema
 {
-  "$id": "https://example.com/polygon#",
-  "$schema": "https://json-schema.org/draft/2019-08/schema#",
+  "$id": "https://example.com/polygon",
+  "$schema": "https://json-schema.org/draft/2019-08/schema",
   "type": "object",
   "properties": {
     "validProp": true,
@@ -3368,6 +3570,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
         </references>
 
         <references title="Informative References">
+            &RFC6596;
             &RFC7049;
             &RFC7231;
             &RFC8288;
@@ -3451,6 +3654,9 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
                             <t>Additional guidance on initial base URIs beyond network retrieval</t>
                             <t>Allow "schema" media type parameter for "application/schema+json"</t>
                             <t>Better explanation of media type parameters and the HTTP Accept header</t>
+                            <t>Use "$id" to establish canonical and base absolute-URIs only, no fragments</t>
+                            <t>Replace plain-name-fragment-only form of $id with $anchor</t>
+                            <t>Clarified that the behavior of JSON Pointers across $id boundary is unreliable</t>
                         </list>
                     </t>
                     <t hangText="draft-handrews-json-schema-01">
