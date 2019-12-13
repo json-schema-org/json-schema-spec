@@ -1,4 +1,5 @@
 # Welcome to JSON Schema
+[![Financial Contributors on Open Collective](https://opencollective.com/json-schema/all/badge.svg?label=financial+contributors)](https://opencollective.com/json-schema) 
 
 JSON Schema is a vocabulary that allows you to validate, annotate, and manipulate JSON documents.
 
@@ -54,6 +55,36 @@ Conformance tests for JSON Schema and its vocabularies may be found
 The JSON Schema web site is at http://json-schema.org/
 
 The source for the website is [maintained in a separate repository](https://github.com/json-schema-org/json-schema-org.github.io).
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/json-schema-org/json-schema-spec/graphs/contributors"><img src="https://opencollective.com/json-schema/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/json-schema/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/json-schema"><img src="https://opencollective.com/json-schema/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/json-schema/contribute)]
+
+<a href="https://opencollective.com/json-schema/organization/0/website"><img src="https://opencollective.com/json-schema/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/1/website"><img src="https://opencollective.com/json-schema/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/2/website"><img src="https://opencollective.com/json-schema/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/3/website"><img src="https://opencollective.com/json-schema/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/4/website"><img src="https://opencollective.com/json-schema/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/5/website"><img src="https://opencollective.com/json-schema/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/6/website"><img src="https://opencollective.com/json-schema/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/7/website"><img src="https://opencollective.com/json-schema/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/8/website"><img src="https://opencollective.com/json-schema/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/organization/9/website"><img src="https://opencollective.com/json-schema/organization/9/avatar.svg"></a>
 
 ## License
 
