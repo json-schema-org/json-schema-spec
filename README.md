@@ -66,25 +66,26 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 ### Financial Contributors
 
 Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/json-schema/contribute)]
+#### Sponsors
+
+Here are our top sponsors. You could be next!
+
+[[Become a sponsor](https://opencollective.com/json-schema#sponsor)]
+
+<a href="https://opencollective.com/json-schema/sponsor/0/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/1/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/2/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/3/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/4/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/5/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/6/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/7/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/8/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/json-schema/sponsor/9/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/9/avatar.svg"></a>
 
 #### Individuals
 
 <a href="https://opencollective.com/json-schema"><img src="https://opencollective.com/json-schema/individuals.svg?width=890"></a>
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/json-schema/contribute)]
-
-<a href="https://opencollective.com/json-schema/organization/0/website"><img src="https://opencollective.com/json-schema/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/1/website"><img src="https://opencollective.com/json-schema/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/2/website"><img src="https://opencollective.com/json-schema/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/3/website"><img src="https://opencollective.com/json-schema/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/4/website"><img src="https://opencollective.com/json-schema/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/5/website"><img src="https://opencollective.com/json-schema/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/6/website"><img src="https://opencollective.com/json-schema/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/7/website"><img src="https://opencollective.com/json-schema/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/8/website"><img src="https://opencollective.com/json-schema/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/json-schema/organization/9/website"><img src="https://opencollective.com/json-schema/organization/9/avatar.svg"></a>
 
 ## License
 
