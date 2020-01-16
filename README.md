@@ -68,9 +68,7 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/json-schema/contribute)]
 #### Sponsors
 
-Here are our top sponsors. You could be next!
-
-[[Become a sponsor](https://opencollective.com/json-schema#sponsor)]
+Here are our top sponsors. You could be next! [[Become a sponsor](https://opencollective.com/json-schema#sponsor)]
 
 <a href="https://opencollective.com/json-schema/sponsor/0/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/json-schema/sponsor/1/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/1/avatar.svg"></a>
