@@ -211,12 +211,12 @@
                         depending on the type:
 
                         <list style="hanging">
-                            <t hangText="null:">A JSON "null" production</t>
-                            <t hangText="boolean:">A "true" or "false" value, from the JSON "true" or "false" productions</t>
-                            <t hangText="object:">An unordered set of properties mapping a string to an instance, from the JSON "object" production</t>
-                            <t hangText="array:">An ordered list of instances, from the JSON "array" production</t>
-                            <t hangText="number:">An arbitrary-precision, base-10 decimal number value, from the JSON "number" production</t>
-                            <t hangText="string:">A string of Unicode code points, from the JSON "string" production</t>
+                            <t hangText="null:">A JSON "null" value</t>
+                            <t hangText="boolean:">A "true" or "false" value, from the JSON "true" or "false" value</t>
+                            <t hangText="object:">An unordered set of properties mapping a string to an instance, from the JSON "object" value</t>
+                            <t hangText="array:">An ordered list of instances, from the JSON "array" value</t>
+                            <t hangText="number:">An arbitrary-precision, base-10 decimal number value, from the JSON "number" value</t>
+                            <t hangText="string:">A string of Unicode code points, from the JSON "string" value</t>
                         </list>
                     </t>
                     <t>
@@ -231,8 +231,8 @@
                     </t>
                     <t>
                         Since an object cannot have two properties with the same key, behavior for a
-                        JSON document that tries to define two properties (the "member" production) with
-                        the same key (the "string" production) in a single object is undefined.
+                        JSON document that tries to define two properties with
+                        the same key in a single object is undefined.
                     </t>
                     <t>
                         Note that JSON Schema vocabularies are free to define their own extended
