@@ -1767,6 +1767,10 @@
                             URI to identify more than one schema. When multiple schemas try to identify
                             as the same URI, validators SHOULD raise an error condition.
                         </t>
+                        <t>
+                            As with all schemas, a referenced schema SHOULD be processed according to its define "$schema"
+                            and "$vocabulary" values, if defined.
+                        </t>
                     </section>
                     <section title="Dereferencing">
                         <t>
