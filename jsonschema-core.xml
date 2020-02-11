@@ -455,6 +455,68 @@
 
         </section>
 
+        <section title="Principles">
+            <t>
+                JSON Schema is built on several principles, which both explain various design
+                choices, and provide guidance on how to extend the specification effectively.
+            </t>
+            <!-- Links will be added to relevant spec parts after the sections are reorganized
+                 to create the new schema loading section -->
+            <t>
+                <list>
+                    <t>
+                        All syntactically legal JSON documents with well-defined behavior are fully
+                        supported as instance data.  Notably, JSON objects with duplicate property
+                        names are syntactically legal but not well-defined.
+                    </t>
+                    <t>
+                        JSON Schema is defined over a data model, not JSON text.  Therefore
+                        JSON Schema can be used with any data format that can be reliably parsed
+                        into the data model.
+                    </t>
+                    <t>
+                        Locations in schemas and instances are always identified by URIs,
+                        JSON Pointers, or Relative JSON Pointers.  JSON Schema treats URIs as
+                        identifiers only.  Locating and retrieving URI-identified resources
+                        is outside of the scope of this specification.
+                    </t>
+                    <t>
+                        Schema URIs referenced or defined in JSON Schema's Core vocabulary MUST be
+                        resolvable without instance data.
+                    </t>
+                    <t>
+                        Once schema URIs are resolved, the result of applying a schema object
+                        to instance data is data is a function of that schema object and its
+                        dynamic-scope subschemas.  Parent schemas have no effect on results.
+                    </t>
+                    <t>
+                        Each keyword's behavior falls into one or more behavioral classifications.
+                        A keyword's classification MUST be the same for all values of the keyword.
+                    </t>
+                    <t>
+                        Keywords produce a boolean assertion result, and an annotation result that
+                        can be of any type.  Depending on the classification, the assertion result
+                        might always be true, or the annotation result might always be empty.
+                    </t>
+                    <t>
+                        Keyword results MAY be defined in terms of the results of other keywords
+                        in the same schema object, as long as no cyclic dependencies are produced.
+                    </t>
+                    <t>
+                        JSON Schema assertions form a constraint system.  The empty schema,
+                        <spanx style="verb">{}</spanx>, allows everything and constrains nothing.
+                        Each assertion keyword adds constraints; keywords MUST NOT remove constraints.
+                    </t>
+                    <t>
+                        JSON Schema annotations provide a flexible way to convey information for
+                        an application to use.  The information can be used with instance data,
+                        or can be used directly from schemas to generate systems for use with
+                        conforming instances.
+                    </t>
+                </list>
+            </t>
+        </section>
+
         <section title="Fragment Identifiers" anchor="fragments">
             <t>
                 In accordance with section 3.1 of <xref target="RFC6839">RFC 6839</xref>,
