@@ -1306,30 +1306,6 @@
                         as those listed here.
                     </t>
                 </section>
-                <section title="Detecting a Meta-Schema">
-                    <t>
-                        Implementations MUST recognize a schema as a meta-schema if it
-                        is being examined because it was identified as such by another
-                        schema's "$schema" keyword.  This means that a single schema
-                        document might sometimes be considered a regular schema, and
-                        other times be considered a meta-schema.
-                    </t>
-                    <t>
-                        In the case of examining a schema which is its own meta-schema,
-                        when an implementation begins processing it as a regular schema,
-                        it is processed under those rules.  However, when loaded a second
-                        time as a result of checking its own "$schema" value, it is treated
-                        as a meta-schema.  So the same document is processed both ways in
-                        the course of one session.
-                    </t>
-                    <t>
-                        Implementations MAY allow a schema to be explicitly passed as a meta-schema,
-                        for implementation-specific purposes, such as pre-loading a commonly
-                        used meta-schema and checking its vocabulary support requirements
-                        up front.  Meta-schema authors MUST NOT expect such features to be
-                        interoperable across implementations.
-                    </t>
-                </section>
             </section>
 
             <section title="Base URI, Anchors, and Dereferencing">
@@ -1343,34 +1319,6 @@
                     or a value used to construct a relative URI-reference.  For these keywords,
                     it is necessary to establish a base URI in order to resolve the reference.
                 </t>
-
-                <section title="Initial Base URI" anchor="initial-base">
-                    <t>
-                        <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
-                        default base URI of a document.
-                    </t>
-                    <t>
-                        Informatively, the initial base URI of a schema is the URI at which it was
-                        found, whether that was a network location, a local filesystem, or any other
-                        situation identifiable by a URI of any known scheme.
-                    </t>
-                    <t>
-                        If a schema document defines no explicit base URI with "$id"
-                        (embedded in content), the base URI is that determined per
-                        <xref target="RFC3986">RFC 3986 section 5</xref>.
-                    </t>
-                    <t>
-                        If no source is known, or no URI scheme is known for the source, a suitable
-                        implementation-specific default URI MAY be used as described in
-                        <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
-                        that implementations document any default base URI that they assume.
-                    </t>
-                    <t>
-                        Unless the "$id" keyword described in the next section is present in the
-                        root schema, this base URI SHOULD be considered the canonical URI of the
-                        schema document's root schema resource.
-                    </t>
-                </section>
 
                 <section title='The "$id" Keyword' anchor="id-keyword">
                     <t>
@@ -1426,106 +1374,6 @@
                             The root schema of a JSON Schema document SHOULD contain an "$id" keyword
                             with an <xref target="RFC3986">absolute-URI</xref> (containing a scheme,
                             but no fragment).
-                        </t>
-                    </section>
-                    <section title="JSON Pointer fragments and embedded schema resources"
-                             anchor="embedded">
-                        <t>
-                            Since JSON Pointer URI fragments are constructed based on the structure
-                            of the schema document, an embedded schema resource and its subschemas
-                            can be identified by JSON Pointer fragments relative to either its own
-                            canonical URI, or relative to the containing resource's URI.
-                        </t>
-                        <t>
-                            Conceptually, a set of linked schema resources should behave
-                            identically whether each resource is a separate document connected with
-                            <xref target="references">schema references</xref>, or is structured as
-                            a single document with one or more schema resources embedded as
-                            subschemas.
-                        </t>
-                        <t>
-                            Since URIs involving JSON Pointer fragments relative to the parent
-                            schema resource's URI cease to be valid when the embedded schema
-                            is moved to a separate document and referenced, applications and schemas
-                            SHOULD NOT use such URIs to identify embedded schema resources or
-                            locations within them.
-                        </t>
-                        <figure>
-                            <preamble>
-                                Consider the following schema document that contains another
-                                schema resource embedded within it:
-                            </preamble>
-                            <artwork>
-<![CDATA[
-{
-  "$id": "https://example.com/foo",
-  "items": {
-    "$id": "https://example.com/bar",
-    "additionalProperties": { }
-  }
-}
-]]>
-                            </artwork>
-                            <postamble>
-                                The URI "https://example.com/foo#/items/additionalProperties"
-                                points to the schema of the "additionalProperties" keyword in
-                                the embedded resource.  The canonical URI of that schema, however,
-                                is "https://example.com/bar#/additionalProperties".
-                            </postamble>
-                        </figure>
-                        <figure>
-                            <preamble>
-                                Now consider the following two schema resources linked by reference
-                                using a URI value for "$ref":
-                            </preamble>
-                            <artwork>
-<![CDATA[
-{
-  "$id": "https://example.com/foo",
-  "items": {
-    "$ref": "bar"
-  }
-}
-
-{
-  "$id": "https://example.com/bar",
-  "additionalProperties": { }
-}
-]]>
-                            </artwork>
-                            <postamble>
-                                Here we see that the canonical URI for that "additionalProperties"
-                                subschema is still valid, while the non-canonical URI with the fragment
-                                beginning with "#/items/$ref" now resolves to nothing.
-                            </postamble>
-                        </figure>
-                        <t>
-                            Note also that "https://example.com/foo#/items" is valid in both
-                            arrangments, but resolves to a different value.  This URI ends up
-                            functioning similarly to a retrieval URI for a resource.  While valid,
-                            examining the resolved value and either using the "$id" (if the value
-                            is a subschema), or resolving the reference and using the "$id" of the
-                            reference target, is preferable.
-                        </t>
-                        <t>
-                            An implementation MAY choose not to support addressing schemas
-                            by non-canonical URIs. As such, it is RECOMENDED that schema authors only
-                            use canonical URIs, as using non-canonical URIs may reduce
-                            schema interoperability.
-                            <cref>
-                                This is to avoid requiring implementations to keep track of a whole
-                                stack of possible base URIs and JSON Pointer fragments for each,
-                                given that all but one will be fragile if the schema resources
-                                are reorganized.  Some have argued that this is easy so there is
-                                no point in forbidding it, while others have argued that it complicates
-                                schema identification and should be forbidden.  Feedback on this
-                                topic is encouraged.
-                            </cref>
-                        </t>
-                        <t>
-                            Further examples of such non-canonical URIs, as well as the appropriate
-                            canonical URIs to use instead, are provided in appendix
-                            <xref target="idExamples" format="counter"></xref>.
                         </t>
                     </section>
                 </section>
@@ -1696,141 +1544,6 @@
                         </section>
                     </section>
 
-                    <section title="Guarding Against Infinite Recursion">
-                        <t>
-                            A schema MUST NOT be run into an infinite loop against an instance. For
-                            example, if two schemas "#alice" and "#bob" both have an "allOf" property
-                            that refers to the other, a naive validator might get stuck in an infinite
-                            recursive loop trying to validate the instance.  Schemas SHOULD NOT make
-                            use of infinite recursive nesting like this; the behavior is undefined.
-                        </t>
-                    </section>
-
-                    <section title="References to Possible Non-Schemas" anchor="non-schemas">
-                        <t>
-                            Subschema objects (or booleans) are recognized by their use with known
-                            applicator keywords or with location-reserving keywords such as
-                            <xref target="defs">"$defs"</xref> that take one or more subschemas
-                            as a value.  These keywords may be "$defs" and the standard applicators
-                            from this document, or extension keywords from a known vocabulary, or
-                            implementation-specific custom keywords.
-                        </t>
-                        <t>
-                            Multi-level structures of unknown keywords are capable of introducing
-                            nested subschemas, which would be subject to the processing rules for
-                            "$id".  Therefore, having a reference target in such an unrecognized
-                            structure cannot be reliably implemented, and the resulting behavior
-                            is undefined.  Similarly, a reference target under a known keyword,
-                            for which the value is known not to be a schema, results in undefined
-                            behavior in order to avoid burdening implementations with the need
-                            to detect such targets.
-                            <cref>
-                                These scenarios are analogous to fetching a schema over HTTP
-                                but receiving a response with a Content-Type other than
-                                application/schema+json.  An implementation can certainly
-                                try to interpret it as a schema, but the origin server
-                                offered no guarantee that it actually is any such thing.
-                                Therefore, interpreting it as such has security implications
-                                and may produce unpredictable results.
-                            </cref>
-                        </t>
-                        <t>
-                            Note that single-level custom keywords with identical syntax and
-                            semantics to "$defs" do not allow for any intervening "$id" keywords,
-                            and therefore will behave correctly under implementations that attempt
-                            to use any reference target as a schema.  However, this behavior is
-                            implementation-specific and MUST NOT be relied upon for interoperability.
-                        </t>
-                    </section>
-
-                    <section title="Loading a referenced schema">
-                        <t>
-                            The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
-                            but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
-                            and the URIs that identify them.
-                        </t>
-                        <t>
-                            When schemas are downloaded,
-                            for example by a generic user-agent that doesn't know until runtime which schemas to download,
-                            see <xref target="hypermedia">Usage for Hypermedia</xref>.
-                        </t>
-                        <t>
-                            Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
-                            schema and/or automatically associate a schema's "$id"-given URI, depending
-                            on the trust that the validator has in the schema.  Such URIs and schemas
-                            can be supplied to an implementation prior to processing instances, or may
-                            be noted within a schema document as it is processed, producing associations
-                            as shown in appendix <xref target="idExamples" format="counter"></xref>.
-                        </t>
-                        <t>
-                            A schema MAY (and likely will) have multiple URIs, but there is no way for a
-                            URI to identify more than one schema. When multiple schemas try to identify
-                            as the same URI, validators SHOULD raise an error condition.
-                        </t>
-                    </section>
-                    <section title="Dereferencing">
-                        <t>
-                            Schemas can be identified by any URI that has been given to them, including
-                            a JSON Pointer or their URI given directly by "$id".  In all cases,
-                            dereferencing a "$ref" reference involves first resolving its value as a
-                            URI reference against the current base URI per
-                            <xref target="RFC3986">RFC 3986</xref>.
-                        </t>
-                        <t>
-                            If the resulting URI identifies a schema within the current document, or
-                            within another schema document that has been made available to the implementation,
-                            then that schema SHOULD be used automatically.
-                        </t>
-                        <t>
-                            For example, consider this schema:
-                        </t>
-
-                        <figure>
-                            <artwork>
-<![CDATA[
-{
-    "$id": "https://example.net/root.json",
-    "items": {
-        "type": "array",
-        "items": { "$ref": "#item" }
-    },
-    "$defs": {
-        "single": {
-            "$anchor": "item",
-            "type": "object",
-            "additionalProperties": { "$ref": "other.json" }
-        }
-    }
-}
-]]>
-                            </artwork>
-                        </figure>
-                        <t>
-                            When an implementation encounters the &lt;#/$defs/single&gt; schema,
-                            it resolves the "$id" URI reference against the current base URI to form
-                            &lt;https://example.net/root.json#item&gt;.
-                        </t>
-                        <t>
-                            When an implementation then looks inside the &lt;#/items&gt; schema, it
-                            encounters the &lt;#item&gt; reference, and resolves this to
-                            &lt;https://example.net/root.json#item&gt;, which it has seen defined in
-                            this same document and can therefore use automatically.
-                        </t>
-                        <t>
-                            When an implementation encounters the reference to "other.json", it resolves
-                            this to &lt;https://example.net/other.json&gt;, which is not defined in this
-                            document.  If a schema with that identifier has otherwise been supplied to
-                            the implementation, it can also be used automatically.
-                            <cref>
-                                What should implementations do when the referenced schema is not known?
-                                Are there circumstances in which automatic network dereferencing is
-                                allowed?  A same origin policy?  A user-configurable option?  In the
-                                case of an evolving API described by Hyper-Schema, it is expected that
-                                new schemas will be added to the system dynamically, so placing an
-                                absolute requirement of pre-loading schema documents is not feasible.
-                            </cref>
-                        </t>
-                    </section>
                 </section>
 
                 <section title='Schema Re-Use With "$defs"' anchor="defs">
@@ -1904,6 +1617,306 @@
                     MUST NOT be collected as an annotation result.
                 </t>
             </section>
+        </section>
+
+        <section title="Loading Schemas and Instance Data">
+            <t>
+            </t>
+            <section title="Loading a Schema">
+                <section title="Initial Base URI" anchor="initial-base">
+                    <t>
+                        <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
+                        default base URI of a document.
+                    </t>
+                    <t>
+                        Informatively, the initial base URI of a schema is the URI at which it was
+                        found, whether that was a network location, a local filesystem, or any other
+                        situation identifiable by a URI of any known scheme.
+                    </t>
+                    <t>
+                        If a schema document defines no explicit base URI with "$id"
+                        (embedded in content), the base URI is that determined per
+                        <xref target="RFC3986">RFC 3986 section 5</xref>.
+                    </t>
+                    <t>
+                        If no source is known, or no URI scheme is known for the source, a suitable
+                        implementation-specific default URI MAY be used as described in
+                        <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
+                        that implementations document any default base URI that they assume.
+                    </t>
+                    <t>
+                        Unless the "$id" keyword described in the next section is present in the
+                        root schema, this base URI SHOULD be considered the canonical URI of the
+                        schema document's root schema resource.
+                    </t>
+                </section>
+
+                <section title="Loading a referenced schema">
+                    <t>
+                        The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
+                        but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
+                        and the URIs that identify them.
+                    </t>
+                    <t>
+                        When schemas are downloaded,
+                        for example by a generic user-agent that doesn't know until runtime which schemas to download,
+                        see <xref target="hypermedia">Usage for Hypermedia</xref>.
+                    </t>
+                    <t>
+                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
+                        schema and/or automatically associate a schema's "$id"-given URI, depending
+                        on the trust that the validator has in the schema.  Such URIs and schemas
+                        can be supplied to an implementation prior to processing instances, or may
+                        be noted within a schema document as it is processed, producing associations
+                        as shown in appendix <xref target="idExamples" format="counter"></xref>.
+                    </t>
+                    <t>
+                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
+                        URI to identify more than one schema. When multiple schemas try to identify
+                        as the same URI, validators SHOULD raise an error condition.
+                    </t>
+                </section>
+
+                <section title="Detecting a Meta-Schema">
+                    <t>
+                        Implementations MUST recognize a schema as a meta-schema if it
+                        is being examined because it was identified as such by another
+                        schema's "$schema" keyword.  This means that a single schema
+                        document might sometimes be considered a regular schema, and
+                        other times be considered a meta-schema.
+                    </t>
+                    <t>
+                        In the case of examining a schema which is its own meta-schema,
+                        when an implementation begins processing it as a regular schema,
+                        it is processed under those rules.  However, when loaded a second
+                        time as a result of checking its own "$schema" value, it is treated
+                        as a meta-schema.  So the same document is processed both ways in
+                        the course of one session.
+                    </t>
+                    <t>
+                        Implementations MAY allow a schema to be explicitly passed as a meta-schema,
+                        for implementation-specific purposes, such as pre-loading a commonly
+                        used meta-schema and checking its vocabulary support requirements
+                        up front.  Meta-schema authors MUST NOT expect such features to be
+                        interoperable across implementations.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Dereferencing">
+                <t>
+                    Schemas can be identified by any URI that has been given to them, including
+                    a JSON Pointer or their URI given directly by "$id".  In all cases,
+                    dereferencing a "$ref" reference involves first resolving its value as a
+                    URI reference against the current base URI per
+                    <xref target="RFC3986">RFC 3986</xref>.
+                </t>
+                <t>
+                    If the resulting URI identifies a schema within the current document, or
+                    within another schema document that has been made available to the implementation,
+                    then that schema SHOULD be used automatically.
+                </t>
+                <t>
+                    For example, consider this schema:
+                </t>
+
+                <figure>
+                    <artwork>
+<![CDATA[
+{
+"$id": "https://example.net/root.json",
+"items": {
+"type": "array",
+"items": { "$ref": "#item" }
+},
+"$defs": {
+"single": {
+    "$anchor": "item",
+    "type": "object",
+    "additionalProperties": { "$ref": "other.json" }
+}
+}
+}
+]]>
+                    </artwork>
+                </figure>
+                <t>
+                    When an implementation encounters the &lt;#/$defs/single&gt; schema,
+                    it resolves the "$id" URI reference against the current base URI to form
+                    &lt;https://example.net/root.json#item&gt;.
+                </t>
+                <t>
+                    When an implementation then looks inside the &lt;#/items&gt; schema, it
+                    encounters the &lt;#item&gt; reference, and resolves this to
+                    &lt;https://example.net/root.json#item&gt;, which it has seen defined in
+                    this same document and can therefore use automatically.
+                </t>
+                <t>
+                    When an implementation encounters the reference to "other.json", it resolves
+                    this to &lt;https://example.net/other.json&gt;, which is not defined in this
+                    document.  If a schema with that identifier has otherwise been supplied to
+                    the implementation, it can also be used automatically.
+                    <cref>
+                        What should implementations do when the referenced schema is not known?
+                        Are there circumstances in which automatic network dereferencing is
+                        allowed?  A same origin policy?  A user-configurable option?  In the
+                        case of an evolving API described by Hyper-Schema, it is expected that
+                        new schemas will be added to the system dynamically, so placing an
+                        absolute requirement of pre-loading schema documents is not feasible.
+                    </cref>
+                </t>
+
+                <section title="JSON Pointer fragments and embedded schema resources"
+                         anchor="embedded">
+                    <t>
+                        Since JSON Pointer URI fragments are constructed based on the structure
+                        of the schema document, an embedded schema resource and its subschemas
+                        can be identified by JSON Pointer fragments relative to either its own
+                        canonical URI, or relative to the containing resource's URI.
+                    </t>
+                    <t>
+                        Conceptually, a set of linked schema resources should behave
+                        identically whether each resource is a separate document connected with
+                        <xref target="references">schema references</xref>, or is structured as
+                        a single document with one or more schema resources embedded as
+                        subschemas.
+                    </t>
+                    <t>
+                        Since URIs involving JSON Pointer fragments relative to the parent
+                        schema resource's URI cease to be valid when the embedded schema
+                        is moved to a separate document and referenced, applications and schemas
+                        SHOULD NOT use such URIs to identify embedded schema resources or
+                        locations within them.
+                    </t>
+                    <figure>
+                        <preamble>
+                            Consider the following schema document that contains another
+                            schema resource embedded within it:
+                        </preamble>
+                        <artwork>
+<![CDATA[
+{
+  "$id": "https://example.com/foo",
+  "items": {
+"$id": "https://example.com/bar",
+"additionalProperties": { }
+  }
+}
+]]>
+                        </artwork>
+                        <postamble>
+                            The URI "https://example.com/foo#/items/additionalProperties"
+                            points to the schema of the "additionalProperties" keyword in
+                            the embedded resource.  The canonical URI of that schema, however,
+                            is "https://example.com/bar#/additionalProperties".
+                        </postamble>
+                    </figure>
+                    <figure>
+                        <preamble>
+                            Now consider the following two schema resources linked by reference
+                            using a URI value for "$ref":
+                        </preamble>
+                        <artwork>
+<![CDATA[
+{
+  "$id": "https://example.com/foo",
+  "items": {
+"$ref": "bar"
+  }
+}
+
+{
+  "$id": "https://example.com/bar",
+  "additionalProperties": { }
+}
+]]>
+                        </artwork>
+                        <postamble>
+                            Here we see that the canonical URI for that "additionalProperties"
+                            subschema is still valid, while the non-canonical URI with the fragment
+                            beginning with "#/items/$ref" now resolves to nothing.
+                        </postamble>
+                    </figure>
+                    <t>
+                        Note also that "https://example.com/foo#/items" is valid in both
+                        arrangments, but resolves to a different value.  This URI ends up
+                        functioning similarly to a retrieval URI for a resource.  While valid,
+                        examining the resolved value and either using the "$id" (if the value
+                        is a subschema), or resolving the reference and using the "$id" of the
+                        reference target, is preferable.
+                    </t>
+                    <t>
+                        An implementation MAY choose not to support addressing schemas
+                        by non-canonical URIs. As such, it is RECOMENDED that schema authors only
+                        use canonical URIs, as using non-canonical URIs may reduce
+                        schema interoperability.
+                        <cref>
+                            This is to avoid requiring implementations to keep track of a whole
+                            stack of possible base URIs and JSON Pointer fragments for each,
+                            given that all but one will be fragile if the schema resources
+                            are reorganized.  Some have argued that this is easy so there is
+                            no point in forbidding it, while others have argued that it complicates
+                            schema identification and should be forbidden.  Feedback on this
+                            topic is encouraged.
+                        </cref>
+                    </t>
+                    <t>
+                        Further examples of such non-canonical URIs, as well as the appropriate
+                        canonical URIs to use instead, are provided in appendix
+                        <xref target="idExamples" format="counter"></xref>.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Caveats">
+                <section title="Guarding Against Infinite Recursion">
+                    <t>
+                        A schema MUST NOT be run into an infinite loop against an instance. For
+                        example, if two schemas "#alice" and "#bob" both have an "allOf" property
+                        that refers to the other, a naive validator might get stuck in an infinite
+                        recursive loop trying to validate the instance.  Schemas SHOULD NOT make
+                        use of infinite recursive nesting like this; the behavior is undefined.
+                    </t>
+                </section>
+
+                <section title="References to Possible Non-Schemas" anchor="non-schemas">
+                    <t>
+                        Subschema objects (or booleans) are recognized by their use with known
+                        applicator keywords or with location-reserving keywords such as
+                        <xref target="defs">"$defs"</xref> that take one or more subschemas
+                        as a value.  These keywords may be "$defs" and the standard applicators
+                        from this document, or extension keywords from a known vocabulary, or
+                        implementation-specific custom keywords.
+                    </t>
+                    <t>
+                        Multi-level structures of unknown keywords are capable of introducing
+                        nested subschemas, which would be subject to the processing rules for
+                        "$id".  Therefore, having a reference target in such an unrecognized
+                        structure cannot be reliably implemented, and the resulting behavior
+                        is undefined.  Similarly, a reference target under a known keyword,
+                        for which the value is known not to be a schema, results in undefined
+                        behavior in order to avoid burdening implementations with the need
+                        to detect such targets.
+                        <cref>
+                            These scenarios are analogous to fetching a schema over HTTP
+                            but receiving a response with a Content-Type other than
+                            application/schema+json.  An implementation can certainly
+                            try to interpret it as a schema, but the origin server
+                            offered no guarantee that it actually is any such thing.
+                            Therefore, interpreting it as such has security implications
+                            and may produce unpredictable results.
+                        </cref>
+                    </t>
+                    <t>
+                        Note that single-level custom keywords with identical syntax and
+                        semantics to "$defs" do not allow for any intervening "$id" keywords,
+                        and therefore will behave correctly under implementations that attempt
+                        to use any reference target as a schema.  However, this behavior is
+                        implementation-specific and MUST NOT be relied upon for interoperability.
+                    </t>
+                </section>
+            </section>
+
         </section>
 
         <section title="A Vocabulary for Applying Subschemas">
