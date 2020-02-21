@@ -979,19 +979,19 @@
                 </t>
 
                 <t>
-                    Possible values for this property are listed in
-                    <xref target="RFC2045">RFC 2045, Sec 6.1</xref> and
-                    <xref target="RFC4648">RFC 4648</xref>.  For "base64", which is defined
-                    in both RFCs, the definition in RFC 4648, which removes line length
-                    limitations, SHOULD be used, as various other specifications have
-                    mandated different lengths.  Note that line lengths within a string
-                    can be constrained using the <xref target="pattern">"pattern"</xref> keyword.
+                    Possible values indicating base 16, 32, and 64 encodings with several
+                    variations are listed in <xref target="RFC4648">RFC 4648</xref>.  Additionally,
+                    sections 6.7 and 6.8 of <xref target="RFC2045">RFC 2045</xref> provide
+                    encodings used in MIME.  As "base64" is defined in both RFCs, the definition
+                    from RFC 4648 SHOULD be assumed unless the string is specifically intended
+                    for use in a MIME context.
                 </t>
 
                 <t>
                     If this keyword is absent, but "contentMediaType" is present, this
-                    indicates that the media type could be encoded into UTF-8 like any
-                    other JSON string value, and does not require additional decoding.
+                    indicates that the encoding is the identity encoding, meaning that
+                    no transformation was needed in order to represent the content in
+                    a UTF-8 string.
                 </t>
 
                 <t>
