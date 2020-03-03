@@ -12,7 +12,7 @@
 <!ENTITY RFC4291 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4291.xml">
 <!ENTITY RFC4329 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4329.xml">
 <!ENTITY RFC4648 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
-<!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
+<!ENTITY RFC5321 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5321.xml">
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC5891 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5891.xml">
 <!ENTITY RFC6531 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6531.xml">
@@ -54,7 +54,7 @@
             </address>
         </author>
 
-        <date year="2019"/>
+        <date year="2020"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -758,10 +758,12 @@
                         Internet email address as follows:
                         <list style="hanging">
                             <t hangText="email:">
-                                As defined by <xref target="RFC5322">RFC 5322, section 3.4.1</xref>.
+                                As defined by the "Mailbox" ABNF rule in
+                                <xref target="RFC5321">RFC 5321, section 4.1.2</xref>.
                             </t>
                             <t hangText="idn-email:">
-                                As defined by <xref target="RFC6531">RFC 6531</xref>
+                                As defined by the extended "Mailbox" ABNF rule in
+                                <xref target="RFC6531">RFC 6531, section 3.3</xref>.
                             </t>
                         </list>
                         Note that all strings valid against the "email" attribute are also
@@ -1302,7 +1304,7 @@
             &RFC4122;
             &RFC4291;
             &RFC4648;
-            &RFC5322;
+            &RFC5321;
             &RFC5890;
             &RFC5891;
             &RFC6570;
