@@ -984,7 +984,9 @@
                     sections 6.7 and 6.8 of <xref target="RFC2045">RFC 2045</xref> provide
                     encodings used in MIME.  As "base64" is defined in both RFCs, the definition
                     from RFC 4648 SHOULD be assumed unless the string is specifically intended
-                    for use in a MIME context.
+                    for use in a MIME context.  Note that all of these encodings result in
+                    strings consisting only of 7-bit ASCII characters.  Therefore, this keyword
+                    has no meaning for strings containing characters outside of that range.
                 </t>
 
                 <t>
@@ -1426,6 +1428,11 @@
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-handrews-json-schema-validation-03">
+                        <list style="symbols">
+                            <t>Clarified the set and meaning of "contentEncoding" values</t>
+                        </list>
+                    </t>
                     <t hangText="draft-handrews-json-schema-validation-02">
                         <list style="symbols">
                             <t>Grouped keywords into formal vocabuarlies</t>
