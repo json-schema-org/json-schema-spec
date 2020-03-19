@@ -8,14 +8,9 @@
 
     "title": "Applicator vocabulary meta-schema",
     "properties": {
-        "additionalItems": { "$recursiveRef": "#" },
+        "prefixItems": { "$ref": "#/$defs/schemaArray" },
+        "items": { "$recursiveRef": "#" },
         "unevaluatedItems": { "$recursiveRef": "#" },
-        "items": {
-            "anyOf": [
-                { "$recursiveRef": "#" },
-                { "$ref": "#/$defs/schemaArray" }
-            ]
-        },
         "contains": { "$recursiveRef": "#" },
         "additionalProperties": { "$recursiveRef": "#" },
         "unevaluatedProperties": { "$recursiveRef": "#" },
