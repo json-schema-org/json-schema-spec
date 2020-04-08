@@ -18,12 +18,7 @@
         },
         "contains": { "$recursiveRef": "#" },
         "additionalProperties": { "$recursiveRef": "#" },
-        "unevaluatedProperties": {
-            "type": "object",
-            "additionalProperties": {
-                "$recursiveRef": "#"
-            }
-        },
+        "unevaluatedProperties": { "$recursiveRef": "#" },
         "properties": {
             "type": "object",
             "additionalProperties": { "$recursiveRef": "#" },
