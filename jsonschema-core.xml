@@ -1391,9 +1391,11 @@
                         identifier keyword that can only be used to create plain name fragments.
                     </t>
                     <t>
-                        If present, the value of this keyword MUST be a string, which MUST start with
-                        a letter ([A-Za-z]), followed by any number of letters, digits ([0-9]),
-                        hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                        If present, the value of this keyword MUST be a string and MUST start with
+                        a letter ([A-Za-z]) or underscore ("_"), followed by any number of letters,
+                        digits ([0-9]), hyphens ("-"), underscores ("_"), and periods (".").
+                        This matches the US-ASCII part of XML's NCName production at
+                        <eref target="https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName"/>.
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a URI-reference.  An "$anchor": "foo" becomes the
