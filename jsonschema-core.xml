@@ -1391,9 +1391,11 @@
                         identifier keyword that can only be used to create plain name fragments.
                     </t>
                     <t>
-                        If present, the value of this keyword MUST be a string, which MUST start with
-                        a letter ([A-Za-z]), followed by any number of letters, digits ([0-9]),
-                        hyphens ("-"), underscores ("_"), colons (":"), or periods (".").
+                        If present, the value of this keyword MUST be a string and MUST start with
+                        a letter ([A-Za-z]) or underscore ("_"), followed by any number of letters,
+                        digits ([0-9]), hyphens ("-"), underscores ("_"), and periods (".").
+                        This matches the US-ASCII part of XML's
+                        <xref target="xml-names">NCName production</xref>.
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a URI-reference.  An "$anchor": "foo" becomes the
@@ -3249,6 +3251,36 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <date year="2017" month="November"/>
                 </front>
                 <seriesInfo name="Internet-Draft" value="draft-handrews-json-schema-hyperschema-02" />
+            </reference>
+            <reference anchor="xml-names" target="http://www.w3.org/TR/2006/REC-xml-names11-20060816">
+                <front>
+                    <title>Namespaces in XML 1.1 (Second Edition)</title>
+                    <author fullname="Tim Bray" role="editor">
+                        <organization>Textuality</organization>
+                        <address>
+                            <email>tbray@textuality.com</email>
+                        </address>
+                    </author>
+                    <author fullname="Dave Hollander" role="editor">
+                        <organization>Contivo, Inc.</organization>
+                        <address>
+                            <email>dmh@contivo.com</email>
+                        </address>
+                    </author>
+                    <author fullname="Andrew Layman" role="editor">
+                        <organization>Microsoft</organization>
+                        <address>
+                            <email>andrewl@microsoft.com</email>
+                        </address>
+                    </author>
+                    <author fullname="Richard Tobin" role="editor">
+                        <organization>University of Edinburgh and Markup Technology Ltd</organization>
+                        <address>
+                            <email>richard@cogsci.ed.ac.uk</email>
+                        </address>
+                    </author>
+                    <date month="August" year="2006"/>
+                </front>
             </reference>
         </references>
 
