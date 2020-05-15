@@ -33,7 +33,7 @@
             </address>
         </author>
 
-        <date year="2019"/>
+        <date year="2020"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>JavaScript</keyword>
@@ -131,6 +131,24 @@
                     <t>
                         If the referenced value is an object member within an object, then
                         the new referenced value is that object.
+                    </t>
+                </list>
+            </t>
+            <t>
+                If the next character is a plus ("+") or minus ("-"), followed by another
+                continuous sequence of decimal digits, the following steps
+                are taken using the decimal numeric value of that plus or minus sign
+                and decimal sequence:
+                <list>
+                    <t>
+                        If the current referenced value is not an item of an array,
+                        then evaluation fails (see below).
+                    </t>
+                    <t>
+                        If the referenced value is an item of an array, then the
+                        new referenced value is the item of the array indexed by
+                        adding the decimal value (which may be negative), to the
+                        index of the current referenced value.
                     </t>
                 </list>
             </t>
@@ -300,6 +318,11 @@
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-handrews-relative-json-pointer-03">
+                        <list style="symbols">
+                            <t>Add array forward and backward index manipulation</t>
+                        </list>
+                    </t>
                     <t hangText="draft-handrews-relative-json-pointer-02">
                         <list style="symbols">
                             <t>Update to the latest JSON RFC</t>
