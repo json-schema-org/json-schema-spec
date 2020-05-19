@@ -2332,13 +2332,17 @@
                         </t>
                         <t>
                             Validation succeeds if each element of the instance validates
-                            against the schema at the same position, if any.
+                            against the schema at the same position, if any.  This keyword
+                            does not constrain the length of the array.  If the array is longer
+                            than this keyword's value, this keyword validates only the
+                            prefix of matching length.
                         </t>
                         <t>
                             This keyword produces an annotation value which is the largest
                             index to which this keyword applied a subschema.  The value
                             MAY be a boolean true if a subschema was applied to every
                             index of the instance, such as is produced by the "items" keyword.
+                            This annotation affects the behavior of "items" and "unevaluatedItems".
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
