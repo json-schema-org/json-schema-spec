@@ -3434,7 +3434,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://example.com/tree",
-    "$dynamicAnchor": true,
+    "$dynamicAnchor": "node",
 
     "type": "object",
     "properties": {
@@ -3442,7 +3442,7 @@ https://example.com/schemas/common#/$defs/count/minimum
         "children": {
             "type": "array",
             "items": {
-                "$dynamicRef": "#"
+                "$dynamicRef": "#node"
             }
         }
     }
@@ -3452,7 +3452,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://example.com/strict-tree",
-    "$dynamicAnchor": true,
+    "$dynamicAnchor": node,
 
     "$ref": "tree",
     "unevaluatedProperties": false
@@ -3466,30 +3466,65 @@ https://example.com/schemas/common#/$defs/count/minimum
                 </artwork>
             </figure>
             <t>
+                When we load these two schemas, we will notice the "$dynamicAnchor"
+                named "node" (note the lack of "#" as this is just the name)
+                present in each, resulting in the following full schema URIs:
+                <list style="symbols">
+                    <t>"https://example.com/tree#node"</t>
+                    <t>"https://example.com/strict-tree#node"</t>
+                </list>
+                In addition, JSON Schema implementations keep track of the fact
+                that these fragments were created with "$dynamicAnchor".
+            </t>
+            <t>
                 If we apply the "strict-tree" schema to the instance, we will follow
                 the "$ref" to the "tree" schema, examine its "children" subschema,
-                and find the "$dynamicAnchor" in its "items" subschema.
+                and find the "$dynamicRef": to "#node" (note the "#" for URI fragment syntax)
+                in its "items" subschema.  That reference resolves to
+                "https://example.com/tree#node", which is a URI with a fragment
+                created by "$dynamicAnchor".  Therefore we must examine the dynamic
+                scope before following the reference.
+            </t>
+            <t>
                 At this point, the dynamic path is
-                "#/$ref/properties/children/items/$dynamicRef".
+                "#/$ref/properties/children/items/$dynamicRef", with a dynamic scope
+                containing (from the outermost scope to the innermost):
+                <list style="numbers">
+                  <t>"https://example.com/strict-tree#"</t>
+                  <t>"https://example.com/tree#"</t>
+                  <t>"https://example.com/tree#/properties/children"</t>
+                  <t>"https://example.com/tree#/properties/children/items"</t>
+                </list>
             </t>
             <t>
-                The base URI at this point is "https://example.com/tree", so the
-                "$dynamicRef" initially resolves to "https://example.com/tree#".
-                Since "$dynamicAnchor" is true, we examine the dynamic path to
-                see if there is a different base URI to use.  We find
-                "$dynamicAnchor" with a true value at the dynamic paths of
-                "#" and "#/$ref".
+                Since we are looking for a plain name fragment, which can be
+                defined anywhere within a schema resource, the JSON Pointer fragments
+                are irrelevant to this check.  That means that we can remove those
+                fragments and eliminate consecutive duplicates, producing:
+                <list style="numbers">
+                  <t>"https://example.com/strict-tree"</t>
+                  <t>"https://example.com/tree"</t>
+                </list>
             </t>
             <t>
-                The outermost is "#", which is the root schema of the "strict-tree"
-                schema, so we use its base URI of "https://example.com/strict-tree",
-                which produces a final resolved URI of
-                "https://example.com/strict-tree#" for the "$dynamicRef".
+                In this case, the outermost resource also has a "node" fragment
+                defined by "$dynamicAnchor".  Therefore instead of resolving the
+                "$dynamicRef" to "https://example.com/tree#node", we resolve it to
+                "https://example.com/strict-tree#node".
             </t>
             <t>
                 This way, the recursion in the "tree" schema recurses to the root
                 of "strict-tree", instead of only applying "strict-tree" to the
                 instance root, but applying "tree" to instance children.
+            </t>
+            <t>
+                This example shows both "$dynamicAnchor"s in the same place
+                in each schema, specifically the resource root schema.
+                Since plain-name fragments are independent of the JSON structure,
+                this would work just as well if one or both of the node schema objects
+                were moved under "$defs".  It is the matching "$dynamicAnchor" values
+                which tell us how to resolve the dynamic reference, not any sort of
+                correlation in JSON structure.
             </t>
         </section>
 
@@ -3590,7 +3625,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://example.com/meta/general-use-example",
-  "$dynamicAnchor": true,
+  "$dynamicAnchor": "meta",
   "$vocabulary": {
     "https://json-schema.org/draft/2019-09/vocab/core": true,
     "https://json-schema.org/draft/2019-09/vocab/applicator": true,
@@ -3625,7 +3660,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://example.com/meta/example-vocab",
-  "$dynamicAnchor": true,
+  "$dynamicAnchor": "meta",
   "$vocabulary": {
     "https://example.com/vocab/example-vocab": true,
   },
