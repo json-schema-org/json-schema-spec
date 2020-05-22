@@ -1169,8 +1169,8 @@
                     <t>
                         The "$schema" keyword SHOULD be used in the document root schema object,
                         and MAY be used in the root schema objects of embedded schema resources.
-                        It MUST NOT appear in subschemas.  If absent from the document root schema,
-                        the resulting behavior is implementation-defined.
+                        It MUST NOT appear in non-resource root schema objects.  If absent from
+                        the document root schema, the resulting behavior is implementation-defined.
                     </t>
                     <t>
                         If multiple schema resources are present in a single document, then
