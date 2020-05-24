@@ -2869,34 +2869,34 @@ https://example.com/schemas/common#/$defs/count/minimum
   "valid": false,
   "errors": [
     {
-      "keywordLocation": "#",
-      "instanceLocation": "#",
+      "keywordLocation": "",
+      "instanceLocation": "",
       "error": "A subschema had errors."
     },
     {
-      "keywordLocation": "#/items/$ref",
+      "keywordLocation": "/items/$ref",
       "absoluteKeywordLocation":
         "https://example.com/polygon#/$defs/point",
-      "instanceLocation": "#/1",
+      "instanceLocation": "/1",
       "error": "A subschema had errors."
     },
     {
-      "keywordLocation": "#/items/$ref/required",
+      "keywordLocation": "/items/$ref/required",
       "absoluteKeywordLocation":
         "https://example.com/polygon#/$defs/point/required",
-      "instanceLocation": "#/1",
+      "instanceLocation": "/1",
       "error": "Required property 'y' not found."
     },
     {
-      "keywordLocation": "#/items/$ref/additionalProperties",
+      "keywordLocation": "/items/$ref/additionalProperties",
       "absoluteKeywordLocation":
         "https://example.com/polygon#/$defs/point/additionalProperties",
-      "instanceLocation": "#/1/z",
+      "instanceLocation": "/1/z",
       "error": "Additional property 'z' found but was invalid."
     },
     {
-      "keywordLocation": "#/minItems",
-      "instanceLocation": "#",
+      "keywordLocation": "/minItems",
+      "instanceLocation": "",
       "error": "Expected at least 3 items but found 2"
     }
   ]
@@ -2936,38 +2936,38 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "valid": false,
-  "keywordLocation": "#",
-  "instanceLocation": "#",
+  "keywordLocation": "",
+  "instanceLocation": "",
   "errors": [
     {
       "valid": false,
-      "keywordLocation": "#/items/$ref",
+      "keywordLocation": "/items/$ref",
       "absoluteKeywordLocation":
         "https://example.com/polygon#/$defs/point",
-      "instanceLocation": "#/1",
+      "instanceLocation": "/1",
       "errors": [
         {
           "valid": false,
-          "keywordLocation": "#/items/$ref/required",
+          "keywordLocation": "/items/$ref/required",
           "absoluteKeywordLocation":
             "https://example.com/polygon#/$defs/point/required",
-          "instanceLocation": "#/1",
+          "instanceLocation": "/1",
           "error": "Required property 'y' not found."
         },
         {
           "valid": false,
-          "keywordLocation": "#/items/$ref/additionalProperties",
+          "keywordLocation": "/items/$ref/additionalProperties",
           "absoluteKeywordLocation":
             "https://example.com/polygon#/$defs/point/additionalProperties",
-          "instanceLocation": "#/1/z",
+          "instanceLocation": "/1/z",
           "error": "Additional property 'z' found but was invalid."
         }
       ]
     },
     {
       "valid": false,
-      "keywordLocation": "#/minItems",
-      "instanceLocation": "#",
+      "keywordLocation": "/minItems",
+      "instanceLocation": "",
       "error": "Expected at least 3 items but found 2"
     }
   ]
@@ -3019,28 +3019,28 @@ https://example.com/schemas/common#/$defs/count/minimum
 // result
 {
   "valid": false,
-  "keywordLocation": "#",
-  "instanceLocation": "#",
+  "keywordLocation": "",
+  "instanceLocation": "",
   "errors": [
     {
       "valid": true,
-      "keywordLocation": "#/type",
-      "instanceLocation": "#"
+      "keywordLocation": "/type",
+      "instanceLocation": ""
     },
     {
       "valid": true,
-      "keywordLocation": "#/properties",
-      "instanceLocation": "#"
+      "keywordLocation": "/properties",
+      "instanceLocation": ""
     },
     {
       "valid": false,
-      "keywordLocation": "#/additionalProperties",
-      "instanceLocation": "#",
+      "keywordLocation": "/additionalProperties",
+      "instanceLocation": "",
       "errors": [
         {
           "valid": false,
-          "keywordLocation": "#/additionalProperties",
-          "instanceLocation": "#/disallowedProp",
+          "keywordLocation": "/additionalProperties",
+          "instanceLocation": "/disallowedProp",
           "error": "Additional property 'disallowedProp' found but was invalid."
         }
       ]
