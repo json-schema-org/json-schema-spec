@@ -703,7 +703,7 @@
                     an alternate implementation producing the same behavior is available.
                     Keywords of this sort SHOULD describe reasonable alternate approaches
                     when appropriate.  This approach is demonstrated by the
-                    "<xref target="additionalItems" format="title"/>" and
+                    "<xref target="items" format="title"/>" and
                     "<xref target="additionalProperties" format="title"/>" keywords in this
                     document.
                 </t>
@@ -931,7 +931,7 @@
 {
     "title": "Feature list",
     "type": "array",
-    "items": [
+    "prefixItems": [
         {
             "title": "Feature A",
             "properties": {
@@ -2143,11 +2143,11 @@
                             "additionalProperties" and itself
                         </t>
                         <t>
-                            "additionalItems", whose behavior is defined in terms of "items"
+                            "items", whose behavior is defined in terms of "prefixItems"
                         </t>
                         <t>
                             "unevaluatedItems", whose behavior is defined in terms of annotations
-                            from "items", "additionalItems" and itself
+                            from "prefixItems", "items", "contains", and itself
                         </t>
                     </list>
                 </t>
@@ -2326,61 +2326,53 @@
                     properties and array items, and combining their results.
                 </t>
                 <section title="Keywords for Applying Subschemas to Arrays">
-                    <section title="items">
+                    <section title="prefixItems">
                         <t>
-                            The value of "items" MUST be either a valid JSON Schema or
-                            an array of valid JSON Schemas.
+                            The value of "prefixItems" MUST be an array of valid JSON Schemas.
                         </t>
                         <t>
-                            If "items" is a schema, validation succeeds if all elements
-                            in the array successfully validate against that schema.
-                        </t>
-                        <t>
-                            If "items" is an array of schemas, validation succeeds if
-                            each element of the instance validates against the schema at the
-                            same position, if any.
+                            Validation succeeds if each element of the instance validates
+                            against the schema at the same position, if any.  This keyword
+                            does not constrain the length of the array.  If the array is longer
+                            than this keyword's value, this keyword validates only the
+                            prefix of matching length.
                         </t>
                         <t>
                             This keyword produces an annotation value which is the largest
                             index to which this keyword applied a subschema.  The value
                             MAY be a boolean true if a subschema was applied to every
-                            index of the instance, such as when "items" is a schema.
-                        </t>
-                        <t>
-                            Annotation results for "items" keywords from multiple
-                            schemas applied to the same instance location are combined
-                            by setting the combined result to true if any of the values
-                            are true, and otherwise retaining the largest numerical value.
+                            index of the instance, such as is produced by the "items" keyword.
+                            This annotation affects the behavior of "items" and "unevaluatedItems".
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
-                            an empty schema.
+                            an empty array.
                         </t>
                     </section>
 
-                    <section title="additionalItems" anchor="additionalItems">
+                    <section title="items" anchor="items">
                         <t>
-                            The value of "additionalItems" MUST be a valid JSON Schema.
+                            The value of "items" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            The behavior of this keyword depends on the presence and
-                            annotation result of "items" within the same schema object.
-                            If "items" is present, and its annotation result is a number,
-                            validation succeeds if every instance element at an index
-                            greater than that number validates against "additionalItems".
+                            This keyword applies its subschema to all instance elements
+                            at indexes greater than the length of the "prefixItems" array
+                            in the same schema object, as reported by the annotation result
+                            of that "prefixItems" keyword.  If no such annotation
+                            result exists, "items" applies its subschema to all instance
+                            array elements.
+                            <cref>
+                                Note that the behavior of "items" without "prefixItems" is
+                                identical to that of the schema form of "items" in prior drafts.
+                                When "prefixItems" is present, the behavior of "items" is
+                                identical to the former "additionalItems" keyword.
+                            </cref>
                         </t>
                         <t>
-                            Otherwise, if "items" is absent or its annotation result
-                            is the boolean true, "additionalItems" MUST be ignored.
-                        </t>
-                        <t>
-                            If the "additionalItems" subschema is applied to any
+                            If the "items" subschema is applied to any
                             positions within the instance array, it produces an
-                            annotation result of boolean true, analogous to the
-                            single schema behavior of "items".  If any "additionalItems"
-                            keyword from any subschema applied to the same instance
-                            location produces an annotation value of true, then
-                            the combined result from these keywords is also true.
+                            annotation result of boolean true, indicating that all remaining array
+                            elements have been evaluated against this keyword's subschema.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2389,7 +2381,7 @@
                         <t>
                             Implementations MAY choose to implement or optimize this keyword
                             in another way that produces the same effect, such as by directly
-                            checking for the presence and size of an "items" array.
+                            checking for the presence and size of a "prefixItems" array.
                             Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
@@ -2401,7 +2393,7 @@
                         <t>
                             The behavior of this keyword depends on the annotation results of
                             adjacent keywords that apply to the instance location being validated.
-                            Specifically, the annotations from "items" and  "additionalItems",
+                            Specifically, the annotations from "prefixItems", "items", and "contains",
                             which can come from those keywords when they are adjacent to the
                             "unevaluatedItems" keyword.  Those two annotations, as well as
                             "unevaluatedItems", can also result from any and all adjacent
@@ -2410,33 +2402,25 @@
                             defined in this document.
                         </t>
                         <t>
-                            If an "items" annotation is present, and its annotation result
-                            is a number, and no "additionalItems" or "unevaluatedItems"
-                            annotation is present, then validation succeeds if every instance
-                            element at an index greater than the "items" annotation validates
-                            against "unevaluatedItems".
+                            If no relevant annotations are present, the "unevaluatedItems"
+                            subschema MUST be applied to all locations in the array.
+                            If a boolean true value is present from any of the relevant annotations,
+                            "unevaluatedItems" MUST be ignored.  Otherwise, the subschema
+                            MUST be applied to any index greater than the largest annotation
+                            value for "prefixItems", which does not appear in any annotation
+                            value for "contains".
                         </t>
                         <t>
-                            Otherwise, if any "items", "additionalItems", or "unevaluatedItems"
-                            annotations are present with a value of boolean true, then
-                            "unevaluatedItems" MUST be ignored.  However, if none of these
-                            annotations are present, "unevaluatedItems" MUST be applied to
-                            all locations in the array.
-                        </t>
-                        <t>
-                            This means that "items", "additionalItems", and all in-place applicators
-                            MUST be evaluated before this keyword can be evaluated.  Authors of
-                            extension keywords MUST NOT define an in-place applicator that would need
-                            to be evaluated before this keyword.
+                            This means that "prefixItems", "items", "contains", and all in-place
+                            applicators MUST be evaluated before this keyword can be evaluated.
+                            Authors of extension keywords MUST NOT define an in-place applicator
+                            that would need to be evaluated before this keyword.
                         </t>
                         <t>
                             If the "unevaluatedItems" subschema is applied to any
                             positions within the instance array, it produces an
                             annotation result of boolean true, analogous to the
-                            single schema behavior of "items".  If any "unevaluatedItems"
-                            keyword from any subschema applied to the same instance
-                            location produces an annotation value of true, then
-                            the combined result from these keywords is also true.
+                            behavior of "items".
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2458,6 +2442,12 @@
                             collecting annotations, the subschema MUST be applied to every
                             array element even after the first match has been found.  This
                             is to ensure that all possible annotations are collected.
+                        </t>
+                        <t>
+                            This keyword produces an annotation value which is an array of
+                            the indexes to which this keyword validates successfully when applying 
+                            its subschema, in ascending order. The value MAY be a boolean true if the 
+                            subschema validated successfully when applied to every index of the instance.
                         </t>
                     </section>
                 </section>
@@ -3800,9 +3790,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t hangText="draft-handrews-json-schema-03">
                         <list style="symbols">
                             <t></t>
-                            <t></t>
-                            <t></t>
-                            <t></t>
+                            <t>Array-value "items" functionality is now "prefixItems"</t>
+                            <t>"items" subsumes the old function of "additionalItems"</t>
+                            <t>"contains" and "unevaluatedItems" interactions now specified</t>
                             <t></t>
                             <t></t>
                             <t></t>
