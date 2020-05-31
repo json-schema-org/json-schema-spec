@@ -913,7 +913,9 @@
             <section title="Foreword">
                 <t>
                     Annotations defined in this section indicate that an instance contains
-                    non-JSON data encoded in a JSON string.
+                    non-JSON data encoded in a JSON string.  Additionally, they can be used in
+                    the context of resources of various media types to indicate binary resources
+                    not otherwise describable by JSON Schema.
                 </t>
                 <t>
                     These properties provide additional information required to interpret JSON data
@@ -945,14 +947,21 @@
                     consumer than that which processed the containing document.
                 </t>
                 <t>
-                    All keywords in this section apply only to strings, and have no
-                    effect on other data types.
+                    All keywords in this section generally apply to strings, and have no
+                    effect on other JSON data types.  Additionally, they MAY be used without
+                    type information when describing resources of other media types, subject
+                    to certain restrictions.
                 </t>
                 <t>
                     Implementations MAY offer the ability to decode, parse, and/or validate
-                    the string contents automatically.  However, it MUST NOT perform these
+                    the string contents automatically.  However, they MUST NOT perform these
                     operations by default, and MUST provide the validation result of each
-                    string-encoded document separately from the enclosing document.  This
+                    string-encoded document separately from the enclosing document.  In particular,
+                    these keywords, including "contentSchema", MUST NOT cause the containing schema
+                    to fail validation.
+                </t>
+                <t>
+                    The optional automatic decoding, parsing, and validating
                     process SHOULD be equivalent to fully evaluating the instance against
                     the original schema, followed by using the annotations to decode, parse,
                     and/or validate each string-encoded document.
@@ -1005,7 +1014,14 @@
                 <t>
                     If the instance is a string, this property indicates the media type
                     of the contents of the string.  If "contentEncoding" is present,
-                    this property describes the decoded string.
+                    this property describes the decoded string.  If the "type" keyword is
+                    absent, this keyword MAY be interpreted as describing an unencoded binary
+                    resource.  The exact meaning and behavior of this untyped usage is
+                    application-defined.
+                    <cref>
+                        For an example of application-defined untyped usage,
+                        see the forthcoming OpenAPI Specification v3.1
+                    </cref>
                 </t>
                 <t>
                     The value of this property MUST be a string, which MUST be a media type,
@@ -1015,8 +1031,9 @@
 
             <section title="contentSchema">
                 <t>
-                    If the instance is a string, and if "contentMediaType" is present, this
-                    property contains a schema which describes the structure of the string.
+                    If the instance is a string or an untyped binary resource,
+                    and if "contentMediaType" is present, this property contains a schema
+                    which describes the structure of the string.
                 </t>
                 <t>
                     This keyword MAY be used with any media type that can be mapped into
@@ -1433,8 +1450,8 @@
                         <list style="symbols">
                             <t>Correct email format RFC reference to 5321 instead of 5322</t>
                             <t>Clarified the set and meaning of "contentEncoding" values</t>
-                            <t></t>
-                            <t></t>
+                            <t>Clarified value requirements for "contentSchema"</t>
+                            <t>Expanded "contentMediaType" to unencoded binary media</t>
                             <t></t>
                             <t></t>
                             <t></t>
