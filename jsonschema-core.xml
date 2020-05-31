@@ -198,13 +198,17 @@
 
             <section title="Instance">
                 <t>
-                    A JSON document to which a schema is applied is known as an "instance".
+                    A document to which a schema is applied is known as an "instance".
                 </t>
 
                 <section title="Instance Data Model">
                     <t>
-                        JSON Schema interprets documents according to a data model. A JSON value
-                        interpreted according to this data model is called an "instance".
+                        JSON Schema interprets documents according to a data model. A value
+                        interpreted according to this data model is called an "instance".  JSON
+                        documents map trivially into the data model, with a few exceptions as
+                        noted below.  Documents of other media types MAY be treated as instances
+                        if a suitable application-defined mapping of the media type into the
+                        data model can be determined.
                     </t>
                     <t>
                         An instance has one of six primitive types, and a range of possible values
@@ -218,6 +222,12 @@
                             <t hangText="number:">An arbitrary-precision, base-10 decimal number value, from the JSON "number" value</t>
                             <t hangText="string:">A string of Unicode code points, from the JSON "string" value</t>
                         </list>
+                    </t>
+                    <t>
+                        Binary data MAY be treated as an instance, however no data type in the data model
+                        is suitable.  Therefore, only schemas such as the empty schema that do not
+                        constrain the type can be considered to pass.  Rationales for and behavior of
+                        binary data as an instance SHOULD be defined by the consuming application.
                     </t>
                     <t>
                         Whitespace and formatting concerns, including different lexical
@@ -3796,7 +3806,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                             <t></t>
                             <t></t>
                             <t></t>
-                            <t></t>
+                            <t>Clarify applicability to non-JSON media types</t>
                             <t></t>
                             <t></t>
                             <t></t>
