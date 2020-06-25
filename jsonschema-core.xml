@@ -624,7 +624,7 @@
                     which must be resolved against another value, such as another
                     URI-reference or a full URI, which is found through the lexical
                     structure of the JSON document.  The "$id", "$ref", and
-                    "$dyanmicRef" core keywords, and the "base" JSON Hyper-Schema
+                    "$dynamicRef" core keywords, and the "base" JSON Hyper-Schema
                     keyword, are examples of this sort of behavior.
                 </t>
                 <t>
@@ -638,12 +638,12 @@
                     with an instance document.  The outermost dynamic scope is the
                     root schema of the schema document in which processing begins.
                     The path from this root schema to any particular keyword (that
-                    includes any "$ref" and "$dyanmicRef" keywords that may have
+                    includes any "$ref" and "$dynamicRef" keywords that may have
                     been resolved) is considered the keyword's "validation path."
                     <cref>
                         Or should this be the schema object at which processing
                         begins, even if it is not a root?  This has some implications
-                        for the case where "$dyanmicAnchor" is only allowed in the
+                        for the case where "$dynamicAnchor" is only allowed in the
                         root schema but processing begins in a subschema.
                     </cref>
                 </t>
@@ -658,8 +658,8 @@
                     dynamic parent, rather than examining the local lexically enclosing parent.
                 </t>
                 <t>
-                    The concept of dynamic scope is primarily used with "$dyanmicRef" and
-                    "$dyanmicAnchor", and should be considered an advanced feature
+                    The concept of dynamic scope is primarily used with "$dynamicRef" and
+                    "$dynamicAnchor", and should be considered an advanced feature
                     and used with caution when defining additional keywords.  It also appears
                     when reporting errors and collected annotations, as it may be possible
                     to revisit the same lexical scope repeatedly with different dynamic
@@ -721,8 +721,8 @@
                 <t>
                     While custom identifier keywords are possible, vocabulary designers should
                     take care not to disrupt the functioning of core keywords. For example,
-                    the "$dyanmicAnchor" keyword in this specification limits its URI resolution
-                    effects to the matching "$dyanmicRef" keyword, leaving the behavior
+                    the "$dynamicAnchor" keyword in this specification limits its URI resolution
+                    effects to the matching "$dynamicRef" keyword, leaving the behavior
                     of "$ref" undisturbed.
                 </t>
             </section>
@@ -774,7 +774,7 @@
                         For some by-reference applicators, such as
                         <xref target="ref">"$ref"</xref>, the referenced schema can be determined
                         by static analysis of the schema document's lexical scope.  Others,
-                        such as "$dyanmicRef" (with "$dyanmicAnchor"),  may make use of dynamic
+                        such as "$dynamicRef" (with "$dynamicAnchor"),  may make use of dynamic
                         scoping, and therefore only be resolvable in the process of evaluating
                         the schema with an instance.
                     </t>
@@ -1435,7 +1435,7 @@
                 <section title="Schema References" anchor="references">
                     <t>
                         Several keywords can be used to reference a schema which is to be applied to the
-                        current instance location. "$ref" and "$dyanmicRef" are applicator
+                        current instance location. "$ref" and "$dynamicRef" are applicator
                         keywords, applying the referenced schema to the instance.
                     </t>
                     <t>
