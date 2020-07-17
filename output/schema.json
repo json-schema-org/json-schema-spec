@@ -46,18 +46,18 @@
         },
         {
           "if": {
-            "oneOf": [
+            "anyOf": [
               {
                 "properties": {
                   "keywordLocation": {
-                    "pattern": ".*/\\$ref/.*"
+                    "pattern": "/\\$ref/"
                   }
                 }
               },
               {
                 "properties": {
                   "keywordLocation": {
-                    "pattern": ".*/\\$recursiveRef/.*"
+                    "pattern": "/\\$recursiveRef/"
                   }
                 }
               }
