@@ -4,7 +4,7 @@
     "$vocabulary": {
         "https://json-schema.org/draft/2019-09/vocab/content": true
     },
-    "$recursiveAnchor": true,
+    "$dynamicAnchor": "meta",
 
     "title": "Content vocabulary meta-schema",
 
@@ -12,6 +12,6 @@
     "properties": {
         "contentMediaType": { "type": "string" },
         "contentEncoding": { "type": "string" },
-        "contentSchema": { "$recursiveRef": "#" }
+        "contentSchema": { "$dynamicRef": "#meta" }
     }
 }

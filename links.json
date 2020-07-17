@@ -2,6 +2,7 @@
     "$schema": "https://json-schema.org/draft/2019-09/hyper-schema",
     "$id": "https://json-schema.org/draft/2019-09/links",
     "title": "Link Description Object",
+
     "allOf": [
         { "required": [ "rel", "href" ] },
         { "$ref": "#/$defs/noRequiredFields" }
@@ -36,7 +37,7 @@
                     "format": "uri-template"
                 },
                 "hrefSchema": {
-                    "$recursiveRef": "https://json-schema.org/draft/2019-09/hyper-schema",
+                    "$dynamicRef": "https://json-schema.org/draft/2019-09/hyper-schema#meta",
                     "default": false
                 },
                 "templatePointers": {
@@ -63,7 +64,7 @@
                     "type": "string"
                 },
                 "targetSchema": {
-                    "$recursiveRef": "https://json-schema.org/draft/2019-09/hyper-schema",
+                    "$dynamicRef": "https://json-schema.org/draft/2019-09/hyper-schema#meta",
                     "default": true
                 },
                 "targetMediaType": {
@@ -71,7 +72,7 @@
                 },
                 "targetHints": { },
                 "headerSchema": {
-                    "$recursiveRef": "https://json-schema.org/draft/2019-09/hyper-schema",
+                    "$dynamicRef": "https://json-schema.org/draft/2019-09/hyper-schema#meta",
                     "default": true
                 },
                 "submissionMediaType": {
@@ -79,7 +80,7 @@
                     "default": "application/json"
                 },
                 "submissionSchema": {
-                    "$recursiveRef": "https://json-schema.org/draft/2019-09/hyper-schema",
+                    "$dynamicRef": "https://json-schema.org/draft/2019-09/hyper-schema#meta",
                     "default": true
                 },
                 "$comment": {

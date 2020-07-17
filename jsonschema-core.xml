@@ -627,11 +627,9 @@
                     Keywords MAY be defined with a partial value, such as a URI-reference,
                     which must be resolved against another value, such as another
                     URI-reference or a full URI, which is found through the lexical
-                    structure of the JSON document.  The "$id" core keyword and
-                    the "base" JSON Hyper-Schema keyword are examples of this sort
-                    of behavior.  Additionally, "$ref" and "$recursiveRef" from
-                    this specification resolve their values in this way, although
-                    they do not change how further values are resolved.
+                    structure of the JSON document.  The "$id", "$ref", and
+                    "$dynamicRef" core keywords, and the "base" JSON Hyper-Schema
+                    keyword, are examples of this sort of behavior.
                 </t>
                 <t>
                     Note that some keywords, such as "$schema", apply to the lexical
@@ -644,12 +642,12 @@
                     with an instance document.  The outermost dynamic scope is the
                     root schema of the schema document in which processing begins.
                     The path from this root schema to any particular keyword (that
-                    includes any "$ref" and "$recursiveRef" keywords that may have
+                    includes any "$ref" and "$dynamicRef" keywords that may have
                     been resolved) is considered the keyword's "validation path."
                     <cref>
                         Or should this be the schema object at which processing
                         begins, even if it is not a root?  This has some implications
-                        for the case where "$recursiveAnchor" is only allowed in the
+                        for the case where "$dynamicAnchor" is only allowed in the
                         root schema but processing begins in a subschema.
                     </cref>
                 </t>
@@ -664,8 +662,8 @@
                     dynamic parent, rather than examining the local lexically enclosing parent.
                 </t>
                 <t>
-                    The concept of dynamic scope is primarily used with "$recursiveRef" and
-                    "$recursiveAnchor", and should be considered an advanced feature
+                    The concept of dynamic scope is primarily used with "$dynamicRef" and
+                    "$dynamicAnchor", and should be considered an advanced feature
                     and used with caution when defining additional keywords.  It also appears
                     when reporting errors and collected annotations, as it may be possible
                     to revisit the same lexical scope repeatedly with different dynamic
@@ -727,8 +725,9 @@
                 <t>
                     While custom identifier keywords are possible, vocabulary designers should
                     take care not to disrupt the functioning of core keywords. For example,
-                    the "$recursiveAnchor" keyword in this specification limits its URI resolution
-                    effects to the matching "$recursiveRef" keyword, leaving "$ref" undisturbed.
+                    the "$dynamicAnchor" keyword in this specification limits its URI resolution
+                    effects to the matching "$dynamicRef" keyword, leaving the behavior
+                    of "$ref" undisturbed.
                 </t>
             </section>
             <section title="Applicators" anchor="applicators">
@@ -779,7 +778,7 @@
                         For some by-reference applicators, such as
                         <xref target="ref">"$ref"</xref>, the referenced schema can be determined
                         by static analysis of the schema document's lexical scope.  Others,
-                        such as "$recursiveRef" and "$recursiveAnchor",  may make use of dynamic
+                        such as "$dynamicRef" (with "$dynamicAnchor"),  may make use of dynamic
                         scoping, and therefore only be resolvable in the process of evaluating
                         the schema with an instance.
                     </t>
@@ -1364,8 +1363,7 @@
                         </t>
                     </section>
                 </section>
-                <section title='Defining location-independent identifiers with "$anchor"'
-                         anchor="anchor">
+                <section title="Defining location-independent identifiers" anchor="anchor">
                     <t>
                         Using JSON Pointer fragments requires knowledge of the structure of the schema.
                         When writing schema documents with the intention to provide re-usable
@@ -1374,8 +1372,32 @@
                         without requiring JSON Pointer references to be updated.
                     </t>
                     <t>
-                        The "$anchor" keyword is used to specify such a fragment.  It is an
-                        identifier keyword that can only be used to create plain name fragments.
+                        The "$anchor" and "$dynamicAnchor" keywords are used to specify such
+                        fragments.  They are identifier keywords that can only be used to create
+                        plain name fragments, rather than absolute URIs as seen with "$id".
+                        The behavior of the created fragment is identical for both keywords.
+                    </t>
+                    <t>
+                        The base URI to which the resulting fragment is appended is the canonical
+                        URI of the schema resource containing the "$anchor" or "$dynamicAnchor"
+                        in question.  As discussed in the previous section, this is either the
+                        nearest "$id" in the same or parent schema object, or the base URI
+                        for the document as determined according to RFC 3986.
+                    </t>
+                    <t>
+                        Separately from the usual usage of URIs, "$dynamicAnchor"
+                        indicates that the fragment is an extension point when used with
+                        the "$dynamicRef" keyword.  This low-level, advanced feature
+                        makes it easier to extend recursive schemas such as the meta-schemas,
+                        without imposing any particular semantics on that extension.
+                        See the section on <xref target="dynamic-ref">"$dynamicRef"</xref>
+                        for details.
+                    </t>
+                    <t>
+                        In most cases, the normal fragment behavior both suffices and
+                        is more intuitive.  Therefore it is RECOMMENDED that "$anchor"
+                        be used to create plain name fragments unless there is a clear
+                        need for "$dynamicAnchor".
                     </t>
                     <t>
                         If present, the value of this keyword MUST be a string and MUST start with
@@ -1390,12 +1412,9 @@
                         </cref>
                     </t>
                     <t>
-                        The base URI to which the resulting fragment is appended is determined
-                        by the "$id" keyword as explained in the previous section.
-                        Two "$anchor" keywords in the same schema document MAY have the same
-                        value if they apply to different base URIs, as the resulting full URIs
-                        will be distinct.  However, the effect of two "$anchor" keywords with the
-                        same value and the same base URI is undefined.  Implementations MAY
+                        The effect of specifying the same fragment name multiple times within
+                        the same resource, using any combination of "$anchor" and/or
+                        "$dynamicAnchor", is undefined.  Implementations MAY
                         raise an error if such usage is detected.
                     </t>
                 </section>
@@ -1403,13 +1422,11 @@
                 <section title="Schema References" anchor="references">
                     <t>
                         Several keywords can be used to reference a schema which is to be applied to the
-                        current instance location. "$ref" and "$recursiveRef" are applicator
-                        keywords, applying the referenced schema to the instance.  "$recursiveAnchor"
-                        is an identifier keyword that controls how the base URI for resolving
-                        the URI-reference value of "$recursiveRef is determined.
+                        current instance location. "$ref" and "$dynamicRef" are applicator
+                        keywords, applying the referenced schema to the instance.
                     </t>
                     <t>
-                        As the values of "$ref" and "$recursiveRef" are URI References, this allows
+                        As the values of "$ref" and "$dynamicRef" are URI References, this allows
                         the possibility to externalise or divide a schema across multiple files,
                         and provides the ability to validate recursive structures through
                         self-reference.
@@ -1434,103 +1451,59 @@
                         <t>
                             The value of the "$ref" property MUST be a string which is a URI-Reference.
                             Resolved against the current URI base, it produces the URI of the schema
-                            to apply.
+                            to apply.  This resolution is safe to perform on schema load, as the
+                            process of evaluating an instance cannot change how the reference resolves.
                         </t>
                     </section>
 
-                    <section title='Recursive References with "$recursiveRef" and "$recursiveAnchor"'
-                             anchor="recursive-ref">
+                    <section title='Dynamic References with "$dynamicRef"' anchor="dynamic-ref">
                         <t>
-                            The "$recursiveRef" and "$recursiveAnchor" keywords are used to construct
-                            extensible recursive schemas.  A recursive schema is one that has
-                            a reference to its own root, identified by the empty fragment
-                            URI reference ("#").
+                            The "$dynamicRef" keyword is an applicator that allows for deferring the
+                            full resolution until runtime, at which point it is resolved each time it is
+                            encountered while evaluating an instance.
                         </t>
                         <t>
-                            Simply stated, a "$recursiveRef" behaves identically to "$ref", except
-                            when its target schema contains "$recursiveAnchor" with a value of true.
-                            In that case, the dynamic scope is examined to determine a new base URI,
-                            and the URI-reference in "$recursiveRef" is re-evaluated against that
-                            base URI.  Unlike base URI changes with "$id", changes with
-                            "$recursiveAnchor" are calculated each time a "$recursiveRef" is
-                            resolved, and do not impact any other keywords.
+                            Together with "$dynamicAnchor", "$dynamicRef" implements a cooperative
+                            extension mechanism that is primarily useful with recursive schemas
+                            (schemas that reference themselves).  Both the extension point and the
+                            runtime-determined extension target are defined with "$dynamicAnchor",
+                            and only exhibit runtime dynamic behavior when referenced with
+                            "$dynamicRef".
                         </t>
                         <t>
-                            For an example using these keyword, see appendix
+                            The value of the "$dynamicRef" property MUST be a string which is
+                            a URI-Reference.  Resolved against the current URI base, it produces
+                            the URI used as the starting point for runtime resolution.  This initial
+                            resolution is safe to perform on schema load.
+                        </t>
+                        <t>
+                            If the initially resolved starting point URI includes a fragment that
+                            was created by the "$dynamicAnchor" keyword, the initial URI MUST be
+                            replaced by the URI (including the fragment) for the outermost schema
+                            resource in the <xref target="scopes">dynamic scope</xref> that defines
+                            an identically named fragment with "$dynamicAnchor".
+                            <cref>
+                                Requiring both the initial and final URI fragment to be defined
+                                by "$dynamicAnchor" ensures that the more common "$anchor"
+                                never unexpectedly changes the dynamic resolution process
+                                due to a naming conflict across resources.  Users of
+                                "$dynamicAnchor" are expected to be aware of the possibility
+                                of such name collisions, while users of "$anchor" are not.
+                            </cref>
+                        </t>
+                        <t>
+                            Otherwise, its behavior is identical to "$ref", and no runtime
+                            resolution is needed.
+                        </t>
+                        <t>
+                            For a full example using these keyword, see appendix
                             <xref target="recursive-example" format="counter" />.
                             <cref>
-                                The difference between the hyper-schema meta-schema in previous
+                                The difference between the hyper-schema meta-schema in pre-2019
                                 drafts and an this draft dramatically demonstrates the utility
                                 of these keywords.
                             </cref>
                         </t>
-                        <section title='Dynamically recursive references with "$recursiveRef"'>
-                            <t>
-                                The value of the "$recursiveRef" property MUST be a string which is
-                                a URI-reference.  It is a by-reference applicator that uses
-                                a dynamically calculated base URI to resolve its value.
-                            </t>
-                            <t>
-                                The behavior of this keyword is defined only for the value "#".
-                                Implementations MAY choose to consider other values to be errors.
-                                <cref>
-                                    This restriction may be relaxed in the future, but to date only
-                                    the value "#" has a clear use case.
-                                </cref>
-                            </t>
-                            <t>
-                                The value of "$recursiveRef" is initially resolved against the
-                                current base URI, in the same manner as for "$ref".
-                            </t>
-                            <t>
-                                The schema identified by the resulting URI is examined for the
-                                presence of "$recursiveAnchor", and a new base URI is calculated
-                                as described for that keyword in the following section.
-                            </t>
-                            <t>
-                                Finally, the value of "$recursiveRef" is resolved against the
-                                new base URI determined according to "$recursiveAnchor" producing
-                                the final resolved reference URI.
-                            </t>
-                            <t>
-                                Note that in the absence of "$recursiveAnchor" (and in some cases
-                                when it is present), "$recursiveRef"'s behavior is identical to
-                                that of "$ref".
-                            </t>
-                            <t>
-                                As with "$ref", the results of this keyword are the results of the
-                                referenced schema.
-                            </t>
-                        </section>
-                        <section title='Enabling Recursion with "$recursiveAnchor"'>
-                            <t>
-                                The value of the "$recursiveAnchor" property MUST be a boolean.
-                            </t>
-                            <t>
-                                "$recursiveAnchor" is used to dynamically identify a base URI
-                                at runtime for "$recursiveRef" by marking where such a calculation
-                                can start, and where it stops.  This keyword MUST NOT affect the
-                                base URI of other keywords, unless they are explicitly defined
-                                to rely on it.
-                            </t>
-                            <t>
-                                If set to true, then when the containing schema object is used
-                                as a target of "$recursiveRef", a new base URI is determined
-                                by examining the <xref target="scopes">dynamic scope</xref> for
-                                the outermost schema that also contains "$recursiveAnchor"
-                                with a value of true.  The base URI of that schema is then used
-                                as the dynamic base URI.
-                            </t>
-                            <t>
-                                If no such schema exists, then the base URI is unchanged.
-                            </t>
-                            <t>
-                                If this keyword is set to false, the base URI is unchanged.
-                            </t>
-                            <t>
-                                Omitting this keyword has the same behavior as a value of false.
-                            </t>
-                        </section>
                     </section>
 
                 </section>
@@ -2657,7 +2630,7 @@
                     <t>
                         The relative location of the validating keyword that follows the validation
                         path.  The value MUST be expressed as a JSON Pointer, and it MUST include
-                        any by-reference applicators such as "$ref" or "$recursiveRef".
+                        any by-reference applicators such as "$ref" or "$dynamicRef".
                     </t>
                     <figure>
                         <artwork>
@@ -2680,7 +2653,7 @@
                         The absolute, dereferenced location of the validating keyword.  The value MUST
                         be expressed as an absolute URI using the canonical URI of the relevant
                         schema object, and it MUST NOT include by-reference applicators
-                        such as "$ref" or "$recursiveRef" as non-terminal path components.
+                        such as "$ref" or "$dynamicRef" as non-terminal path components.
                         It MAY end in such keywords if the error or annotation is for that
                         keyword, such as an unresolvable reference.
                     </t>
@@ -3448,7 +3421,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://example.com/tree",
-    "$recursiveAnchor": true,
+    "$dynamicAnchor": "node",
 
     "type": "object",
     "properties": {
@@ -3456,7 +3429,7 @@ https://example.com/schemas/common#/$defs/count/minimum
         "children": {
             "type": "array",
             "items": {
-                "$recursiveRef": "#"
+                "$dynamicRef": "#node"
             }
         }
     }
@@ -3466,7 +3439,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "https://example.com/strict-tree",
-    "$recursiveAnchor": true,
+    "$dynamicAnchor": node,
 
     "$ref": "tree",
     "unevaluatedProperties": false
@@ -3480,30 +3453,65 @@ https://example.com/schemas/common#/$defs/count/minimum
                 </artwork>
             </figure>
             <t>
+                When we load these two schemas, we will notice the "$dynamicAnchor"
+                named "node" (note the lack of "#" as this is just the name)
+                present in each, resulting in the following full schema URIs:
+                <list style="symbols">
+                    <t>"https://example.com/tree#node"</t>
+                    <t>"https://example.com/strict-tree#node"</t>
+                </list>
+                In addition, JSON Schema implementations keep track of the fact
+                that these fragments were created with "$dynamicAnchor".
+            </t>
+            <t>
                 If we apply the "strict-tree" schema to the instance, we will follow
                 the "$ref" to the "tree" schema, examine its "children" subschema,
-                and find the "$recursiveAnchor" in its "items" subschema.
+                and find the "$dynamicRef": to "#node" (note the "#" for URI fragment syntax)
+                in its "items" subschema.  That reference resolves to
+                "https://example.com/tree#node", which is a URI with a fragment
+                created by "$dynamicAnchor".  Therefore we must examine the dynamic
+                scope before following the reference.
+            </t>
+            <t>
                 At this point, the dynamic path is
-                "#/$ref/properties/children/items/$recursiveRef".
+                "#/$ref/properties/children/items/$dynamicRef", with a dynamic scope
+                containing (from the outermost scope to the innermost):
+                <list style="numbers">
+                  <t>"https://example.com/strict-tree#"</t>
+                  <t>"https://example.com/tree#"</t>
+                  <t>"https://example.com/tree#/properties/children"</t>
+                  <t>"https://example.com/tree#/properties/children/items"</t>
+                </list>
             </t>
             <t>
-                The base URI at this point is "https://example.com/tree", so the
-                "$recursiveRef" initially resolves to "https://example.com/tree#".
-                Since "$recursiveAnchor" is true, we examine the dynamic path to
-                see if there is a different base URI to use.  We find
-                "$recursiveAnchor" with a true value at the dynamic paths of
-                "#" and "#/$ref".
+                Since we are looking for a plain name fragment, which can be
+                defined anywhere within a schema resource, the JSON Pointer fragments
+                are irrelevant to this check.  That means that we can remove those
+                fragments and eliminate consecutive duplicates, producing:
+                <list style="numbers">
+                  <t>"https://example.com/strict-tree"</t>
+                  <t>"https://example.com/tree"</t>
+                </list>
             </t>
             <t>
-                The outermost is "#", which is the root schema of the "strict-tree"
-                schema, so we use its base URI of "https://example.com/strict-tree",
-                which produces a final resolved URI of
-                "https://example.com/strict-tree#" for the "$recursiveRef".
+                In this case, the outermost resource also has a "node" fragment
+                defined by "$dynamicAnchor".  Therefore instead of resolving the
+                "$dynamicRef" to "https://example.com/tree#node", we resolve it to
+                "https://example.com/strict-tree#node".
             </t>
             <t>
                 This way, the recursion in the "tree" schema recurses to the root
                 of "strict-tree", instead of only applying "strict-tree" to the
                 instance root, but applying "tree" to instance children.
+            </t>
+            <t>
+                This example shows both "$dynamicAnchor"s in the same place
+                in each schema, specifically the resource root schema.
+                Since plain-name fragments are independent of the JSON structure,
+                this would work just as well if one or both of the node schema objects
+                were moved under "$defs".  It is the matching "$dynamicAnchor" values
+                which tell us how to resolve the dynamic reference, not any sort of
+                correlation in JSON structure.
             </t>
         </section>
 
@@ -3547,8 +3555,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                     appropriate for certain use cases.
                 </t>
                 <t>
-                    The recursive nature of meta-schemas makes the "$recursiveAnchor"
-                    and "$recursiveRef" keywords particularly useful for extending
+                    The recursive nature of meta-schemas makes the "$dynamicAnchor"
+                    and "$dynamicRef" keywords particularly useful for extending
                     existing meta-schemas, as can be seen in the JSON Hyper-Schema meta-schema
                     which extends the Validation meta-schema.
                 </t>
@@ -3604,7 +3612,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://example.com/meta/general-use-example",
-  "$recursiveAnchor": true,
+  "$dynamicAnchor": "meta",
   "$vocabulary": {
     "https://json-schema.org/draft/2019-09/vocab/core": true,
     "https://json-schema.org/draft/2019-09/vocab/applicator": true,
@@ -3639,7 +3647,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://example.com/meta/example-vocab",
-  "$recursiveAnchor": true,
+  "$dynamicAnchor": "meta",
   "$vocabulary": {
     "https://example.com/vocab/example-vocab": true,
   },
@@ -3780,9 +3788,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                             <t>Array-value "items" functionality is now "prefixItems"</t>
                             <t>"items" subsumes the old function of "additionalItems"</t>
                             <t>"contains" and "unevaluatedItems" interactions now specified</t>
-                            <t></t>
-                            <t></t>
-                            <t></t>
+                            <t>Rename $recursive* to $dynamic*</t>
+                            <t>$dynamicAnchor defines a fragment like $anchor</t>
+                            <t>$dynamic* (previously $recursive) no longer use runtime base URI determination</t>
                             <t></t>
                             <t></t>
                             <t></t>
