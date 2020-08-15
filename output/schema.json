@@ -46,20 +46,20 @@
         },
         {
           "if": {
-            "oneOf": [
+            "anyOf": [
               {
                 "properties": {
                   "keywordLocation": {
-                    "pattern": ".*/$ref/.*"
+                    "pattern": "/\\$ref/"
                   }
-                }    
+                }
               },
               {
                 "properties": {
                   "keywordLocation": {
-                    "pattern": ".*/$recursiveRef/.*"
+                    "pattern": "/\\$recursiveRef/"
                   }
-                }    
+                }
               }
             ]
           },
@@ -79,8 +79,8 @@
       },
       "required": [ "valid" ]
     },
-    "basic": { "$ref": "#/outputUnit" },
-    "detailed": { "$ref": "#/outputUnit" },
-    "verbose": { "$ref": "#/outputUnit" }
+    "basic": { "$ref": "#/$defs/outputUnit" },
+    "detailed": { "$ref": "#/$defs/outputUnit" },
+    "verbose": { "$ref": "#/$defs/outputUnit" }
   }
 }
