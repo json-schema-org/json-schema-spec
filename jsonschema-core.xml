@@ -1845,6 +1845,48 @@
                 </section>
             </section>
 
+            <section title="Compound Documents">
+                <t>
+                    A Compound Schema Document is defined as JSON document (sometimes called a "dereferenced" or
+                    "bundled" schema) which has multiple embedded JSON Schema Resources bundled into the same
+                    document to ease transportation.
+                </t>
+                <t>
+                    Each embedded Schema Resource MUST be treated as an individual Schema Resource, following standard
+                    schema loading and processing requirements, including determining voacbulary support.
+                </t>
+                <section title="Bundling">
+                    <t>
+                        A Compound Schema Document is created by replacing references (such as "$ref") with an
+                        embedded version of the referenced Schema Resource.
+                    </t>
+                    <t>
+                        Each embedded JSON Schema Resource (and the document's root) MUST identify itself
+                        with an absolute URI using the "$id" keyword, and SHOULD make use of the "$schema"
+                        keyword to identify the dialect it is using, in the root of the schema resource.
+                    </t>
+                    <t>
+                        When a reference applicator is dereferenced as part of the bundling process, the Schema Resource
+                        MUST NOT be embedded by replacing the schema object from which it was referenced, or by wrapping
+                        in other applicator keywords. In stead, a bundled Schema Resource MUST be located in `$defs`,
+                        where the key is the `$id` of the Schema Resource, which MUST then be referenced using `$ref`.
+                    </t>
+                </section>
+                <section title="Validating">
+                    <t>
+                        Given a Compound Schema Document may have embedded resources which idenfiy as using different
+                        dialects, it is NOT RECOMMENDED that these documents are validated by applying a meta-schema
+                        to the Compound Schema Document as an instance. It is RECOMMENDED that an alternate
+                        validation process be provided in order to validate Compound Schema Documents
+                        (such as a differnet function).
+                    </t>
+                    <t>
+                        A Compound Schema Document in which all embedded resources idenfity as using the same
+                        dialect MAY be validated by applying the appropriate meta-schema.
+                    </t>
+                </section>
+            </section>
+
             <section title="Caveats">
                 <section title="Guarding Against Infinite Recursion">
                     <t>
