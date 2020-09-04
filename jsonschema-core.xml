@@ -1950,7 +1950,7 @@
                         <figure>
                             <artwork>
         <![CDATA[
-        Content-Type: application/json;
+        Content-Type: application/schema-instance+json;
                   schema="https://example.com/my-hyper-schema#"
         ]]>
                             </artwork>
@@ -1964,7 +1964,7 @@
                         <figure>
                             <artwork>
         <![CDATA[
-        Content-Type: application/json;
+        Content-Type: application/schema-instance+json;
                   schema="https://example.com/alice https://example.com/bob"
         ]]>
                             </artwork>
@@ -1977,9 +1977,9 @@
                         <figure>
                             <artwork>
         <![CDATA[
-        Accept: application/json;
+        Accept: application/schema-instance+json;
                   schema="https://example.com/qiang https://example.com/li",
-                application/json;
+                application/schema-instance+json;
                   schema="https://example.com/kumar"
         ]]>
                             </artwork>
@@ -1995,7 +1995,7 @@
                             indicate that the client can accept several media types.
                             In the above example, note that the two media types differ
                             only by their schema parameter values.  This requests an
-                            application/json representation that conforms to at least one
+                            application/schema-instance+json representation that conforms to at least one
                             of the identified schemas.
                         </t>
 
