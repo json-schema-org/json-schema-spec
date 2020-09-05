@@ -704,14 +704,17 @@
                 <t>
                     Because annotation collection can add significant cost in terms of both
                     computation and memory, implementations MAY opt out of this feature.
-                    Keywords known to an implementation to have assertion or applicator behavior
-                    that depend on annotation results MUST then be treated as errors, unless
-                    an alternate implementation producing the same behavior is available.
-                    Keywords of this sort SHOULD describe reasonable alternate approaches
-                    when appropriate.  This approach is demonstrated by the
+                    Keywords that are specified in terms of collected annotations SHOULD
+                    describe reasonable alternate approaches when appropriate.
+                    This approach is demonstrated by the
                     "<xref target="items" format="title"/>" and
                     "<xref target="additionalProperties" format="title"/>" keywords in this
                     document.
+                </t>
+                <t>
+                    Note that when no such alternate approach is possible for a keyword,
+                    implementations that do not support annotation collections will not
+                    be able to support those keywords or vocabularies that contain them.
                 </t>
             </section>
             <section title="Identifiers" anchor="identifiers">
@@ -2535,10 +2538,6 @@
                     Omitting this keyword has the same assertion behavior as
                     an empty schema.
                 </t>
-                <t>
-                    Implementations that do not collect annotations MUST raise an error
-                    upon encountering this keyword.
-                </t>
             </section>
 
             <section title="unevaluatedProperties" anchor="unevaluatedProperties">
@@ -2584,10 +2583,6 @@
                 <t>
                     Omitting this keyword has the same assertion behavior as
                     an empty schema.
-                </t>
-                <t>
-                    Implementations that do not collect annotations MUST raise an error
-                    upon encountering this keyword.
                 </t>
             </section>
         </section>
