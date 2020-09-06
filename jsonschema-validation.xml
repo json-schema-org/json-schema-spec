@@ -1083,7 +1083,7 @@
     "contentSchema": {
         "type": "array",
         "minItems": 2,
-        "items": [
+        "prefixItems": [
             {
                 "const": {
                     "typ": "JWT",
@@ -1177,10 +1177,10 @@
                     the entire resource being described MAY be removed in the future.
                 </t>
                 <t>
-                    When the "deprecated" keyword is applied to an item in an array by means of 
-                    "items", if "items" is a single schema, the deprecation relates to the whole 
-                    array, while if "items" is an array of schemas, the deprecation relates to 
-                    the corresponding item according to the subschemas position.
+                    The "deprecated" keyword applies to each instance location to which the
+                    schema object containing the keyword successfully applies.  This can
+                    result in scenarios where every array item or object property
+                    is deprecated even though the containing array or object is not.
                 </t>
                 <t>
                     Omitting this keyword has the same behavior as a value of false.
