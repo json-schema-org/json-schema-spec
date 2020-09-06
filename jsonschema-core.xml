@@ -200,6 +200,15 @@
                 <t>
                     A JSON document to which a schema is applied is known as an "instance".
                 </t>
+                <t>
+                    JSON Schema is defined over "application/json" or compatible documents,
+                    including media types with the "+json" structured syntax suffix.
+                </t>
+                <t>
+                    Among these, this specification defines the "application/schema-instance+json"
+                    media type which defines handling for fragments in the URI,
+                    and the "schema" media type parameter.
+                </t>
 
                 <section title="Instance Data Model">
                     <t>
@@ -243,25 +252,6 @@
                     </t>
                 </section>
 
-                <section title="Instance Media Types">
-                    <t>
-                        JSON Schema is designed to fully work with "application/json" documents,
-                        as well as media types using the "+json" structured syntax suffix.
-                    </t>
-                    <t>
-                        Some functionality that is useful for working with schemas is
-                        defined by each media type, namely media type parameters and
-                        URI fragment identifier syntax and semantics.  These features are
-                        useful in content negotiation and in calculating URIs for specific
-                        locations within an instance, respectively.
-                    </t>
-                    <t>
-                        This specification defines the "application/schema-instance+json"
-                        media type in order to allow instance authors to take full advantage
-                        of parameters and fragment identifiers for these purposes.
-                    </t>
-                </section>
-
                 <section title="Instance Equality">
                     <t>
                         Two JSON instances are said to be equal if and only if they are of the same type
@@ -286,6 +276,22 @@
                         there is no way to define multiple properties with the same key,
                         and mere formatting differences (indentation, placement of commas, trailing
                         zeros) are insignificant.
+                    </t>
+                </section>
+
+                <section title="Non-JSON Instances">
+                    <t>
+                        It is possible to use JSON Schema with a superset of the JSON Schema data model,
+                        where an instance may be outside any of the six JSON data types.
+                    </t>
+                    <t>
+                        In this case, annotations still apply; but validation keywords will not be useful,
+                        as they will always pass or always fail.
+                    </t>
+                    <t>
+                        A custom vocabulary may define support for a superset of the core data model.
+                        The schema itself may only be expressible in this superset;
+                        for example, to make use of the "const" keyword.
                     </t>
                 </section>
             </section>
