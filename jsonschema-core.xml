@@ -770,7 +770,9 @@
                 </t>
                 <t>
                     <xref target="annotations">Annotation</xref> results are
-                    combined according to the rules specified by each annotation keyword.
+                    preserved along with the instance location and the location of
+                    the schema keyword, so that applications can decide how to
+                    interpret multiple values.
                 </t>
                 <section title="Referenced and Referencing Schemas" anchor="referenced">
                     <t>
@@ -865,8 +867,9 @@
                 <t>
                     Annotations are attached to specific locations in an instance.
                     Since many subschemas can be applied to any single
-                    location, annotation keywords need to specify any unusual handling of
-                    multiple applicable occurrences of the keyword with different values.
+                    location, applications may need to decide how to handle differing
+                    annotation values being attached to the same instance location by
+                    the same schema keyword in different schema objects.
                 </t>
                 <t>
                     Unlike assertion results, annotation data can take a wide variety of forms,
@@ -918,14 +921,6 @@
                                 The attached value(s)
                             </t>
                         </list>
-                    </t>
-                    <t>
-                        If the same keyword attaches values from multiple schema locations
-                        to the same instance location, and the annotation defines a process
-                        for combining such values, then the combined value MUST also be associated
-                        with the instance location.  The <xref target="output">output formats</xref>
-                        described in this specification that include annotation information
-                        meet this requirement.
                     </t>
                     <section title="Distinguishing Among Multiple Values">
                         <t>
@@ -986,8 +981,7 @@
                         <t>
                             In this example, both Feature A and Feature B make use of the re-usable
                             "enabledToggle" schema.  That schema uses the "title", "description",
-                            and "default" annotations, none of which define special behavior for
-                            handling multiple values.  Therefore the application has to decide how
+                            and "default" annotations.  Therefore the application has to decide how
                             to handle the additional "default" value for Feature A, and the additional
                             "description" value for Feature B.
                         </t>
@@ -1061,10 +1055,7 @@
                         <t>
                             In addition to possibly defining annotation results of their own,
                             applicator keywords aggregate the annotations collected in their
-                            subschema(s) or referenced schema(s).  The rules for aggregating
-                            annotation values are defined by each annotation keyword, and are
-                            not directly affected by the logic used for combining assertion
-                            results.
+                            subschema(s) or referenced schema(s).
                         </t>
                     </section>
                 </section>
