@@ -351,7 +351,7 @@
                     </t>
                     <t>
                         A JSON Schema MAY contain properties which are not schema keywords.
-                        Unknown keywords SHOULD be ignored.
+                        Unknown keywords SHOULD be treated as annotations.
                     </t>
                     <t>
                         An empty schema is a JSON Schema with no properties, or only unknown
@@ -3089,6 +3089,11 @@ https://example.com/schemas/common#/$defs/count/minimum
                 Validators should take care that the parsing and validating against schemas doesn't consume excessive
                 system resources.
                 Validators MUST NOT fall into an infinite loop.
+            </t>
+            <t>
+                A malicious party could cause an implementation to repeatedly collect a copy
+                of a very large value as an annotation.  Implementations SHOULD guard against
+                excessive consumption of system resources in such a scenario.
             </t>
             <t>
                 Servers MUST ensure that malicious parties can't change the functionality of
