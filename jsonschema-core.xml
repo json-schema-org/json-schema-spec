@@ -1692,18 +1692,18 @@
                     <artwork>
 <![CDATA[
 {
-"$id": "https://example.net/root.json",
-"items": {
-"type": "array",
-"items": { "$ref": "#item" }
-},
-"$defs": {
-"single": {
-    "$anchor": "item",
-    "type": "object",
-    "additionalProperties": { "$ref": "other.json" }
-}
-}
+    "$id": "https://example.net/root.json",
+    "items": {
+        "type": "array",
+        "items": { "$ref": "#item" }
+    },
+    "$defs": {
+        "single": {
+            "$anchor": "item",
+            "type": "object",
+            "additionalProperties": { "$ref": "other.json" }
+        }
+    }
 }
 ]]>
                     </artwork>
@@ -1764,11 +1764,11 @@
                         <artwork>
 <![CDATA[
 {
-  "$id": "https://example.com/foo",
-  "items": {
-"$id": "https://example.com/bar",
-"additionalProperties": { }
-  }
+    "$id": "https://example.com/foo",
+    "items": {
+        "$id": "https://example.com/bar",
+        "additionalProperties": { }
+    }
 }
 ]]>
                         </artwork>
@@ -1787,15 +1787,15 @@
                         <artwork>
 <![CDATA[
 {
-  "$id": "https://example.com/foo",
-  "items": {
-"$ref": "bar"
-  }
+    "$id": "https://example.com/foo",
+    "items": {
+        "$ref": "bar"
+    }
 }
 
 {
-  "$id": "https://example.com/bar",
-  "additionalProperties": { }
+    "$id": "https://example.com/bar",
+    "additionalProperties": { }
 }
 ]]>
                         </artwork>
