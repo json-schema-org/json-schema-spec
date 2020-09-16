@@ -304,9 +304,6 @@
                 <t>
                     A JSON Schema MUST be an object or a boolean.
                 </t>
-                <t>
-                    Keywords within the same schema object are referred to as adjacent keywords.
-                </t>
                 <section title="JSON Schema Objects and Keywords">
                     <t>
                         Object properties that are applied to the instance are called keywords,
@@ -338,6 +335,9 @@
                         SHOULD only produce assertion results based on their subschemas'
                         results.  They should not define additional constraints independent
                         of their subschemas.
+                    </t>
+                    <t>
+                        Keywords within the same schema object are referred to as adjacent keywords.
                     </t>
                     <t>
                         Extension keywords, meaning those defined outside of this document
