@@ -1613,6 +1613,11 @@
                         that implementations document any default base URI that they assume.
                     </t>
                     <t>
+                        If a schema object is embedded in a document of another media type, then
+                        the initial base URI is determined according to the rules of that
+                        media type.
+                    </t>
+                    <t>
                         Unless the "$id" keyword described in the next section is present in the
                         root schema, this base URI SHOULD be considered the canonical URI of the
                         schema document's root schema resource.
