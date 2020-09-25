@@ -314,7 +314,7 @@
                     <t>
                         Object properties that are applied to the instance are called keywords,
                         or schema keywords.  Broadly speaking, keywords fall into one
-                        of four categories:
+                        of five categories:
                         <list style="hanging">
                             <t hangText="identifiers:">
                                 control schema identification through setting the schema's
@@ -1697,26 +1697,26 @@
                     <artwork>
 <![CDATA[
 {
-"$id": "https://example.net/root.json",
-"items": {
-"type": "array",
-"items": { "$ref": "#item" }
-},
-"$defs": {
-"single": {
-    "$anchor": "item",
-    "type": "object",
-    "additionalProperties": { "$ref": "other.json" }
-}
-}
+    "$id": "https://example.net/root.json",
+    "items": {
+        "type": "array",
+        "items": { "$ref": "#item" }
+    },
+    "$defs": {
+        "single": {
+            "$anchor": "item",
+            "type": "object",
+            "additionalProperties": { "$ref": "other.json" }
+        }
+    }
 }
 ]]>
                     </artwork>
                 </figure>
                 <t>
                     When an implementation encounters the &lt;#/$defs/single&gt; schema,
-                    it resolves the "$id" URI reference against the current base URI to form
-                    &lt;https://example.net/root.json#item&gt;.
+                    it resolves the "$anchor" value as a fragment name against the current
+                    base URI to form &lt;https://example.net/root.json#item&gt;.
                 </t>
                 <t>
                     When an implementation then looks inside the &lt;#/items&gt; schema, it
@@ -1769,11 +1769,11 @@
                         <artwork>
 <![CDATA[
 {
-  "$id": "https://example.com/foo",
-  "items": {
-"$id": "https://example.com/bar",
-"additionalProperties": { }
-  }
+    "$id": "https://example.com/foo",
+    "items": {
+        "$id": "https://example.com/bar",
+        "additionalProperties": { }
+    }
 }
 ]]>
                         </artwork>
@@ -1792,15 +1792,15 @@
                         <artwork>
 <![CDATA[
 {
-  "$id": "https://example.com/foo",
-  "items": {
-"$ref": "bar"
-  }
+    "$id": "https://example.com/foo",
+    "items": {
+        "$ref": "bar"
+    }
 }
 
 {
-  "$id": "https://example.com/bar",
-  "additionalProperties": { }
+    "$id": "https://example.com/bar",
+    "additionalProperties": { }
 }
 ]]>
                         </artwork>
