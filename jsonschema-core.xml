@@ -2705,11 +2705,18 @@
                 <section title="Keyword Absolute Location">
                     <t>
                         The absolute, dereferenced location of the validating keyword.  The value MUST
-                        be expressed as an absolute URI using the canonical URI of the relevant
+                        be expressed as a full URI using the canonical URI of the relevant
                         schema object, and it MUST NOT include by-reference applicators
                         such as "$ref" or "$dynamicRef" as non-terminal path components.
                         It MAY end in such keywords if the error or annotation is for that
                         keyword, such as an unresolvable reference.
+                        <cref>
+                            Note that "absolute" here is in the sense of "absolute filesystem path"
+                            (meaning the complete location) rather than the "absolute-URI"
+                            terminology from RFC 3986 (meaning with scheme but without fragment).
+                            Keyword absolute locations will always have a fragment in order to
+                            identify the keyword.
+                        </cref>
                     </t>
                     <figure>
                         <artwork>
