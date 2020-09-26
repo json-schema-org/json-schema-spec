@@ -11,10 +11,8 @@
     "properties": {
         "prefixItems": { "$ref": "#/$defs/schemaArray" },
         "items": { "$dynamicRef": "#meta" },
-        "unevaluatedItems": { "$dynamicRef": "#meta" },
         "contains": { "$dynamicRef": "#meta" },
         "additionalProperties": { "$dynamicRef": "#meta" },
-        "unevaluatedProperties": { "$dynamicRef": "#meta" },
         "properties": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
