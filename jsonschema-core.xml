@@ -150,9 +150,9 @@
             <t>
                 JSON Schema can be extended either by defining additional vocabularies,
                 or less formally by defining additional keywords outside of any vocabulary.
-                Unrecognized individual keywords are ignored, while the behavior with respect
-                to an unrecognized vocabulary can be controlled when declaring which
-                vocabularies are in use.
+                Unrecognized individual keywords simply have their values collected as annotations,
+                while the behavior with respect to an unrecognized vocabulary can be controlled
+                when declaring which vocabularies are in use.
             </t>
             <t>
                 This document defines a core vocabulary that MUST be supported by any
@@ -351,7 +351,8 @@
                     </t>
                     <t>
                         A JSON Schema MAY contain properties which are not schema keywords.
-                        Unknown keywords SHOULD be treated as annotations.
+                        Unknown keywords SHOULD be treated as annotations, where the value
+                        of the keyword is the value of the annotation.
                     </t>
                     <t>
                         An empty schema is a JSON Schema with no properties, or only unknown
@@ -575,7 +576,8 @@
                     by any entity.  Save for explicit agreement, schema authors SHALL NOT
                     expect these additional keywords and vocabularies to be supported by
                     implementations that do not explicitly document such support.
-                    Implementations SHOULD ignore keywords they do not support.
+                    Implementations SHOULD treat keywords they do not support as annotations,
+                    where the value of the keyword is the value of the annotation.
                 </t>
                 <t>
                     Implementations MAY provide the ability to register or load handlers
@@ -1237,7 +1239,8 @@
                     </t>
                     <t>
                         Per <xref target="extending" format="counter"></xref>, unrecognized
-                        keywords SHOULD be ignored.  This remains the case for keywords defined
+                        keywords SHOULD be treated as annotations.
+                        This remains the case for keywords defined
                         by unrecognized vocabularies.  It is not currently possible to distinguish
                         between unrecognized keywords that are defined in vocabularies from
                         those that are not part of any vocabulary.
