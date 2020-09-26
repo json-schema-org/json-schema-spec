@@ -146,6 +146,7 @@
             <t>
                 To facilitate re-use, keywords can be organized into vocabularies.  A vocabulary
                 consists of a list of keywords, together with their syntax and semantics.
+                A set of vocabularies identified by a meta-schema is known as a dialect.
             </t>
             <t>
                 JSON Schema can be extended either by defining additional vocabularies,
@@ -173,7 +174,9 @@
             </t>
             <t>
                 Further vocabularies for purposes such as structural validation or
-                hypermedia annotation are defined in other documents.
+                hypermedia annotation are defined in other documents.  These other
+                documents each define a dialect collecting the standard sets of
+                vocabularies needed to write schemas for that document's purpose.
             </t>
         </section>
 
