@@ -1866,7 +1866,7 @@
                         keyword to identify the dialect it is using, in the root of the schema resource.
                     </t>
                     <t>
-                        When a reference applicator is dereferenced as part of the bundling process, the Schema Resource
+                        When a by-reference applicator is dereferenced as part of the bundling process, the Schema Resource
                         MUST NOT be embedded by replacing the schema object from which it was referenced, or by wrapping
                         in other applicator keywords. Instead, a bundled Schema Resource MUST be located in `$defs`,
                         where the key is the `$id` of the Schema Resource, which MUST then be referenced using `$ref`.
