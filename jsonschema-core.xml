@@ -1865,7 +1865,8 @@
                 </section>
                 <section title="Differing and Default Dialects">
                     <t>
-                        In addition to the rules defining the use of the "$schema" keyword <target='The "$schema" Keyword' format="counter"></xref>,
+                        In addition to the rules defining the use of the "$schema" keyword
+                        <target='The "$schema" Keyword' format="counter"></xref>,
                         if multiple schema resources are present in a single document, then
                         schema resources which do not have a "$schema" keyword in their root
                         schema object MUST be processed as if "$schema" were present with the
@@ -1881,8 +1882,12 @@
                         Given a Compound Schema Document may have embedded resources which idenfiy as using different
                         dialects, it is NOT RECOMMENDED that these documents are validated by applying a meta-schema
                         to the Compound Schema Document as an instance. It is RECOMMENDED that an alternate
-                        validation process be provided in order to validate Compound Schema Documents
-                        (such as a different function).
+                        validation process be provided in order to validate Schema Documents.
+                        <cref>
+                            If you know a schema is what's being validated, you can identify if the schemas
+                            is a Compound Schema Document or not, by way of use of "$id", which identifies an
+                            embedded resource when used not at the document's root.
+                        </cref>
                     </t>
                     <t>
                         A Compound Schema Document in which all embedded resources idenfity as using the same
