@@ -1857,8 +1857,9 @@
                 </t>
                 <section title="Bundling">
                     <t>
-                        A Compound Schema Document is created by replacing references (such as "$ref") with an
-                        embedded version of the referenced Schema Resource.
+                        A Compound Schema Document is created by taking references (such as "$ref")
+                        to an external Schema Resource and embedding the referenced Schema Resources
+                        within the referreing document.
                     </t>
                     <t>
                         Each embedded JSON Schema Resource (and the document's root) MUST identify itself
