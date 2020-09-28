@@ -1181,16 +1181,6 @@
                         the document root schema, the resulting behavior is implementation-defined.
                     </t>
                     <t>
-                        If multiple schema resources are present in a single document, then
-                        schema resources which do not have a "$schema" keyword in their root
-                        schema object MUST be processed as if "$schema" were present with the
-                        same value as for the immediately enclosing resource.
-                    </t>
-                    <t>
-                        Embedded schema resources MAY specify different "$schema" values from their
-                        enclosing resource, as any schema that can be referenced can also be embedded.
-                    </t>
-                    <t>
                         Values for this property are defined elsewhere in this and other documents,
                         and by other parties.
                     </t>
@@ -1871,6 +1861,19 @@
                         MUST NOT be embedded by replacing the schema object from which it was referenced, or by wrapping
                         in other applicator keywords. Instead, a bundled Schema Resource MUST be located in `$defs`,
                         where the key is the `$id` of the Schema Resource, which MUST then be referenced using `$ref`.
+                    </t>
+                </section>
+                <section title="Differing and Default Dialects">
+                    <t>
+                        In addition to the rules defining the use of the "$schema" keyword <target='The "$schema" Keyword' format="counter"></xref>,
+                        if multiple schema resources are present in a single document, then
+                        schema resources which do not have a "$schema" keyword in their root
+                        schema object MUST be processed as if "$schema" were present with the
+                        same value as for the immediately enclosing resource.
+                    </t>
+                    <t>
+                        Embedded schema resources MAY specify different "$schema" values from their
+                        enclosing resource, as any schema that can be referenced can also be embedded.
                     </t>
                 </section>
                 <section title="Validating">
