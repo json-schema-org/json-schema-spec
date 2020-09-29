@@ -1859,8 +1859,15 @@
                     <t>
                         When a by-reference applicator is dereferenced as part of the bundling process, the Schema Resource
                         MUST NOT be embedded by replacing the schema object from which it was referenced, or by wrapping
-                        in other applicator keywords. Instead, a bundled Schema Resource MUST be located in `$defs`,
-                        where the key is the `$id` of the Schema Resource, which MUST then be referenced using `$ref`.
+                        in other applicator keywords. Instead, a bundled Schema Resource MUST be located as a value of
+                        a "$defs" object at the containing schemas root. The key of the "$defs" for the now embedded
+                        Schema Resource MAY be the "$id" of the bundled schema or some other form of application defined
+                        unique identifer (such as a UUID). This key is not intended to be referenced in JSON Schema, but may
+                        be used by an application to aid the bundling process.
+                    </t>
+                    <t>
+                        References in the containing schema document to the previously external Schema Resources
+                        MUST NOT be changed, and now resolve to a schema using the "$id" of an embedded Schema Resource.
                     </t>
                 </section>
                 <section title="Differing and Default Dialects">
