@@ -1159,7 +1159,7 @@
                     Meta-schema authoring is an advanced usage of JSON Schema, so the design of
                     meta-schema features emphasizes flexibility over simplicity.
                 </t>
-                <section title='The "$schema" Keyword'>
+                <section title='The "$schema" Keyword' anchor="keyword-schema">
                     <t>
                         The "$schema" keyword is both used as a JSON Schema feature set identifier and
                         as the identifier of a resource which is itself a JSON Schema, which describes the
@@ -1865,8 +1865,8 @@
                 </section>
                 <section title="Differing and Default Dialects">
                     <t>
-                        In addition to the rules defining the use of the "$schema" keyword
-                        <xref target='The "$schema" Keyword' format="counter"></xref>,
+                        In addition to the rules defining the use of
+                        <xref target="keyword-schema">the "$schema" keyword</xref>,
                         if multiple schema resources are present in a single document, then
                         schema resources which do not have a "$schema" keyword in their root
                         schema object MUST be processed as if "$schema" were present with the
