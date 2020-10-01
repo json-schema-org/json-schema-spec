@@ -687,14 +687,74 @@
             </section>
             <section title="Keyword Interactions">
                 <t>
-                    Keyword behavior MAY be defined in terms of the annotation results
-                    of <xref target="root">subschemas</xref> and/or adjacent keywords
-                    (keywords within the same schema object) and their subschemas.
+                    Keyword behavior MAY be defined in terms of the annotation or
+                    validation results of adjacent keywords (keywords within the same
+                    schema object) and their <xref target="root">subschemas</xref>.
                     Such keywords MUST NOT result in a circular dependency.
                     Keywords MAY modify their behavior based on the presence or absence
                     of another keyword in the same
                     <xref target="schema-document">schema object</xref>.
                 </t>
+                <t>
+                    Keywords MAY specify dependencies on keywords in other vocabularies.
+                    However, dependencies are purely in terms of keyword/annotation name.
+                    While a keyword's description SHOULD indicate the vocabulary that is
+                    expected to provide the dependency, this is not an enforceable dependency.
+                    As with overlapping keyword names in general, the behavior of using
+                    vocabularies with incompatible semantics is undefined.
+                </t>
+                <t>
+                    In addition to depending on specific adjacent keywords, a keyword MAY
+                    depend on specific annotations collected through any and all in-place applicators,
+                    without needing to list individual in-place applicator keywords.  This allows
+                    for continued correct behavior when some other vocabulary adds previously unknown
+                    in-place applicators.  An annotation that has been collected through in-place
+                    applicators will have the same instance location as that which is currently
+                    being processed.
+                    <cref>
+                        At this time, the only class of keywords that can be depended upon like this
+                        are in-place applicators.  To date, no use cases have been found for other
+                        keyword class dependencies.  This could change in the future.
+                    </cref>
+                </t>
+                <t>
+                    Keywords defining interactions through these mechanisms SHOULD be supported by any
+                    vocabulary plugin architecture; interactions of this sort involving adjacent
+                    keywords and in-place applicators are expressed in machine-readable form in the
+                    <xref target="vocab-file">vocabulary file</xref>.
+                </t>
+                <t>
+                    Vocabulary authors MUST NOT assume that vocabulary plug-in architectures
+                    will allow any other form of interaction.  Save for explicit agreement,
+                    schema authors SHALL NOT expect these keywords depending on additional
+                    interactions to be supported by peer implementations.
+                </t>
+                <section title="Implementing keyword interactions">
+                    <t>
+                        While keyword interactions MUST be defined as described above in order
+                        to be implementable in any conforming plugin architecture, implementations
+                        MAY choose other ways to implement specific keyword dependencies for
+                        reasons of performance or simplicity.
+                    </t>
+                    <t>
+                        Because annotation collection can add significant cost in terms of both
+                        computation and memory, implementations MAY opt out of this feature.
+                        Keywords that are specified in terms of collected annotations SHOULD
+                        describe reasonable alternate approaches when appropriate.
+                        This approach is demonstrated by the
+                        "<xref target="items" format="title"/>" and
+                        "<xref target="additionalProperties" format="title"/>" keywords in this
+                        document.  However, "<xref target="unevaluatedItems" format="title" />"
+                        and "<xref target="unevaluatedProperties" format="title" />" do not
+                        specify alternate approaches, as the complexity of those keywords
+                        is not conducive to simple alternatives.
+                    </t>
+                    <t>
+                        Note that when no such alternate approach is possible for a keyword,
+                        implementations that do not support annotation collection will not
+                        be able to support those keywords or vocabularies that contain them.
+                    </t>
+                </section>
             </section>
             <section title="Default Behaviors">
                 <t>
@@ -711,21 +771,6 @@
                     SHOULD note such values where known.  However, even if the value which
                     produces the default behavior would produce annotation results if
                     present, the default behavior still MUST NOT result in annotations.
-                </t>
-                <t>
-                    Because annotation collection can add significant cost in terms of both
-                    computation and memory, implementations MAY opt out of this feature.
-                    Keywords that are specified in terms of collected annotations SHOULD
-                    describe reasonable alternate approaches when appropriate.
-                    This approach is demonstrated by the
-                    "<xref target="items" format="title"/>" and
-                    "<xref target="additionalProperties" format="title"/>" keywords in this
-                    document.
-                </t>
-                <t>
-                    Note that when no such alternate approach is possible for a keyword,
-                    implementations that do not support annotation collections will not
-                    be able to support those keywords or vocabularies that contain them.
                 </t>
             </section>
             <section title="Identifiers" anchor="identifiers">
@@ -1111,7 +1156,7 @@
             </t>
             <t>
                 The current URI for the Core vocabulary is:
-                &lt;https://json-schema.org/draft/2019-09/vocab/core&gt;.
+                <eref target="https://json-schema.org/draft/2019-09/vocab/core"/>.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
@@ -1290,6 +1335,122 @@
                                 search for vocabularies in referenced meta-schemas would
                                 be overly burdensome.
                             </cref>
+                        </t>
+                    </section>
+                    <section title="The vocabulary file" anchor="vocab-file">
+                        <t>
+                            The vocabulary file is a machine-readable specification of
+                            essential information that a vocabulary plugin system would
+                            need to know to support keyword interactions.  It allows
+                            the implementation to evaluate keywords in the correct order
+                            across all vocabularies.
+                        </t>
+                        <t>
+                            This draft introduces a minimal format based on preliminary feedback.
+                            Its format may change substantially in the next draft as more
+                            feedback comes in.  However, the capabilities it is currently able
+                            to describe are expected ot remain, even if the syntax changes.
+                        </t>
+                        <t>
+                            The vocabulary file MUST be a JSON document consisting
+                            of a single object with two properties:
+                            <list style="hanging">
+                                <t hangText="vocabularyId">
+                                    The value of this keyword MUST be an absolute-URI,
+                                    which MUST be the URI expected to be used in the
+                                    "$vocabulary" keyword in a meta-schema; as noted
+                                    in the "$vocabulary" description, this URI is an
+                                    identifier rather than a locator
+                                </t>
+                                <t hangText="keywords">
+                                    An object whose keys MUST be the complete set
+                                    of keywords defined by this vocabulary, and whose
+                                    values MUST be objects as defined below
+                                </t>
+                            </list>
+                            The per-keyword object MAY be empty, or MAY have any of the following
+                            properties:
+                            <list style="hanging">
+                                <t hangText="inPlaceApplicator">
+                                    The value of this property MUST be a boolean; if true, the
+                                    keyword is an in-place applicator; if false (the default)
+                                    it is some other unspecified classification
+                                </t>
+                                <t hangText="dependsOn">
+                                    The value of this property MUST be an array of strings;
+                                    the strings MUST be names of the annotations (which are the
+                                    same as the keywords that produce them) on which this keyword's
+                                    behavior depends; the annotations/keywords need not be defined
+                                    in this same vocabulary; the default is an empty array
+                                </t>
+                                <t hangText="throughInPlaceApplicators">
+                                    The value of this property MUST be a boolean; if true,
+                                    the keyword depends on the annotations listed in "dependsOn"
+                                    both from adjacent keywords, and from annotations attached to
+                                    the current instance location that are collected through
+                                    adjacent in-place applicator keywords; if false (the default),
+                                    only annotations collected directly from adjacent keywords are used
+                                </t>
+                                <t hangText="dependsOnValidity">
+                                    The value of this property MUST be an object; the property
+                                    names MUST be names of keywords, and the property values MUST
+                                    be booleans, such that this keyword MUST be evaluated only if
+                                    the keywords in this object are present as adjacent keywords,
+                                    and produce an assertion result equal to the property value
+                                </t>
+                            </list>
+                        </t>
+                        <t>
+                            Note that when using "throughInPlaceApplicators", a keyword may depend
+                            on itself, as it may appear in in-place applicator subschemas.
+                            When examining adjacent keywords, implementations MUST detect such
+                            a self-dependency and avoid deadlocking.
+                        </t>
+                        <t>
+                            <figure>
+                                <preamble>
+                                    The following example set of keywords, taken from other vocabularies
+                                    in this specification, demonstrate all of the above possibilities:
+                                </preamble>
+                                <artwork>
+<![CDATA[
+"keywords": {
+    "properties": {},
+    "patternProperties": {},
+    "additionalProperties": {
+        "dependsOn": [
+            "properties",
+            "patternProperties"
+        ]
+    },
+    "unevaluatedProperties": {
+        "dependsOn": [
+            "properties",
+            "patternProperties",
+            "additionalProperties",
+            "unevaluatedProperties"
+        ],
+        "throughInPlaceApplicators": true
+    },
+    "if": {
+        "inPlaceApplicator": true
+    },
+    "then": {
+        "inPlaceApplicator": true,
+        "dependsOnValidity": {
+            "if": true
+        }
+    },
+    "else": {
+        "inPlaceApplicator": true,
+        "dependsOnValidity": {
+            "if": false
+        }
+    }
+}
+]]>
+                                </artwork>
+                            </figure>
                         </t>
                     </section>
                 </section>
@@ -2086,7 +2247,7 @@
             </t>
             <t>
                 The current URI for this vocabulary, known as the Applicator vocabulary, is:
-                &lt;https://json-schema.org/draft/2019-09/vocab/applicator&gt;.
+                <eref target="https://json-schema.org/draft/2019-09/vocab/applicator"/>.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
@@ -2099,34 +2260,6 @@
                 before the next to indicate the same syntax and semantics
                 as those listed here.
             </t>
-            <section title="Keyword Independence">
-                <t>
-                    Schema keywords typically operate independently, without
-                    affecting each other's outcomes.
-                </t>
-                <t>
-                    For schema author convenience, there are some exceptions among the
-                    keywords in this vocabulary:
-                    <list>
-                        <t>
-                            "additionalProperties", whose behavior is defined in terms of
-                            "properties" and "patternProperties"
-                        </t>
-                        <t>
-                            "unevaluatedProperties", whose behavior is defined in terms of
-                            annotations from "properties", "patternProperties",
-                            "additionalProperties" and itself
-                        </t>
-                        <t>
-                            "items", whose behavior is defined in terms of "prefixItems"
-                        </t>
-                        <t>
-                            "unevaluatedItems", whose behavior is defined in terms of annotations
-                            from "prefixItems", "items", "contains", and itself
-                        </t>
-                    </list>
-                </t>
-            </section>
 
             <section title="Keywords for Applying Subschemas in Place" anchor="in-place">
                 <t>

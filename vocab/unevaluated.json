@@ -1,0 +1,23 @@
+{
+    "vocabulary": "https://json-schema.org/draft/next/vocab/unevaluated",
+    "keywords": {
+        "unevaluatedItems": {
+            "dependsOn": [
+                "prefixItems",
+                "items",
+                "contains",
+                "unevaluatedItems"
+            ],
+            "throughInPlaceApplicators": true
+        },
+        "unevaluatedProperties": {
+            "dependsOn": [
+                "properties",
+                "patternProperties",
+                "additionalProperties",
+                "unevaluatedProperties"
+            ],
+            "throughInPlaceApplicators": true
+        }
+    }
+}

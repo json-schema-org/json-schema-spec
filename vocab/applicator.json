@@ -1,0 +1,42 @@
+{
+    "vocabulary": "https://json-schema.org/draft/next/vocab/applicator",
+    "keywords": {
+        "allOf": {
+            "inPlaceApplicator": true
+        },
+        "anyOf": {
+            "inPlaceApplicator": true
+        },
+        "oneOf": {
+            "inPlaceApplicator": true
+        },
+        "not": {
+            "inPlaceApplicator": true
+        },
+        "if": {
+            "inPlaceApplicator": true
+        },
+        "then": {
+            "inPlaceApplicator": true,
+            "dependsOnValidity": {"if": true}
+        },
+        "else": {
+            "inPlaceApplicator": true,
+            "dependsOnValidity": {"if": false}
+        },
+        "dependentSchemas": {
+            "inPlaceApplicator": true
+        }, 
+        "prefixItems": {},
+        "items": {
+            "dependsOn": ["prefixItems"]
+        },
+        "contains": {},
+        "properties": {},
+        "patternProperties": {},
+        "additionalProperties": {
+            "dependsOn": ["properties", "patternProperties"]
+        },
+        "propertyNames": {}
+    }
+}
