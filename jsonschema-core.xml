@@ -1888,13 +1888,13 @@
                         same value as for the immediately enclosing resource.
                     </t>
                     <t>
-                        Embedded schema resources MAY specify different "$schema" values from their
-                        enclosing resource, as any schema that can be referenced can also be embedded.
+                        Since any schema that can be referenced can also be embedded, embedded schema resources MAY
+                        specify different "$schema" values from their enclosing resource.
                     </t>
                 </section>
                 <section title="Validating">
                     <t>
-                        Given a Compound Schema Document may have embedded resources which idenfiy as using different
+                        Given that a Compound Schema Document may have embedded resources which idenfiy as using different
                         dialects, it is NOT RECOMMENDED that these documents are validated by applying a meta-schema
                         to the Compound Schema Document as an instance. It is RECOMMENDED that an alternate
                         validation process be provided in order to validate Schema Documents.
