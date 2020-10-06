@@ -1847,9 +1847,9 @@
                 </t>
                 <section title="Bundling">
                     <t>
-                        A Compound Schema Document is created by taking references (such as "$ref")
-                        to an external Schema Resource and embedding the referenced Schema Resources
-                        within the referreing document.
+                        The bundling process for creating a Compound Schema Document is done by taking
+                        references (such as "$ref") to an external Schema Resource and embedding the referenced
+                        Schema Resources within the referreing document.
                     </t>
                     <t>
                         Each embedded JSON Schema Resource (and the document's root) MUST identify itself
@@ -1868,6 +1868,11 @@
                     <t>
                         References in the containing schema document to the previously external Schema Resources
                         MUST NOT be changed, and now resolve to a schema using the "$id" of an embedded Schema Resource.
+                    </t>
+                    <t>
+                        While the bundling process will often be the main method for creating a Compound Schema Document,
+                        it is also possible and expected that some will be created by hand, potentially without individual
+                        Schema Resources existing on their own previously.
                     </t>
                 </section>
                 <section title="Differing and Default Dialects">
