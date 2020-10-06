@@ -1847,7 +1847,7 @@
                 </t>
                 <section title="Bundling">
                     <t>
-                        The bundling process for creating a Compound Schema Document is done by taking
+                        The bundling process for creating a Compound Schema Document is defined as taking
                         references (such as "$ref") to an external Schema Resource and embedding the referenced
                         Schema Resources within the referreing document.
                     </t>
@@ -1857,13 +1857,16 @@
                         schema resource.
                     </t>
                     <t>
-                        When a by-reference applicator is dereferenced as part of the bundling process, the Schema Resource
-                        MUST NOT be embedded by replacing the schema object from which it was referenced, or by wrapping
-                        in other applicator keywords. Instead, a bundled Schema Resource MUST be located as a value of
-                        a "$defs" object at the containing schemas root. The key of the "$defs" for the now embedded
-                        Schema Resource MAY be the "$id" of the bundled schema or some other form of application defined
-                        unique identifer (such as a UUID). This key is not intended to be referenced in JSON Schema, but may
-                        be used by an application to aid the bundling process.
+                        When the Schema Resource referenced by a by-reference applicator is bundled, the Schema Resource
+                        MUST be located as a value of a "$defs" object at the containing schemas root.
+                        The key of the "$defs" for the now embedded Schema Resource MAY be the "$id" of the bundled schema
+                        or some other form of application defined unique identifer (such as a UUID). This key is not
+                        intended to be referenced in JSON Schema, but may be used by an application to aid the
+                        bundling process.
+                    </t>
+                    <t>
+                        Bundled Schema Resource MUST NOT be bundled by replacing the schema object from which it was
+                        referenced, or by wrapping the Schema Resource in other applicator keywords.
                     </t>
                     <t>
                         References in the containing schema document to the previously external Schema Resources
