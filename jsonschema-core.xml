@@ -1849,7 +1849,9 @@
                     <t>
                         The bundling process for creating a Compound Schema Document is defined as taking
                         references (such as "$ref") to an external Schema Resource and embedding the referenced
-                        Schema Resources within the referring document.
+                        Schema Resources within the referring document. Bundling is done in such a way that
+                        all URIs (used for referencing) in the base document and any referenced/embedded
+                        documents do not require altering.
                     </t>
                     <t>
                         Each embedded JSON Schema Resource MUST identify itself with an absolute URI using the "$id" keyword,
