@@ -1871,8 +1871,10 @@
                         referenced, or by wrapping the Schema Resource in other applicator keywords.
                     </t>
                     <t>
-                        References in the containing schema document to the previously external Schema Resources
-                        MUST NOT be changed, and now resolve to a schema using the "$id" of an embedded Schema Resource.
+                        In order to produce identical output, references in the containing schema document to the
+                        previously external Schema Resources MUST NOT be changed, and now resolve to a schema using the
+                        "$id" of an embedded Schema Resource. Such identical output includes validation evaluation and URIs
+                        or paths used in resulting annotations or errors.
                     </t>
                     <t>
                         While the bundling process will often be the main method for creating a Compound Schema Document,
