@@ -1843,13 +1843,13 @@
                 </t>
                 <t>
                     Each embedded Schema Resource MUST be treated as an individual Schema Resource, following standard
-                    schema loading and processing requirements, including determining voacbulary support.
+                    schema loading and processing requirements, including determining vocabulary support.
                 </t>
                 <section title="Bundling">
                     <t>
                         The bundling process for creating a Compound Schema Document is defined as taking
                         references (such as "$ref") to an external Schema Resource and embedding the referenced
-                        Schema Resources within the referreing document.
+                        Schema Resources within the referring document.
                     </t>
                     <t>
                         Each embedded JSON Schema Resource MUST identify itself with an absolute URI using the "$id" keyword,
@@ -1892,7 +1892,7 @@
                 </section>
                 <section title="Validating">
                     <t>
-                        Given that a Compound Schema Document may have embedded resources which idenfiy as using different
+                        Given that a Compound Schema Document may have embedded resources which identify as using different
                         dialects, these documents SHOULD NOT be validated by applying a meta-schema
                         to the Compound Schema Document as an instance. It is RECOMMENDED that an alternate
                         validation process be provided in order to validate Schema Documents. Each Schema Resource
