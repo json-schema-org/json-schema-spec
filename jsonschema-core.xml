@@ -545,7 +545,12 @@
                     Keywords MAY use regular expressions to express constraints, or constrain
                     the instance value to be a regular expression.
                     These regular expressions SHOULD be valid according to the regular expression
-                    dialect described in <xref target="ecma262">ECMA 262, section 15.10.1</xref>.
+                    dialect described in <xref target="ecma262">ECMA-262, section 21.2.1</xref>.
+                </t>
+                <t>
+                    Regular expressions SHOULD be built with the "u" flag (or equivilent) to provide
+                    Unicode support, or processed in such a way which provides which provides Unicode
+                    as defined by ECMA-262.
                 </t>
                 <t>
                     Furthermore, given the high disparity in regular expression constructs support,
@@ -2480,7 +2485,7 @@
                         <t>
                             The value of "patternProperties" MUST be an object. Each property name
                             of this object SHOULD be a valid regular expression, according to the
-                            ECMA 262 regular expression dialect. Each property value of this object
+                            ECMA-262 regular expression dialect. Each property value of this object
                             MUST be a valid JSON Schema.
                         </t>
                         <t>
@@ -3291,11 +3296,11 @@ https://example.com/schemas/common#/$defs/count/minimum
             &RFC8259;
             &ldp;
             <reference anchor="ecma262"
-            target="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">
+            target="https://www.ecma-international.org/ecma-262/11.0">
                 <front>
-                    <title>ECMA 262 specification</title>
+                    <title>ECMA-262, 11th edition specification</title>
                     <author/>
-                    <date/>
+                    <date month="June" year="2020" />
                 </front>
             </reference>
         </references>
@@ -3924,7 +3929,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                             <t>Rename $recursive* to $dynamic*</t>
                             <t>$dynamicAnchor defines a fragment like $anchor</t>
                             <t>$dynamic* (previously $recursive) no longer use runtime base URI determination</t>
+                            <t>Reference ecma262 11th edition for regular expression support</t>
                             <t>Define Compound Schema Documents (bundle) and processing</t>
+                            <t>Reference ECMA-262, 11th edition for regular expression support</t>
                             <t></t>
                             <t></t>
                             <t></t>
