@@ -1115,11 +1115,11 @@
             </t>
             <t>
                 The current URI for the Core vocabulary is:
-                &lt;https://json-schema.org/draft/2019-09/vocab/core&gt;.
+                &lt;https://json-schema.org/draft/2020-11/vocab/core&gt;.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-09/meta/core"/>.
+                <eref target="https://json-schema.org/draft/2020-11/meta/core"/>.
             </t>
             <t>
                 While the "$" prefix is not formally reserved for the Core vocabulary,
@@ -2160,11 +2160,11 @@
             </t>
             <t>
                 The current URI for this vocabulary, known as the Applicator vocabulary, is:
-                &lt;https://json-schema.org/draft/2019-09/vocab/applicator&gt;.
+                &lt;https://json-schema.org/draft/2020-11/vocab/applicator&gt;.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-09/meta/applicator"/>.
+                <eref target="https://json-schema.org/draft/2020-11/meta/applicator"/>.
             </t>
             <t>
                 Updated vocabulary and meta-schema URIs MAY be published between
@@ -2589,11 +2589,11 @@
             <t>
                 The current URI for this vocabulary, known as the Unevaluated Applicator
                 vocabulary, is:
-                &lt;https://json-schema.org/draft/2019-09/vocab/unevaluated&gt;.
+                &lt;https://json-schema.org/draft/2020-11/vocab/unevaluated&gt;.
             </t>
             <t>
                 The current URI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2019-09/meta/unevaluated"/>.
+                <eref target="https://json-schema.org/draft/2020-11/meta/unevaluated"/>.
             </t>
             <t>
                 Updated vocabulary and meta-schema URIs MAY be published between
@@ -2873,7 +2873,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-11/schema",
   "$defs": {
     "point": {
       "type": "object",
@@ -3086,7 +3086,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         Because this output structure can be quite large, a smaller example is given
                         here for brevity.  The URI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/2019-09/output/verbose-example"/>.
+                        <eref target="https://json-schema.org/draft/2020-11/output/verbose-example"/>.
                     </t>
                     <figure>
                         <artwork>
@@ -3094,7 +3094,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 // schema
 {
   "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-11/schema",
   "type": "object",
   "properties": {
     "validProp": true,
@@ -3148,7 +3148,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         For convenience, JSON Schema has been provided to validate output generated
                         by implementations.  Its URI is:
-                        <eref target="https://json-schema.org/draft/2019-09/output/schema"/>.
+                        <eref target="https://json-schema.org/draft/2020-11/output/schema"/>.
                     </t>
                 </section>
 
@@ -3556,7 +3556,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 // tree schema, extensible
 {
-    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$schema": "https://json-schema.org/draft/2020-11/schema",
     "$id": "https://example.com/tree",
     "$dynamicAnchor": "node",
 
@@ -3574,7 +3574,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 
 // strict-tree schema, guards against misspelled properties
 {
-    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$schema": "https://json-schema.org/draft/2020-11/schema",
     "$id": "https://example.com/strict-tree",
     "$dynamicAnchor": node,
 
@@ -3747,19 +3747,19 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-11/schema",
   "$id": "https://example.com/meta/general-use-example",
   "$dynamicAnchor": "meta",
   "$vocabulary": {
-    "https://json-schema.org/draft/2019-09/vocab/core": true,
-    "https://json-schema.org/draft/2019-09/vocab/applicator": true,
-    "https://json-schema.org/draft/2019-09/vocab/validation": true,
+    "https://json-schema.org/draft/2020-11/vocab/core": true,
+    "https://json-schema.org/draft/2020-11/vocab/applicator": true,
+    "https://json-schema.org/draft/2020-11/vocab/validation": true,
     "https://example.com/vocab/example-vocab": true
   },
   "allOf": [
-    {"$ref": "https://json-schema.org/draft/2019-09/meta/core"},
-    {"$ref": "https://json-schema.org/draft/2019-09/meta/applicator"},
-    {"$ref": "https://json-schema.org/draft/2019-09/meta/validation"},
+    {"$ref": "https://json-schema.org/draft/2020-11/meta/core"},
+    {"$ref": "https://json-schema.org/draft/2020-11/meta/applicator"},
+    {"$ref": "https://json-schema.org/draft/2020-11/meta/validation"},
     {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
@@ -3782,7 +3782,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-11/schema",
   "$id": "https://example.com/meta/example-vocab",
   "$dynamicAnchor": "meta",
   "$vocabulary": {
