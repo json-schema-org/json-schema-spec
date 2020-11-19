@@ -103,7 +103,8 @@
                 This specification defines JSON Schema core terminology and mechanisms, including
                 pointing to another JSON Schema by reference,
                 dereferencing a JSON Schema reference,
-                specifying the vocabulary being used,
+                specifying the dialect being used,
+                specifying a dialect's vocabulary requirements,
                 and defining the expected output.
             </t>
             <t>
@@ -146,9 +147,10 @@
                 some sort of condition.
             </t>
             <t>
-                To facilitate re-use, keywords can be organized into vocabularies.  A vocabulary
+                To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
                 consists of a list of keywords, together with their syntax and semantics.
-                A set of vocabularies identified by a meta-schema is known as a dialect.
+                A dialect is defined as a set of vocabularies and their required support
+                identified in a meta-schema.
             </t>
             <t>
                 JSON Schema can be extended either by defining additional vocabularies,
@@ -1198,7 +1200,8 @@
                         vocabularies available for use in schemas described by that meta-schema.
                         It is also used to indicate whether each vocabulary is required or optional,
                         in the sense that an implementation MUST understand the required vocabularies
-                        in order to successfully process the schema.
+                        in order to successfully process the schema. Together, this information forms
+                        a dialect.
                     </t>
                     <t>
                         The value of this keyword MUST be an object.  The property names in the
