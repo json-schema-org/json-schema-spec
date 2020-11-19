@@ -2577,6 +2577,14 @@
                 Only successful evaluations are considered.
             </t>
             <t>
+                If an item in an array or an object property is "successfully evaluated", it
+                is logically considered to be valid in terms of the representation of the
+                object or array that's expected. For example if a subschema represents a car,
+                which requires between 2-4 wheeles, and the value of "wheeles" is 6, the instance
+                object is not "evaluated" to be a car, and the "wheeles" property is considerd
+                "unevaluated (successfully as a known thing)", and does not retain any annotations.
+            </t>
+            <t>
                 Recall that adjacent keywords are keywords within the same schema object,
                 and that the dynamic-scope subschemas include reference targets as well as
                 lexical subschemas.
