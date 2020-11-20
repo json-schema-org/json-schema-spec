@@ -566,9 +566,12 @@
                     <cref>This is due to the keyword's history, and is not in line with current
                     keyword design principles.</cref>  In order to manage this ambiguity, the
                     "format" keyword is defined in its own separate vocabulary, as noted above.
-                    The true or false value of the vocabulary declaration governs the implementation
-                    requirements necessary to process a schema that uses "format", and the
-                    behaviors on which schema authors can rely.
+                </t>
+                <t>
+                    Regardless of the boolean value of the vocabulary declaration,
+                    an implementation that can evaluate "format" as an assertion MUST provide
+                    options to enable and disable such evaluation.  The default behavior MUST be
+                    to collect annotations by default.
                 </t>
 
                 <section title="As an annotation">
@@ -576,80 +579,48 @@
                         The value of format MUST be collected as an annotation, if the implementation
                         supports annotation collection.  This enables application-level validation when
                         schema validation is unavailable or inadequate.
-                    </t>
-                    <t>
-                        This requirement is not affected by the boolean value of the vocabulary
-                        declaration, nor by the configuration of "format"'s assertion
-                        behavior described in the next section.
                         <cref>
-                            Requiring annotation collection even when the vocabulary is declared with
-                            a value of false is atypical, but necessary to ensure that the best
-                            practice of performing application-level validation is possible even when
-                            assertion evaluation is not implemented.  Since "format" has always been
-                            a part of this specification, requiring implementations to be aware of it
-                            even with a false vocabulary declaration is deemed to not be a burden.
+                            This requirement is not affected by the boolean value of the vocabulary
+                            declaration.
+                            For a vocabulary value of true, the implementation MUST halt if it doesn't
+                            understand the vocabulary.  If the implementation does understand the
+                            vocabulary, annotations are collected.  This halt-on-non-understanding
+                            behavior may be desired by an application, so it is considered.  However,
+                            this is the result of the behavior of the "$vocabulary" keyword exclusively
+                            and is not affected by the definition of "format".
+                            For a vocabulary value of false, the implementation MAY proceed without
+                            understanding the keyword, meaning that the implementation will collect
+                            its value as an annotation anyway.
                         </cref>
                     </t>
                 </section>
 
                 <section title="As an assertion">
                     <t>
-                        Regardless of the boolean value of the vocabulary declaration,
-                        an implementation that can evaluate "format" as an assertion MUST provide
-                        options to enable and disable such evaluation.  The assertion evaluation
-                        behavior when the option is not explicitly specified depends on
-                        the vocabulary declaration's boolean value.
+                        When configured to process "format" as an assertion, an implementation MUST
+                        implement syntactic validation for all format attributes defined
+                        in this specification, and for any additional format attributes that
+                        it recognizes, such that there exist possible instance values
+                        of the correct type that will fail validation.
                     </t>
-
                     <t>
-                        When implementing this entire specification, this vocabulary MUST
-                        be supported with a value of false (but see details below),
-                        and MAY be supported with a value of true.
-                    </t>
-
-                    <t>
-                        When the vocabulary is declared with a value of false, an implementation:
-                        <list>
-                            <t>
-                                MUST NOT evaluate "format" as an assertion unless it is explicitly
-                                configured to do so;
-                            </t>
-                            <t>
-                                SHOULD provide an implementation-specific best effort validation
-                                for each format attribute defined below;
-                            </t>
-                            <t>
-                                MAY choose to implement validation of any or all format attributes
-                                as a no-op by always producing a validation result of true;
-                            </t>
-                            <t>
-                                SHOULD document its level of support for validation.
-                            </t>
-                        </list>
+                        It is understood that, due to computing limitations and other concerns, 
+                        it is improbable that an implementation will be able to perfectly cover
+                        all of the requirements set forth by these formats.  As such, it is
+                        strongly RECOMMENDED for implementations to document their level of
+                        support for validation.
                         <cref>
                             This matches the current reality of implementations, which provide
                             widely varying levels of validation, including no validation at all,
                             for some or all format attributes.  It is also designed to encourage
                             relying only on the annotation behavior and performing semantic
                             validation in the application, which is the recommended best practice.
+                            Furthermore, the more support an implementation has, the more users
+                            it is likely to attract.  This should encourage implementors to
+                            provide the most comprehensive support they can.
                         </cref>
                     </t>
-
                     <t>
-                        When the vocabulary is declared with a value of true, an implementation
-                        that supports this form of the vocabulary:
-                        <list>
-                            <t>
-                                MUST evaluate "format" as an assertion unless it is explicitly
-                                configured not to do so;
-                            </t>
-                            <t>
-                                MUST implement syntactic validation for all format attributes defined
-                                in this specification, and for any additional format attributes that
-                                it recognizes, such that there exist possible instance values
-                                of the correct type that will fail validation.
-                            </t>
-                        </list>
                         The requirement for minimal validation of format attributes is intentionally
                         vague and permissive, due to the complexity involved in many of the attributes.
                         Note in particular that the requirement is limited to syntactic checking; it is
@@ -676,7 +647,7 @@
                         The <xref target="meta-schema">standard core and validation meta-schema</xref>
                         includes this vocabulary in its "$vocabulary" keyword with a value of false,
                         since by default implementations are not required to support this keyword
-                        as an assertion.  Supporting the format vocabulary with a value of true is
+                        as an assertion.  Supporting the format vocabulary as an assertion is
                         understood to greatly increase code size and in some cases execution time,
                         and will not be appropriate for all implementations.
                     </t>
