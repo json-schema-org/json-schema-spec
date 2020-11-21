@@ -668,10 +668,9 @@
                     <t>
                         Implementations MAY support custom format attributes. Save for agreement between
                         parties, schema authors SHALL NOT expect a peer implementation to support such
-                        custom format attributes.  An implementation MUST NOT fail
-                        validation or cease processing due to an unknown format attribute.
-                        When treating "format" as an annotation, implementations SHOULD collect both
-                        known and unknown format attribute values.
+                        custom format attributes. An implementation MUST NOT fail to collect unknown formats
+                        as annotations.  When the Format-Assertion vocabulary is specified, implementations
+                        MUST fail upon encountering unknown formats.
                     </t>
                     <t>
                         Vocabularies do not support specifically declaring different value sets for keywords.
