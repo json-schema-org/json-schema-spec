@@ -1196,7 +1196,9 @@
                         It is also used to indicate whether each vocabulary is required or optional,
                         in the sense that an implementation MUST understand the required vocabularies
                         in order to successfully process the schema. Together, this information forms
-                        a dialect.
+                        a dialect. Any vocabulary that is understood by the implementation MUST be
+                        processed in a manner consistent with the semantic definitions contained
+                        within the vocabulary.
                     </t>
                     <t>
                         The value of this keyword MUST be an object.  The property names in the
@@ -1224,7 +1226,8 @@
                         the vocabulary MUST refuse to process any schemas that declare
                         this meta-schema with "$schema".  If the value is false, implementations
                         that do not recognize the vocabulary SHOULD proceed with processing
-                        such schemas.
+                        such schemas.  The value has no impact if the implementation
+                        understands the vocabulary.
                     </t>
                     <t>
                         Per <xref target="extending" format="counter"></xref>, unrecognized
