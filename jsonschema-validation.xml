@@ -540,20 +540,19 @@
 
                 <t>
                     The current URI for this vocabulary, known as the Format-Annotation vocabulary, is:
-                    &lt;https://json-schema.org/draft/2020-11/vocab/format-annotation&gt;.  This vocabulary
-                    is required by this specification.
+                    &lt;https://json-schema.org/draft/2020-11/vocab/format-annotation&gt;. The current
+                    URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2020-11/meta/format-annotation"/>.
+                    Implementing support for this vocabulary is REQUIRED.
                 </t>
                 <t>
                     In addition to the Format-Annotation vocabulary, a secondary vocabulary is available
                     for custom meta-schemas that defines "format" as an assertion. The URI for the
                     Format-Assertion vocabulary, is:
-                    &lt;https://json-schema.org/draft/2020-11/vocab/format-assertion&gt;.
-                </t>
-                <t>
-                    The current URI for the corresponding meta-schema is:
-                    <eref target="https://json-schema.org/draft/2020-11/meta/format"/>. Because the
-                    syntactic requirements of "format" do not change between the annotation and assertion
-                    vocabularies, the meta-schema is shared between them.
+                    &lt;https://json-schema.org/draft/2020-11/vocab/format-assertion&gt;. The current
+                    URI for the corresponding meta-schema is:
+                    <eref target="https://json-schema.org/draft/2020-11/meta/format-assertion"/>.
+                    Implementing support for the Format-Assertion vocabulary is OPTIONAL.
                 </t>
                 <t>
                     Specifying both the Format-Annotation and the Format-Assertion vocabularies is functionally
