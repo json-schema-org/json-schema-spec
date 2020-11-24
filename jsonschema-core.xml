@@ -2212,6 +2212,13 @@
                     or modifying the subschema results in various ways.
                 </t>
 
+                <t>
+                    Subschemas of these keywords evaluate the instance completely independently
+                    such that the results of one such subschema MUST NOT impact the results of sibling
+                    subschemas.  Therefore subschemas may be applied in
+                    any order.
+                </t>
+
                 <section title="Keywords for Applying Subschemas With Logic" anchor="logic">
                     <t>
                         These keywords correspond to logical operators for combining or modifying
