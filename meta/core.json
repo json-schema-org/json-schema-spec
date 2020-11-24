@@ -27,13 +27,13 @@
             "type": "string",
             "format": "uri-reference"
         },
-        "$recursiveRef": {
+        "$dynamicRef": {
             "type": "string",
             "format": "uri-reference"
         },
-        "$recursiveAnchor": {
-            "type": "boolean",
-            "default": false
+        "$dynamicAnchor": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][-A-Za-z0-9._]*$"
         },
         "$vocabulary": {
             "type": "object",
