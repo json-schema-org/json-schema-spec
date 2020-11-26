@@ -1085,6 +1085,21 @@
                     undesirable interactions with references in certain circumstances.
                 </t>
             </section>
+            <section title="Loading Instance Data">
+                <t>
+                    While none of the vocabularies defined as part of this or the associated documents
+                    define a keyword which may target and / or load instance data, it is possible that
+                    other vocabularies may wish to do so.
+                </t>
+                <t>
+                    Keywords MAY be defined to use JSON Pointers or Relative JSON Pointers to examine
+                    parts of an instance outside the current scope.
+                </t>
+                <t>
+                    Keywords that allow adjusting the location using a Relative JSON Pointer SHOULD
+                    default to using the current location if a default is desireable.
+                </t>
+            </section>
         </section>
         <section title="The JSON Schema Core Vocabulary">
             <t>
