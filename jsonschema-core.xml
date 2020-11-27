@@ -1856,14 +1856,14 @@
                     <t>
                         The bundling process for creating a Compound Schema Document is defined as taking
                         references (such as "$ref") to an external Schema Resource and embedding the referenced
-                        Schema Resources within the referring document. Bundling is done in such a way that
+                        Schema Resources within the referring document. Bundling SHOULD be done in such a way that
                         all URIs (used for referencing) in the base document and any referenced/embedded
                         documents do not require altering.
                     </t>
                     <t>
-                        Each embedded JSON Schema Resource MUST identify itself with an absolute URI using the "$id" keyword,
+                        Each embedded JSON Schema Resource MUST identify itself with a URI using the "$id" keyword,
                         and SHOULD make use of the "$schema" keyword to identify the dialect it is using, in the root of the
-                        schema resource.
+                        schema resource. It is RECOMMENDED that the URI identifier value of "$id" be an Absolute URI.
                     </t>
                     <t>
                         When the Schema Resource referenced by a by-reference applicator is bundled, the Schema Resource
@@ -1874,7 +1874,7 @@
                         bundling process.
                     </t>
                     <t>
-                        Bundled Schema Resource MUST NOT be bundled by replacing the schema object from which it was
+                        Schema Resources MUST NOT be bundled by replacing the schema object from which it was
                         referenced, or by wrapping the Schema Resource in other applicator keywords.
                     </t>
                     <t>
@@ -1891,14 +1891,13 @@
                 </section>
                 <section title="Differing and Default Dialects">
                     <t>
-                        If multiple schema resources are present in a single document, then
-                        schema resources which do not have a "$schema" keyword in their root
-                        schema object MUST be processed as if "$schema" were present with the
-                        same value as for the immediately enclosing resource.
+                        When multiple schema resources are present in a single document,
+                        schema resources which do not define with which dialect they should be processed
+                        MUST be processed with the same dialect as the enclosing resource.
                     </t>
                     <t>
                         Since any schema that can be referenced can also be embedded, embedded schema resources MAY
-                        specify different "$schema" values from their enclosing resource.
+                        specify different processing dialects using the "$schema" values from their enclosing resource.
                     </t>
                 </section>
                 <section title="Validating">
