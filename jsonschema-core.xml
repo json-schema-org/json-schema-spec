@@ -666,7 +666,7 @@
                     Lexical and dynamic scopes align until a reference keyword
                     is encountered.  While following the reference keyword moves processing
                     from one lexical scope into a different one, from the perspective
-                    of dynamic scope, following reference is no different from descending
+                    of dynamic scope, following a reference is no different from descending
                     into a subschema present as a value.  A keyword on the far side of
                     that reference that resolves information through the dynamic scope
                     will consider the originating side of the reference to be their
@@ -795,9 +795,8 @@
                         For some by-reference applicators, such as
                         <xref target="ref">"$ref"</xref>, the referenced schema can be determined
                         by static analysis of the schema document's lexical scope.  Others,
-                        such as "$dynamicRef" (with "$dynamicAnchor"),  may make use of dynamic
-                        scoping, and therefore only be resolvable in the process of evaluating
-                        the schema with an instance.
+                        such as "$dynamicRef" (with "$dynamicAnchor"), are only resolvable in the context
+                        of the dynamic scope.
                     </t>
                 </section>
             </section>
@@ -1445,8 +1444,8 @@
                         <t>
                             The value of the "$ref" keyword MUST be a string which is a URI-Reference.
                             Resolved against the current URI base, it produces the URI of the schema
-                            to apply.  This resolution is safe to perform on schema load, as the
-                            process of evaluating an instance cannot change how the reference resolves.
+                            to apply.  This resolution is safe to perform on schema load as neither other
+                            schemas nor the instance can change how the reference resolves.
                         </t>
                     </section>
 
@@ -1464,9 +1463,10 @@
                         </t>
                         <t>
                             The value of the "$dynamicRef" keyword MUST be a string which is a URI-Reference.
-                            Resolved against the URI base, it produces the URI of the schema to apply. This
-                            resolution is not safe to perform on schema load, as the process of evaluating an
-                            instance can change how the reference resolves.
+                            Resolved against the dynamically determined URI base, it produces the URI of the
+                            schema to apply. This resolution is not safe to perform on schema load because
+                            the dynamic scope is not known. It is safe to perform this resolution as part of
+                            a compile step where all schemas involved have been loaded.
                         </t>
                         <t>
                             For a full example using these keyword, see appendix
