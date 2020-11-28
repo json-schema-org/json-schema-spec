@@ -208,8 +208,7 @@
                 </t>
                 <t>
                     Among these, this specification defines the "application/schema-instance+json"
-                    media type which defines handling for fragments in the URI,
-                    and the "schema" media type parameter.
+                    media type which defines handling for fragments in the URI.
                 </t>
 
                 <section title="Instance Data Model">
@@ -305,7 +304,7 @@
                     A schema can itself be interpreted as an instance, but SHOULD always be given
                     the media type "application/schema+json" rather than
                     "application/schema-instance+json".  The "application/schema+json" media
-                    type is defined to offer a superset of the media type parameter and
+                    type is defined to offer a superset of the
                     fragment identifier syntax and semantics provided by
                     "application/schema-instance+json".
                 </t>
@@ -2001,114 +2000,6 @@
                             <artwork>
         <![CDATA[
         Link: <https://example.com/my-hyper-schema>; rel="describedby"
-        ]]>
-                            </artwork>
-                        </figure>
-
-                    </section>
-
-
-                    <section title='Identifying a Schema via a Media Type Parameter' anchor="parameter">
-                        <t>
-                            Media types MAY allow for a "schema" media type parameter, which gives
-                            HTTP servers the ability to perform Content-Type Negotiation based on schema.
-                            The media-type parameter MUST be a whitespace-separated list of URIs
-                            (i.e. relative references are invalid).
-                        </t>
-                        <t>
-                            When using the media type application/schema-instance+json, the "schema"
-                            parameter MUST be supplied.
-                        </t>
-                        <t>
-                            When using the media type application/schema+json, the "schema" parameter
-                            MAY be supplied. If supplied, it SHOULD contain the same URI as identified
-                            by the "$schema" keyword, and MAY contain additional URIs.  The "$schema"
-                            URI MUST be considered the schema's canonical meta-schema, regardless
-                            of the presence of alternative or additional meta-schemas as a media type
-                            parameter.
-                        </t>
-                        <t>
-                            The schema URI is opaque and SHOULD NOT automatically be dereferenced.
-                            If the implementation does not understand the semantics of the provided schema,
-                            the implementation can instead follow the "describedby" links, if any, which may
-                            provide information on how to handle the schema.
-                            Since "schema" doesn't necessarily point to a network location, the
-                            "describedby" relation is used for linking to a downloadable schema.
-                            However, for simplicity, schema authors should make these URIs point to the same
-                            resource when possible.
-                        </t>
-
-                        <t>
-                            In HTTP, the media-type parameter would be sent inside the Content-Type header:
-                        </t>
-
-                        <figure>
-                            <artwork>
-        <![CDATA[
-        Content-Type: application/schema-instance+json;
-                  schema="https://example.com/my-hyper-schema"
-        ]]>
-                            </artwork>
-                        </figure>
-
-                        <t>
-                            Multiple schemas are whitespace separated, and indicate that the
-                            instance conforms to all of the listed schemas:
-                        </t>
-
-                        <figure>
-                            <artwork>
-        <![CDATA[
-        Content-Type: application/schema-instance+json;
-                  schema="https://example.com/alice https://example.com/bob"
-        ]]>
-                            </artwork>
-                        </figure>
-
-                        <t>
-                            Media type parameters are also used in HTTP's Accept request header:
-                        </t>
-
-                        <figure>
-                            <artwork>
-        <![CDATA[
-        Accept: application/schema-instance+json;
-                  schema="https://example.com/qiang https://example.com/li",
-                application/schema-instance+json;
-                  schema="https://example.com/kumar"
-        ]]>
-                            </artwork>
-                        </figure>
-
-                        <t>
-                            As with Content-Type, multiple schema parameters in the same string
-                            requests an instance that conforms to all of the listed schemas.
-                        </t>
-
-                        <t>
-                            Unlike Content-Type, Accept can contain multiple values to
-                            indicate that the client can accept several media types.
-                            In the above example, note that the two media types differ
-                            only by their schema parameter values.  This requests an
-                            application/schema-instance+json representation that conforms to at least one
-                            of the identified schemas.
-                        </t>
-
-                        <t>
-                            <cref>
-                                This paragraph assumes that we can register a "schema" link relation.
-                                Should we instead specify something like "tag:json-schema.org,2017:schema"
-                                for now?
-                            </cref>
-                            HTTP can also send the "schema" in a Link, though this may impact media-type
-                            semantics and Content-Type negotiation if this replaces the media-type parameter
-                            entirely:
-                        </t>
-
-                        <figure>
-                            <artwork>
-        <![CDATA[
-        Link: </alice>;rel="schema", </bob>;rel="schema"
         ]]>
                             </artwork>
                         </figure>
@@ -3954,7 +3845,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                             <t>$dynamic* (previously $recursive) no longer use runtime base URI determination</t>
                             <t>Define Compound Schema Documents (bundle) and processing</t>
                             <t>Reference ECMA-262, 11th edition for regular expression support</t>
-                            <t></t>
+                            <t>Remove media type parameters</t>
                             <t></t>
                             <t></t>
                         </list>
