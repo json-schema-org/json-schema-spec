@@ -1866,15 +1866,19 @@
                         schema resource. It is RECOMMENDED that the URI identifier value of "$id" be an Absolute URI.
                     </t>
                     <t>
-                        When the Schema Resource referenced by a by-reference applicator is bundled, the Schema Resource
-                        MUST be located as a value of a "$defs" object at the containing schema's root.
+                        When the Schema Resource referenced by a by-reference applicator is bundled, it is RECOMMENDED that
+                        the Schema Resource be located as a value of a "$defs" object at the containing schema's root.
                         The key of the "$defs" for the now embedded Schema Resource MAY be the "$id" of the bundled schema
                         or some other form of application defined unique identifer (such as a UUID). This key is not
                         intended to be referenced in JSON Schema, but may be used by an application to aid the
                         bundling process.
                     </t>
                     <t>
-                        Schema Resources MUST NOT be bundled by replacing the schema object from which it was
+                        A Schema Resource MAY be embedded in a location other than "$defs" where the location is defined
+                        as a schema value.
+                    </t>
+                    <t>
+                        A Bundled Schema Resource MUST NOT be bundled by replacing the schema object from which it was
                         referenced, or by wrapping the Schema Resource in other applicator keywords.
                     </t>
                     <t>
