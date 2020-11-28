@@ -287,7 +287,7 @@
                         where an instance may be outside any of the six JSON data types.
                     </t>
                     <t>
-                        In this case, annotations still apply; but validation keywords will not be useful,
+                        In this case, annotations still apply; but most validation keywords will not be useful,
                         as they will always pass or always fail.
                     </t>
                     <t>
@@ -345,7 +345,7 @@
                         of their subschemas.
                     </t>
                     <t>
-                        Keywords within the same schema object are referred to as adjacent keywords.
+                        Keywords which are properties within the same schema object are referred to as adjacent keywords.
                     </t>
                     <t>
                         Extension keywords, meaning those defined outside of this document
@@ -364,7 +364,7 @@
                 <section title="Boolean JSON Schemas">
                     <t>
                         The boolean schema values "true" and "false" are trivial schemas that
-                        always produce themselves as assertions results, regardless of the
+                        always produce themselves as assertion results, regardless of the
                         instance value.  They never produce annotation results.
                     </t>
                     <t>
@@ -547,7 +547,7 @@
                     dialect described in <xref target="ecma262">ECMA-262, section 21.2.1</xref>.
                 </t>
                 <t>
-                    Regular expressions SHOULD be built with the "u" flag (or equivilent) to provide
+                    Regular expressions SHOULD be built with the "u" flag (or equivalent) to provide
                     Unicode support, or processed in such a way which provides Unicode as defined
                     by ECMA-262.
                 </t>
