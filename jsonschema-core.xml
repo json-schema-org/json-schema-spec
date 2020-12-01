@@ -654,25 +654,17 @@
                     appear in a schema resource's root schema.
                 </t>
                 <t>
-                    Other keywords may take into account the dynamic scope that
-                    exists during the evaluation of a schema, typically together
-                    with an instance document.  The outermost dynamic scope is the
-                    root schema of the schema document in which processing begins.
-                    The path from this root schema to any particular keyword (that
-                    includes any "$ref" and "$dynamicRef" keywords that may have
-                    been resolved) is considered the keyword's "validation path."
-                    <cref>
-                        Or should this be the schema object at which processing
-                        begins, even if it is not a root?  This has some implications
-                        for the case where "$dynamicAnchor" is only allowed in the
-                        root schema but processing begins in a subschema.
-                    </cref>
+                    Other keywords may take into account the dynamic scope that exists during the
+                    evaluation of a schema.  The outermost dynamic scope is the root schema of the
+                    schema document in which processing begins.  The path from this root schema to
+                    any particular keyword (that includes any "$ref" and "$dynamicRef" keywords that
+                    may have been resolved) is considered the keyword's "validation path."
                 </t>
                 <t>
                     Lexical and dynamic scopes align until a reference keyword
                     is encountered.  While following the reference keyword moves processing
                     from one lexical scope into a different one, from the perspective
-                    of dynamic scope, following reference is no different from descending
+                    of dynamic scope, following a reference is no different from descending
                     into a subschema present as a value.  A keyword on the far side of
                     that reference that resolves information through the dynamic scope
                     will consider the originating side of the reference to be their
@@ -741,7 +733,7 @@
                 <t>
                     Canonical schema URIs MUST NOT change while processing an instance, but
                     keywords that affect URI-reference resolution MAY have behavior that
-                    is only fully determined at runtime.
+                    is only fully determined dynamically.
                 </t>
                 <t>
                     While custom identifier keywords are possible, vocabulary designers should
@@ -798,12 +790,10 @@
                         of an instance against a schema.
                     </t>
                     <t>
-                        For some by-reference applicators, such as
-                        <xref target="ref">"$ref"</xref>, the referenced schema can be determined
-                        by static analysis of the schema document's lexical scope.  Others,
-                        such as "$dynamicRef" (with "$dynamicAnchor"),  may make use of dynamic
-                        scoping, and therefore only be resolvable in the process of evaluating
-                        the schema with an instance.
+                        For some by-reference applicators, such as <xref target="ref">"$ref"</xref>, the
+                        referenced schema can be determined by static analysis of the schema document's
+                        lexical scope.  Others, such as "$dynamicRef" (with "$dynamicAnchor"), are only
+                        resolvable with knowledge of all the schemas in it's dynamic scope.
                     </t>
                 </section>
             </section>
@@ -1397,7 +1387,6 @@
                         The "$anchor" and "$dynamicAnchor" keywords are used to specify such
                         fragments.  They are identifier keywords that can only be used to create
                         plain name fragments, rather than absolute URIs as seen with "$id".
-                        The behavior of the created fragment is identical for both keywords.
                     </t>
                     <t>
                         The base URI to which the resulting fragment is appended is the canonical
@@ -1471,32 +1460,30 @@
                             </cref>
                         </t>
                         <t>
-                            The value of the "$ref" property MUST be a string which is a URI-Reference.
+                            The value of the "$ref" keyword MUST be a string which is a URI-Reference.
                             Resolved against the current URI base, it produces the URI of the schema
-                            to apply.  This resolution is safe to perform on schema load, as the
-                            process of evaluating an instance cannot change how the reference resolves.
+                            to apply.  This resolution is safe to perform on schema load as neither other
+                            schemas nor the instance can change how the reference resolves.
                         </t>
                     </section>
 
                     <section title='Dynamic References with "$dynamicRef"' anchor="dynamic-ref">
                         <t>
-                            The "$dynamicRef" keyword is an applicator that allows for deferring the
-                            full resolution until runtime, at which point it is resolved each time it is
-                            encountered while evaluating an instance.
+                            The "$dynamicRef" keyword is an applicator that is used to reference a
+                            dynamically identified schema.
                         </t>
                         <t>
                             Together with "$dynamicAnchor", "$dynamicRef" implements a cooperative
                             extension mechanism that is primarily useful with recursive schemas
                             (schemas that reference themselves).  Both the extension point and the
-                            runtime-determined extension target are defined with "$dynamicAnchor",
-                            and only exhibit runtime dynamic behavior when referenced with
-                            "$dynamicRef".
+                            extension target are defined with "$dynamicAnchor", and only exhibit dynamic
+                            behavior when referenced with "$dynamicRef".
                         </t>
                         <t>
-                            The value of the "$dynamicRef" property MUST be a string which is
-                            a URI-Reference.  Resolved against the current URI base, it produces
-                            the URI used as the starting point for runtime resolution.  This initial
-                            resolution is safe to perform on schema load.
+                            The value of the "$dynamicRef" property MUST be a string which is a
+                            URI-Reference.  Resolved against the current URI base, it produces the URI used
+                            as the starting point for resolution.  This initial resolution is safe to perform
+                            on schema load.
                         </t>
                         <t>
                             If the initially resolved starting point URI includes a fragment that
@@ -1504,18 +1491,10 @@
                             replaced by the URI (including the fragment) for the outermost schema
                             resource in the <xref target="scopes">dynamic scope</xref> that defines
                             an identically named fragment with "$dynamicAnchor".
-                            <cref>
-                                Requiring both the initial and final URI fragment to be defined
-                                by "$dynamicAnchor" ensures that the more common "$anchor"
-                                never unexpectedly changes the dynamic resolution process
-                                due to a naming conflict across resources.  Users of
-                                "$dynamicAnchor" are expected to be aware of the possibility
-                                of such name collisions, while users of "$anchor" are not.
-                            </cref>
                         </t>
                         <t>
-                            Otherwise, its behavior is identical to "$ref", and no runtime
-                            resolution is needed.
+                            Otherwise, its behavior is identical to "$ref", and no dynamic resolution is
+                            needed.
                         </t>
                         <t>
                             For a full example using these keyword, see appendix
@@ -3510,7 +3489,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 {
     "$schema": "https://json-schema.org/draft/2020-11/schema",
     "$id": "https://example.com/strict-tree",
-    "$dynamicAnchor": node,
+    "$dynamicAnchor": "node",
 
     "$ref": "tree",
     "unevaluatedProperties": false
