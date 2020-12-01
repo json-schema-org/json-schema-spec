@@ -656,8 +656,9 @@
                 <t>
                     Other keywords may take into account the dynamic scope that
                     exists during the evaluation of a schema, typically together
-                    with an instance document.  The outermost dynamic scope is the
-                    root schema of the schema document in which processing begins.
+                    with an instance document.
+                    The outermost dynamic scope is the schema object at
+                    which processing begins, even if it is not a schema resource root.
                     The path from this root schema to any particular keyword (that
                     includes any "$ref" and "$dynamicRef" keywords that may have
                     been resolved) is considered the keyword's "validation path."
