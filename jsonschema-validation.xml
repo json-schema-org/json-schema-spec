@@ -409,14 +409,16 @@
                         The value of this keyword MUST be a non-negative integer.
                     </t>
                     <t>
-                        An array instance is valid against "maxContains" if the number of
-                        elements that are valid against the schema for
-                        <xref target="json-schema">"contains"</xref> is
-                        less than, or equal to, the value of this keyword.
-                    </t>
-                    <t>
                         If "contains" is not present within the same schema object,
                         then this keyword has no effect.
+                    </t>
+                    <t>
+                        An array instance is valid against "maxContains" if its
+                        value is less than or equal to, the array length of the annotation
+                        result from an ajacent
+                        <xref target="json-schema">"contains"</xref> keyword where the
+                        annotation is an array, or the length of the instance array
+                        where the annotation is "true".
                     </t>
                 </section>
 
@@ -425,19 +427,21 @@
                         The value of this keyword MUST be a non-negative integer.
                     </t>
                     <t>
-                        An array instance is valid against "minContains" if the number of
-                        elements that are valid against the schema for
-                        <xref target="json-schema">"contains"</xref> is
-                        greater than, or equal to, the value of this keyword.
+                        If "contains" is not present within the same schema object,
+                        then this keyword has no effect.
+                    </t>
+                    <t>
+                        An array instance is valid against "minContains" if its
+                        value is greater than or equal to, the array length of the annotation
+                        result from an ajacent
+                        <xref target="json-schema">"contains"</xref> keyword where the
+                        annotation is an array, or the length of the instance array
+                        where the annotation is "true".
                     </t>
                     <t>
                         A value of 0 is allowed, but is only useful for setting a range
                         of occurrences from 0 to the value of "maxContains".  A value of
                         0 with no "maxContains" causes "contains" to always pass validation.
-                    </t>
-                    <t>
-                        If "contains" is not present within the same schema object,
-                        then this keyword has no effect.
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as a value of 1.
