@@ -91,8 +91,9 @@
                 </preamble>
                 <artwork>
 <![CDATA[
-   relative-json-pointer =  non-negative-integer <json-pointer>
+   relative-json-pointer =  non-negative-integer [index-manipulation] <json-pointer>
    relative-json-pointer =/ non-negative-integer "#"
+   index-manipulation    =  ("+" / "-") non-negative-integer
    non-negative-integer      =  %x30 / %x31-39 *( %x30-39 )
            ; "0", or digits without a leading "0"
 ]]>
@@ -213,8 +214,10 @@
 <![CDATA[
                   "0"                         "baz"
                   "1/0"                       "bar"
+                  "0-1"                       "bar"
                   "2/highly/nested/objects"   true
                   "0#"                        1
+                  "0-1#"                      0
                   "1#"                        "foo"
 ]]>
                     </artwork>
