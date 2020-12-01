@@ -2084,16 +2084,10 @@
                             "properties" and "patternProperties"
                         </t>
                         <t>
-                            "unevaluatedProperties", whose behavior is defined in terms of
-                            annotations from "properties", "patternProperties",
-                            "additionalProperties" and itself
-                        </t>
-                        <t>
                             "items", whose behavior is defined in terms of "prefixItems"
                         </t>
                         <t>
-                            "unevaluatedItems", whose behavior is defined in terms of annotations
-                            from "prefixItems", "items", "contains", and itself
+                            "contains", whose behavior is defined in terms of "minContains"
                         </t>
                     </list>
                 </t>
@@ -2521,6 +2515,26 @@
                 before the next to indicate the same syntax and semantics
                 as those listed here.
             </t>
+
+            <section title="Keyword Independence">
+                <t>
+                    Schema keywords typically operate independently, without
+                    affecting each other's outcomes. However, the keywords in this
+                    vocabulary are notable exceptions:
+                    <list>
+                        <t>
+                            "unevaluatedItems", whose behavior is defined in terms of annotations
+                            from "prefixItems", "items", "contains", and itself
+                        </t>
+                        <t>
+                            "unevaluatedProperties", whose behavior is defined in terms of
+                            annotations from "properties", "patternProperties",
+                            "additionalProperties" and itself
+                        </t>
+                    </list>
+                </t>
+            </section>
+
             <section title="unevaluatedItems" anchor="unevaluatedItems">
                 <t>
                     The value of "unevaluatedItems" MUST be a valid JSON Schema.
@@ -2530,7 +2544,7 @@
                     adjacent keywords that apply to the instance location being validated.
                     Specifically, the annotations from "prefixItems", "items", and "contains",
                     which can come from those keywords when they are adjacent to the
-                    "unevaluatedItems" keyword.  Those two annotations, as well as
+                    "unevaluatedItems" keyword. Those three annotations, as well as
                     "unevaluatedItems", can also result from any and all adjacent
                     <xref target="in-place">in-place applicator</xref> keywords.
                     This includes but is not limited to the in-place applicators
@@ -3644,10 +3658,10 @@ https://example.com/schemas/common#/$defs/count/minimum
                     keywords in that vocabulary, is shown after the main example meta-schema.
                 </t>
                 <t>
-                    The main example meta-schema also restricts the usage of the Applicator
+                    The main example meta-schema also restricts the usage of the Unevaluated
                     vocabulary by forbidding the keywords prefixed with "unevaluated", which
                     are particularly complex to implement.  This does not change the semantics
-                    or set of keywords defined by the Applicator vocabulary.  It just ensures
+                    or set of keywords defined by the other vocabularies. It just ensures
                     that schemas using this meta-schema that attempt to use the keywords
                     prefixed with "unevaluated" will fail validation against this meta-schema.
                 </t>
@@ -3682,7 +3696,7 @@ https://example.com/schemas/common#/$defs/count/minimum
     {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
-    "^unevaluated.*$": false
+    "^unevaluated": false
   },
   "properties": {
     "localKeyword": {
