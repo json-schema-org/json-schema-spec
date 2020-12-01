@@ -2360,16 +2360,23 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema.  Note that when
-                            collecting annotations, the subschema MUST be applied to every
-                            array element even after the first match has been found.  This
-                            is to ensure that all possible annotations are collected.
+                            its elements is valid against the given schema. The subschema MUST be
+                            applied to every array element even after the first match has
+                            been found, in order to collect annotations for use by other keywords.
+                            This is to ensure that all possible annotations are collected.
+                        </t>
+                        <t>
+                            Logically, the validation result of applying the value subschema to each
+                            item in the array MUST be ORed with "false", resulting in an overall
+                            validation result.
                         </t>
                         <t>
                             This keyword produces an annotation value which is an array of
                             the indexes to which this keyword validates successfully when applying
-                            its subschema, in ascending order. The value MAY be a boolean true if the
+                            its subschema, in ascending order. The value MAY be a boolean "true" if the
                             subschema validated successfully when applied to every index of the instance.
+                            If the instance array this keywords subschema is applicable to is empty,
+                            the annotation value MUST NOT be missing.
                         </t>
                     </section>
                 </section>
