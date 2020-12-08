@@ -656,8 +656,9 @@
                 <t>
                     Other keywords may take into account the dynamic scope that
                     exists during the evaluation of a schema, typically together
-                    with an instance document.  The outermost dynamic scope is the
-                    root schema of the schema document in which processing begins.
+                    with an instance document.
+                    The outermost dynamic scope is the schema object at
+                    which processing begins, even if it is not a schema resource root.
                     The path from this root schema to any particular keyword (that
                     includes any "$ref" and "$dynamicRef" keywords that may have
                     been resolved) is considered the keyword's "validation path."
@@ -1632,7 +1633,7 @@
                     </t>
                     <t>
                         When schemas are downloaded,
-                        for example by a generic user-agent that doesn't know until runtime which schemas to download,
+                        for example by a generic user-agent that does not know until runtime which schemas to download,
                         see <xref target="hypermedia">Usage for Hypermedia</xref>.
                     </t>
                     <t>
@@ -2084,16 +2085,10 @@
                             "properties" and "patternProperties"
                         </t>
                         <t>
-                            "unevaluatedProperties", whose behavior is defined in terms of
-                            annotations from "properties", "patternProperties",
-                            "additionalProperties" and itself
-                        </t>
-                        <t>
                             "items", whose behavior is defined in terms of "prefixItems"
                         </t>
                         <t>
-                            "unevaluatedItems", whose behavior is defined in terms of annotations
-                            from "prefixItems", "items", "contains", and itself
+                            "contains", whose behavior is defined in terms of "minContains"
                         </t>
                     </list>
                 </t>
@@ -2380,10 +2375,7 @@
                         </t>
                         <t>
                             The annotation result of this keyword is the set of instance
-                            property names matched by this keyword.  Annotation results
-                            for "properties" keywords from multiple schemas applied to
-                            the same instance location are combined by taking the union
-                            of the sets.
+                            property names matched by this keyword.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2406,10 +2398,7 @@
                         </t>
                         <t>
                             The annotation result of this keyword is the set of instance
-                            property names matched by this keyword.  Annotation results
-                            for "patternProperties" keywords from multiple schemas applied to
-                            the same instance location are combined by taking the union
-                            of the sets.
+                            property names matched by this keyword.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2436,9 +2425,6 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names validated by this keyword's subschema.
-                            Annotation results for "additionalProperties" keywords from
-                            multiple schemas applied to the same instance location are combined
-                            by taking the union of the sets.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2521,6 +2507,26 @@
                 before the next to indicate the same syntax and semantics
                 as those listed here.
             </t>
+
+            <section title="Keyword Independence">
+                <t>
+                    Schema keywords typically operate independently, without
+                    affecting each other's outcomes. However, the keywords in this
+                    vocabulary are notable exceptions:
+                    <list>
+                        <t>
+                            "unevaluatedItems", whose behavior is defined in terms of annotations
+                            from "prefixItems", "items", "contains", and itself
+                        </t>
+                        <t>
+                            "unevaluatedProperties", whose behavior is defined in terms of
+                            annotations from "properties", "patternProperties",
+                            "additionalProperties" and itself
+                        </t>
+                    </list>
+                </t>
+            </section>
+
             <section title="unevaluatedItems" anchor="unevaluatedItems">
                 <t>
                     The value of "unevaluatedItems" MUST be a valid JSON Schema.
@@ -2530,7 +2536,7 @@
                     adjacent keywords that apply to the instance location being validated.
                     Specifically, the annotations from "prefixItems", "items", and "contains",
                     which can come from those keywords when they are adjacent to the
-                    "unevaluatedItems" keyword.  Those two annotations, as well as
+                    "unevaluatedItems" keyword. Those three annotations, as well as
                     "unevaluatedItems", can also result from any and all adjacent
                     <xref target="in-place">in-place applicator</xref> keywords.
                     This includes but is not limited to the in-place applicators
@@ -2599,9 +2605,6 @@
                 <t>
                     The annotation result of this keyword is the set of instance
                     property names validated by this keyword's subschema.
-                    Annotation results for "unevaluatedProperties" keywords from
-                    multiple schemas applied to the same instance location are combined
-                    by taking the union of the sets.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
@@ -2648,10 +2651,10 @@
                             structure that matches the exact structure of the schema.
                         </t>
                     </list>
-                    An implementation SHOULD provide at least the "flag", "basic", or "detailed"
+                    An implementation SHOULD provide at least one of the "flag", "basic", or "detailed"
                     format and MAY provide the "verbose" format.  If it provides one or more of the
-                    complex formats, it MUST also provide the "flag" format. Implementations SHOULD
-                    specify in their documentation which formats they support.
+                    "detailed" or "verbose" formats, it MUST also provide the "flag" format.
+                    Implementations SHOULD specify in their documentation which formats they support.
                 </t>
 
             </section>
@@ -2704,7 +2707,7 @@
                             Note that "absolute" here is in the sense of "absolute filesystem path"
                             (meaning the complete location) rather than the "absolute-URI"
                             terminology from RFC 3986 (meaning with scheme but without fragment).
-                            Keyword absolute locations will always have a fragment in order to
+                            Keyword absolute locations will have a fragment in order to
                             identify the keyword.
                         </cref>
                     </t>
@@ -2716,8 +2719,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                         </artwork>
                     </figure>
                     <t>
-                        This information MAY be omitted only if either the relative location contains
-                        no references or if the schema does not declare an absolute URI as its "$id".
+                        This information MAY be omitted only if either the dynamic scope did not pass
+                        over a reference or if the schema does not declare an absolute URI as its "$id".
                     </t>
                     <t>
                         The JSON key for this information is "absoluteKeywordLocation".
@@ -3083,7 +3086,7 @@ https://example.com/schemas/common#/$defs/count/minimum
             <t>
                 Instances and schemas are both frequently written by untrusted third parties, to be
                 deployed on public Internet servers.
-                Validators should take care that the parsing and validating against schemas doesn't consume excessive
+                Validators should take care that the parsing and validating against schemas does not consume excessive
                 system resources.
                 Validators MUST NOT fall into an infinite loop.
             </t>
@@ -3093,7 +3096,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                 excessive consumption of system resources in such a scenario.
             </t>
             <t>
-                Servers MUST ensure that malicious parties can't change the functionality of
+                Servers MUST ensure that malicious parties cannot change the functionality of
                 existing schemas by uploading a schema with a pre-existing or very similar "$id".
             </t>
             <t>
@@ -3599,9 +3602,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                     behavior is undefined.
                 </t>
                 <t>
-                    Vocabulary authors should provide a meta-schema that validates the
+                    Vocabulary authors SHOULD provide a meta-schema that validates the
                     expected usage of the vocabulary's keywords on their own.  Such meta-schemas
-                    should not forbid additional keywords, and must not forbid any
+                    SHOULD not forbid additional keywords, and MUST not forbid any
                     keywords from the Core vocabulary.
                 </t>
                 <t>
@@ -3644,10 +3647,10 @@ https://example.com/schemas/common#/$defs/count/minimum
                     keywords in that vocabulary, is shown after the main example meta-schema.
                 </t>
                 <t>
-                    The main example meta-schema also restricts the usage of the Applicator
+                    The main example meta-schema also restricts the usage of the Unevaluated
                     vocabulary by forbidding the keywords prefixed with "unevaluated", which
                     are particularly complex to implement.  This does not change the semantics
-                    or set of keywords defined by the Applicator vocabulary.  It just ensures
+                    or set of keywords defined by the other vocabularies. It just ensures
                     that schemas using this meta-schema that attempt to use the keywords
                     prefixed with "unevaluated" will fail validation against this meta-schema.
                 </t>
@@ -3682,7 +3685,7 @@ https://example.com/schemas/common#/$defs/count/minimum
     {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
-    "^unevaluated.*$": false
+    "^unevaluated": false
   },
   "properties": {
     "localKeyword": {
