@@ -2549,7 +2549,7 @@
                     This means that "prefixItems", "items", "contains", and all in-place
                     applicators MUST be evaluated before this keyword can be evaluated.
                     Authors of extension keywords MUST NOT define an in-place applicator
-                    that would need to be evaluated before this keyword.
+                    that would need to be evaluated after this keyword.
                 </t>
                 <t>
                     If the "unevaluatedItems" subschema is applied to any
@@ -2594,7 +2594,7 @@
                     This means that "properties", "patternProperties", "additionalProperties",
                     and all in-place applicators MUST be evaluated before this keyword can
                     be evaluated.  Authors of extension keywords MUST NOT define an in-place
-                    applicator that would need to be evaluated before this keyword.
+                    applicator that would need to be evaluated after this keyword.
                 </t>
                 <t>
                     The annotation result of this keyword is the set of instance
