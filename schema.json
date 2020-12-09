@@ -28,7 +28,8 @@
             "$comment": "\"definitions\" has been replaced by \"$defs\".",
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
-            "default": {}
+            "default": {},
+            "deprecated": true
         },
         "dependencies": {
             "$comment": "\"dependencies\" has been split and replaced by \"dependentSchemas\" and \"dependentRequired\" in order to serve their differing semantics.",
@@ -38,15 +39,18 @@
                     { "$dynamicRef": "#meta" },
                     { "$ref": "meta/validation#/$defs/stringArray" }
                 ]
-            }
+            },
+            "deprecated": true
         },
         "$recursiveAnchor": {
             "$comment": "\"$recursiveAnchor\" has been replaced by \"$dynamicAnchor\".",
-            "$ref": "meta/core#/$defs/anchorString"
+            "$ref": "meta/core#/$defs/anchorString",
+            "deprecated": true
         },
         "$recursiveRef": {
             "$comment": "\"$recursiveRef\" has been replaced by \"$dynamicRef\".",
-            "$ref": "meta/core#/$defs/uriReferenceString"
+            "$ref": "meta/core#/$defs/uriReferenceString",
+            "deprecated": true
         }
     }
 }
