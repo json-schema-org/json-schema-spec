@@ -12,7 +12,10 @@
         "prefixItems": { "$ref": "#/$defs/schemaArray" },
         "items": { "$dynamicRef": "#meta" },
         "contains": { "$dynamicRef": "#meta" },
-        "additionalProperties": { "$dynamicRef": "#meta" },
+        "additionalProperties": {
+            "$dynamicRef": "#meta",
+            "default": {}
+        },
         "properties": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
@@ -26,11 +29,13 @@
         },
         "dependentSchemas": {
             "type": "object",
-            "additionalProperties": {
-                "$dynamicRef": "#meta"
-            }
+            "additionalProperties": { "$dynamicRef": "#meta" },
+            "default": {}
         },
-        "propertyNames": { "$dynamicRef": "#meta" },
+        "propertyNames": { 
+            "$dynamicRef": "#meta",
+            "default": {}
+        },
         "if": { "$dynamicRef": "#meta" },
         "then": { "$dynamicRef": "#meta" },
         "else": { "$dynamicRef": "#meta" },

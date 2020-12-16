@@ -9,6 +9,22 @@
     "title": "Validation vocabulary meta-schema",
     "type": ["object", "boolean"],
     "properties": {
+        "type": {
+            "anyOf": [
+                { "$ref": "#/$defs/simpleTypes" },
+                {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/simpleTypes" },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
+            ]
+        },
+        "const": true,
+        "enum": {
+            "type": "array",
+            "items": true
+        },
         "multipleOf": {
             "type": "number",
             "exclusiveMinimum": 0
@@ -50,22 +66,6 @@
             "additionalProperties": {
                 "$ref": "#/$defs/stringArray"
             }
-        },
-        "const": true,
-        "enum": {
-            "type": "array",
-            "items": true
-        },
-        "type": {
-            "anyOf": [
-                { "$ref": "#/$defs/simpleTypes" },
-                {
-                    "type": "array",
-                    "items": { "$ref": "#/$defs/simpleTypes" },
-                    "minItems": 1,
-                    "uniqueItems": true
-                }
-            ]
         }
     },
     "$defs": {
