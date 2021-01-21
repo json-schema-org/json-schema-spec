@@ -50,13 +50,11 @@
         "maxItems": { "$ref": "#/$defs/nonNegativeInteger" },
         "minItems": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
         "uniqueItems": {
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
         },
         "maxContains": { "$ref": "#/$defs/nonNegativeInteger" },
         "minContains": {
-            "$ref": "#/$defs/nonNegativeInteger",
-            "default": 1
+            "$ref": "#/$defs/nonNegativeInteger"
         },
         "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
         "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
@@ -65,9 +63,11 @@
             "type": "object",
             "additionalProperties": {
                 "$ref": "#/$defs/stringArray"
-            },
-            "default": {}
+            }
         }
+    },
+    "default": {
+        "minContains": 1
     },
     "$defs": {
         "nonNegativeInteger": {

@@ -31,9 +31,11 @@
         },
         "$defs": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
-            "default": {}
+            "additionalProperties": { "$dynamicRef": "#meta" }
         }
+    },
+    "default": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema"
     },
     "$defs": {
         "anchorString": {

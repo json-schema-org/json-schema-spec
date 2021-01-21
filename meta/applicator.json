@@ -17,19 +17,16 @@
         },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
-            "default": {}
+            "additionalProperties": { "$dynamicRef": "#meta" }
         },
         "patternProperties": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
-            "propertyNames": { "format": "regex" },
-            "default": {}
+            "propertyNames": { "format": "regex" }
         },
         "dependentSchemas": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
-            "default": {}
+            "additionalProperties": { "$dynamicRef": "#meta" }
         },
         "propertyNames": { 
             "$dynamicRef": "#meta"
