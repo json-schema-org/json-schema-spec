@@ -29,7 +29,8 @@
             "$comment": "\"definitions\" has been replaced by \"$defs\".",
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
-            "deprecated": true
+            "deprecated": true,
+            "default": {}
         },
         "dependencies": {
             "$comment": "\"dependencies\" has been split and replaced by \"dependentSchemas\" and \"dependentRequired\" in order to serve their differing semantics.",
@@ -40,7 +41,8 @@
                     { "$ref": "meta/validation#/$defs/stringArray" }
                 ]
             },
-            "deprecated": true
+            "deprecated": true,
+            "default": {}
         },
         "$recursiveAnchor": {
             "$comment": "\"$recursiveAnchor\" has been replaced by \"$dynamicAnchor\".",

@@ -16,18 +16,18 @@
         "properties": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
-            "$comment": "default: {}"
+            "default": {}
         },
         "patternProperties": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
             "propertyNames": { "format": "regex" },
-            "$comment": "default: {}"
+            "default": {}
         },
         "dependentSchemas": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "#meta" },
-            "$comment": "default: {}"
+            "default": {}
         },
         "propertyNames": { "$dynamicRef": "#meta" },
         "if": { "$dynamicRef": "#meta" },
