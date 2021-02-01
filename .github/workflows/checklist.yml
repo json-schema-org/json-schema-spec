@@ -16,7 +16,7 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
       - name: Update comment
-        # if: github.event.action == 'opened'
+        if: github.event.action == 'opened'
         uses: AsasInnab/pr-body-action@v1
         with:
           body: ${{ steps.get-comment-body.outputs.body }}
