@@ -2,20 +2,29 @@ name: Checklist Handler
 on: [pull_request]
 
 jobs:
-  label:
+  add-checklist:
     runs-on: ubuntu-latest
     steps:
-      - id: get-comment-body
+      - name: Get Comment Body
+        id: get-comment-body
         run: |
-          body=$(cat checklist.md)
+          body=$(cat .github/workflows/checklist.md)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
       - name: Update comment
+        # if: github.event.type == 'opened'
         uses: peter-evans/create-or-update-comment@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           comment-id: ${{ github.event.comment.id }}
           body: ${{ steps.get-comment-body.outputs.body }}
-          token: GITHUB_TOKEN
           edit-mode: append
+  enforce-checklist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: adamzolyak/checklist-checker-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
