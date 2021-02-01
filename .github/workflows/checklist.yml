@@ -20,6 +20,8 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           comment-author: ${{ github.event.pull_request.user.login }}
+      - name: Print Comment ID
+        run: echo ${{ steps.fc.outputs.comment-id }}
       - name: Update comment
         # if: github.event.action == 'opened'
         uses: peter-evans/create-or-update-comment@v1
