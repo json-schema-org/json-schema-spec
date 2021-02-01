@@ -14,21 +14,15 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
-      - name: Find Comment
-        uses: peter-evans/find-comment@v1
-        id: fc
-        with:
-          issue-number: ${{ github.event.number }}
-          comment-author: ${{ github.event.pull_request.user.login }}
       - name: Print Comment ID
-        run: echo ${{ steps.fc.outputs.comment-id }}
+        run: echo ${{ github.event.pull_request.comments[0].id }}
       - name: Update comment
         # if: github.event.action == 'opened'
         uses: peter-evans/create-or-update-comment@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
+          comment-id: ${{ github.event.pull_request.comments[0].id }}
           body: ${{ steps.get-comment-body.outputs.body }}
           edit-mode: append
   enforce-checklist:
