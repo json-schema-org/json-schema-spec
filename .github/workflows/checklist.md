@@ -1,4 +1,5 @@
 
+
 ---
 
 - [ ] [Issue](https://github.com/json-schema-org/json-schema-spec/issues) linked
