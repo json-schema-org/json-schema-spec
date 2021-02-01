@@ -14,21 +14,20 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
-      - name: Print Comment ID
-        run: |
-          echo ${{ github.event.pull_request }}
-          echo ${{ github.event.pull_request.comments }}
-          echo ${{ github.event.pull_request.comments[0] }}
-          echo ${{ github.event.pull_request.comments[0].id }}
+      # - name: Print Comment ID
+      #   run: |
+      #     echo ${{ github.event.pull_request }}
+      #     echo ${{ github.event.pull_request.comments }}
+      #     echo ${{ github.event.pull_request.comments[0] }}
+      #     echo ${{ github.event.pull_request.comments[0].id }}
       - name: Update comment
         # if: github.event.action == 'opened'
-        uses: peter-evans/create-or-update-comment@v1
+        # uses: peter-evans/create-or-update-comment@v1
+        uses: AsasInnab/pr-body-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          comment-id: ${{ github.event.pull_request.comments[0].id }}
           body: ${{ steps.get-comment-body.outputs.body }}
-          edit-mode: append
   enforce-checklist:
     runs-on: ubuntu-latest
     needs: add-checklist
