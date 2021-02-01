@@ -10,7 +10,7 @@ jobs:
         id: get-comment-body
         run: |
           existing=${{ github.event.pull_request.body }}
-          body="existing$'\n'$(cat .github/workflows/checklist.md)"
+          body=existing$'\n'$(cat .github/workflows/checklist.md)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
