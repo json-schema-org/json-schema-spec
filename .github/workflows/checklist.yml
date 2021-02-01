@@ -15,7 +15,11 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
       - name: Print Comment ID
-        run: echo ${{ github.event.pull_request.comments[0].id }}
+        run: |
+          echo ${{ github.event.pull_request }}
+          echo ${{ github.event.pull_request.comments }}
+          echo ${{ github.event.pull_request.comments[0] }}
+          echo ${{ github.event.pull_request.comments[0].id }}
       - name: Update comment
         # if: github.event.action == 'opened'
         uses: peter-evans/create-or-update-comment@v1
