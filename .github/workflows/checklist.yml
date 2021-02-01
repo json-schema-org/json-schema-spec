@@ -5,10 +5,11 @@ jobs:
   add-checklist:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Get Comment Body
         id: get-comment-body
         run: |
-          body=$(cat .github/workflows/checklist.md)
+          body=$(cat checklist.md)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
@@ -24,6 +25,7 @@ jobs:
           edit-mode: append
   enforce-checklist:
     runs-on: ubuntu-latest
+    needs: add-checklist
     steps:
       - uses: adamzolyak/checklist-checker-action@master
         env:
