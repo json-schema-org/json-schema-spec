@@ -15,12 +15,12 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
       - name: Update comment
-        # if: github.event.type == 'opened'
+        # if: github.event.action == 'opened'
         uses: peter-evans/create-or-update-comment@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          comment-id: ${{ github.event.comment.id }}
+          issue-number: ${{ github.event.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
           edit-mode: append
   enforce-checklist:
