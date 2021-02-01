@@ -9,20 +9,14 @@ jobs:
       - name: Get Comment Body
         id: get-comment-body
         run: |
-          body=$(cat .github/workflows/checklist.md)
+          existing=${{ github.event.pull_request.body }}
+          body="existing$'\n'$(cat .github/workflows/checklist.md)"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
-      # - name: Print Comment ID
-      #   run: |
-      #     echo ${{ github.event.pull_request }}
-      #     echo ${{ github.event.pull_request.comments }}
-      #     echo ${{ github.event.pull_request.comments[0] }}
-      #     echo ${{ github.event.pull_request.comments[0].id }}
       - name: Update comment
         # if: github.event.action == 'opened'
-        # uses: peter-evans/create-or-update-comment@v1
         uses: AsasInnab/pr-body-action@v1
         with:
           body: ${{ steps.get-comment-body.outputs.body }}
