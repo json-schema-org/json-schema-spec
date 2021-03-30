@@ -19,7 +19,9 @@
         },
         "absoluteKeywordLocation": {
           "type": "string",
-          "format": "uri"
+          "format": "iri",
+          "$comment": "any fragment must be non-empty, and use json-pointer syntax",
+          "pattern": "^[^#]*(#(/([^~]|~[01])*)*)?$"
         },
         "instanceLocation": {
           "type": "string",
