@@ -225,8 +225,11 @@
                         or "integer" which matches any number with a zero fractional part.
                     </t>
                     <t>
-                        An instance validates if and only if the instance is in any of the sets listed
-                        for this keyword.
+                        If the value of "type" is a string, then an instance validates successfully if
+                        its type matches the type represented by the value of the string.
+
+                        If the value of "type" is an array, then an instance validates successfully if
+                        its type matches any of the types indicated by the strings in the array.
                     </t>
                 </section>
 
