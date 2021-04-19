@@ -410,13 +410,13 @@
                         then this keyword has no effect.
                     </t>
                     <t>
-                        An instance array is valid against "maxContains" in two ways, depending on
-                        the form of the annotation result of an adjacent
+                        An instance array or object is valid against "maxContains" in two ways,
+                        depending on the form of the annotation result of an adjacent
                         <xref target="json-schema">"contains"</xref> keyword. The first way is if
                         the annotation result is an array and the length of that array is less than
                         or equal to the "maxContains" value. The second way is if the annotation
-                        result is a boolean "true" and the instance array length is less than or
-                        equal to the "maxContains" value.
+                        result is a boolean "true" and the instance length is less than or equal to
+                        the "maxContains" value.
                     </t>
                 </section>
 
@@ -429,13 +429,13 @@
                         then this keyword has no effect.
                     </t>
                     <t>
-                        An instance array is valid against "minContains" in two ways, depending on
-                        the form of the annotation result of an adjacent
+                        An instance array or object is valid against "minContains" in two ways,
+                        depending on the form of the annotation result of an adjacent
                         <xref target="json-schema">"contains"</xref> keyword. The first way is if
                         the annotation result is an array and the length of that array is greater
                         than or equal to the "minContains" value. The second way is if the
-                        annotation result is a boolean "true" and the instance array length is
-                        greater than or equal to the "minContains" value.
+                        annotation result is a boolean "true" and the instance length is greater
+                        than or equal to the "minContains" value.
                     </t>
                     <t>
                         A value of 0 is allowed, but is only useful for setting a range
