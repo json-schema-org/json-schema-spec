@@ -2343,17 +2343,25 @@
                             This is to ensure that all possible annotations are collected.
                         </t>
                         <t>
-                            Logically, the validation result of applying the value subschema to each
-                            item in the array MUST be ORed with "false", resulting in an overall
-                            validation result.
+                            An object instance is valid against "contains" if at least one of
+                            its property values is valid against the given schema. The subschema
+                            MUST be applied to every property value even after the first match has
+                            been found, in order to collect annotations for use by other keywords.
+                            This is to ensure that all possible annotations are collected.
                         </t>
                         <t>
-                            This keyword produces an annotation value which is an array of
-                            the indexes to which this keyword validates successfully when applying
-                            its subschema, in ascending order. The value MAY be a boolean "true" if
-                            the subschema validates successfully when applied to every index of the
-                            instance. The annotation MUST be present if the instance array to which
-                            this keyword's schema applies is empty.
+                            Logically, the validation result of applying the value subschema to each
+                            item in the array or property in the object MUST be ORed with "false",
+                            resulting in an overall validation result.
+                        </t>
+                        <t>
+                            This keyword produces an annotation value which is an array of the
+                            indexes or property names to which this keyword validates successfully
+                            when applying its subschema, in ascending order. The value MAY be a
+                            boolean "true" if the subschema validates successfully when applied to
+                            every index or property value of the instance. The annotation MUST be
+                            present if the instance array or object to which this keyword's schema
+                            applies is empty.
                         </t>
                     </section>
                 </section>
