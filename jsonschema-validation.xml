@@ -415,8 +415,8 @@
                         <xref target="json-schema">"contains"</xref> keyword. The first way is if
                         the annotation result is an array and the length of that array is less than
                         or equal to the "maxContains" value. The second way is if the annotation
-                        result is a boolean "true" and the instance length is less than or equal to
-                        the "maxContains" value.
+                        result is a boolean "true" and the instance length (number of items or
+                        properties) is less than or equal to the "maxContains" value.
                     </t>
                 </section>
 
@@ -434,8 +434,8 @@
                         <xref target="json-schema">"contains"</xref> keyword. The first way is if
                         the annotation result is an array and the length of that array is greater
                         than or equal to the "minContains" value. The second way is if the
-                        annotation result is a boolean "true" and the instance length is greater
-                        than or equal to the "minContains" value.
+                        annotation result is a boolean "true" and the instance length (number of
+                        items or properties) is greater than or equal to the "minContains" value.
                     </t>
                     <t>
                         A value of 0 is allowed, but is only useful for setting a range
