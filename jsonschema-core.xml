@@ -2367,45 +2367,6 @@
                             Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
-
-                    <section title="contains">
-                        <t>
-                            The value of this keyword MUST be a valid JSON Schema.
-                        </t>
-                        <t>
-                            An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema,
-                            except when "minContains" is present and has a value of 0, in which
-                            case an array instance MUST be considered valid against the "contains" keyword,
-                            even if none of its elements is valid against the given schema.
-                        </t>
-                        <t>
-                            An object instance is valid against "contains" if at least one of
-                            its properties is valid against the given schema,
-                            except when "minContains" is present and has a value of 0, in which
-                            case an object instance MUST be considered valid against the "contains" keyword,
-                            even if none of its property values is valid against the given schema.
-                        </t>
-                        <t>
-                            This keyword produces an annotation value which is an array of the
-                            indexes or property names to which this keyword validates successfully
-                            when applying its subschema, in ascending order. The value MAY be a
-                            boolean "true" if the subschema validates successfully when applied to
-                            every index or property value of the instance. The annotation MUST be
-                            present if the instance array or object to which this keyword's schema
-                            applies is empty.
-                        </t>
-                        <t>
-                            This annotation affects the behavior of "unevaluatedItems" in the
-                            Unevaluated vocabulary, and MAY also be used to implement the
-                            "minContains" and "maxContains" keywords in the Validation vocabulary.
-                        </t>
-                        <t>
-                            The subschema MUST be applied to every array element even after the first
-                            match has been found, in order to collect annotations for use by other
-                            keywords. This is to ensure that all possible annotations are collected.
-                        </t>
-                    </section>
                 </section>
 
                 <section title="Keywords for Applying Subschemas to Objects">
@@ -2514,6 +2475,48 @@
                         </t>
                         <t>
                             Omitting this keyword has the same behavior as an empty schema.
+                        </t>
+                    </section>
+                </section>
+
+                <section title="Other Keywords for Applying Subschemas">
+
+                    <section title="contains">
+                        <t>
+                            The value of this keyword MUST be a valid JSON Schema.
+                        </t>
+                        <t>
+                            An array instance is valid against "contains" if at least one of
+                            its elements is valid against the given schema,
+                            except when "minContains" is present and has a value of 0, in which
+                            case an array instance MUST be considered valid against the "contains" keyword,
+                            even if none of its elements is valid against the given schema.
+                        </t>
+                        <t>
+                            An object instance is valid against "contains" if at least one of
+                            its properties is valid against the given schema,
+                            except when "minContains" is present and has a value of 0, in which
+                            case an object instance MUST be considered valid against the "contains" keyword,
+                            even if none of its property values is valid against the given schema.
+                        </t>
+                        <t>
+                            This keyword produces an annotation value which is an array of the
+                            indexes or property names to which this keyword validates successfully
+                            when applying its subschema, in ascending order. The value MAY be a
+                            boolean "true" if the subschema validates successfully when applied to
+                            every index or property value of the instance. The annotation MUST be
+                            present if the instance array or object to which this keyword's schema
+                            applies is empty.
+                        </t>
+                        <t>
+                            This annotation affects the behavior of "unevaluatedItems" in the
+                            Unevaluated vocabulary, and MAY also be used to implement the
+                            "minContains" and "maxContains" keywords in the Validation vocabulary.
+                        </t>
+                        <t>
+                            The subschema MUST be applied to every array element even after the first
+                            match has been found, in order to collect annotations for use by other
+                            keywords. This is to ensure that all possible annotations are collected.
                         </t>
                     </section>
                 </section>
