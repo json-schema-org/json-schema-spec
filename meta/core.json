@@ -10,14 +10,14 @@
     "type": ["object", "boolean"],
     "properties": {
         "$id": {
-            "$ref": "#/$defs/uriReferenceString",
+            "$ref": "#/$defs/iriReferenceString",
             "$comment": "Non-empty fragments not allowed.",
             "pattern": "^[^#]*#?$"
         },
         "$schema": { "$ref": "#/$defs/uriString" },
-        "$ref": { "$ref": "#/$defs/uriReferenceString" },
+        "$ref": { "$ref": "#/$defs/iriReferenceString" },
         "$anchor": { "$ref": "#/$defs/anchorString" },
-        "$dynamicRef": { "$ref": "#/$defs/uriReferenceString" },
+        "$dynamicRef": { "$ref": "#/$defs/iriReferenceString" },
         "$dynamicAnchor": { "$ref": "#/$defs/anchorString" },
         "$vocabulary": {
             "type": "object",
@@ -46,6 +46,10 @@
         "uriReferenceString": {
             "type": "string",
             "format": "uri-reference"
+        },
+        "iriReferenceString": {
+            "type": "string",
+            "format": "iri-reference"
         }
     }
 }
