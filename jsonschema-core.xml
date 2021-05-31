@@ -1417,7 +1417,7 @@
                         a letter ([A-Za-z]) or underscore ("_"), followed by any number of letters,
                         digits ([0-9]), hyphens ("-"), underscores ("_"), and periods (".").
                         This matches the US-ASCII part of XML's
-                        <xref target="xml-names">NCName production</xref>.
+                        <xref target="xml-names">NCName type</xref>.
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a URI-reference.  An "$anchor": "foo" becomes the
@@ -2085,7 +2085,8 @@
                             "items", whose behavior is defined in terms of "prefixItems"
                         </t>
                         <t>
-                            "contains", whose behavior is defined in terms of "minContains"
+                            "contains", whose behavior is affected by the presence and value of
+                            "minContains", in the Validation vocabulary
                         </t>
                     </list>
                 </t>
@@ -2318,6 +2319,7 @@
                             positions within the instance array, it produces an
                             annotation result of boolean true, indicating that all remaining array
                             elements have been evaluated against this keyword's subschema.
+                            This annotation affects the behavior of "unevaluatedItems".
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2337,15 +2339,18 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema. The subschema MUST be
-                            applied to every array element even after the first match has
-                            been found, in order to collect annotations for use by other keywords.
-                            This is to ensure that all possible annotations are collected.
+                            its elements is valid against the given schema, provided that
+                            "minContains" is not present or is a value greater than 0.
                         </t>
                         <t>
-                            Logically, the validation result of applying the value subschema to each
-                            item in the array MUST be ORed with "false", resulting in an overall
-                            validation result.
+                            If "minContains" is present and has a value of 0, then an array instance
+                            is valid against this keyword only if NONE of its elements is valid
+                            against the given schema.
+                        </t>
+                        <t>
+                            The subschema MUST be applied to every array element even after the first
+                            match has been found, in order to collect annotations for use by other
+                            keywords. This is to ensure that all possible annotations are collected.
                         </t>
                         <t>
                             This keyword produces an annotation value which is an array of
@@ -2354,6 +2359,7 @@
                             the subschema validates successfully when applied to every index of the
                             instance. The annotation MUST be present if the instance array to which
                             this keyword's schema applies is empty.
+                            This annotation affects the behavior of "unevaluatedItems".
                         </t>
                     </section>
                 </section>
@@ -2373,7 +2379,9 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names matched by this keyword.
-                        </t>
+                            This annotation affects the behavior of "additionalProperties" and
+                            "unevaluatedProperties".
+                          </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
                             an empty object.
@@ -2396,7 +2404,9 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names matched by this keyword.
-                        </t>
+                            This annotation affects the behavior of "additionalProperties" and
+                            "unevaluatedProperties".
+                          </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
                             an empty object.
@@ -2422,6 +2432,7 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names validated by this keyword's subschema.
+                            This annotation affects the behavior of "unevaluatedProperties".
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2559,6 +2570,7 @@
                     positions within the instance array, it produces an
                     annotation result of boolean true, analogous to the
                     behavior of "items".
+                    This annotation affects the behavior of "unevaluatedItems" in parent schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
@@ -2602,6 +2614,7 @@
                 <t>
                     The annotation result of this keyword is the set of instance
                     property names validated by this keyword's subschema.
+                    This annotation affects the behavior of "unevaluatedProperties" in parent schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
@@ -3846,8 +3859,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                             <t>"$schema" MAY change for embedded resources</t>
                             <t>Array-value "items" functionality is now "prefixItems"</t>
                             <t>"items" subsumes the old function of "additionalItems"</t>
-                            <t>"contains" and "unevaluatedItems" interactions now specified</t>
-                            <t>Rename $recursive* to $dynamic*</t>
+                            <t>"contains" annotation behavior, and "contains" and "unevaluatedItems" interactions now specified</t>
+                            <t>Rename $recursive* to $dynamic*, with behavior modification</t>
                             <t>$dynamicAnchor defines a fragment like $anchor</t>
                             <t>$dynamic* (previously $recursive) no longer use runtime base URI determination</t>
                             <t>Define Compound Schema Documents (bundle) and processing</t>
