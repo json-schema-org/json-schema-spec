@@ -704,30 +704,34 @@
                         <list style="hanging">
                             <t hangText="date-time:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "date-time" production.
+                                a valid representation according to the "date-time' ABNF rule
+                                (referenced above)
                             </t>
                             <t hangText="date:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "full-date" production.
+                                a valid representation according to the "full-date" ABNF rule
+                                (referenced above)
                             </t>
                             <t hangText="time:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "full-time" production.
+                                a valid representation according to the "full-time" ABNF rule
+                                (referenced above)
                             </t>
                             <t hangText="duration:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "duration" production.
+                                a valid representation according to the "duration" ABNF rule
+                                (referenced above)
                             </t>
                         </list>
                     </t>
                     <t>
                         Implementations MAY support additional attributes using the other
-                        production names defined anywhere in that RFC.  If "full-date" or "full-time"
+                        format names defined anywhere in that RFC.  If "full-date" or "full-time"
                         are implemented, the corresponding short form ("date" or "time"
                         respectively) MUST be implemented, and MUST behave identically.
                         Implementations SHOULD NOT define extension attributes
-                        with any name matching an RFC 3339 production unless it validates
-                        according to the rules of that production.
+                        with any name matching an RFC 3339 format unless it validates
+                        according to the rules of that format.
                         <cref>
                             There is not currently consensus on the need for supporting
                             all RFC 3339 formats, so this approach of reserving the
