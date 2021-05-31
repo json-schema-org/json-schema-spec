@@ -442,8 +442,9 @@
                     </t>
                     <t>
                         A value of 0 is allowed, but is only useful for setting a range
-                        of occurrences from 0 to the value of "maxContains".  A value of
-                        0 with no "maxContains" causes "contains" to always pass validation.
+                        of occurrences from 0 to the value of "maxContains". A value of
+                        0 causes "minContains" to always pass validation (but validation can
+                        still fail against a "maxContains" keyword).
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as a value of 1.
