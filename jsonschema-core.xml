@@ -2318,6 +2318,8 @@
                             positions within the instance array, it produces an
                             annotation result of boolean true, indicating that all remaining array
                             elements have been evaluated against this keyword's subschema.
+                            This annotation affects the behavior of "unevaluatedItems" in the
+                            Unevaluated vocabulary.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2354,6 +2356,8 @@
                             the subschema validates successfully when applied to every index of the
                             instance. The annotation MUST be present if the instance array to which
                             this keyword's schema applies is empty.
+                            This annotation affects the behavior of "unevaluatedItems" in the
+                            Unevaluated vocabulary.
                         </t>
                     </section>
                 </section>
@@ -2373,6 +2377,8 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names matched by this keyword.
+                            This annotation affects the behavior of "additionalProperties" (in
+                            this vocabulary) and "unevaluatedProperties" in the Unevaluated vocabulary.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2396,6 +2402,8 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names matched by this keyword.
+                            This annotation affects the behavior of "additionalProperties" (in this
+                            vocabulary) and "unevaluatedProperties" (in the Unevaluated vocabulary).
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2422,6 +2430,8 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names validated by this keyword's subschema.
+                            This annotation affects the behavior of "unevaluatedProperties"
+                            in the Unevaluated vocabulary.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2552,6 +2562,7 @@
                     positions within the instance array, it produces an
                     annotation result of boolean true, analogous to the
                     behavior of "items".
+                    This annotation affects the behavior of "unevaluatedItems" in parent schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
@@ -2595,6 +2606,7 @@
                 <t>
                     The annotation result of this keyword is the set of instance
                     property names validated by this keyword's subschema.
+                    This annotation affects the behavior of "unevaluatedProperties" in parent schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
