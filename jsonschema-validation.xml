@@ -213,6 +213,23 @@
                 <eref target="https://json-schema.org/draft/2020-12/meta/validation"/>.
             </t>
 
+            <section title="Keyword Independence">
+                <t>
+                    Schema keywords typically operate independently, without
+                    affecting each other's outcomes.
+                </t>
+                <t>
+                    For schema author convenience, there are some exceptions among the
+                    keywords in this vocabulary:
+                    <list>
+                        <t>
+                          "maxContains" and "minContains", whose behavior is affected by the
+                          presence and value of "contains", in the Applicator vocabulary
+                        </t>
+                    </list>
+                </t>
+            </section>
+
             <section title="Validation Keywords for Any Instance Type" anchor="general">
                 <section title="type">
                     <t>
@@ -418,6 +435,12 @@
                         result is a boolean "true" and the instance array length is less than or
                         equal to the "maxContains" value.
                     </t>
+                    <t>
+                      If annotations are not being collected, the validation value may be determined
+                      by considering the number of instance elements that are valid against the
+                      "contains" schema: validation is successful if and only if the number of valid
+                      elements is less than or equal to the "maxContains" value.
+                    </t>
                 </section>
 
                 <section title="minContains">
@@ -438,9 +461,16 @@
                         greater than or equal to the "minContains" value.
                     </t>
                     <t>
+                        If annotations are not being collected, the validation value may be determined
+                        by considering the number of instance elements that are valid against the
+                        "contains" schema: validation is successful if and only if the number of valid
+                        elements is greater than or equal to the "minContains" value.
+                    </t>
+                    <t>
                         A value of 0 is allowed, but is only useful for setting a range
-                        of occurrences from 0 to the value of "maxContains".  A value of
-                        0 with no "maxContains" causes "contains" to always pass validation.
+                        of occurrences from 0 to the value of "maxContains". A value of
+                        0 causes "contains" to always pass validation (but validation can still fail
+                        against a "maxContains" keyword).
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as a value of 1.

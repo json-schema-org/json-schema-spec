@@ -2085,7 +2085,8 @@
                             "items", whose behavior is defined in terms of "prefixItems"
                         </t>
                         <t>
-                            "contains", whose behavior is defined in terms of "minContains"
+                            "contains", whose behavior is affected by the presence and value of
+                            "minContains", in the Validation vocabulary
                         </t>
                     </list>
                 </t>
@@ -2338,15 +2339,18 @@
                         </t>
                         <t>
                             An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema. The subschema MUST be
-                            applied to every array element even after the first match has
-                            been found, in order to collect annotations for use by other keywords.
-                            This is to ensure that all possible annotations are collected.
+                            its elements is valid against the given schema, provided that
+                            "minContains" is not present or is a value greater than 0.
                         </t>
                         <t>
-                            Logically, the validation result of applying the value subschema to each
-                            item in the array MUST be ORed with "false", resulting in an overall
-                            validation result.
+                            If "minContains" is present and has a value of 0, then an array instance
+                            is valid against this keyword only if NONE of its elements is valid
+                            against the given schema.
+                        </t>
+                        <t>
+                            The subschema MUST be applied to every array element even after the first
+                            match has been found, in order to collect annotations for use by other
+                            keywords. This is to ensure that all possible annotations are collected.
                         </t>
                         <t>
                             This keyword produces an annotation value which is an array of
