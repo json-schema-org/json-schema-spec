@@ -10,14 +10,15 @@
     "type": ["object", "boolean"],
     "properties": {
         "$id": {
-            "$ref": "#/$defs/uriReferenceString",
+            "type": "string",
+            "format": "uri-reference",
             "$comment": "Non-empty fragments not allowed.",
             "pattern": "^[^#]*#?$"
         },
         "$schema": { "$ref": "#/$defs/uriString" },
-        "$ref": { "$ref": "#/$defs/uriReferenceString" },
+        "$ref": { "$ref": "#/$defs/uriReferenceToSchemaString" },
         "$anchor": { "$ref": "#/$defs/anchorString" },
-        "$dynamicRef": { "$ref": "#/$defs/uriReferenceString" },
+        "$dynamicRef": { "$ref": "#/$defs/uriReferenceToSchemaString" },
         "$dynamicAnchor": { "$ref": "#/$defs/anchorString" },
         "$vocabulary": {
             "type": "object",
@@ -43,9 +44,11 @@
             "type": "string",
             "format": "uri"
         },
-        "uriReferenceString": {
+        "uriReferenceToSchemaString": {
             "type": "string",
-            "format": "uri-reference"
+            "format": "uri-reference",
+            "$comment": "any fragment must be empty, or match anchor or json-pointer syntax",
+            "pattern": "^[^#]*(|#([A-Za-z_][-A-Za-z0-9.:_]*|/([^~]|~[01])*))$"
         }
     }
 }
