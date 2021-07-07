@@ -1241,6 +1241,24 @@
                     an additional example.  If "examples" is absent, "default"
                     MAY still be used in this manner.
                 </t>
+                <t>
+                    Implementations MAY use the values of "namedExamples", if present, as
+                    additional examples.  If "examples" is absent, "namedExamples"
+                    MAY still be used in this manner.
+                </t>
+            </section>
+
+            <section title='"namedExamples"'>
+                <t>
+                    The value of this keyword MUST be an object.
+                    There are no restrictions placed on the values within the object.
+                </t>
+                <t>
+                    This keyword can be used to provide named sample JSON values associated with a
+                    particular schema, for the purpose of illustrating usage, and to make them
+                    available for referencing outside of the schema.  It is RECOMMENDED that these
+                    values be valid against the associated schema.
+                </t>
             </section>
         </section>
 
