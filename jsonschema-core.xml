@@ -427,14 +427,24 @@
                         A JSON Schema resource is a schema which is
                         <xref target="RFC6596">canonically</xref> identified by an
                         <xref target="RFC3986">absolute URI</xref>.  Schema resources MAY
-                        also be identified by URIs including fragments.  Any such URIs
-                        are considered to be non-canonical.
+                        also be identified by URIs, including URIs with fragments,
+                        if the resulting secondary resource (as defined by
+                        <xref target="RFC3986">section 3.5 of RFC 3986</xref>) is identical
+                        to the primary resource.  This can occur with the empty fragment,
+                        or when one schema resource is embedded in another.  Any such URIs
+                        with fragments are considered to be non-canonical.
                     </t>
                     <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.  The root schema is always a schema resource, where the
                         URI is determined as described in section
                         <xref target="initial-base" format="counter"></xref>.
+                        <cref>
+                            Note that documents that embed schemas in another format will not
+                            have a root schema resource in this sense.  Exactly how such usages
+                            fit with the JSON Schema document and resource concepts will be
+                            clarified in a future draft.
+                        </cref>
                     </t>
                     <t>
                         Some keywords take schemas themselves, allowing JSON Schemas to be nested:
@@ -1342,17 +1352,19 @@
                     <t>
                         If present, the value for this keyword MUST be a string, and MUST represent a
                         valid <xref target="RFC3986">URI-reference</xref>.  This URI-reference
-                        SHOULD be normalized, and MUST be semantically equivalent to an
-                        <xref target="RFC3986">absolute-URI</xref> (without a fragment).
+                        SHOULD be normalized, and MUST resolve to an
+                        <xref target="RFC3986">absolute-URI</xref> (without a fragment),
+                        or to a URI with an empty fragment.
                     </t>
                     <t>
-                        The application/schema+json media type defines that an absolute-URI
-                        identifying a resource and the same URI with an empty fragment
-                        appended (which identifies the resource's root schema object) are
-                        semantically equivalent.  Since this semantic equivalence is not part
-                        of the <xref target="RFC3986">RFC 3986 normalization process</xref>,
-                        implementors and schema authors cannot rely on generic URI libraries
-                        understanding the equivalence.
+                        The empty fragment form is NOT RECOMMENDED and is retained only
+                        for backwards compatibility, and because the
+                        application/schema+json media type defines that a URI with an
+                        empty fragment identifies the same resource as the same URI
+                        with the fragment removed.  However, since this equivalence is not
+                        part of the <xref target="RFC3986">RFC 3986 normalization process</xref>,
+                        implementers and schema authors cannot rely on generic URI libraries
+                        understanding it.
                     </t>
                     <t>
                         Therefore, "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT
@@ -1757,7 +1769,7 @@
                         Since JSON Pointer URI fragments are constructed based on the structure
                         of the schema document, an embedded schema resource and its subschemas
                         can be identified by JSON Pointer fragments relative to either its own
-                        canonical URI, or relative to a containing resource's URI.
+                        canonical URI, or relative to any containing resource's URI.
                     </t>
                     <t>
                         Conceptually, a set of linked schema resources should behave
@@ -1822,10 +1834,12 @@
 ]]>
                         </artwork>
                         <postamble>
-                            Here we see that the URI for the "additionalProperties" schema object
-                            that is relative to its resource's canonical URI is still valid,
-                            while the URI relative to the "items" schema object's URI no longer
-                            resolves to anything.
+                            Here we see that "https://example.com/bar#/additionalProperties",
+                            using a JSON Pointer fragment appended to the canonical URI of
+                            the "bar" schema resource, is still valid, while
+                            "https://example.com/foo#/items/additionalProperties", which relied
+                            on a JSON Pointer fragment appended to the canonical URI of the
+                            "foo" schema resource, no longer resolves to anything.
                         </postamble>
                     </figure>
                     <t>
