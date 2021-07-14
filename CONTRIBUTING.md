@@ -22,7 +22,7 @@ If the pull request would solve a particular issue, reference the issue in the p
 
 Changes that would affect implementation behavior should typically be opened as an issue first.
 
-Pull requests should be made to master.
+Pull requests should be made to the default branch, which may be `draft-patch`, `draft-next`, or `master` depending on where we are in the [release process](https://github.com/json-schema-org/community/discussions/7).
 
 Most PRs, including all PRs that impact implementation behavior, will be left open for a minimum of 14 days.  Minor wording fixes may be merged more quickly once approved by a project member.
 
