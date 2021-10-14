@@ -2581,7 +2581,7 @@
                         <t>
                             "unevaluatedProperties", whose behavior is defined in terms of
                             annotations from "properties", "patternProperties",
-                            "additionalProperties" and itself
+                            "additionalProperties", "contains", and itself
                         </t>
                     </list>
                 </t>
@@ -2638,9 +2638,9 @@
                     The behavior of this keyword depends on the annotation results of
                     adjacent keywords that apply to the instance location being validated.
                     Specifically, the annotations from "properties", "patternProperties",
-                    and "additionalProperties", which can come from those keywords when
+                    "contains", and "additionalProperties", which can come from those keywords when
                     they are adjacent to the "unevaluatedProperties" keyword.  Those
-                    three annotations, as well as "unevaluatedProperties", can also
+                    four annotations, as well as "unevaluatedProperties", can also
                     result from any and all adjacent
                     <xref target="in-place">in-place applicator</xref> keywords.
                     This includes but is not limited to the in-place applicators
@@ -2649,7 +2649,7 @@
                 <t>
                     Validation with "unevaluatedProperties" applies only to the child
                     values of instance names that do not appear in the "properties",
-                    "patternProperties", "additionalProperties", or
+                    "patternProperties", "additionalProperties", "contains", or
                     "unevaluatedProperties" annotation results that apply to the
                     instance location being validated.
                 </t>
@@ -2659,7 +2659,7 @@
                 </t>
                 <t>
                     This means that "properties", "patternProperties", "additionalProperties",
-                    and all in-place applicators MUST be evaluated before this keyword can
+                    "contains" and all in-place applicators MUST be evaluated before this keyword can
                     be evaluated.  Authors of extension keywords MUST NOT define an in-place
                     applicator that would need to be evaluated after this keyword.
                 </t>
