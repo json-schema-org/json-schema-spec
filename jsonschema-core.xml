@@ -2,6 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC3987 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3987.xml">
 <!ENTITY RFC6596 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6596.xml">
 <!ENTITY RFC6839 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6839.xml">
 <!ENTITY RFC6901 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6901.xml">
@@ -205,7 +206,7 @@
                 </t>
                 <t>
                     Among these, this specification defines the "application/schema-instance+json"
-                    media type which defines handling for fragments in the URI.
+                    media type which defines handling for fragments in the IRI.
                 </t>
 
                 <section title="Instance Data Model">
@@ -316,7 +317,7 @@
                         <list style="hanging">
                             <t hangText="identifiers:">
                                 control schema identification through setting the schema's
-                                canonical URI and/or changing how the base URI is determined
+                                canonical IRI and/or changing how the base IRI is determined
                             </t>
                             <t hangText="assertions:">
                                 produce a boolean result when applied to an instance
@@ -393,7 +394,7 @@
                     <t>
                         Vocabularies are the primary unit of re-use in JSON Schema, as schema
                         authors can indicate what vocabularies are required or optional in
-                        order to process the schema.  Since vocabularies are identified by URIs
+                        order to process the schema.  Since vocabularies are identified by IRIs
                         in the meta-schema, generic implementations can load extensions to support
                         previously unknown vocabularies.  While keywords can be supported outside
                         of any vocabulary, there is no analogous mechanism to indicate individual
@@ -419,12 +420,12 @@
                     <t>
                         A JSON Schema resource is a schema which is
                         <xref target="RFC6596">canonically</xref> identified by an
-                        <xref target="RFC3986">absolute URI</xref>.
+                        <xref target="RFC3987">absolute IRI</xref>.
                     </t>
                     <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.  The root schema is always a schema resource, where the
-                        URI is determined as described in section
+                        IRI is determined as described in section
                         <xref target="initial-base" format="counter"></xref>.
                     </t>
                     <t>
@@ -482,7 +483,7 @@
                 fragment identifier structure: JSON Pointers.
             </t>
             <t>
-                The use of JSON Pointers as URI fragment identifiers is described in
+                The use of JSON Pointers as IRI fragment identifiers is described in
                 <xref target="RFC6901">RFC 6901</xref>.
                 For "application/schema+json", which supports two fragment identifier syntaxes,
                 fragment identifiers matching the JSON Pointer syntax, including the empty string,
@@ -638,9 +639,9 @@
                     schema object with no subschemas.
                 </t>
                 <t>
-                    Keywords MAY be defined with a partial value, such as a URI-reference,
+                    Keywords MAY be defined with a partial value, such as a IRI-reference,
                     which must be resolved against another value, such as another
-                    URI-reference or a full URI, which is found through the lexical
+                    IRI-reference or a full IRI, which is found through the lexical
                     structure of the JSON document.  The "$id", "$ref", and
                     "$dynamicRef" core keywords, and the "base" JSON Hyper-Schema
                     keyword, are examples of this sort of behavior.
@@ -725,20 +726,20 @@
             </section>
             <section title="Identifiers" anchor="identifiers">
                 <t>
-                    Identifiers set the canonical URI of a schema, or affect how such URIs are
+                    Identifiers set the canonical IRI of a schema, or affect how such IRIs are
                     resolved in <xref target="references">references</xref>, or both.
                     The Core vocabulary defined in this document defines several
                     identifying keywords, most notably "$id".
                 </t>
                 <t>
-                    Canonical schema URIs MUST NOT change while processing an instance, but
-                    keywords that affect URI-reference resolution MAY have behavior that
+                    Canonical schema IRIs MUST NOT change while processing an instance, but
+                    keywords that affect IRI-reference resolution MAY have behavior that
                     is only fully determined at runtime.
                 </t>
                 <t>
                     While custom identifier keywords are possible, vocabulary designers should
                     take care not to disrupt the functioning of core keywords. For example,
-                    the "$dynamicAnchor" keyword in this specification limits its URI resolution
+                    the "$dynamicAnchor" keyword in this specification limits its IRI resolution
                     effects to the matching "$dynamicRef" keyword, leaving the behavior
                     of "$ref" undisturbed.
                 </t>
@@ -913,7 +914,7 @@
                                 such as "$ref" were followed to reach the absolute schema location.
                             </t>
                             <t>
-                                The absolute schema location of the attaching keyword, as a URI.
+                                The absolute schema location of the attaching keyword, as a IRI.
                                 This MAY be omitted if it is the same as the schema location path
                                 from above.
                             </t>
@@ -1117,14 +1118,14 @@
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" MUST be considered to
-                require the Core vocabulary as if its URI were present with a value of true.
+                require the Core vocabulary as if its IRI were present with a value of true.
             </t>
             <t>
-                The current URI for the Core vocabulary is:
+                The current IRI for the Core vocabulary is:
                 &lt;https://json-schema.org/draft/2020-12/vocab/core&gt;.
             </t>
             <t>
-                The current URI for the corresponding meta-schema is:
+                The current IRI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft/2020-12/meta/core"/>.
             </t>
             <t>
@@ -1176,12 +1177,12 @@
                         set of valid schemas written for this particular dialect.
                     </t>
                     <t>
-                        The value of this keyword MUST be a <xref target="RFC3986">URI</xref>
-                        (containing a scheme) and this URI MUST be normalized.
-                        The current schema MUST be valid against the meta-schema identified by this URI.
+                        The value of this keyword MUST be a <xref target="RFC3987">IRI</xref>
+                        (containing a scheme) and this IRI MUST be normalized.
+                        The current schema MUST be valid against the meta-schema identified by this IRI.
                     </t>
                     <t>
-                        If this URI identifies a retrievable resource, that resource SHOULD be of
+                        If this IRI identifies a retrievable resource, that resource SHOULD be of
                         media type "application/schema+json".
                     </t>
                     <t>
@@ -1208,15 +1209,15 @@
                     </t>
                     <t>
                         The value of this keyword MUST be an object.  The property names in the
-                        object MUST be URIs (containing a scheme) and this URI MUST be normalized.
-                        Each URI that appears as a property name identifies a specific set of
+                        object MUST be IRIs (containing a scheme) and this IRI MUST be normalized.
+                        Each IRI that appears as a property name identifies a specific set of
                         keywords and their semantics.
                     </t>
                     <t>
-                        The URI MAY be a URL, but the nature of the retrievable resource is
+                        The IRI MAY be a URL, but the nature of the retrievable resource is
                         currently undefined, and reserved for future use.  Vocabulary authors
                         MAY use the URL of the vocabulary specification, in a human-readable
-                        media type such as text/html or text/plain, as the vocabulary URI.
+                        media type such as text/html or text/plain, as the vocabulary IRI.
                         <cref>
                             Vocabulary documents may be added in forthcoming drafts.
                             For now, identifying the keyword set is deemed sufficient as that,
@@ -1257,7 +1258,7 @@
                         <t>
                             If "$vocabulary" is absent, an implementation MAY determine
                             behavior based on the meta-schema if it is recognized from the
-                            URI value of the referring schema's "$schema" keyword.
+                            IRI value of the referring schema's "$schema" keyword.
                             This is how behavior (such as Hyper-Schema usage) has been
                             recognized prior to the existence of vocabularies.
                         </t>
@@ -1297,51 +1298,51 @@
                         </t>
                     </section>
                 </section>
-                <section title="Updates to Meta-Schema and Vocabulary URIs">
+                <section title="Updates to Meta-Schema and Vocabulary IRIs">
                     <t>
-                        Updated vocabulary and meta-schema URIs MAY be published between
+                        Updated vocabulary and meta-schema IRIs MAY be published between
                         specification drafts in order to correct errors.  Implementations
-                        SHOULD consider URIs dated after this specification draft and
+                        SHOULD consider IRIs dated after this specification draft and
                         before the next to indicate the same syntax and semantics
                         as those listed here.
                     </t>
                 </section>
             </section>
 
-            <section title="Base URI, Anchors, and Dereferencing">
+            <section title="Base IRI, Anchors, and Dereferencing">
                 <t>
                     To differentiate between schemas in a vast ecosystem, schemas are
-                    identified by <xref target="RFC3986">URI</xref>, and can embed references
-                    to other schemas by specifying their URI.
+                    identified by <xref target="RFC3987">IRI</xref>, and can embed references
+                    to other schemas by specifying their IRI.
                 </t>
                 <t>
-                    Several keywords can accept a relative <xref target="RFC3986">URI-reference</xref>,
-                    or a value used to construct a relative URI-reference.  For these keywords,
-                    it is necessary to establish a base URI in order to resolve the reference.
+                    Several keywords can accept a relative <xref target="RFC3987">IRI-reference</xref>,
+                    or a value used to construct a relative IRI-reference.  For these keywords,
+                    it is necessary to establish a base IRI in order to resolve the reference.
                 </t>
 
                 <section title='The "$id" Keyword' anchor="id-keyword">
                     <t>
                         The "$id" keyword identifies a schema resource with its
-                        <xref target="RFC6596">canonical</xref> URI.
+                        <xref target="RFC6596">canonical</xref> IRI.
                     </t>
                     <t>
-                        Note that this URI is an identifier and not necessarily a network locator.
+                        Note that this IRI is an identifier and not necessarily a network locator.
                         In the case of a network-addressable URL, a schema need not be downloadable
-                        from its canonical URI.
+                        from its canonical IRI.
                     </t>
                     <t>
                         If present, the value for this keyword MUST be a string, and MUST represent a
-                        valid <xref target="RFC3986">URI-reference</xref>.  This URI-reference
+                        valid <xref target="RFC3987">IRI-reference</xref>.  This IRI-reference
                         SHOULD be normalized, and MUST resolve to an
-                        <xref target="RFC3986">absolute-URI</xref> (without a fragment).  Therefore,
+                        <xref target="RFC3987">absolute-IRI</xref> (without a fragment).  Therefore,
                         "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT contain an
                         empty fragment.
                     </t>
                     <t>
                         Since an empty fragment in the context of the application/schema+json media
-                        type refers to the same resource as the base URI without a fragment,
-                        an implementation MAY normalize a URI ending with an empty fragment by removing
+                        type refers to the same resource as the base IRI without a fragment,
+                        an implementation MAY normalize a IRI ending with an empty fragment by removing
                         the fragment.  However, schema authors SHOULD NOT rely on this behavior
                         across implementations.
                         <cref>
@@ -1351,28 +1352,30 @@
                         </cref>
                     </t>
                     <t>
-                        This URI also serves as the base URI for relative URI-references in keywords
+                        This IRI also serves as the base IRI for relative IRI-references in keywords
                         within the schema resource, in accordance with
+                        <xref target="RFC3987">RFC 3987 section 6.5</xref> and
                         <xref target="RFC3986">RFC 3986 section 5.1.1</xref> regarding base URIs
-                        embedded in content.
+                        embedded in content
                     </t>
                     <t>
                         The presence of "$id" in a subschema indicates that the subschema constitutes
                         a distinct schema resource within a single schema document.  Furthermore,
-                        in accordance with <xref target="RFC3986">RFC 3986 section 5.1.2</xref>
-                        regarding encapsulating entities, if an "$id" in a subschema is a relative
-                        URI-reference, the base URI for resolving that reference is the URI of
+                        in accordance with <xref target="RFC3987">RFC 3987 section 6.5</xref> and
+                        <xref target="RFC3986">RFC 3986 section 5.1.2</xref> regarding
+                        encapsulating entities, if an "$id" in a subschema is a relative
+                        IRI-reference, the base IRI for resolving that reference is the IRI of
                         the parent schema resource.
                     </t>
                     <t>
                         If no parent schema object explicitly identifies itself as a resource
-                        with "$id", the base URI is that of the entire document, as established
+                        with "$id", the base IRI is that of the entire document, as established
                         by the steps given in the <xref target="initial-base">previous section.</xref>
                     </t>
                     <section title="Identifying the root schema">
                         <t>
                             The root schema of a JSON Schema document SHOULD contain an "$id" keyword
-                            with an <xref target="RFC3986">absolute-URI</xref> (containing a scheme,
+                            with an <xref target="RFC3987">absolute-IRI</xref> (containing a scheme,
                             but no fragment).
                         </t>
                     </section>
@@ -1388,17 +1391,19 @@
                     <t>
                         The "$anchor" and "$dynamicAnchor" keywords are used to specify such
                         fragments.  They are identifier keywords that can only be used to create
-                        plain name fragments, rather than absolute URIs as seen with "$id".
+                        plain name fragments, rather than absolute IRIs as seen with "$id".
                     </t>
                     <t>
-                        The base URI to which the resulting fragment is appended is the canonical
-                        URI of the schema resource containing the "$anchor" or "$dynamicAnchor"
+                        The base IRI to which the resulting fragment is appended is the canonical
+                        IRI of the schema resource containing the "$anchor" or "$dynamicAnchor"
                         in question.  As discussed in the previous section, this is either the
-                        nearest "$id" in the same or parent schema object, or the base URI
-                        for the document as determined according to RFC 3986.
+                        nearest "$id" in the same or parent schema object, 
+                        or the base IRI for the document as determined according to 
+                        <xref target="RFC3987">RFC 3987</xref> and
+                        <xref target="RFC3986">RFC 3986</xref>.
                     </t>
                     <t>
-                        Separately from the usual usage of URIs, "$dynamicAnchor"
+                        Separately from the usual usage of IRIs, "$dynamicAnchor"
                         indicates that the fragment is an extension point when used with
                         the "$dynamicRef" keyword.  This low-level, advanced feature
                         makes it easier to extend recursive schemas such as the meta-schemas,
@@ -1420,8 +1425,8 @@
                         <xref target="xml-names">NCName production</xref>.
                         <cref>
                             Note that the anchor string does not include the "#" character,
-                            as it is not a URI-reference.  An "$anchor": "foo" becomes the
-                            fragment "#foo" when used in a URI.  See below for full examples.
+                            as it is not a IRI-reference.  An "$anchor": "foo" becomes the
+                            fragment "#foo" when used in a IRI.  See below for full examples.
                         </cref>
                     </t>
                     <t>
@@ -1439,17 +1444,17 @@
                         keywords, applying the referenced schema to the instance.
                     </t>
                     <t>
-                        As the values of "$ref" and "$dynamicRef" are URI References, this allows
+                        As the values of "$ref" and "$dynamicRef" are IRI References, this allows
                         the possibility to externalise or divide a schema across multiple files,
                         and provides the ability to validate recursive structures through
                         self-reference.
                     </t>
                     <t>
-                        The resolved URI produced by these keywords is not necessarily a network
+                        The resolved IRI produced by these keywords is not necessarily a network
                         locator, only an identifier. A schema need not be downloadable from the
                         address if it is a network-addressable URL, and implementations SHOULD NOT
                         assume they should perform a network operation when they encounter
-                        a network-addressable URI.
+                        a network-addressable IRI.
                     </t>
 
                     <section title='Direct References with "$ref"' anchor="ref">
@@ -1462,8 +1467,8 @@
                             </cref>
                         </t>
                         <t>
-                            The value of the "$ref" keyword MUST be a string which is a URI-Reference.
-                            Resolved against the current URI base, it produces the URI of the schema
+                            The value of the "$ref" keyword MUST be a string which is a IRI-Reference.
+                            Resolved against the current IRI base, it produces the IRI of the schema
                             to apply.  This resolution is safe to perform on schema load, as the
                             process of evaluating an instance cannot change how the reference resolves.
                         </t>
@@ -1485,14 +1490,14 @@
                         </t>
                         <t>
                             The value of the "$dynamicRef" property MUST be a string which is
-                            a URI-Reference.  Resolved against the current URI base, it produces
-                            the URI used as the starting point for runtime resolution.  This initial
+                            a IRI-Reference.  Resolved against the current IRI base, it produces
+                            the IRI used as the starting point for runtime resolution.  This initial
                             resolution is safe to perform on schema load.
                         </t>
                         <t>
-                            If the initially resolved starting point URI includes a fragment that
-                            was created by the "$dynamicAnchor" keyword, the initial URI MUST be
-                            replaced by the URI (including the fragment) for the outermost schema
+                            If the initially resolved starting point IRI includes a fragment that
+                            was created by the "$dynamicAnchor" keyword, the initial IRI MUST be
+                            replaced by the IRI (including the fragment) for the outermost schema
                             resource in the <xref target="scopes">dynamic scope</xref> that defines
                             an identically named fragment with "$dynamicAnchor".
                         </t>
@@ -1589,44 +1594,47 @@
             <t>
             </t>
             <section title="Loading a Schema">
-                <section title="Initial Base URI" anchor="initial-base">
+                <section title="Initial Base IRI" anchor="initial-base">
                     <t>
-                        <xref target="RFC3986">RFC3986 Section 5.1</xref> defines how to determine the
-                        default base URI of a document.
+                        <xref target="RFC3987">RFC 3987 Section 6.5</xref> and 
+                        <xref target="RFC3986">RFC 3986 Section 5.1</xref> defines how to determine the
+                        default base IRI of a document.
                     </t>
                     <t>
-                        Informatively, the initial base URI of a schema is the URI at which it was
+                        Informatively, the initial base IRI of a schema is the IRI at which it was
                         found, whether that was a network location, a local filesystem, or any other
-                        situation identifiable by a URI of any known scheme.
+                        situation identifiable by a IRI of any known scheme.
                     </t>
                     <t>
-                        If a schema document defines no explicit base URI with "$id"
-                        (embedded in content), the base URI is that determined per
+                        If a schema document defines no explicit base IRI with "$id"
+                        (embedded in content), the base IRI is that determined per 
+                        <xref target="RFC3987">RFC 3987 Section 6.5</xref> and
                         <xref target="RFC3986">RFC 3986 section 5</xref>.
                     </t>
                     <t>
-                        If no source is known, or no URI scheme is known for the source, a suitable
-                        implementation-specific default URI MAY be used as described in
-                        <xref target="RFC3986"> RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
-                        that implementations document any default base URI that they assume.
+                        If no source is known, or no IRI scheme is known for the source, a suitable
+                        implementation-specific default IRI MAY be used as described in
+                        <xref target="RFC3987">RFC 3987 Section 6.5</xref> and
+                        <xref target="RFC3986">RFC 3986 Section 5.1.4</xref>.  It is RECOMMENDED
+                        that implementations document any default base IRI that they assume.
                     </t>
                     <t>
                         If a schema object is embedded in a document of another media type, then
-                        the initial base URI is determined according to the rules of that
+                        the initial base IRI is determined according to the rules of that
                         media type.
                     </t>
                     <t>
                         Unless the "$id" keyword described in the next section is present in the
-                        root schema, this base URI SHOULD be considered the canonical URI of the
+                        root schema, this base IRI SHOULD be considered the canonical IRI of the
                         schema document's root schema resource.
                     </t>
                 </section>
 
                 <section title="Loading a referenced schema">
                     <t>
-                        The use of URIs to identify remote schemas does not necessarily mean anything is downloaded,
+                        The use of IRIs to identify remote schemas does not necessarily mean anything is downloaded,
                         but instead JSON Schema implementations SHOULD understand ahead of time which schemas they will be using,
-                        and the URIs that identify them.
+                        and the IRIs that identify them.
                     </t>
                     <t>
                         When schemas are downloaded,
@@ -1634,17 +1642,17 @@
                         see <xref target="hypermedia">Usage for Hypermedia</xref>.
                     </t>
                     <t>
-                        Implementations SHOULD be able to associate arbitrary URIs with an arbitrary
-                        schema and/or automatically associate a schema's "$id"-given URI, depending
-                        on the trust that the validator has in the schema.  Such URIs and schemas
+                        Implementations SHOULD be able to associate arbitrary IRIs with an arbitrary
+                        schema and/or automatically associate a schema's "$id"-given IRI, depending
+                        on the trust that the validator has in the schema.  Such IRIs and schemas
                         can be supplied to an implementation prior to processing instances, or may
                         be noted within a schema document as it is processed, producing associations
                         as shown in appendix <xref target="idExamples" format="counter"></xref>.
                     </t>
                     <t>
-                        A schema MAY (and likely will) have multiple URIs, but there is no way for a
-                        URI to identify more than one schema. When multiple schemas try to identify
-                        as the same URI, validators SHOULD raise an error condition.
+                        A schema MAY (and likely will) have multiple IRIs, but there is no way for a
+                        IRI to identify more than one schema. When multiple schemas try to identify
+                        as the same IRI, validators SHOULD raise an error condition.
                     </t>
                 </section>
 
@@ -1676,14 +1684,14 @@
 
             <section title="Dereferencing">
                 <t>
-                    Schemas can be identified by any URI that has been given to them, including
-                    a JSON Pointer or their URI given directly by "$id".  In all cases,
+                    Schemas can be identified by any IRI that has been given to them, including
+                    a JSON Pointer or their IRI given directly by "$id".  In all cases,
                     dereferencing a "$ref" reference involves first resolving its value as a
-                    URI reference against the current base URI per
+                    IRI reference against the current base IRI per
                     <xref target="RFC3986">RFC 3986</xref>.
                 </t>
                 <t>
-                    If the resulting URI identifies a schema within the current document, or
+                    If the resulting IRI identifies a schema within the current document, or
                     within another schema document that has been made available to the implementation,
                     then that schema SHOULD be used automatically.
                 </t>
@@ -1714,7 +1722,7 @@
                 <t>
                     When an implementation encounters the &lt;#/$defs/single&gt; schema,
                     it resolves the "$anchor" value as a fragment name against the current
-                    base URI to form &lt;https://example.net/root.json#item&gt;.
+                    base IRI to form &lt;https://example.net/root.json#item&gt;.
                 </t>
                 <t>
                     When an implementation then looks inside the &lt;#/items&gt; schema, it
@@ -1740,10 +1748,10 @@
                 <section title="JSON Pointer fragments and embedded schema resources"
                          anchor="embedded">
                     <t>
-                        Since JSON Pointer URI fragments are constructed based on the structure
+                        Since JSON Pointer IRI fragments are constructed based on the structure
                         of the schema document, an embedded schema resource and its subschemas
                         can be identified by JSON Pointer fragments relative to either its own
-                        canonical URI, or relative to the containing resource's URI.
+                        canonical IRI, or relative to the containing resource's IRI.
                     </t>
                     <t>
                         Conceptually, a set of linked schema resources should behave
@@ -1753,10 +1761,10 @@
                         subschemas.
                     </t>
                     <t>
-                        Since URIs involving JSON Pointer fragments relative to the parent
-                        schema resource's URI cease to be valid when the embedded schema
+                        Since IRIs involving JSON Pointer fragments relative to the parent
+                        schema resource's IRI cease to be valid when the embedded schema
                         is moved to a separate document and referenced, applications and schemas
-                        SHOULD NOT use such URIs to identify embedded schema resources or
+                        SHOULD NOT use such IRIs to identify embedded schema resources or
                         locations within them.
                     </t>
                     <figure>
@@ -1776,16 +1784,16 @@
 ]]>
                         </artwork>
                         <postamble>
-                            The URI "https://example.com/foo#/items/additionalProperties"
+                            The IRI "https://example.com/foo#/items/additionalProperties"
                             points to the schema of the "additionalProperties" keyword in
-                            the embedded resource.  The canonical URI of that schema, however,
+                            the embedded resource.  The canonical IRI of that schema, however,
                             is "https://example.com/bar#/additionalProperties".
                         </postamble>
                     </figure>
                     <figure>
                         <preamble>
                             Now consider the following two schema resources linked by reference
-                            using a URI value for "$ref":
+                            using a IRI value for "$ref":
                         </preamble>
                         <artwork>
 <![CDATA[
@@ -1803,27 +1811,27 @@
 ]]>
                         </artwork>
                         <postamble>
-                            Here we see that the canonical URI for that "additionalProperties"
-                            subschema is still valid, while the non-canonical URI with the fragment
+                            Here we see that the canonical IRI for that "additionalProperties"
+                            subschema is still valid, while the non-canonical IRI with the fragment
                             beginning with "#/items/$ref" now resolves to nothing.
                         </postamble>
                     </figure>
                     <t>
                         Note also that "https://example.com/foo#/items" is valid in both
-                        arrangements, but resolves to a different value.  This URI ends up
-                        functioning similarly to a retrieval URI for a resource.  While valid,
+                        arrangements, but resolves to a different value.  This IRI ends up
+                        functioning similarly to a retrieval IRI for a resource.  While valid,
                         examining the resolved value and either using the "$id" (if the value
                         is a subschema), or resolving the reference and using the "$id" of the
                         reference target, is preferable.
                     </t>
                     <t>
                         An implementation MAY choose not to support addressing schemas
-                        by non-canonical URIs. As such, it is RECOMMENDED that schema authors only
-                        use canonical URIs, as using non-canonical URIs may reduce
+                        by non-canonical IRIs. As such, it is RECOMMENDED that schema authors only
+                        use canonical IRIs, as using non-canonical IRIs may reduce
                         schema interoperability.
                         <cref>
                             This is to avoid requiring implementations to keep track of a whole
-                            stack of possible base URIs and JSON Pointer fragments for each,
+                            stack of possible base IRIs and JSON Pointer fragments for each,
                             given that all but one will be fragile if the schema resources
                             are reorganized.  Some have argued that this is easy so there is
                             no point in forbidding it, while others have argued that it complicates
@@ -1832,8 +1840,8 @@
                         </cref>
                     </t>
                     <t>
-                        Further examples of such non-canonical URIs, as well as the appropriate
-                        canonical URIs to use instead, are provided in appendix
+                        Further examples of such non-canonical IRIs, as well as the appropriate
+                        canonical IRIs to use instead, are provided in appendix
                         <xref target="idExamples" format="counter"></xref>.
                     </t>
                 </section>
@@ -1854,13 +1862,13 @@
                         The bundling process for creating a Compound Schema Document is defined as taking
                         references (such as "$ref") to an external Schema Resource and embedding the referenced
                         Schema Resources within the referring document. Bundling SHOULD be done in such a way that
-                        all URIs (used for referencing) in the base document and any referenced/embedded
+                        all IRIs (used for referencing) in the base document and any referenced/embedded
                         documents do not require altering.
                     </t>
                     <t>
-                        Each embedded JSON Schema Resource MUST identify itself with a URI using the "$id" keyword,
+                        Each embedded JSON Schema Resource MUST identify itself with a IRI using the "$id" keyword,
                         and SHOULD make use of the "$schema" keyword to identify the dialect it is using, in the root of the
-                        schema resource. It is RECOMMENDED that the URI identifier value of "$id" be an Absolute URI.
+                        schema resource. It is RECOMMENDED that the IRI identifier value of "$id" be an Absolute IRI.
                     </t>
                     <t>
                         When the Schema Resource referenced by a by-reference applicator is bundled, it is RECOMMENDED that
@@ -1881,7 +1889,7 @@
                     <t>
                         In order to produce identical output, references in the containing schema document to the
                         previously external Schema Resources MUST NOT be changed, and now resolve to a schema using the
-                        "$id" of an embedded Schema Resource. Such identical output includes validation evaluation and URIs
+                        "$id" of an embedded Schema Resource. Such identical output includes validation evaluation and IRIs
                         or paths used in resulting annotations or errors.
                     </t>
                     <t>
@@ -2051,20 +2059,20 @@
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                require this vocabulary as if its URI were present with a value of true.
+                require this vocabulary as if its IRI were present with a value of true.
             </t>
             <t>
-                The current URI for this vocabulary, known as the Applicator vocabulary, is:
+                The current IRI for this vocabulary, known as the Applicator vocabulary, is:
                 &lt;https://json-schema.org/draft/2020-12/vocab/applicator&gt;.
             </t>
             <t>
-                The current URI for the corresponding meta-schema is:
+                The current IRI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft/2020-12/meta/applicator"/>.
             </t>
             <t>
-                Updated vocabulary and meta-schema URIs MAY be published between
+                Updated vocabulary and meta-schema IRIs MAY be published between
                 specification drafts in order to correct errors.  Implementations
-                SHOULD consider URIs dated after this specification draft and
+                SHOULD consider IRIs dated after this specification draft and
                 before the next to indicate the same syntax and semantics
                 as those listed here.
             </t>
@@ -2496,10 +2504,10 @@
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                require this vocabulary as if its URI were present with a value of true.
+                require this vocabulary as if its IRI were present with a value of true.
             </t>
             <t>
-                The current URI for this vocabulary, known as the Unevaluated Applicator
+                The current IRI for this vocabulary, known as the Unevaluated Applicator
                 vocabulary, is:
                 &lt;https://json-schema.org/draft/2020-12/vocab/unevaluated&gt;.
             </t>
@@ -2705,15 +2713,15 @@
                 <section title="Keyword Absolute Location">
                     <t>
                         The absolute, dereferenced location of the validating keyword.  The value MUST
-                        be expressed as a full URI using the canonical URI of the relevant
+                        be expressed as a full IRI using the canonical IRI of the relevant
                         schema object, and it MUST NOT include by-reference applicators
                         such as "$ref" or "$dynamicRef" as non-terminal path components.
                         It MAY end in such keywords if the error or annotation is for that
                         keyword, such as an unresolvable reference.
                         <cref>
                             Note that "absolute" here is in the sense of "absolute filesystem path"
-                            (meaning the complete location) rather than the "absolute-URI"
-                            terminology from RFC 3986 (meaning with scheme but without fragment).
+                            (meaning the complete location) rather than the "absolute-IRI"
+                            terminology from RFC 3987 (meaning with scheme but without fragment).
                             Keyword absolute locations will have a fragment in order to
                             identify the keyword.
                         </cref>
@@ -2727,7 +2735,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </figure>
                     <t>
                         This information MAY be omitted only if either the dynamic scope did not pass
-                        over a reference or if the schema does not declare an absolute URI as its "$id".
+                        over a reference or if the schema does not declare an absolute IRI as its "$id".
                     </t>
                     <t>
                         The JSON key for this information is "absoluteKeywordLocation".
@@ -3014,7 +3022,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </t>
                     <t>
                         Because this output structure can be quite large, a smaller example is given
-                        here for brevity.  The URI of the full output structure of the example above is:
+                        here for brevity.  The IRI of the full output structure of the example above is:
                         <eref target="https://json-schema.org/draft/2020-12/output/verbose-example"/>.
                     </t>
                     <figure>
@@ -3076,7 +3084,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                 <section title="Output validation schemas">
                     <t>
                         For convenience, JSON Schema has been provided to validate output generated
-                        by implementations.  Its URI is:
+                        by implementations.  Its IRI is:
                         <eref target="https://json-schema.org/draft/2020-12/output/schema"/>.
                     </t>
                 </section>
@@ -3135,7 +3143,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                             Optional parameters:
                             <list style="hanging">
                                 <t hangText="schema:">
-                                    A non-empty list of space-separated URIs, each identifying
+                                    A non-empty list of space-separated IRIs, each identifying
                                     a JSON Schema resource.  The instance SHOULD successfully
                                     validate against at least one of these meta-schemas.
                                     Non-validating meta-schemas MAY be included for purposes such
@@ -3179,7 +3187,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                             Required parameters:
                             <list style="hanging">
                                 <t hangText="schema:">
-                                    A non-empty list of space-separated URIs, each identifying
+                                    A non-empty list of space-separated IRIs, each identifying
                                     a JSON Schema resource.  The instance SHOULD successfully
                                     validate against at least one of these schemas.
                                     Non-validating schemas MAY be included for purposes such
@@ -3219,6 +3227,7 @@ https://example.com/schemas/common#/$defs/count/minimum
         <references title="Normative References">
             &RFC2119;
             &RFC3986;
+            &RFC3987;
             &RFC6839;
             &RFC6901;
             &RFC8259;
@@ -3334,7 +3343,7 @@ https://example.com/schemas/common#/$defs/count/minimum
             <t>
                 The schemas at the following URI-encoded <xref target="RFC6901">JSON
                 Pointers</xref> (relative to the root schema) have the following
-                base URIs, and are identifiable by any listed URI in accordance with
+                base IRIs, and are identifiable by any listed IRI in accordance with
                 sections <xref target="fragments" format="counter"></xref> and
                 <xref target="embedded" format="counter"></xref> above.
             </t>
@@ -3342,76 +3351,76 @@ https://example.com/schemas/common#/$defs/count/minimum
                 <list style="hanging">
                     <t hangText="# (document root)">
                         <list style="hanging">
-                            <t hangText="canonical absolute-URI (and also base URI)">
+                            <t hangText="canonical absolute-IRI (and also base IRI)">
                                 https://example.com/root.json
                             </t>
-                            <t hangText="canonical URI with pointer fragment">
+                            <t hangText="canonical IRI with pointer fragment">
                                 https://example.com/root.json#
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/A">
                         <list>
-                            <t hangText="base URI">https://example.com/root.json</t>
-                            <t hangText="canonical URI with plain fragment">
+                            <t hangText="base IRI">https://example.com/root.json</t>
+                            <t hangText="canonical IRI with plain fragment">
                                 https://example.com/root.json#foo
                             </t>
-                            <t hangText="canonical URI with pointer fragment">
+                            <t hangText="canonical IRI with pointer fragment">
                                 https://example.com/root.json#/$defs/A
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/B">
                         <list style="hanging">
-                            <t hangText="base URI">https://example.com/other.json</t>
-                            <t hangText="canonical URI with pointer fragment">
+                            <t hangText="base IRI">https://example.com/other.json</t>
+                            <t hangText="canonical IRI with pointer fragment">
                                 https://example.com/other.json#
                             </t>
-                            <t hangText="non-canonical URI with fragment relative to root.json">
+                            <t hangText="non-canonical IRI with fragment relative to root.json">
                                 https://example.com/root.json#/$defs/B
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/B/$defs/X">
                         <list style="hanging">
-                            <t hangText="base URI">https://example.com/other.json</t>
-                            <t hangText="canonical URI with plain fragment">
+                            <t hangText="base IRI">https://example.com/other.json</t>
+                            <t hangText="canonical IRI with plain fragment">
                                 https://example.com/other.json#bar
                             </t>
-                            <t hangText="canonical URI with pointer fragment">
+                            <t hangText="canonical IRI with pointer fragment">
                                 https://example.com/other.json#/$defs/X
                             </t>
-                            <t hangText="non-canonical URI with fragment relative to root.json">
+                            <t hangText="non-canonical IRI with fragment relative to root.json">
                                 https://example.com/root.json#/$defs/B/$defs/X
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/B/$defs/Y">
                         <list style="hanging">
-                            <t hangText="base URI">https://example.com/t/inner.json</t>
-                            <t hangText="canonical URI with plain fragment">
+                            <t hangText="base IRI">https://example.com/t/inner.json</t>
+                            <t hangText="canonical IRI with plain fragment">
                                 https://example.com/t/inner.json#bar
                             </t>
-                            <t hangText="canonical URI with pointer fragment">
+                            <t hangText="canonical IRI with pointer fragment">
                                 https://example.com/t/inner.json#
                             </t>
-                            <t hangText="non-canonical URI with fragment relative to other.json">
+                            <t hangText="non-canonical IRI with fragment relative to other.json">
                                 https://example.com/other.json#/$defs/Y
                             </t>
-                            <t hangText="non-canonical URI with fragment relative to root.json">
+                            <t hangText="non-canonical IRI with fragment relative to root.json">
                                 https://example.com/root.json#/$defs/B/$defs/Y
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/C">
                         <list style="hanging">
-                            <t hangText="base URI">
+                            <t hangText="base IRI">
                                 urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f
                             </t>
-                            <t hangText="canonical URI with pointer fragment">
+                            <t hangText="canonical IRI with pointer fragment">
                                 urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#
                             </t>
-                            <t hangText="non-canonical URI with fragment relative to root.json">
+                            <t hangText="non-canonical IRI with fragment relative to root.json">
                                 https://example.com/root.json#/$defs/C
                             </t>
                         </list>
@@ -3442,8 +3451,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                 </t>
                 <t>
                     This transformation can be safely and reversibly done as long as
-                    all static references (e.g. "$ref") use URI-references that resolve
-                    to canonical URIs, and all schema resources have an absolute-URI
+                    all static references (e.g. "$ref") use IRI-references that resolve
+                    to canonical IRIs, and all schema resources have an absolute-IRI
                     as the "$id" in their root schema.
                 </t>
                 <t>
@@ -3452,7 +3461,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     schema objects, and without changing any aspect of validation or
                     annotation results.  The names of the schemas under "$defs" do
                     not affect behavior, assuming they are each unique, as they
-                    do not appear in canonical URIs for the embedded resources.
+                    do not appear in canonical IRIs for the embedded resources.
                 </t>
             </section>
             <section title="Reference removal is not always safe">
@@ -3521,7 +3530,7 @@ https://example.com/schemas/common#/$defs/count/minimum
             <t>
                 When we load these two schemas, we will notice the "$dynamicAnchor"
                 named "node" (note the lack of "#" as this is just the name)
-                present in each, resulting in the following full schema URIs:
+                present in each, resulting in the following full schema IRIs:
                 <list style="symbols">
                     <t>"https://example.com/tree#node"</t>
                     <t>"https://example.com/strict-tree#node"</t>
@@ -3532,9 +3541,9 @@ https://example.com/schemas/common#/$defs/count/minimum
             <t>
                 If we apply the "strict-tree" schema to the instance, we will follow
                 the "$ref" to the "tree" schema, examine its "children" subschema,
-                and find the "$dynamicRef": to "#node" (note the "#" for URI fragment syntax)
+                and find the "$dynamicRef": to "#node" (note the "#" for IRI fragment syntax)
                 in its "items" subschema.  That reference resolves to
-                "https://example.com/tree#node", which is a URI with a fragment
+                "https://example.com/tree#node", which is a IRI with a fragment
                 created by "$dynamicAnchor".  Therefore we must examine the dynamic
                 scope before following the reference.
             </t>
@@ -3738,7 +3747,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     The standard meta-schemas that combine all vocabularies defined by
                     the Core and Validation specification, and that combine all vocabularies
                     defined by those specifications as well as the Hyper-Schema specification,
-                    demonstrate additional complex combinations.  These URIs for these
+                    demonstrate additional complex combinations.  These IRIs for these
                     meta-schemas may be found in the Validation and Hyper-Schema specifications,
                     respectively.
                 </t>
