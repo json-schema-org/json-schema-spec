@@ -2265,6 +2265,25 @@
                             Omitting this keyword has the same behavior as an empty object.
                         </t>
                     </section>
+                    <section title="propertyDependencies">
+                        <t>
+                            This keyword specifies subschemas that are evaluated if the instance is
+                            an object and contains a certain property with a certain string value.
+                        </t>
+                        <t>
+                            This keyword's value MUST be an object. Each value in the object MUST be
+                            an object whose values MUST be valid JSON Schemas.
+                        </t>
+                        <t>
+                            If the outer object key is a property in the instance and the inner
+                            object key is equal to the value of that property, the entire instance
+                            must validate against the schema. Its use is dependent on the presence
+                            and value of the property.
+                        </t>
+                        <t>
+                            Omitting this keyword has the same behavior as an empty object.
+                        </t>
+                    </section>
                 </section>
             </section>
             <section title="Keywords for Applying Subschemas to Child Instances">
@@ -3859,6 +3878,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                         <list style="symbols">
                             <t>"contains" now applies to objects as well as arrays</t>
                             <t>Remove bookending requirement for "$dynamicRef"</t>
+                            <t>Add "propertyDependencies" keyword</t>
                         </list>
                     </t>
                     <t hangText="draft-bhutton-json-schema-00">
