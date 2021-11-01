@@ -493,6 +493,18 @@
                     </t>
                 </section>
 
+                <section title="requiredAllExcept">
+                    <t>
+                        The value of this keyword MUST be an array.
+                        Elements of this array, if any, MUST be strings, and MUST be unique.
+                    </t>
+                    <t>
+                        An object instance is valid against this keyword if every property name
+                        declared in "properties" except those that appear in the array is the name
+                        of a property in the instance.
+                    </t>
+                </section>
+
                 <section title="dependentRequired">
                     <t>
                         The value of this keyword MUST be an object.  Properties in
@@ -1445,6 +1457,7 @@
                     <t hangText="draft-next">
                         <list style="symbols">
                             <t>Use IRIs instead of URIs</t>
+                            <t>Add the "requireAllExcept" keyword</t>
                         </list>
                     </t>
                     <t hangText="draft-bhutton-json-schema-validation-01">
