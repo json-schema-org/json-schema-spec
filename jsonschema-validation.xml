@@ -177,20 +177,20 @@
 
         <section title="Meta-Schema" anchor="meta-schema">
             <t>
-                The current URI for the default JSON Schema dialect meta-schema is
+                The current IRI for the default JSON Schema dialect meta-schema is
                 <eref target="https://json-schema.org/draft/2020-12/schema"/>.
                 For schema author convenience, this meta-schema describes a dialect
                 consisting of all vocabularies
                 defined in this specification and the JSON Schema Core specification,
                 as well as two former keywords which are reserved for a transitional period.
-                Individual vocabulary and vocabulary meta-schema URIs are given for
+                Individual vocabulary and vocabulary meta-schema IRIs are given for
                 each section below.  Certain vocabularies are optional to support, which
                 is explained in detail in the relevant sections.
             </t>
             <t>
-                Updated vocabulary and meta-schema URIs MAY be published between
+                Updated vocabulary and meta-schema IRIs MAY be published between
                 specification drafts in order to correct errors.  Implementations
-                SHOULD consider URIs dated after this specification draft and
+                SHOULD consider IRIs dated after this specification draft and
                 before the next to indicate the same syntax and semantics
                 as those listed here.
             </t>
@@ -203,14 +203,14 @@
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                require this vocabulary as if its URI were present with a value of true.
+                require this vocabulary as if its IRI were present with a value of true.
             </t>
             <t>
-                The current URI for this vocabulary, known as the Validation vocabulary, is:
+                The current IRI for this vocabulary, known as the Validation vocabulary, is:
                 &lt;https://json-schema.org/draft/2020-12/vocab/validation&gt;.
             </t>
             <t>
-                The current URI for the corresponding meta-schema is:
+                The current IRI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft/2020-12/meta/validation"/>.
             </t>
 
@@ -547,18 +547,18 @@
                 </t>
 
                 <t>
-                    The current URI for this vocabulary, known as the Format-Annotation vocabulary, is:
+                    The current IRI for this vocabulary, known as the Format-Annotation vocabulary, is:
                     &lt;https://json-schema.org/draft/2020-12/vocab/format-annotation&gt;. The current
-                    URI for the corresponding meta-schema is:
+                    IRI for the corresponding meta-schema is:
                     <eref target="https://json-schema.org/draft/2020-12/meta/format-annotation"/>.
                     Implementing support for this vocabulary is REQUIRED.
                 </t>
                 <t>
                     In addition to the Format-Annotation vocabulary, a secondary vocabulary is available
-                    for custom meta-schemas that defines "format" as an assertion. The URI for the
+                    for custom meta-schemas that defines "format" as an assertion. The IRI for the
                     Format-Assertion vocabulary, is:
                     &lt;https://json-schema.org/draft/2020-12/vocab/format-assertion&gt;. The current
-                    URI for the corresponding meta-schema is:
+                    IRI for the corresponding meta-schema is:
                     <eref target="https://json-schema.org/draft/2020-12/meta/format-assertion"/>.
                     Implementing support for the Format-Assertion vocabulary is OPTIONAL.
                 </t>
@@ -819,7 +819,7 @@
                         <list style="hanging">
                             <t hangText="uri:">
                                 A string instance is valid against this attribute if it is
-                                a valid URI, according to <xref target="RFC3986"/>.
+                                a valid IRI, according to <xref target="RFC3987"/>.
                             </t>
                             <t hangText="uri-reference:">
                                 A string instance is valid against this attribute if it is a valid URI
@@ -920,14 +920,14 @@
                 </t>
                 <t>
                     Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                    require this vocabulary as if its URI were present with a value of true.
+                    require this vocabulary as if its IRI were present with a value of true.
                 </t>
                 <t>
-                    The current URI for this vocabulary, known as the Content vocabulary, is:
+                    The current IRI for this vocabulary, known as the Content vocabulary, is:
                     &lt;https://json-schema.org/draft/2020-12/vocab/content&gt;.
                 </t>
                 <t>
-                    The current URI for the corresponding meta-schema is:
+                    The current IRI for the corresponding meta-schema is:
                     <eref target="https://json-schema.org/draft/2020-12/meta/content"/>.
                 </t>
             </section>
@@ -1127,14 +1127,14 @@
             </t>
             <t>
                 Meta-schemas that do not use "$vocabulary" SHOULD be considered to
-                require this vocabulary as if its URI were present with a value of true.
+                require this vocabulary as if its IRI were present with a value of true.
             </t>
             <t>
-                The current URI for this vocabulary, known as the Meta-Data vocabulary, is:
+                The current IRI for this vocabulary, known as the Meta-Data vocabulary, is:
                 &lt;https://json-schema.org/draft/2020-12/vocab/meta-data&gt;.
             </t>
             <t>
-                The current URI for the corresponding meta-schema is:
+                The current IRI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft/2020-12/meta/meta-data"/>.
             </t>
 
@@ -1442,6 +1442,11 @@
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-next">
+                        <list style="symbols">
+                            <t>Use IRIs instead of URIs</t>
+                        </list>
+                    </t>
                     <t hangText="draft-bhutton-json-schema-validation-01">
                         <list style="symbols">
                             <t>Improve and clarify the "minContains" keyword explanation</t>
