@@ -10,18 +10,18 @@
     "type": ["object", "boolean"],
     "properties": {
         "$id": {
-            "$ref": "#/$defs/uriReferenceString",
+            "$ref": "#/$defs/iriReferenceString",
             "$comment": "Non-empty fragments not allowed.",
             "pattern": "^[^#]*#?$"
         },
-        "$schema": { "$ref": "#/$defs/uriString" },
-        "$ref": { "$ref": "#/$defs/uriReferenceString" },
+        "$schema": { "$ref": "#/$defs/iriString" },
+        "$ref": { "$ref": "#/$defs/iriReferenceString" },
         "$anchor": { "$ref": "#/$defs/anchorString" },
-        "$dynamicRef": { "$ref": "#/$defs/uriReferenceString" },
+        "$dynamicRef": { "$ref": "#/$defs/iriReferenceString" },
         "$dynamicAnchor": { "$ref": "#/$defs/anchorString" },
         "$vocabulary": {
             "type": "object",
-            "propertyNames": { "$ref": "#/$defs/uriString" },
+            "propertyNames": { "$ref": "#/$defs/iriString" },
             "additionalProperties": {
                 "type": "boolean"
             }
@@ -39,13 +39,13 @@
             "type": "string",
             "pattern": "^[A-Za-z_][-A-Za-z0-9._]*$"
         },
-        "uriString": {
+        "iriString": {
             "type": "string",
-            "format": "uri"
+            "format": "iri"
         },
-        "uriReferenceString": {
+        "iriReferenceString": {
             "type": "string",
-            "format": "uri-reference"
+            "format": "iri-reference"
         }
     }
 }
