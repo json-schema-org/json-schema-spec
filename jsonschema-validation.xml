@@ -964,7 +964,7 @@
 
                 <t>
                     If the instance value is a string, this property defines that the string
-                    SHOULD be interpreted as binary data and decoded using the encoding
+                    SHOULD be interpreted as encoded binary data and decoded using the encoding
                     named by this property.
                 </t>
 
@@ -972,7 +972,13 @@
                     Possible values indicating base 16, 32, and 64 encodings with several
                     variations are listed in <xref target="RFC4648">RFC 4648</xref>.  Additionally,
                     sections 6.7 and 6.8 of <xref target="RFC2045">RFC 2045</xref> provide
-                    encodings used in MIME.  As "base64" is defined in both RFCs, the definition
+                    encodings used in MIME. This keyword is derived from MIME's
+                    Content-Transfer-Encoding header, which was designed to map binary data
+                    into ASCII characters.  It is not related to HTTP's Content-Encoding header,
+                    which is used for compressing HTTP request and response payloads.
+                </t>
+                <t>
+                    As "base64" is defined in both RFCs, the definition
                     from RFC 4648 SHOULD be assumed unless the string is specifically intended
                     for use in a MIME context.  Note that all of these encodings result in
                     strings consisting only of 7-bit ASCII characters.  Therefore, this keyword
