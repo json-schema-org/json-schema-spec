@@ -1142,11 +1142,11 @@
             </t>
             <t>
                 The current IRI for the Core vocabulary is:
-                &lt;https://json-schema.org/draft/2020-12/vocab/core&gt;.
+                &lt;https://json-schema.org/draft/next/vocab/core&gt;.
             </t>
             <t>
                 The current IRI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2020-12/meta/core"/>.
+                <eref target="https://json-schema.org/draft/next/meta/core"/>.
             </t>
             <t>
                 While the "$" prefix is not formally reserved for the Core vocabulary,
@@ -2104,11 +2104,11 @@
             </t>
             <t>
                 The current IRI for this vocabulary, known as the Applicator vocabulary, is:
-                &lt;https://json-schema.org/draft/2020-12/vocab/applicator&gt;.
+                &lt;https://json-schema.org/draft/next/vocab/applicator&gt;.
             </t>
             <t>
                 The current IRI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2020-12/meta/applicator"/>.
+                <eref target="https://json-schema.org/draft/next/meta/applicator"/>.
             </t>
             <section title="Keyword Independence">
                 <t>
@@ -2569,11 +2569,11 @@
             <t>
                 The current IRI for this vocabulary, known as the Unevaluated Applicator
                 vocabulary, is:
-                &lt;https://json-schema.org/draft/2020-12/vocab/unevaluated&gt;.
+                &lt;https://json-schema.org/draft/next/vocab/unevaluated&gt;.
             </t>
             <t>
                 The current IRI for the corresponding meta-schema is:
-                <eref target="https://json-schema.org/draft/2020-12/meta/unevaluated"/>.
+                <eref target="https://json-schema.org/draft/next/meta/unevaluated"/>.
             </t>
 
             <section title="Keyword Independence">
@@ -2865,7 +2865,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft/next/schema",
   "$defs": {
     "point": {
       "type": "object",
@@ -3078,7 +3078,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         Because this output structure can be quite large, a smaller example is given
                         here for brevity.  The IRI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/2020-12/output/verbose-example"/>.
+                        <eref target="https://json-schema.org/draft/next/output/verbose-example"/>.
                     </t>
                     <figure>
                         <artwork>
@@ -3086,7 +3086,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 // schema
 {
   "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft/next/schema",
   "type": "object",
   "properties": {
     "validProp": true,
@@ -3140,7 +3140,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         For convenience, JSON Schema has been provided to validate output generated
                         by implementations.  Its IRI is:
-                        <eref target="https://json-schema.org/draft/2020-12/output/schema"/>.
+                        <eref target="https://json-schema.org/draft/next/output/schema"/>.
                     </t>
                 </section>
 
@@ -3534,7 +3534,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 // tree schema, extensible
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://example.com/tree",
     "$dynamicAnchor": "node",
 
@@ -3552,7 +3552,7 @@ https://example.com/schemas/common#/$defs/count/minimum
 
 // strict-tree schema, guards against misspelled properties
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://example.com/strict-tree",
     "$dynamicAnchor": "node",
 
@@ -3725,20 +3725,20 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/meta/general-use-example",
   "$dynamicAnchor": "meta",
   "$vocabulary": {
-    "https://json-schema.org/draft/2020-12/vocab/core": true,
-    "https://json-schema.org/draft/2020-12/vocab/applicator": true,
-    "https://json-schema.org/draft/2020-12/vocab/validation": true,
+    "https://json-schema.org/draft/next/vocab/core": true,
+    "https://json-schema.org/draft/next/vocab/applicator": true,
+    "https://json-schema.org/draft/next/vocab/validation": true,
     "https://example.com/vocab/example-vocab": true
   },
   "allOf": [
-    {"$ref": "https://json-schema.org/draft/2020-12/meta/core"},
-    {"$ref": "https://json-schema.org/draft/2020-12/meta/applicator"},
-    {"$ref": "https://json-schema.org/draft/2020-12/meta/validation"},
-    {"$ref": "https://example.com/meta/example-vocab"}
+    {"$ref": "https://json-schema.org/draft/next/meta/core"},
+    {"$ref": "https://json-schema.org/draft/next/meta/applicator"},
+    {"$ref": "https://json-schema.org/draft/next/meta/validation"},
+    {"$ref": "https://example.com/meta/example-vocab",
   ],
   "patternProperties": {
     "^unevaluated": false
@@ -3760,7 +3760,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <artwork>
 <![CDATA[
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/meta/example-vocab",
   "$dynamicAnchor": "meta",
   "$vocabulary": {
