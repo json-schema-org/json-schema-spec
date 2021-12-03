@@ -1510,27 +1510,22 @@
                         <t>
                             Together with "$dynamicAnchor", "$dynamicRef" implements a cooperative
                             extension mechanism that is primarily useful with recursive schemas
-                            (schemas that reference themselves).  Both the extension point and the
-                            runtime-determined extension target are defined with "$dynamicAnchor",
-                            and only exhibit runtime dynamic behavior when referenced with
-                            "$dynamicRef".
+                            (schemas that reference themselves).  The extension point is defined with
+                            "$dynamicAnchor" and only exhibits runtime dynamic behavior when referenced
+                            with "$dynamicRef".
                         </t>
                         <t>
-                            The value of the "$dynamicRef" property MUST be a string which is
-                            a IRI-Reference.  Resolved against the current IRI base, it produces
-                            the IRI used as the starting point for runtime resolution.  This initial
-                            resolution is safe to perform on schema load.
+                            The value of the "$dynamicRef" property MUST be a string which is a
+                            IRI-Reference that contains a valid <xref target="anchor">plain name
+                            fragment</xref>.  Resolved against the current IRI base, it indicates
+                            the schema resource used as the starting point for runtime resolution.
+                            This initial resolution is safe to perform on schema load.
                         </t>
                         <t>
-                            If the initially resolved starting point IRI includes a fragment that
-                            was created by the "$dynamicAnchor" keyword, the initial IRI MUST be
-                            replaced by the IRI (including the fragment) for the outermost schema
-                            resource in the <xref target="scopes">dynamic scope</xref> that defines
-                            an identically named fragment with "$dynamicAnchor".
-                        </t>
-                        <t>
-                            Otherwise, its behavior is identical to "$ref", and no runtime
-                            resolution is needed.
+                            The schema to apply is the outermost schema resource in the
+                            <xref target="scopes">dynamic scope</xref> that defines a
+                            "$dynamicAnchor" that matches the plain name fragment in the initially
+                            resolved IRI.
                         </t>
                         <t>
                             For a full example using these keyword, see appendix
@@ -3904,6 +3899,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                         <list style="symbols">
                             <t>"contains" now applies to objects as well as arrays</t>
                             <t>Use IRIs instead of URIs</t>
+                            <t>Remove bookending requirement for "$dynamicRef"</t>
                         </list>
                     </t>
                     <t hangText="draft-bhutton-json-schema-01">
