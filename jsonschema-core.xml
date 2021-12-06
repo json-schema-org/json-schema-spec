@@ -2302,10 +2302,7 @@
                         <t>
                             This keyword applies its subschema to all instance elements
                             at indexes greater than the length of the "prefixItems" array
-                            in the same schema object, as reported by the annotation result
-                            of that "prefixItems" keyword.  If no such annotation
-                            result exists, "items" applies its subschema to all instance
-                            array elements.
+                            in the same schema object.
                             <cref>
                                 Note that the behavior of "items" without "prefixItems" is
                                 identical to that of the schema form of "items" in prior drafts.
@@ -2322,12 +2319,6 @@
                         <t>
                             Omitting this keyword has the same assertion behavior as
                             an empty schema.
-                        </t>
-                        <t>
-                            Implementations MAY choose to implement or optimize this keyword
-                            in another way that produces the same effect, such as by directly
-                            checking for the presence and size of a "prefixItems" array.
-                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
@@ -2408,12 +2399,12 @@
                             The value of "additionalProperties" MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            The behavior of this keyword depends on the presence and
-                            annotation results of "properties" and "patternProperties"
+                            The behavior of this keyword depends on the presence
+                            of "properties" and "patternProperties"
                             within the same schema object.
                             Validation with "additionalProperties" applies only to the child
-                            values of instance names that do not appear in the annotation
-                            results of either "properties" or "patternProperties".
+                            values of instance names that do not match any names in "properties",
+                            and do not match any regular expression in "patternProperties".
                         </t>
                         <t>
                             For all such properties, validation succeeds if the child instance
@@ -2426,13 +2417,6 @@
                         <t>
                             Omitting this keyword has the same assertion behavior as
                             an empty schema.
-                        </t>
-                        <t>
-                            Implementations MAY choose to implement or optimize this keyword
-                            in another way that produces the same effect, such as by directly
-                            checking the names in "properties" and the patterns in
-                            "patternProperties" against the instance property set.
-                            Implementations that do not support annotation collection MUST do so.
                         </t>
                     </section>
 
