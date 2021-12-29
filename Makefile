@@ -1,4 +1,4 @@
-XML2RFC=xml2rfc
+XML2RFC ?= xml2rfc
 
 OUT = \
 	jsonschema-core.html jsonschema-core.txt \
