@@ -24,4 +24,4 @@ json-schema.tar.gz: $(OUT)
 clean:
 	rm -f $(OUT) json-schema.tar.gz
 
-.PHONY: clean
+.PHONY: clean all
