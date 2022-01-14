@@ -86,4 +86,6 @@ Here are our top sponsors. You could be next! [[Become a sponsor](https://openco
 
 ## License
 
-The source material in this repository is licensed under the AFL or BSD license.
+Prose and other content in this repository may be distributed under the terms of the AFL (Academic Free License) or BSD (simplified 2-clause) license.
+
+Sample code and schemas, including content in `meta/`, is public domain (as described by UNLICENSE).
