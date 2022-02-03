@@ -3131,20 +3131,6 @@ https://example.com/schemas/common#/$defs/count/minimum
                         <t>Subtype name: schema+json</t>
                         <t>Required parameters: N/A</t>
                         <t>
-                            Optional parameters:
-                            <list style="hanging">
-                                <t hangText="schema:">
-                                    A non-empty list of space-separated URIs, each identifying
-                                    a JSON Schema resource.  The instance SHOULD successfully
-                                    validate against at least one of these meta-schemas.
-                                    Non-validating meta-schemas MAY be included for purposes such
-                                    as allowing clients to make use of older versions of
-                                    a meta-schema as long as the runtime instance validates
-                                    against that older version.
-                                </t>
-                            </list>
-                        </t>
-                        <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
                             media type.  See <xref target="RFC8259">JSON</xref>.
@@ -3174,20 +3160,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <list>
                         <t>Type name: application</t>
                         <t>Subtype name: schema-instance+json</t>
-                        <t>
-                            Required parameters:
-                            <list style="hanging">
-                                <t hangText="schema:">
-                                    A non-empty list of space-separated URIs, each identifying
-                                    a JSON Schema resource.  The instance SHOULD successfully
-                                    validate against at least one of these schemas.
-                                    Non-validating schemas MAY be included for purposes such
-                                    as allowing clients to make use of older versions of a schema
-                                    as long as the runtime instance validates against that
-                                    older version.
-                                </t>
-                            </list>
-                        </t>
+                        <t>Required parameters: N/A</t>
                         <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
