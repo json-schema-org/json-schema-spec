@@ -15,9 +15,8 @@ all: $(OUT)
 	$(XML2RFC) --html $< -o $@
 
 json-schema.tar.gz: $(OUT)
-	mkdir json-schema
 	git clone . json-schema
-	(cd json-schema && make)
+	make -C json-schema
 	tar -czf json-schema.tar.gz --exclude '.*' json-schema
 	rm -rf json-schema
 
