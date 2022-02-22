@@ -50,7 +50,7 @@
             </address>
         </author>
 
-        <date year="2021"/>
+        <date year="2022"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -1824,10 +1824,10 @@
                         reference target, is preferable.
                     </t>
                     <t>
-                        An implementation MAY choose not to support addressing schemas
-                        by non-canonical URIs. As such, it is RECOMMENDED that schema authors only
-                        use canonical URIs, as using non-canonical URIs may reduce
-                        schema interoperability.
+                        An implementation MAY choose not to support addressing schema resources
+                        (and their subschemas) by non-canonical URIs.
+                        As such, it is RECOMMENDED that schema authors only use canonical URIs,
+                        as using non-canonical URIs may reduce schema interoperability.
                         <cref>
                             This is to avoid requiring implementations to keep track of a whole
                             stack of possible base URIs and JSON Pointer fragments for each,
@@ -1836,6 +1836,11 @@
                             no point in forbidding it, while others have argued that it complicates
                             schema identification and should be forbidden.  Feedback on this
                             topic is encouraged.
+                            After some discussion, we feel that we need to remove the use of
+                            "canonical" in favour of talking about JSON Pointers which reference
+                            across schema resource boundaries as undefined or even forbidden behavior
+                            (https://github.com/json-schema-org/json-schema-spec/issues/937,
+                            https://github.com/json-schema-org/json-schema-spec/issues/1183)
                         </cref>
                     </t>
                     <t>
@@ -3390,6 +3395,18 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </t>
                 </list>
             </t>
+            <t>
+                Note: The fragment part of the URI does not make it canonical or non-canonical,
+                rather, the base URI used (as part of the full URI with any fragment) is what
+                determines the canonical nature of the resutling full URI.
+                <cref>
+                    Multiple "canonical" URIs? We Acknowledge this is potetnially confusing, and
+                    direct you to read the CREF located in the
+                    <xref target="embedded">JSON Pointer fragments and embedded schema resources</xref>
+                    section for futher comments.
+                </cref>
+            </t>
+
         </section>
 
         <section title="Manipulating schema documents and references">
