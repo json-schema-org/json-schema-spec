@@ -2486,21 +2486,10 @@
                                 but it does affect the resulting output format.
                                 The ambiguity allows for multiple valid output results depending on whether annotations
                                 are used or a solution that "produces the same effect" as draft-07. It is understood
-                                that annotations from failing schemas are dropped. See
-                                https://github.com/json-schema-org/community/discussions/57 for details.
-                                We discussed the possible solutions at length (https://github.com/json-schema-org/json-schema-spec/issues/1172).
-                                We concluded that we need to re-evaluate the annotation collection system
-                                and its use for validation purposes, but we also agreed not to do so for this release.
-                                This confusion stemmed from the understanding of "evaluated" and the impact on
-                                annotation collection.
-                                It was proposed that we could read a different interpretation (https://github.com/json-schema-org/json-schema-spec/issues/1172#issuecomment-1049686478)
-                                however the previous interpretation is still valid.
-                                The only consensus we could reach for this release was to note all this
-                                in a CREF, which you're now reading, and acknowledge that both results
-                                as described in https://github.com/json-schema-org/community/discussions/57.
-                                If you encounter the same issue regarding ambiguity of the output format,
-                                please do reach out to us, either via emails as per editors of this specification,
-                                or other official JSON Schema channels like our Slack or Twitter.
+                                that annotations from failing schemas are dropped.
+                                See our
+                                [Decision Record](https://github.com/json-schema-org/json-schema-spec/tree/HEAD/adr/2022-04-08-cref-for-ambiguity-and-fix-later-gh-spec-issue-1172.md)
+                                for further details.
                             </cref>
                         </t>
                     </section>
