@@ -5,6 +5,7 @@
 * Date:  2022-04-08
 
 Related...
+
 Issue: https://github.com/json-schema-org/json-schema-spec/issues/1172
 
 Discussion: https://github.com/json-schema-org/community/discussions/57
