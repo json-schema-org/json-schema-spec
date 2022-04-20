@@ -4,9 +4,12 @@
 * Deciders: @relequestual @gregsdennis, @jdesrosiers, @karenetheridge
 * Date:  2022-04-08
 
-https://github.com/json-schema-org/json-schema-spec/issues/1172
-https://github.com/json-schema-org/community/discussions/57
-https://github.com/json-schema-org/json-schema-spec/pull/1203
+Related...
+Issue: https://github.com/json-schema-org/json-schema-spec/issues/1172
+
+Discussion: https://github.com/json-schema-org/community/discussions/57
+
+Pull Request: https://github.com/json-schema-org/json-schema-spec/pull/1203
 
 ## Context and Problem Statement
 
