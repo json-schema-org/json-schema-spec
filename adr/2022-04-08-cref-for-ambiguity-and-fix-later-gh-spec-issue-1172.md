@@ -14,7 +14,7 @@ Pull Request: https://github.com/json-schema-org/json-schema-spec/pull/1203
 
 ## Context and Problem Statement
 
-When we changed the specification to use annotations as the context in which some keywords behave, we included a clause that implementations which didn't use annotations may implement or optimize the processing of `additionalProperties` in another way which produces the same effect as the prior behaviour.
+When we changed the specification to use annotations as the context in which some keywords behave, we included a clause that allowed implementations which didn't use annotations to optimize the processing of `additionalProperties` in another way which produces the same effect as the prior behaviour.
 This section created an ambiguity in terms of the resulting output format, but not validation.
 
 We needed to decide on how to proceed for the patch release of the 2020-12 version of the specification.
