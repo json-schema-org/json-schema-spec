@@ -1418,11 +1418,12 @@
                         need for "$dynamicAnchor".
                     </t>
                     <t>
-                        If present, the value of this keyword MUST be a string and MUST start with
-                        a letter ([A-Za-z]) or underscore ("_"), followed by any number of letters,
-                        digits ([0-9]), hyphens ("-"), underscores ("_"), and periods (".").
-                        This matches the US-ASCII part of XML's
-                        <xref target="xml-names">NCName production</xref>.
+                        If present, the value of this keyword MUST be a string and MUST
+                        have the following syntax according to ECMA-262 regular expression dialect
+                        <sourcecode><![CDATA[
+                          plain-name = [A-Za-z_][A-Za-z0-9_-.]+
+                        ]]>
+                        </sourcecode>
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a IRI-reference.  An "$anchor": "foo" becomes the
