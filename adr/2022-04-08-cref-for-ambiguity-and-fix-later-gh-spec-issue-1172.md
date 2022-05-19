@@ -1,8 +1,8 @@
 # Acknowledge ambiguity in additionalProperties behaviour and fix after patch release
 
-* Status: proposed
+* Status: accepted
 * Deciders: @relequestual @gregsdennis, @jdesrosiers, @karenetheridge
-* Date:  2022-04-08
+* Date:  2022-05-19
 
 Related...
 
