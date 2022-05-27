@@ -214,6 +214,22 @@
                 <eref target="https://json-schema.org/draft/next/meta/validation"/>.
             </t>
 
+            <section title="Keyword Independence">
+                <t>
+                    Schema keywords typically operate independently, without
+                    affecting each other's outcomes.
+                </t>
+                <t>
+                    For schema author convenience, there are some exceptions among the
+                    keywords in this vocabulary:
+                    <list>
+                        <t>
+                            "requiredAllExcept", whose behavior is defined in terms of "properties"
+                        </t>
+                    </list>
+                </t>
+            </section>
+
             <section title="Validation Keywords for Any Instance Type" anchor="general">
                 <section title="type">
                     <t>
