@@ -515,10 +515,12 @@
                         Elements of this array, if any, MUST be strings, and MUST be unique.
                     </t>
                     <t>
-                        An object instance is valid against this keyword if every property name
-                        declared in "properties" within the same schema object is the name of
-                        a property in the instance, with the exception of the property names
-                        that appear in this keyword's array.
+                        This keyword specifies properties that are required based on the property
+                        names declared in a "properties" keyword within the same schema object.
+                        The set of required properites is the set of property names declared in
+                        "properties" minus the set of property names declared in this keyword's
+                        array. An object instance is valid against this keyword if it has defined
+                        properties for each of the property names in this set of required properties.
                     </t>
                 </section>
 
