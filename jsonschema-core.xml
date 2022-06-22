@@ -2963,35 +2963,35 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "valid": false,
-  "errors": [
+  "nested": [
     {
-      "keywordLocation": "",
+      "evaluationPath": "",
       "instanceLocation": "",
       "error": "A subschema had errors."
     },
     {
-      "keywordLocation": "/items/$ref",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point",
       "instanceLocation": "/1",
       "error": "A subschema had errors."
     },
     {
-      "keywordLocation": "/items/$ref/required",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref/required",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point/required",
       "instanceLocation": "/1",
       "error": "Required property 'y' not found."
     },
     {
-      "keywordLocation": "/items/$ref/additionalProperties",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref/additionalProperties",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point/additionalProperties",
       "instanceLocation": "/1/z",
       "error": "Additional property 'z' found but was invalid."
     },
     {
-      "keywordLocation": "/minItems",
+      "evaluationPath": "/minItems",
       "instanceLocation": "",
       "error": "Expected at least 3 items but found 2"
     }
@@ -3032,28 +3032,28 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "valid": false,
-  "keywordLocation": "",
+  "evaluationPath": "",
   "instanceLocation": "",
-  "errors": [
+  "nested": [
     {
       "valid": false,
-      "keywordLocation": "/items/$ref",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point",
       "instanceLocation": "/1",
-      "errors": [
+      "nested": [
         {
           "valid": false,
-          "keywordLocation": "/items/$ref/required",
-          "absoluteKeywordLocation":
+          "evaluationPath": "/items/$ref/required",
+          "schemaLocation":
             "https://example.com/polygon#/$defs/point/required",
           "instanceLocation": "/1",
           "error": "Required property 'y' not found."
         },
         {
           "valid": false,
-          "keywordLocation": "/items/$ref/additionalProperties",
-          "absoluteKeywordLocation":
+          "evaluationPath": "/items/$ref/additionalProperties",
+          "schemaLocation":
             "https://example.com/polygon#/$defs/point/additionalProperties",
           "instanceLocation": "/1/z",
           "error": "Additional property 'z' found but was invalid."
@@ -3062,7 +3062,7 @@ https://example.com/schemas/common#/$defs/count/minimum
     },
     {
       "valid": false,
-      "keywordLocation": "/minItems",
+      "evaluationPath": "/minItems",
       "instanceLocation": "",
       "error": "Expected at least 3 items but found 2"
     }
@@ -3115,27 +3115,27 @@ https://example.com/schemas/common#/$defs/count/minimum
 // result
 {
   "valid": false,
-  "keywordLocation": "",
+  "evaluationPath": "",
   "instanceLocation": "",
-  "errors": [
+  "nested": [
     {
       "valid": true,
-      "keywordLocation": "/type",
+      "evaluationPath": "/type",
       "instanceLocation": ""
     },
     {
       "valid": true,
-      "keywordLocation": "/properties",
+      "evaluationPath": "/properties",
       "instanceLocation": ""
     },
     {
       "valid": false,
-      "keywordLocation": "/additionalProperties",
+      "evaluationPath": "/additionalProperties",
       "instanceLocation": "",
-      "errors": [
+      "nested": [
         {
           "valid": false,
-          "keywordLocation": "/additionalProperties",
+          "evaluationPath": "/additionalProperties",
           "instanceLocation": "/disallowedProp",
           "error": "Additional property 'disallowedProp' found but was invalid."
         }
