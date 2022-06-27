@@ -2726,18 +2726,18 @@
                             Basic - Provides validation information in a flat list structure.
                         </t>
                         <t>
-                            Detailed - Provides validation information in a condensed hierarchical
-                            structure based on the structure of the schema.
-                        </t>
-                        <t>
-                            Verbose - Provides validation information in an uncondensed hierarchical
-                            structure that matches the exact structure of the schema.
+                            Hierarchical - Provides validation information in a hierarchical
+                            structure that mimics the structure of the schema.
+                            <cref>
+                                To be precise, this structure follows the paths that a validator
+                                would traverse while processing the schema, including composition
+                                via by-reference keywords.
+                            </cref>
                         </t>
                     </list>
-                    An implementation SHOULD provide at least one of the "flag", "basic", or "detailed"
-                    format and MAY provide the "verbose" format.  If it provides one or more of the
-                    "detailed" or "verbose" formats, it MUST also provide the "flag" format.
-                    Implementations SHOULD specify in their documentation which formats they support.
+                    An implementation MUST provide the "flag" format and SHOULD provide at least one
+                    of the "basic" or "hierarchical" formats. Implementations SHOULD specify in
+                    their documentation which formats they support.
                 </t>
 
             </section>
@@ -2824,7 +2824,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         Any errors produced by the validation.  This property MUST NOT
                         be included if the validation was successful.  The value
-                        for this property is an object where the keys are the names of
+                        for this property MUST be an object where the keys are the names of
                         keywords and the values are the error message produced by the
                         associated keyword.  If the subschema itself is producing the
                         error, that error MUST be listed with an empty string key.
@@ -2842,7 +2842,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         Any annotations produced by the validation.  This property MUST NOT
                         be included if the validation was unsuccessful.  The value
-                        for this property is an object where the keys are the names of
+                        for this property MUST be an object where the keys are the names of
                         keywords and the values are the annotations produced by the
                         associated keyword.
                     </t>
@@ -2857,12 +2857,19 @@ https://example.com/schemas/common#/$defs/count/minimum
 
                 <section title="Nested Results">
                     <t>
-                        For "basic", this property will appear only at the root output unit
-                        and will hold all results in a flat list.
+                        Nested results are generated from applicator keywords: keywords with
+                        subschemas or collections of subschemas as values.  Keywords which
+                        have arrays of subschemas (e.g. "anyOf") will generally generate an output
+                        unit for each subschema.  In order to accommodate potentially multiple
+                        results, the value of this property MUST be an array of output units.
                     </t>
                     <t>
-                        For "detailed" and "verbose", this property will hold nested results
-                        in a tree structure, mimicking that of the schema.
+                        For "basic", this property will appear only at the root output unit
+                        and will hold all output units in a flat list.
+                    </t>
+                    <t>
+                        For "hierarchical", this property will hold nested results in a tree
+                        structure, mimicking that of the schema.
                     </t>
                     <t>
                         The sequence of output units within this list is not specified and
@@ -3017,16 +3024,16 @@ https://example.com/schemas/common#/$defs/count/minimum
                             will produce <sourcecode>["foo-prop"]</sourcecode>.
                         </t>
                         <t>
-                            The keyword "title"
-                            validated at "/properties/foo/allOf/1/properties/foo-prop"
-                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
-                            will produce <sourcecode>"foo-prop-title"</sourcecode>.
-                        </t>
-                        <t>
                             The keyword "additionalProperties"
                             validated at "/properties/foo/allOf/1"
                             by following the path "/properties/foo/allOf/1"
                             will produce <sourcecode>["unspecified-prop"]</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "title"
+                            validated at "/properties/foo/allOf/1/properties/foo-prop"
+                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
+                            will produce <sourcecode>"foo-prop-title"</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
@@ -3085,9 +3092,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                         omitted from the root output unit.
                     </t>
                     <t>
-                        Intermediate output units, which do not themselves produce errors but
-                        represent subschemas that contain error-producing subschemas, MAY be
-                        included.
+                        Output units which do not contain errors or annotations SHOULD be excluded
+                        from this format, however implementations MAY choose to include them for
+                        completeness.
                     </t>
                     <figure>
                         <artwork>
@@ -3125,78 +3132,72 @@ https://example.com/schemas/common#/$defs/count/minimum
     }
   ]
 }
-]]>
-                        </artwork>
-                    </figure>
-                </section>
 
-                <section title="Detailed">
-                    <t>
-                        The "Detailed" format is a hierarchical structure based on that of the schema
-                        and can be more readable for both humans and machines by grouping together
-                        output units that apply to the same subschemas.
-                    </t>
-                    <t>
-                        The root output unit contains "valid" for the overall result and "nested"
-                        for the list of specific results.  All other information is explicitly
-                        omitted from the root output unit.
-                    </t>
-                    <t>
-                        The following rules govern the construction of the results object:
-                        <list>
-                            <t>
-                                All applicator keywords ("*Of", "$ref", "if"/"then"/"else", etc.) require
-                                a output unit.
-                            </t>
-                            <t>
-                                Output units that have no children are removed.
-                            </t>
-                            <t>
-                                Output units that have a single child are replaced by the child.
-                            </t>
-                        </list>
-                        Branch output units do not require an error message or an annotation.
-                    </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
-// failing results
+// passing results
 {
-  "valid": false,
+  "valid": true,
   "nested": [
     {
+      "valid": true,
+      "evaluationPath": "",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#",
+      "instanceLocation": "",
+      "annotations": {
+        "title": "root",
+        "properties": [ "foo", "bar" ]
+      }
+    },
+    {
+      "valid": true,
       "evaluationPath": "/properties/foo",
       "schemaLocation":
         "https://json-schema.org/schemas/example#/properties/foo",
       "instanceLocation": "/foo",
-      "nested": [
-        {
-          "evaluationPath": "/properties/foo/allOf/0",
-          "schemaLocation":
-            "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
-          "instanceLocation": "/foo",
-          "errors": {
-            "type": "Expected the property \"unspecified-prop\"."
-          }
-        },
-        {
-          "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-          "schemaLocation":
-            "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
-          "instanceLocation": "/foo/foo-prop",
-          "errors": {
-            "type": "Expected the value \"1\"."
-          }
-        }
-      ]
+      "annotations": {
+        "title": "foo-title"
+      }
     },
     {
+      "valid": true,
+      "evaluationPath": "/properties/foo/allOf/1",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
+      "instanceLocation": "/foo/foo-prop",
+      "annotations": {
+        "properties": [ "foo-prop" ],
+        "additionalProperties": [ "unspecified-prop" ]
+      }
+    },
+    {
+      "valid": true,
+      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+      "instanceLocation": "/foo/foo-prop",
+      "annotations": {
+        "title": "foo-prop-title"
+      }
+    },
+    {
+      "valid": true,
+      "evaluationPath": "/properties/bar/$ref",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#/$defs/bar",
+      "instanceLocation": "/bar",
+      "annotations": {
+        "title": "bar-title",
+        "properties": [ "bar-prop" ]
+      }
+    },
+    {
+      "valid": true,
       "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
       "schemaLocation":
         "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
       "instanceLocation": "/bar/bar-prop",
-      "errors": {
-        "type": "Expected a value of type \"integer\"."
+      "annotations": {
+        "title": "bar-prop-title"
       }
     }
   ]
@@ -3206,23 +3207,24 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </figure>
                 </section>
 
-                <section title="Verbose">
+                <section title="Hierarchical">
                     <t>
-                        The "Verbose" structure is a fully realized hierarchy that exactly matches
-                        that of the schema.  This structure has applications in form generation and
-                        validation where the error's location is important.
+                        The "Hierarchical" structure is a tree structure that follows the
+                        evaluation path during the validation process.  Typically, it will
+                        resemble the schema as if all referenced schemas were bundled in place
+                        of their associated by-reference keywords.
                     </t>
                     <t>
-                        The primary difference between this and the "Detailed" structure is that
-                        all results are returned.  This includes subschema validation results that
-                        would otherwise be removed (e.g. passing subschemas contained within failing
-                        subschemas, etc.). Because of this, each output unit MUST also carry a
-                        "valid" property to indicate its local validation result.
+                        All output units are included in this format.
+                    </t>
+                    <t>
+                        The location properties of the output unit MAY be omitted from the
+                        root node.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
-// failing results
+// failing results (errors)
 {
     "valid": false,
     "nested": [
@@ -3294,7 +3296,92 @@ https://example.com/schemas/common#/$defs/count/minimum
       }
     ]
   }
-  ]]>
+
+  // passing results (annotations)
+  {
+  "valid": true,
+  "annotations": {
+    "title": "root",
+    "properties": [ "foo", "bar" ]
+  },
+  "nested": [
+    {
+      "valid": true,
+      "evaluationPath": "/properties/foo",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#/properties/foo",
+      "instanceLocation": "/foo",
+      "annotations": {
+        "title": "foo-title"
+      },
+      "nested": [
+        {
+          "valid": true,
+          "evaluationPath": "/properties/foo/allOf/0",
+          "schemaLocation":
+            "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+          "instanceLocation": "/foo"
+        },
+        {
+          "valid": true,
+          "evaluationPath": "/properties/foo/allOf/1",
+          "schemaLocation":
+            "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
+          "instanceLocation": "/foo/foo-prop",
+          "annotations": {
+            "properties": [ "foo-prop" ],
+            "additionalProperties": [ "unspecified-prop" ]
+          },
+          "nested": [
+            {
+              "valid": true,
+              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+              "schemaLocation":
+                "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+              "instanceLocation": "/foo/foo-prop",
+              "annotations": {
+                "title": "foo-prop-title"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "valid": true,
+      "evaluationPath": "/properties/bar",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#/properties/bar",
+      "instanceLocation": "/bar",
+      "nested": [
+        {
+          "valid": true,
+          "evaluationPath": "/properties/bar/$ref",
+          "schemaLocation":
+            "https://json-schema.org/schemas/example#/$defs/bar",
+          "instanceLocation": "/bar",
+          "annotations": {
+            "title": "bar-title",
+            "properties": [ "bar-prop" ]
+          },
+          "nested": [
+            {
+              "valid": true,
+              "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+              "schemaLocation":
+                "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+              "instanceLocation": "/bar/bar-prop",
+              "annotations": {
+                "title": "bar-prop-title"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+]]>
                         </artwork>
                     </figure>
                 </section>
