@@ -1,62 +1,62 @@
 {
   "valid": false,
-  "keywordLocation": "",
+  "evaluationPath": "",
   "instanceLocation": "",
-  "errors": [
+  "nested": [
     {
       "valid": true,
-      "keywordLocation": "/$defs",
+      "evaluationPath": "/$defs",
       "instanceLocation": ""
     },
     {
       "valid": true,
-      "keywordLocation": "/type",
+      "evaluationPath": "/type",
       "instanceLocation": ""
     },
     {
       "valid": false,
-      "keywordLocation": "/items",
+      "evaluationPath": "/items",
       "instanceLocation": "",
-      "errors": [
+      "nested": [
         {
           "valid": true,
-          "keywordLocation": "/items/$ref",
-          "absoluteKeywordLocation":
+          "evaluationPath": "/items/$ref",
+          "schemaLocation":
             "https://example.com/polygon#/items/$ref",
           "instanceLocation": "/0",
-          "annotations": [
+          "nested": [
             {
               "valid": true,
-              "keywordLocation": "/items/$ref",
-              "absoluteKeywordLocation":
+              "evaluationPath": "/items/$ref",
+              "schemaLocation":
                 "https://example.com/polygon#/$defs/point",
               "instanceLocation": "/0",
-              "annotations": [
+              "nested": [
                 {
                   "valid": true,
-                  "keywordLocation": "/items/$ref/type",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/type",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/type",
                   "instanceLocation": "/0"
                 },
                 {
                   "valid": true,
-                  "keywordLocation": "/items/$ref/properties",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/properties",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/properties",
                   "instanceLocation": "/0"
                 },
                 {
                   "valid": true,
-                  "keywordLocation": "/items/$ref/required",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/required",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/required",
                   "instanceLocation": "/0"
                 },
                 {
                   "valid": true,
-                  "keywordLocation": "/items/$ref/additionalProperties",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/additionalProperties",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/additionalProperties",
                   "instanceLocation": "/0"
                 }
@@ -66,50 +66,50 @@
         },
         {
           "valid": false,
-          "keywordLocation": "/items/$ref",
-          "absoluteKeywordLocation":
+          "evaluationPath": "/items/$ref",
+          "schemaLocation":
             "https://example.com/polygon#/items/$ref",
           "instanceLocation": "/1",
-          "errors": [
+          "nested": [
             {
               "valid": false,
-              "keywordLocation": "/items/$ref",
-              "absoluteKeywordLocation":
+              "evaluationPath": "/items/$ref",
+              "schemaLocation":
                 "https://example.com/polygon#/$defs/point",
               "instanceLocation": "/1",
-              "errors": [
+              "nested": [
                 {
                   "valid": true,
-                  "keywordLocation": "/items/$ref/type",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/type",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/type",
                   "instanceLocation": "/1"
                 },
                 {
                   "valid": true,
-                  "keywordLocation": "/items/$ref/properties",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/properties",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/properties",
                   "instanceLocation": "/1"
                 },
                 {
                   "valid": false,
-                  "keywordLocation": "/items/$ref/required",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/required",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/required",
                   "instanceLocation": "/1"
                 },
                 {
                   "valid": false,
-                  "keywordLocation": "/items/$ref/additionalProperties",
-                  "absoluteKeywordLocation":
+                  "evaluationPath": "/items/$ref/additionalProperties",
+                  "schemaLocation":
                     "https://example.com/polygon#/$defs/point/additionalProperties",
                   "instanceLocation": "/1",
-                  "errors": [
+                  "nested": [
                     {
                       "valid": false,
-                      "keywordLocation": "/items/$ref/additionalProperties",
-                      "absoluteKeywordLocation":
+                      "evaluationPath": "/items/$ref/additionalProperties",
+                      "schemaLocation":
                         "https://example.com/polygon#/$defs/point/additionalProperties",
                       "instanceLocation": "/1/z"
                     }
@@ -123,7 +123,7 @@
     },
     {
       "valid": false,
-      "keywordLocation": "/minItems",
+      "evaluationPath": "/minItems",
       "instanceLocation": ""
     }
   ]

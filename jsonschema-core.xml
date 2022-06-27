@@ -2704,9 +2704,15 @@
 
                 <section title="Keyword Relative Location">
                     <t>
-                        The relative location of the validating keyword that follows the validation
-                        path.  The value MUST be expressed as a JSON Pointer, and it MUST include
-                        any by-reference applicators such as "$ref" or "$dynamicRef".
+                        The relative location of the validating keyword that follows the path
+                        traversed through the schema. The value MUST be expressed as a JSON
+                        Pointer, and it MUST include any by-reference applicators such as
+                        "$ref" or "$dynamicRef".
+                        <cref>
+                            The schema may not actually have a value at the location indicated
+                            by this pointer. It is provided as an indication of the traversal
+                            path only.
+                        </cref>
                     </t>
                     <figure>
                         <artwork>
@@ -2720,7 +2726,7 @@
                     due to the inclusion of these by-reference applicator keywords.
                     </t>
                     <t>
-                        The JSON key for this information is "keywordLocation".
+                        The JSON key for this information is "evaluationPath".
                     </t>
                 </section>
 
@@ -2752,7 +2758,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                         over a reference or if the schema does not declare an absolute IRI as its "$id".
                     </t>
                     <t>
-                        The JSON key for this information is "absoluteKeywordLocation".
+                        The JSON key for this information is "schemaLocation".
                     </t>
                 </section>
 
@@ -2786,13 +2792,15 @@ https://example.com/schemas/common#/$defs/count/minimum
 
                 <section title="Nested Results">
                     <t>
-                        For the two hierarchical structures, this property will hold nested errors
-                        and annotations.
+                        For "basic", this property will appear only at the root node and will hold
+                        all errors or annotations in a list.
                     </t>
                     <t>
-                        The JSON key for nested results in failed validations is "errors"; for
-                        successful validations it is "annotations".  Note the plural forms, as
-                        a keyword with nested results can also have a local error or annotation.
+                        For "detailed" and "verbose", this property will hold nested errors
+                        and annotations in a tree structure, mimicking that of the schema.
+                    </t>
+                    <t>
+                        The JSON key for nested results is "nested".
                     </t>
                 </section>
 
@@ -2802,19 +2810,14 @@ https://example.com/schemas/common#/$defs/count/minimum
                 <t>
                     The output MUST be an object containing a boolean property named "valid".  When
                     additional information about the result is required, the output MUST also contain
-                    "errors" or "annotations" as described below.
+                    "nested" as described below.
                     <list>
                         <t>
                             "valid" - a boolean value indicating the overall validation success or
                             failure
                         </t>
                         <t>
-                            "errors" - the collection of errors or annotations produced by a failed
-                            validation
-                        </t>
-                        <t>
-                            "annotations" - the collection of errors or annotations produced by a
-                            successful validation
+                            "nested" - the collection of errors or annotations produced by a keyword
                         </t>
                     </list>
                     For these examples, the following schema and instance will be used.
@@ -2910,35 +2913,35 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "valid": false,
-  "errors": [
+  "nested": [
     {
-      "keywordLocation": "",
+      "evaluationPath": "",
       "instanceLocation": "",
       "error": "A subschema had errors."
     },
     {
-      "keywordLocation": "/items/$ref",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point",
       "instanceLocation": "/1",
       "error": "A subschema had errors."
     },
     {
-      "keywordLocation": "/items/$ref/required",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref/required",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point/required",
       "instanceLocation": "/1",
       "error": "Required property 'y' not found."
     },
     {
-      "keywordLocation": "/items/$ref/additionalProperties",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref/additionalProperties",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point/additionalProperties",
       "instanceLocation": "/1/z",
       "error": "Additional property 'z' found but was invalid."
     },
     {
-      "keywordLocation": "/minItems",
+      "evaluationPath": "/minItems",
       "instanceLocation": "",
       "error": "Expected at least 3 items but found 2"
     }
@@ -2979,28 +2982,28 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 {
   "valid": false,
-  "keywordLocation": "",
+  "evaluationPath": "",
   "instanceLocation": "",
-  "errors": [
+  "nested": [
     {
       "valid": false,
-      "keywordLocation": "/items/$ref",
-      "absoluteKeywordLocation":
+      "evaluationPath": "/items/$ref",
+      "schemaLocation":
         "https://example.com/polygon#/$defs/point",
       "instanceLocation": "/1",
-      "errors": [
+      "nested": [
         {
           "valid": false,
-          "keywordLocation": "/items/$ref/required",
-          "absoluteKeywordLocation":
+          "evaluationPath": "/items/$ref/required",
+          "schemaLocation":
             "https://example.com/polygon#/$defs/point/required",
           "instanceLocation": "/1",
           "error": "Required property 'y' not found."
         },
         {
           "valid": false,
-          "keywordLocation": "/items/$ref/additionalProperties",
-          "absoluteKeywordLocation":
+          "evaluationPath": "/items/$ref/additionalProperties",
+          "schemaLocation":
             "https://example.com/polygon#/$defs/point/additionalProperties",
           "instanceLocation": "/1/z",
           "error": "Additional property 'z' found but was invalid."
@@ -3009,7 +3012,7 @@ https://example.com/schemas/common#/$defs/count/minimum
     },
     {
       "valid": false,
-      "keywordLocation": "/minItems",
+      "evaluationPath": "/minItems",
       "instanceLocation": "",
       "error": "Expected at least 3 items but found 2"
     }
@@ -3062,27 +3065,27 @@ https://example.com/schemas/common#/$defs/count/minimum
 // result
 {
   "valid": false,
-  "keywordLocation": "",
+  "evaluationPath": "",
   "instanceLocation": "",
-  "errors": [
+  "nested": [
     {
       "valid": true,
-      "keywordLocation": "/type",
+      "evaluationPath": "/type",
       "instanceLocation": ""
     },
     {
       "valid": true,
-      "keywordLocation": "/properties",
+      "evaluationPath": "/properties",
       "instanceLocation": ""
     },
     {
       "valid": false,
-      "keywordLocation": "/additionalProperties",
+      "evaluationPath": "/additionalProperties",
       "instanceLocation": "",
-      "errors": [
+      "nested": [
         {
           "valid": false,
-          "keywordLocation": "/additionalProperties",
+          "evaluationPath": "/additionalProperties",
           "instanceLocation": "/disallowedProp",
           "error": "Additional property 'disallowedProp' found but was invalid."
         }
