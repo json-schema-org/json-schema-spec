@@ -2826,7 +2826,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                         be included if the validation was successful.  The value
                         for this property is an object where the keys are the names of
                         keywords and the values are the error message produced by the
-                        associated keyword.
+                        associated keyword.  If the subschema itself is producing the
+                        error, that error MUST be listed with an empty string key.
                     </t>
                     <t>
                         The specific wording for the message is not defined by this
@@ -2856,12 +2857,16 @@ https://example.com/schemas/common#/$defs/count/minimum
 
                 <section title="Nested Results">
                     <t>
-                        For "basic", this property will appear only at the root node and will hold
-                        all results in a flat list.
+                        For "basic", this property will appear only at the root output unit
+                        and will hold all results in a flat list.
                     </t>
                     <t>
                         For "detailed" and "verbose", this property will hold nested results
                         in a tree structure, mimicking that of the schema.
+                    </t>
+                    <t>
+                        The sequence of output units within this list is not specified and
+                        may be determined by the implementation.
                     </t>
                     <t>
                         The JSON key for nested results is "nested".
@@ -2897,14 +2902,20 @@ https://example.com/schemas/common#/$defs/count/minimum
   "title": "root",
   "properties": {
     "foo": {
-      "type": "object",
-      "title": "foo-title",
-      "properties": {
-        "foo-prop": {
-          "const": 1,
-          "title": "foo-prop-title"
+      "allOf": [
+        { "required": [ "unspecified-prop" ] },
+        {
+          "type": "object",
+          "title": "foo-title",
+          "properties": {
+            "foo-prop": {
+              "const": 1,
+              "title": "foo-prop-title"
+            }
+          },
+          "additionalProperties": { "type": "boolean" }
         }
-      }
+      ]
     },
     "bar": {
       "$ref": "#/$defs/bar"
@@ -2927,13 +2938,16 @@ https://example.com/schemas/common#/$defs/count/minimum
 
 // failing instance
 {
-  "foo": {"foo-prop": "not 1"},
+  "foo": {"foo-prop": "not 1", "other-prop": false},
   "bar": {"bar-prop": 2}
 }
 
 // passing instance
 {
-  "foo": {"foo-prop": 1},
+  "foo": {
+    "foo-prop": 1,
+    "unspecified-prop": true
+  },
   "bar": {"bar-prop": 20}
 }
 ]]>
@@ -2943,9 +2957,16 @@ https://example.com/schemas/common#/$defs/count/minimum
                     The failing instance will produce the following errors:
                     <list>
                         <t>
+                            The value at "/foo"
+                            validated at "/properties/foo/allOf/0"
+                            by following the path "/properties/foo/allOf/0"
+                            by the "required" keyword
+                            is missing the property "unspecified-prop".
+                        </t>
+                        <t>
                             The value at "/foo/foo-prop"
-                            validated at "/properties/foo/properties/foo-prop"
-                            by following the path "/properties/foo/properties/foo-prop"
+                            validated at "/properties/foo/allOf/1/properties/foo-prop"
+                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
                             by the "const" keyword
                             is not the constant value 1.
                         </t>
@@ -2975,49 +2996,55 @@ https://example.com/schemas/common#/$defs/count/minimum
                             The keyword "title"
                             validated at ""
                             by following the path ""
-                            will produce "root".
+                            will produce <sourcecode>"root"</sourcecode>.
                         </t>
                         <t>
                             The keyword "properties"
                             validated at ""
                             by following the path ""
-                            will produce "["foo", "bar"]".
+                            will produce <sourcecode>["foo", "bar"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
                             validated at "/properties/foo"
                             by following the path "/properties/foo"
-                            will produce "foo-title".
+                            will produce <sourcecode>"foo-title"</sourcecode>.
                         </t>
                         <t>
                             The keyword "properties"
-                            validated at "/properties/foo"
-                            by following the path "/properties/foo"
-                            will produce "["foo-prop"]".
+                            validated at "/properties/foo/allOf/1"
+                            by following the path "/properties/foo/allOf/1"
+                            will produce <sourcecode>["foo-prop"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
-                            validated at "/properties/foo/properties/foo-prop"
-                            by following the path "/properties/foo/properties/foo-prop"
-                            will produce "foo-prop-title".
+                            validated at "/properties/foo/allOf/1/properties/foo-prop"
+                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
+                            will produce <sourcecode>"foo-prop-title"</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "additionalProperties"
+                            validated at "/properties/foo/allOf/1"
+                            by following the path "/properties/foo/allOf/1"
+                            will produce <sourcecode>["unspecified-prop"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
                             validated at "/$defs/bar"
                             by following the path "/properties/bar/$ref"
-                            will produce "bar-title".
+                            will produce <sourcecode>"bar-title"</sourcecode>.
                         </t>
                         <t>
                             The keyword "properties"
                             validated at "/$defs/bar"
                             by following the path "/properties/var/$ref"
-                            will produce "["bar-prop"]".
+                            will produce <sourcecode>["bar-prop"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
                             validated at "/$defs/bar/properties/bar-prop"
                             by following the path "/properties/bar/$ref/properties/bar-prop"
-                            will produce "bar-prop-title".
+                            will produce <sourcecode>"bar-prop-title"</sourcecode>.
                         </t>
                     </list>
                 </t>
@@ -3025,7 +3052,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                 <section title="Flag">
                     <t>
                         In the simplest case, merely the boolean result for the "valid" valid property
-                        needs to be fulfilled.
+                        needs to be fulfilled.  For this format, all other information is explicitly
+                        omitted.
                     </t>
                     <figure>
                         <artwork>
@@ -3040,7 +3068,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                         Because no errors or annotations are returned with this format, it is
                         RECOMMENDED that implementations use short-circuiting logic to return
                         failure or success as soon as the outcome can be determined.  For example,
-                        if an "anyOf" keyword contains five sub-schemas, and the second one
+                        if an "anyOf" keyword contains five subschemas, and the second one
                         passes, there is no need to check the other three.  The logic can simply
                         return with success.
                     </t>
@@ -3048,44 +3076,52 @@ https://example.com/schemas/common#/$defs/count/minimum
 
                 <section title="Basic">
                     <t>
-                        The "Basic" structure is a flat list of output units.
+                        The "Basic" structure is a flat list of output units contained within a
+                        root output unit.
+                    </t>
+                    <t>
+                        The root output unit contains "valid" for the overall result and "nested"
+                        for the list of specific results.  All other information is explicitly
+                        omitted from the root output unit.
+                    </t>
+                    <t>
+                        Intermediate output units, which do not themselves produce errors but
+                        represent subschemas that contain error-producing subschemas, MAY be
+                        included.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
+// failing results
 {
   "valid": false,
   "nested": [
     {
-      "evaluationPath": "",
-      "instanceLocation": "",
-      "error": "A subschema had errors."
-    },
-    {
-      "evaluationPath": "/items/$ref",
+      "evaluationPath": "/properties/foo/allOf/0",
       "schemaLocation":
-        "https://example.com/polygon#/$defs/point",
-      "instanceLocation": "/1",
-      "error": "A subschema had errors."
+        "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+      "instanceLocation": "/foo",
+      "errors": {
+        "type": "Expected the property \"unspecified-prop\"."
+      }
     },
     {
-      "evaluationPath": "/items/$ref/required",
+      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
       "schemaLocation":
-        "https://example.com/polygon#/$defs/point/required",
-      "instanceLocation": "/1",
-      "error": "Required property 'y' not found."
+        "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+      "instanceLocation": "/foo/foo-prop",
+      "errors": {
+        "type": "Expected the value \"1\"."
+      }
     },
     {
-      "evaluationPath": "/items/$ref/additionalProperties",
+      "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
       "schemaLocation":
-        "https://example.com/polygon#/$defs/point/additionalProperties",
-      "instanceLocation": "/1/z",
-      "error": "Additional property 'z' found but was invalid."
-    },
-    {
-      "evaluationPath": "/minItems",
-      "instanceLocation": "",
-      "error": "Expected at least 3 items but found 2"
+        "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+      "instanceLocation": "/bar/bar-prop",
+      "errors": {
+        "type": "Expected a value of type \"integer\"."
+      }
     }
   ]
 }
@@ -3096,67 +3132,72 @@ https://example.com/schemas/common#/$defs/count/minimum
 
                 <section title="Detailed">
                     <t>
-                        The "Detailed" structure is based on the schema and can be more readable
-                        for both humans and machines.  Having the structure organized this way makes
-                        associations between the errors more apparent.  For example, the fact that
-                        the missing "y" property and the extra "z" property both stem from the same
-                        location in the instance is not immediately obvious in the "Basic" structure.
-                        In a hierarchy, the correlation is more easily identified.
+                        The "Detailed" format is a hierarchical structure based on that of the schema
+                        and can be more readable for both humans and machines by grouping together
+                        output units that apply to the same subschemas.
+                    </t>
+                    <t>
+                        The root output unit contains "valid" for the overall result and "nested"
+                        for the list of specific results.  All other information is explicitly
+                        omitted from the root output unit.
                     </t>
                     <t>
                         The following rules govern the construction of the results object:
                         <list>
                             <t>
                                 All applicator keywords ("*Of", "$ref", "if"/"then"/"else", etc.) require
-                                a node.
+                                a output unit.
                             </t>
                             <t>
-                                Nodes that have no children are removed.
+                                Output units that have no children are removed.
                             </t>
                             <t>
-                                Nodes that have a single child are replaced by the child.
+                                Output units that have a single child are replaced by the child.
                             </t>
                         </list>
-                        Branch nodes do not require an error message or an annotation.
+                        Branch output units do not require an error message or an annotation.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
+// failing results
 {
   "valid": false,
-  "evaluationPath": "",
-  "instanceLocation": "",
   "nested": [
     {
-      "valid": false,
-      "evaluationPath": "/items/$ref",
+      "evaluationPath": "/properties/foo",
       "schemaLocation":
-        "https://example.com/polygon#/$defs/point",
-      "instanceLocation": "/1",
+        "https://json-schema.org/schemas/example#/properties/foo",
+      "instanceLocation": "/foo",
       "nested": [
         {
-          "valid": false,
-          "evaluationPath": "/items/$ref/required",
+          "evaluationPath": "/properties/foo/allOf/0",
           "schemaLocation":
-            "https://example.com/polygon#/$defs/point/required",
-          "instanceLocation": "/1",
-          "error": "Required property 'y' not found."
+            "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+          "instanceLocation": "/foo",
+          "errors": {
+            "type": "Expected the property \"unspecified-prop\"."
+          }
         },
         {
-          "valid": false,
-          "evaluationPath": "/items/$ref/additionalProperties",
+          "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
           "schemaLocation":
-            "https://example.com/polygon#/$defs/point/additionalProperties",
-          "instanceLocation": "/1/z",
-          "error": "Additional property 'z' found but was invalid."
+            "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+          "instanceLocation": "/foo/foo-prop",
+          "errors": {
+            "type": "Expected the value \"1\"."
+          }
         }
       ]
     },
     {
-      "valid": false,
-      "evaluationPath": "/minItems",
-      "instanceLocation": "",
-      "error": "Expected at least 3 items but found 2"
+      "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+      "schemaLocation":
+        "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+      "instanceLocation": "/bar/bar-prop",
+      "errors": {
+        "type": "Expected a value of type \"integer\"."
+      }
     }
   ]
 }
@@ -3173,69 +3214,87 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </t>
                     <t>
                         The primary difference between this and the "Detailed" structure is that
-                        all results are returned.  This includes sub-schema validation results that
-                        would otherwise be removed (e.g. annotations for failed validations,
-                        successful validations inside a `not` keyword, etc.).  Because of this, it
-                        is RECOMMENDED that each node also carry a `valid` property to indicate the
-                        validation result for that node.
-                    </t>
-                    <t>
-                        Because this output structure can be quite large, a smaller example is given
-                        here for brevity.  The IRI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/next/output/verbose-example"/>.
+                        all results are returned.  This includes subschema validation results that
+                        would otherwise be removed (e.g. passing subschemas contained within failing
+                        subschemas, etc.). Because of this, each output unit MUST also carry a
+                        "valid" property to indicate its local validation result.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
-// schema
+// failing results
 {
-  "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/next/schema",
-  "type": "object",
-  "properties": {
-    "validProp": true,
-  },
-  "additionalProperties": false
-}
-
-// instance
-{
-  "validProp": 5,
-  "disallowedProp": "value"
-}
-
-// result
-{
-  "valid": false,
-  "evaluationPath": "",
-  "instanceLocation": "",
-  "nested": [
-    {
-      "valid": true,
-      "evaluationPath": "/type",
-      "instanceLocation": ""
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties",
-      "instanceLocation": ""
-    },
-    {
-      "valid": false,
-      "evaluationPath": "/additionalProperties",
-      "instanceLocation": "",
-      "nested": [
-        {
-          "valid": false,
-          "evaluationPath": "/additionalProperties",
-          "instanceLocation": "/disallowedProp",
-          "error": "Additional property 'disallowedProp' found but was invalid."
-        }
-      ]
-    }
-  ]
-}
-]]>
+    "valid": false,
+    "nested": [
+      {
+        "valid": false,
+        "evaluationPath": "/properties/foo",
+        "schemaLocation":
+          "https://json-schema.org/schemas/example#/properties/foo",
+        "instanceLocation": "/foo",
+        "nested": [
+          {
+            "valid": false,
+            "evaluationPath": "/properties/foo/allOf/0",
+            "schemaLocation":
+              "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+            "instanceLocation": "/foo",
+            "errors": {
+              "required": "Expected the property \"unspecified-prop\"."
+            }
+          },
+          {
+            "valid": false,
+            "evaluationPath": "/properties/foo/allOf/1",
+            "schemaLocation":
+              "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
+            "instanceLocation": "/foo/foo-prop",
+            "nested": [
+              {
+                "valid": false,
+                "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+                "schemaLocation":
+                  "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+                "instanceLocation": "/foo/foo-prop",
+                "errors": {
+                  "const": "Expected the value \"1\"."
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valid": false,
+        "evaluationPath": "/properties/bar",
+        "schemaLocation":
+          "https://json-schema.org/schemas/example#/properties/bar",
+        "instanceLocation": "/bar",
+        "nested": [
+          {
+            "valid": false,
+            "evaluationPath": "/properties/bar/$ref",
+            "schemaLocation":
+              "https://json-schema.org/schemas/example#/$defs/bar",
+            "instanceLocation": "/bar",
+            "nested": [
+              {
+                "valid": false,
+                "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+                "schemaLocation":
+                  "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+                "instanceLocation": "/bar/bar-prop",
+                "errors": {
+                  "type": "Expected a value of type \"integer\"."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  ]]>
                         </artwork>
                     </figure>
                 </section>
