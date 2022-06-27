@@ -2760,9 +2760,14 @@
                 <section title="Keyword Relative Location">
                     <t>
                         The relative location of the validating keyword that follows the path
-                        traversed through the schema.  The value MUST be expressed as a JSON
+                        traversed through the schema. The value MUST be expressed as a JSON
                         Pointer, and it MUST include any by-reference applicators such as
                         "$ref" or "$dynamicRef".
+                        <cref>
+                            The schema may not actually have a value at the location indicated
+                            by this pointer. It is provided as an indication of the traversal
+                            path only.
+                        </cref>
                     </t>
                     <figure>
                         <artwork>
