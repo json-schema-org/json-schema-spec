@@ -28,7 +28,7 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-bhutton-json-schema-validation-00" ipr="trust200902">
+<rfc category="info" docName="draft-bhutton-json-schema-validation-01" ipr="trust200902">
     <front>
         <title abbrev="JSON Schema Validation">
             JSON Schema Validation: A Vocabulary for Structural Validation of JSON
@@ -47,13 +47,14 @@
         </author>
 
         <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
+            <organization>Postman</organization>
             <address>
                 <email>ben@jsonschema.dev</email>
                 <uri>https://jsonschema.dev</uri>
             </address>
         </author>
 
-        <date year="2021"/>
+        <date year="2022"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -442,8 +443,9 @@
                     </t>
                     <t>
                         A value of 0 is allowed, but is only useful for setting a range
-                        of occurrences from 0 to the value of "maxContains".  A value of
-                        0 with no "maxContains" causes "contains" to always pass validation.
+                        of occurrences from 0 to the value of "maxContains". A value of
+                        0 causes "minContains" and "contains" to always pass validation
+                        (but validation can still fail against a "maxContains" keyword).
                     </t>
                     <t>
                         Omitting this keyword has the same behavior as a value of 1.
@@ -704,30 +706,34 @@
                         <list style="hanging">
                             <t hangText="date-time:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "date-time" production.
+                                a valid representation according to the "date-time' ABNF rule
+                                (referenced above)
                             </t>
                             <t hangText="date:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "full-date" production.
+                                a valid representation according to the "full-date" ABNF rule
+                                (referenced above)
                             </t>
                             <t hangText="time:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "full-time" production.
+                                a valid representation according to the "full-time" ABNF rule
+                                (referenced above)
                             </t>
                             <t hangText="duration:">
                                 A string instance is valid against this attribute if it is
-                                a valid representation according to the "duration" production.
+                                a valid representation according to the "duration" ABNF rule
+                                (referenced above)
                             </t>
                         </list>
                     </t>
                     <t>
                         Implementations MAY support additional attributes using the other
-                        production names defined anywhere in that RFC.  If "full-date" or "full-time"
+                        format names defined anywhere in that RFC.  If "full-date" or "full-time"
                         are implemented, the corresponding short form ("date" or "time"
                         respectively) MUST be implemented, and MUST behave identically.
                         Implementations SHOULD NOT define extension attributes
-                        with any name matching an RFC 3339 production unless it validates
-                        according to the rules of that production.
+                        with any name matching an RFC 3339 format unless it validates
+                        according to the rules of that format.
                         <cref>
                             There is not currently consensus on the need for supporting
                             all RFC 3339 formats, so this approach of reserving the
@@ -964,7 +970,7 @@
 
                 <t>
                     If the instance value is a string, this property defines that the string
-                    SHOULD be interpreted as binary data and decoded using the encoding
+                    SHOULD be interpreted as encoded binary data and decoded using the encoding
                     named by this property.
                 </t>
 
@@ -972,7 +978,14 @@
                     Possible values indicating base 16, 32, and 64 encodings with several
                     variations are listed in <xref target="RFC4648">RFC 4648</xref>.  Additionally,
                     sections 6.7 and 6.8 of <xref target="RFC2045">RFC 2045</xref> provide
-                    encodings used in MIME.  As "base64" is defined in both RFCs, the definition
+                    encodings used in MIME. This keyword is derived from MIME's
+                    Content-Transfer-Encoding header, which was designed to map binary data
+                    into ASCII characters.  It is not related to HTTP's Content-Encoding header,
+                    which is used to encode (e.g. compress or encrypt)
+                    the content of HTTP request and responses.
+                </t>
+                <t>
+                    As "base64" is defined in both RFCs, the definition
                     from RFC 4648 SHOULD be assumed unless the string is specifically intended
                     for use in a MIME context.  Note that all of these encodings result in
                     strings consisting only of 7-bit ASCII characters.  Therefore, this keyword
@@ -1342,9 +1355,9 @@
                     <author initials="G." surname="Dennis">
                         <organization/>
                     </author>
-                    <date year="2020" month="December"/>
+                    <date year="2022" month="June"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-bhutton-json-schema-00" />
+                <seriesInfo name="Internet-Draft" value="draft-bhutton-json-schema-01" />
             </reference>
         </references>
 
@@ -1429,6 +1442,12 @@
             </t>
             <t>
                 <list style="hanging">
+                    <t hangText="draft-bhutton-json-schema-validation-01">
+                        <list style="symbols">
+                            <t>Improve and clarify the "minContains" keyword explanation</t>
+                            <t>Remove the use of "production" in favour of "ABNF rule"</t>
+                        </list>
+                    </t>
                     <t hangText="draft-bhutton-json-schema-validation-00">
                         <list style="symbols">
                             <t>Correct email format RFC reference to 5321 instead of 5322</t>

@@ -21,7 +21,7 @@
 <?rfc rfcedstyle="yes"?>
 <?rfc comments="yes"?>
 <?rfc inline="yes" ?>
-<rfc category="info" docName="draft-bhutton-json-schema-00" ipr="trust200902">
+<rfc category="info" docName="draft-bhutton-json-schema-01" ipr="trust200902">
     <front>
         <title abbrev="JSON Schema">JSON Schema: A Media Type for Describing JSON Documents</title>
 
@@ -38,6 +38,7 @@
         </author>
 
         <author fullname="Ben Hutton" initials="B" surname="Hutton" role="editor">
+            <organization>Postman</organization>
             <address>
                 <email>ben@jsonschema.dev</email>
                 <uri>https://jsonschema.dev</uri>
@@ -51,7 +52,7 @@
             </address>
         </author>
 
-        <date year="2021"/>
+        <date year="2022"/>
         <workgroup>Internet Engineering Task Force</workgroup>
         <keyword>JSON</keyword>
         <keyword>Schema</keyword>
@@ -316,8 +317,8 @@
                         of five categories:
                         <list style="hanging">
                             <t hangText="identifiers:">
-                                control schema identification through setting the schema's
-                                canonical IRI and/or changing how the base IRI is determined
+                                control schema identification through setting a IRI
+                                for the schema and/or changing how the base IRI is determined
                             </t>
                             <t hangText="assertions:">
                                 produce a boolean result when applied to an instance
@@ -400,6 +401,13 @@
                         of any vocabulary, there is no analogous mechanism to indicate individual
                         keyword usage.
                     </t>
+                    <t>
+                        A schema vocabulary can be defined by anything from an informal description
+                        to a standards proposal, depending on the audience and interoperability
+                        expectations.  In particular, in order to facilitate vocabulary use within
+                        non-public organizations, a vocabulary specification need not be published
+                        outside of its scope of use.
+                    </t>
                 </section>
                 <section title="Meta-Schemas">
                     <t>
@@ -420,13 +428,25 @@
                     <t>
                         A JSON Schema resource is a schema which is
                         <xref target="RFC6596">canonically</xref> identified by an
-                        <xref target="RFC3987">absolute IRI</xref>.
+                        <xref target="RFC3987">absolute IRI</xref>.  Schema resources MAY
+                        also be identified by IRIs, including IRIs with fragments,
+                        if the resulting secondary resource (as defined by
+                        <xref target="RFC3986">section 3.5 of RFC 3986</xref>) is identical
+                        to the primary resource.  This can occur with the empty fragment,
+                        or when one schema resource is embedded in another.  Any such IRIs
+                        with fragments are considered to be non-canonical.
                     </t>
                     <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.  The root schema is always a schema resource, where the
                         IRI is determined as described in section
                         <xref target="initial-base" format="counter"></xref>.
+                        <cref>
+                            Note that documents that embed schemas in another format will not
+                            have a root schema resource in this sense.  Exactly how such usages
+                            fit with the JSON Schema document and resource concepts will be
+                            clarified in a future draft.
+                        </cref>
                     </t>
                     <t>
                         Some keywords take schemas themselves, allowing JSON Schemas to be nested:
@@ -724,9 +744,9 @@
                     be able to support those keywords or vocabularies that contain them.
                 </t>
             </section>
-            <section title="Identifiers" anchor="identifiers">
+            <section title="Identifiers">
                 <t>
-                    Identifiers set the canonical IRI of a schema, or affect how such IRIs are
+                    Identifiers define IRIs for a schema, or affect how such IRIs are
                     resolved in <xref target="references">references</xref>, or both.
                     The Core vocabulary defined in this document defines several
                     identifying keywords, most notably "$id".
@@ -1335,25 +1355,32 @@
                         If present, the value for this keyword MUST be a string, and MUST represent a
                         valid <xref target="RFC3987">IRI-reference</xref>.  This IRI-reference
                         SHOULD be normalized, and MUST resolve to an
-                        <xref target="RFC3987">absolute-IRI</xref> (without a fragment).  Therefore,
-                        "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT contain an
-                        empty fragment.
+                        <xref target="RFC3987">absolute-IRI</xref> (without a fragment),
+                        or to a IRI with an empty fragment.
                     </t>
                     <t>
-                        Since an empty fragment in the context of the application/schema+json media
-                        type refers to the same resource as the base IRI without a fragment,
-                        an implementation MAY normalize a IRI ending with an empty fragment by removing
-                        the fragment.  However, schema authors SHOULD NOT rely on this behavior
-                        across implementations.
+                        The empty fragment form is NOT RECOMMENDED and is retained only
+                        for backwards compatibility, and because the
+                        application/schema+json media type defines that a IRI with an
+                        empty fragment identifies the same resource as the same IRI
+                        with the fragment removed.  However, since this equivalence is not
+                        part of the <xref target="RFC3986">RFC 3986 normalization process</xref>,
+                        implementers and schema authors cannot rely on generic IRI libraries
+                        understanding it.
+                    </t>
+                    <t>
+                        Therefore, "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT
+                        contain an empty fragment.  The absolute-IRI form MUST be considered
+                        the canonical IRI, regardless of the presence or absence of an empty fragment.
                         <cref>
-                            This is primarily allowed because older meta-schemas have an empty
-                            fragment in their $id (or previously, id).  A future draft may outright
-                            forbid even empty fragments in "$id".
+                            An empty fragment is currently allowed because older meta-schemas have
+                            an empty fragment in their $id (or previously, id).
+                            A future draft may outright forbid even empty fragments in "$id".
                         </cref>
                     </t>
                     <t>
-                        This IRI also serves as the base IRI for relative IRI-references in keywords
-                        within the schema resource, in accordance with
+                        The absolute-IRI also serves as the base IRI for relative IRI-references
+                        in keywords within the schema resource, in accordance with
                         <xref target="RFC3987">RFC 3987 section 6.5</xref> and
                         <xref target="RFC3986">RFC 3986 section 5.1.1</xref> regarding base URIs
                         embedded in content.
@@ -1619,7 +1646,7 @@
                         media type.
                     </t>
                     <t>
-                        Unless the "$id" keyword described in the next section is present in the
+                        Unless the "$id" keyword described in an earlier section is present in the
                         root schema, this base IRI SHOULD be considered the canonical IRI of the
                         schema document's root schema resource.
                     </t>
@@ -1746,7 +1773,7 @@
                         Since JSON Pointer IRI fragments are constructed based on the structure
                         of the schema document, an embedded schema resource and its subschemas
                         can be identified by JSON Pointer fragments relative to either its own
-                        canonical IRI, or relative to the containing resource's IRI.
+                        canonical IRI, or relative to any containing resource's IRI.
                     </t>
                     <t>
                         Conceptually, a set of linked schema resources should behave
@@ -1778,13 +1805,18 @@
 }
 ]]>
                         </artwork>
-                        <postamble>
-                            The IRI "https://example.com/foo#/items/additionalProperties"
-                            points to the schema of the "additionalProperties" keyword in
-                            the embedded resource.  The canonical IRI of that schema, however,
-                            is "https://example.com/bar#/additionalProperties".
-                        </postamble>
                     </figure>
+                    <t>
+                        The IRI "https://example.com/foo#/items" points to the "items" schema,
+                        which is an embedded resource.  The canonical IRI of that schema
+                        resource, however, is "https://example.com/bar".
+                    </t>
+                    <t>
+                        For the "additionalProperties" schema within that embedded resource,
+                        the IRI "https://example.com/foo#/items/additionalProperties" points
+                        to the correct object, but that object's IRI relative to its resource's
+                        canonical IRI is "https://example.com/bar#/additionalProperties".
+                    </t>
                     <figure>
                         <preamble>
                             Now consider the following two schema resources linked by reference
@@ -1806,38 +1838,47 @@
 ]]>
                         </artwork>
                         <postamble>
-                            Here we see that the canonical IRI for that "additionalProperties"
-                            subschema is still valid, while the non-canonical IRI with the fragment
-                            beginning with "#/items/$ref" now resolves to nothing.
+                            Here we see that "https://example.com/bar#/additionalProperties",
+                            using a JSON Pointer fragment appended to the canonical IRI of
+                            the "bar" schema resource, is still valid, while
+                            "https://example.com/foo#/items/additionalProperties", which relied
+                            on a JSON Pointer fragment appended to the canonical IRI of the
+                            "foo" schema resource, no longer resolves to anything.
                         </postamble>
                     </figure>
                     <t>
                         Note also that "https://example.com/foo#/items" is valid in both
                         arrangements, but resolves to a different value.  This IRI ends up
-                        functioning similarly to a retrieval IRI for a resource.  While valid,
-                        examining the resolved value and either using the "$id" (if the value
-                        is a subschema), or resolving the reference and using the "$id" of the
-                        reference target, is preferable.
+                        functioning similarly to a retrieval IRI for a resource.  While this IRI
+                        is valid, it is more robust to use the "$id" of the embedded or referenced
+                        resource unless it is specifically desired to identify the object containing
+                        the "$ref" in the second (non-embedded) arrangement.
                     </t>
                     <t>
-                        An implementation MAY choose not to support addressing schemas
-                        by non-canonical IRIs. As such, it is RECOMMENDED that schema authors only
-                        use canonical IRIs, as using non-canonical IRIs may reduce
-                        schema interoperability.
+                        An implementation MAY choose not to support addressing schema resource
+                        contents by IRIs using a base other than the resource's canonical IRI,
+                        plus a JSON Pointer fragment relative to that base.  Therefore, schema
+                        authors SHOULD NOT rely on such IRIs, as using them may reduce interoperability.
                         <cref>
                             This is to avoid requiring implementations to keep track of a whole
                             stack of possible base IRIs and JSON Pointer fragments for each,
                             given that all but one will be fragile if the schema resources
-                            are reorganized.  Some have argued that this is easy so there is
+                            are reorganized.  Some
+                            have argued that this is easy so there is
                             no point in forbidding it, while others have argued that it complicates
                             schema identification and should be forbidden.  Feedback on this
                             topic is encouraged.
+                            After some discussion, we feel that we need to remove the use of
+                            "canonical" in favour of talking about JSON Pointers which reference
+                            across schema resource boundaries as undefined or even forbidden behavior
+                            (https://github.com/json-schema-org/json-schema-spec/issues/937,
+                            https://github.com/json-schema-org/json-schema-spec/issues/1183)
                         </cref>
                     </t>
                     <t>
-                        Further examples of such non-canonical IRIs, as well as the appropriate
-                        canonical IRIs to use instead, are provided in appendix
-                        <xref target="idExamples" format="counter"></xref>.
+                        Further examples of such non-canonical IRI construction, as well as
+                        the appropriate canonical IRI-based fragments to use instead,
+                        are provided in appendix <xref target="idExamples" format="counter"></xref>.
                     </t>
                 </section>
             </section>
@@ -2064,13 +2105,6 @@
                 The current IRI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft/next/meta/applicator"/>.
             </t>
-            <t>
-                Updated vocabulary and meta-schema IRIs MAY be published between
-                specification drafts in order to correct errors.  Implementations
-                SHOULD consider IRIs dated after this specification draft and
-                before the next to indicate the same syntax and semantics
-                as those listed here.
-            </t>
             <section title="Keyword Independence">
                 <t>
                     Schema keywords typically operate independently, without
@@ -2088,7 +2122,8 @@
                             "items", whose behavior is defined in terms of "prefixItems"
                         </t>
                         <t>
-                            "contains", whose behavior is defined in terms of "minContains"
+                            "contains", whose behavior is affected by the presence and value of
+                            "minContains", in the Validation vocabulary
                         </t>
                     </list>
                 </t>
@@ -2340,6 +2375,8 @@
                             positions within the instance array, it produces an
                             annotation result of boolean true, indicating that all remaining array
                             elements have been evaluated against this keyword's subschema.
+                            This annotation affects the behavior of "unevaluatedItems" in the
+                            Unevaluated vocabulary.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2350,6 +2387,37 @@
                             in another way that produces the same effect, such as by directly
                             checking for the presence and size of a "prefixItems" array.
                             Implementations that do not support annotation collection MUST do so.
+                        </t>
+                    </section>
+
+                    <section title="contains">
+                        <t>
+                            The value of this keyword MUST be a valid JSON Schema.
+                        </t>
+                        <t>
+                            An array instance is valid against "contains" if at least one of
+                            its elements is valid against the given schema,
+                            except when "minContains" is present and has a value of 0, in which
+                            case an array instance MUST be considered valid against the "contains" keyword,
+                            even if none of its elements is valid against the given schema.
+                        </t>
+                        <t>
+                            This keyword produces an annotation value which is an array of
+                            the indexes to which this keyword validates successfully when applying
+                            its subschema, in ascending order. The value MAY be a boolean "true" if
+                            the subschema validates successfully when applied to every index of the
+                            instance. The annotation MUST be present if the instance array to which
+                            this keyword's schema applies is empty.
+                        </t>
+                        <t>
+                            This annotation affects the behavior of "unevaluatedItems" in the
+                            Unevaluated vocabulary, and MAY also be used to implement the
+                            "minContains" and "maxContains" keywords in the Validation vocabulary.
+                        </t>
+                        <t>
+                            The subschema MUST be applied to every array element even after the first
+                            match has been found, in order to collect annotations for use by other
+                            keywords. This is to ensure that all possible annotations are collected.
                         </t>
                     </section>
                 </section>
@@ -2369,6 +2437,8 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names matched by this keyword.
+                            This annotation affects the behavior of "additionalProperties" (in
+                            this vocabulary) and "unevaluatedProperties" in the Unevaluated vocabulary.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2392,6 +2462,8 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names matched by this keyword.
+                            This annotation affects the behavior of "additionalProperties" (in this
+                            vocabulary) and "unevaluatedProperties" (in the Unevaluated vocabulary).
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2418,6 +2490,8 @@
                         <t>
                             The annotation result of this keyword is the set of instance
                             property names validated by this keyword's subschema.
+                            This annotation affects the behavior of "unevaluatedProperties"
+                            in the Unevaluated vocabulary.
                         </t>
                         <t>
                             Omitting this keyword has the same assertion behavior as
@@ -2429,6 +2503,17 @@
                             checking the names in "properties" and the patterns in
                             "patternProperties" against the instance property set.
                             Implementations that do not support annotation collection MUST do so.
+                            <cref>
+                                In defining this option, it seems there is the potential for
+                                ambiguity in the output format. The ambiguity does not affect validation results,
+                                but it does affect the resulting output format.
+                                The ambiguity allows for multiple valid output results depending on whether annotations
+                                are used or a solution that "produces the same effect" as draft-07. It is understood
+                                that annotations from failing schemas are dropped.
+                                See our
+                                [Decision Record](https://github.com/json-schema-org/json-schema-spec/tree/HEAD/adr/2022-04-08-cref-for-ambiguity-and-fix-later-gh-spec-issue-1172.md)
+                                for further details.
+                            </cref>
                         </t>
                     </section>
 
@@ -2526,15 +2611,8 @@
                 &lt;https://json-schema.org/draft/next/vocab/unevaluated&gt;.
             </t>
             <t>
-                The current URI for the corresponding meta-schema is:
+                The current IRI for the corresponding meta-schema is:
                 <eref target="https://json-schema.org/draft/next/meta/unevaluated"/>.
-            </t>
-            <t>
-                Updated vocabulary and meta-schema URIs MAY be published between
-                specification drafts in order to correct errors.  Implementations
-                SHOULD consider URIs dated after this specification draft and
-                before the next to indicate the same syntax and semantics
-                as those listed here.
             </t>
 
             <section title="Keyword Independence">
@@ -2591,6 +2669,7 @@
                     positions within the instance array, it produces an
                     annotation result of boolean true, analogous to the
                     behavior of "items".
+                    This annotation affects the behavior of "unevaluatedItems" in parent schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
@@ -2634,6 +2713,7 @@
                 <t>
                     The annotation result of this keyword is the set of instance
                     property names validated by this keyword's subschema.
+                    This annotation affects the behavior of "unevaluatedProperties" in parent schemas.
                 </t>
                 <t>
                     Omitting this keyword has the same assertion behavior as
@@ -2733,8 +2813,8 @@
                 <section title="Keyword Absolute Location">
                     <t>
                         The absolute, dereferenced location of the validating keyword.  The value MUST
-                        be expressed as a full IRI using the canonical IRI of the relevant
-                        schema object, and it MUST NOT include by-reference applicators
+                        be expressed as a full IRI using the canonical IRI of the relevant schema resource
+                        with a JSON Pointer fragment, and it MUST NOT include by-reference applicators
                         such as "$ref" or "$dynamicRef" as non-terminal path components.
                         It MAY end in such keywords if the error or annotation is for that
                         keyword, such as an unresolvable reference.
@@ -3157,20 +3237,6 @@ https://example.com/schemas/common#/$defs/count/minimum
                         <t>Subtype name: schema+json</t>
                         <t>Required parameters: N/A</t>
                         <t>
-                            Optional parameters:
-                            <list style="hanging">
-                                <t hangText="schema:">
-                                    A non-empty list of space-separated IRIs, each identifying
-                                    a JSON Schema resource.  The instance SHOULD successfully
-                                    validate against at least one of these meta-schemas.
-                                    Non-validating meta-schemas MAY be included for purposes such
-                                    as allowing clients to make use of older versions of
-                                    a meta-schema as long as the runtime instance validates
-                                    against that older version.
-                                </t>
-                            </list>
-                        </t>
-                        <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
                             media type.  See <xref target="RFC8259">JSON</xref>.
@@ -3200,20 +3266,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <list>
                         <t>Type name: application</t>
                         <t>Subtype name: schema-instance+json</t>
-                        <t>
-                            Required parameters:
-                            <list style="hanging">
-                                <t hangText="schema:">
-                                    A non-empty list of space-separated IRIs, each identifying
-                                    a JSON Schema resource.  The instance SHOULD successfully
-                                    validate against at least one of these schemas.
-                                    Non-validating schemas MAY be included for purposes such
-                                    as allowing clients to make use of older versions of a schema
-                                    as long as the runtime instance validates against that
-                                    older version.
-                                </t>
-                            </list>
-                        </t>
+                        <t>Required parameters: N/A</t>
                         <t>
                             Encoding considerations: Encoding considerations are
                             identical to those specified for the "application/json"
@@ -3277,9 +3330,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <author initials="B." surname="Hutton">
                         <organization/>
                     </author>
-                    <date year="2020" month="December"/>
+                    <date year="2022" month="June"/>
                 </front>
-                <seriesInfo name="Internet-Draft" value="draft-bhutton-json-schema-validation-00" />
+                <seriesInfo name="Internet-Draft" value="draft-bhutton-json-schema-validation-01" />
             </reference>
             <reference anchor="json-hyper-schema">
                 <front>
@@ -3358,7 +3411,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                 </artwork>
             </figure>
             <t>
-                The schemas at the following URI-encoded <xref target="RFC6901">JSON
+                The schemas at the following IRI-encoded <xref target="RFC6901">JSON
                 Pointers</xref> (relative to the root schema) have the following
                 base IRIs, and are identifiable by any listed IRI in accordance with
                 sections <xref target="fragments" format="counter"></xref> and
@@ -3368,10 +3421,10 @@ https://example.com/schemas/common#/$defs/count/minimum
                 <list style="hanging">
                     <t hangText="# (document root)">
                         <list style="hanging">
-                            <t hangText="canonical absolute-IRI (and also base IRI)">
+                            <t hangText="canonical (and base) IRI">
                                 https://example.com/root.json
                             </t>
-                            <t hangText="canonical IRI with pointer fragment">
+                            <t hangText="canonical resource IRI plus pointer fragment">
                                 https://example.com/root.json#
                             </t>
                         </list>
@@ -3379,21 +3432,21 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t hangText="#/$defs/A">
                         <list>
                             <t hangText="base IRI">https://example.com/root.json</t>
-                            <t hangText="canonical IRI with plain fragment">
+                            <t hangText="canonical resource IRI plus plain fragment">
                                 https://example.com/root.json#foo
                             </t>
-                            <t hangText="canonical IRI with pointer fragment">
+                            <t hangText="canonical resource IRI plus pointer fragment">
                                 https://example.com/root.json#/$defs/A
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/B">
                         <list style="hanging">
-                            <t hangText="base IRI">https://example.com/other.json</t>
-                            <t hangText="canonical IRI with pointer fragment">
+                            <t hangText="canonical (and base) IRI">https://example.com/other.json</t>
+                            <t hangText="canonical resource IRI plus pointer fragment">
                                 https://example.com/other.json#
                             </t>
-                            <t hangText="non-canonical IRI with fragment relative to root.json">
+                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
                                 https://example.com/root.json#/$defs/B
                             </t>
                         </list>
@@ -3401,49 +3454,61 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t hangText="#/$defs/B/$defs/X">
                         <list style="hanging">
                             <t hangText="base IRI">https://example.com/other.json</t>
-                            <t hangText="canonical IRI with plain fragment">
+                            <t hangText="canonical resource IRI plus plain fragment">
                                 https://example.com/other.json#bar
                             </t>
-                            <t hangText="canonical IRI with pointer fragment">
+                            <t hangText="canonical resource IRI plus pointer fragment">
                                 https://example.com/other.json#/$defs/X
                             </t>
-                            <t hangText="non-canonical IRI with fragment relative to root.json">
+                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
                                 https://example.com/root.json#/$defs/B/$defs/X
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/B/$defs/Y">
                         <list style="hanging">
-                            <t hangText="base IRI">https://example.com/t/inner.json</t>
-                            <t hangText="canonical IRI with plain fragment">
+                            <t hangText="canonical (and base) IRI">https://example.com/t/inner.json</t>
+                            <t hangText="canonical IRI plus plain fragment">
                                 https://example.com/t/inner.json#bar
                             </t>
-                            <t hangText="canonical IRI with pointer fragment">
+                            <t hangText="canonical IRI plus pointer fragment">
                                 https://example.com/t/inner.json#
                             </t>
-                            <t hangText="non-canonical IRI with fragment relative to other.json">
+                            <t hangText="base IRI of enclosing (other.json) resource plus fragment">
                                 https://example.com/other.json#/$defs/Y
                             </t>
-                            <t hangText="non-canonical IRI with fragment relative to root.json">
+                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
                                 https://example.com/root.json#/$defs/B/$defs/Y
                             </t>
                         </list>
                     </t>
                     <t hangText="#/$defs/C">
                         <list style="hanging">
-                            <t hangText="base IRI">
+                            <t hangText="canonical (and base) IRI">
                                 urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f
                             </t>
-                            <t hangText="canonical IRI with pointer fragment">
+                            <t hangText="canonical IRI plus pointer fragment">
                                 urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#
                             </t>
-                            <t hangText="non-canonical IRI with fragment relative to root.json">
+                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
                                 https://example.com/root.json#/$defs/C
                             </t>
                         </list>
                     </t>
                 </list>
             </t>
+            <t>
+                Note: The fragment part of the IRI does not make it canonical or non-canonical,
+                rather, the base IRI used (as part of the full IRI with any fragment) is what
+                determines the canonical nature of the resulting full IRI.
+                <cref>
+                    Multiple "canonical" IRIs? We Acknowledge this is potentially confusing, and
+                    direct you to read the CREF located in the
+                    <xref target="embedded">JSON Pointer fragments and embedded schema resources</xref>
+                    section for futher comments.
+                </cref>
+            </t>
+
         </section>
 
         <section title="Manipulating schema documents and references">
@@ -3469,8 +3534,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                 <t>
                     This transformation can be safely and reversibly done as long as
                     all static references (e.g. "$ref") use IRI-references that resolve
-                    to canonical IRIs, and all schema resources have an absolute-IRI
-                    as the "$id" in their root schema.
+                    to IRIs using the canonical resource IRI as the base, and all schema
+                    resources have an absolute-IRI as the "$id" in their root schema.
                 </t>
                 <t>
                     With these conditions met, each external resource can be copied
@@ -3478,7 +3543,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     schema objects, and without changing any aspect of validation or
                     annotation results.  The names of the schemas under "$defs" do
                     not affect behavior, assuming they are each unique, as they
-                    do not appear in canonical IRIs for the embedded resources.
+                    do not appear in the canonical IRIs for the embedded resources.
                 </t>
             </section>
             <section title="Reference removal is not always safe">
@@ -3880,8 +3945,19 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t hangText="draft-bhutton-json-schema-next">
                         <list style="symbols">
                             <t>"contains" now applies to objects as well as arrays</t>
+                            <t>Use IRIs instead of URIs</t>
                             <t>Remove bookending requirement for "$dynamicRef"</t>
                             <t>Add "propertyDependencies" keyword</t>
+                        </list>
+                    </t>
+                    <t hangText="draft-bhutton-json-schema-01">
+                        <list style="symbols">
+                            <t>Improve and clarify the "type", "contains", "unevaluatedProperties", and "unevaluatedItems" keyword explanations</t>
+                            <t>Clarify various aspects of "canonical URIs"</t>
+                            <t>Comment on ambiguity around annotations and "additionalProperties"</t>
+                            <t>Clarify Vocabularies need not be formally defined</t>
+                            <t>Remove references to remaining media-type parameters</t>
+                            <t>Fix multiple examples</t>
                         </list>
                     </t>
                     <t hangText="draft-bhutton-json-schema-00">
@@ -3889,8 +3965,8 @@ https://example.com/schemas/common#/$defs/count/minimum
                             <t>"$schema" MAY change for embedded resources</t>
                             <t>Array-value "items" functionality is now "prefixItems"</t>
                             <t>"items" subsumes the old function of "additionalItems"</t>
-                            <t>"contains" and "unevaluatedItems" interactions now specified</t>
-                            <t>Rename $recursive* to $dynamic*</t>
+                            <t>"contains" annotation behavior, and "contains" and "unevaluatedItems" interactions now specified</t>
+                            <t>Rename $recursive* to $dynamic*, with behavior modification</t>
                             <t>$dynamicAnchor defines a fragment like $anchor</t>
                             <t>$dynamic* (previously $recursive) no longer use runtime base URI determination</t>
                             <t>Define Compound Schema Documents (bundle) and processing</t>
