@@ -2869,11 +2869,12 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </t>
                     <t>
                         For "hierarchical", this property will hold nested results in a tree
-                        structure, mimicking that of the schema.
+                        structure where each output unit may itself have nested results.
                     </t>
                     <t>
                         The sequence of output units within this list is not specified and
-                        may be determined by the implementation.
+                        MAY be determined by the implementation.  Sets of output units are
+                        considered equivalent if they contain the same units, in any order.
                     </t>
                     <t>
                         The JSON key for nested results is "nested".
