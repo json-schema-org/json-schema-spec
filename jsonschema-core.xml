@@ -3103,32 +3103,35 @@ https://example.com/schemas/common#/$defs/count/minimum
 // failing results
 {
   "valid": false,
+  "evaluationPath": "",
+  "schemaLocation": "https://json-schema.org/schemas/example#",
+  "instanceLocation": "",
   "nested": [
     {
-      "evaluationPath": "/properties/foo/allOf/0",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+      "valid": false,
+      "evaluationPath": "/properties/foo/0",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/0",
       "instanceLocation": "/foo",
       "errors": {
-        "type": "Expected the property \"unspecified-prop\"."
+        "required": "Required properties [\"unspecified-prop\"] were not present"
       }
     },
     {
-      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+      "valid": false,
+      "evaluationPath": "/properties/foo/1/properties/foo-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
       "instanceLocation": "/foo/foo-prop",
       "errors": {
-        "type": "Expected the value \"1\"."
+        "const": "Expected \"1\""
       }
     },
     {
+      "valid": false,
       "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
       "instanceLocation": "/bar/bar-prop",
       "errors": {
-        "type": "Expected a value of type \"integer\"."
+        "minimum": "2 is less than or equal to 10"
       }
     }
   ]
@@ -3137,44 +3140,54 @@ https://example.com/schemas/common#/$defs/count/minimum
 // passing results
 {
   "valid": true,
+  "evaluationPath": "",
+  "schemaLocation": "https://json-schema.org/schemas/example#",
+  "instanceLocation": "",
   "nested": [
     {
       "valid": true,
       "evaluationPath": "",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#",
+      "schemaLocation": "https://json-schema.org/schemas/example#",
       "instanceLocation": "",
       "annotations": {
         "title": "root",
-        "properties": [ "foo", "bar" ]
+        "properties": [
+          "foo",
+          "bar"
+        ]
       }
     },
     {
       "valid": true,
-      "evaluationPath": "/properties/foo",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/foo",
+      "evaluationPath": "/properties/foo/1",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1",
       "instanceLocation": "/foo",
       "annotations": {
-        "title": "foo-title"
+        "title": "foo-title",
+        "properties": [
+          "foo-prop"
+        ],
+        "additionalProperties": [
+          "unspecified-prop"
+        ]
       }
     },
     {
       "valid": true,
-      "evaluationPath": "/properties/foo/allOf/1",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
-      "instanceLocation": "/foo/foo-prop",
+      "evaluationPath": "/properties/bar/$ref",
+      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
+      "instanceLocation": "/bar",
       "annotations": {
-        "properties": [ "foo-prop" ],
-        "additionalProperties": [ "unspecified-prop" ]
+        "title": "bar-title",
+        "properties": [
+          "bar-prop"
+        ]
       }
     },
     {
       "valid": true,
-      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+      "evaluationPath": "/properties/foo/1/properties/foo-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
       "instanceLocation": "/foo/foo-prop",
       "annotations": {
         "title": "foo-prop-title"
@@ -3182,20 +3195,8 @@ https://example.com/schemas/common#/$defs/count/minimum
     },
     {
       "valid": true,
-      "evaluationPath": "/properties/bar/$ref",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/$defs/bar",
-      "instanceLocation": "/bar",
-      "annotations": {
-        "title": "bar-title",
-        "properties": [ "bar-prop" ]
-      }
-    },
-    {
-      "valid": true,
       "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
       "instanceLocation": "/bar/bar-prop",
       "annotations": {
         "title": "bar-prop-title"
@@ -3227,122 +3228,134 @@ https://example.com/schemas/common#/$defs/count/minimum
 <![CDATA[
 // failing results (errors)
 {
-    "valid": false,
-    "nested": [
-      {
-        "valid": false,
-        "evaluationPath": "/properties/foo",
-        "schemaLocation":
-          "https://json-schema.org/schemas/example#/properties/foo",
-        "instanceLocation": "/foo",
-        "nested": [
-          {
-            "valid": false,
-            "evaluationPath": "/properties/foo/allOf/0",
-            "schemaLocation":
-              "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
-            "instanceLocation": "/foo",
-            "errors": {
-              "required": "Expected the property \"unspecified-prop\"."
+  "valid": false,
+  "evaluationPath": "",
+  "schemaLocation": "https://json-schema.org/schemas/example#",
+  "instanceLocation": "",
+  "nested": [
+    {
+      "valid": false,
+      "evaluationPath": "/properties/foo",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
+      "instanceLocation": "/foo",
+      "nested": [
+        {
+          "valid": false,
+          "evaluationPath": "/properties/foo/0",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/0",
+          "instanceLocation": "/foo",
+          "errors": {
+            "required": "Required properties [\"unspecified-prop\"] were not present"
+          }
+        },
+        {
+          "valid": false,
+          "evaluationPath": "/properties/foo/1",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1",
+          "instanceLocation": "/foo",
+          "nested": [
+            {
+              "valid": false,
+              "evaluationPath": "/properties/foo/1/properties/foo-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
+              "instanceLocation": "/foo/foo-prop",
+              "errors": {
+                "const": "Expected \"1\""
+              }
+            },
+            {
+              "valid": true,
+              "evaluationPath": "/properties/foo/1/additionalProperties/other-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/additionalProperties/other-prop",
+              "instanceLocation": "/foo/other-prop"
             }
-          },
-          {
-            "valid": false,
-            "evaluationPath": "/properties/foo/allOf/1",
-            "schemaLocation":
-              "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
-            "instanceLocation": "/foo/foo-prop",
-            "nested": [
-              {
-                "valid": false,
-                "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-                "schemaLocation":
-                  "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
-                "instanceLocation": "/foo/foo-prop",
-                "errors": {
-                  "const": "Expected the value \"1\"."
-                }
+          ]
+        }
+      ]
+    },
+    {
+      "valid": false,
+      "evaluationPath": "/properties/bar",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
+      "instanceLocation": "/bar",
+      "nested": [
+        {
+          "valid": false,
+          "evaluationPath": "/properties/bar/$ref",
+          "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
+          "instanceLocation": "/bar",
+          "nested": [
+            {
+              "valid": false,
+              "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+              "instanceLocation": "/bar/bar-prop",
+              "errors": {
+                "minimum": "2 is less than or equal to 10"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "valid": false,
-        "evaluationPath": "/properties/bar",
-        "schemaLocation":
-          "https://json-schema.org/schemas/example#/properties/bar",
-        "instanceLocation": "/bar",
-        "nested": [
-          {
-            "valid": false,
-            "evaluationPath": "/properties/bar/$ref",
-            "schemaLocation":
-              "https://json-schema.org/schemas/example#/$defs/bar",
-            "instanceLocation": "/bar",
-            "nested": [
-              {
-                "valid": false,
-                "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-                "schemaLocation":
-                  "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
-                "instanceLocation": "/bar/bar-prop",
-                "errors": {
-                  "type": "Expected a value of type \"integer\"."
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
 
-  // passing results (annotations)
-  {
+// passing results (annotations)
+{
   "valid": true,
+  "evaluationPath": "",
+  "schemaLocation": "https://json-schema.org/schemas/example#",
+  "instanceLocation": "",
   "annotations": {
     "title": "root",
-    "properties": [ "foo", "bar" ]
+    "properties": [
+      "foo",
+      "bar"
+    ]
   },
   "nested": [
     {
       "valid": true,
       "evaluationPath": "/properties/foo",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/foo",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
       "instanceLocation": "/foo",
-      "annotations": {
-        "title": "foo-title"
-      },
       "nested": [
         {
           "valid": true,
-          "evaluationPath": "/properties/foo/allOf/0",
-          "schemaLocation":
-            "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+          "evaluationPath": "/properties/foo/0",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/0",
           "instanceLocation": "/foo"
         },
         {
           "valid": true,
-          "evaluationPath": "/properties/foo/allOf/1",
-          "schemaLocation":
-            "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
-          "instanceLocation": "/foo/foo-prop",
+          "evaluationPath": "/properties/foo/1",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1",
+          "instanceLocation": "/foo",
           "annotations": {
-            "properties": [ "foo-prop" ],
-            "additionalProperties": [ "unspecified-prop" ]
+            "title": "foo-title",
+            "properties": [
+              "foo-prop"
+            ],
+            "additionalProperties": [
+              "unspecified-prop"
+            ]
           },
           "nested": [
             {
               "valid": true,
-              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-              "schemaLocation":
-                "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+              "evaluationPath": "/properties/foo/1/properties/foo-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
               "instanceLocation": "/foo/foo-prop",
               "annotations": {
                 "title": "foo-prop-title"
               }
+            },
+            {
+              "valid": true,
+              "evaluationPath": "/properties/foo/1/additionalProperties/unspecified-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/additionalProperties/unspecified-prop",
+              "instanceLocation": "/foo/unspecified-prop"
             }
           ]
         }
@@ -3351,26 +3364,25 @@ https://example.com/schemas/common#/$defs/count/minimum
     {
       "valid": true,
       "evaluationPath": "/properties/bar",
-      "schemaLocation":
-        "https://json-schema.org/schemas/example#/properties/bar",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
       "instanceLocation": "/bar",
       "nested": [
         {
           "valid": true,
           "evaluationPath": "/properties/bar/$ref",
-          "schemaLocation":
-            "https://json-schema.org/schemas/example#/$defs/bar",
+          "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
           "instanceLocation": "/bar",
           "annotations": {
             "title": "bar-title",
-            "properties": [ "bar-prop" ]
+            "properties": [
+              "bar-prop"
+            ]
           },
           "nested": [
             {
               "valid": true,
               "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-              "schemaLocation":
-                "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
               "instanceLocation": "/bar/bar-prop",
               "annotations": {
                 "title": "bar-prop-title"
