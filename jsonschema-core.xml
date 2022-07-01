@@ -3090,7 +3090,9 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         The root output unit contains "valid" for the overall result and "nested"
                         for the list of specific results.  All other information is explicitly
-                        omitted from the root output unit.
+                        omitted from the root output unit.  If the root schema produces errors or
+                        annotations, then the output node for the root MUST be present within the
+                        root output unit's "nested" list with those errors or annotations.
                     </t>
                     <t>
                         Output units which do not contain errors or annotations SHOULD be excluded
@@ -3103,14 +3105,11 @@ https://example.com/schemas/common#/$defs/count/minimum
 // failing results
 {
   "valid": false,
-  "evaluationPath": "",
-  "schemaLocation": "https://json-schema.org/schemas/example#",
-  "instanceLocation": "",
   "nested": [
     {
       "valid": false,
-      "evaluationPath": "/properties/foo/0",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/0",
+      "evaluationPath": "/properties/foo/allOf/0",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
       "instanceLocation": "/foo",
       "errors": {
         "required": "Required properties [\"unspecified-prop\"] were not present"
@@ -3118,8 +3117,8 @@ https://example.com/schemas/common#/$defs/count/minimum
     },
     {
       "valid": false,
-      "evaluationPath": "/properties/foo/1/properties/foo-prop",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
+      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
       "instanceLocation": "/foo/foo-prop",
       "errors": {
         "const": "Expected \"1\""
@@ -3140,9 +3139,6 @@ https://example.com/schemas/common#/$defs/count/minimum
 // passing results
 {
   "valid": true,
-  "evaluationPath": "",
-  "schemaLocation": "https://json-schema.org/schemas/example#",
-  "instanceLocation": "",
   "nested": [
     {
       "valid": true,
@@ -3159,8 +3155,8 @@ https://example.com/schemas/common#/$defs/count/minimum
     },
     {
       "valid": true,
-      "evaluationPath": "/properties/foo/1",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1",
+      "evaluationPath": "/properties/foo/allOf/1",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
       "instanceLocation": "/foo",
       "annotations": {
         "title": "foo-title",
@@ -3186,8 +3182,8 @@ https://example.com/schemas/common#/$defs/count/minimum
     },
     {
       "valid": true,
-      "evaluationPath": "/properties/foo/1/properties/foo-prop",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
+      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
       "instanceLocation": "/foo/foo-prop",
       "annotations": {
         "title": "foo-prop-title"
@@ -3220,8 +3216,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                         All output units are included in this format.
                     </t>
                     <t>
-                        The location properties of the output unit MAY be omitted from the
-                        root node.
+                        The location properties of the root output unit MAY be omitted.
                     </t>
                     <figure>
                         <artwork>
@@ -3241,8 +3236,8 @@ https://example.com/schemas/common#/$defs/count/minimum
       "nested": [
         {
           "valid": false,
-          "evaluationPath": "/properties/foo/0",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/0",
+          "evaluationPath": "/properties/foo/allOf/0",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
           "instanceLocation": "/foo",
           "errors": {
             "required": "Required properties [\"unspecified-prop\"] were not present"
@@ -3250,14 +3245,14 @@ https://example.com/schemas/common#/$defs/count/minimum
         },
         {
           "valid": false,
-          "evaluationPath": "/properties/foo/1",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1",
+          "evaluationPath": "/properties/foo/allOf/1",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
           "instanceLocation": "/foo",
           "nested": [
             {
               "valid": false,
-              "evaluationPath": "/properties/foo/1/properties/foo-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
+              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
               "instanceLocation": "/foo/foo-prop",
               "errors": {
                 "const": "Expected \"1\""
@@ -3265,8 +3260,8 @@ https://example.com/schemas/common#/$defs/count/minimum
             },
             {
               "valid": true,
-              "evaluationPath": "/properties/foo/1/additionalProperties/other-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/additionalProperties/other-prop",
+              "evaluationPath": "/properties/foo/allOf/1/additionalProperties",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/additionalProperties",
               "instanceLocation": "/foo/other-prop"
             }
           ]
@@ -3323,14 +3318,14 @@ https://example.com/schemas/common#/$defs/count/minimum
       "nested": [
         {
           "valid": true,
-          "evaluationPath": "/properties/foo/0",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/0",
+          "evaluationPath": "/properties/foo/allOf/0",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
           "instanceLocation": "/foo"
         },
         {
           "valid": true,
-          "evaluationPath": "/properties/foo/1",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1",
+          "evaluationPath": "/properties/foo/allOf/1",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
           "instanceLocation": "/foo",
           "annotations": {
             "title": "foo-title",
@@ -3344,8 +3339,8 @@ https://example.com/schemas/common#/$defs/count/minimum
           "nested": [
             {
               "valid": true,
-              "evaluationPath": "/properties/foo/1/properties/foo-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/properties/foo-prop",
+              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
               "instanceLocation": "/foo/foo-prop",
               "annotations": {
                 "title": "foo-prop-title"
@@ -3353,8 +3348,8 @@ https://example.com/schemas/common#/$defs/count/minimum
             },
             {
               "valid": true,
-              "evaluationPath": "/properties/foo/1/additionalProperties/unspecified-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/1/additionalProperties/unspecified-prop",
+              "evaluationPath": "/properties/foo/allOf/1/additionalProperties",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/additionalProperties",
               "instanceLocation": "/foo/unspecified-prop"
             }
           ]
