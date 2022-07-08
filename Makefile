@@ -11,10 +11,14 @@ all: $(OUT)
 %.txt: %.xml
 	$(XML2RFC) --text $< -o $@
 
+%.pdf: %.xml
+	$(XML2RFC) --pdf $< -o $@
+
 %.html: %.xml
 	$(XML2RFC) --html $< -o $@
 
 json-schema.tar.gz: $(OUT)
+	test ! -e json-schema
 	mkdir json-schema
 	git clone . json-schema
 	(cd json-schema && make)
