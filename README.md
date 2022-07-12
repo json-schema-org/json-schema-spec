@@ -93,4 +93,4 @@ Here are our top sponsors. You could be next! [[Become a sponsor](https://openco
 
 ## License
 
-The source material in this repository is licensed under the AFL or BSD license.
+The contents of this repository are [licensed under](./LICENSE) either the BSD 3-clause license *or* the Academic Free License v3.0.
