@@ -2,7 +2,8 @@
     "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://json-schema.org/draft/next/meta/applicator",
     "$vocabulary": {
-        "https://json-schema.org/draft/next/vocab/applicator": true
+        "https://json-schema.org/draft/next/vocab/applicator": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true
     },
     "$dynamicAnchor": "meta",
 
@@ -47,11 +48,103 @@
         "oneOf": { "$ref": "#/$defs/schemaArray" },
         "not": { "$dynamicRef": "#meta" }
     },
+    "applicators": {
+        "prefixItems": "arrayChild",
+        "items": "arrayChild",
+        "contains": [ "objectChild", "arrayChild" ],
+        "additionalProperties": "objectChild",
+        "properties": "objectChild",
+        "patternProperties": "objectChild",
+        "dependentSchemas": "inPlace",
+        "propertyDependencies": "inPlace",
+        "propertyNames": "objectChild",
+        "if": "inPlace",
+        "then": "inPlace",
+        "else": "inPlace",
+        "allOf": "inPlace",
+        "anyOf": "inPlace",
+        "oneOf": "inPlace",
+        "not": "inPlace"
+    },
+    "assertions": [
+        "prefixItems",
+        "items",
+        "contains",
+        "additionalProperties",
+        "properties",
+        "patternProperties",
+        "dependentSchemas",
+        "propertyDependencies",
+        "propertyNames",
+        "then",
+        "else",
+        "allOf",
+        "anyOf",
+        "oneOf",
+        "not"
+    ],
+    "annotations": {
+        "prefixItems": {
+            "kind": [ "producer", "collector" ],
+            "producedValue": {
+                "oneOf": [
+                    { "$ref": "#/$defs/nonNegativeInteger" },
+                    { "type": "boolean" }
+                ]
+            }
+        },
+        "items": {
+            "kind": [ "producer", "collector" ],
+            "producedValue": { "const": true }
+        },
+        "contains": {
+            "kind": [ "producer", "collector" ],
+            "producedValue": {
+                "type": "array",
+                "items": { "$ref": "#/$defs/nonNegativeInteger" }
+            }
+        },
+        "additionalProperties": {
+            "kind": [ "producer", "collector" ],
+            "producedValue": {
+                "type": "array",
+                "items": { "type": "string" }
+            }
+        },
+        "properties": {
+            "kind": [ "producer", "collector" ],
+            "producedValue": {
+                "type": "array",
+                "items": { "type": "string" }
+            }
+        },
+        "patternProperties": {
+            "kind": [ "producer", "collector" ],
+            "producedValue": {
+                "type": "array",
+                "items": { "type": "string" }
+            }
+        },
+        "dependentSchemas": { "kind": "collector" },
+        "propertyDependencies": { "kind": "collector" },
+        "propertyNames": { "kind": "collector" },
+        "if": { "kind": "collector" },
+        "then": { "kind": "collector" },
+        "else": { "kind": "collector" },
+        "allOf": { "kind": "collector" },
+        "anyOf": { "kind": "collector" },
+        "oneOf": { "kind": "collector" },
+        "not": { "kind": "collector" }
+    },
     "$defs": {
         "schemaArray": {
             "type": "array",
             "minItems": 1,
             "items": { "$dynamicRef": "#meta" }
+        },
+        "nonNegativeInteger": {
+            "type": "integer",
+            "minimum": 0
         }
     }
 }

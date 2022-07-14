@@ -2,7 +2,8 @@
     "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://json-schema.org/draft/next/meta/content",
     "$vocabulary": {
-        "https://json-schema.org/draft/next/vocab/content": true
+        "https://json-schema.org/draft/next/vocab/content": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true
     },
     "$dynamicAnchor": "meta",
 
@@ -13,5 +14,10 @@
         "contentEncoding": { "type": "string" },
         "contentMediaType": { "type": "string" },
         "contentSchema": { "$dynamicRef": "#meta" }
+    },
+    "annotations": {
+        "contentEncoding": { "kind": "producer" },
+        "contentMediaType": { "kind": "producer" },
+        "contentSchema": { "kind": "producer" }
     }
 }

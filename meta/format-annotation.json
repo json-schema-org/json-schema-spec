@@ -2,7 +2,8 @@
     "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://json-schema.org/draft/next/meta/format-annotation",
     "$vocabulary": {
-        "https://json-schema.org/draft/next/vocab/format-annotation": true
+        "https://json-schema.org/draft/next/vocab/format-annotation": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true
     },
     "$dynamicAnchor": "meta",
 
@@ -10,5 +11,8 @@
     "type": ["object", "boolean"],
     "properties": {
         "format": { "type": "string" }
+    },
+    "annotations": {
+        "format": { "kind": "producer" }
     }
 }

@@ -2,7 +2,8 @@
     "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://json-schema.org/draft/next/meta/meta-data",
     "$vocabulary": {
-        "https://json-schema.org/draft/next/vocab/meta-data": true
+        "https://json-schema.org/draft/next/vocab/meta-data": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true
     },
     "$dynamicAnchor": "meta",
 
@@ -33,5 +34,14 @@
             "type": "array",
             "items": true
         }
+    },
+    "annotations": {
+        "title": { "kind": "producer" },
+        "description": { "kind": "producer" },
+        "default": { "kind": "producer" },
+        "deprecated": { "kind": "producer" },
+        "readOnly": { "kind": "producer" },
+        "writeOnly": { "kind": "producer" },
+        "examples": { "kind": "producer" }
     }
 }

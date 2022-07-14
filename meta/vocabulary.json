@@ -1,0 +1,66 @@
+{
+    "$schema": "https://json-schema.org/draft/next/schema",
+    "$id": "https://json-schema.org/draft/next/meta/vocabulary",
+    "$vocabulary": {
+        "https://json-schema.org/draft/next/vocab/core": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true,
+    },
+
+    "title": "Vocabulary meta-data vocabulary meta-schema",
+    "description": "Defines keywords for use in vocabulary meta-schemas to provide additional information for their keywords",
+    "type": [ "object", "boolean" ],
+    "properties": {
+        "applicators": {
+            "type": "object",
+            "additionalProperties": {
+                "oneOf": [
+                    {"$ref": "#/$defs/applicatorKind"},
+                    {
+                        "type": "array",
+                        "items": { "$ref": "#/$defs/applicatorKind" },
+                        "minItems": 1,
+                        "uniqueItems": true
+                    }
+                ],
+            }
+        },
+        "assertions": {
+            "type": "array",
+            "items": { "type": "string" }
+        },
+        "annotations": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "oneOf": [
+                            { "$ref": "#/$defs/annotationKind" },
+                            {
+                                "type": "array",
+                                "items": { "$ref": "#/$defs/annotationKind" },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            }
+                        ],
+                    }
+                },
+                "producedValue": true
+            },
+            "required": [ "kind" ]
+        }
+    },
+    "annotations": {
+        "applicators": { "kind": "producer" },
+        "assertions": { "kind": "producer" },
+        "annotations": { "kind": "producer" }
+    },
+    "$defs": {
+        "applicatorKind": {
+            "enum": [ "objectChild", "arrayChild", "inPlace" ]
+        },
+        "annotationKind": {
+            "enum": [ "producer", "collector" ]
+        }
+    }
+}

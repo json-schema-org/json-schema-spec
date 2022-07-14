@@ -2,7 +2,8 @@
     "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://json-schema.org/draft/next/meta/unevaluated",
     "$vocabulary": {
-        "https://json-schema.org/draft/next/vocab/unevaluated": true
+        "https://json-schema.org/draft/next/vocab/unevaluated": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true
     },
     "$dynamicAnchor": "meta",
 
@@ -11,5 +12,17 @@
     "properties": {
         "unevaluatedItems": { "$dynamicRef": "#meta" },
         "unevaluatedProperties": { "$dynamicRef": "#meta" }
+    },
+    "applicators": {
+        "unevaluatedItems": "arrayChild",
+        "unevaluatedProperties": "objectChild"
+    },
+    "assertions": [
+        "unevaluatedItems",
+        "unevaluatedProperties"
+    ],
+    "annotations": {
+        "unevaluatedItems": { "kind": "collector" },
+        "unevaluatedProperties": { "kind": "collector" }
     }
 }

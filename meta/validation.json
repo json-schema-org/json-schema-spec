@@ -2,7 +2,8 @@
     "$schema": "https://json-schema.org/draft/next/schema",
     "$id": "https://json-schema.org/draft/next/meta/validation",
     "$vocabulary": {
-        "https://json-schema.org/draft/next/vocab/validation": true
+        "https://json-schema.org/draft/next/vocab/validation": true,
+        "https://json-schema.org/draft/next/vocab/vocabulary": true
     },
     "$dynamicAnchor": "meta",
 
@@ -68,6 +69,27 @@
             }
         }
     },
+    "assertions": [
+        "type",
+        "const",
+        "multipleOf",
+        "maximum",
+        "exclusiveMaximum",
+        "minimum",
+        "exclusiveMinimum",
+        "maxLength",
+        "minLength",
+        "pattern",
+        "maxItems",
+        "minItems",
+        "uniqueItems",
+        "maxContains",
+        "minContains",
+        "maxProperties",
+        "minProperties",
+        "required",
+        "dependentRequired"
+    ],
     "$defs": {
         "nonNegativeInteger": {
             "type": "integer",
