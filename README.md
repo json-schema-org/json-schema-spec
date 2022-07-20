@@ -35,7 +35,14 @@ Labels are assigned based on [Sensible Github Labels](https://github.com/Releque
     * links.json - JSON Hyper-Schema's Link Description Object meta-schema
     * hyper-schema-output.json - The recommended output format for JSON Hyper-Schema links
 
-Install "xml2rfc" using "pip" (https://pypi.org/project/xml2rfc/) and type "make" at a shell to build the .txt and .html spec files.
+Install "xml2rfc" using "pip" (https://pypi.org/project/xml2rfc/) and type "make" at a shell to build the .txt and .html spec files:
+
+```sh
+pip install --requirement requirements.txt
+make 
+```
+
+The version of "xml2rfc" that this project uses is updated by modifying `requirements.in` and running `pip-compile requirements.in`.
 
 Descriptions of the xml2rfc, I-D documents, and RFC processes:
 
