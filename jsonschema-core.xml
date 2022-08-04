@@ -2727,7 +2727,8 @@
                         </t>
                         <t>
                             Hierarchical - Provides validation information in a hierarchical
-                            structure that mimics the dereferenced evaluation structure of the schema.
+                            structure that follows the evaluation paths generated while processing
+                            the schema.
                         </t>
                     </list>
                     An implementation MUST provide the "flag" format and SHOULD provide at least one
@@ -2753,10 +2754,9 @@
 
                 <section title="Evaluation path">
                     <t>
-                        The location of the schema resource that produced the output unit, represented
-                        by the path traversed during evaluation. The value MUST be expressed as a
-                        JSON Pointer, and it MUST include any by-reference applicators such as
-                        "$ref" or "$dynamicRef".
+                        The evalutaion path to the schema object that produced the output unit.
+                        The value MUST be expressed as a JSON Pointer, and it MUST include any
+                        by-reference applicators such as "$ref" or "$dynamicRef".
                         <cref>
                             The schema may not actually have a value at the location indicated
                             by this pointer. It is provided as an indication of the traversal
@@ -2779,19 +2779,19 @@
                     </t>
                 </section>
 
-                <section title="Subschema Location">
+                <section title="Schema Location">
                     <t>
-                        The absolute, dereferenced location of the schema resource that produced
+                        The absolute, dereferenced location of the schema object that produced
                         the output unit.  The value MUST be expressed using the canonical IRI of the
-                        relevant schema resource plus a JSON Pointer fragment that indicates the contained
-                        subschema that produced the output.  It MUST NOT include by-reference applicators
+                        relevant schema resource plus a JSON Pointer fragment that indicates the schema
+                        object that produced the output.  It MUST NOT include by-reference applicators
                         such as "$ref" or "$dynamicRef".
                         <cref>
                             Note that "absolute" here is in the sense of "absolute filesystem path"
                             (meaning the complete location) rather than the "absolute-IRI"
-                            terminology from RFC 3987 (meaning with scheme but without fragment).
-                            Keyword absolute locations will have a fragment in order to
-                            identify the keyword.
+                            terminology from RFC 3987 (meaning with scheme and without fragment).
+                            Schema locations will have a fragment in order to identify the specific
+                            schema object.
                         </cref>
                     </t>
                     <figure>
@@ -2844,7 +2844,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </t>
                     <t>
                         Each keyword defines its own annotation data type (e.g. "properties"
-                        produces a list of keywords, whereas "$title" produces a string).
+                        produces a list of keywords, whereas "title" produces a string).
                     </t>
                     <t>
                         The JSON key for this information is "annotations".
@@ -2887,11 +2887,10 @@ https://example.com/schemas/common#/$defs/count/minimum
                     "nested" as described below.
                     <list>
                         <t>
-                            "valid" - a boolean value indicating the overall validation success or
-                            failure
+                            "valid" - a boolean value indicating the overall validation success or failure
                         </t>
                         <t>
-                            "nested" - the collection of errors or annotations produced by a subschema
+                            "nested" - the collection of results produced by subschemas
                         </t>
                     </list>
                     For these examples, the following schema and instances will be used.
@@ -2963,21 +2962,21 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <list>
                         <t>
                             The value at "/foo"
-                            validated at "/properties/foo/allOf/0"
+                            evaluated at "/properties/foo/allOf/0"
                             by following the path "/properties/foo/allOf/0"
                             by the "required" keyword
                             is missing the property "unspecified-prop".
                         </t>
                         <t>
                             The value at "/foo/foo-prop"
-                            validated at "/properties/foo/allOf/1/properties/foo-prop"
+                            evaluated at "/properties/foo/allOf/1/properties/foo-prop"
                             by following the path "/properties/foo/allOf/1/properties/foo-prop"
                             by the "const" keyword
                             is not the constant value 1.
                         </t>
                         <t>
                             The value at "/bar/bar-prop"
-                            validated at "/$defs/bar/properties/bar-prop"
+                            evaluated at "/$defs/bar/properties/bar-prop"
                             by following the path "/properties/bar/$ref/properties/bar-prop"
                             by the "type" keyword
                             is not a number.
@@ -2999,55 +2998,55 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <list>
                         <t>
                             The keyword "title"
-                            validated at ""
+                            evaluated at ""
                             by following the path ""
                             will produce <sourcecode>"root"</sourcecode>.
                         </t>
                         <t>
                             The keyword "properties"
-                            validated at ""
+                            evaluated at ""
                             by following the path ""
                             will produce <sourcecode>["foo", "bar"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
-                            validated at "/properties/foo"
+                            evaluated at "/properties/foo"
                             by following the path "/properties/foo"
                             will produce <sourcecode>"foo-title"</sourcecode>.
                         </t>
                         <t>
                             The keyword "properties"
-                            validated at "/properties/foo/allOf/1"
+                            evaluated at "/properties/foo/allOf/1"
                             by following the path "/properties/foo/allOf/1"
                             will produce <sourcecode>["foo-prop"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "additionalProperties"
-                            validated at "/properties/foo/allOf/1"
+                            evaluated at "/properties/foo/allOf/1"
                             by following the path "/properties/foo/allOf/1"
                             will produce <sourcecode>["unspecified-prop"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
-                            validated at "/properties/foo/allOf/1/properties/foo-prop"
+                            evaluated at "/properties/foo/allOf/1/properties/foo-prop"
                             by following the path "/properties/foo/allOf/1/properties/foo-prop"
                             will produce <sourcecode>"foo-prop-title"</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
-                            validated at "/$defs/bar"
+                            evaluated at "/$defs/bar"
                             by following the path "/properties/bar/$ref"
                             will produce <sourcecode>"bar-title"</sourcecode>.
                         </t>
                         <t>
                             The keyword "properties"
-                            validated at "/$defs/bar"
+                            evaluated at "/$defs/bar"
                             by following the path "/properties/var/$ref"
                             will produce <sourcecode>["bar-prop"]</sourcecode>.
                         </t>
                         <t>
                             The keyword "title"
-                            validated at "/$defs/bar/properties/bar-prop"
+                            evaluated at "/$defs/bar/properties/bar-prop"
                             by following the path "/properties/bar/$ref/properties/bar-prop"
                             will produce <sourcecode>"bar-prop-title"</sourcecode>.
                         </t>
@@ -3206,7 +3205,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                     <t>
                         The "Hierarchical" structure is a tree structure that follows the
                         evaluation path during the validation process.  Typically, it will
-                        resemble the schema as if all referenced schemas were bundled in place
+                        resemble the schema as if all referenced schemas were inlined in place
                         of their associated by-reference keywords.
                     </t>
                     <t>
