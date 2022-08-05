@@ -1,8 +1,0 @@
-language: python
-install:
-- pip install "xml2rfc~=2.20"
-before_script:
-- TAG=$(git tag -l --points-at HEAD)
-script:
-- xml2rfc -V
-- make all
