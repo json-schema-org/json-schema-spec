@@ -1,0 +1,14 @@
+name: JSON Schema
+on:
+  - push
+jobs:
+  specs:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: pip install --requirement requirements.txt
+      - run: xml2rfc --version
+      - run: make all
+      - uses: actions/upload-artifact@v2
+        with:
+          path: *.(html|txt)
