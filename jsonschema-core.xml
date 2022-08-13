@@ -1467,6 +1467,11 @@
                         an error condition.  Otherwise the result is undefined, and even if
                         documented will not be interoperable.
                     </t>
+                    <t>
+                        Note that due to the semantics of JSON Pointer fragments, schema IRIs
+                        that differ only by the presence or absence of an empty fragment MUST
+                        be considered duplicates.
+                    </t>
                 </section>
 
                 <section title="Schema References" anchor="references">
