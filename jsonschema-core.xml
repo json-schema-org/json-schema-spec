@@ -2822,8 +2822,18 @@ https://example.com/schemas/common#/$defs/allOf/1
                         be included if the validation was successful.  The value
                         for this property MUST be an object where the keys are the names of
                         keywords and the values are the error message produced by the
-                        associated keyword.  If the subschema itself is producing the
-                        error, that error MUST be listed with an empty string key.
+                        associated keyword.
+                    </t>
+                    <t>
+                        If the subschema itself is producing the error, that error MUST be
+                        listed with an empty string key.
+                        <cref>
+                            Although there may be other cases where a subschema can produce
+                            an error, the most common case is the "false" schema.  In
+                            cases like these, there is no keyword that produces the error,
+                            so there is nothing to use as a key.  Thus the empty string
+                            is used instead.
+                        </cref>
                     </t>
                     <t>
                         The specific wording for the message is not defined by this
