@@ -11,4 +11,6 @@ jobs:
       - run: make all
       - uses: actions/upload-artifact@v2
         with:
-          path: *.(html|txt)
+          path: |
+              *.(html|txt)
+              !requirements.txt
