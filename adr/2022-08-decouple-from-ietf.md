@@ -62,7 +62,7 @@ Our decision is to go with Option 3 and decouple from IETF completely and come
 up with our own governance model. The idea of having to come up with our own
 governance model is daunting, but when the alternatives are to continue to abuse
 the I-D process or to conform to the IETF process that doesn't fit our needs,
-going our own way seems the bast option.
+going our own way seems the best option.
 
 ### Positive Consequences
 
