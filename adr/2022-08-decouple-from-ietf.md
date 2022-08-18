@@ -14,16 +14,16 @@ Related Issues:
 
 ## Context and Problem Statement
 
-Currently JSON Schema follows the IETF Internet-Draft (I-D) process for spec
-development and releases but aren't associated with IETF in any way. Our
+Currently JSON Schema loosely follows the IETF Internet-Draft (I-D) process for
+spec development and releases but isn't associated with IETF in any way. Our
 perceived involvement with IETF causes confusion and misunderstanding within our
-community in the cases were our needs and the realities of our situation deviate
-from the IETF process.
+community in the cases were our practices and the realities of our situation
+deviate from the typical IETF I-D process.
 
 ## Decision Drivers
 
 * IETF's draft versioning system doesn't work for JSON Schema and we stopped
-  using it to version our releases a while ago. We now use a date based version
+  using it to version our releases a while ago. We now use date based versioning
   and even have more than one draft submission per release (the initial release
   and the patch release).
 * The IETF process is optimized for working on a draft until it's done and then
@@ -52,31 +52,36 @@ from the IETF process.
 
 1. Continue to submit I-Ds, while using our customized process with no intention
   of pursing standards track RFC status.
-2. Get JSON Schema to a stable place and pursue a standards track RFC with the
-  IETF.
-3. Decouple from IETF completely and come up with our own governance model.
+2. Go all-in with IETF and pursue a standards track RFC with the IETF.
+3. Join W3C and pursue a standards track with them using their process.
+4. Decouple completely from any standards organization and come up with our own
+   specification development lifecycle (SDLC) model inspired by well established
+   projects with an SDLC that more closely meets or needs.
 
 ## Decision Outcome
 
-Our decision is to go with Option 3 and decouple from IETF completely and come
-up with our own governance model. The idea of having to come up with our own
-governance model is daunting, but when the alternatives are to continue to abuse
-the I-D process or to conform to the IETF process that doesn't fit our needs,
-going our own way seems the best option.
+Our decision is to go with Option 4 and decouple from standards organizations
+that don't fit our needs. We don't currently have a plan for what to replace
+IETF with. We are currently investigating how other established projects do
+their SDLC and will likely choose one to emulate and adapt to our needs.
+Although we don't have a replacement solution in place yet, we are confident
+that continuing to abuse the IETF I-D process or conforming to a standards
+organization process that doesn't fit our needs is not the way to go.
 
 ### Positive Consequences
 
 * Decoupling from IETF allows us to distance ourselves from the assumptions that
   people make about JSON Schema because they assume it works like a typical I-D.
-* Decoupling from IETF allows us to customize our governance model to what works
-  best for JSON Schema.
+* Decoupling from IETF allows us to customize our SDLC model to what works best
+  for JSON Schema.
 
 ### Negative Consequences
 
-* Choosing our own governance model means we aren't associated with a recognized
-  standard body which could reduce to credibility of JSON Schema in the eyes of
-  some.
-* If we don't go the standardization route with IETF, we lose access to their
-  expert review process.
-* Defining our own process will be a lot of work and none of use have expertise
-  in defining such a process.
+* Not being associated with a recognized standards organization such as IETF,
+  W3C, or IEEE reduces the credibility of JSON Schema in the eyes of some.
+* If we don't go the standardization route with IETF or W3C, we lose access to
+  their expert review process.
+* Defining our own SLDC process will be a lot of work and none of us have
+  expertise in defining such a process. However, we can take inspiration from
+  existing well established projects and we would have the freedom to update our
+  process as we learn what works and what doesn't.
