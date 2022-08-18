@@ -30,7 +30,7 @@ from the IETF process.
   disbanding. In some cases, the RFC may be revisited and revised in the future,
   but this is rare and generally contains little more than clarifications and
   reference updates. JSON Schema is not like that. JSON Schema is more like a
-  programming language. When it stops evolving, it will loose it's relevance.
+  programming language. When it stops evolving, it will lose its relevance.
   When we finish a release of JSON Schema, we don't disband, we start work on
   the next release.
 * Every one of our releases is expected to be used in production and will be
