@@ -14,6 +14,7 @@ jobs:
       - run: make all
       - uses: actions/upload-artifact@v3
         with:
+          name: specification-docs
           path: |
               *.html
               *.txt
