@@ -6,10 +6,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
       - run: pip install --requirement requirements.txt
       - run: xml2rfc --version
       - run: make all
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           path: |
               *.html
