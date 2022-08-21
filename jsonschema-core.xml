@@ -1353,8 +1353,8 @@
                     </t>
                     <t>
                         If present, the value for this keyword MUST be a string, and MUST represent a
-                        valid <xref target="RFC3987">IRI-reference</xref> with a non-empty non-fragment
-                        component.  This IRI-reference SHOULD be normalized, and MUST resolve to an
+                        valid <xref target="RFC3987">IRI-reference</xref>.  This IRI-reference
+                        SHOULD be normalized, and MUST resolve to an
                         <xref target="RFC3987">absolute-IRI</xref> (without a fragment),
                         or to a IRI with an empty fragment.
                     </t>
@@ -1392,7 +1392,10 @@
                         <xref target="RFC3986">RFC 3986 section 5.1.2</xref> regarding
                         encapsulating entities, if an "$id" in a subschema is a relative
                         IRI-reference, the base IRI for resolving that reference is the IRI of
-                        the parent schema resource.
+                        the parent schema resource.  Note that an "$id" consisting of an empty IRI or
+                        of the empty fragment only will result in the embedded resource having
+                        the same IRI as the encapsulating resource, which SHOULD be considered
+                        an error per section <xref target="duplicate-iris" format="counter"></xref>.
                     </t>
                     <t>
                         If no parent schema object explicitly identifies itself as a resource
@@ -1458,7 +1461,7 @@
                     </t>
                 </section>
 
-                <section title="Duplicate schema identifiers">
+                <section title="Duplicate schema identifiers" anchor="duplicate-iris">
                     <t>
                         A schema MAY (and likely will) have multiple IRIs, but there is no way
                         for an IRI to identify more than one schema. When multiple schemas
