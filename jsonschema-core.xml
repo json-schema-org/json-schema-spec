@@ -679,7 +679,7 @@
                     which processing begins, even if it is not a schema resource root.
                     The path from this root schema to any particular keyword (that
                     includes any "$ref" and "$dynamicRef" keywords that may have
-                    been resolved) is considered the keyword's "validation path."
+                    been resolved) is considered the keyword's "evaluation path."
                 </t>
                 <t>
                     Lexical and dynamic scopes align until a reference keyword
@@ -698,7 +698,7 @@
                     when reporting errors and collected annotations, as it may be possible
                     to revisit the same lexical scope repeatedly with different dynamic
                     scopes.  In such cases, it is important to inform the user of the
-                    dynamic path that produced the error or annotation.
+                    evaluation path that produced the error or annotation.
                 </t>
             </section>
             <section title="Keyword Interactions">
@@ -930,12 +930,12 @@
                                 The instance location to which it is attached, as a JSON Pointer
                             </t>
                             <t>
-                                The schema location path, indicating how reference keywords
+                                The evaluation path, indicating how reference keywords
                                 such as "$ref" were followed to reach the absolute schema location.
                             </t>
                             <t>
                                 The absolute schema location of the attaching keyword, as a IRI.
-                                This MAY be omitted if it is the same as the schema location path
+                                This MAY be omitted if it is the same as the evaluation path
                                 from above.
                             </t>
                             <t>
@@ -1016,11 +1016,11 @@
                             author to write descriptions that work when combined in this way.
                         </t>
                         <t>
-                            The application can use the schema location path to determine which
+                            The application can use the evaluation path to determine which
                             values are which.  The values in the feature's immediate "enabled"
                             property schema are more specific, while the values under the re-usable
-                            schema that is referenced to with "$ref" are more generic.  The schema
-                            location path will show whether each value was found by crossing a
+                            schema that is referenced to with "$ref" are more generic.  The evaluation
+                            path will show whether each value was found by crossing a
                             "$ref" or not.
                         </t>
                         <t>
@@ -3605,7 +3605,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                 scope before following the reference.
             </t>
             <t>
-                At this point, the dynamic path is
+                At this point, the evaluation path is
                 "#/$ref/properties/children/items/$dynamicRef", with a dynamic scope
                 containing (from the outermost scope to the innermost):
                 <list style="numbers">
