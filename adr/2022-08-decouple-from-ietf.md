@@ -15,10 +15,14 @@ Related Issues:
 ## Context and Problem Statement
 
 Currently JSON Schema loosely follows the IETF Internet-Draft (I-D) process for
-spec development and releases but isn't associated with IETF in any way. Our
-perceived involvement with IETF causes confusion and misunderstanding within our
-community in the cases were our practices and the realities of our situation
-deviate from the typical IETF I-D process.
+spec development and releases but isn't associated with any IETF working group.
+JSON Schema is an individual draft. That means it isn't on a standards track
+with IETF and IETF is not involved nor supports the spec in any way other than
+hosting the canonical version of our I-Ds. Our perceived involvement with IETF
+causes confusion and misunderstanding within our community in the cases were our
+practices and the realities of our situation deviate from a typical IETF I-D
+lifecycle. The thing that makes our situation different than a typical I-D is
+that our "drafts" are intended for use in production.
 
 ## Decision Drivers
 
@@ -46,13 +50,19 @@ deviate from the typical IETF I-D process.
 * Several members of the JSON Schema team have had poor interactions with IETF
   and don't feel that working with them would be productive. This is a
   relatively minor consideration. If we thought IETF was right for JSON Schema,
-  we could find ways to make those relationships work.
+  we could find ways to make those relationships work. We have a good
+  relationship with the relatively new HTTPAPIs working group and working with
+  them would be far more likely to be productive than the people/WG we were
+  previously in communication with.
 
 ## Considered Options
 
 1. Continue to submit I-Ds, while using our customized process with no intention
-  of pursing standards track RFC status.
-2. Go all-in with IETF and pursue a standards track RFC with the IETF.
+   of pursing standards track RFC status.
+2. Go all-in with IETF and pursue a standards track RFC with the IETF. The
+   approach would be to describe the essential characteristics of evaluating a
+   JSON Schema: the keywords that everybody is guaranteed to support, and any
+   extension mechanisms.
 3. Join W3C and pursue a standards track with them using their process.
 4. Decouple completely from any standards organization and come up with our own
    specification development lifecycle (SDLC) model inspired by well established
@@ -62,11 +72,44 @@ deviate from the typical IETF I-D process.
 
 Our decision is to go with Option 4 and decouple from standards organizations
 that don't fit our needs. We don't currently have a plan for what to replace
-IETF with. We are currently investigating how other established projects do
+IETF with, but we are currently investigating how other established projects do
 their SDLC and will likely choose one to emulate and adapt to our needs.
 Although we don't have a replacement solution in place yet, we are confident
 that continuing to abuse the IETF I-D process or conforming to a standards
 organization process that doesn't fit our needs is not the way to go.
+
+Option 2 and 3 are still on the table if we feel it makes sense when we get to a
+more stable place in the future. The main concern is the pain this process is
+causing while we are in this unusual phase of simultaneous unstable growth and
+production use. Standardization isn't out of the question, it's just not
+productive for us to be developing JSON Schema within the constraints of a
+standards organizations procedures.
+
+Option 1 was rejected because it ignores the problems we've been facing and
+provides no solution. No one wants this.
+
+Option 2 was rejected for several reasons. If we go all in with IETF, we would
+have to join a working group and treat JSON Schema like a normal I-D. That means
+we would have to start treating drafts as drafts, which means not recommending
+production use until we are ready for RFC and not releasing a new
+production-ready version of JSON Schema until we've reached RFC status. Most of
+the core contributors don't believe that we are close enough to an RFC-ready
+release that we want to commit to not being able to issue another release until
+that happens.
+
+There are other concerns including skepticism that even with an extension
+mechanism that the RFC wouldn't need regular updates, which is not normal
+practice for an RFC and would require significant effort to issue a replacing
+RFC. Without a concrete proposal on the scope of the RFC and the extension
+mechanisms, it's hard to commit to this path.
+
+Additionally, many of the core contributors have found working with the IETF
+unproductive and have concerns about JSON Schema getting deeper involved without
+compelling enough reason. Most agree that the reasons are not sufficiently
+compelling at this point.
+
+Option 3 was rejected because it has the same problems as Option 2 accept that
+we don't have the same unpleasant history with W3C than we do with IETF.
 
 ### Positive Consequences
 
@@ -79,8 +122,14 @@ organization process that doesn't fit our needs is not the way to go.
 
 * Not being associated with a recognized standards organization such as IETF,
   W3C, or IEEE reduces the credibility of JSON Schema in the eyes of some.
+  However, people seem comfortable adopting OpenAPI without it being associated
+  with a standards organization, so we don't expect this to be a significant
+  issue for JSON Schema either.
 * If we don't go the standardization route with IETF or W3C, we lose access to
   their expert review process.
+* One of the benefits of an RFC is other standards can normatively reference it,
+  and use JSON Schema to define their JSON-based syntaxes. Independently
+  publishing a specification does not permit this.
 * Defining our own SLDC process will be a lot of work and none of us have
   expertise in defining such a process. However, we can take inspiration from
   existing well established projects and we would have the freedom to update our
