@@ -2502,7 +2502,6 @@
                 </section>
 
                 <section title="Other Keywords for Applying Subschemas">
-
                     <section title="contains">
                         <t>
                             The value of this keyword MUST be a valid JSON Schema.
@@ -2716,7 +2715,7 @@
 
             <section title="Output Formats">
                 <t>
-                    This specification defines four output formats.  See the "Output Structure"
+                    This specification defines three output formats.  See the "Output Structure"
                     section for the requirements of each format.
                     <list>
                         <t>
@@ -2727,18 +2726,14 @@
                             Basic - Provides validation information in a flat list structure.
                         </t>
                         <t>
-                            Detailed - Provides validation information in a condensed hierarchical
-                            structure based on the structure of the schema.
-                        </t>
-                        <t>
-                            Verbose - Provides validation information in an uncondensed hierarchical
-                            structure that matches the exact structure of the schema.
+                            Hierarchical - Provides validation information in a hierarchical
+                            structure that follows the evaluation paths generated while processing
+                            the schema.
                         </t>
                     </list>
-                    An implementation SHOULD provide at least one of the "flag", "basic", or "detailed"
-                    format and MAY provide the "verbose" format.  If it provides one or more of the
-                    "detailed" or "verbose" formats, it MUST also provide the "flag" format.
-                    Implementations SHOULD specify in their documentation which formats they support.
+                    An implementation MUST provide the "flag" format and SHOULD provide at least one
+                    of the "basic" or "hierarchical" formats. Implementations SHOULD specify in
+                    their documentation which formats they support.
                 </t>
 
             </section>
@@ -2757,12 +2752,11 @@
                     Implementations MAY elect to provide additional information.
                 </t>
 
-                <section title="Keyword Relative Location">
+                <section title="Evaluation path">
                     <t>
-                        The relative location of the validating keyword that follows the path
-                        traversed through the schema. The value MUST be expressed as a JSON
-                        Pointer, and it MUST include any by-reference applicators such as
-                        "$ref" or "$dynamicRef".
+                        The evalutaion path to the schema object that produced the output unit.
+                        The value MUST be expressed as a JSON Pointer, and it MUST include any
+                        by-reference applicators such as "$ref" or "$dynamicRef".
                         <cref>
                             The schema may not actually have a value at the location indicated
                             by this pointer. It is provided as an indication of the traversal
@@ -2772,46 +2766,41 @@
                     <figure>
                         <artwork>
 <![CDATA[
-/properties/width/$ref/minimum
+/properties/width/$ref/allOf/1
 ]]>
                         </artwork>
                     </figure>
                     <t>
-                    Note that this pointer may not be resolvable by the normal JSON Pointer process
-                    due to the inclusion of these by-reference applicator keywords.
+                        Note that this pointer may not be resolvable by the normal JSON Pointer process
+                        due to the inclusion of these by-reference applicator keywords.
                     </t>
                     <t>
                         The JSON key for this information is "evaluationPath".
                     </t>
                 </section>
 
-                <section title="Keyword Absolute Location">
+                <section title="Schema Location">
                     <t>
-                        The absolute, dereferenced location of the validating keyword.  The value MUST
-                        be expressed as a full IRI using the canonical IRI of the relevant schema resource
-                        with a JSON Pointer fragment, and it MUST NOT include by-reference applicators
-                        such as "$ref" or "$dynamicRef" as non-terminal path components.
-                        It MAY end in such keywords if the error or annotation is for that
-                        keyword, such as an unresolvable reference.
+                        The absolute, dereferenced location of the schema object that produced
+                        the output unit.  The value MUST be expressed using the canonical IRI of the
+                        relevant schema resource plus a JSON Pointer fragment that indicates the schema
+                        object that produced the output.  It MUST NOT include by-reference applicators
+                        such as "$ref" or "$dynamicRef".
                         <cref>
                             Note that "absolute" here is in the sense of "absolute filesystem path"
                             (meaning the complete location) rather than the "absolute-IRI"
-                            terminology from RFC 3987 (meaning with scheme but without fragment).
-                            Keyword absolute locations will have a fragment in order to
-                            identify the keyword.
+                            terminology from RFC 3987 (meaning with scheme and without fragment).
+                            Schema locations will have a fragment in order to identify the specific
+                            schema object.
                         </cref>
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
-https://example.com/schemas/common#/$defs/count/minimum
+https://example.com/schemas/common#/$defs/allOf/1
 ]]>
                         </artwork>
                     </figure>
-                    <t>
-                        This information MAY be omitted only if either the dynamic scope did not pass
-                        over a reference or if the schema does not declare an absolute IRI as its "$id".
-                    </t>
                     <t>
                         The JSON key for this information is "schemaLocation".
                     </t>
@@ -2827,32 +2816,72 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </t>
                 </section>
 
-                <section title="Error or Annotation">
+                <section title="Errors">
                     <t>
-                        The error or annotation that is produced by the validation.
+                        Any errors produced by the validation.  This property MUST NOT
+                        be included if the validation was successful.  The value
+                        for this property MUST be an object where the keys are the names of
+                        keywords and the values are the error message produced by the
+                        associated keyword.
                     </t>
                     <t>
-                        For errors, the specific wording for the message is not defined by this
+                        If the subschema itself is producing the error, that error MUST be
+                        listed with an empty string key.
+                        <cref>
+                            Although there may be other cases where a subschema can produce
+                            an error, the most common case is the "false" schema.  In
+                            cases like these, there is no keyword that produces the error,
+                            so there is nothing to use as a key.  Thus the empty string
+                            is used instead.
+                        </cref>
+                    </t>
+                    <t>
+                        The specific wording for the message is not defined by this
                         specification.  Implementations will need to provide this.
                     </t>
                     <t>
-                        For annotations, each keyword that produces an annotation specifies its
-                        format.  By default, it is the keyword's value.
+                        The JSON key for this information is "errors".
+                    </t>
+                </section>
+
+                <section title="Annotations">
+                    <t>
+                        Any annotations produced by the validation.  This property MUST NOT
+                        be included if the validation was unsuccessful.  The value
+                        for this property MUST be an object where the keys are the names of
+                        keywords and the values are the annotations produced by the
+                        associated keyword.
                     </t>
                     <t>
-                        The JSON key for failed validations is "error"; for successful validations
-                        it is "annotation".
+                        Each keyword defines its own annotation data type (e.g. "properties"
+                        produces a list of keywords, whereas "title" produces a string).
+                    </t>
+                    <t>
+                        The JSON key for this information is "annotations".
                     </t>
                 </section>
 
                 <section title="Nested Results">
                     <t>
-                        For "basic", this property will appear only at the root node and will hold
-                        all errors or annotations in a list.
+                        Nested results are generated from keywords which create a new dynamic
+                        scope by applying a subschema to the instance or a child of the instance.
+                        Keywords which have multiple subschemas (e.g. "anyOf") will generally
+                        generate an output unit for each subschema.  In order to accommodate
+                        potentially multiple results, the value of this property MUST be an
+                        array of output units, even if only a single output unit is produced.
                     </t>
                     <t>
-                        For "detailed" and "verbose", this property will hold nested errors
-                        and annotations in a tree structure, mimicking that of the schema.
+                        For "basic", this property will appear only at the root output unit
+                        and will hold all output units in a flat list.
+                    </t>
+                    <t>
+                        For "hierarchical", this property will hold nested results in a tree
+                        structure where each output unit may itself have nested results.
+                    </t>
+                    <t>
+                        The sequence of output units within this list is not specified and
+                        MAY be determined by the implementation.  Sets of output units are
+                        considered equivalent if they contain the same units, in any order.
                     </t>
                     <t>
                         The JSON key for nested results is "nested".
@@ -2868,77 +2897,177 @@ https://example.com/schemas/common#/$defs/count/minimum
                     "nested" as described below.
                     <list>
                         <t>
-                            "valid" - a boolean value indicating the overall validation success or
-                            failure
+                            "valid" - a boolean value indicating the overall validation success or failure
                         </t>
                         <t>
-                            "nested" - the collection of errors or annotations produced by a keyword
+                            "nested" - the collection of results produced by subschemas
                         </t>
                     </list>
-                    For these examples, the following schema and instance will be used.
+                    For these examples, the following schema and instances will be used.
                 </t>
                 <figure>
                     <artwork>
 <![CDATA[
+// schema
 {
-  "$id": "https://example.com/polygon",
   "$schema": "https://json-schema.org/draft/next/schema",
-  "$defs": {
-    "point": {
-      "type": "object",
-      "properties": {
-        "x": { "type": "number" },
-        "y": { "type": "number" }
-      },
-      "additionalProperties": false,
-      "required": [ "x", "y" ]
+  "$id": "https://json-schema.org/schemas/example",
+  "type": "object",
+  "title": "root",
+  "properties": {
+    "foo": {
+      "allOf": [
+        { "required": [ "unspecified-prop" ] },
+        {
+          "type": "object",
+          "title": "foo-title",
+          "properties": {
+            "foo-prop": {
+              "const": 1,
+              "title": "foo-prop-title"
+            }
+          },
+          "additionalProperties": { "type": "boolean" }
+        }
+      ]
+    },
+    "bar": {
+      "$ref": "#/$defs/bar"
     }
   },
-  "type": "array",
-  "items": { "$ref": "#/$defs/point" },
-  "minItems": 3
+  "$defs": {
+    "bar": {
+      "type": "object",
+      "title": "bar-title",
+      "properties": {
+        "bar-prop": {
+          "type": "integer",
+          "minimum": 10,
+          "title": "bar-prop-title"
+        }
+      }
+    }
+  }
 }
 
-[
-  {
-    "x": 2.5,
-    "y": 1.3
+// failing instance
+{
+  "foo": {"foo-prop": "not 1", "other-prop": false},
+  "bar": {"bar-prop": 2}
+}
+
+// passing instance
+{
+  "foo": {
+    "foo-prop": 1,
+    "unspecified-prop": true
   },
-  {
-    "x": 1,
-    "z": 6.7
-  }
-]
+  "bar": {"bar-prop": 20}
+}
 ]]>
                     </artwork>
                 </figure>
                 <t>
-                    This instance will fail validation and produce errors, but it's trivial to deduce
-                    examples for passing schemas that produce annotations.
-                </t>
-                <t>
-                    Specifically, the errors it will produce are:
+                    The failing instance will produce the following errors:
                     <list>
                         <t>
-                            The second object is missing a "y" property.
+                            The value at "/foo"
+                            evaluated at "/properties/foo/allOf/0"
+                            by following the path "/properties/foo/allOf/0"
+                            by the "required" keyword
+                            is missing the property "unspecified-prop".
                         </t>
                         <t>
-                            The second object has a disallowed "z" property.
+                            The value at "/foo/foo-prop"
+                            evaluated at "/properties/foo/allOf/1/properties/foo-prop"
+                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
+                            by the "const" keyword
+                            is not the constant value 1.
                         </t>
                         <t>
-                            There are only two objects, but three are required.
+                            The value at "/bar/bar-prop"
+                            evaluated at "/$defs/bar/properties/bar-prop"
+                            by following the path "/properties/bar/$ref/properties/bar-prop"
+                            by the "type" keyword
+                            is not a number.
                         </t>
                     </list>
-                    Note that the error message wording as depicted in these examples is not a
-                    requirement of this specification.  Implementations SHOULD craft error messages
-                    tailored for their audience or provide a templating mechanism that allows their
-                    users to craft their own messages.
+                    <cref>
+                        "minimum" doesn't produce an error because it only operates on
+                        instances that are numbers.
+                    </cref>
+                    <cref>
+                        Note that the error message wording as depicted in the examples below is not a
+                        requirement of this specification.  Implementations SHOULD craft error messages
+                        tailored for their audience or provide a templating mechanism that allows their
+                        users to craft their own messages.
+                    </cref>
+                </t>
+                <t>
+                    The passing instance will produce the following annotations:
+                    <list>
+                        <t>
+                            The keyword "title"
+                            evaluated at ""
+                            by following the path ""
+                            will produce <sourcecode>"root"</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "properties"
+                            evaluated at ""
+                            by following the path ""
+                            will produce <sourcecode>["foo", "bar"]</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "title"
+                            evaluated at "/properties/foo"
+                            by following the path "/properties/foo"
+                            will produce <sourcecode>"foo-title"</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "properties"
+                            evaluated at "/properties/foo/allOf/1"
+                            by following the path "/properties/foo/allOf/1"
+                            will produce <sourcecode>["foo-prop"]</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "additionalProperties"
+                            evaluated at "/properties/foo/allOf/1"
+                            by following the path "/properties/foo/allOf/1"
+                            will produce <sourcecode>["unspecified-prop"]</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "title"
+                            evaluated at "/properties/foo/allOf/1/properties/foo-prop"
+                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
+                            will produce <sourcecode>"foo-prop-title"</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "title"
+                            evaluated at "/$defs/bar"
+                            by following the path "/properties/bar/$ref"
+                            will produce <sourcecode>"bar-title"</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "properties"
+                            evaluated at "/$defs/bar"
+                            by following the path "/properties/var/$ref"
+                            will produce <sourcecode>["bar-prop"]</sourcecode>.
+                        </t>
+                        <t>
+                            The keyword "title"
+                            evaluated at "/$defs/bar/properties/bar-prop"
+                            by following the path "/properties/bar/$ref/properties/bar-prop"
+                            will produce <sourcecode>"bar-prop-title"</sourcecode>.
+                        </t>
+                    </list>
                 </t>
 
                 <section title="Flag">
                     <t>
                         In the simplest case, merely the boolean result for the "valid" valid property
-                        needs to be fulfilled.
+                        needs to be fulfilled.  For this format, all other information is explicitly
+                        omitted.
                     </t>
                     <figure>
                         <artwork>
@@ -2953,7 +3082,7 @@ https://example.com/schemas/common#/$defs/count/minimum
                         Because no errors or annotations are returned with this format, it is
                         RECOMMENDED that implementations use short-circuiting logic to return
                         failure or success as soon as the outcome can be determined.  For example,
-                        if an "anyOf" keyword contains five sub-schemas, and the second one
+                        if an "anyOf" keyword contains five subschemas, and the second one
                         passes, there is no need to check the other three.  The logic can simply
                         return with success.
                     </t>
@@ -2961,44 +3090,119 @@ https://example.com/schemas/common#/$defs/count/minimum
 
                 <section title="Basic">
                     <t>
-                        The "Basic" structure is a flat list of output units.
+                        The "Basic" structure is a flat list of output units contained within a
+                        root output unit.
+                    </t>
+                    <t>
+                        The root output unit contains "valid" for the overall result and "nested"
+                        for the list of specific results.  All other information is explicitly
+                        omitted from the root output unit.  If the root schema produces errors or
+                        annotations, then the output node for the root MUST be present within the
+                        root output unit's "nested" list with those errors or annotations.
+                    </t>
+                    <t>
+                        Output units which do not contain errors or annotations SHOULD be excluded
+                        from this format, however implementations MAY choose to include them for
+                        completeness.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
+// failing results
 {
   "valid": false,
   "nested": [
     {
+      "valid": false,
+      "evaluationPath": "/properties/foo/allOf/0",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+      "instanceLocation": "/foo",
+      "errors": {
+        "required": "Required properties [\"unspecified-prop\"] were not present"
+      }
+    },
+    {
+      "valid": false,
+      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+      "instanceLocation": "/foo/foo-prop",
+      "errors": {
+        "const": "Expected \"1\""
+      }
+    },
+    {
+      "valid": false,
+      "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+      "instanceLocation": "/bar/bar-prop",
+      "errors": {
+        "minimum": "2 is less than or equal to 10"
+      }
+    }
+  ]
+}
+
+// passing results
+{
+  "valid": true,
+  "nested": [
+    {
+      "valid": true,
       "evaluationPath": "",
+      "schemaLocation": "https://json-schema.org/schemas/example#",
       "instanceLocation": "",
-      "error": "A subschema had errors."
+      "annotations": {
+        "title": "root",
+        "properties": [
+          "foo",
+          "bar"
+        ]
+      }
     },
     {
-      "evaluationPath": "/items/$ref",
-      "schemaLocation":
-        "https://example.com/polygon#/$defs/point",
-      "instanceLocation": "/1",
-      "error": "A subschema had errors."
+      "valid": true,
+      "evaluationPath": "/properties/foo/allOf/1",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
+      "instanceLocation": "/foo",
+      "annotations": {
+        "title": "foo-title",
+        "properties": [
+          "foo-prop"
+        ],
+        "additionalProperties": [
+          "unspecified-prop"
+        ]
+      }
     },
     {
-      "evaluationPath": "/items/$ref/required",
-      "schemaLocation":
-        "https://example.com/polygon#/$defs/point/required",
-      "instanceLocation": "/1",
-      "error": "Required property 'y' not found."
+      "valid": true,
+      "evaluationPath": "/properties/bar/$ref",
+      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
+      "instanceLocation": "/bar",
+      "annotations": {
+        "title": "bar-title",
+        "properties": [
+          "bar-prop"
+        ]
+      }
     },
     {
-      "evaluationPath": "/items/$ref/additionalProperties",
-      "schemaLocation":
-        "https://example.com/polygon#/$defs/point/additionalProperties",
-      "instanceLocation": "/1/z",
-      "error": "Additional property 'z' found but was invalid."
+      "valid": true,
+      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+      "instanceLocation": "/foo/foo-prop",
+      "annotations": {
+        "title": "foo-prop-title"
+      }
     },
     {
-      "evaluationPath": "/minItems",
-      "instanceLocation": "",
-      "error": "Expected at least 3 items but found 2"
+      "valid": true,
+      "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+      "instanceLocation": "/bar/bar-prop",
+      "annotations": {
+        "title": "bar-prop-title"
+      }
     }
   ]
 }
@@ -3007,142 +3211,185 @@ https://example.com/schemas/common#/$defs/count/minimum
                     </figure>
                 </section>
 
-                <section title="Detailed">
+                <section title="Hierarchical">
                     <t>
-                        The "Detailed" structure is based on the schema and can be more readable
-                        for both humans and machines.  Having the structure organized this way makes
-                        associations between the errors more apparent.  For example, the fact that
-                        the missing "y" property and the extra "z" property both stem from the same
-                        location in the instance is not immediately obvious in the "Basic" structure.
-                        In a hierarchy, the correlation is more easily identified.
+                        The "Hierarchical" structure is a tree structure that follows the
+                        evaluation path during the validation process.  Typically, it will
+                        resemble the schema as if all referenced schemas were inlined in place
+                        of their associated by-reference keywords.
                     </t>
                     <t>
-                        The following rules govern the construction of the results object:
-                        <list>
-                            <t>
-                                All applicator keywords ("*Of", "$ref", "if"/"then"/"else", etc.) require
-                                a node.
-                            </t>
-                            <t>
-                                Nodes that have no children are removed.
-                            </t>
-                            <t>
-                                Nodes that have a single child are replaced by the child.
-                            </t>
-                        </list>
-                        Branch nodes do not require an error message or an annotation.
+                        All output units are included in this format.
+                    </t>
+                    <t>
+                        The location properties of the root output unit MAY be omitted.
                     </t>
                     <figure>
                         <artwork>
 <![CDATA[
+// failing results (errors)
 {
   "valid": false,
   "evaluationPath": "",
+  "schemaLocation": "https://json-schema.org/schemas/example#",
   "instanceLocation": "",
   "nested": [
     {
       "valid": false,
-      "evaluationPath": "/items/$ref",
-      "schemaLocation":
-        "https://example.com/polygon#/$defs/point",
-      "instanceLocation": "/1",
+      "evaluationPath": "/properties/foo",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
+      "instanceLocation": "/foo",
       "nested": [
         {
           "valid": false,
-          "evaluationPath": "/items/$ref/required",
-          "schemaLocation":
-            "https://example.com/polygon#/$defs/point/required",
-          "instanceLocation": "/1",
-          "error": "Required property 'y' not found."
+          "evaluationPath": "/properties/foo/allOf/0",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+          "instanceLocation": "/foo",
+          "errors": {
+            "required": "Required properties [\"unspecified-prop\"] were not present"
+          }
         },
         {
           "valid": false,
-          "evaluationPath": "/items/$ref/additionalProperties",
-          "schemaLocation":
-            "https://example.com/polygon#/$defs/point/additionalProperties",
-          "instanceLocation": "/1/z",
-          "error": "Additional property 'z' found but was invalid."
+          "evaluationPath": "/properties/foo/allOf/1",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
+          "instanceLocation": "/foo",
+          "nested": [
+            {
+              "valid": false,
+              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+              "instanceLocation": "/foo/foo-prop",
+              "errors": {
+                "const": "Expected \"1\""
+              }
+            },
+            {
+              "valid": true,
+              "evaluationPath": "/properties/foo/allOf/1/additionalProperties",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/additionalProperties",
+              "instanceLocation": "/foo/other-prop"
+            }
+          ]
         }
       ]
     },
     {
       "valid": false,
-      "evaluationPath": "/minItems",
-      "instanceLocation": "",
-      "error": "Expected at least 3 items but found 2"
-    }
-  ]
-}
-]]>
-                        </artwork>
-                    </figure>
-                </section>
-
-                <section title="Verbose">
-                    <t>
-                        The "Verbose" structure is a fully realized hierarchy that exactly matches
-                        that of the schema.  This structure has applications in form generation and
-                        validation where the error's location is important.
-                    </t>
-                    <t>
-                        The primary difference between this and the "Detailed" structure is that
-                        all results are returned.  This includes sub-schema validation results that
-                        would otherwise be removed (e.g. annotations for failed validations,
-                        successful validations inside a `not` keyword, etc.).  Because of this, it
-                        is RECOMMENDED that each node also carry a `valid` property to indicate the
-                        validation result for that node.
-                    </t>
-                    <t>
-                        Because this output structure can be quite large, a smaller example is given
-                        here for brevity.  The IRI of the full output structure of the example above is:
-                        <eref target="https://json-schema.org/draft/next/output/verbose-example"/>.
-                    </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
-// schema
-{
-  "$id": "https://example.com/polygon",
-  "$schema": "https://json-schema.org/draft/next/schema",
-  "type": "object",
-  "properties": {
-    "validProp": true,
-  },
-  "additionalProperties": false
-}
-
-// instance
-{
-  "validProp": 5,
-  "disallowedProp": "value"
-}
-
-// result
-{
-  "valid": false,
-  "evaluationPath": "",
-  "instanceLocation": "",
-  "nested": [
-    {
-      "valid": true,
-      "evaluationPath": "/type",
-      "instanceLocation": ""
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties",
-      "instanceLocation": ""
-    },
-    {
-      "valid": false,
-      "evaluationPath": "/additionalProperties",
-      "instanceLocation": "",
+      "evaluationPath": "/properties/bar",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
+      "instanceLocation": "/bar",
       "nested": [
         {
           "valid": false,
-          "evaluationPath": "/additionalProperties",
-          "instanceLocation": "/disallowedProp",
-          "error": "Additional property 'disallowedProp' found but was invalid."
+          "evaluationPath": "/properties/bar/$ref",
+          "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
+          "instanceLocation": "/bar",
+          "nested": [
+            {
+              "valid": false,
+              "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+              "instanceLocation": "/bar/bar-prop",
+              "errors": {
+                "minimum": "2 is less than or equal to 10"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+// passing results (annotations)
+{
+  "valid": true,
+  "evaluationPath": "",
+  "schemaLocation": "https://json-schema.org/schemas/example#",
+  "instanceLocation": "",
+  "annotations": {
+    "title": "root",
+    "properties": [
+      "foo",
+      "bar"
+    ]
+  },
+  "nested": [
+    {
+      "valid": true,
+      "evaluationPath": "/properties/foo",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
+      "instanceLocation": "/foo",
+      "nested": [
+        {
+          "valid": true,
+          "evaluationPath": "/properties/foo/allOf/0",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
+          "instanceLocation": "/foo"
+        },
+        {
+          "valid": true,
+          "evaluationPath": "/properties/foo/allOf/1",
+          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
+          "instanceLocation": "/foo",
+          "annotations": {
+            "title": "foo-title",
+            "properties": [
+              "foo-prop"
+            ],
+            "additionalProperties": [
+              "unspecified-prop"
+            ]
+          },
+          "nested": [
+            {
+              "valid": true,
+              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
+              "instanceLocation": "/foo/foo-prop",
+              "annotations": {
+                "title": "foo-prop-title"
+              }
+            },
+            {
+              "valid": true,
+              "evaluationPath": "/properties/foo/allOf/1/additionalProperties",
+              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/additionalProperties",
+              "instanceLocation": "/foo/unspecified-prop"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "valid": true,
+      "evaluationPath": "/properties/bar",
+      "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
+      "instanceLocation": "/bar",
+      "nested": [
+        {
+          "valid": true,
+          "evaluationPath": "/properties/bar/$ref",
+          "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
+          "instanceLocation": "/bar",
+          "annotations": {
+            "title": "bar-title",
+            "properties": [
+              "bar-prop"
+            ]
+          },
+          "nested": [
+            {
+              "valid": true,
+              "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
+              "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
+              "instanceLocation": "/bar/bar-prop",
+              "annotations": {
+                "title": "bar-prop-title"
+              }
+            }
+          ]
         }
       ]
     }
