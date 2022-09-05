@@ -350,9 +350,9 @@
                         and its companions, are free to define other behaviors as well.
                     </t>
                     <t>
-                        A JSON Schema MAY contain properties which are not schema keywords.
-                        Unknown keywords SHOULD be treated as annotations, where the value
-                        of the keyword is the value of the annotation.
+                        A JSON Schema MAY contain properties which are not schema keywords or are not recognized as schema keywords.
+                        The behavior of such keywords is governed by section
+                        <xref target="unrecognized" format="counter"></xref>.
                     </t>
                     <t>
                         An empty schema is a JSON Schema with no properties, or only unknown
@@ -600,14 +600,21 @@
                     by any entity.  Save for explicit agreement, schema authors SHALL NOT
                     expect these additional keywords and vocabularies to be supported by
                     implementations that do not explicitly document such support.
-                    Implementations SHOULD treat keywords they do not support as annotations,
-                    where the value of the keyword is the value of the annotation.
                 </t>
                 <t>
                     Implementations MAY provide the ability to register or load handlers
                     for vocabularies that they do not support directly.  The exact mechanism
                     for registering and implementing such handlers is implementation-dependent.
                 </t>
+
+                <section title="Handling of unrecognized or unsupported keywords" anchor="unrecognized">
+                    <t>
+                        Implementations SHOULD treat keywords they do not recognize, or that
+                        they recognize but do not support, as annotations, where the value of
+                        the keyword is the value of the annotation.  Whether an implementation
+                        collects these annotations or not, they MUST otherwise ignore the keywords.
+                    </t>
+                </section>
             </section>
 
         </section>
