@@ -1399,7 +1399,10 @@
                         <xref target="RFC3986">RFC 3986 section 5.1.2</xref> regarding
                         encapsulating entities, if an "$id" in a subschema is a relative
                         IRI-reference, the base IRI for resolving that reference is the IRI of
-                        the parent schema resource.
+                        the parent schema resource.  Note that an "$id" consisting of an empty IRI or
+                        of the empty fragment only will result in the embedded resource having
+                        the same IRI as the encapsulating resource, which SHOULD be considered
+                        an error per section <xref target="duplicate-iris" format="counter"></xref>.
                     </t>
                     <t>
                         If no parent schema object explicitly identifies itself as a resource
@@ -1463,11 +1466,21 @@
                             fragment "#foo" when used in a IRI.  See below for full examples.
                         </cref>
                     </t>
+                </section>
+
+                <section title="Duplicate schema identifiers" anchor="duplicate-iris">
                     <t>
-                        The effect of specifying the same fragment name multiple times within
-                        the same resource, using any combination of "$anchor" and/or
-                        "$dynamicAnchor", is undefined.  Implementations MAY
-                        raise an error if such usage is detected.
+                        A schema MAY (and likely will) have multiple IRIs, but there is no way
+                        for an IRI to identify more than one schema. When multiple schemas
+                        attempt to identify as the same IRI through the use of "$id", "$anchor",
+                        "$dynamicAnchor", or any other mechanism, implementations SHOULD raise
+                        an error condition.  Otherwise the result is undefined, and even if
+                        documented will not be interoperable.
+                    </t>
+                    <t>
+                        Note that due to the semantics of JSON Pointer fragments, schema IRIs
+                        that differ only by the presence or absence of an empty fragment MUST
+                        be considered duplicates.
                     </t>
                 </section>
 
@@ -1677,11 +1690,6 @@
                         can be supplied to an implementation prior to processing instances, or may
                         be noted within a schema document as it is processed, producing associations
                         as shown in appendix <xref target="idExamples" format="counter"></xref>.
-                    </t>
-                    <t>
-                        A schema MAY (and likely will) have multiple IRIs, but there is no way for a
-                        IRI to identify more than one schema. When multiple schemas try to identify
-                        as the same IRI, validators SHOULD raise an error condition.
                     </t>
                 </section>
 
