@@ -122,9 +122,10 @@ we don't have the same unpleasant history with W3C than we do with IETF.
 
 * Not being associated with a recognized standards organization such as IETF,
   W3C, or IEEE reduces the credibility of JSON Schema in the eyes of some.
-  However, people seem comfortable adopting OpenAPI without it being associated
-  with a standards organization, so we don't expect this to be a significant
-  issue for JSON Schema either.
+  However, we have received feedback from people involved in standards
+  development that say they are comfortable adopting OpenAPI without it being
+  associated with a standards organization, so we don't expect this to be a
+  significant issue for JSON Schema either.
 * If we don't go the standardization route with IETF or W3C, we lose access to
   their expert review process.
 * One of the benefits of an RFC is other standards can normatively reference it,
