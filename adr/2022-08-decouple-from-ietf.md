@@ -37,23 +37,30 @@ that our "drafts" are intended for use in production.
   programming language. When it stops evolving, it will lose its relevance.
   When we finish a release of JSON Schema, we don't disband, we start work on
   the next release.
-* Every one of our releases is expected to be used in production and will be
-  depended on for many years forward. This is not consistent with normal IETF
-  drafts. Even if we don't publicly use the term "draft", we're still using the
-  IETF I-D system in a way that's not intended.
+* Since the project resumed activity after the gap following draft-04, every one
+  of our releases is expected to be used in production and will be depended on
+  for many years forward. This is not consistent with normal IETF drafts. Even
+  if we don't publicly use the term "draft", we're still using the IETF I-D
+  system in a way that's not intended.
 * Under IETF, JSON Schema fits under the category of "draft". The community has
   repeatedly told us that they perceive this to meant that JSON Schema
   "incomplete" and not "not ready for production use". This is the wrong message
   for us to be sending as all of our releases are intended to be used in
   production. This ADR doesn't decide whether or not to drop the "draft" from
   our releases, but decoupling from IETF gives us that option.
-* Several members of the JSON Schema team have had poor interactions with IETF
-  and don't feel that working with them would be productive. This is a
-  relatively minor consideration. If we thought IETF was right for JSON Schema,
-  we could find ways to make those relationships work. We have a good
-  relationship with the relatively new HTTPAPIs working group and working with
-  them would be far more likely to be productive than the people/WG we were
-  previously in communication with.
+* Several members of the JSON Schema team have interacted with JSON-related IETF
+  working groups. Some of these interactions demonstrated an indifference or
+  hostility to JSON Schema, and a preference for projects taking a different
+  approach. Equally important was a lack of any active interest or constructive
+  engagement. Finally, we were informed that any schema project for JSON would
+  not necessarily start from JSON Schema as a base, indicating that a "JSON
+  Schema" working group would quite likely not involve JSON Schema itself. This
+  impression has been reinforced by observing the amount of change introduced to
+  JSON Path as a consequence of its adoption by an IETF working group. While we
+  have a good relationship with the relatively new HTTPAPIs working group, the
+  combination of these other experiences with other mismatches between our
+  project and the IETF process contributes to our reluctance to move forward
+  through the iETF.
 
 ## Considered Options
 
@@ -77,6 +84,17 @@ their SDLC and will likely choose one to emulate and adapt to our needs.
 Although we don't have a replacement solution in place yet, we are confident
 that continuing to abuse the IETF I-D process or conforming to a standards
 organization process that doesn't fit our needs is not the way to go.
+
+However, we still plan to use the IETF process to register the media types
+defined by JSON Schema with IANA. This effort is currently in progress with the
+HTTPAPIs working group.
+
+The decision to not use IETF applies only to the main specification documents
+and not necessarily supporting components we have defined or will define in the
+future. Currently our only such component is Relative JSON Pointer, but there
+could be others in the future. These components will be examined on a case by
+case basis and we may choose an IETF standards path for those components if it
+makes sense.
 
 Option 2 and 3 are still on the table if we feel it makes sense when we get to a
 more stable place in the future. The main concern is the pain this process is
@@ -108,7 +126,7 @@ unproductive and have concerns about JSON Schema getting deeper involved without
 compelling enough reason. Most agree that the reasons are not sufficiently
 compelling at this point.
 
-Option 3 was rejected because it has the same problems as Option 2 accept that
+Option 3 was rejected because it has the same problems as Option 2 except that
 we don't have the same unpleasant history with W3C than we do with IETF.
 
 ### Positive Consequences
@@ -120,20 +138,21 @@ we don't have the same unpleasant history with W3C than we do with IETF.
 
 ### Negative Consequences
 
-* Not being associated with a recognized standards organization such as IETF,
-  W3C, or IEEE reduces the credibility of JSON Schema in the eyes of some.
-  However, we have received feedback from people involved in standards
-  development that told us that they were comfortable referencing OpenAPI's self
-  published specification in their standards and that OpenAPI's membership with
-  the Linux Foundation was an important aspect of what makes them comfortable
-  doing so. JSON Schema is a member of the OpenJS Foundation, which is a
-  sub-group of the Linux Foundation, so we expect standards developers to be
-  just as comfortable referencing JSON Schema as they are referencing OpenAPI.
 * If we don't go the standardization route with IETF or W3C, we lose access to
   their expert review process.
+* Not being associated with a recognized standards organization such as IETF,
+  W3C, or IEEE reduces the credibility of JSON Schema in the eyes of some.
+  However, we have received feedback that our membership with OpenJS/Linux
+  Foundation provides the credibility that we need.
 * One of the benefits of an RFC is other standards can normatively reference it,
-  and use JSON Schema to define their JSON-based syntaxes. Independently
-  publishing a specification does not permit this.
+  and use JSON Schema to define their JSON-based syntaxes. However, we have
+  received feedback from people involved in standards development that told us
+  that they were comfortable referencing OpenAPI's self published specification
+  in their standards and that OpenAPI's membership with the Linux Foundation was
+  an important aspect of what makes them comfortable doing so. JSON Schema is a
+  member of the OpenJS Foundation, which is a sub-group of the Linux Foundation,
+  so we expect standards developers to be just as comfortable referencing JSON
+  Schema as they are referencing OpenAPI.
 * Defining our own SLDC process will be a lot of work and none of us have
   expertise in defining such a process. However, we can take inspiration from
   existing well established projects and we would have the freedom to update our
