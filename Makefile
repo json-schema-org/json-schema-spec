@@ -6,7 +6,7 @@ OUT = \
 	jsonschema-validation.html jsonschema-validation.txt \
 	relative-json-pointer.html relative-json-pointer.txt
 
-all: $(OUT)
+all: $(VENV) $(OUT)
 
 %.txt: %.xml
 	$(XML2RFC) --text $< -o $@
@@ -25,17 +25,15 @@ json-schema.tar.gz: $(OUT)
 	tar -czf json-schema.tar.gz --exclude '.*' json-schema
 	rm -rf json-schema
 
-venv: $(VENV)
+$(VENV): requirements.txt
+	python -m venv $@
+	$@/bin/python -m pip install --upgrade pip
+	$@/bin/python -m pip install -r requirements.txt
 
-$(VENV):
-	python -m venv .venv
-	. .venv/bin/activate && python -m pip install --upgrade pip setuptools wheel
-	. .venv/bin/activate && python -m pip install -r requirements.txt
-
-venv-clean:
-	rm -rf .venv
-
-clean:
+spec-clean:
 	rm -f $(OUT) json-schema.tar.gz
 
-.PHONY: clean all
+clean: spec-clean
+	rm -rf $(VENV)
+
+.PHONY: spec-clean clean all
