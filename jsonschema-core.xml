@@ -1458,8 +1458,11 @@
                         If present, the value of this keyword MUST be a string and MUST start with
                         a letter ([A-Za-z]) or underscore ("_"), followed by any number of letters,
                         digits ([0-9]), hyphens ("-"), underscores ("_"), and periods (".").
-                        This matches the US-ASCII part of XML's
-                        <xref target="xml-names">NCName production</xref>.
+                        Due to the once-common practice of providing resource representations in
+                        both JSON and XML, this matches the US-ASCII part of XML's
+                        <xref target="xml-names">NCName production</xref>, which is noted in the
+                        <xref target="W3C.WD-fragid-best-practices-20121025">WC3's best practices for fragment identifiers</xref>
+                        as the typical plain name syntax for XML-based formats.
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a IRI-reference.  An "$anchor": "foo" becomes the
