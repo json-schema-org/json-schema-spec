@@ -564,6 +564,11 @@
                     dialect described in <xref target="ecma262">ECMA-262, section 21.2.1</xref>.
                 </t>
                 <t>
+                    Unless otherwise specified by a keyword, regular expressions MUST NOT be
+                    considered to be implicitly anchored at either end.  All regular expression
+                    keywords in this specification and its companion documents are un-anchored.
+                </t>
+                <t>
                     Regular expressions SHOULD be built with the "u" flag (or equivalent) to provide
                     Unicode support, or processed in such a way which provides Unicode support as
                     defined by ECMA-262.
