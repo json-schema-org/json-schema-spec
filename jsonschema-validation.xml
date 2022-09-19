@@ -936,33 +936,13 @@
                 <t>
                     Due to security and performance concerns, as well as the open-ended nature of
                     possible content types, implementations MUST NOT automatically decode, parse,
-                    and/or validate the string contents by default.  This additionally supports
-                    the use case of embedded documents intended for processing by a different
-                    consumer than that which processed the containing document.
+                    and/or validate the string contents.  Applications are expected to use these
+                    annotations to invoke the appropriate libraries (including JSON Schema for
+                    any further schema-based validation) separately.
                 </t>
                 <t>
                     All keywords in this section apply only to strings, and have no
                     effect on other data types.
-                </t>
-                <t>
-                    Implementations MAY offer the ability to decode, parse, and/or validate
-                    the string contents automatically.  However, it MUST NOT perform these
-                    operations by default, and MUST provide the validation result of each
-                    string-encoded document separately from the enclosing document.  This
-                    process SHOULD be equivalent to fully evaluating the instance against
-                    the original schema, followed by using the annotations to decode, parse,
-                    and/or validate each string-encoded document.
-                    <cref>
-                        For now, the exact mechanism of performing and returning parsed
-                        data and/or validation results from such an automatic decoding, parsing,
-                        and validating feature is left unspecified.  Should such a feature
-                        prove popular, it may be specified more thoroughly in a future draft.
-                    </cref>
-                </t>
-                <t>
-                    See also the <xref target="security">Security Considerations</xref>
-                    sections for possible vulnerabilities introduced by automatically
-                    processing the instance string according to these keywords.
                 </t>
             </section>
 
@@ -970,8 +950,8 @@
 
                 <t>
                     If the instance value is a string, this property defines that the string
-                    SHOULD be interpreted as encoded binary data and decoded using the encoding
-                    named by this property.
+                    SHOULD be interpreted as encoded binary data and, and applications wishing
+                    to decode it SHOULD do so using the encoding named by this property.
                 </t>
 
                 <t>
@@ -1023,7 +1003,8 @@
                 </t>
                 <t>
                     This keyword MAY be used with any media type that can be mapped into
-                    JSON Schema's data model.
+                    JSON Schema's data model.  Specifying such mappings is outside of the
+                    scope of this specification.
                 </t>
                 <t>
                     The value of this property MUST be a valid JSON schema. It SHOULD be ignored if
