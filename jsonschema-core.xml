@@ -2122,7 +2122,7 @@
                         </t>
                         <t>
                             "contains", whose behavior is affected by the presence and value of
-                            "minContains", in the Validation vocabulary
+                            "minContains"
                         </t>
                     </list>
                 </t>
@@ -2502,6 +2502,53 @@
                 </section>
 
                 <section title="Other Keywords for Applying Subschemas">
+                    <section title="maxContains">
+                        <t>
+                            The value of this keyword MUST be a non-negative integer.
+                        </t>
+                        <t>
+                            If "contains" is not present within the same schema object,
+                            then this keyword has no effect.
+                        </t>
+                        <t>
+                            An instance array or object is valid against "maxContains" in two ways,
+                            depending on the form of the annotation result of an adjacent
+                            "contains" keyword. The first way is if
+                            the annotation result is an array and the length of that array is less than
+                            or equal to the "maxContains" value. The second way is if the annotation
+                            result is a boolean "true" and the instance length (number of items or
+                            properties) is less than or equal to the "maxContains" value.
+                        </t>
+                    </section>
+
+                    <section title="minContains">
+                        <t>
+                            The value of this keyword MUST be a non-negative integer.
+                        </t>
+                        <t>
+                            If "contains" is not present within the same schema object,
+                            then this keyword has no effect.
+                        </t>
+                        <t>
+                            An instance array or object is valid against "minContains" in two ways,
+                            depending on the form of the annotation result of an adjacent
+                            "contains" keyword. The first way is if
+                            the annotation result is an array and the length of that array is greater
+                            than or equal to the "minContains" value. The second way is if the
+                            annotation result is a boolean "true" and the instance length (number of
+                            items or properties) is greater than or equal to the "minContains" value.
+                        </t>
+                        <t>
+                            A value of 0 is allowed, but is only useful for setting a range
+                            of occurrences from 0 to the value of "maxContains". A value of
+                            0 causes "minContains" and "contains" to always pass validation
+                            (but validation can still fail against a "maxContains" keyword).
+                        </t>
+                        <t>
+                            Omitting this keyword has the same behavior as a value of 1.
+                        </t>
+                    </section>
+
                     <section title="contains">
                         <t>
                             The value of this keyword MUST be a valid JSON Schema.
