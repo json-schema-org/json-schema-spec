@@ -608,6 +608,46 @@
                 </t>
             </section>
 
+            <section title="Evaluation Results">
+                <t>
+                    Evaluating an instance against a schema MUST produce one of four general outcomes:
+
+                    <list>
+                        <t>
+                            success: the evaluation completed without failing any validation assertions
+                        </t>
+                        <t>
+                            failure: the evaluation completed with assertion failures
+                        </t>
+                        <t>
+                            runtime error: the schema was understood but the evaluation could not
+                            complete
+                        </t>
+                        <t>
+                            refusal to process: the schema was not understood and evaluation never began
+                        </t>
+                    </list>
+                </t>
+                <t>
+                    Runtime errors include but are not limited to:  failure of reference resolution,
+                    detection of an infinite reference loop, or excessive consumption of memory.
+                </t>
+                <t>
+                    Implementations MAY detect certain refusal-to-process conditions when a schema is
+                    loaded, prior to attempting any evaluation.  For example, a schema that requires
+                    a vocabulary that the implementation does not support cannot be processed
+                    regardless of the instance.
+                </t>
+                <t>
+                    Some conditions can manifest as either runtime or refusal-to-process outcomes.
+                    For example, a reference to a non-existent location within a schema resource can
+                    be detected at schema load time, but a reference to a non-existent external schema
+                    might not be detected until runtime as that reference target schema might
+                    be provided between the loading of the reference source schema and the first
+                    attempted evaluation with an instance.
+                </t>
+            </section>
+
             <section title="Extending JSON Schema" anchor="extending">
                 <t>
                     Additional schema keywords and schema vocabularies MAY be defined
