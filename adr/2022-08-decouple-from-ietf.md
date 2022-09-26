@@ -128,6 +128,15 @@ compelling at this point.
 
 Option 3 was rejected because it has the same problems as Option 2 except that
 we don't have the same unpleasant history with W3C than we do with IETF.
+Additionally, the W3C is a "pay to play" standards organization. Organizations
+must pay to contribute to specifications the W3C publish, which doesn't match
+the JSON Schema Org's open ethos.
+
+Ben Hutton has had multiple calls with various individuals at different levels
+within the W3C, and has a friendly contact should we wish to investigate again
+at a later point. The W3C does have an "invited expert" solution for when
+a persons employer doesn't want to be a paying member, however this is supposed
+to be an exception to the rule, and not frequently used.
 
 ### Positive Consequences
 
