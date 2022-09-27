@@ -1,7 +1,7 @@
 # Decoupling from IETF
 
 * Status: accepted
-* Deciders: @jdesrosiers @relequestual @awwright @handrews
+* Deciders: @jdesrosiers @relequestual @awwright @handrews @gregsdennis
 * Date: 2022-08-17
 
 Related Issues:
