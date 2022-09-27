@@ -2,7 +2,7 @@
 
 * Status: accepted
 * Deciders: @jdesrosiers @relequestual @awwright @handrews @gregsdennis
-* Date: 2022-08-17
+* Date: 2022-09-27
 
 Related Issues:
 * https://github.com/orgs/json-schema-org/discussions/69 - This issue is about
