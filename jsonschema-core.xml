@@ -12,6 +12,7 @@
 <!ENTITY RFC8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 <!ENTITY ldp SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-ldp-20150226.xml">
 <!ENTITY fragid-best-practices SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.WD-fragid-best-practices-20121025.xml">
+<!ENTITY xptr-framework SYSTEM "https://bib.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xptr-framework-20030325.xml">
 ]>
 <?rfc toc="yes"?>
 <?rfc symrefs="yes"?>
@@ -513,7 +514,18 @@
                 Per the W3C's
                 <xref target="W3C.WD-fragid-best-practices-20121025">best practices for fragment identifiers</xref>,
                 plain name fragment identifiers in "application/schema+json" are reserved for referencing
-                locally named schemas.  All fragment identifiers that do
+                locally named schemas.
+            </t>
+            <t>
+                Plain name fragments MUST start with a letter ([A-Za-z]) or underscore ("_"),
+                followed by any number of letters, digits ([0-9]), hyphens ("-"),
+                underscores ("_"), and periods (".").  This matches the US-ASCII part of XML's
+                <xref target="xml-names">NCName production</xref>, which allows for compatibility
+                with the recommended plain name <xref target="W3C.REC-xptr-framework-20030325">syntax</xref> for
+                XML-based media types.
+            </t>
+            <t>
+                All fragment identifiers that do
                 not match the JSON Pointer syntax MUST be interpreted as
                 plain name fragment identifiers.
             </t>
@@ -521,8 +533,6 @@
                 Defining and referencing a plain name fragment identifier within an
                 "application/schema+json" document are specified
                 in the <xref target="anchor">"$anchor" keyword</xref> section.
-            </t>
-            <t>
             </t>
         </section>
 
@@ -1455,11 +1465,9 @@
                         need for "$dynamicAnchor".
                     </t>
                     <t>
-                        If present, the value of this keyword MUST be a string and MUST start with
-                        a letter ([A-Za-z]) or underscore ("_"), followed by any number of letters,
-                        digits ([0-9]), hyphens ("-"), underscores ("_"), and periods (".").
-                        This matches the US-ASCII part of XML's
-                        <xref target="xml-names">NCName production</xref>.
+                        If present, the value of these keywords MUST be a string and MUST conform
+                        to the plain name fragment identifier syntax defined in section
+                        <xref target="fragments" format="counter"></xref>.
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a IRI-reference.  An "$anchor": "foo" becomes the
@@ -3555,6 +3563,7 @@ https://example.com/schemas/common#/$defs/allOf/1
             &RFC7231;
             &RFC8288;
             &fragid-best-practices;
+            &xptr-framework;
             <reference anchor="json-schema-validation">
                 <front>
                     <title>JSON Schema Validation: A Vocabulary for Structural Validation of JSON</title>
