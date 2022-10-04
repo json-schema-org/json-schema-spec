@@ -574,6 +574,11 @@
                     dialect described in <xref target="ecma262">ECMA-262, section 21.2.1</xref>.
                 </t>
                 <t>
+                    Unless otherwise specified by a keyword, regular expressions MUST NOT be
+                    considered to be implicitly anchored at either end.  All regular expression
+                    keywords in this specification and its companion documents are un-anchored.
+                </t>
+                <t>
                     Regular expressions SHOULD be built with the "u" flag (or equivalent) to provide
                     Unicode support, or processed in such a way which provides Unicode support as
                     defined by ECMA-262.
@@ -2449,7 +2454,8 @@
                             Validation succeeds if, for each instance name that matches any
                             regular expressions that appear as a property name in this keyword's value,
                             the child instance for that name successfully validates against each
-                            schema that corresponds to a matching regular expression.
+                            schema that corresponds to a matching regular expression.  Recall: regular
+                            expressions are not implicitly anchored.
                         </t>
                         <t>
                             The annotation result of this keyword is the set of instance
