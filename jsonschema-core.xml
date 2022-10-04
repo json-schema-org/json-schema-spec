@@ -2349,10 +2349,10 @@
                         </t>
                         <t>
                             Validation succeeds if each element of the instance validates
-                            against the schema at the same position, if any.  This keyword
-                            does not constrain the length of the array.  If the array is longer
-                            than this keyword's value, this keyword validates only the
-                            prefix of matching length.
+                            against the subschema at the same position, if any.  This keyword
+                            does not constrain the length of the array.  Only array positions
+                            present in both the keyword's value and the instance value are
+                            affected by this keyword.
                         </t>
                         <t>
                             This keyword produces an annotation value which is the largest
