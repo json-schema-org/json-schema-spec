@@ -1376,31 +1376,10 @@
                         If present, the value for this keyword MUST be a string, and MUST represent a
                         valid <xref target="RFC3987">IRI-reference</xref>.  This IRI-reference
                         SHOULD be normalized, and MUST resolve to an
-                        <xref target="RFC3987">absolute-IRI</xref> (without a fragment),
-                        or to a IRI with an empty fragment.
+                        <xref target="RFC3987">absolute-IRI</xref> (without a fragment).
                     </t>
                     <t>
-                        The empty fragment form is NOT RECOMMENDED and is retained only
-                        for backwards compatibility, and because the
-                        application/schema+json media type defines that a IRI with an
-                        empty fragment identifies the same resource as the same IRI
-                        with the fragment removed.  However, since this equivalence is not
-                        part of the <xref target="RFC3986">RFC 3986 normalization process</xref>,
-                        implementers and schema authors cannot rely on generic IRI libraries
-                        understanding it.
-                    </t>
-                    <t>
-                        Therefore, "$id" MUST NOT contain a non-empty fragment, and SHOULD NOT
-                        contain an empty fragment.  The absolute-IRI form MUST be considered
-                        the canonical IRI, regardless of the presence or absence of an empty fragment.
-                        <cref>
-                            An empty fragment is currently allowed because older meta-schemas have
-                            an empty fragment in their $id (or previously, id).
-                            A future draft may outright forbid even empty fragments in "$id".
-                        </cref>
-                    </t>
-                    <t>
-                        The absolute-IRI also serves as the base IRI for relative IRI-references
+                        The resulting absolute-IRI serves as the base IRI for relative IRI-references
                         in keywords within the schema resource, in accordance with
                         <xref target="RFC3987">RFC 3987 section 6.5</xref> and
                         <xref target="RFC3986">RFC 3986 section 5.1.1</xref> regarding base IRIs
@@ -1488,11 +1467,6 @@
                         "$dynamicAnchor", or any other mechanism, implementations SHOULD raise
                         an error condition.  Otherwise the result is undefined, and even if
                         documented will not be interoperable.
-                    </t>
-                    <t>
-                        Note that due to the semantics of JSON Pointer fragments, schema IRIs
-                        that differ only by the presence or absence of an empty fragment MUST
-                        be considered duplicates.
                     </t>
                 </section>
 
