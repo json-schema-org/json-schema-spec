@@ -733,7 +733,7 @@
                     <xref target="schema-document">schema object</xref>.
                 </t>
             </section>
-            <section title="Default Behaviors">
+            <section title="Default Behaviors" anchor="default-behaviors">
                 <t>
                     A missing keyword MUST NOT produce a false assertion result, MUST
                     NOT produce annotation results, and MUST NOT cause any other schema
@@ -2122,7 +2122,7 @@
                         </t>
                         <t>
                             "contains", whose behavior is affected by the presence and value of
-                            "minContains", in the Validation vocabulary
+                            "minContains"
                         </t>
                     </list>
                 </t>
@@ -2502,23 +2502,65 @@
                 </section>
 
                 <section title="Other Keywords for Applying Subschemas">
+                    <section title="maxContains">
+                        <t>
+                            The value of this keyword MUST be a non-negative integer.
+                        </t>
+                        <t>
+                            This keyword modifies the behavior of "contains" within the same schema object,
+                            as described below in the section for that keyword.
+                        </t>
+                        <t>
+                            Validation MUST always succeed against this keyword.
+                            The value of this keyword is used as its annotation result.
+                        </t>
+                    </section>
+
+                    <section title="minContains">
+                        <t>
+                            The value of this keyword MUST be a non-negative integer.
+                        </t>
+                        <t>
+                            This keyword modifies the behavior of "contains" within the same schema object,
+                            as described below in the section for that keyword.
+                        </t>
+                        <t>
+                            Validation MUST always succeed against this keyword.
+                            The value of this keyword is used as its annotation result.
+                        </t>
+                        <t> Per section <xref target="default-behaviors" format="counter"></xref>,
+                            omitted keywords MUST NOT produce annotation results.  However, as described
+                            in the section for "contains", the absence of this keyword's annotation
+                            causes "contains" to assume a minimum value of 1.
+                        </t>
+                    </section>
+
                     <section title="contains">
                         <t>
                             The value of this keyword MUST be a valid JSON Schema.
                         </t>
                         <t>
-                            An array instance is valid against "contains" if at least one of
-                            its elements is valid against the given schema,
-                            except when "minContains" is present and has a value of 0, in which
-                            case an array instance MUST be considered valid against the "contains" keyword,
-                            even if none of its elements is valid against the given schema.
+                            This keyword applies its subschema to array elements or object property values.
                         </t>
                         <t>
-                            An object instance is valid against "contains" if at least one of
-                            its properties is valid against the given schema,
-                            except when "minContains" is present and has a value of 0, in which
-                            case an object instance MUST be considered valid against the "contains" keyword,
-                            even if none of its property values is valid against the given schema.
+                            An instance is valid against "contains" if the number of elements or property
+                            values that are valid against its subschema is with the inclusive range of
+                            the minimum and (if any) maximum number of occurrences.
+                        </t>
+                        <t>
+                            The maximum number of occurrences is provided by the "maxContains" keyword
+                            within the same schema object as "contains".  If "maxContains" is absent,
+                            the maximum number of occurrences MUST be unbounded.
+                        </t>
+                        <t>
+                            The minimum number of occurrences is provided by the "minContains" keyword
+                            within the same schema object as "contains".  If "minContains" is absent,
+                            the minimum number of occurrences MUST be 1.
+                        </t>
+                        <t>
+                            Implementations MAY implement the dependency on "minContians" and
+                            "maxContains" by inspecting their values rather than reading annotations
+                            produced by those keywords.
                         </t>
                         <t>
                             This keyword produces an annotation value which is an array of the
@@ -2531,13 +2573,13 @@
                         </t>
                         <t>
                             This annotation affects the behavior of "unevaluatedItems" in the
-                            Unevaluated vocabulary, and MAY also be used to implement the
-                            "minContains" and "maxContains" keywords in the Validation vocabulary.
+                            Unevaluated vocabulary.
                         </t>
                         <t>
-                            The subschema MUST be applied to every array element even after the first
-                            match has been found, in order to collect annotations for use by other
-                            keywords. This is to ensure that all possible annotations are collected.
+                            The subschema MUST be applied to every array element or object property
+                            value even after the first match has been found, in order to collect
+                            annotations for use by other keywords. This is to ensure that all possible
+                            annotations are collected.
                         </t>
                     </section>
                 </section>

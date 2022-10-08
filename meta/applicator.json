@@ -11,6 +11,11 @@
     "properties": {
         "prefixItems": { "$ref": "#/$defs/schemaArray" },
         "items": { "$dynamicRef": "#meta" },
+        "maxContains": { "$ref": "#/$defs/nonNegativeInteger" },
+        "minContains": {
+            "$ref": "#/$defs/nonNegativeInteger",
+            "default": 1
+        },
         "contains": { "$dynamicRef": "#meta" },
         "additionalProperties": { "$dynamicRef": "#meta" },
         "properties": {
@@ -48,6 +53,10 @@
         "not": { "$dynamicRef": "#meta" }
     },
     "$defs": {
+        "nonNegativeInteger": {
+            "type": "integer",
+            "minimum": 0
+        },
         "schemaArray": {
             "type": "array",
             "minItems": 1,
