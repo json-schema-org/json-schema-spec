@@ -28,7 +28,7 @@ json-schema.tar.gz: $(OUT)
 $(VENV): requirements.txt
 	python -m venv $@
 	$@/bin/python -m pip install --upgrade pip
-	$@/bin/python -m pip install -r requirements.txt
+	$@/bin/python -m pip install -r $<
 
 spec-clean:
 	rm -f $(OUT) json-schema.tar.gz

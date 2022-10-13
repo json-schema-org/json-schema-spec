@@ -35,19 +35,16 @@ Labels are assigned based on [Sensible Github Labels](https://github.com/Releque
     * links.json - JSON Hyper-Schema's Link Description Object meta-schema
     * hyper-schema-output.json - The recommended output format for JSON Hyper-Schema links
 
-The Makefile can create the necessary Python virtual environment for you:
+The Makefile will create the necessary Python venv for you as part of the regular make target.
+
+`make clean` will remove all output including the venv.  To clean just the spec output and
+keep the venv, use `make spec-clean`.
+
+If you want to run `xml2rfc` manually after running make for the first time, you will
+need to activate the virtual environment:
 
 ```sh
-make venv
 source .venv/bin/activate
-make
-```
-
-Or you can manually install "xml2rfc" using "pip" (https://pypi.org/project/xml2rfc/) and type "make" at a shell to build the .txt and .html spec files:
-
-```sh
-pip install --requirement requirements.txt
-make 
 ```
 
 The version of "xml2rfc" that this project uses is updated by modifying `requirements.in` and running `pip-compile requirements.in`.
