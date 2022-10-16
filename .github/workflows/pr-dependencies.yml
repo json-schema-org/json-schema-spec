@@ -1,0 +1,12 @@
+name: Check PR Dependencies
+
+on: pull_request
+
+jobs:
+  check_dependencies:
+    runs-on: ubuntu-latest
+    name: Check Dependencies
+    steps:
+    - uses: gregsdennis/dependencies-action@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
