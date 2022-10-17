@@ -6,18 +6,17 @@
   "anyOf": [
     { "$ref": "#/$defs/flag" },
     { "$ref": "#/$defs/basic" },
-    { "$ref": "#/$defs/detailed" },
-    { "$ref": "#/$defs/verbose" }
+    { "$ref": "#/$defs/hierarchical" }
   ],
   "$defs": {
     "outputUnit":{
       "properties": {
         "valid": { "type": "boolean" },
-        "keywordLocation": {
+        "evaluationPath": {
           "type": "string",
           "format": "json-pointer"
         },
-        "absoluteKeywordLocation": {
+        "schemaLocation": {
           "type": "string",
           "format": "uri"
         },
@@ -25,56 +24,38 @@
           "type": "string",
           "format": "json-pointer"
         },
-        "error": {
-          "type": "string"
-        },
-        "errors": {
+        "nested": {
           "$ref": "#/$defs/outputUnitArray"
         },
         "annotations": {
-          "$ref": "#/$defs/outputUnitArray"
+          "type": "object",
+          "additionalProperties": true
+        },
+        "errors": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
         }
       },
-      "required": [ "valid", "keywordLocation", "instanceLocation" ],
+      "required": [ "valid", "evaluationPath", "schemaLocation", "instanceLocation" ],
       "allOf": [
         {
           "if": {
+            "required": [ "errors" ]
+          },
+          "then": {
             "properties": {
               "valid": { "const": false }
             }
-          },
-          "then": {
-            "anyOf": [
-              {
-                "required": [ "error" ]
-              },
-              {
-                "required": [ "errors" ]
-              }
-            ]
           }
         },
         {
           "if": {
-            "anyOf": [
-              {
-                "properties": {
-                  "keywordLocation": {
-                    "pattern": "/\\$ref/"
-                  }
-                }
-              },
-              {
-                "properties": {
-                  "keywordLocation": {
-                    "pattern": "/\\$dynamicRef/"
-                  }
-                }
-              }
-            ]
+            "required": [ "annotations" ]
           },
           "then": {
-            "required": [ "absoluteKeywordLocation" ]
+            "properties": {
+              "valid": { "const": true }
+            }
           }
         }
       ]
@@ -89,8 +70,15 @@
       },
       "required": [ "valid" ]
     },
-    "basic": { "$ref": "#/$defs/outputUnit" },
-    "detailed": { "$ref": "#/$defs/outputUnit" },
-    "verbose": { "$ref": "#/$defs/outputUnit" }
+    "basic": {
+      "properties": {
+        "valid": { "type": "boolean" },
+        "nested": {
+          "$ref": "#/$defs/outputUnitArray"
+        }
+      },
+      "required": [ "valid", "nested" ]
+    },
+    "hierarchical": { "$ref": "#/$defs/outputUnit" }
   }
 }
