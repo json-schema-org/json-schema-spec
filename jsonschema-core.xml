@@ -2888,11 +2888,14 @@ https://example.com/schemas/common#/$defs/allOf/1
 
                 <section title="Annotations">
                     <t>
-                        Any annotations produced by the validation.  This property MUST NOT
-                        be included if the validation was unsuccessful.  The value
-                        for this property MUST be an object where the keys are the names of
-                        keywords and the values are the annotations produced by the
-                        associated keyword.
+                        Any annotations produced by the evaluation.  This property MUST NOT
+                        be included if the validation result of the containing subschema was
+                        unsuccessful.
+                    </t>
+                    <t>
+                        The value for this property MUST be an object where the
+                        keys are the names of keywords and the values are the annotations
+                        produced by the associated keyword.
                     </t>
                     <t>
                         Each keyword defines its own annotation data type (e.g. "properties"
@@ -2900,6 +2903,32 @@ https://example.com/schemas/common#/$defs/allOf/1
                     </t>
                     <t>
                         The JSON key for this information is "annotations".
+                    </t>
+                </section>
+
+                <section title="Dropped Annotations">
+                    <t>
+                        Any annotations produced and subsequently dropped by the evaluation
+                        due to an unsuccessful validation result of the containing subschema.
+                        This property MAY be included if the validation result of the containing
+                        subschema was unsuccessful.  It MUST NOT be included if the local
+                        validation result of the containing subschema was successful.
+                    </t>
+                    <t>
+                        Implementations that wish to include these annotations are encouraged
+                        to provide users with a configuration option to exclude them.
+                    </t>
+                    <t>
+                        The value for this property MUST be an object where the
+                        keys are the names of keywords and the values are the annotations
+                        produced by the associated keyword.
+                    </t>
+                    <t>
+                        Each keyword defines its own annotation data type (e.g. "properties"
+                        produces a list of keywords, whereas "title" produces a string).
+                    </t>
+                    <t>
+                        The JSON key for this information is "droppedAnnotations".
                     </t>
                 </section>
 
