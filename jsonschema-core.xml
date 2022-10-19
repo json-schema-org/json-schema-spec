@@ -3325,6 +3325,10 @@ https://example.com/schemas/common#/$defs/allOf/1
           "evaluationPath": "/properties/foo/allOf/1",
           "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
           "instanceLocation": "/foo",
+          "droppedAnnotations": {
+            "properties": [ "foo-prop" ],
+            "title": "foo-title"
+          },
           "nested": [
             {
               "valid": false,
@@ -3333,6 +3337,9 @@ https://example.com/schemas/common#/$defs/allOf/1
               "instanceLocation": "/foo/foo-prop",
               "errors": {
                 "const": "Expected \"1\""
+              },
+              "droppedAnnotations": {
+                "title": "foo-prop-title"
               }
             },
             {
@@ -3356,6 +3363,10 @@ https://example.com/schemas/common#/$defs/allOf/1
           "evaluationPath": "/properties/bar/$ref",
           "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
           "instanceLocation": "/bar",
+          "droppedAnnotations": {
+            "properties": [ "bar-prop" ],
+            "title": "bar-title"
+          },
           "nested": [
             {
               "valid": false,
@@ -3364,6 +3375,9 @@ https://example.com/schemas/common#/$defs/allOf/1
               "instanceLocation": "/bar/bar-prop",
               "errors": {
                 "minimum": "2 is less than or equal to 10"
+              },
+              "droppedAnnotations": {
+                "title": "bar-prop-title"
               }
             }
           ]
