@@ -655,8 +655,12 @@
                 Typically, applicator keywords are processed until a schema object with no
                 applicators (and therefore no subschemas) is reached.  The appropriate
                 location in the instance is evaluated against the assertion and
-                annotation keywords in the schema object, and their results are gathered
-                into the parent schema according to the rules of the applicator.
+                annotation keywords in the schema object.  The interactions of those
+                keyword results to produce the schema object results are governed by
+                section <xref target="annot-assert" format="counter"></xref>, while the
+                relationship of subschema results to the results of the applicator
+                keyword that applied them is described by section
+                <xref target="applicators" format="counter"></xref>.
             </t>
             <t>
                 Evaluation of a parent schema object can complete once all of its
@@ -811,10 +815,11 @@
                     assertion conditions of their own.
                 </t>
                 <t>
-                    <xref target="annotations">Annotation</xref> results are
-                    preserved along with the instance location and the location of
-                    the schema keyword, so that applications can decide how to
-                    interpret multiple values.
+                    <xref target="annotations">Annotation</xref> results from subschemas
+                    are preserved in accordance with section
+                    <xref target="collect" format="counter"></xref> so that applications
+                    can decide how to interpret multiple values.  Applicator keywords
+                    do not play a direct role in this preservation.
                 </t>
                 <section title="Referenced and Referencing Schemas" anchor="referenced">
                     <t>
@@ -935,7 +940,7 @@
                     for failing schemas.
                 </t>
 
-                <section title="Collecting Annotations">
+                <section title="Collecting Annotations" anchor="collect">
                     <t>
                         Annotations are collected by keywords that explicitly define
                         annotation-collecting behavior.  Note that boolean schemas cannot
@@ -1058,7 +1063,7 @@
                             schema locations.
                         </t>
                     </section>
-                    <section title="Annotations and Assertions">
+                    <section title="Annotations and Assertions" anchor="annot-assert">
                         <t>
                             Schema objects that produce a false assertion result MUST NOT
                             produce any annotation results, whether from their own keywords
@@ -1091,13 +1096,6 @@
                             title annotation "Integer Value" is discarded because the type assertion
                             in that schema object fails.  The title annotation "String Value"
                             is kept, as the instance passes the string type assertions.
-                        </t>
-                    </section>
-                    <section title="Annotations and Applicators">
-                        <t>
-                            In addition to possibly defining annotation results of their own,
-                            applicator keywords aggregate the annotations collected in their
-                            subschema(s) or referenced schema(s).
                         </t>
                     </section>
                 </section>
