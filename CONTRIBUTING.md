@@ -46,7 +46,7 @@ As an informative document, bugs in the meta-schema may be fixed in place to ali
 
 ## Conduct
 
-All official channels including the mailing list, GitHub organization, and Freenode channel, follow the IETF Guidelines for Conduct as specified in [RFC7154](https://tools.ietf.org/html/rfc7154).
+All official channels including the mailing list, GitHub organization, Slack server, and IRC channels, follow our [Code of Conduct](https://github.com/json-schema-org/.github/blob/main/CODE_OF_CONDUCT.md).
 
 
 ## Financial contributions
