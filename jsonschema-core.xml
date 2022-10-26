@@ -2915,8 +2915,9 @@ https://example.com/schemas/common#/$defs/allOf/1
                         validation result of the containing subschema was successful.
                     </t>
                     <t>
-                        Implementations that wish to include these annotations are encouraged
-                        to provide users with a configuration option to exclude them.
+                        Implementations that wish to provide these annotations MUST NOT provide
+                        them as their default behavior.  These annotations MUST only be included
+                        by explicitly configuring the implementation to do so.
                     </t>
                     <t>
                         The value for this property MUST be an object where the
