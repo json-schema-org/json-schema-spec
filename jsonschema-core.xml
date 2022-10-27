@@ -1132,7 +1132,7 @@
                 </t>
             </section>
         </section>
-        <section title="The JSON Schema Core Vocabulary">
+        <section title="The JSON Schema Core Vocabulary" anchor="core">
             <t>
                 Keywords declared in this section, which all begin with "$", make up
                 the JSON Schema Core vocabulary.  These keywords are either required in
@@ -1238,17 +1238,13 @@
                 <section title='The "$vocabulary" Keyword'>
                     <t>
                         The "$vocabulary" keyword is used in meta-schemas to identify the
-                        vocabularies available for use in schemas described by that meta-schema.
-                        It is also used to indicate whether each vocabulary is required or optional,
-                        in the sense that an implementation MUST understand the required vocabularies
-                        in order to successfully process the schema. Together, this information forms
-                        a dialect. Any vocabulary that is understood by the implementation MUST be
-                        processed in a manner consistent with the semantic definitions contained
-                        within the vocabulary.
+                        vocabularies available for use in schemas described by that meta-schema,
+                        and whether each vocabulary is required or optional.  Together, this
+                        information forms a dialect.
                     </t>
                     <t>
                         The value of this keyword MUST be an object.  The property names in the
-                        object MUST be IRIs (containing a scheme) and this IRI MUST be normalized.
+                        object MUST be IRIs (containing a scheme) and each IRI MUST be normalized.
                         Each IRI that appears as a property name identifies a specific set of
                         keywords and their semantics.
                     </t>
@@ -1268,32 +1264,79 @@
                     </t>
                     <t>
                         The values of the object properties MUST be booleans.
-                        If the value is true, then implementations that do not recognize
-                        the vocabulary MUST refuse to process any schemas that declare
-                        this meta-schema with "$schema".  If the value is false, implementations
-                        that do not recognize the vocabulary SHOULD proceed with processing
-                        such schemas.  The value has no impact if the implementation
-                        understands the vocabulary.
+                        If the value is true, then the vocabulary MUST be considered to be required.
+                        If the value is false, then the vocabulary MUST be considered to be optional.
                     </t>
-                    <t>
-                        Per <xref target="extending" format="counter"></xref>, unrecognized
-                        keywords SHOULD be treated as annotations.
-                        This remains the case for keywords defined
-                        by unrecognized vocabularies.  It is not currently possible to distinguish
-                        between unrecognized keywords that are defined in vocabularies from
-                        those that are not part of any vocabulary.
-                    </t>
-                    <t>
-                        The "$vocabulary" keyword SHOULD be used in the root schema of any schema
-                        resource intended for use as a meta-schema.  It MUST NOT appear in subschemas.
-                    </t>
-                    <t>
-                        The "$vocabulary" keyword MUST be ignored in schema resources that
-                        are not being processed as a meta-schema.  This allows validating
-                        a meta-schema M against its own meta-schema M' without requiring
-                        the validator to understand the vocabularies declared by M.
-                    </t>
-                    <section title="Default vocabularies">
+                    <section title="Required, optional, and omitted vocabularies">
+                        <t>
+                            A schema is said to use a dialect and its constituent vocabularies if it is
+                            associated with a meta-schema defining the dialect with "$vocabulary",
+                            either through "$schema", through appropriately defined media type parameters
+                            or link relation types, or through documented default implementation-defined
+                            behavior in the absence of an explicit meta-schema.  If a meta-schema
+                            does not contain "$vocabulary", the set of vocabularies in use is determined
+                            according to section <xref target="default-vocabs" format="counter"></xref>.
+                        </t>
+                        <t>
+                            Any vocabulary in use by a schema and understood by the implementation
+                            MUST be processed in a manner consistent with the semantic definitions
+                            contained within the vocabulary, regardless of whether that vocabulary
+                            is required or optional.
+                        </t>
+                        <t>
+                            Any vocabulary that is not present in "$vocabulary" MUST NOT be made
+                            available for use in schemas described by that meta-schema, except for
+                            the core vocabulary as specified by the introduction to section
+                            <xref target="core" format="counter"></xref>.
+                        </t>
+                        <t>
+                            Implementations that do not support a vocabulary required by a schema
+                            MUST refuse to process that schema.
+                        </t>
+                        <t>
+                            Implementations that do not support a vocabulary that is optionally used
+                            by a schema SHOULD proceed with processing the schema.  The keywords will
+                            be considered to be unrecognized keywords as addressed by section
+                            <xref target="unrecognized" format="counter"></xref>.  Note that since
+                            the recommended behavior for such keywords is to collect them as
+                            annotations, vocabularies consisting only of annotations will have
+                            the same behavior when used optionally whether the implementation
+                            supports them or not.  This allows annotation-only vocabularies to
+                            be supported without custom code, even in implementations that do
+                            not support providing custom code for extension vocabularies.
+                        </t>
+                    </section>
+                    <section title="Vocabularies are schema resource-scoped">
+                        <t>
+                            The "$vocabulary" keyword SHOULD be used in the root schema of any schema
+                            resource intended for use as a meta-schema.  It MUST NOT appear in subschemas.
+                        </t>
+                        <t>
+                            The "$vocabulary" keyword MUST be ignored in schema resources that
+                            are not being processed as a meta-schema.  This allows validating
+                            a meta-schema M against its own meta-schema M' without requiring
+                            the validator to understand the vocabularies declared by M.
+                        </t>
+                    </section>
+                    <section title="Vocabulary and non-vocabulary keywords">
+                        <t>
+                            Keywords from different vocabularies, as well as non-vocabulary
+                            extension keywords, can have identical names.  These are not
+                            considered to be the same keyword from the perspective of
+                            enabling or disabling them through "$vocabulary".
+                        </t>
+                        <t>
+                            In particular the keywords defined in this specification and its
+                            companion documents MUST be considered to be vocabulary keywords,
+                            with availability governed by "$vocabulary" even in implementations
+                            that do not support any extension vocabularies.
+                        </t>
+                        <t>
+                            Guidance regarding vocabularies with identically-named keywords is provided
+                            in Appendix <xref target="vocab-practices" format="counter"></xref>.
+                        </t>
+                    </section>
+                    <section title="Default vocabularies" anchor="default-vocabs">
                         <t>
                             If "$vocabulary" is absent, an implementation MAY determine
                             behavior based on the meta-schema if it is recognized from the
@@ -3936,7 +3979,8 @@ https://example.com/schemas/common#/$defs/allOf/1
         </section>
 
         <section title="Working with vocabularies">
-            <section title="Best practices for vocabulary and meta-schema authors">
+            <section title="Best practices for vocabulary and meta-schema authors"
+                     anchor="vocab-practices">
                 <t>
                     Vocabulary authors should
                     take care to avoid keyword name collisions if the vocabulary is intended
