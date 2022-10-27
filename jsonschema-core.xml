@@ -633,18 +633,10 @@
                     detection of an infinite reference loop, or excessive consumption of memory.
                 </t>
                 <t>
-                    Implementations MAY detect certain refusal-to-process conditions when a schema is
-                    loaded, prior to attempting any evaluation.  For example, a schema that requires
-                    a vocabulary that the implementation does not support cannot be processed
-                    regardless of the instance.
-                </t>
-                <t>
-                    Some conditions can manifest as either runtime or refusal-to-process outcomes.
-                    For example, a reference to a non-existent location within a schema resource can
-                    be detected at schema load time, but a reference to a non-existent external schema
-                    might not be detected until runtime as that reference target schema might
-                    be provided between the loading of the reference source schema and the first
-                    attempted evaluation with an instance.
+                    Unlike runtime errors, refusal-to-process is the expected outcome in certain cases.
+                    Currently, the only situations where refusal-to-process is either required or allowed
+                    are when a vocabulary cannot be supported, or a dialect cannot be determined.  These
+                    scenarios are noted in the appropriate sections of the specification.
                 </t>
             </section>
 
