@@ -31,9 +31,6 @@ Labels are assigned based on [Sensible Github Labels](https://github.com/Releque
     * relative-json-pointer.xml - source for the Relative JSON Pointer I-D
 * _meta-schemas and recommended output formats_
     * schema.json - JSON Schema "core" and Validation meta-schema
-    * hyper-schema.json - JSON Hyper-Schema meta-schema
-    * links.json - JSON Hyper-Schema's Link Description Object meta-schema
-    * hyper-schema-output.json - The recommended output format for JSON Hyper-Schema links
 
 The Makefile will create the necessary Python venv for you as part of the regular make target.
 
