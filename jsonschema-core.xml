@@ -2929,11 +2929,14 @@ https://example.com/schemas/common#/$defs/allOf/1
 
                 <section title="Annotations">
                     <t>
-                        Any annotations produced by the validation.  This property MUST NOT
-                        be included if the validation was unsuccessful.  The value
-                        for this property MUST be an object where the keys are the names of
-                        keywords and the values are the annotations produced by the
-                        associated keyword.
+                        Any annotations produced by the evaluation.  This property MUST NOT
+                        be included if the validation result of the containing subschema was
+                        unsuccessful.
+                    </t>
+                    <t>
+                        The value for this property MUST be an object where the
+                        keys are the names of keywords and the values are the annotations
+                        produced by the associated keyword.
                     </t>
                     <t>
                         Each keyword defines its own annotation data type (e.g. "properties"
@@ -2941,6 +2944,33 @@ https://example.com/schemas/common#/$defs/allOf/1
                     </t>
                     <t>
                         The JSON key for this information is "annotations".
+                    </t>
+                </section>
+
+                <section title="Dropped Annotations">
+                    <t>
+                        Any annotations produced and subsequently dropped by the evaluation
+                        due to an unsuccessful validation result of the containing subschema.
+                        This property MAY be included if the validation result of the containing
+                        subschema was unsuccessful.  It MUST NOT be included if the local
+                        validation result of the containing subschema was successful.
+                    </t>
+                    <t>
+                        Implementations that wish to provide these annotations MUST NOT provide
+                        them as their default behavior.  These annotations MUST only be included
+                        by explicitly configuring the implementation to do so.
+                    </t>
+                    <t>
+                        The value for this property MUST be an object where the
+                        keys are the names of keywords and the values are the annotations
+                        produced by the associated keyword.
+                    </t>
+                    <t>
+                        Each keyword defines its own annotation data type (e.g. "properties"
+                        produces a list of keywords, whereas "title" produces a string).
+                    </t>
+                    <t>
+                        The JSON key for this information is "droppedAnnotations".
                     </t>
                 </section>
 
@@ -3337,6 +3367,10 @@ https://example.com/schemas/common#/$defs/allOf/1
           "evaluationPath": "/properties/foo/allOf/1",
           "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
           "instanceLocation": "/foo",
+          "droppedAnnotations": {
+            "properties": [ "foo-prop" ],
+            "title": "foo-title"
+          },
           "nested": [
             {
               "valid": false,
@@ -3345,6 +3379,9 @@ https://example.com/schemas/common#/$defs/allOf/1
               "instanceLocation": "/foo/foo-prop",
               "errors": {
                 "const": "Expected \"1\""
+              },
+              "droppedAnnotations": {
+                "title": "foo-prop-title"
               }
             },
             {
@@ -3368,6 +3405,10 @@ https://example.com/schemas/common#/$defs/allOf/1
           "evaluationPath": "/properties/bar/$ref",
           "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
           "instanceLocation": "/bar",
+          "droppedAnnotations": {
+            "properties": [ "bar-prop" ],
+            "title": "bar-title"
+          },
           "nested": [
             {
               "valid": false,
@@ -3376,6 +3417,9 @@ https://example.com/schemas/common#/$defs/allOf/1
               "instanceLocation": "/bar/bar-prop",
               "errors": {
                 "minimum": "2 is less than or equal to 10"
+              },
+              "droppedAnnotations": {
+                "title": "bar-prop-title"
               }
             }
           ]
