@@ -25,7 +25,7 @@ There have been two proposals put forward. Both address the goal of a stable
 specification with the ability to evolve. The third option represents sticking
 with the status quo.
 
-### Option 1 - TC-39 inspired
+### Option 1 - TC-39 Inspired
 The spec would be converted from I-D XML to Markdown, but can otherwise be
 structured however we choose. A system would be put in place to allow us to flag
 the stability level of any feature in the spec. There would be only one version
@@ -44,66 +44,64 @@ designated by the year they were released.
 
 ### Option 2 - IETF Inspired
 The spec would be reorganized into two parts: "Core Semantics" and "Standard
-Extensions".
+Extensions". Changes to either spec are subject to strict backward and forward
+compatibility requirements and would be released as a new spec that replaces and
+obsoletes past versions of the spec.
 
-The "Core Semantics" spec would contain the bare minimum rules that
-must be implemented for validators to not produce inaccurate results regardless
-of future revisions or extensions. Among other necessities, this would include a
+The "Core Semantics" spec would contain the bare minimum rules that must be
+implemented for validators to not produce inaccurate results regardless of
+future revisions or extensions. Among other necessities, this would include a
 core set of keywords necessary to fully support structural validation and an
-extension mechanism. This spec should be considered stable and should rarely
-change, but if it does, it must maintain backward and forward compatibility.
+extension mechanism. This spec should rarely change. New features would be added
+through additional specifications that define extensions to the "Core Semantics"
+spec.
 
-The "Standard Extensions" spec would include the rest of the spec. Features and
-keywords included in this spec are so ubiquitous that they should be considered
-essential for implementations to support. Changes to this spec must be
-compatible with previous releases with exceptions only in extreme cases.
-
-A registry could be maintained that maps keywords to their specified semantics.
-User extensions that aren't in the registry should use a URI for their keyword
-to avoid conflicts with other third-party extensions or with future standard
-extensions.
+The "Standard Extensions" spec is an example of one of these extension
+specifications. This spec would be authored by the JSON Schema Org, but
+extension specifications could be authored by anyone. The "Standard Extensions"
+spec would include everything from the current spec that isn't included in the
+"Core Semantics" spec. Features and keywords included in this spec are so
+ubiquitous that they should be considered essential for implementations to
+support.
 
 ### Option 3 - Minimal Change
 Option 3 represents the minimal amount of change to our process from what we
 have been doing. The spec would need to be converted from I-D XML to a Markdown
 version that would be served on the website, but otherwise we would continue to
-work the way we have been. We would aim for new version release every year with
-a patch release mid-cycle. Each release is a distinct version of JSON Schema and
+work the way we have been. We would aim for new version releases every year with
+patch releases mid-cycle. Each release is a distinct version of JSON Schema and
 has no compatibility guarantees between versions.
 
 ## Decision Outcome
-The decision is to go with Option 1 while leaving discussion open for nearly all
-of Option 2 because it is mostly compatible with Option 1. Option 2 uses an
-immutable spec where each release replaces the last while the Option 1 uses a
-mutable spec. The outcome of having only one current version of the spec is
-achieved with either option, but the mutable spec allows us to remove some
-unnecessary roadblocks in our development processes and allows us to release a
-stable spec much sooner. Other than that, discussion for the rest of Option 2
-can continue within the constraints of Option 1.
+The decision is to go with Option 1 while leaving discussion open for aspects of
+Option 2 that could be adopted within the constraints of Option 1.
 
-Option 1 puts no constraint on the structure of the spec and restructuring is
-allowed at any time as long as it doesn't break compatibility requirements.
-Therefore, restructuring the spec as "Core Semantics" and "Standard Extensions"
-is compatible with Option 1. We can move forward with Option 1 now while leaving
-the restructuring discussion open.
+Option 2 uses an immutable spec where each release replaces the last while
+Option 1 uses a mutable spec. The outcome of having only one current version of
+the spec is achieved with either option, but the mutable spec allows us to
+remove some unnecessary roadblocks in our development processes and allows us to
+release a stable spec much sooner.
 
-Option 2 defines a new extension mechanism and some new keywords. These features
-can be introduced under the stability model described in Option 1. Therefore, we
-can move forward with Option 1 while leaving the discussion open for these new
-features.
+Option 2's restructuring of the spec into "Core Semantics" and "Standard
+Extensions" isn't specifically ruled out, but spec evolution is expected to be
+done primarily through mutation of the spec guided by the stability process
+rather than through extension. Option 1 puts no constraint on the structure of
+the spec and restructuring is allowed at any time as long as it doesn't break
+compatibility requirements.
 
 ## Pros and Cons of the Options
 The biggest benefit is shared between Option 1 and Option 2. Both approaches
-result in a stable spec. This will have benefits implementers and users. Because
-of the compatibility requirements, whenever you write a schema, you will never
-need to change it just to keep up with new features added to JSON Schema. This
-is also better for implementers because they don't have to maintain separate
-code with different semantics in different versions. They just need to code for the
-current release and they will automatically have support for past releases.
+result in a stable spec. This will have benefits for both implementers and
+users. Because of the compatibility requirements, whenever you write a schema,
+you will never need to change it just to keep up with changes to JSON Schema.
+This is also better for implementers because they don't have to maintain
+separate code with different semantics in different versions. They just need to
+code for the current release and they will automatically have support for past
+releases.
 
 ### Option 1 - TC-39 Inspired
-The two things that make this option stand out are the stability model and the
-mutability of the spec document.
+The two things that make this option stand out are the stability model governing
+spec evolution and the mutability of the spec document.
 
 Having a mutable spec allows us to make clarifications and bug fixes immediately
 rather than having to wait months or years for the next release to go out. It
@@ -129,9 +127,9 @@ it much more likely that we don't get stuck with something that doesn't work out
 or could be done better.
 
 The stability model also makes it clear to users which features are stable and
-how likely an unstable feature is to change in the future. Whether they prefer
-to stick with stable features or want to use a new keyword, users have the
-information they need to make that decision.
+how likely a feature is to change in the future. Whether they prefer to stick
+with stable features or want to use a new keyword, users have the information
+they need to make that decision.
 
 The downside of the stability model is that it presents a very high barrier for
 a feature to make it into a stable status. It would typically take two years for
@@ -142,14 +140,14 @@ feature.
 ### Option 2 - IETF Inspired
 The benefit of this approach is that it's compatible with the IETF process
 without imposing some of the constraints and perception issues that we had with
-IETF. We can pursue an RFC in the future if we choose to without significant
-changes or spec restructuring.
+our previous process. We can pursue an RFC in the future if we choose to without
+significant changes or spec restructuring.
 
 With this proposal, releases are done as a new document that replaces the
-previous documents. Compared to the constantly evolving spec in Option 1, change
-from non-functional clarifications and bug fixes to adding and evolving new
-features takes much longer if you have to wait for the next release to make a
-change. This lengthens the feedback loop slowing spec development progress.
+previous documents. Compared to the constantly evolving spec in Option 1,
+changes from non-functional clarifications and bug fixes to adding and evolving
+new features takes much longer if you have to wait for the next release to make
+a change. This lengthens the feedback loop slowing spec development progress.
 
 The main downside of this approach compared to Option 1 is that it will likely
 take quite a while to get to a stable release. The spec restructuring is
