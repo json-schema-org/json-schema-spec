@@ -51,7 +51,7 @@ must be implemented for validators to not produce inaccurate results regardless
 of future revisions or extensions. Among other necessities, this would include a
 core set of keywords necessary to fully support structural validation and an
 extension mechanism. This spec should be considered stable and should rarely
-change, but if it does, it must do so in a backward and forward compatible way.
+change, but if it does, it must maintain backward and forward compatibility.
 
 The "Standard Extensions" spec would include the rest of the spec. Features and
 keywords included in this spec are so ubiquitous that they should be considered
@@ -98,7 +98,7 @@ result in a stable spec. This will have benefits implementers and users. Because
 of the compatibility requirements, whenever you write a schema, you will never
 need to change it just to keep up with new features added to JSON Schema. This
 is also better for implementers because they don't have to maintain separate
-code different semantics in different versions. They just need to code for the
+code with different semantics in different versions. They just need to code for the
 current release and they will automatically have support for past releases.
 
 ### Option 1 - TC-39 Inspired
