@@ -176,3 +176,5 @@ looking for.
   stable core.
 * https://github.com/json-schema-org/community/discussions/119 - When we first
   started talking about forward compatibility and a stable spec.
+  * https://json-schema.org/blog/posts/future-of-json-schema - User friendly
+    comments on decoupling from the IETF.
