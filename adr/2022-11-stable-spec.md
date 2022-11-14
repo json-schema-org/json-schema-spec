@@ -97,7 +97,7 @@ you will never need to change it just to keep up with changes to JSON Schema.
 This is also better for implementers because they don't have to maintain
 separate code with different semantics in different versions. They just need to
 code for the current release and they will automatically have support for past
-releases.
+releases (not including "draft" releases).
 
 ### Option 1 - TC-39 Inspired
 The two things that make this option stand out are the stability model governing
@@ -131,11 +131,12 @@ how likely a feature is to change in the future. Whether they prefer to stick
 with stable features or want to use a new keyword, users have the information
 they need to make that decision.
 
-The downside of the stability model is that it presents a very high barrier for
-a feature to make it into a stable status. It would typically take two years for
-a feature to reach stability which could be a long time to wait for users who
-need to stick to the stable feature set but could benefit greatly from a new
-feature.
+The stability model sets a very high barrier for a feature to make it into
+stable status. This is on purpose so we can be very sure features won't change
+once they are stable, but this process can take a long time. It would typically
+take two years for a feature to reach stability which could be a long time to
+wait for users who need to stick to the stable feature set but could benefit
+greatly from a new feature.
 
 ### Option 2 - IETF Inspired
 The benefit of this approach is that it's compatible with the IETF process
