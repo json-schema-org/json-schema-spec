@@ -2,10 +2,14 @@
 This document formally defines the process used to evolve the JSON Schema
 specification as of the first stable release in 2023. It applies to the core
 specification and the specifications for any dialects and vocabularies
-maintained by the JSON Schema Org. It does not necessarily apply to everything
-the JSON Schema Org maintains. For example, media type registration follows the
-IETF process. Certain components used within JSON Schema, such as Relative JSON
-Pointer, may also follow a separate process.
+maintained by the JSON Schema Org, but it doesn't necessarily apply to
+everything the JSON Schema Org maintains. For example, media type registration
+follows the IETF process. Certain components used within JSON Schema, such as
+Relative JSON Pointer, may also follow a separate process.
+
+This process doesn't apply to third-party dialects, vocabularies, or other
+extensions. However, third-parties are welcome to use this as a basis for the
+process they use for their specifications.
 
 ## Canonical URLs
 There MUST be a stable canonical URL for referencing any specification that
@@ -24,10 +28,14 @@ merged in the last quarter.
 
 ## The Stability Model
 Every feature in the spec has a release status. It's either evolving, stable, or
-deprecated. Flags are used to show the status a feature is in. If a feature
-doesn't have a flag, it's considered stable. If it has a year flag (such as
-`2024`) that's the year the feature reached stability. The other flags indicate
-a feature that is not yet stable or is deprecated.
+deprecated. Flags are used to show the status a feature is in. If it has a year
+flag (such as `2024`) that's the year the feature reached stability. The other
+flags indicate a feature that is not yet stable or is deprecated.
+
+If a feature doesn't have a flag, it's considered stable. A feature can only be
+unflagged if it was stable in the initial stable release in 2023. Any functional
+change to the spec after the initial stable release MUST have a flag indicating
+it's status.
 
 ### Champions
 Any feature that is evolving SHOULD have a champion. The champion is responsible
@@ -45,11 +53,11 @@ Features that could be problematic for forward compatibility are highly
 discouraged, but may be considered if the feature is optional and disabled by
 default.
 
-**Promotion Checklist:**
+**Promotion to STAGE-0 Checklist:**
 [] Consensus among JSON Schema Org core contributors that the proposal is worth
   pursuing
 [] The proposal has a champion
-[] A PR for an entry for in the `STAGE-0` registry has been approved
+[] A PR for an entry in the `STAGE-0` registry has been approved
 
 ### STAGE-0
 `STAGE-0` features are tracked in the `STAGE-0` Registry on the website. This
@@ -63,7 +71,7 @@ issues that might lead to low adoption such as difficulty of implementation or
 performance implications. Therefore, these implementations don't need to be
 publicly available or have real world use at this point.
 
-**Promotion Checklist:**
+**Promotion to STAGE-1 Checklist:**
 [] There is general consensus among the core contributors for adding the feature
   to the spec
 [] Tests are available in the test suite
@@ -73,14 +81,14 @@ publicly available or have real world use at this point.
   removes the feature from the `STAGE-0` registry.
 
 ### STAGE-1
-`STAGE-1` features are included to the specification, but flagged as `STAGE-1`
+`STAGE-1` features are included in the specification, but flagged as `STAGE-1`
 and are not subject to the compatibility requirements of "stable" features. They
 can be added at any time as long as it meets all criteria for `STAGE-1` status.
 
 At this stage, the feature should be seeing real world use. These features MAY
 change or be removed all together based on what we learn from real world usage,
 but anything more than small changes should be extremely rare. Any necessary
-feature experimentation and evolution should have be done in `STAGE-0`.
+feature experimentation and evolution should have been done in `STAGE-0`.
 
 Implementers are encouraged to implement `STAGE-1` features, but are not
 expected to maintain support for previous versions if they change. Users who
@@ -91,7 +99,7 @@ A `STAGE-1` feature can be promoted to `STAGE-2` at any time. Ideally a
 feature should stay in `STAGE-1` for about one year, but may stay longer if we
 don't see it used enough in the wild.
 
-**Promotion Checklist:**
+**Promotion to STAGE-2 Checklist:**
 [] There is general consensus that the feature has been proven to be a good
   addition to JSON Schema and is unlikely to change.
 [] We see the feature being used successfully in the wild and not generating a
@@ -117,7 +125,7 @@ year to allow implementations to catch up.
 
 `STAGE-2` features can only be promoted to stable as part of a release.
 
-**Promotion Checklist:**
+**Promotion to Stable Checklist:**
 [] The vast majority of actively maintained implementations support the feature
 
 ### Stable
@@ -148,7 +156,7 @@ Implementations that express support for a particular release MUST support all
 features that are stable as of that release.
 
 A snapshot of the spec will be taken of the stable parts of the spec and made
-available as a PDF on the website at.
+available as a PDF on the website.
 
 ## Meta-Schemas
 Meta-schemas associated with the specification(s) maintained under this process
@@ -156,7 +164,7 @@ are subject to the same compatibility rules as the specification. They can be
 updated at any time, but changes MUST be backward compatible and allow for
 forward compatibility with future schemas.
 
-Meta-schema URIs SHOULD not change once published, but if they do, the old URI
+Meta-schema URIs SHOULD NOT change once published, but if they do, the old URI
 MUST remain available and redirect to the new URI.
 
 Meta-schemas are considered non-normative. It's sometimes not possible or not
