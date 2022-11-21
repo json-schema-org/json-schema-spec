@@ -1228,7 +1228,15 @@
                         The "$schema" keyword SHOULD be used in the document root schema object,
                         and MAY be used in the root schema objects of embedded schema resources.
                         It MUST NOT appear in non-resource root schema objects.  If absent from
-                        the document root schema, the resulting behavior is implementation-defined.
+                        the document root schema, the resulting behavior is implementation-defined,
+                        but MUST fall within the following options:
+                        <ul>
+                            <li>Refuse to process the schema, as with unsupported required
+                                vocabularies</li>
+                            <li>Assume a specific, documented meta-schema</li>
+                            <li>Document the process by which it examines the schema and determines
+                                which of a specific set of meta-schemas to assume</li>
+                        </ul>
                     </t>
                     <t>
                         Values for this property are defined elsewhere in this and other documents,
@@ -3547,9 +3555,9 @@ https://example.com/schemas/common#/$defs/allOf/1
             <t>
                 Instances and schemas are both frequently written by untrusted third parties, to be
                 deployed on public Internet servers.
-                Validators should take care that the parsing and validating against schemas does not consume excessive
-                system resources.
-                Validators MUST NOT fall into an infinite loop.
+                Implementations should take care that the parsing and evaluating against schemas
+                does not consume excessive system resources.
+                Implementations MUST NOT fall into an infinite loop.
             </t>
             <t>
                 A malicious party could cause an implementation to repeatedly collect a copy
