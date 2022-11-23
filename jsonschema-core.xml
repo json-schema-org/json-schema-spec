@@ -2806,7 +2806,7 @@
                             with no further details.
                         </t>
                         <t>
-                            Basic - Provides validation information in a flat list structure.
+                            List - Provides validation information in a flat list structure.
                         </t>
                         <t>
                             Hierarchical - Provides validation information in a hierarchical
@@ -2815,7 +2815,7 @@
                         </t>
                     </list>
                     An implementation MUST provide the "flag" format and SHOULD provide at least one
-                    of the "basic" or "hierarchical" formats. Implementations SHOULD specify in
+                    of the "list" or "hierarchical" formats. Implementations SHOULD specify in
                     their documentation which formats they support.
                 </t>
 
@@ -2984,7 +2984,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                         array of output units, even if only a single output unit is produced.
                     </t>
                     <t>
-                        For "basic", this property will appear only at the root output unit
+                        For "list", this property will appear only at the root output unit
                         and will hold all output units in a flat list.
                     </t>
                     <t>
@@ -3201,9 +3201,9 @@ https://example.com/schemas/common#/$defs/allOf/1
                     </t>
                 </section>
 
-                <section title="Basic">
+                <section title="List">
                     <t>
-                        The "Basic" structure is a flat list of output units contained within a
+                        The "List" structure is a flat list of output units contained within a
                         root output unit.
                     </t>
                     <t>
