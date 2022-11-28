@@ -11,6 +11,10 @@ This process doesn't apply to third-party dialects, vocabularies, or other
 extensions. However, third-parties are welcome to use this as a basis for the
 process they use for their specifications.
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in RFC 2119.
+
 ## Canonical URLs
 There MUST be a stable canonical URL for referencing any specification that
 follows this process. If the spec is made available from any other URLs, they
@@ -32,17 +36,17 @@ deprecated. Flags are used to show the status a feature is in. If it has a year
 flag (such as `2024`) that's the year the feature reached stability. The other
 flags indicate a feature that is not yet stable or is deprecated.
 
-If a feature doesn't have a flag, it's considered stable. A feature can only be
-unflagged if it was stable in the initial stable release in 2023. Any functional
-change to the spec after the initial stable release MUST have a flag indicating
-it's status.
+If a feature doesn't have a flag, that means it was part of the original stable
+release and MUST be considered stable. Any functional change to the spec after
+the initial stable release MUST have a flag indicating it's status.
 
 ### Champions
 Any feature that is evolving SHOULD have a champion. The champion is responsible
 for shepherding the feature through the process to into stable status. The
 champion doesn't need to do all the work, they're just responsible for making
 sure the work gets done. The champion role MAY be shared by more than one
-person. An evolving feature without a champion SHOULD be removed from the spec.
+person or transferred to someone else if necessary. An evolving feature without
+a champion SHOULD be removed from the spec.
 
 ### Proposals
 New features start out as proposals. Proposals are informal GitHub Issues or
@@ -100,10 +104,12 @@ feature should stay in `STAGE-1` for about one year, but may stay longer if we
 don't see it used enough in the wild.
 
 **Promotion to STAGE-2 Checklist:**
-[] There is general consensus that the feature has been proven to be a good
-  addition to JSON Schema and is unlikely to change.
-[] We see the feature being used successfully in the wild and not generating a
-  lot of community support issues that could indicate a problem.
+[] There is general consensus among the active specification contributors that
+  the feature has been proven to be a good addition to JSON Schema and is
+  unlikely to change.
+[] The active specification contributors see the feature being used successfully
+  in the wild and not generating a lot of community support issues that could
+  indicate a problem.
 
 ### STAGE-2
 `STAGE-2` features are in the last stages of becoming stable. Changes are
@@ -126,7 +132,8 @@ year to allow implementations to catch up.
 `STAGE-2` features can only be promoted to stable as part of a release.
 
 **Promotion to Stable Checklist:**
-[] The vast majority of actively maintained implementations support the feature
+[] The active specification contributors determined that the vast majority of
+  actively maintained implementations support the feature.
 
 ### Stable
 Any part of the specification that doesn't have stability flag or has a year
