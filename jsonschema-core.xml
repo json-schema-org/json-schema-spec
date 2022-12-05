@@ -516,13 +516,34 @@
                 locally named schemas.
             </t>
             <t>
-                Plain name fragments MUST start with a letter ([A-Za-z]) or underscore ("_"),
-                followed by any number of letters, digits ([0-9]), hyphens ("-"),
-                underscores ("_"), and periods (".").  This matches the US-ASCII part of XML's
+                Plain name fragments MUST follow XML's 
                 <xref target="xml-names">NCName production</xref>, which allows for compatibility
                 with the recommended plain name <xref target="W3C.REC-xptr-framework-20030325">syntax</xref> for
-                XML-based media types.
+                XML-based media types.  For convenience, the NCName syntax is reproduced here in ABNF form, using
+                a minimal set of rules:
+                <cref>
+                    Note that the previous syntax for plain name fragment is a subset of this syntax,
+                    which used only the first line of each of the NCNameStartChar and NCNameChar rules.
+                </cref>
             </t>
+            <figure>
+                <artwork>
+<![CDATA[
+NCNameStartChar = [A-Z] / "_" / [a-z]
+NCNameStartChar =/ %xC0-%xD6 / %xD8-%xF6 / %xF8-%x2FF
+NCNameStartChar =/ %x370-%x37D / %x37F-%x1FFF
+NCNameStartChar =/ %x200C-%x200D / %x2070-%x218F
+NCNameStartChar =/ %x2C00-%x2FEF / %x3001-%xD7FF
+NCNameStartChar =/ %xF900-%xFDCF / %xFDF0-%xFFFD
+NCNameStartChar =/ %x10000-%xEFFFF
+
+NCNameChar      = NCNameStartChar / "-" / "." / 0-9
+NCNameChar      =/ %xB7 / %x0300-%x036F / %x203F-%x2040
+
+NCName          = NCNameStartChar *NCNameChar
+]]>
+                </artwork>
+            </figure>
             <t>
                 All fragment identifiers that do
                 not match the JSON Pointer syntax MUST be interpreted as
