@@ -960,7 +960,10 @@
                 </t>
                 <t>
                     The value of this property MUST be a valid JSON schema. It SHOULD be ignored if
-                    "contentMediaType" is not present.
+                    "contentMediaType" is not present.  Accessing the schema through the schema location
+                    IRI included as part of the annotation will ensure that it is correctly processed
+                    as a subschema.  Using the extracted annotation value directly is only safe if
+                    the schema is an embedded resource with both "$schema" and an absolute-IRI "$id".
                 </t>
             </section>
 
