@@ -5,7 +5,7 @@
 
   "anyOf": [
     { "$ref": "#/$defs/flag" },
-    { "$ref": "#/$defs/basic" },
+    { "$ref": "#/$defs/list" },
     { "$ref": "#/$defs/hierarchical" }
   ],
   "$defs": {
@@ -81,7 +81,7 @@
       },
       "required": [ "valid" ]
     },
-    "basic": {
+    "list": {
       "properties": {
         "valid": { "type": "boolean" },
         "nested": {
