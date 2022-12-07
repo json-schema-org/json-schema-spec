@@ -4295,10 +4295,34 @@ https://example.com/schemas/common#/$defs/allOf/1
                 <list style="hanging">
                     <t hangText="draft-bhutton-json-schema-next">
                         <list style="symbols">
-                            <t>"contains" now applies to objects as well as arrays</t>
-                            <t>Use IRIs instead of URIs</t>
+                            <t>Use IRIs instead of URIs, including allowing unicode in plain-name fragments</t>
+                            <t>Clarify that detecting duplicate IRIs for different schemas SHOULD raise an error</t>
+                            <t>Consolidate and clarify the syntax and rationale for plain-name fragments</t>
+                            <t>"$id" MUST be an absolute-IRI, without any fragment, even an empty one</t>
+                            <t>Note that an empty string "$id" results in duplicate IRIs for different schemas</t>
+                            <t>Define empty schemas as empty (no longer allowing unrecognized keywords</t>
+                            <t>Clarify that if unknown properties are not treated as annotations, they MUST be ignored</t>
+                            <t>Remove outdated pre-annotation-collection section on annotation-applicator interaction</t>
+                            <t>Clarify that regular expressions are not anchored</t>
+                            <t>Specify valid implementation-defined options for handling schemas without "$schema"</t>
+                            <t>Clarify that vocabularies omitted from "$vocabulary" MUST NOT be available for use</t>
+                            <t>Clarify that standard keywords are only available as vocabulary keywords, subject to "$vocabulary" control</t>
+                            <t>Clarify the nature and purpose of optional (set to false in "$vocabulary") vocabularies</t>
+                            <t>Clarify that optional simple-annotation-only vocabularies can be supported without custom code</t>
+                            <t>Fix typo that "$vocabulary" can only be in a document root; it is legal in resource roots</t>
                             <t>Remove bookending requirement for "$dynamicRef"</t>
+                            <t>Clarify that "prefixItems" does not constrain the length of an array</t>
+                            <t>Move "minContains" and "maxContains" to the applicator vocabulary from validation</t>
+                            <t>"minContains" and "maxContains" no longer have their own assertion results</t>
+                            <t>"contains" assertion result now depends on "minContains" and "maxContains"</t>
+                            <t>Affirm that no keyword can un-fail an adjacent keyword ("minContains" previously violated this)</t>
+                            <t>"contains", "minContains", and "maxContains" now apply to objects as well as arrays</t>
+                            <t>As an object keyword, "contains" now affects "unevaluatedProperties"</t>
                             <t>Add "propertyDependencies" keyword</t>
+                            <t>Add new "list" and "hierarchical" output formats in place of "basic", "detailed", and "verbose"</t>
+                            <t>Rename "absoluteKeywordLocation" and "keywordLocation" to "schemaLocation" and "evaluationPath"</t>
+                            <t>Output units in new format group by "schemaLocation", "instanceLocation", and "evaluationPath"</t>
+                            <t>Add "droppedAnnotations" to output formats</t>
                         </list>
                     </t>
                     <t hangText="draft-bhutton-json-schema-01">
