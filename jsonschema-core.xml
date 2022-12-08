@@ -352,8 +352,7 @@
                     </t>
                     <t>
                         A JSON Schema MAY contain properties which are not schema keywords or are not recognized as schema keywords.
-                        The behavior of such keywords is governed by section
-                        <xref target="unrecognized" format="counter"></xref>.
+                        The behavior of such keywords is governed by <xref target="unrecognized"></xref>.
                     </t>
                     <t>
                         An empty schema is a JSON Schema with no properties.
@@ -439,8 +438,7 @@
                     <t>
                         The root schema is the schema that comprises the entire JSON document
                         in question.  The root schema is always a schema resource, where the
-                        IRI is determined as described in section
-                        <xref target="initial-base" format="counter"></xref>.
+                        IRI is determined as described in <xref target="initial-base"></xref>.
                         <cref>
                             Note that documents that embed schemas in another format will not
                             have a root schema resource in this sense.  Exactly how such usages
@@ -471,8 +469,7 @@
                         As with the root schema, a subschema is either an object or a boolean.
                     </t>
                     <t>
-                        As discussed in section
-                        <xref target="id-keyword" format="counter"></xref>, a JSON Schema document
+                        As discussed in <xref target="id-keyword"></xref>, a JSON Schema document
                         can contain multiple JSON Schema resources.  When used without qualification,
                         the term "root schema" refers to the document's root schema.  In some
                         cases, resource root schemas are discussed.  A resource's root schema
@@ -657,10 +654,9 @@
                 location in the instance is evaluated against the assertion and
                 annotation keywords in the schema object.  The interactions of those
                 keyword results to produce the schema object results are governed by
-                section <xref target="annot-assert" format="counter"></xref>, while the
+                <xref target="annot-assert"></xref>, while the
                 relationship of subschema results to the results of the applicator
-                keyword that applied them is described by section
-                <xref target="applicators" format="counter"></xref>.
+                keyword that applied them is described by <xref target="applicators"></xref>.
             </t>
             <t>
                 Evaluation of a parent schema object can complete once all of its
@@ -816,8 +812,7 @@
                 </t>
                 <t>
                     <xref target="annotations">Annotation</xref> results from subschemas
-                    are preserved in accordance with section
-                    <xref target="collect" format="counter"></xref> so that applications
+                    are preserved in accordance with <xref target="collect"></xref> so that applications
                     can decide how to interpret multiple values.  Applicator keywords
                     do not play a direct role in this preservation.
                 </t>
@@ -1110,8 +1105,8 @@
                     keywords.
                 </t>
                 <t>
-                    While these keywords do not directly affect results, as explained in section
-                    <xref target="non-schemas" format="counter"></xref> unrecognized
+                    While these keywords do not directly affect results, as explained in
+                    <xref target="non-schemas"></xref> unrecognized
                     extension keywords that reserve locations for re-usable schemas may have
                     undesirable interactions with references in certain circumstances.
                 </t>
@@ -1283,7 +1278,7 @@
                             or link relation types, or through documented default implementation-defined
                             behavior in the absence of an explicit meta-schema.  If a meta-schema
                             does not contain "$vocabulary", the set of vocabularies in use is determined
-                            according to section <xref target="default-vocabs" format="counter"></xref>.
+                            according to <xref target="default-vocabs"></xref>.
                         </t>
                         <t>
                             Any vocabulary in use by a schema and understood by the implementation
@@ -1294,8 +1289,8 @@
                         <t>
                             Any vocabulary that is not present in "$vocabulary" MUST NOT be made
                             available for use in schemas described by that meta-schema, except for
-                            the core vocabulary as specified by the introduction to section
-                            <xref target="core" format="counter"></xref>.
+                            the core vocabulary as specified by the introduction to
+                            <xref target="core"></xref>.
                         </t>
                         <t>
                             Implementations that do not support a vocabulary required by a schema
@@ -1304,8 +1299,8 @@
                         <t>
                             Implementations that do not support a vocabulary that is optionally used
                             by a schema SHOULD proceed with processing the schema.  The keywords will
-                            be considered to be unrecognized keywords as addressed by section
-                            <xref target="unrecognized" format="counter"></xref>.  Note that since
+                            be considered to be unrecognized keywords as addressed by
+                            <xref target="unrecognized"></xref>.  Note that since
                             the recommended behavior for such keywords is to collect them as
                             annotations, vocabularies consisting only of annotations will have
                             the same behavior when used optionally whether the implementation
@@ -1341,7 +1336,7 @@
                         </t>
                         <t>
                             Guidance regarding vocabularies with identically-named keywords is provided
-                            in Appendix <xref target="vocab-practices" format="counter"></xref>.
+                            in <xref target="vocab-practices"></xref>.
                         </t>
                     </section>
                     <section title="Default vocabularies" anchor="default-vocabs">
@@ -1444,7 +1439,7 @@
                         the parent schema resource.  Note that an "$id" consisting of an empty IRI or
                         of the empty fragment only will result in the embedded resource having
                         the same IRI as the encapsulating resource, which SHOULD be considered
-                        an error per section <xref target="duplicate-iris" format="counter"></xref>.
+                        an error per <xref target="duplicate-iris"></xref>.
                     </t>
                     <t>
                         If no parent schema object explicitly identifies itself as a resource
@@ -1498,8 +1493,8 @@
                     </t>
                     <t>
                         If present, the value of these keywords MUST be a string and MUST conform
-                        to the plain name fragment identifier syntax defined in section
-                        <xref target="fragments" format="counter"></xref>.
+                        to the plain name fragment identifier syntax defined in
+                        <xref target="fragments"></xref>.
                         <cref>
                             Note that the anchor string does not include the "#" character,
                             as it is not a IRI-reference.  An "$anchor": "foo" becomes the
@@ -1583,8 +1578,7 @@
                             resolved IRI.
                         </t>
                         <t>
-                            For a full example using these keyword, see appendix
-                            <xref target="recursive-example" format="counter" />.
+                            For a full example using these keyword, see <xref target="recursive-example" />.
                             <cref>
                                 The difference between the hyper-schema meta-schema in pre-2019
                                 drafts and an this draft dramatically demonstrates the utility
@@ -1724,7 +1718,7 @@
                         on the trust that the validator has in the schema.  Such IRIs and schemas
                         can be supplied to an implementation prior to processing instances, or may
                         be noted within a schema document as it is processed, producing associations
-                        as shown in appendix <xref target="idExamples" format="counter"></xref>.
+                        as shown in <xref target="idExamples"></xref>.
                     </t>
                 </section>
 
@@ -1926,7 +1920,7 @@
                     <t>
                         Further examples of such non-canonical IRI construction, as well as
                         the appropriate canonical IRI-based fragments to use instead,
-                        are provided in appendix <xref target="idExamples" format="counter"></xref>.
+                        are provided in <xref target="idExamples"></xref>.
                     </t>
                 </section>
             </section>
@@ -2577,7 +2571,7 @@
                             Validation MUST always succeed against this keyword.
                             The value of this keyword is used as its annotation result.
                         </t>
-                        <t> Per section <xref target="default-behaviors" format="counter"></xref>,
+                        <t> Per <xref target="default-behaviors"></xref>,
                             omitted keywords MUST NOT produce annotation results.  However, as described
                             in the section for "contains", the absence of this keyword's annotation
                             causes "contains" to assume a minimum value of 1.
@@ -3599,8 +3593,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                             media type.  See <xref target="RFC8259">JSON</xref>.
                         </t>
                         <t>
-                            Security considerations: See Section
-                            <xref target="security" format="counter"></xref> above.
+                            Security considerations: See <xref target="security"></xref> above.
                         </t>
                         <t>
                             Interoperability considerations: See Sections
@@ -3609,8 +3602,8 @@ https://example.com/schemas/common#/$defs/allOf/1
                             <xref target="regex" format="counter"></xref> above.
                         </t>
                         <t>
-                            Fragment identifier considerations: See Section
-                            <xref target="fragments" format="counter"></xref>
+                            Fragment identifier considerations: See
+                            <xref target="fragments"></xref>
                         </t>
                     </list>
                 </t>
@@ -3630,8 +3623,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                             media type.  See <xref target="RFC8259">JSON</xref>.
                         </t>
                         <t>
-                            Security considerations: See Section
-                            <xref target="security" format="counter"></xref> above.
+                            Security considerations: See <xref target="security"></xref> above.
                         </t>
                         <t>
                             Interoperability considerations: See Sections
@@ -3640,8 +3632,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                             <xref target="regex" format="counter"></xref> above.
                         </t>
                         <t>
-                            Fragment identifier considerations: See Section
-                            <xref target="fragments" format="counter"></xref>
+                            Fragment identifier considerations: See <xref target="fragments"></xref>
                         </t>
                     </list>
                 </t>
@@ -3772,8 +3763,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                 The schemas at the following IRI-encoded <xref target="RFC6901">JSON
                 Pointers</xref> (relative to the root schema) have the following
                 base IRIs, and are identifiable by any listed IRI in accordance with
-                sections <xref target="fragments" format="counter"></xref> and
-                <xref target="embedded" format="counter"></xref> above.
+                <xref target="fragments"></xref> and <xref target="embedded"></xref> above.
             </t>
             <t>
                 <list style="hanging">
