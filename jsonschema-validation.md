@@ -522,17 +522,17 @@ representation of an IP address as follows:
 These attributes apply to string instances.
 
 - *uri:* A string instance is valid against this attribute if it is
-  a valid IRI, according to [Section ](#rfc3987).
+  a valid IRI, according to [RFC3987](#rfc3987).
 - *uri-reference:* A string instance is valid against this attribute if it is a valid URI
   Reference (either a URI or a relative-reference),
-  according to [Section ](#rfc3986).
+  according to [RFC3986](#rfc3986).
 - *iri:* A string instance is valid against this attribute if it is
-  a valid IRI, according to [Section ](#rfc3987).
+  a valid IRI, according to [RFC3987](#rfc3987).
 - *iri-reference:* A string instance is valid against this attribute if it is a valid IRI
   Reference (either an IRI or a relative-reference),
-  according to [Section ](#rfc3987).
+  according to [RFC3987](#rfc3987).
 - *uuid:* A string instance is valid against this attribute if it is a valid
-  string representation of a UUID, according to [Section ](#rfc4122).
+  string representation of a UUID, according to [RFC4122](#rfc4122).
 
 Note that all valid URIs are valid IRIs, and all valid URI References are
 also valid IRI References.
@@ -547,7 +547,7 @@ URN namespace.
 This attribute applies to string instances.
 
 A string instance is valid against this attribute if it is a valid URI Template
-(of any level), according to [Section ](#rfc6570).
+(of any level), according to [RFC6570](#rfc6570).
 
 Note that URI Templates may be used for IRIs; there is no separate
 IRI Template specification.
@@ -654,7 +654,10 @@ JSON Schema's data model. Specifying such mappings is outside of the
 scope of this specification.
 
 The value of this property MUST be a valid JSON schema. It SHOULD be ignored if
-"contentMediaType" is not present.
+"contentMediaType" is not present. Accessing the schema through the schema location
+IRI included as part of the annotation will ensure that it is correctly processed
+as a subschema. Using the extracted annotation value directly is only safe if
+the schema is an embedded resource with both "$schema" and an absolute-IRI "$id".
 
 ### 8.6. Example
 
@@ -1129,3 +1132,21 @@ for their submissions and patches to the document.
     - Provide algorithms to calculate schema(s) for array/object
       instances.
     - Add interoperability considerations.
+
+## Authors' Addresses
+
+### Austin Wright (*editor*)
+
+Email: aaa@bzfx.net
+
+### Henry Andrews (*editor*)
+
+Email: andrews_henry@yahoo.com
+
+### Ben Hutton (*editor*)
+
+Postman
+
+Email: ben@jsonschema.dev
+
+URI: https://jsonschema.dev

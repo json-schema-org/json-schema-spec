@@ -225,8 +225,7 @@ Extension keywords, meaning those defined outside of this document
 and its companions, are free to define other behaviors as well.
 
 A JSON Schema MAY contain properties which are not schema keywords or are not recognized as schema keywords.
-The behavior of such keywords is governed by section
-[6.5.1](#651-handling-of-unrecognized-or-unsupported-keywords).
+The behavior of such keywords is governed by [Section 6.5.1](#651-handling-of-unrecognized-or-unsupported-keywords).
 
 An empty schema is a JSON Schema with no properties.
 
@@ -297,8 +296,7 @@ with fragments are considered to be non-canonical.
 
 The root schema is the schema that comprises the entire JSON document
 in question. The root schema is always a schema resource, where the
-IRI is determined as described in section
-[9.1.1](#911-initial-base-iri).[^1]
+IRI is determined as described in [Section 9.1.1](#911-initial-base-iri).[^1]
 [^1]: Note that documents that embed schemas in another format will not
 have a root schema resource in this sense. Exactly how such usages
 fit with the JSON Schema document and resource concepts will be
@@ -320,8 +318,7 @@ and the schema titled "root" is the root schema.
 
 As with the root schema, a subschema is either an object or a boolean.
 
-As discussed in section
-[8.2.1](#821-the--id--keyword), a JSON Schema document
+As discussed in [Section 8.2.1](#821-the--id--keyword), a JSON Schema document
 can contain multiple JSON Schema resources. When used without qualification,
 the term "root schema" refers to the document's root schema. In some
 cases, resource root schemas are discussed. A resource's root schema
@@ -467,10 +464,9 @@ applicators (and therefore no subschemas) is reached. The appropriate
 location in the instance is evaluated against the assertion and
 annotation keywords in the schema object. The interactions of those
 keyword results to produce the schema object results are governed by
-section [7.7.1.2](#7712-annotations-and-assertions), while the
+[Section 7.7.1.2](#7712-annotations-and-assertions), while the
 relationship of subschema results to the results of the applicator
-keyword that applied them is described by section
-[7.5](#75-applicators).
+keyword that applied them is described by [Section 7.5](#75-applicators).
 
 Evaluation of a parent schema object can complete once all of its
 subschemas have been evaluated, although in some circumstances evaluation
@@ -607,8 +603,7 @@ to the assertion results of subschemas, but MUST NOT introduce new
 assertion conditions of their own.
 
 [Annotation](#77-annotations) results from subschemas
-are preserved in accordance with section
-[7.7.1](#771-collecting-annotations) so that applications
+are preserved in accordance with [Section 7.7.1](#771-collecting-annotations) so that applications
 can decide how to interpret multiple values. Applicator keywords
 do not play a direct role in this preservation.
 
@@ -847,8 +842,8 @@ Their purpose in the core vocabulary is to ensure that locations are
 available for certain purposes and will not be redefined by extension
 keywords.
 
-While these keywords do not directly affect results, as explained in section
-[9.4.2](#942-references-to-possible-non-schemas) unrecognized
+While these keywords do not directly affect results, as explained in
+[Section 9.4.2](#942-references-to-possible-non-schemas) unrecognized
 extension keywords that reserve locations for re-usable schemas may have
 undesirable interactions with references in certain circumstances.
 
@@ -942,7 +937,14 @@ media type "application/schema+json".
 The "$schema" keyword SHOULD be used in the document root schema object,
 and MAY be used in the root schema objects of embedded schema resources.
 It MUST NOT appear in non-resource root schema objects. If absent from
-the document root schema, the resulting behavior is implementation-defined.
+the document root schema, the resulting behavior is implementation-defined,
+but MUST fall within the following options:
+
+- Refuse to process the schema, as with unsupported required
+  vocabularies
+- Assume a specific, documented meta-schema
+- Document the process by which it examines the schema and determines
+  which of a specific set of meta-schemas to assume
 
 Values for this property are defined elsewhere in this and other documents,
 and by other parties.
@@ -982,7 +984,7 @@ either through "$schema", through appropriately defined media type parameters
 or link relation types, or through documented default implementation-defined
 behavior in the absence of an explicit meta-schema. If a meta-schema
 does not contain "$vocabulary", the set of vocabularies in use is determined
-according to section [8.1.2.4](#8124-default-vocabularies).
+according to [Section 8.1.2.4](#8124-default-vocabularies).
 
 Any vocabulary in use by a schema and understood by the implementation
 MUST be processed in a manner consistent with the semantic definitions
@@ -991,16 +993,16 @@ is required or optional.
 
 Any vocabulary that is not present in "$vocabulary" MUST NOT be made
 available for use in schemas described by that meta-schema, except for
-the core vocabulary as specified by the introduction to section
-[8](#8-the-json-schema-core-vocabulary).
+the core vocabulary as specified by the introduction to
+[Section 8](#8-the-json-schema-core-vocabulary).
 
 Implementations that do not support a vocabulary required by a schema
 MUST refuse to process that schema.
 
 Implementations that do not support a vocabulary that is optionally used
 by a schema SHOULD proceed with processing the schema. The keywords will
-be considered to be unrecognized keywords as addressed by section
-[6.5.1](#651-handling-of-unrecognized-or-unsupported-keywords). Note that since
+be considered to be unrecognized keywords as addressed by
+[Section 6.5.1](#651-handling-of-unrecognized-or-unsupported-keywords). Note that since
 the recommended behavior for such keywords is to collect them as
 annotations, vocabularies consisting only of annotations will have
 the same behavior when used optionally whether the implementation
@@ -1031,7 +1033,7 @@ with availability governed by "$vocabulary" even in implementations
 that do not support any extension vocabularies.
 
 Guidance regarding vocabularies with identically-named keywords is provided
-in Appendix [D.1](#d1-best-practices-for-vocabulary-and-meta-schema-authors).
+in [Appendix D.1](#d1-best-practices-for-vocabulary-and-meta-schema-authors).
 
 ##### 8.1.2.4. Default vocabularies
 
@@ -1117,7 +1119,7 @@ IRI-reference, the base IRI for resolving that reference is the IRI of
 the parent schema resource. Note that an "$id" consisting of an empty IRI or
 of the empty fragment only will result in the embedded resource having
 the same IRI as the encapsulating resource, which SHOULD be considered
-an error per section [8.2.3](#823-duplicate-schema-identifiers).
+an error per [Section 8.2.3](#823-duplicate-schema-identifiers).
 
 If no parent schema object explicitly identifies itself as a resource
 with "$id", the base IRI is that of the entire document, as established
@@ -1163,8 +1165,8 @@ be used to create plain name fragments unless there is a clear
 need for "$dynamicAnchor".
 
 If present, the value of these keywords MUST be a string and MUST conform
-to the plain name fragment identifier syntax defined in section
-[5](#5-fragment-identifiers).[^4]
+to the plain name fragment identifier syntax defined in
+[Section 5](#5-fragment-identifiers).[^4]
 [^4]: Note that the anchor string does not include the "#" character,
 as it is not a IRI-reference. An "$anchor": "foo" becomes the
 fragment "#foo" when used in a IRI. See below for full examples.
@@ -1230,8 +1232,7 @@ The schema to apply is the outermost schema resource in the
 "$dynamicAnchor" that matches the plain name fragment in the initially
 resolved IRI.
 
-For a full example using these keyword, see appendix
-[Appendix C](#appendix-c-example-of-recursive-schema-extension).[^6]
+For a full example using these keyword, see [Appendix C](#appendix-c-example-of-recursive-schema-extension).[^6]
 [^6]: The difference between the hyper-schema meta-schema in pre-2019
 drafts and an this draft dramatically demonstrates the utility
 of these keywords.
@@ -1342,7 +1343,7 @@ schema and/or automatically associate a schema's "$id"-given IRI, depending
 on the trust that the validator has in the schema. Such IRIs and schemas
 can be supplied to an implementation prior to processing instances, or may
 be noted within a schema document as it is processed, producing associations
-as shown in appendix [Appendix A](#appendix-a-schema-identification-examples).
+as shown in [Appendix A](#appendix-a-schema-identification-examples).
 
 #### 9.1.3. Detecting a Meta-Schema
 
@@ -1512,7 +1513,7 @@ https://github.com/json-schema-org/json-schema-spec/issues/1183)
 
 Further examples of such non-canonical IRI construction, as well as
 the appropriate canonical IRI-based fragments to use instead,
-are provided in appendix [Appendix A](#appendix-a-schema-identification-examples).
+are provided in [Appendix A](#appendix-a-schema-identification-examples).
 
 ### 9.3. Compound Documents
 
@@ -2018,7 +2019,7 @@ as described below in the section for that keyword.
 Validation MUST always succeed against this keyword.
 The value of this keyword is used as its annotation result.
 
-Per section [7.3](#73-default-behaviors),
+Per [Section 7.3](#73-default-behaviors),
 omitted keywords MUST NOT produce annotation results. However, as described
 in the section for "contains", the absence of this keyword's annotation
 causes "contains" to assume a minimum value of 1.
@@ -2203,12 +2204,12 @@ section for the requirements of each format.
 
 - Flag - A boolean which simply indicates the overall validation result
   with no further details.
-- Basic - Provides validation information in a flat list structure.
+- List - Provides validation information in a flat list structure.
 - Hierarchical - Provides validation information in a hierarchical
   structure that follows the evaluation paths generated while processing
   the schema.
   An implementation MUST provide the "flag" format and SHOULD provide at least one
-  of the "basic" or "hierarchical" formats. Implementations SHOULD specify in
+  of the "list" or "hierarchical" formats. Implementations SHOULD specify in
   their documentation which formats they support.
 
 ### 12.3. Minimum Information
@@ -2323,35 +2324,35 @@ produces a list of keywords, whereas "title" produces a string).
 
 The JSON key for this information is "droppedAnnotations".
 
-#### 12.3.7. Nested Results
+#### 12.3.7. Results from Subschemas
 
-Nested results are generated from keywords which create a new dynamic
-scope by applying a subschema to the instance or a child of the instance.
+Evaluation results generated by applying a subschema to the instance
+or a child of the instance.
 Keywords which have multiple subschemas (e.g. "anyOf") will generally
 generate an output unit for each subschema. In order to accommodate
 potentially multiple results, the value of this property MUST be an
 array of output units, even if only a single output unit is produced.
 
-For "basic", this property will appear only at the root output unit
+For "list", this property will appear only at the root output unit
 and will hold all output units in a flat list.
 
-For "hierarchical", this property will hold nested results in a tree
-structure where each output unit may itself have nested results.
+For "hierarchical", this property will contain results in a tree
+structure where each output unit may itself have further nested results.
 
 The sequence of output units within this list is not specified and
 MAY be determined by the implementation. Sets of output units are
 considered equivalent if they contain the same units, in any order.
 
-The JSON key for nested results is "nested".
+The JSON key for these additional results is "details".
 
 ### 12.4. Output Structure
 
 The output MUST be an object containing a boolean property named "valid". When
 additional information about the result is required, the output MUST also contain
-"nested" as described below.
+"details" as described below.
 
 - "valid" - a boolean value indicating the overall validation success or failure
-- "nested" - the collection of results produced by subschemas
+- "details" - the collection of results produced by subschemas
   For these examples, the following schema and instances will be used.
 
 Schema:
@@ -2515,16 +2516,16 @@ if an "anyOf" keyword contains five subschemas, and the second one
 passes, there is no need to check the other three. The logic can simply
 return with success.
 
-#### 12.4.2. Basic
+#### 12.4.2. List
 
-The "Basic" structure is a flat list of output units contained within a
+The "List" structure is a flat list of output units contained within a
 root output unit.
 
-The root output unit contains "valid" for the overall result and "nested"
+The root output unit contains "valid" for the overall result and "details"
 for the list of specific results. All other information is explicitly
 omitted from the root output unit. If the root schema produces errors or
 annotations, then the output node for the root MUST be present within the
-root output unit's "nested" list with those errors or annotations.
+root output unit's "details" list with those errors or annotations.
 
 Output units which do not contain errors or annotations SHOULD be excluded
 from this format, however implementations MAY choose to include them for
@@ -2535,7 +2536,7 @@ Failing results:
 ```json
 {
   "valid": false,
-  "nested": [
+  "details": [
     {
       "valid": false,
       "evaluationPath": "/properties/foo/allOf/0",
@@ -2572,7 +2573,7 @@ Passing results:
 ```json
 {
   "valid": true,
-  "nested": [
+  "details": [
     {
       "valid": true,
       "evaluationPath": "",
@@ -2654,13 +2655,13 @@ Failing results (errors):
   "evaluationPath": "",
   "schemaLocation": "https://json-schema.org/schemas/example#",
   "instanceLocation": "",
-  "nested": [
+  "details": [
     {
       "valid": false,
       "evaluationPath": "/properties/foo",
       "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
       "instanceLocation": "/foo",
-      "nested": [
+      "details": [
         {
           "valid": false,
           "evaluationPath": "/properties/foo/allOf/0",
@@ -2681,7 +2682,7 @@ Failing results (errors):
             ],
             "title": "foo-title"
           },
-          "nested": [
+          "details": [
             {
               "valid": false,
               "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
@@ -2709,7 +2710,7 @@ Failing results (errors):
       "evaluationPath": "/properties/bar",
       "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
       "instanceLocation": "/bar",
-      "nested": [
+      "details": [
         {
           "valid": false,
           "evaluationPath": "/properties/bar/$ref",
@@ -2721,7 +2722,7 @@ Failing results (errors):
             ],
             "title": "bar-title"
           },
-          "nested": [
+          "details": [
             {
               "valid": false,
               "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
@@ -2757,13 +2758,13 @@ Passing results (annotations):
       "bar"
     ]
   },
-  "nested": [
+  "details": [
     {
       "valid": true,
       "evaluationPath": "/properties/foo",
       "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
       "instanceLocation": "/foo",
-      "nested": [
+      "details": [
         {
           "valid": true,
           "evaluationPath": "/properties/foo/allOf/0",
@@ -2784,7 +2785,7 @@ Passing results (annotations):
               "unspecified-prop"
             ]
           },
-          "nested": [
+          "details": [
             {
               "valid": true,
               "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
@@ -2809,7 +2810,7 @@ Passing results (annotations):
       "evaluationPath": "/properties/bar",
       "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
       "instanceLocation": "/bar",
-      "nested": [
+      "details": [
         {
           "valid": true,
           "evaluationPath": "/properties/bar/$ref",
@@ -2821,7 +2822,7 @@ Passing results (annotations):
               "bar-prop"
             ]
           },
-          "nested": [
+          "details": [
             {
               "valid": true,
               "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
@@ -2852,9 +2853,9 @@ defined in [RFC 8259](#rfc8259) apply.
 
 Instances and schemas are both frequently written by untrusted third parties, to be
 deployed on public Internet servers.
-Validators should take care that the parsing and validating against schemas does not consume excessive
-system resources.
-Validators MUST NOT fall into an infinite loop.
+Implementations should take care that the parsing and evaluating against schemas
+does not consume excessive system resources.
+Implementations MUST NOT fall into an infinite loop.
 
 A malicious party could cause an implementation to repeatedly collect a copy
 of a very large value as an annotation. Implementations SHOULD guard against
@@ -2886,14 +2887,13 @@ The proposed MIME media type for JSON Schema is defined as follows:
 - Encoding considerations: Encoding considerations are
   identical to those specified for the "application/json"
   media type. See [JSON](#rfc8259).
-- Security considerations: See Section
-  [13](#13-security-considerations) above.
+- Security considerations: See [Section 13](#13-security-considerations) above.
 - Interoperability considerations: See Sections
   [6.2](#62-programming-language-independence),
   [6.3](#63-mathematical-integers), and
   [6.4](#64-regular-expressions) above.
-- Fragment identifier considerations: See Section
-  [5](#5-fragment-identifiers)
+- Fragment identifier considerations: See
+  [Section 5](#5-fragment-identifiers)
 
 ### 14.2. application/schema-instance+json
 
@@ -2906,14 +2906,12 @@ a JSON Schema-specific media type is defined as follows:
 - Encoding considerations: Encoding considerations are
   identical to those specified for the "application/json"
   media type. See [JSON](#rfc8259).
-- Security considerations: See Section
-  [13](#13-security-considerations) above.
+- Security considerations: See [Section 13](#13-security-considerations) above.
 - Interoperability considerations: See Sections
   [6.2](#62-programming-language-independence),
   [6.3](#63-mathematical-integers), and
   [6.4](#64-regular-expressions) above.
-- Fragment identifier considerations: See Section
-  [5](#5-fragment-identifiers)
+- Fragment identifier considerations: See [Section 5](#5-fragment-identifiers)
 
 ## 15. References
 
@@ -3044,8 +3042,8 @@ to define plain name fragment identifiers.
 The schemas at the following IRI-encoded [JSON
 Pointers](#rfc6901) (relative to the root schema) have the following
 base IRIs, and are identifiable by any listed IRI in accordance with
-sections [5](#5-fragment-identifiers) and
-[9.2.1](#921-json-pointer-fragments-and-embedded-schema-resources) above.
+[Section 5](#5-fragment-identifiers) and [Section 9.2.1](#921-json-pointer-fragments-and-embedded-schema-resources)
+above.
 
 - *# (document root)*
     - *canonical (and base) IRI* https://example.com/root.json
@@ -3565,3 +3563,27 @@ for their submissions and patches to the document.
     - Add interoperability considerations.
 - *draft-zyp-json-schema-00*
     - Initial draft.
+
+## Authors' Addresses
+
+### Austin Wright (*editor*)
+
+Email: aaa@bzfx.net
+
+### Henry Andrews (*editor*)
+
+Email: andrews_henry@yahoo.com
+
+### Ben Hutton (*editor*)
+
+Postman
+
+Email: ben@jsonschema.dev
+
+URI: https://jsonschema.dev
+
+### Greg Dennis
+
+Email: gregsdennis@yahoo.com
+
+URI: https://github.com/gregsdennis

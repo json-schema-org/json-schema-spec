@@ -38,7 +38,8 @@ The ABNF syntax of a Relative JSON Pointer is:
 relative-json-pointer =  non-negative-integer [index-manipulation] <json-pointer>
 relative-json-pointer =/ non-negative-integer "#"
 index-manipulation    =  ("+" / "-") non-negative-integer
-non-negative-integer  =  %x30 / %x31-39 *( %x30-39 ) ; "0", or digits without a leading "0"
+non-negative-integer  =  %x30 / %x31-39 *( %x30-39 )
+        ; "0", or digits without a leading "0"
 ```
 
 where <json-pointer> follows the production defined in
@@ -170,7 +171,7 @@ syntax does not imply that the other syntax is also acceptable.
 ## 9. Acknowledgements
 
 The language and structure of this specification are based heavily on
-[Section ](#rfc6901), sometimes quoting it outright.
+[RFC6901](#rfc6901), sometimes quoting it outright.
 
 This draft remains primarily as written and published by Geraint Luff,
 with only minor subsequent alterations under new editorship.
@@ -227,3 +228,21 @@ December 2017, <<https://www.rfc-editor.org/info/rfc8259>>.
     - Clarified how to use alongside JSON Pointer.
 - *draft-luff-relative-json-pointer-00*
     - Initial draft.
+
+## Authors' Addresses
+
+### Geraint Luff
+
+Cambridge
+UK
+Email: luffgd@gmail.com
+
+### Henry Andrews (*editor*)
+
+Email: andrews_henry@yahoo.com
+
+### Ben Hutton (*editor*)
+
+Email: ben@jsonschema.dev
+
+URI: https://jsonschema.dev
