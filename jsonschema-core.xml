@@ -127,19 +127,36 @@
 
         <section title="Overview">
             <t>
-                This document proposes a new media type "application/schema+json" to identify a JSON
-                Schema for describing JSON data.
-                It also proposes a further optional media type, "application/schema-instance+json",
-                to provide additional integration features.
+                This document specifies the media type "application/schema+json" which
+                can describe a set of JSON documents, classify documents as instances of this set,
+                and to generate annotations about a given instance.
+                It also specifies "application/schema-instance+json",
+                to describe JSON documents known to be instances of a particular schema.
                 JSON Schemas are themselves JSON documents.
-                This, and related specifications, define keywords allowing authors to describe JSON
-                data in several ways.
             </t>
             <t>
-                JSON Schema uses keywords to assert constraints on JSON instances or annotate those
-                instances with additional information.  Additional keywords are used to apply
-                assertions and annotations to more complex JSON data structures, or based on
-                some sort of condition.
+                A JSON Schema document consists of a set of keywords,
+                typically encoded as properties in a JSON object.
+                The name of the keyword is used as the property name,
+                and any arguments to the keyword are provided as the value.
+            </t>
+            <t>
+                Each keyword provides an assertion and/or annotations about the instance.
+                Assertions add constraints that instances must conform to.
+                Given a schema and an instance, the schema "accepts" an instance whenever all the assertions are met,
+                and the schema "rejects" when any of the assertions fail.
+                Schemas may also be used to build a set of JSON documents:
+                The "valid set" of a schema consists of all instances that the schema accepts,
+                and the "invalid set" of a schema consists of all instances that the schema rejects.
+                In a schema without any assertion keywords, the set of all instances is the set of all JSON documents.
+            </t>
+            <t>
+                Schemas may also provide "annotations" to instances:
+                metadata that describes the instance.
+                For example, you can document the meaning of a property,
+                suggest a default value for new instances,
+                generate a list of hyperlinks from the instance,
+                or declare relationships between data.
             </t>
             <t>
                 To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
