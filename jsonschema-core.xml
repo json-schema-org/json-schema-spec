@@ -125,57 +125,51 @@
             </t>
         </section>
 
-        <section title="Overview">
+        <!-- JSON Schema accomplishes two objectives, which each get their own section. -->
+        <section title="Validation">
             <t>
-                This document proposes a new media type "application/schema+json" to identify a JSON
-                Schema for describing JSON data.
-                It also proposes a further optional media type, "application/schema-instance+json",
-                to provide additional integration features.
-                JSON Schemas are themselves JSON documents.
-                This, and related specifications, define keywords allowing authors to describe JSON
-                data in several ways.
+                A JSON Schema document describes a validator (also known as a "recognizer" or "acceptor") which classifies a provided JSON document as "accepted" or "rejected."
+                It supports "structural validation" (context-free grammars), and certain more complicated conditions.
+                Validation follows JSON semantics, so two documents that are value-equal, but vary only by character escapes, property ordering, or whitespace, will validate with the same result.
             </t>
             <t>
-                JSON Schema uses keywords to assert constraints on JSON instances or annotate those
-                instances with additional information.  Additional keywords are used to apply
-                assertions and annotations to more complex JSON data structures, or based on
-                some sort of condition.
+                With respect to a given schema, an input document accepted by that schema is called an "instance."
+                A JSON Schema may be used to specify sets of JSON documents, by referring to the set of all possible instances of that schema.
             </t>
             <t>
-                To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
-                consists of a list of keywords, together with their syntax and semantics.
-                A dialect is defined as a set of vocabularies and their required support
-                identified in a meta-schema.
+                A condition for accepting a document is called an "assertion".
+                Assertions impose constraints that instances must conform to.
+                Given a schema and an instance, the schema "accepts" an input whenever all the assertions are met,
+                and the schema "rejects" when any of the assertions fail.
+                Schemas without any assertions accept all JSON documents.
             </t>
             <t>
-                JSON Schema can be extended either by defining additional vocabularies,
-                or less formally by defining additional keywords outside of any vocabulary.
-                Unrecognized individual keywords simply have their values collected as annotations,
-                while the behavior with respect to an unrecognized vocabulary can be controlled
-                when declaring which vocabularies are in use.
+                Assertions are encoded into a JSON Schema using "keywords," described below.
+            </t>
+        </section>
+
+        <section title="Annotation">
+            <t>
+                A schema may also describe an "annotator," a way to read an instance and output a set of "annotations."
+                Annotations can be any output metadata about that instance.
             </t>
             <t>
-                This document defines a core vocabulary that MUST be supported by any
-                implementation, and cannot be disabled.  Its keywords are each prefixed
-                with a "$" character to emphasize their required nature.  This vocabulary
-                is essential to the functioning of the "application/schema+json" media
-                type, and is used to bootstrap the loading of other vocabularies.
+                For example, you can document the meaning of a property,
+                suggest a default value for new instances,
+                generate a list of hyperlinks from the instance,
+                or declare relationships between data.
+                Applications may make use of annotations to query for arbitrary information;
+                for example, to extract a list of names from a document with a known structure.
+                Annotations may also describe values within the instance in a standard way;
+                for example, extracting a common type of hyperlink from many different types of documents, using a different schema for type.
             </t>
             <t>
-                Additionally, this document defines a RECOMMENDED vocabulary of keywords
-                for applying subschemas conditionally, and for applying subschemas to
-                the contents of objects and arrays.  Either this vocabulary or one very
-                much like it is required to write schemas for non-trivial JSON instances,
-                whether those schemas are intended for assertion validation, annotation,
-                or both.  While not part of the required core vocabulary, for maximum
-                interoperability this additional vocabulary is included in this document
-                and its use is strongly encouraged.
-            </t>
-            <t>
-                Further vocabularies for purposes such as structural validation or
-                hypermedia annotation are defined in other documents.  These other
-                documents each define a dialect collecting the standard sets of
-                vocabularies needed to write schemas for that document's purpose.
+                Like assertions, the instructions for producing annotations are encoded in a schema using keywords.
+                Output is only defined over valid instances,
+                so annotations are not returned until the input has been validated.
+                However, not all valid input is meaningful or true to a given application.
+                That is, if you process an arbitrary instance with nonsense data,
+                the resulting annotations may not necessarily be true, even though the input is valid.
             </t>
         </section>
 
@@ -394,6 +388,42 @@
                     </t>
                 </section>
                 <section title="Schema Vocabularies">
+                    <t>
+                        To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
+                        consists of a list of keywords, together with their syntax and semantics.
+                        A dialect is defined as a set of vocabularies and their required support
+                        identified in a meta-schema.
+                    </t>
+                    <t>
+                        JSON Schema can be extended either by defining additional vocabularies,
+                        or less formally by defining additional keywords outside of any vocabulary.
+                        Unrecognized individual keywords simply have their values collected as annotations,
+                        while the behavior with respect to an unrecognized vocabulary can be controlled
+                        when declaring which vocabularies are in use.
+                    </t>
+                    <t>
+                        This document defines a core vocabulary that MUST be supported by any
+                        implementation, and cannot be disabled.  Its keywords are each prefixed
+                        with a "$" character to emphasize their required nature.  This vocabulary
+                        is essential to the functioning of the "application/schema+json" media
+                        type, and is used to bootstrap the loading of other vocabularies.
+                    </t>
+                    <t>
+                        Additionally, this document defines a RECOMMENDED vocabulary of keywords
+                        for applying subschemas conditionally, and for applying subschemas to
+                        the contents of objects and arrays.  Either this vocabulary or one very
+                        much like it is required to write schemas for non-trivial JSON instances,
+                        whether those schemas are intended for assertion validation, annotation,
+                        or both.  While not part of the required core vocabulary, for maximum
+                        interoperability this additional vocabulary is included in this document
+                        and its use is strongly encouraged.
+                    </t>
+                    <t>
+                        Further vocabularies for purposes such as structural validation or
+                        hypermedia annotation are defined in other documents.  These other
+                        documents each define a dialect collecting the standard sets of
+                        vocabularies needed to write schemas for that document's purpose.
+                    </t>
                     <t>
                         A schema vocabulary, or simply a vocabulary, is a set of keywords,
                         their syntax, and their semantics.  A vocabulary is generally organized
@@ -1357,7 +1387,7 @@
                             specification and the companion Validation specification.
                         </t>
                     </section>
-                    <section title="Non-inheritability of vocabularies ">
+                    <section title="Non-inheritability of vocabularies">
                         <t>
                             Note that the processing restrictions on "$vocabulary" mean that
                             meta-schemas that reference other meta-schemas using "$ref" or
