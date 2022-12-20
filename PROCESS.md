@@ -31,18 +31,18 @@ compatibility guarantees. Any changes to stable behaviors in the specification
 MUST be backward-compatible with previous versions of the specification and MUST
 NOT change in ways that could be problematic for forward-compatibility.
 Therefore, it's not necessary for implementations to support previous versions
-of the specification separately.
+of the specification separately (excluding "draft" releases).
 
 _Note: How, when, and how often the specification will be updated are all open
 questions that will be decided before any changes are issued following the
-initial release. Because releases are compatible, these things shouldn't effect
+initial release. Because releases are compatible, these things shouldn't affect
 choices made by implementers or schema authors the same way the "draft" releases
 did._
 
 ### Experimental Behaviors
 The specification MAY include sections that introduce experimental behaviors.
 These sections MUST be clearly marked and aren't subject to the compatibility
-guarantees of stable features. Experimental behaviors MUST be compatible with
+guarantees of stable behaviors. Experimental behaviors MUST be compatible with
 all current stable behaviors.
 
 _Note: How and when experimental behaviors are promoted to stable behaviors is
@@ -56,10 +56,11 @@ Implementations that express support for a particular release MUST support all
 of that release's stable behaviors and SHOULD support any experimental
 behaviors. Because releases are compatible, expressing support for a given
 release implies support for all previous releases (excluding "draft" releases).
+Support for previous releases might have limitations if an implementation
+chooses not to support a deprecated behavior.
 
 ### Deprecation
 Stable behaviors MAY be marked as "deprecated". Implementations SHOULD support
-these features to maintain backward compatibility. Deprecated features will
-never be removed from the spec, but schema authors SHOULD migrate away from
-using them as implementations may begin dropping support for these features at
-some point.
+these behaviors to maintain backward compatibility. Schema authors SHOULD
+migrate away from using deprecated behaviors as implementations MAY begin
+dropping support for these behaviors at some point.
