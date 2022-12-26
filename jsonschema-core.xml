@@ -220,14 +220,14 @@
                         An instance has one of six primitive types, and a range of possible values
                         depending on the type:
 
-                        <list style="hanging">
-                            <t hangText="null:">A JSON "null" value</t>
-                            <t hangText="boolean:">A "true" or "false" value, from the JSON "true" or "false" value</t>
-                            <t hangText="object:">An unordered set of properties mapping a string to an instance, from the JSON "object" value</t>
-                            <t hangText="array:">An ordered list of instances, from the JSON "array" value</t>
-                            <t hangText="number:">An arbitrary-precision, base-10 decimal number value, from the JSON "number" value</t>
-                            <t hangText="string:">A string of Unicode code points, from the JSON "string" value</t>
-                        </list>
+                        <dl>
+                            <dt>null</dt><dd>A JSON "null" value</dd>
+                            <dt>boolean</dt><dd>A "true" or "false" value, from the JSON "true" or "false" value</dd>
+                            <dt>object</dt><dd>An unordered set of properties mapping a string to an instance, from the JSON "object" value</dd>
+                            <dt>array</dt><dd>An ordered list of instances, from the JSON "array" value</dd>
+                            <dt>number</dt><dd>An arbitrary-precision, base-10 decimal number value, from the JSON "number" value</dd>
+                            <dt>string</dt><dd>A string of Unicode code points, from the JSON "string" value</dd>
+                        </dl>
                     </t>
                     <t>
                         Whitespace and formatting concerns, including different lexical
@@ -258,17 +258,17 @@
                         Two JSON instances are said to be equal if and only if they are of the same type
                         and have the same value according to the data model. Specifically, this means:
 
-                        <list>
-                            <t>both are null; or</t>
-                            <t>both are true; or</t>
-                            <t>both are false; or</t>
-                            <t>both are strings, and are the same codepoint-for-codepoint; or</t>
-                            <t>both are numbers, and have the same mathematical value; or</t>
-                            <t>both are arrays, and have an equal value item-for-item; or</t>
-                            <t>both are objects, and each property in one has exactly one property with
+                        <ul>
+                            <li>both are null; or</li>
+                            <li>both are true; or</li>
+                            <li>both are false; or</li>
+                            <li>both are strings, and are the same codepoint-for-codepoint; or</li>
+                            <li>both are numbers, and have the same mathematical value; or</li>
+                            <li>both are arrays, and have an equal value item-for-item; or</li>
+                            <li>both are objects, and each property in one has exactly one property with
                                 a key equal to the other's, and that other property has an equal
-                                value.</t>
-                        </list>
+                                value.</li>
+                        </ul>
                     </t>
                     <t>
                         Implied in this definition is that arrays must be the same length,
@@ -316,27 +316,32 @@
                         Object properties that are applied to the instance are called keywords,
                         or schema keywords.  Broadly speaking, keywords fall into one
                         of five categories:
-                        <list style="hanging">
-                            <t hangText="identifiers:">
-                                control schema identification through setting a IRI
-                                for the schema and/or changing how the base IRI is determined
-                            </t>
-                            <t hangText="assertions:">
-                                produce a boolean result when applied to an instance
-                            </t>
-                            <t hangText="annotations:">
-                                attach information to an instance for application use
-                            </t>
-                            <t hangText="applicators:">
-                                apply one or more subschemas to a particular location
-                                in the instance, and combine or modify their results
-                            </t>
-                            <t hangText="reserved locations:">
-                                do not directly affect results, but reserve a place
-                                for a specific purpose to ensure interoperability
-                            </t>
-                        </list>
                     </t>
+                    <dl>
+                        <dt>identifiers</dt>
+                        <dd>
+                            control schema identification through setting a IRI
+                            for the schema and/or changing how the base IRI is determined
+                        </dd>
+                        <dt>assertions</dt>
+                        <dd>
+                            produce a boolean result when applied to an instance
+                        </dd>
+                        <dt>annotations</dt>
+                        <dd>
+                            attach information to an instance for application use
+                        </dd>
+                        <dt>applicators</dt>
+                        <dd>
+                            apply one or more subschemas to a particular location
+                            in the instance, and combine or modify their results
+                        </dd>
+                        <dt>reserved locations</dt>
+                        <dd>
+                            do not directly affect results, but reserve a place
+                            for a specific purpose to ensure interoperability
+                        </dd>
+                    </dl>
                     <t>
                         Keywords may fall into multiple categories, although applicators
                         SHOULD only produce assertion results based on their subschemas'
@@ -369,14 +374,19 @@
                         facilitate schema processing optimizations.  They behave identically
                         to the following schema objects (where "not" is part of the
                         subschema application vocabulary defined in this document).
-                        <list style="hanging">
-                            <t hangText="true:">
-                                Always passes validation, as if the empty schema {}
-                            </t>
-                            <t hangText="false:">
-                                Always fails validation, as if the schema { "not": {} }
-                            </t>
-                        </list>
+                    </t>
+                    <dl>
+                        <dt>true</dt>
+                        <dd>
+                            Always passes validation, as if the empty schema {}
+                        </dd>
+
+                        <dt>false</dt>
+                        <dd>
+                            Always fails validation, as if the schema { "not": {} }
+                        </dd>
+                    </dl>
+                    <t>
                         While the empty schema object is unambiguous, there are many
                         possible equivalents to the "false" schema.  Using the boolean
                         values ensures that the intent is clear to both human readers
@@ -449,18 +459,14 @@
                     <t>
                         Some keywords take schemas themselves, allowing JSON Schemas to be nested:
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode type="json"><![CDATA[
 {
     "title": "root",
     "items": {
         "title": "array item"
     }
 }
-]]>
-                        </artwork>
-                    </figure>
+]]></sourcecode>
                     <t>
                         In this example document, the schema titled "array item" is a subschema,
                         and the schema titled "root" is the root schema.
@@ -584,19 +590,19 @@
                     schema authors SHOULD limit themselves to the following regular expression
                     tokens:
 
-                    <list>
-                        <t>individual Unicode characters, as defined by the <xref
-                        target="RFC8259">JSON specification</xref>;</t>
-                        <t>simple character classes ([abc]), range character classes ([a-z]);</t>
-                        <t>complemented character classes ([^abc], [^a-z]);</t>
-                        <t>simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or
-                        one), and their lazy versions ("+?", "*?", "??");</t>
-                        <t>range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at
+                    <ul>
+                        <li>individual Unicode characters, as defined by the <xref
+                        target="RFC8259">JSON specification</xref>;</li>
+                        <li>simple character classes ([abc]), range character classes ([a-z]);</li>
+                        <li>complemented character classes ([^abc], [^a-z]);</li>
+                        <li>simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or
+                        one), and their lazy versions ("+?", "*?", "??");</li>
+                        <li>range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at
                         most y, occurrences), {x,} (x occurrences or more), and their lazy
-                        versions;</t>
-                        <t>the beginning-of-input ("^") and end-of-input ("$") anchors;</t>
-                        <t>simple grouping ("(...)") and alternation ("|").</t>
-                    </list>
+                        versions;</li>
+                        <li>the beginning-of-input ("^") and end-of-input ("$") anchors;</li>
+                        <li>simple grouping ("(...)") and alternation ("|").</li>
+                    </ul>
                 </t>
                 <t>
                     Finally, implementations MUST NOT take regular expressions to be
@@ -878,24 +884,20 @@
                         for a concise expression of use cases such as a function that might
                         return either a string of a certain length or a null value:
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode type="json"><![CDATA[
 {
     "type": ["string", "null"],
     "maxLength": 255
 }
-]]>
-                        </artwork>
-                        <postamble>
-                            If "maxLength" also restricted the instance type to be a string,
-                            then this would be substantially more cumbersome to express because
-                            the example as written would not actually allow null values.
-                            Each keyword is evaluated separately unless explicitly specified
-                            otherwise, so if "maxLength" restricted the instance to strings,
-                            then including "null" in "type" would not have any useful effect.
-                        </postamble>
-                    </figure>
+]]></sourcecode>
+                    <t>
+                        If "maxLength" also restricted the instance type to be a string,
+                        then this would be substantially more cumbersome to express because
+                        the example as written would not actually allow null values.
+                        Each keyword is evaluated separately unless explicitly specified
+                        otherwise, so if "maxLength" restricted the instance to strings,
+                        then including "null" in "type" would not have any useful effect.
+                    </t>
                 </section>
             </section>
 
@@ -943,27 +945,27 @@
                     </t>
                     <t>
                         A collected annotation MUST include the following information:
-                        <list>
-                            <t>
-                                The name of the keyword that produces the annotation
-                            </t>
-                            <t>
-                                The instance location to which it is attached, as a JSON Pointer
-                            </t>
-                            <t>
-                                The evaluation path, indicating how reference keywords
-                                such as "$ref" were followed to reach the absolute schema location.
-                            </t>
-                            <t>
-                                The absolute schema location of the attaching keyword, as a IRI.
-                                This MAY be omitted if it is the same as the evaluation path
-                                from above.
-                            </t>
-                            <t>
-                                The attached value(s)
-                            </t>
-                        </list>
                     </t>
+                    <ul>
+                        <li>
+                            The name of the keyword that produces the annotation
+                        </li>
+                        <li>
+                            The instance location to which it is attached, as a JSON Pointer
+                        </li>
+                        <li>
+                            The evaluation path, indicating how reference keywords
+                            such as "$ref" were followed to reach the absolute schema location.
+                        </li>
+                        <li>
+                            The absolute schema location of the attaching keyword, as a IRI.
+                            This MAY be omitted if it is the same as the evaluation path
+                            from above.
+                        </li>
+                        <li>
+                            The attached value(s)
+                        </li>
+                    </ul>
                     <section title="Distinguishing Among Multiple Values">
                         <t>
                             Applications MAY make decisions on which of multiple annotation values
@@ -975,12 +977,10 @@
                             For example, consider this schema, which uses annotations and assertions from
                             the <xref target="json-schema-validation">Validation specification</xref>:
                         </t>
-                        <figure>
-                            <preamble>
-                                Note that some lines are wrapped for clarity.
-                            </preamble>
-                            <artwork>
-<![CDATA[
+                        <t>
+                            Note that some lines are wrapped for clarity.
+                        </t>
+                        <sourcecode type="json"><![CDATA[
 {
     "title": "Feature list",
     "type": "array",
@@ -1017,9 +1017,7 @@
         }
     }
 }
-]]>
-                            </artwork>
-                        </figure>
+]]></sourcecode>
                         <t>
                             In this example, both Feature A and Feature B make use of the re-usable
                             "enabledToggle" schema.  That schema uses the "title", "description",
@@ -1068,9 +1066,7 @@
                             Note that the overall schema results may still include annotations
                             collected from other schema locations.  Given this schema:
                         </t>
-                        <figure>
-                            <artwork>
-<![CDATA[
+                        <sourcecode type="json"><![CDATA[
 {
     "oneOf": [
         {
@@ -1083,11 +1079,9 @@
         }
     ]
 }
-]]>
-                            </artwork>
-                        </figure>
+]]></sourcecode>
                         <t>
-                            Against the instance <spanx style="verb">"This is a string"</spanx>, the
+                            Against the instance <sourcecode>"This is a string"</sourcecode>, the
                             title annotation "Integer Value" is discarded because the type assertion
                             in that schema object fails.  The title annotation "String Value"
                             is kept, as the instance passes the string type assertions.
@@ -1176,22 +1170,24 @@
                 </t>
                 <t>
                     The meta-schema serves two purposes:
-                    <list style="hanging">
-                        <t hangText="Declaring the vocabularies in use">
-                            The "$vocabulary" keyword, when it appears in a meta-schema, declares
-                            which vocabularies are available to be used in schemas that refer
-                            to that meta-schema.  Vocabularies define keyword semantics,
-                            as well as their general syntax.
-                        </t>
-                        <t hangText="Describing valid schema syntax">
-                            A schema MUST successfully validate against its meta-schema, which
-                            constrains the syntax of the available keywords.  The syntax described
-                            is expected to be compatible with the vocabularies declared; while
-                            it is possible to describe an incompatible syntax, such a meta-schema
-                            would be unlikely to be useful.
-                        </t>
-                    </list>
                 </t>
+                <dl>
+                    <dt>Declaring the vocabularies in use</dt>
+                    <dd>
+                        The "$vocabulary" keyword, when it appears in a meta-schema, declares
+                        which vocabularies are available to be used in schemas that refer
+                        to that meta-schema.  Vocabularies define keyword semantics,
+                        as well as their general syntax.
+                    </dd>
+                    <dt>Describing valid schema syntax</dt>
+                    <dd>
+                        A schema MUST successfully validate against its meta-schema, which
+                        constrains the syntax of the available keywords.  The syntax described
+                        is expected to be compatible with the vocabularies declared; while
+                        it is possible to describe an incompatible syntax, such a meta-schema
+                        would be unlikely to be useful.
+                    </dd>
+                </dl>
                 <t>
                     Meta-schemas are separate from vocabularies to allow for
                     vocabularies to be combined in different ways, and for meta-schema authors
@@ -1604,9 +1600,7 @@
                         integers, where the positive integer constraint is a subschema in
                         "$defs":
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode type="json"><![CDATA[
 {
     "type": "array",
     "items": { "$ref": "#/$defs/positiveInteger" },
@@ -1617,9 +1611,7 @@
         }
     }
 }
-]]>
-                        </artwork>
-                    </figure>
+]]></sourcecode>
                 </section>
             </section>
 
@@ -1765,9 +1757,7 @@
                     For example, consider this schema:
                 </t>
 
-                <figure>
-                    <artwork>
-<![CDATA[
+                <sourcecode type="json"><![CDATA[
 {
     "$id": "https://example.net/root.json",
     "type": "array",
@@ -1780,9 +1770,7 @@
         }
     }
 }
-]]>
-                    </artwork>
-                </figure>
+]]></sourcecode>
                 <t>
                     When an implementation encounters the &lt;#/$defs/single&gt; schema,
                     it resolves the "$anchor" value as a fragment name against the current
@@ -1831,13 +1819,11 @@
                         SHOULD NOT use such IRIs to identify embedded schema resources or
                         locations within them.
                     </t>
-                    <figure>
-                        <preamble>
-                            Consider the following schema document that contains another
-                            schema resource embedded within it:
-                        </preamble>
-                        <artwork>
-<![CDATA[
+                    <t>
+                        Consider the following schema document that contains another
+                        schema resource embedded within it:
+                    </t>
+                    <sourcecode type="json"><![CDATA[
 {
     "$id": "https://example.com/foo",
     "items": {
@@ -1845,9 +1831,7 @@
         "additionalProperties": { }
     }
 }
-]]>
-                        </artwork>
-                    </figure>
+]]></sourcecode>
                     <t>
                         The IRI "https://example.com/foo#/items" points to the "items" schema,
                         which is an embedded resource.  The canonical IRI of that schema
@@ -1859,35 +1843,32 @@
                         to the correct object, but that object's IRI relative to its resource's
                         canonical IRI is "https://example.com/bar#/additionalProperties".
                     </t>
-                    <figure>
-                        <preamble>
-                            Now consider the following two schema resources linked by reference
-                            using a IRI value for "$ref":
-                        </preamble>
-                        <artwork>
-<![CDATA[
+                    <t>
+                        Now consider the following two schema resources linked by reference
+                        using a IRI value for "$ref":
+                    </t>
+                    <sourcecode type="json"><![CDATA[
 {
     "$id": "https://example.com/foo",
     "items": {
         "$ref": "bar"
     }
 }
-
+]]></sourcecode>
+                        <sourcecode type="json"><![CDATA[
 {
     "$id": "https://example.com/bar",
     "additionalProperties": { }
 }
-]]>
-                        </artwork>
-                        <postamble>
-                            Here we see that "https://example.com/bar#/additionalProperties",
-                            using a JSON Pointer fragment appended to the canonical IRI of
-                            the "bar" schema resource, is still valid, while
-                            "https://example.com/foo#/items/additionalProperties", which relied
-                            on a JSON Pointer fragment appended to the canonical IRI of the
-                            "foo" schema resource, no longer resolves to anything.
-                        </postamble>
-                    </figure>
+]]></sourcecode>
+                    <t>
+                        Here we see that "https://example.com/bar#/additionalProperties",
+                        using a JSON Pointer fragment appended to the canonical IRI of
+                        the "bar" schema resource, is still valid, while
+                        "https://example.com/foo#/items/additionalProperties", which relied
+                        on a JSON Pointer fragment appended to the canonical IRI of the
+                        "foo" schema resource, no longer resolves to anything.
+                    </t>
                     <t>
                         Note also that "https://example.com/foo#/items" is valid in both
                         arrangements, but resolves to a different value.  This IRI ends up
@@ -2080,13 +2061,9 @@
                             <xref target="RFC8288">Link header</xref>. An example of such a header would be:
                         </t>
 
-                        <figure>
-                            <artwork>
-        <![CDATA[
-        Link: <https://example.com/my-hyper-schema>; rel="describedby"
-        ]]>
-                            </artwork>
-                        </figure>
+                        <sourcecode><![CDATA[
+Link: <https://example.com/my-hyper-schema>; rel="describedby"
+]]></sourcecode>
 
                     </section>
 
@@ -2111,13 +2088,9 @@
                             of significance, the JSON Schema library name/version should precede the more
                             generic HTTP library name (if any). For example:
                         </t>
-                        <figure>
-                            <artwork>
-        <![CDATA[
-        User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
-        ]]>
-                            </artwork>
-                        </figure>
+                        <sourcecode><![CDATA[
+User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
+]]></sourcecode>
                         <t>
                             Clients SHOULD be able to make requests with a "From" header so that server
                             operators can contact the owner of a potentially misbehaving script.
@@ -2155,20 +2128,20 @@
                 <t>
                     For schema author convenience, there are some exceptions among the
                     keywords in this vocabulary:
-                    <list>
-                        <t>
-                            "additionalProperties", whose behavior is defined in terms of
-                            "properties" and "patternProperties"
-                        </t>
-                        <t>
-                            "items", whose behavior is defined in terms of "prefixItems"
-                        </t>
-                        <t>
-                            "contains", whose behavior is affected by the presence and value of
-                            "minContains"
-                        </t>
-                    </list>
                 </t>
+                <ul>
+                    <li>
+                        "additionalProperties", whose behavior is defined in terms of
+                        "properties" and "patternProperties"
+                    </li>
+                    <li>
+                        "items", whose behavior is defined in terms of "prefixItems"
+                    </li>
+                    <li>
+                        "contains", whose behavior is affected by the presence and value of
+                        "minContains"
+                    </li>
+                </ul>
             </section>
 
             <section title="Keywords for Applying Subschemas in Place" anchor="in-place">
@@ -2679,18 +2652,18 @@
                     Schema keywords typically operate independently, without
                     affecting each other's outcomes. However, the keywords in this
                     vocabulary are notable exceptions:
-                    <list>
-                        <t>
-                            "unevaluatedItems", whose behavior is defined in terms of annotations
-                            from "prefixItems", "items", "contains", and itself
-                        </t>
-                        <t>
-                            "unevaluatedProperties", whose behavior is defined in terms of
-                            annotations from "properties", "patternProperties",
-                            "additionalProperties", "contains", and itself
-                        </t>
-                    </list>
                 </t>
+                <ul>
+                    <li>
+                        "unevaluatedItems", whose behavior is defined in terms of annotations
+                        from "prefixItems", "items", "contains", and itself
+                    </li>
+                    <li>
+                        "unevaluatedProperties", whose behavior is defined in terms of
+                        annotations from "properties", "patternProperties",
+                        "additionalProperties", "contains", and itself
+                    </li>
+                </ul>
             </section>
 
             <section title="unevaluatedItems" anchor="unevaluatedItems">
@@ -2802,20 +2775,25 @@
                 <t>
                     This specification defines three output formats.  See the "Output Structure"
                     section for the requirements of each format.
-                    <list>
-                        <t>
-                            Flag - A boolean which simply indicates the overall validation result
-                            with no further details.
-                        </t>
-                        <t>
-                            List - Provides validation information in a flat list structure.
-                        </t>
-                        <t>
-                            Hierarchical - Provides validation information in a hierarchical
-                            structure that follows the evaluation paths generated while processing
-                            the schema.
-                        </t>
-                    </list>
+                </t>
+                <dl>
+                    <dt>Flag</dt>
+                    <dd>
+                        A boolean which simply indicates the overall validation result
+                        with no further details.
+                    </dd>
+                    <dt>List</dt>
+                    <dd>
+                        Provides validation information in a flat list structure.
+                    </dd>
+                    <dt>Hierarchical</dt>
+                    <dd>
+                        Provides validation information in a hierarchical
+                        structure that follows the evaluation paths generated while processing
+                        the schema.
+                    </dd>
+                </dl>
+                <t>
                     An implementation MUST provide the "flag" format and SHOULD provide at least one
                     of the "list" or "hierarchical" formats. Implementations SHOULD specify in
                     their documentation which formats they support.
@@ -2839,7 +2817,7 @@
 
                 <section title="Evaluation path">
                     <t>
-                        The evalutaion path to the schema object that produced the output unit.
+                        The evaluation path to the schema object that produced the output unit.
                         The value MUST be expressed as a JSON Pointer, and it MUST include any
                         by-reference applicators such as "$ref" or "$dynamicRef".
                         <cref>
@@ -2848,13 +2826,9 @@
                             path only.
                         </cref>
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode><![CDATA[
 /properties/width/$ref/allOf/1
-]]>
-                        </artwork>
-                    </figure>
+]]></sourcecode>
                     <t>
                         Note that this pointer may not be resolvable by the normal JSON Pointer process
                         due to the inclusion of these by-reference applicator keywords.
@@ -2879,13 +2853,10 @@
                             schema object.
                         </cref>
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode><![CDATA[
 https://example.com/schemas/common#/$defs/allOf/1
 ]]>
-                        </artwork>
-                    </figure>
+                    </sourcecode>
                     <t>
                         The JSON key for this information is "schemaLocation".
                     </t>
@@ -3010,19 +2981,18 @@ https://example.com/schemas/common#/$defs/allOf/1
                     The output MUST be an object containing a boolean property named "valid".  When
                     additional information about the result is required, the output MUST also contain
                     "details" as described below.
-                    <list>
-                        <t>
-                            "valid" - a boolean value indicating the overall validation success or failure
-                        </t>
-                        <t>
-                            "details" - the collection of results produced by subschemas
-                        </t>
-                    </list>
+                </t>
+                <dl>
+                    <dt>valid</dt>
+                    <dd>a boolean value indicating the overall validation success or failure</dd>
+
+                    <dt>details</dt>
+                    <dd>the collection of results produced by subschemas</dd>
+                </dl>
+                <t>
                     For these examples, the following schema and instances will be used.
                 </t>
-                <figure>
-                    <artwork>
-<![CDATA[
+                <sourcecode type="javascript"><![CDATA[
 // schema
 {
   "$schema": "https://json-schema.org/draft/next/schema",
@@ -3079,34 +3049,34 @@ https://example.com/schemas/common#/$defs/allOf/1
   },
   "bar": {"bar-prop": 20}
 }
-]]>
-                    </artwork>
-                </figure>
+]]></sourcecode>
                 <t>
                     The failing instance will produce the following errors:
-                    <list>
-                        <t>
-                            The value at "/foo"
-                            evaluated at "/properties/foo/allOf/0"
-                            by following the path "/properties/foo/allOf/0"
-                            by the "required" keyword
-                            is missing the property "unspecified-prop".
-                        </t>
-                        <t>
-                            The value at "/foo/foo-prop"
-                            evaluated at "/properties/foo/allOf/1/properties/foo-prop"
-                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
-                            by the "const" keyword
-                            is not the constant value 1.
-                        </t>
-                        <t>
-                            The value at "/bar/bar-prop"
-                            evaluated at "/$defs/bar/properties/bar-prop"
-                            by following the path "/properties/bar/$ref/properties/bar-prop"
-                            by the "type" keyword
-                            is not a number.
-                        </t>
-                    </list>
+                </t>
+                <ul>
+                    <li>
+                        The value at "/foo"
+                        evaluated at "/properties/foo/allOf/0"
+                        by following the path "/properties/foo/allOf/0"
+                        by the "required" keyword
+                        is missing the property "unspecified-prop".
+                    </li>
+                    <li>
+                        The value at "/foo/foo-prop"
+                        evaluated at "/properties/foo/allOf/1/properties/foo-prop"
+                        by following the path "/properties/foo/allOf/1/properties/foo-prop"
+                        by the "const" keyword
+                        is not the constant value 1.
+                    </li>
+                    <li>
+                        The value at "/bar/bar-prop"
+                        evaluated at "/$defs/bar/properties/bar-prop"
+                        by following the path "/properties/bar/$ref/properties/bar-prop"
+                        by the "type" keyword
+                        is not a number.
+                    </li>
+                </ul>
+                <t>
                     <cref>
                         "minimum" doesn't produce an error because it only operates on
                         instances that are numbers.
@@ -3120,63 +3090,63 @@ https://example.com/schemas/common#/$defs/allOf/1
                 </t>
                 <t>
                     The passing instance will produce the following annotations:
-                    <list>
-                        <t>
-                            The keyword "title"
-                            evaluated at ""
-                            by following the path ""
-                            will produce <sourcecode>"root"</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "properties"
-                            evaluated at ""
-                            by following the path ""
-                            will produce <sourcecode>["foo", "bar"]</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "title"
-                            evaluated at "/properties/foo"
-                            by following the path "/properties/foo"
-                            will produce <sourcecode>"foo-title"</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "properties"
-                            evaluated at "/properties/foo/allOf/1"
-                            by following the path "/properties/foo/allOf/1"
-                            will produce <sourcecode>["foo-prop"]</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "additionalProperties"
-                            evaluated at "/properties/foo/allOf/1"
-                            by following the path "/properties/foo/allOf/1"
-                            will produce <sourcecode>["unspecified-prop"]</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "title"
-                            evaluated at "/properties/foo/allOf/1/properties/foo-prop"
-                            by following the path "/properties/foo/allOf/1/properties/foo-prop"
-                            will produce <sourcecode>"foo-prop-title"</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "title"
-                            evaluated at "/$defs/bar"
-                            by following the path "/properties/bar/$ref"
-                            will produce <sourcecode>"bar-title"</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "properties"
-                            evaluated at "/$defs/bar"
-                            by following the path "/properties/var/$ref"
-                            will produce <sourcecode>["bar-prop"]</sourcecode>.
-                        </t>
-                        <t>
-                            The keyword "title"
-                            evaluated at "/$defs/bar/properties/bar-prop"
-                            by following the path "/properties/bar/$ref/properties/bar-prop"
-                            will produce <sourcecode>"bar-prop-title"</sourcecode>.
-                        </t>
-                    </list>
                 </t>
+                <ul>
+                    <li>
+                        The keyword "title"
+                        evaluated at ""
+                        by following the path ""
+                        will produce <sourcecode>"root"</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "properties"
+                        evaluated at ""
+                        by following the path ""
+                        will produce <sourcecode>["foo", "bar"]</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "title"
+                        evaluated at "/properties/foo"
+                        by following the path "/properties/foo"
+                        will produce <sourcecode>"foo-title"</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "properties"
+                        evaluated at "/properties/foo/allOf/1"
+                        by following the path "/properties/foo/allOf/1"
+                        will produce <sourcecode>["foo-prop"]</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "additionalProperties"
+                        evaluated at "/properties/foo/allOf/1"
+                        by following the path "/properties/foo/allOf/1"
+                        will produce <sourcecode>["unspecified-prop"]</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "title"
+                        evaluated at "/properties/foo/allOf/1/properties/foo-prop"
+                        by following the path "/properties/foo/allOf/1/properties/foo-prop"
+                        will produce <sourcecode>"foo-prop-title"</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "title"
+                        evaluated at "/$defs/bar"
+                        by following the path "/properties/bar/$ref"
+                        will produce <sourcecode>"bar-title"</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "properties"
+                        evaluated at "/$defs/bar"
+                        by following the path "/properties/var/$ref"
+                        will produce <sourcecode>["bar-prop"]</sourcecode>.
+                    </li>
+                    <li>
+                        The keyword "title"
+                        evaluated at "/$defs/bar/properties/bar-prop"
+                        by following the path "/properties/bar/$ref/properties/bar-prop"
+                        will produce <sourcecode>"bar-prop-title"</sourcecode>.
+                    </li>
+                </ul>
 
                 <section title="Flag">
                     <t>
@@ -3184,15 +3154,11 @@ https://example.com/schemas/common#/$defs/allOf/1
                         needs to be fulfilled.  For this format, all other information is explicitly
                         omitted.
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode type="json"><![CDATA[
 {
   "valid": false
 }
-]]>
-                        </artwork>
-                    </figure>
+]]></sourcecode>
                     <t>
                         Because no errors or annotations are returned with this format, it is
                         RECOMMENDED that implementations use short-circuiting logic to return
@@ -3220,9 +3186,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                         from this format, however implementations MAY choose to include them for
                         completeness.
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode type="javascript"><![CDATA[
 // failing results
 {
   "valid": false,
@@ -3321,9 +3285,7 @@ https://example.com/schemas/common#/$defs/allOf/1
     }
   ]
 }
-]]>
-                        </artwork>
-                    </figure>
+]]></sourcecode>
                 </section>
 
                 <section title="Hierarchical">
@@ -3339,9 +3301,7 @@ https://example.com/schemas/common#/$defs/allOf/1
                     <t>
                         The location properties of the root output unit MAY be omitted.
                     </t>
-                    <figure>
-                        <artwork>
-<![CDATA[
+                    <sourcecode type="javascript"><![CDATA[
 // failing results (errors)
 {
   "valid": false,
@@ -3525,8 +3485,7 @@ https://example.com/schemas/common#/$defs/allOf/1
   ]
 }
 ]]>
-                        </artwork>
-                    </figure>
+                    </sourcecode>
                 </section>
 
                 <section title="Output validation schemas">
@@ -3582,60 +3541,77 @@ https://example.com/schemas/common#/$defs/allOf/1
             <section title="application/schema+json">
                 <t>
                     The proposed MIME media type for JSON Schema is defined as follows:
-
-                    <list>
-                        <t>Type name: application</t>
-                        <t>Subtype name: schema+json</t>
-                        <t>Required parameters: N/A</t>
-                        <t>
-                            Encoding considerations: Encoding considerations are
-                            identical to those specified for the "application/json"
-                            media type.  See <xref target="RFC8259">JSON</xref>.
-                        </t>
-                        <t>
-                            Security considerations: See <xref target="security"></xref> above.
-                        </t>
-                        <t>
-                            Interoperability considerations: See Sections
-                            <xref target="language" format="counter"></xref>,
-                            <xref target="integers" format="counter"></xref>, and
-                            <xref target="regex" format="counter"></xref> above.
-                        </t>
-                        <t>
-                            Fragment identifier considerations: See
-                            <xref target="fragments"></xref>
-                        </t>
-                    </list>
                 </t>
+                <dl>
+                    <dt>Type name:</dt>
+                    <dd>application</dd>
+
+                    <dt>Subtype name:</dt>
+                    <dd>schema+json</dd>
+
+                    <dt>Required parameters:</dt>
+                    <dd>N/A</dd>
+
+                    <dt>Encoding considerations:</dt>
+                    <dd>
+                        Encoding considerations are
+                        identical to those specified for the "application/json"
+                        media type.  See <xref target="RFC8259">JSON</xref>.
+                    </dd>
+
+                    <dt>Security considerations:</dt>
+                    <dd>See <xref target="security"></xref> above.</dd>
+
+                    <dt>Interoperability considerations:</dt>
+                    <dd>
+                        See Sections
+                        <xref target="language" format="counter"></xref>,
+                        <xref target="integers" format="counter"></xref>, and
+                        <xref target="regex" format="counter"></xref> above.
+                    </dd>
+
+                    <dt>Fragment identifier considerations:</dt>
+                    <dd>
+                        See <xref target="fragments"></xref>
+                    </dd>
+                </dl>
             </section>
             <section title="application/schema-instance+json">
                 <t>
                     The proposed MIME media type for JSON Schema Instances that require
                     a JSON Schema-specific media type is defined as follows:
-
-                    <list>
-                        <t>Type name: application</t>
-                        <t>Subtype name: schema-instance+json</t>
-                        <t>Required parameters: N/A</t>
-                        <t>
-                            Encoding considerations: Encoding considerations are
-                            identical to those specified for the "application/json"
-                            media type.  See <xref target="RFC8259">JSON</xref>.
-                        </t>
-                        <t>
-                            Security considerations: See <xref target="security"></xref> above.
-                        </t>
-                        <t>
-                            Interoperability considerations: See Sections
-                            <xref target="language" format="counter"></xref>,
-                            <xref target="integers" format="counter"></xref>, and
-                            <xref target="regex" format="counter"></xref> above.
-                        </t>
-                        <t>
-                            Fragment identifier considerations: See <xref target="fragments"></xref>
-                        </t>
-                    </list>
                 </t>
+                <dl>
+                    <dt>Type name:</dt>
+                    <dd>application</dd>
+
+                    <dt>Subtype name:</dt>
+                    <dd>schema-instance+json</dd>
+
+                    <dt>Required parameters:</dt>
+                    <dd>N/A</dd>
+
+                    <dt>Encoding considerations:</dt>
+                    <dd>
+                        Encoding considerations are
+                        identical to those specified for the "application/json"
+                        media type.  See <xref target="RFC8259">JSON</xref>.
+                    </dd>
+
+                    <dt>Security considerations:</dt>
+                    <dd>See <xref target="security"></xref> above.</dd>
+
+                    <dt>Interoperability considerations:</dt>
+                    <dd>
+                        See Sections
+                        <xref target="language" format="counter"></xref>,
+                        <xref target="integers" format="counter"></xref>, and
+                        <xref target="regex" format="counter"></xref> above.
+                    </dd>
+
+                    <dt>Fragment identifier considerations:</dt>
+                    <dd>See <xref target="fragments"></xref></dd>
+                </dl>
             </section>
         </section>
     </middle>
@@ -3729,14 +3705,12 @@ https://example.com/schemas/common#/$defs/allOf/1
         </references>
 
         <section title="Schema identification examples" anchor="idExamples">
-            <figure>
-                <preamble>
-                    Consider the following schema, which shows "$id" being used to identify
-                    both the root schema and various subschemas, and "$anchor" being used
-                    to define plain name fragment identifiers.
-                </preamble>
-                <artwork>
-<![CDATA[
+            <t>
+                Consider the following schema, which shows "$id" being used to identify
+                both the root schema and various subschemas, and "$anchor" being used
+                to define plain name fragment identifiers.
+            </t>
+            <sourcecode type="json"><![CDATA[
 {
     "$id": "https://example.com/root.json",
     "$defs": {
@@ -3756,95 +3730,104 @@ https://example.com/schemas/common#/$defs/allOf/1
         }
     }
 }
-]]>
-                </artwork>
-            </figure>
+]]></sourcecode>
             <t>
                 The schemas at the following IRI-encoded <xref target="RFC6901">JSON
                 Pointers</xref> (relative to the root schema) have the following
                 base IRIs, and are identifiable by any listed IRI in accordance with
                 <xref target="fragments"></xref> and <xref target="embedded"></xref> above.
             </t>
-            <t>
-                <list style="hanging">
-                    <t hangText="# (document root)">
-                        <list style="hanging">
-                            <t hangText="canonical (and base) IRI">
-                                https://example.com/root.json
-                            </t>
-                            <t hangText="canonical resource IRI plus pointer fragment">
-                                https://example.com/root.json#
-                            </t>
-                        </list>
-                    </t>
-                    <t hangText="#/$defs/A">
-                        <list>
-                            <t hangText="base IRI">https://example.com/root.json</t>
-                            <t hangText="canonical resource IRI plus plain fragment">
-                                https://example.com/root.json#foo
-                            </t>
-                            <t hangText="canonical resource IRI plus pointer fragment">
-                                https://example.com/root.json#/$defs/A
-                            </t>
-                        </list>
-                    </t>
-                    <t hangText="#/$defs/B">
-                        <list style="hanging">
-                            <t hangText="canonical (and base) IRI">https://example.com/other.json</t>
-                            <t hangText="canonical resource IRI plus pointer fragment">
-                                https://example.com/other.json#
-                            </t>
-                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
-                                https://example.com/root.json#/$defs/B
-                            </t>
-                        </list>
-                    </t>
-                    <t hangText="#/$defs/B/$defs/X">
-                        <list style="hanging">
-                            <t hangText="base IRI">https://example.com/other.json</t>
-                            <t hangText="canonical resource IRI plus plain fragment">
-                                https://example.com/other.json#bar
-                            </t>
-                            <t hangText="canonical resource IRI plus pointer fragment">
-                                https://example.com/other.json#/$defs/X
-                            </t>
-                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
-                                https://example.com/root.json#/$defs/B/$defs/X
-                            </t>
-                        </list>
-                    </t>
-                    <t hangText="#/$defs/B/$defs/Y">
-                        <list style="hanging">
-                            <t hangText="canonical (and base) IRI">https://example.com/t/inner.json</t>
-                            <t hangText="canonical IRI plus plain fragment">
-                                https://example.com/t/inner.json#bar
-                            </t>
-                            <t hangText="canonical IRI plus pointer fragment">
-                                https://example.com/t/inner.json#
-                            </t>
-                            <t hangText="base IRI of enclosing (other.json) resource plus fragment">
-                                https://example.com/other.json#/$defs/Y
-                            </t>
-                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
-                                https://example.com/root.json#/$defs/B/$defs/Y
-                            </t>
-                        </list>
-                    </t>
-                    <t hangText="#/$defs/C">
-                        <list style="hanging">
-                            <t hangText="canonical (and base) IRI">
-                                urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f
-                            </t>
-                            <t hangText="canonical IRI plus pointer fragment">
-                                urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#
-                            </t>
-                            <t hangText="base IRI of enclosing (root.json) resource plus fragment">
-                                https://example.com/root.json#/$defs/C
-                            </t>
-                        </list>
-                    </t>
-                </list>
-            </t>
+            <dl newline="true">
+                <dt><tt>#</tt> (document root)</dt>
+                <dd>
+                    <dl>
+                        <dt>canonical (and base) IRI"</dt>
+                        <dd>https://example.com/root.json</dd>
+
+                        <dt>canonical resource IRI plus pointer fragment"</dt>
+                        <dd>https://example.com/root.json#</dd>
+                    </dl>
+                </dd>
+
+                <dt><tt>#/$defs/A</tt></dt>
+                <dd>
+                    <dl>
+                        <dt>base IRI</dt>
+                        <dd>https://example.com/root.json</dd>
+
+                        <dt>canonical resource IRI plus plain fragment</dt>
+                        <dd>https://example.com/root.json#foo</dd>
+
+                        <dt>canonical resource IRI plus pointer fragment</dt>
+                        <dd>https://example.com/root.json#/$defs/A</dd>
+                    </dl>
+                </dd>
+
+                <dt><tt>#/$defs/B</tt></dt>
+                <dd>
+                    <dl>
+                        <dt>canonical (and base) IRI</dt>
+                        <dd>https://example.com/other.json</dd>
+
+                        <dt>canonical resource IRI plus pointer fragment</dt>
+                        <dd>https://example.com/other.json#</dd>
+
+                        <dt>base IRI of enclosing (root.json) resource plus fragment</dt>
+                        <dd>https://example.com/root.json#/$defs/B</dd>
+                    </dl>
+                </dd>
+
+                <dt><tt>#/$defs/B/$defs/X</tt></dt>
+                <dd>
+                    <dl>
+                        <dt>base IRI</dt>
+                        <dd>https://example.com/other.json</dd>
+
+                        <dt>canonical resource IRI plus plain fragment</dt>
+                        <dd>https://example.com/other.json#bar</dd>
+
+                        <dt>canonical resource IRI plus pointer fragment</dt>
+                        <dd>https://example.com/other.json#/$defs/X</dd>
+
+                        <dt>base IRI of enclosing (root.json) resource plus fragment</dt>
+                        <dd>https://example.com/root.json#/$defs/B/$defs/X</dd>
+                    </dl>
+                </dd>
+
+                <dt><tt>#/$defs/B/$defs/Y</tt></dt>
+                <dd><t>
+                    <dl>
+                        <dt>canonical (and base) IRI</dt>
+                        <dd>https://example.com/t/inner.json</dd>
+
+                        <dt>canonical IRI plus plain fragment</dt>
+                        <dd>https://example.com/t/inner.json#bar</dd>
+
+                        <dt>canonical IRI plus pointer fragment</dt>
+                        <dd>https://example.com/t/inner.json#</dd>
+
+                        <dt>base IRI of enclosing (other.json) resource plus fragment</dt>
+                        <dd>https://example.com/other.json#/$defs/Y</dd>
+
+                        <dt>base IRI of enclosing (root.json) resource plus fragment</dt>
+                        <dd>https://example.com/root.json#/$defs/B/$defs/Y</dd>
+                    </dl>
+                </t></dd>
+
+                <dt><tt>#/$defs/C</tt></dt>
+                <dd>
+                    <dl>
+                        <dt>canonical (and base) IRI</dt>
+                        <dd>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f</dd>
+
+                        <dt>canonical IRI plus pointer fragment</dt>
+                        <dd>urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#</dd>
+
+                        <dt>base IRI of enclosing (root.json) resource plus fragment</dt>
+                        <dd>https://example.com/root.json#/$defs/C</dd>
+                    </dl>
+                </dd>
+            </dl>
             <t>
                 Note: The fragment part of the IRI does not make it canonical or non-canonical,
                 rather, the base IRI used (as part of the full IRI with any fragment) is what
@@ -3911,17 +3894,15 @@ https://example.com/schemas/common#/$defs/allOf/1
         </section>
 
         <section title="Example of recursive schema extension" anchor="recursive-example">
-            <figure>
-                <preamble>
+                <t>
                     Consider the following two schemas describing a simple
                     recursive tree structure, where each node in the tree
                     can have a "data" field of any type.  The first schema
                     allows and ignores other instance properties.  The second is
                     more strict and only allows the "data" and "children" properties.
                     An example instance with "data" misspelled as "daat" is also shown.
-                </preamble>
-                <artwork>
-<![CDATA[
+                </t>
+                <sourcecode type="javascript"><![CDATA[
 // tree schema, extensible
 {
     "$schema": "https://json-schema.org/draft/next/schema",
@@ -3954,17 +3935,15 @@ https://example.com/schemas/common#/$defs/allOf/1
 {
     "children": [ { "daat": 1 } ]
 }
-]]>
-                </artwork>
-            </figure>
+]]></sourcecode>
             <t>
                 When we load these two schemas, we will notice the "$dynamicAnchor"
                 named "node" (note the lack of "#" as this is just the name)
                 present in each, resulting in the following full schema IRIs:
-                <list style="symbols">
-                    <t>"https://example.com/tree#node"</t>
-                    <t>"https://example.com/strict-tree#node"</t>
-                </list>
+                <ul>
+                    <li>"https://example.com/tree#node"</li>
+                    <li>"https://example.com/strict-tree#node"</li>
+                </ul>
                 In addition, JSON Schema implementations keep track of the fact
                 that these fragments were created with "$dynamicAnchor".
             </t>
@@ -3981,22 +3960,22 @@ https://example.com/schemas/common#/$defs/allOf/1
                 At this point, the evaluation path is
                 "#/$ref/properties/children/items/$dynamicRef", with a dynamic scope
                 containing (from the outermost scope to the innermost):
-                <list style="numbers">
-                  <t>"https://example.com/strict-tree#"</t>
-                  <t>"https://example.com/tree#"</t>
-                  <t>"https://example.com/tree#/properties/children"</t>
-                  <t>"https://example.com/tree#/properties/children/items"</t>
-                </list>
+                <ol>
+                  <li>"https://example.com/strict-tree#"</li>
+                  <li>"https://example.com/tree#"</li>
+                  <li>"https://example.com/tree#/properties/children"</li>
+                  <li>"https://example.com/tree#/properties/children/items"</li>
+                </ol>
             </t>
             <t>
                 Since we are looking for a plain name fragment, which can be
                 defined anywhere within a schema resource, the JSON Pointer fragments
                 are irrelevant to this check.  That means that we can remove those
                 fragments and eliminate consecutive duplicates, producing:
-                <list style="numbers">
-                  <t>"https://example.com/strict-tree"</t>
-                  <t>"https://example.com/tree"</t>
-                </list>
+                <ol>
+                  <li>"https://example.com/strict-tree"</li>
+                  <li>"https://example.com/tree"</li>
+                </ol>
             </t>
             <t>
                 In this case, the outermost resource also has a "node" fragment
@@ -4109,12 +4088,10 @@ https://example.com/schemas/common#/$defs/allOf/1
                     outside of vocabularies, making them unsuitable for use except in a
                     specific environment in which they are understood.
                 </t>
-                <figure>
-                    <preamble>
-                        This meta-schema combines several vocabularies for general use.
-                    </preamble>
-                    <artwork>
-<![CDATA[
+                <t>
+                    This meta-schema combines several vocabularies for general use.
+                </t>
+                <sourcecode type="json"><![CDATA[
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/meta/general-use-example",
@@ -4141,15 +4118,11 @@ https://example.com/schemas/common#/$defs/allOf/1
     }
   }
 }
-]]>
-                    </artwork>
-                </figure>
-                <figure>
-                    <preamble>
-                        This meta-schema describes only a single extension vocabulary.
-                    </preamble>
-                    <artwork>
-<![CDATA[
+]]></sourcecode>
+                <t>
+                    This meta-schema describes only a single extension vocabulary.
+                </t>
+                <sourcecode type="json"><![CDATA[
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/meta/example-vocab",
@@ -4166,9 +4139,7 @@ https://example.com/schemas/common#/$defs/allOf/1
     }
   }
 }
-]]>
-                    </artwork>
-                </figure>
+]]></sourcecode>
                 <t>
                     As shown above, even though each of the single-vocabulary meta-schemas
                     referenced in the general-use meta-schema's "allOf" declares its
@@ -4207,16 +4178,14 @@ https://example.com/schemas/common#/$defs/allOf/1
                 is to create an annotation keyword for use in the same
                 schema object alongside of a reference keyword such as "$ref".
             </t>
-            <figure>
-                <preamble>
-                    For example, here is a hypothetical keyword for determining
-                    whether a code generator should consider the reference
-                    target to be a distinct class, and how those classes are related.
-                    Note that this example is solely for illustrative purposes, and is
-                    not intended to propose a functional code generation keyword.
-                </preamble>
-                <artwork>
-<![CDATA[
+            <t>
+                For example, here is a hypothetical keyword for determining
+                whether a code generator should consider the reference
+                target to be a distinct class, and how those classes are related.
+                Note that this example is solely for illustrative purposes, and is
+                not intended to propose a functional code generation keyword.
+            </t>
+            <sourcecode type="json"><![CDATA[
 {
     "allOf": [
         {
@@ -4237,9 +4206,7 @@ https://example.com/schemas/common#/$defs/allOf/1
         }
     }
 }
-]]>
-                </artwork>
-            </figure>
+]]></sourcecode>
             <t>
                 Here, this schema represents some sort of object-oriented class.
                 The first reference in the "allOf" is noted as the base class.
@@ -4285,140 +4252,146 @@ https://example.com/schemas/common#/$defs/allOf/1
             </t>
         </section>
 
-        <section title="ChangeLog">
+        <section title="Change Log">
             <t>
                 <cref>This section to be removed before leaving Internet-Draft status.</cref>
             </t>
-            <t>
-                <list style="hanging">
-                    <t hangText="draft-bhutton-json-schema-next">
-                        <list style="symbols">
-                            <t>"contains" now applies to objects as well as arrays</t>
-                            <t>Use IRIs instead of URIs</t>
-                            <t>Remove bookending requirement for "$dynamicRef"</t>
-                            <t>Add "propertyDependencies" keyword</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-bhutton-json-schema-01">
-                        <list style="symbols">
-                            <t>Improve and clarify the "type", "contains", "unevaluatedProperties", and "unevaluatedItems" keyword explanations</t>
-                            <t>Clarify various aspects of "canonical URIs"</t>
-                            <t>Comment on ambiguity around annotations and "additionalProperties"</t>
-                            <t>Clarify Vocabularies need not be formally defined</t>
-                            <t>Remove references to remaining media-type parameters</t>
-                            <t>Fix multiple examples</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-bhutton-json-schema-00">
-                        <list style="symbols">
-                            <t>"$schema" MAY change for embedded resources</t>
-                            <t>Array-value "items" functionality is now "prefixItems"</t>
-                            <t>"items" subsumes the old function of "additionalItems"</t>
-                            <t>"contains" annotation behavior, and "contains" and "unevaluatedItems" interactions now specified</t>
-                            <t>Rename $recursive* to $dynamic*, with behavior modification</t>
-                            <t>$dynamicAnchor defines a fragment like $anchor</t>
-                            <t>$dynamic* (previously $recursive) no longer use runtime base URI determination</t>
-                            <t>Define Compound Schema Documents (bundle) and processing</t>
-                            <t>Reference ECMA-262, 11th edition for regular expression support</t>
-                            <t>Regular expression should support unicode</t>
-                            <t>Remove media type parameters</t>
-                            <t>Specify Unknown keywords are collected as annotations</t>
-                            <t>Moved "unevaluatedItems" and "unevaluatedProperties" from core into their own vocabulary</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-handrews-json-schema-02">
-                        <list style="symbols">
-                            <t>Update to RFC 8259 for JSON specification</t>
-                            <t>Moved "definitions" from the Validation specification here as "$defs"</t>
-                            <t>Moved applicator keywords from the Validation specification as their own vocabulary</t>
-                            <t>Moved the schema form of "dependencies" from the Validation specification as "dependentSchemas"</t>
-                            <t>Formalized annotation collection</t>
-                            <t>Specified recommended output formats</t>
-                            <t>Defined keyword interactions in terms of annotation and assertion results</t>
-                            <t>Added "unevaluatedProperties" and "unevaluatedItems"</t>
-                            <t>Define "$ref" behavior in terms of the assertion, applicator, and annotation model</t>
-                            <t>Allow keywords adjacent to "$ref"</t>
-                            <t>Note undefined behavior for "$ref" targets involving unknown keywords</t>
-                            <t>Add recursive referencing, primarily for meta-schema extension</t>
-                            <t>Add the concept of formal vocabularies, and how they can be recognized through meta-schemas</t>
-                            <t>Additional guidance on initial base URIs beyond network retrieval</t>
-                            <t>Allow "schema" media type parameter for "application/schema+json"</t>
-                            <t>Better explanation of media type parameters and the HTTP Accept header</t>
-                            <t>Use "$id" to establish canonical and base absolute-URIs only, no fragments</t>
-                            <t>Replace plain-name-fragment-only form of "$id" with "$anchor"</t>
-                            <t>Clarified that the behavior of JSON Pointers across "$id" boundary is unreliable</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-handrews-json-schema-01">
-                        <list style="symbols">
-                            <t>This draft is purely a clarification with no functional changes</t>
-                            <t>Emphasized annotations as a primary usage of JSON Schema</t>
-                            <t>Clarified $id by use cases</t>
-                            <t>Exhaustive schema identification examples</t>
-                            <t>Replaced "external referencing" with how and when an implementation might know of a schema from another document</t>
-                            <t>Replaced "internal referencing" with how an implementation should recognized schema identifiers during parsing</t>
-                            <t>Dereferencing the former "internal" or "external" references is always the same process</t>
-                            <t>Minor formatting improvements</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-handrews-json-schema-00">
-                        <list style="symbols">
-                            <t>Make the concept of a schema keyword vocabulary more clear</t>
-                            <t>Note that the concept of "integer" is from a vocabulary, not the data model</t>
-                            <t>Classify keywords as assertions or annotations and describe their general behavior</t>
-                            <t>Explain the boolean schemas in terms of generalized assertions</t>
-                            <t>Reserve "$comment" for non-user-visible notes about the schema</t>
-                            <t>Wording improvements around "$id" and fragments</t>
-                            <t>Note the challenges of extending meta-schemas with recursive references</t>
-                            <t>Add "application/schema-instance+json" media type</t>
-                            <t>Recommend a "schema" link relation / parameter instead of "profile"</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-wright-json-schema-01">
-                        <list style="symbols">
-                            <t>Updated intro</t>
-                            <t>Allowed for any schema to be a boolean</t>
-                            <t>"$schema" SHOULD NOT appear in subschemas, although that may change</t>
-                            <t>Changed "id" to "$id"; all core keywords prefixed with "$"</t>
-                            <t>Clarify and formalize fragments for application/schema+json</t>
-                            <t>Note applicability to formats such as CBOR that can be represented in the JSON data model</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-wright-json-schema-00">
-                        <list style="symbols">
-                            <t>Updated references to JSON</t>
-                            <t>Updated references to HTTP</t>
-                            <t>Updated references to JSON Pointer</t>
-                            <t>Behavior for "id" is now specified in terms of RFC3986</t>
-                            <t>Aligned vocabulary usage for URIs with RFC3986</t>
-                            <t>Removed reference to draft-pbryan-zyp-json-ref-03</t>
-                            <t>Limited use of "$ref" to wherever a schema is expected</t>
-                            <t>Added definition of the "JSON Schema data model"</t>
-                            <t>Added additional security considerations</t>
-                            <t>Defined use of subschema identifiers for "id"</t>
-                            <t>Rewrote section on usage with HTTP</t>
-                            <t>Rewrote section on usage with rel="describedBy" and rel="profile"</t>
-                            <t>Fixed numerous invalid examples</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-zyp-json-schema-04">
-                        <list style="symbols">
-                            <t>Salvaged from draft v3.</t>
-                            <t>Split validation keywords into separate document.</t>
-                            <t>Split hypermedia keywords into separate document.</t>
-                            <t>Initial post-split draft.</t>
-                            <t>Mandate the use of JSON Reference, JSON Pointer.</t>
-                            <t>Define the role of "id". Define URI resolution scope.</t>
-                            <t>Add interoperability considerations.</t>
-                        </list>
-                    </t>
-                    <t hangText="draft-zyp-json-schema-00">
-                        <list style="symbols">
-                            <t>Initial draft.</t>
-                        </list>
-                    </t>
-                </list>
-            </t>
+
+            <section title="draft-bhutton-json-schema-next">
+                <ul>
+                    <li>"contains" now applies to objects as well as arrays</li>
+                    <li>Use IRIs instead of URIs</li>
+                    <li>Remove bookending requirement for "$dynamicRef"</li>
+                    <li>Add "propertyDependencies" keyword</li>
+                </ul>
+            </section>
+
+            <section title="draft-bhutton-json-schema-01">
+                <ul>
+                    <li>Improve and clarify the "type", "contains", "unevaluatedProperties", and "unevaluatedItems" keyword explanations</li>
+                    <li>Clarify various aspects of "canonical URIs"</li>
+                    <li>Comment on ambiguity around annotations and "additionalProperties"</li>
+                    <li>Clarify Vocabularies need not be formally defined</li>
+                    <li>Remove references to remaining media-type parameters</li>
+                    <li>Fix multiple examples</li>
+                </ul>
+            </section>
+
+            <section title="draft-bhutton-json-schema-00">
+                <ul>
+                    <li>"$schema" MAY change for embedded resources</li>
+                    <li>Array-value "items" functionality is now "prefixItems"</li>
+                    <li>"items" subsumes the old function of "additionalItems"</li>
+                    <li>"contains" annotation behavior, and "contains" and "unevaluatedItems" interactions now specified</li>
+                    <li>Rename $recursive* to $dynamic*, with behavior modification</li>
+                    <li>$dynamicAnchor defines a fragment like $anchor</li>
+                    <li>$dynamic* (previously $recursive) no longer use runtime base URI determination</li>
+                    <li>Define Compound Schema Documents (bundle) and processing</li>
+                    <li>Reference ECMA-262, 11th edition for regular expression support</li>
+                    <li>Regular expression should support unicode</li>
+                    <li>Remove media type parameters</li>
+                    <li>Specify Unknown keywords are collected as annotations</li>
+                    <li>Moved "unevaluatedItems" and "unevaluatedProperties" from core into their own vocabulary</li>
+                </ul>
+            </section>
+
+            <section title="draft-handrews-json-schema-02">
+                <ul>
+                    <li>Update to RFC 8259 for JSON specification</li>
+                    <li>Moved "definitions" from the Validation specification here as "$defs"</li>
+                    <li>Moved applicator keywords from the Validation specification as their own vocabulary</li>
+                    <li>Moved the schema form of "dependencies" from the Validation specification as "dependentSchemas"</li>
+                    <li>Formalized annotation collection</li>
+                    <li>Specified recommended output formats</li>
+                    <li>Defined keyword interactions in terms of annotation and assertion results</li>
+                    <li>Added "unevaluatedProperties" and "unevaluatedItems"</li>
+                    <li>Define "$ref" behavior in terms of the assertion, applicator, and annotation model</li>
+                    <li>Allow keywords adjacent to "$ref"</li>
+                    <li>Note undefined behavior for "$ref" targets involving unknown keywords</li>
+                    <li>Add recursive referencing, primarily for meta-schema extension</li>
+                    <li>Add the concept of formal vocabularies, and how they can be recognized through meta-schemas</li>
+                    <li>Additional guidance on initial base URIs beyond network retrieval</li>
+                    <li>Allow "schema" media type parameter for "application/schema+json"</li>
+                    <li>Better explanation of media type parameters and the HTTP Accept header</li>
+                    <li>Use "$id" to establish canonical and base absolute-URIs only, no fragments</li>
+                    <li>Replace plain-name-fragment-only form of "$id" with "$anchor"</li>
+                    <li>Clarified that the behavior of JSON Pointers across "$id" boundary is unreliable</li>
+                </ul>
+            </section>
+
+            <section title="draft-handrews-json-schema-01">
+                <ul>
+                    <li>This draft is purely a clarification with no functional changes</li>
+                    <li>Emphasized annotations as a primary usage of JSON Schema</li>
+                    <li>Clarified $id by use cases</li>
+                    <li>Exhaustive schema identification examples</li>
+                    <li>Replaced "external referencing" with how and when an implementation might know of a schema from another document</li>
+                    <li>Replaced "internal referencing" with how an implementation should recognized schema identifiers during parsing</li>
+                    <li>Dereferencing the former "internal" or "external" references is always the same process</li>
+                    <li>Minor formatting improvements</li>
+                </ul>
+            </section>
+
+            <section title="draft-handrews-json-schema-00">
+                <ul>
+                    <li>Make the concept of a schema keyword vocabulary more clear</li>
+                    <li>Note that the concept of "integer" is from a vocabulary, not the data model</li>
+                    <li>Classify keywords as assertions or annotations and describe their general behavior</li>
+                    <li>Explain the boolean schemas in terms of generalized assertions</li>
+                    <li>Reserve "$comment" for non-user-visible notes about the schema</li>
+                    <li>Wording improvements around "$id" and fragments</li>
+                    <li>Note the challenges of extending meta-schemas with recursive references</li>
+                    <li>Add "application/schema-instance+json" media type</li>
+                    <li>Recommend a "schema" link relation / parameter instead of "profile"</li>
+                </ul>
+            </section>
+
+            <section title="draft-wright-json-schema-01">
+                <ul>
+                    <li>Updated intro</li>
+                    <li>Allowed for any schema to be a boolean</li>
+                    <li>"$schema" SHOULD NOT appear in subschemas, although that may change</li>
+                    <li>Changed "id" to "$id"; all core keywords prefixed with "$"</li>
+                    <li>Clarify and formalize fragments for application/schema+json</li>
+                    <li>Note applicability to formats such as CBOR that can be represented in the JSON data model</li>
+                </ul>
+            </section>
+
+            <section title="draft-wright-json-schema-00">
+                <ul>
+                    <li>Updated references to JSON</li>
+                    <li>Updated references to HTTP</li>
+                    <li>Updated references to JSON Pointer</li>
+                    <li>Behavior for "id" is now specified in terms of RFC3986</li>
+                    <li>Aligned vocabulary usage for URIs with RFC3986</li>
+                    <li>Removed reference to draft-pbryan-zyp-json-ref-03</li>
+                    <li>Limited use of "$ref" to wherever a schema is expected</li>
+                    <li>Added definition of the "JSON Schema data model"</li>
+                    <li>Added additional security considerations</li>
+                    <li>Defined use of subschema identifiers for "id"</li>
+                    <li>Rewrote section on usage with HTTP</li>
+                    <li>Rewrote section on usage with rel="describedBy" and rel="profile"</li>
+                    <li>Fixed numerous invalid examples</li>
+                </ul>
+            </section>
+
+            <section title="draft-zyp-json-schema-04">
+                <ul>
+                    <li>Salvaged from draft v3.</li>
+                    <li>Split validation keywords into separate document.</li>
+                    <li>Split hypermedia keywords into separate document.</li>
+                    <li>Initial post-split draft.</li>
+                    <li>Mandate the use of JSON Reference, JSON Pointer.</li>
+                    <li>Define the role of "id". Define URI resolution scope.</li>
+                    <li>Add interoperability considerations.</li>
+                </ul>
+            </section>
+
+            <section title="draft-zyp-json-schema-00">
+                <ul>
+                    <li>Initial draft.</li>
+                </ul>
+            </section>
         </section>
     </back>
 </rfc>
