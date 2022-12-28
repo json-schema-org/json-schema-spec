@@ -29,15 +29,11 @@ to the current URL.
 Everything in the specification is considered "stable" by default and subject to
 compatibility guarantees. Any changes to stable behaviors in the specification
 MUST be backward-compatible with previous versions of the specification and MUST
-NOT change in ways that could be problematic for forward-compatibility.
-Therefore, it's not necessary for implementations to support previous versions
-of the specification separately (excluding "draft" releases).
+NOT change in ways that could be problematic for forward compatibility.
 
 _Note: How, when, and how often the specification will be updated are all open
 questions that will be decided before any changes are issued following the
-initial release. Because releases are compatible, these things shouldn't affect
-choices made by implementers or schema authors the same way the "draft" releases
-did._
+initial release._
 
 ### Experimental Behaviors
 The specification MAY include sections that introduce experimental behaviors.
@@ -52,15 +48,19 @@ defined in more detail and is likely to evolve as we learn what works best. Such
 evolution will always be compatible with previous versions of this document._
 
 ### Compliance
-Implementations that express support for a particular release MUST support all
-of that release's stable behaviors and SHOULD support any experimental
-behaviors. Because releases are compatible, expressing support for a given
-release implies support for all previous releases (excluding "draft" releases).
-Support for previous releases might have limitations if an implementation
-chooses not to support a deprecated behavior.
+An implementation is compliant with a given release if it implements all of the
+required stable behaviors defined in that release. Experimental behaviors are
+not required to be considered compliant, but implementing them is highly
+encouraged. An implementation that implements behaviors that are not compatible
+with the given release is considered compliant only if those behaviors are
+disabled by default.
+
+Because releases are compatible, expressing support for a given release implies
+support for all previous releases (excluding "draft" releases). Support for
+previous releases might have limitations if an implementation chooses not to
+support a deprecated behavior.
 
 ### Deprecation
-Stable behaviors MAY be marked as "deprecated". Implementations SHOULD support
-these behaviors to maintain backward compatibility. Schema authors SHOULD
-migrate away from using deprecated behaviors as implementations MAY begin
-dropping support for these behaviors at some point.
+Stable behaviors MAY be marked as "deprecated". Implementations are expected to
+support these behaviors to maintain backward compatibility and schema authors
+should migrate away from using these behaviors.
