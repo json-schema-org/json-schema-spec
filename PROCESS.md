@@ -26,7 +26,7 @@ URL is changed in the future, all previous canonical URLs MUST remain accessible
 as redirects to the current URL.
 
 ## Compatible Releases
-Everything in the specification is considered "stable" by default and subject to
+Any part of the specification that is considered "stable" is subject to
 compatibility guarantees. Any changes to stable behaviors in the specification
 MUST be backward-compatible with previous versions of the specification and MUST
 NOT change in ways that could be problematic for forward compatibility.
@@ -38,38 +38,8 @@ initial release._
 Compatibility is defined with respect to the true/false validation result of a
 schema. If an instance is valid or invalid against a schema according to one
 release, all other releases including future releases MUST define the same
-validation result or be indeterminate. An indeterminate result is neither valid
-nor invalid.
+validation result or define the result to be indeterminate. An indeterminate
+result is neither valid nor invalid.
 
 _Note: Additional compatibility constraints may be added in the future such as
 output format results._
-
-### Experimental Behaviors
-The specification MAY include sections that introduce experimental behaviors.
-These sections MUST be clearly marked and aren't subject to the compatibility
-guarantees of stable behaviors. Experimental behaviors MUST be compatible with
-all current stable behaviors.
-
-_Note: How and when experimental behaviors are promoted to stable behaviors is
-an open discussion and will be defined before a promotion is considered. The
-process of how an experimental behavior goes from proposal to stable will be
-defined in more detail and is likely to evolve as we learn what works best. Such
-evolution will always be compatible with previous versions of this document._
-
-### Compliance
-An implementation is compliant with a given release if it implements all of the
-required stable behaviors in that release. Experimental behaviors are not
-required to be considered compliant, but implementing them is highly encouraged.
-An implementation that implements behaviors that are not compatible with the
-given release is considered compliant only if those behaviors are disabled by
-default.
-
-Because releases using this process are compatible, expressing support for a
-given release implies support for all previous releases (excluding "draft"
-releases). Support for previous releases might have limitations if an
-implementation chooses not to support a deprecated behavior.
-
-### Deprecation
-Behaviors MAY be marked as "deprecated". Implementations are expected to support
-stable deprecated behaviors to maintain backward compatibility and schema
-authors should migrate away from using these behaviors.
