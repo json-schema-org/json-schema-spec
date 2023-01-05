@@ -19,11 +19,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 ## Canonical URLs
-There MUST be a stable canonical URL for referencing any specification that
-follows this process. If the specification is made available from any other
-URLs, they SHOULD redirect to the canonical URL. If the canonical URL is changed
-in the future, all previous canonical URLs MUST remain accessible as redirects
-to the current URL.
+There MUST be a canonical URL for referencing the current version of any
+specification that follows this process. If the specification is made available
+from any other URLs, they SHOULD redirect to the canonical URL. If the canonical
+URL is changed in the future, all previous canonical URLs MUST remain accessible
+as redirects to the current URL.
 
 ## Compatible Releases
 Everything in the specification is considered "stable" by default and subject to
@@ -34,6 +34,15 @@ NOT change in ways that could be problematic for forward compatibility.
 _Note: How, when, and how often the specification will be updated are all open
 questions that will be decided before any changes are issued following the
 initial release._
+
+Compatibility is defined with respect to the true/false validation result of a
+schema. If an instance is valid or invalid against a schema according to one
+release, all other releases including future releases MUST define the same
+validation result or be indeterminate. An indeterminate result is neither valid
+nor invalid.
+
+_Note: Additional compatibility constraints may be added in the future such as
+output format results._
 
 ### Experimental Behaviors
 The specification MAY include sections that introduce experimental behaviors.
@@ -49,18 +58,18 @@ evolution will always be compatible with previous versions of this document._
 
 ### Compliance
 An implementation is compliant with a given release if it implements all of the
-required stable behaviors defined in that release. Experimental behaviors are
-not required to be considered compliant, but implementing them is highly
-encouraged. An implementation that implements behaviors that are not compatible
-with the given release is considered compliant only if those behaviors are
-disabled by default.
+required stable behaviors in that release. Experimental behaviors are not
+required to be considered compliant, but implementing them is highly encouraged.
+An implementation that implements behaviors that are not compatible with the
+given release is considered compliant only if those behaviors are disabled by
+default.
 
-Because releases are compatible, expressing support for a given release implies
-support for all previous releases (excluding "draft" releases). Support for
-previous releases might have limitations if an implementation chooses not to
-support a deprecated behavior.
+Because releases using this process are compatible, expressing support for a
+given release implies support for all previous releases (excluding "draft"
+releases). Support for previous releases might have limitations if an
+implementation chooses not to support a deprecated behavior.
 
 ### Deprecation
-Stable behaviors MAY be marked as "deprecated". Implementations are expected to
-support these behaviors to maintain backward compatibility and schema authors
-should migrate away from using these behaviors.
+Behaviors MAY be marked as "deprecated". Implementations are expected to support
+stable deprecated behaviors to maintain backward compatibility and schema
+authors should migrate away from using these behaviors.
