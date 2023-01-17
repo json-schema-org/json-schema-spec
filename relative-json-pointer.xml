@@ -92,27 +92,19 @@
                 length or start with a '/' (%x2F).  Similarly, a JSON Pointer will
                 never be ambiguous with the '#'.
             </t>
-            <figure align="center">
-                <preamble>
-                    The ABNF syntax of a Relative JSON Pointer is:
-                </preamble>
-                <artwork>
-<![CDATA[
-   relative-json-pointer =  origin-specification <json-pointer>
-   relative-json-pointer =/ origin-specification "#"
-   origin-specification  =  non-negative-integer [index-manipulation]
-   index-manipulation    =  ("+" / "-") non-negative-integer
-   non-negative-integer  =  %x30 / %x31-39 *( %x30-39 )
-           ; "0", or digits without a leading "0"
-]]>
-                </artwork>
-                <postamble>
-                    where &lt;json-pointer&gt; follows the production defined in
-                    <xref target="RFC6901">RFC 6901, Section 3</xref> ("Syntax").
-                </postamble>
-            </figure>
             <t>
+                The ABNF syntax of a Relative JSON Pointer is:
             </t>
+            <sourcecode type="abnf9110"><![CDATA[
+  relative-json-pointer = origin-specification json-pointer
+                        / origin-specification "#"
+                        ; json-pointer from RFC 6901
+
+  origin-specification  = non-negative-integer [ index-manipulation ]
+  index-manipulation    = ( "+" / "-" ) non-negative-integer
+  non-negative-integer  = "0" / %x31-39 *DIGIT
+                        ; zero, or digits without a leading zero
+]]></sourcecode>
         </section>
 
         <section title="Evaluation">
