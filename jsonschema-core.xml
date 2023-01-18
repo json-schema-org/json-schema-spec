@@ -620,8 +620,9 @@
 
                 <section title="Handling of unrecognized or unsupported keywords" anchor="unrecognized">
                     <t>
-                        Implementations SHOULD treat keywords they do not recognize, or that
-                        they recognize but do not support, as annotations, where the value of
+                        If annotation collection is supported and not disabled, implementations
+                        MUST treat keywords they do not recognize, or that they recognize but
+                        do not support, as annotations, where the collected value of
                         the keyword is the value of the annotation.  Whether an implementation
                         collects these annotations or not, they MUST otherwise ignore the keywords.
                     </t>
@@ -1298,7 +1299,7 @@
                         </t>
                         <t>
                             Implementations that do not support a vocabulary that is optionally used
-                            by a schema SHOULD proceed with processing the schema.  The keywords will
+                            by a schema MUST proceed with processing the schema.  The keywords will
                             be considered to be unrecognized keywords as addressed by
                             <xref target="unrecognized"></xref>.  Note that since
                             the recommended behavior for such keywords is to collect them as
