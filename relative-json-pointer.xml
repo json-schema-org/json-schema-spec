@@ -103,9 +103,10 @@
                         ; json-pointer from RFC 6901
 
   origin-specification  = non-negative-integer [ index-manipulation ]
-  index-manipulation    = ( "+" / "-" ) non-negative-integer
-  non-negative-integer  = "0" / %x31-39 *DIGIT
-                        ; zero, or digits without a leading zero
+  index-manipulation    = ( "+" / "-" ) positive-integer
+  non-negative-integer  = "0" / positive-integer
+  positive-integer      = %x31-39 *DIGIT
+                        ; digits without a leading zero
 ]]></sourcecode>
         </section>
 
