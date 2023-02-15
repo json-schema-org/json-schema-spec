@@ -83,11 +83,13 @@
             <t>
                 A Relative JSON Pointer is a Unicode string in UTF-8 encoding (see RFC 8259,
                 <xref target="RFC8259">Section 8</xref>), comprising a non-negative integer,
-                followed by either a '#' (%x23) character or a JSON Pointer
-                (<xref target="RFC6901">RFC 6901</xref>).
+                an optional index adjustment consisting of '+' (%x2B) or '-' (%x2D) followed
+                by a positive integer, followed by either a '#' (%x23) character or
+                a JSON Pointer (<xref target="RFC6901">RFC 6901</xref>).
             </t>
             <t>
-                The separation between the integer prefix and the JSON Pointer will
+                The separation between the integer prefix (with optional adjustment)
+                and the JSON Pointer will
                 always be unambiguous, because a JSON Pointer must be either zero-
                 length or start with a '/' (%x2F).  Similarly, a JSON Pointer will
                 never be ambiguous with the '#'.
