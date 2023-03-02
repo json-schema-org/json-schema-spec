@@ -2,6 +2,12 @@
 
 JSON Schema is defined to be platform-independent.  As such, to increase compatibility across platforms, implementations SHOULD conform to a standard validation output format.  This section describes the minimum requirements that consumers will need to properly interpret validation results.
 
+## Schema Identifiers
+
+The output defined in this specification requires that the evaluation root be defined with an absolute IRI.  In the event an absolute IRI has not been defined, the implementation MUST generate one.
+
+There are no requirements on the form of IRI itself, except that it MUST be absolute.
+
 ## Textual Format and Encoding
 
 JSON Schema output is defined using the JSON Schema data instance model as described in [JSON Schema, section 4.2.1]().  Implementations MAY deviate from this as supported by their specific languages and platforms, however it is RECOMMENDED that the output be convertible to the JSON format defined herein via serialization or other means.
