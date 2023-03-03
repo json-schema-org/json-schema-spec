@@ -600,4 +600,6 @@ Reasons to omit output units may include, but are not limited to:
 - Child output units whose validation result does not impact the validation result of the parent.  For example, a subschema of an `anyOf` which has a false validation result when there exists a sibling subschema with a true validation result.
 - Child output units which have a true validation result but contain no annotations.
 
+Output units which include annotations MUST NOT be pruned.
+
 Implementations which provide this behavior SHOULD provide configuration mechanisms appropriate for their users' needs.
