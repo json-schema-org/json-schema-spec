@@ -624,12 +624,22 @@
                     for registering and implementing such handlers is implementation-dependent.
                 </t>
 
+                <section title="Explicit annotation keywords" anchor="explicit-annotation">
+                    <t>
+                        The values of keywords which begin with the "@" symbol MUST be
+                        collected as annotations.
+                    </t>
+                    <t>
+                        Consequently, the "@" symbol is reserved for this purpose, and
+                        extension vocabularies which define keywords that start with "@"
+                        MUST define them as annotation-only keywords.
+                    </t>
+                </section>
+
                 <section title="Handling of unrecognized or unsupported keywords" anchor="unrecognized">
                     <t>
-                        Implementations SHOULD treat keywords they do not recognize, or that
-                        they recognize but do not support, as annotations, where the value of
-                        the keyword is the value of the annotation.  Whether an implementation
-                        collects these annotations or not, they MUST otherwise ignore the keywords.
+                        Implementations MUST refuse to process schemas which contain
+                        unrecognized or unsupported keywords.
                     </t>
                 </section>
             </section>
