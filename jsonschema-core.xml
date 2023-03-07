@@ -638,9 +638,10 @@
 
                 <section title="Handling of unrecognized or unsupported keywords" anchor="unrecognized">
                     <t>
-                        Implementations MUST refuse to process schemas which contain
-                        keywords which they do not recognize or which they recognize
-                        but do not support.
+                        Implementations SHOULD treat keywords they do not recognize, or that
+                        they recognize but do not support, as annotations, where the value of
+                        the keyword is the value of the annotation.  Whether an implementation
+                        collects these annotations or not, they MUST otherwise ignore the keywords.
                     </t>
                 </section>
             </section>
