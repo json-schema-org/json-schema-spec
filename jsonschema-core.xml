@@ -1157,9 +1157,8 @@
                 <eref target="https://json-schema.org/draft/next/meta/core"/>.
             </t>
             <t>
-                While the "$" prefix is not formally reserved for the Core vocabulary,
-                it is RECOMMENDED that extension keywords (in vocabularies or otherwise)
-                begin with a character other than "$" to avoid possible future collisions.
+                The "$" prefix is reserved for use by the Core vocabulary.
+                Vocabulary extensions MUST NOT define new keywords that begin with "$".
             </t>
 
             <section title="Meta-Schemas and Vocabularies" anchor="vocabulary">
