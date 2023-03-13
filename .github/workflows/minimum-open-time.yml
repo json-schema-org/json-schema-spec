@@ -1,0 +1,18 @@
+on:
+  - pull_request
+  - workflow_dispatch
+  # not sure about scheduling only on PRs.  See https://github.com/orgs/community/discussions/49960
+  # - schedule
+  #   - cron: '0 * * * *'
+
+jobs:
+  require-minimum-open-time:
+    runs-on: ubuntu-latest
+    name: Require Minimum Open Time
+    steps:
+    - uses: actions/checkout@v2
+    - uses: gregsdennis/minimum-open-time@main
+      with:
+        time: 2w # see below for options
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
