@@ -1,8 +1,8 @@
 name: PR Policy
+# scheduling only on PRs is not directly supported.  See https://github.com/orgs/community/discussions/49960
 on:
   pull_request
   workflow_dispatch
-  # scheduling only on PRs is not directly supported.  See https://github.com/orgs/community/discussions/49960
   schedule
     - cron: '0 0 * * *'
 
