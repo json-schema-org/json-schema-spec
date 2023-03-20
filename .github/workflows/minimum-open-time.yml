@@ -1,10 +1,10 @@
 name: PR Policy
 on:
-  - pull_request
-  - workflow_dispatch
+  pull_request
+  workflow_dispatch
   # scheduling only on PRs is not directly supported.  See https://github.com/orgs/community/discussions/49960
-  - schedule:
-    - cron: '0 0 * * *' # once daily
+  schedule:
+  - cron: '0 0 * * *' # once daily
 
 jobs:
   require-minimum-open-time:
