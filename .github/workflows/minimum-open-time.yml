@@ -1,0 +1,20 @@
+name: PR Policy
+on:
+  pull_request:
+  workflow_dispatch:
+  # scheduling only on PRs is not directly supported.  See https://github.com/orgs/community/discussions/49960
+  schedule:
+  - cron: '0 0 * * *' # once daily
+
+jobs:
+  require-minimum-open-time:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    name: Require Minimum Open Time
+    steps:
+    - uses: actions/checkout@v2
+    - uses: gregsdennis/minimum-open-time@main
+      with:
+        time: 2w # see below for options
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
