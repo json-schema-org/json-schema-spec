@@ -626,17 +626,16 @@
 
                 <section title="Explicit annotation keywords" anchor="explicit-annotation">
                     <t>
-                        The values of keywords which begin with the "@" symbol MUST be
-                        collected as annotations.
+                        The values of keywords which begin with "x-" MUST be collected as annotations.
                     </t>
                     <t>
-                        Keywords which begin with the "@" symbol MUST NOT affect evaluation
+                        Keywords which begin with "x-" symbol MUST NOT affect evaluation
                         of a schema in any way other than annotation collection.
                     </t>
                     <t>
-                        Consequently, the "@" symbol is reserved for this purpose, and
-                        extension vocabularies which define keywords that start with "@"
-                        MUST define them as annotation-only keywords.
+                        Consequently, the "x-" prefix is reserved for this purpose, and
+                        extension vocabularies MUST NOT define any keywords which begin
+                        with this prefix.
                     </t>
                 </section>
 
