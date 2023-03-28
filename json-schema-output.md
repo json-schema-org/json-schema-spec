@@ -88,7 +88,7 @@ Any annotations produced by the evaluation.  This property MUST NOT be included 
 The value for this property MUST be an object where the keys are the names of keywords and the values are the annotations
 produced by the associated keyword.
 
-Each keyword defines its own annotation data type (e.g. `properties` produces a list of keywords, whereas `title` produces a string).
+Each keyword defines its own annotation data type (e.g. `properties` produces a list of object keys, whereas `title` produces a string).
 
 The JSON key for this information is `annotations`.
 
@@ -100,7 +100,7 @@ Implementations that wish to provide these annotations MUST NOT provide them as 
 
 The value for this property MUST be an object where the keys are the names of keywords and the values are the annotations produced by the associated keyword.
 
-Each keyword defines its own annotation data type (e.g. `properties` produces a list of keywords, whereas `title` produces a string).
+Each keyword defines its own annotation data type (e.g. `properties` produces a list of object keys, whereas `title` produces a string).
 
 The JSON key for this information is `droppedAnnotations`.
 
