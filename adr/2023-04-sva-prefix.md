@@ -81,7 +81,7 @@ High level of effort
 [Discussion](https://github.com/orgs/json-schema-org/discussions/329#discussioncomment-4988904)
 
 * Good, because it provides a way to define SVAs.
-* Good, because it cannot be supported by the meta-schema without other changes, which may be difficult to define and/or implement.
+* Bad, because it cannot be supported by the meta-schema without other changes, which may be difficult to define and/or implement.
 
 High level of effort
 
