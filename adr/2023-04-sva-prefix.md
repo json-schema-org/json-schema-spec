@@ -57,7 +57,7 @@ Specifically, the prefix `x-` has been selected.
 
 * Good, because it's simple and easy to understand.
 * Good, because `x-` specifically is familiar to many developers as an identifying prefix for custom data.
-* Good, because it's easily supportable by the meta-schema (i.e. `patterProperties`)
+* Good, because it's easily supportable by the meta-schema (i.e. `patternProperties`)
 * Bad, because `x-` in some other contexts can denote "experimental" behavior, which is not our meaning.
 
 #### Option 1a - Optionally defined by a new `$sigil` keyword
