@@ -313,43 +313,70 @@
                 </t>
                 <section title="JSON Schema Objects and Keywords">
                     <t>
-                        Object properties that are applied to the instance are called keywords,
-                        or schema keywords.  Broadly speaking, keywords fall into one
-                        of five categories:
+                        Object properties that are applied to the instance are called keywords, or schema keywords.
+                        Two properties in the same schema object are referred to as adjacent keywords.
+                        As an authoring convenience, adjacent keywords can sometimes affect each other in a way that a property from a different schema (including sub-schemas) cannot.
+                    </t>
+                    <t>
+                        Keywords are classified into one or more of six categories:
                     </t>
                     <dl>
-                        <dt>identifiers</dt>
+                        <dt>Core keywords</dt>
                         <dd>
-                            control schema identification through setting a IRI
-                            for the schema and/or changing how the base IRI is determined
+                            Keywords that may configure how the schema is processed,
+                            and can modify the meaning of other keywords in the schema.
                         </dd>
-                        <dt>assertions</dt>
+                        <dt>Assertion keywords</dt>
                         <dd>
-                            produce a boolean result when applied to an instance
+                            Keywords that may decide an instance is invalid.
                         </dd>
-                        <dt>annotations</dt>
+                        <dt>Annotation keywords</dt>
                         <dd>
-                            attach information to an instance for application use
+                            Keywords that produce output generated from an instance.
                         </dd>
-                        <dt>applicators</dt>
+                        <dt>Applicator keywords</dt>
                         <dd>
-                            apply one or more subschemas to a particular location
-                            in the instance, and combine or modify their results
+                            A keyword that has one or more subschemas,
+                            that are applied against the instance,
+                            or some value within the instance,
+                            and logically aggregated together.
                         </dd>
-                        <dt>reserved locations</dt>
+                        <dt>Reserved keywords</dt>
                         <dd>
-                            do not directly affect results, but reserve a place
-                            for a specific purpose to ensure interoperability
+                            Keywords that are permitted in a schema,
+                            but that do not do anything by themselves,
+                            though their value may be read by or referred to by another keyword.
+                        </dd>
+                        <dt>Arguments</dt>
+                        <dd>
+                            Arguments are properties in a schema that are used by an adjacent keyword,
+                            and whose meaning may only be defined in the presence of that keyword.
                         </dd>
                     </dl>
                     <t>
-                        Keywords may fall into multiple categories, although applicators
-                        SHOULD only produce assertion results based on their subschemas'
-                        results.  They should not define additional constraints independent
-                        of their subschemas.
+                        Some properties may be classified into multiple categories.
+                        Some keywords are also arguments to other keywords,
+                        and applicator keywords are both assertions and annotations.
                     </t>
                     <t>
-                        Keywords which are properties within the same schema object are referred to as adjacent keywords.
+                        The categories that a keyword belongs to is defined per keyword.
+                        Additionally, there are naming conventions that impose limits or requirements on the categories that keywords belong to:
+                    </t>
+                    <ul>
+                        <li>
+                            A keyword that begins with "annotation-" is never a core keyword or assertion keyword, but may be an annotation or reserved keyword. These keywords MUST NOT affect a validation result.
+                            <cref>
+                                This naming is subject to change.
+                            </cref>
+                        </li>
+                        <li>
+                            A keyword that begins with "$" is a core keyword, unless defined otherwise.
+                            (For example, "$comment" behaves as a reserved keyword.)
+                        </li>
+                    </ul>
+                    <t>
+                        If a validator encounters a keyword whose assertion behavior is unknown (a keyword besides an "annotation-" keyword),
+                        then attempting to compute the validation result SHOULD raise an error.
                     </t>
                     <t>
                         Extension keywords, meaning those defined outside of this document
