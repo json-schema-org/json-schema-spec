@@ -624,6 +624,21 @@
                     for registering and implementing such handlers is implementation-dependent.
                 </t>
 
+                <section title="Explicit annotation keywords" anchor="explicit-annotation">
+                    <t>
+                        The values of keywords which begin with "x-" MUST be collected as annotations.
+                    </t>
+                    <t>
+                        Keywords which begin with "x-" symbol MUST NOT affect evaluation
+                        of a schema in any way other than annotation collection.
+                    </t>
+                    <t>
+                        Consequently, the "x-" prefix is reserved for this purpose, and
+                        extension vocabularies MUST NOT define any keywords which begin
+                        with this prefix.
+                    </t>
+                </section>
+
                 <section title="Handling of unrecognized or unsupported keywords" anchor="unrecognized">
                     <t>
                         Implementations SHOULD treat keywords they do not recognize, or that
