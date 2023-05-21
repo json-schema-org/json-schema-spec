@@ -26,6 +26,8 @@ In discussing this, we also discovered misalignment on how a dialect was to be d
 * Opinion: A copy of the meta-schema that is packaged with an implementation should align validation of schemas with the implementation's support.  Only a closed meta-schema can support this.
 * It is only possible to extend an open meta-schema.
 
+We will also need to document the benefits and detriments of using each meta-schema so that users can make informed decisions.
+
 ## Considered Options
 
 * Open meta-schema
