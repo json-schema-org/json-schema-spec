@@ -98,8 +98,7 @@
                 The ABNF syntax of a Relative JSON Pointer is:
             </t>
             <sourcecode type="abnf9110"><![CDATA[
-  relative-json-pointer = origin-specification json-pointer
-                        / origin-specification "#"
+  relative-json-pointer = origin-specification ( "#" / json-pointer )
                         ; json-pointer from RFC 6901
 
   origin-specification  = non-negative-integer [ index-manipulation ]
