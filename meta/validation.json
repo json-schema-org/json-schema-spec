@@ -11,10 +11,10 @@
     "properties": {
         "type": {
             "anyOf": [
-                { "$ref": "#/$defs/simpleTypes" },
+                { "$ref": "#/$defs/simpleType" },
                 {
                     "type": "array",
-                    "items": { "$ref": "#/$defs/simpleTypes" },
+                    "items": { "$ref": "#/$defs/simpleType" },
                     "minItems": 1,
                     "uniqueItems": true
                 }
@@ -72,7 +72,7 @@
             "$ref": "#/$defs/nonNegativeInteger",
             "default": 0
         },
-        "simpleTypes": {
+        "simpleType": {
             "enum": [
                 "array",
                 "boolean",
