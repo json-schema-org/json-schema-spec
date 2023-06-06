@@ -131,7 +131,7 @@
                 <t>
                     The following features of JSON are structural validation:
                 </t>
-                <list>
+                <t><list>
                     <t>JSON primitive type (string, object, etc)</t>
                     <t>Minimum or maximum in a linear range of values</t>
                     <t>Minimum or maximum lengths (number of characters, digits, items, or properties)</t>
@@ -139,7 +139,7 @@
                     <t>Pattern matching strings by a regular expression (including object keys)</t>
                     <t>Logic operators (union, intersection, difference)</t>
                     <t>Descent into object properties and array items (recursively)</t>
-                </list>
+                </list></t>
                 <t>
                     Multiple forms that are value-equal according to JSON are not distinguishable under this use-case. This includes the ordering of properties in an object, character escapes in strings, and whitespace.
                 </t>
@@ -150,13 +150,13 @@
                     There is a need to annotate values within a JSON document: for machine readability, and for documentation purposes.
                     Given a document and directions for annotating it, you should should be able to:
                 </t>
-                <list>
+                <t><list>
                     <t>document the meaning of a property,</t>
                     <t>suggest a default value for new documents of a given type,</t>
                     <t>fill in missing values (in objects or arrays) with values of equivalent meaning,</t>
                     <t>generate a list of hyperlinks,</t>
                     <t>or declare relationships between data.</t>
-                </list>
+                </list></t>
                 <t>
                     A schema may be used to describe a machine-readable <xref target="RFC6906">profile</xref> of JSON document. Even when two schemas identify the same set of JSON documents; depending on the context, a given JSON document may be a profile of one but not the other.
                 </t>
@@ -211,11 +211,11 @@
                 <t>
                     Due to technical limitations, some JSON parsers may only be able to understand a subset of the JSON value space, and it makes sense to validate the value read by the application, instead of the JSON document provided to the JSON parser. For example:
                 </t>
-                <list style="symbols">
+                <t><list style="symbols">
                     <t>Many JSON parsers cast the arbitrary-precision decimal numbers to an IEEE floating point, validating the number after it has lost some precision.</t>
                     <t>Some programming languages cannot distinguish between an ordered array of values and a key-value map; or an empty array is identical to an empty object.</t>
                     <t>Other validators may have a limited amount of memory and cannot support assertions more complicated than a deterministic context-free grammar.</t>
-                </list>
+                </list></t>
                 <t>
                     Users of these validators need a way to determine if the missing functionality is essential to correctly validating input, and if not, get a validation result that would be correct but-for the unimplemented functionality.
                 </t>
