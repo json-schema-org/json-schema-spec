@@ -1096,7 +1096,7 @@
 }
 ]]></sourcecode>
                         <t>
-                            Against the instance <sourcecode>"This is a string"</sourcecode>, the
+                            Against the instance <tt>"This is a string"</tt>, the
                             title annotation "Integer Value" is discarded because the type assertion
                             in that schema object fails.  The title annotation "String Value"
                             is kept, as the instance passes the string type assertions.
@@ -3110,55 +3110,55 @@ https://example.com/schemas/common#/$defs/allOf/1
                         The keyword "title"
                         evaluated at ""
                         by following the path ""
-                        will produce <sourcecode>"root"</sourcecode>.
+                        will produce <tt>"root"</tt>.
                     </li>
                     <li>
                         The keyword "properties"
                         evaluated at ""
                         by following the path ""
-                        will produce <sourcecode>["foo", "bar"]</sourcecode>.
+                        will produce <tt>["foo", "bar"]</tt>.
                     </li>
                     <li>
                         The keyword "title"
                         evaluated at "/properties/foo"
                         by following the path "/properties/foo"
-                        will produce <sourcecode>"foo-title"</sourcecode>.
+                        will produce <tt>"foo-title"</tt>.
                     </li>
                     <li>
                         The keyword "properties"
                         evaluated at "/properties/foo/allOf/1"
                         by following the path "/properties/foo/allOf/1"
-                        will produce <sourcecode>["foo-prop"]</sourcecode>.
+                        will produce <tt>["foo-prop"]</tt>.
                     </li>
                     <li>
                         The keyword "additionalProperties"
                         evaluated at "/properties/foo/allOf/1"
                         by following the path "/properties/foo/allOf/1"
-                        will produce <sourcecode>["unspecified-prop"]</sourcecode>.
+                        will produce <tt>["unspecified-prop"]</tt>.
                     </li>
                     <li>
                         The keyword "title"
                         evaluated at "/properties/foo/allOf/1/properties/foo-prop"
                         by following the path "/properties/foo/allOf/1/properties/foo-prop"
-                        will produce <sourcecode>"foo-prop-title"</sourcecode>.
+                        will produce <tt>"foo-prop-title"</tt>.
                     </li>
                     <li>
                         The keyword "title"
                         evaluated at "/$defs/bar"
                         by following the path "/properties/bar/$ref"
-                        will produce <sourcecode>"bar-title"</sourcecode>.
+                        will produce <tt>"bar-title"</tt>.
                     </li>
                     <li>
                         The keyword "properties"
                         evaluated at "/$defs/bar"
                         by following the path "/properties/var/$ref"
-                        will produce <sourcecode>["bar-prop"]</sourcecode>.
+                        will produce <tt>["bar-prop"]</tt>.
                     </li>
                     <li>
                         The keyword "title"
                         evaluated at "/$defs/bar/properties/bar-prop"
                         by following the path "/properties/bar/$ref/properties/bar-prop"
-                        will produce <sourcecode>"bar-prop-title"</sourcecode>.
+                        will produce <tt>"bar-prop-title"</tt>.
                     </li>
                 </ul>
 
