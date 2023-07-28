@@ -8,6 +8,7 @@ const defaultOptions = {
 
 const remarkNumberHeadings = (options) => (tree) => {
   options = { ...defaultOptions, ...options };
+  options.skip = new RegExp(`^(${options.skip.join("|")})$`, "u");
 
   let sectionNumbers = [];
 
@@ -17,17 +18,28 @@ const remarkNumberHeadings = (options) => (tree) => {
     }
 
     visit(node, "text", (textNode) => {
-      const text = textNode.value ? textNode.value.trim() : "";
+      let text = textNode.value ? textNode.value.trim() : "";
 
-      if (options.skip.includes(text)) {
+      if (options.skip.test(text)) {
         return;
       }
 
-      sectionNumbers[node.depth] = (sectionNumbers[node.depth] ?? 0) + 1;
-      sectionNumbers = sectionNumbers.slice(0, node.depth + 1);
+      if (text.startsWith(options.appendixToken)) {
+        const currentIndex = typeof sectionNumbers[node.depth] === "string"
+          ? sectionNumbers[node.depth]
+          : "@";
+        sectionNumbers[node.depth] = String.fromCharCode(currentIndex.charCodeAt(0) + 1);
+        sectionNumbers = sectionNumbers.slice(0, node.depth + 1);
 
-      const sectionNumber = sectionNumbers.slice(options.startDepth, node.depth + 1).join(".");
-      textNode.value = `${sectionNumber}. ${text}`;
+        const sectionNumber = sectionNumbers.slice(options.startDepth, node.depth + 1).join(".");
+        textNode.value = `${options.appendixPrefix} ${sectionNumber}. ${text.slice(options.appendixToken.length + 1)}`;
+      } else {
+        sectionNumbers[node.depth] = (sectionNumbers[node.depth] ?? 0) + 1;
+        sectionNumbers = sectionNumbers.slice(0, node.depth + 1);
+
+        const sectionNumber = sectionNumbers.slice(options.startDepth, node.depth + 1).join(".");
+        textNode.value = `${sectionNumber}. ${text}`;
+      }
     });
   });
 };
