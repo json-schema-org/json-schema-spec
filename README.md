@@ -22,29 +22,59 @@ For the current status of issues and pull requests, please see the following lab
 
 Labels are assigned based on [Sensible Github Labels](https://github.com/Relequestual/sensible-github-labels).
 
-## Contents
+## Authoring and Building
 
-* Makefile - scripts to build the Internet-Draft txt/html
-* _Internet-Draft sources_
-    * jsonschema-core.xml - source for JSON Schema's "core" I-D
-    * jsonschema-validation.xml - source for the validation vocabulary I-D
-    * relative-json-pointer.xml - source for the Relative JSON Pointer I-D
-* _meta-schemas and recommended output formats_
-    * schema.json - JSON Schema "core" and Validation meta-schema
+### Specification
+To build the spec files to HTML from the Markdown sources, run `npm run build`.
+You can also build each individually with `npm run build-core` and `npm run
+build-validation`.
 
-The Makefile will create the necessary Python venv for you as part of the regular make target.
+The spec is built using [Remark](https://remark.js.org/), a markdown engine with
+good support for plugins and lots of existing plugins we can use.
 
-`make clean` will remove all output including the venv.  To clean just the spec output and
-keep the venv, use `make spec-clean`.
+#### Plugins
+The following is a not-necessarily-complete list of configured plugins and the
+features they make available to you.
 
-If you want to run `xml2rfc` manually after running make for the first time, you will
-need to activate the virtual environment:
+- [remark-lint](https://github.com/remarkjs/remark-lint) -- Enforce markdown
+  styles guide.
+- [remark-gfm](https://github.com/remarkjs/remark-gfm) -- Adds support for
+  Github Flavored Markdown specific markdown features such as autolink literals,
+  footnotes, strikethrough, tables, and tasklists.
+- [remark-number-headings](/json-schema-org/json-schema-spec/blob/main/remark-number-headings.js)
+  -- Adds hierarchical section numbers to headings.
+- [remark-toc](https://github.com/remarkjs/remark-toc) -- Adds a table of
+  contents in a section with a header called "Table of Contents".
+- [remark-torchlight](https://github.com/torchlight-api/remark-torchlight) --
+  Syntax highlighting and more using https://torchlight.dev. Features include
+  line numbers and line highlighting.
+- [rehype-slug](https://github.com/rehypejs/rehype-slug) -- Adds `id` anchors to
+  header so they can be linked to with URI fragment syntax.
+- [rehype-autolink-headings](https://github.com/rehypejs/rehype-autolink-headings)
+  -- Makes headings clickable.
+- [remark-flexible-containers](https://github.com/ipikuka/remark-flexible-containers)
+  -- Add a callout box using the following syntax. Supported container types are
+  `warning`, `note`, and `experimental`.
 
-```sh
-source .venv/bin/activate
-```
+    ```
+    ::: {type} {title}
+    {content}
+    :::
+    ```
 
-The version of "xml2rfc" that this project uses is updated by modifying `requirements.in` and running `pip-compile requirements.in`.
+### Internet-Drafts
+To build components that are being maintained as IETF Internet-Drafts, run
+`make`. The Makefile will create the necessary Python venv for you as part of
+the regular make target.
+
+`make clean` will remove all output including the venv. To clean just the spec
+output and keep the venv, use `make spec-clean`.
+
+If you want to run `xml2rfc` manually after running make for the first time, you
+will need to activate the virtual environment: `source .venv/bin/activate`.
+
+The version of "xml2rfc" that this project uses is updated by modifying
+`requirements.in` and running `pip-compile requirements.in`.
 
 Descriptions of the xml2rfc, I-D documents, and RFC processes:
 
