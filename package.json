@@ -1,0 +1,33 @@
+{
+  "name": "json-schema-org/json-schema-spec",
+  "version": "1.0.0",
+  "description": "The JSON Schema Specification",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint *.js",
+    "build": "npm run build-core && npm run build-validation",
+    "build-core": "node build/build.js < jsonschema-core.md > jsonschema-core.html",
+    "build-validation": "node build/build.js < jsonschema-validation.md > jsonschema-validation.html"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "rehype-autolink-headings": "^6.1.1",
+    "rehype-slug": "^5.1.0",
+    "rehype-stringify": "^9.0.3",
+    "remark": "^14.0.3",
+    "remark-flexible-containers": "^1.0.6",
+    "remark-gfm": "^3.0.1",
+    "remark-preset-lint-markdown-style-guide": "^5.1.3",
+    "remark-rehype": "^10.1.0",
+    "remark-toc": "^8.0.1",
+    "remark-torchlight": "^0.0.5",
+    "vfile-reporter": "^8.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "eslint": "*",
+    "eslint-import-resolver-node": "*",
+    "eslint-plugin-import": "*"
+  }
+}
