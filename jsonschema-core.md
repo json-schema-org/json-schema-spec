@@ -2768,7 +2768,7 @@ Bray, T., Ed., Hollander, D., Ed., Layman, A., Ed., and R. Tobin, Ed.,
 "Namespaces in XML 1.1 (Second Edition)", August 2006,
 <<http://www.w3.org/TR/2006/REC-xml-names11-20060816>>.
 
-## Appendix A. Schema identification examples
+## [Appendix] Schema identification examples
 Consider the following schema, which shows `$id` being used to identify both the
 root schema and various subschemas, and `$anchor` being used to define plain
 name fragment identifiers.
@@ -2841,12 +2841,12 @@ embedded schema
 resources](#921-json-pointer-fragments-and-embedded-schema-resources) section
 for futher comments.
 
-## Appendix B. Manipulating schema documents and references
+## [Appendix] Manipulating schema documents and references
 Various tools have been created to rearrange schema documents based on how and
 where references (`$ref`) appear. This appendix discusses which use cases and
 actions are compliant with this specification.
 
-### B.1. Bundling schema resources into a single document
+### Bundling schema resources into a single document
 A set of schema resources intended for use together can be organized with each
 in its own schema document, all in the same schema document, or any granularity
 of document grouping in between.
@@ -2868,7 +2868,7 @@ changing any aspect of validation or annotation results. The names of the
 schemas under `$defs` do not affect behavior, assuming they are each unique, as
 they do not appear in the canonical IRIs for the embedded resources.
 
-### B.2. Reference removal is not always safe
+### Reference removal is not always safe
 Attempting to remove all references and produce a single schema document does
 not, in all cases, produce a schema with identical behavior to the original
 form.
@@ -2880,7 +2880,7 @@ scope of this specification to determine or provide a set of safe `$ref` removal
 transformations, as they depend not only on the schema structure but also on the
 intended usage.
 
-## Appendix C. Example of recursive schema extension
+## [Appendix] Example of recursive schema extension
 Consider the following two schemas describing a simple recursive tree structure,
 where each node in the tree can have a "data" field of any type. The first
 schema allows and ignores other instance properties. The second is more strict
@@ -2976,9 +2976,9 @@ of the node schema objects were moved under `$defs`. It is the matching
 `$dynamicAnchor` values which tell us how to resolve the dynamic reference, not
 any sort of correlation in JSON structure.
 
-## Appendix D. Working with vocabularies
+## [Appendix] Working with vocabularies
 
-### D.1. Best practices for vocabulary and meta-schema authors
+### Best practices for vocabulary and meta-schema authors
 Vocabulary authors should take care to avoid keyword name collisions if the
 vocabulary is intended for broad use, and potentially combined with other
 vocabularies. JSON Schema does not provide any formal namespacing system, but
@@ -3026,7 +3026,7 @@ resulting behavior is undefined.
 Meta-schemas intended for local use, with no need to test for vocabulary support
 in arbitrary implementations, can safely omit `$vocabulary` entirely.
 
-### D.2. Example meta-schema with vocabulary declarations
+### Example meta-schema with vocabulary declarations
 This meta-schema explicitly declares both the Core and Applicator vocabularies,
 together with an extension vocabulary, and combines their meta-schemas with an
 `allOf`. The extension vocabulary's meta-schema, which describes only the
@@ -3118,7 +3118,7 @@ to ensure that it is validated even when `format` functions purely as an
 annotation, as explained in the [Validation
 specification](#json-schema-validation).
 
-## Appendix E. References and generative use cases
+## [Appendix] References and generative use cases
 While the presence of references is expected to be transparent to validation
 results, generative use cases such as code generators and UI renderers often
 consider references to be semantically significant.
@@ -3167,7 +3167,7 @@ instance of a distinct class.
 This style of usage requires the annotation to be in the same object as the
 reference, which must be recognizable as a reference.
 
-## Appendix F. Acknowledgments
+## [Appendix] Acknowledgments
 Thanks to Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, and Henry
 Andrews for their work on the initial drafts of JSON Schema.
 
@@ -3176,16 +3176,16 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## Appendix G. Change Log[^19]
+## [Appendix] Change Log[^19]
 [^19]: This section to be removed before leaving Internet-Draft status.
 
-### G.1. draft-bhutton-json-schema-next
+### draft-bhutton-json-schema-next
 - `contains` now applies to objects as well as arrays
 - Use IRIs instead of URIs
 - Remove bookending requirement for `$dynamicRef`
 - Add `propertyDependencies` keyword
 
-### G.2. draft-bhutton-json-schema-01
+### draft-bhutton-json-schema-01
 - Improve and clarify the `type`, `contains`, `unevaluatedProperties`, and
 `unevaluatedItems` keyword explanations
 - Clarify various aspects of "canonical URIs"
@@ -3194,7 +3194,7 @@ to the document.
 - Remove references to remaining media-type parameters
 - Fix multiple examples
 
-### G.3. draft-bhutton-json-schema-00
+### draft-bhutton-json-schema-00
 - `$schema` MAY change for embedded resources
 - Array-value `items` functionality is now `prefixItems`
 - `items` subsumes the old function of `additionalItems`
@@ -3211,7 +3211,7 @@ interactions now specified
 - Moved `unevaluatedItems` and `unevaluatedProperties` from core into their own
 vocabulary
 
-### G.4. draft-handrews-json-schema-02
+### draft-handrews-json-schema-02
 - Update to RFC 8259 for JSON specification
 - Moved `definitions` from the Validation specification here as `$defs`
 - Moved applicator keywords from the Validation specification as their own
@@ -3237,7 +3237,7 @@ meta-schemas
 - Clarified that the behavior of JSON Pointers across `$id` boundary is
 unreliable
 
-### G.5. draft-handrews-json-schema-01
+### draft-handrews-json-schema-01
 - This draft is purely a clarification with no functional changes
 - Emphasized annotations as a primary usage of JSON Schema
 - Clarified $id by use cases
@@ -3250,7 +3250,7 @@ schema identifiers during parsing
 same process
 - Minor formatting improvements
 
-### G.6. draft-handrews-json-schema-00
+### draft-handrews-json-schema-00
 - Make the concept of a schema keyword vocabulary more clear
 - Note that the concept of "integer" is from a vocabulary, not the data model
 - Classify keywords as assertions or annotations and describe their general
@@ -3262,7 +3262,7 @@ behavior
 - Add `application/schema-instance+json` media type
 - Recommend a "schema" link relation / parameter instead of "profile"
 
-### G.7. draft-wright-json-schema-01
+### draft-wright-json-schema-01
 - Updated intro
 - Allowed for any schema to be a boolean
 - `$schema` SHOULD NOT appear in subschemas, although that may change
@@ -3271,7 +3271,7 @@ behavior
 - Note applicability to formats such as CBOR that can be represented in the JSON
 data model
 
-### G.8. draft-wright-json-schema-00
+### draft-wright-json-schema-00
 - Updated references to JSON
 - Updated references to HTTP
 - Updated references to JSON Pointer
@@ -3286,7 +3286,7 @@ data model
 - Rewrote section on usage with rel="describedBy" and rel="profile"
 - Fixed numerous invalid examples
 
-### G.9. draft-zyp-json-schema-04
+### draft-zyp-json-schema-04
 - Salvaged from draft v3.
 - Split validation keywords into separate document.
 - Split hypermedia keywords into separate document.
@@ -3295,23 +3295,12 @@ data model
 - Define the role of `id`. Define URI resolution scope.
 - Add interoperability considerations.
 
-### G.10. draft-zyp-json-schema-00
+### draft-zyp-json-schema-00
 - Initial draft.
 
 ## Authors' Addresses
-
-### Austin Wright (*editor*)
-Email: <aaa@bzfx.net>
-
-### Ben Hutton (*editor*)
-Postman
-
-Email: <ben@jsonschema.dev>
-
-URI: <https://jsonschema.dev>
-
-### Greg Dennis
-
-Email: <gregsdennis@yahoo.com>
-
-URI: <https://github.com/gregsdennis>
+| Author                   | Company | Email                   | URI                              |
+|--------------------------|---------|-------------------------|----------------------------------|
+| Austin Wright (*editor*) |         | <aaa@bzfx.net>          |                                  |
+| Ben Hutton (*editor*)    | Postman | <ben@jsonschema.dev>    | <https://jsonschema.dev>         |
+| Greg Dennis              |         | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |

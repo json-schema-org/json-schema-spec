@@ -1,18 +1,18 @@
-/* eslint-disable no-console */
 import dotenv from "dotenv";
 import { readFileSync, writeFileSync } from "node:fs";
 import { reporter } from "vfile-reporter";
 import { remark } from "remark";
-import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
-import remarkGfm from "remark-gfm";
-import remarkToc from "remark-toc";
-import torchLight from "remark-torchlight";
-import remarkRehype from "remark-rehype";
-import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
-import remarkNumberHeadings from "./remark-number-headings.js";
 import remarkFlexibleContainers from "remark-flexible-containers";
+import remarkGfm from "remark-gfm";
+import remarkNumberHeadings from "./remark-number-headings.js";
+import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
+import remarkRehype from "remark-rehype";
+import remarkToc from "remark-toc";
+import remarkValidateLinks from "remark-validate-links";
+import torchLight from "remark-torchlight";
 
 
 dotenv.config();
@@ -22,10 +22,20 @@ dotenv.config();
   const html = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
     .use(remarkGfm)
-    .use(remarkNumberHeadings, { startDepth: 2, skip: ["Abstract", "Note to Readers", "Table of Contents"] })
-    .use(remarkToc, { tight: true, heading: "Table of Contents" })
     .use(torchLight)
     .use(remarkFlexibleContainers)
+    .use(remarkNumberHeadings, {
+      startDepth: 2,
+      skip: ["Abstract", "Note to Readers", "Table of Contents", "Authors' Addresses", "\\[.*\\]", "draft-.*"],
+      appendixToken: "[Appendix]",
+      appendixPrefix: "Appendix"
+    })
+    .use(remarkToc, {
+      tight: true,
+      heading: "Table of Contents",
+      skip: "\\[.*\\]|draft-.*"
+    })
+    .use(remarkValidateLinks)
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, { behavior: "wrap" })

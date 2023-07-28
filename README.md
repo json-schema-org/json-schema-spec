@@ -38,6 +38,8 @@ features they make available to you.
 
 - [remark-lint](https://github.com/remarkjs/remark-lint) -- Enforce markdown
   styles guide.
+- [remark-validate-links](https://github.com/remarkjs/remark-validate-links) --
+  Check for broken links.
 - [remark-gfm](https://github.com/remarkjs/remark-gfm) -- Adds support for
   Github Flavored Markdown specific markdown features such as autolink literals,
   footnotes, strikethrough, tables, and tasklists.

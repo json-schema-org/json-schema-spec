@@ -5,7 +5,6 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint *.js",
     "build": "npm run build-core && npm run build-validation",
     "build-core": "node build/build.js < jsonschema-core.md > jsonschema-core.html",
     "build-validation": "node build/build.js < jsonschema-validation.md > jsonschema-validation.html"
@@ -22,12 +21,10 @@
     "remark-rehype": "^10.1.0",
     "remark-toc": "^8.0.1",
     "remark-torchlight": "^0.0.5",
+    "remark-validate-links": "^12.1.1",
     "vfile-reporter": "^8.0.0"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1",
-    "eslint": "*",
-    "eslint-import-resolver-node": "*",
-    "eslint-plugin-import": "*"
+    "dotenv": "^16.3.1"
   }
 }

@@ -895,7 +895,7 @@ draft-bhutton-json-schema-01, June 2022,
 Hoehrmann, B., "Scripting Media Types", RFC 4329, DOI 10.17487/RFC4329, April
 2006, <<https://www.rfc-editor.org/info/rfc4329>>.
 
-## Appendix A. Keywords Moved from Validation to Core
+## [Appendix] Keywords Moved from Validation to Core
 Several keywords have been moved from this document into the [Core
 Specification](#json-schema) starting with draft 2019-09, in some cases with
 re-naming or other changes. This affects the following former validation
@@ -928,7 +928,7 @@ property. The property name array form is retained here and renamed to
 `dependentRequired`, as it is an assertion which is a shortcut for the
 conditional use of the `required` assertion keyword.
 
-## Appendix B. Acknowledgments
+## [Appendix] Acknowledgments
 Thanks to Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, and Henry
 Andrews for their work on the initial drafts of JSON Schema.
 
@@ -937,7 +937,7 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## Appendix C. ChangeLog[^6]
+## [Appendix] ChangeLog[^6]
 [^6]: This section to be removed before leaving Internet-Draft status.
 
 - *draft-next*
@@ -1032,15 +1032,7 @@ schema form to the core spec
     - Add interoperability considerations.
 
 ## Authors' Addresses
-
-### Austin Wright (*editor*)
-
-Email: <aaa@bzfx.net>
-
-### Ben Hutton (*editor*)
-
-Postman
-
-Email: <ben@jsonschema.dev>
-
-URI: <https://jsonschema.dev>
+| Author                   | Company | Email                | URI                      |
+|--------------------------|---------|----------------------|--------------------------|
+| Austin Wright (*editor*) |         | <aaa@bzfx.net>       |                          |
+| Ben Hutton (*editor*)    | Postman | <ben@jsonschema.dev> | <https://jsonschema.dev> |
