@@ -92,7 +92,7 @@ A JSON document is an information resource (series of octets) described by the
 
 In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are
 interchangeable because of the data model it defines in
-[Section 4.2.1](#421-instance-data-model).
+{{instance-data-model}}.
 
 JSON Schema is only defined over JSON documents. However, any document or memory
 structure that can be parsed into or processed according to the JSON Schema data
@@ -109,7 +109,7 @@ including media types with the `+json` structured syntax suffix.
 Among these, this specification defines the `application/schema-instance+json`
 media type which defines handling for fragments in the IRI.
 
-#### Instance Data Model
+#### Instance Data Model {#instance-data-model}
 
 JSON Schema interprets documents according to a data model. A JSON value
 interpreted according to this data model is called an "instance".
@@ -219,7 +219,7 @@ companions, are free to define other behaviors as well.
 
 A JSON Schema MAY contain properties which are not schema keywords or are not
 recognized as schema keywords. The behavior of such keywords is governed by
-[Section 6.5.2](#652-handling-of-unrecognized-or-unsupported-keywords).
+{{unknown-keywords}}.
 
 An empty schema is a JSON Schema with no properties.
 
@@ -281,7 +281,7 @@ in another. Any such IRIs with fragments are considered to be non-canonical.
 
 The root schema is the schema that comprises the entire JSON document in
 question. The root schema is always a schema resource, where the IRI is
-determined as described in [Section 9.1.1](#911-initial-base-iri).[^1]
+determined as described in {{initial-base-iri}}.[^1]
 
 [^1]: Note that documents that embed schemas in another format will not have a
 root schema resource in this sense. Exactly how such usages fit with the JSON
@@ -303,7 +303,7 @@ schema titled "root" is the root schema.
 
 As with the root schema, a subschema is either an object or a boolean.
 
-As discussed in [Section 8.2.1](#821-the-id-keyword), a JSON Schema document
+As discussed in {{id-keyword}}, a JSON Schema document
 can contain multiple JSON Schema resources. When used without qualification,
 the term "root schema" refers to the document's root schema. In some cases,
 resource root schemas are discussed. A resource's root schema is its top-level
@@ -313,7 +313,7 @@ to be extracted to a standalone JSON Schema document.
 Whether multiple schema resources are embedded or linked with a reference, they
 are processed in the same way, with the same available behaviors.
 
-## Fragment Identifiers
+## Fragment Identifiers {#fragment-identifiers}
 In accordance with section 3.1 of [RFC 6839](#rfc6839), the syntax and semantics
 of fragment identifiers specified for any +json media type SHOULD be as
 specified for `application/json`. (At publication of this document, there is no
@@ -420,7 +420,7 @@ any way other than annotation collection.
 Consequently, the "x-" prefix is reserved for this purpose, and extension
 vocabularies MUST NOT define any keywords which begin with this prefix.
 
-#### Handling of unrecognized or unsupported keywords
+#### Handling of unrecognized or unsupported keywords {#unknown-keywords}
 Implementations SHOULD treat keywords they do not recognize, or that they
 recognize but do not support, as annotations, where the value of the keyword is
 the value of the annotation. Whether an implementation collects these
@@ -445,9 +445,9 @@ applicator keywords are processed until a schema object with no applicators (and
 therefore no subschemas) is reached. The appropriate location in the instance
 is evaluated against the assertion and annotation keywords in the schema object.
 The interactions of those keyword results to produce the schema object results
-are governed by [Section 7.7.1.2](#7712-annotations-and-assertions), while the
+are governed by {{annotations-and-assertions}}, while the
 relationship of subschema results to the results of the applicator keyword that
-applied them is described by [Section 7.5](#75-applicators).
+applied them is described by {{applicators}}.
 
 Evaluation of a parent schema object can complete once all of its subschemas
 have been evaluated, although in some circumstances evaluation may be
@@ -507,7 +507,7 @@ keywords MUST NOT result in a circular dependency. Keywords MAY modify their
 behavior based on the presence or absence of another keyword in the same [schema
 object](#43-json-schema-documents).
 
-### Default Behaviors
+### Default Behaviors {#default-behaviors}
 A missing keyword MUST NOT produce a false assertion result, MUST NOT produce
 annotation results, and MUST NOT cause any other schema to be evaluated as part
 of its own behavioral definition. However, given that missing keywords do not
@@ -546,7 +546,7 @@ care not to disrupt the functioning of core keywords. For example, the
 to the matching `$dynamicRef` keyword, leaving the behavior of `$ref`
 undisturbed.
 
-### Applicators
+### Applicators {#applicators}
 Applicators allow for building more complex schemas than can be accomplished
 with a single schema object. Evaluation of an instance against a [schema
 document](#43-json-schema-documents) begins by applying the [root
@@ -567,12 +567,12 @@ operation to the assertion results of subschemas, but MUST NOT introduce new
 assertion conditions of their own.
 
 [Annotation](#77-annotations) results from subschemas are preserved in
-accordance with [Section 7.7.1](#771-collecting-annotations) so that
+accordance with {{collecting-annotations}} so that
 applications can decide how to interpret multiple values. Applicator keywords
 do not play a direct role in this preservation.
 
 #### Referenced and Referencing Schemas
-As noted in [Section 7.5](#75-applicators), an applicator keyword may refer to a
+As noted in {{applicators}}, an applicator keyword may refer to a
 schema to be applied, rather than including it as a subschema in the
 applicator's value. In such situations, the schema being applied is known as
 the referenced schema, while the schema containing the applicator keyword is the
@@ -657,7 +657,7 @@ even if they cannot change the overall assertion result. The only exception is
 that subschemas of a schema object that has failed validation MAY be skipped, as
 annotations are not retained for failing schemas.
 
-#### Collecting Annotations
+#### Collecting Annotations {#collecting-annotations}
 Annotations are collected by keywords that explicitly define
 annotation-collecting behavior. Note that boolean schemas cannot produce
 annotations as they do not make use of keywords.
@@ -752,7 +752,7 @@ might take. For example, an application may consider the presence of two
 different values for `default` to be an error, regardless of their schema
 locations.
 
-##### Annotations and Assertions
+##### Annotations and Assertions {#annotations-and-assertions}
 Schema objects that produce a false assertion result MUST NOT produce any
 annotation results, whether from their own keywords or from keywords in
 subschemas.
@@ -787,10 +787,10 @@ re-use. These keywords do not affect validation or annotation results. Their
 purpose in the core vocabulary is to ensure that locations are available for
 certain purposes and will not be redefined by extension keywords.
 
-While these keywords do not directly affect results, as explained in [Section
-9.4.2](#942-references-to-possible-non-schemas) unrecognized extension keywords
-that reserve locations for re-usable schemas may have undesirable interactions
-with references in certain circumstances.
+While these keywords do not directly affect results, as explained in
+{{non-schema-references}} unrecognized extension keywords that reserve
+locations for re-usable schemas may have undesirable interactions with
+references in certain circumstances.
 
 ### Loading Instance Data
 While none of the vocabularies defined as part of this or the associated
@@ -803,7 +803,7 @@ examine parts of an instance outside the current evaluation location.
 Keywords that allow adjusting the location using a Relative JSON Pointer SHOULD
 default to using the current location if a default is desireable.
 
-## The JSON Schema Core Vocabulary
+## The JSON Schema Core Vocabulary {#core-vocabulary}
 Keywords declared in this section, which all begin with "$", make up the JSON
 Schema Core vocabulary. These keywords are either required in order to process
 any schema or meta-schema, including those split across multiple documents, or
@@ -919,7 +919,7 @@ through `$schema`, through appropriately defined media type parameters or link
 relation types, or through documented default implementation-defined behavior in
 the absence of an explicit meta-schema. If a meta-schema does not contain
 `$vocabulary`, the set of vocabularies in use is determined according to
-[Section 8.1.2.4](#8124-default-vocabularies).
+{{default-vocabularies}}.
 
 Any vocabulary in use by a schema and understood by the implementation MUST be
 processed in a manner consistent with the semantic definitions contained within
@@ -927,22 +927,20 @@ the vocabulary, regardless of whether that vocabulary is required or optional.
 
 Any vocabulary that is not present in `$vocabulary` MUST NOT be made available
 for use in schemas described by that meta-schema, except for the core vocabulary
-as specified by the introduction to [Section
-8](#8-the-json-schema-core-vocabulary).
+as specified by the introduction to {{core-vocabulary}}.
 
 Implementations that do not support a vocabulary required by a schema MUST
 refuse to process that schema.
 
 Implementations that do not support a vocabulary that is optionally used by a
 schema SHOULD proceed with processing the schema. The keywords will be
-considered to be unrecognized keywords as addressed by [Section
-6.5.2](#652-handling-of-unrecognized-or-unsupported-keywords). Note that since
-the recommended behavior for such keywords is to collect them as annotations,
-vocabularies consisting only of annotations will have the same behavior when
-used optionally whether the implementation supports them or not. This allows
-annotation-only vocabularies to be supported without custom code, even in
-implementations that do not support providing custom code for extension
-vocabularies.
+considered to be unrecognized keywords as addressed by
+{{unknown-keywords}}. Note that since the recommended behavior for such
+keywords is to collect them as annotations, vocabularies consisting only of
+annotations will have the same behavior when used optionally whether the
+implementation supports them or not. This allows annotation-only vocabularies to
+be supported without custom code, even in implementations that do not support
+providing custom code for extension vocabularies.
 
 ##### Vocabularies are schema resource-scoped
 The `$vocabulary` keyword SHOULD be used in the root schema of any schema
@@ -967,7 +965,7 @@ extension vocabularies.
 Guidance regarding vocabularies with identically-named keywords is provided in
 [Appendix D.1](#d1-best-practices-for-vocabulary-and-meta-schema-authors).
 
-##### Default vocabularies
+##### Default vocabularies {#default-vocabularies}
 If `$vocabulary` is absent, an implementation MAY determine behavior based on
 the meta-schema if it is recognized from the IRI value of the referring schema's
 `$schema` keyword. This is how behavior (such as Hyper-Schema usage) has been
@@ -1012,7 +1010,7 @@ Several keywords can accept a relative [IRI-reference](#rfc3987), or a value
 used to construct a relative IRI-reference. For these keywords, it is necessary
 to establish a base IRI in order to resolve the reference.
 
-#### The $id Keyword
+#### The $id Keyword {#id-keyword}
 The `$id` keyword identifies a schema resource with its [canonical](#rfc6596)
 IRI.
 
@@ -1037,11 +1035,11 @@ a relative IRI-reference, the base IRI for resolving that reference is the IRI
 of the parent schema resource. Note that an `$id` consisting of an empty IRI or
 of the empty fragment only will result in the embedded resource having the same
 IRI as the encapsulating resource, which SHOULD be considered an error per
-[Section 8.2.3](#823-duplicate-schema-identifiers).
+{{duplicate-identifiers}}.
 
 If no parent schema object explicitly identifies itself as a resource with
 `$id`, the base IRI is that of the entire document, as established by the steps
-given in the [previous section.](#911-initial-base-iri)
+given in the [previous section.](initial-base-iri)
 
 ##### Identifying the root schema
 The root schema of a JSON Schema document SHOULD contain an `$id` keyword with
@@ -1076,14 +1074,14 @@ Therefore it is RECOMMENDED that `$anchor` be used to create plain name
 fragments unless there is a clear need for `$dynamicAnchor`.
 
 If present, the value of these keywords MUST be a string and MUST conform to the
-plain name fragment identifier syntax defined in [Section
-5](#5-fragment-identifiers).[^4]
+plain name fragment identifier syntax defined in
+{{fragment-identifiers}}.[^4]
 
 [^4]: Note that the anchor string does not include the "#" character, as it is
 not a IRI-reference. An `$anchor`: "foo" becomes the fragment `#foo` when used
 in a IRI. See below for full examples.
 
-#### Duplicate schema identifiers
+#### Duplicate schema identifiers {#duplicate-identifiers}
 A schema MAY (and likely will) have multiple IRIs, but there is no way for an
 IRI to identify more than one schema. When multiple schemas attempt to identify
 as the same IRI through the use of `$id`, `$anchor`, `$dynamicAnchor`, or any
@@ -1200,7 +1198,7 @@ MUST NOT be collected as an annotation result.
 
 ### Loading a Schema
 
-#### Initial Base IRI
+#### Initial Base IRI {#initial-base-iri}
 [RFC 3987 Section 6.5](#rfc3987) and [RFC 3986 Section 5.1](#rfc3986) defines
 how to determine the default base IRI of a document.
 
@@ -1306,7 +1304,7 @@ described by Hyper-Schema, it is expected that new schemas will be added to the
 system dynamically, so placing an absolute requirement of pre-loading schema
 documents is not feasible.
 
-#### JSON Pointer fragments and embedded schema resources
+#### JSON Pointer fragments and embedded schema resources {#json-pointer-embedded}
 Since JSON Pointer IRI fragments are constructed based on the structure of the
 schema document, an embedded schema resource and its subschemas can be
 identified by JSON Pointer fragments relative to either its own canonical IRI,
@@ -1478,7 +1476,7 @@ the other, a naive validator might get stuck in an infinite recursive loop
 trying to validate the instance. Schemas SHOULD NOT make use of infinite
 recursive nesting like this; the behavior is undefined.
 
-#### References to Possible Non-Schemas
+#### References to Possible Non-Schemas {#non-schema-references}
 Subschema objects (or booleans) are recognized by their use with known
 applicator keywords or with location-reserving keywords such as
 [`$defs`](#825-schema-re-use-with-defs) that take one or more subschemas as a
@@ -1851,10 +1849,9 @@ as described below in the section for that keyword.
 Validation MUST always succeed against this keyword. The value of this keyword
 is used as its annotation result.
 
-Per [Section 7.3](#73-default-behaviors), omitted keywords MUST NOT produce
-annotation results. However, as described in the section for `contains`, the
-absence of this keyword's annotation causes `contains` to assume a minimum value
-of 1.
+Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation
+results. However, as described in the section for `contains`, the absence of
+this keyword's annotation causes `contains` to assume a minimum value of 1.
 
 ##### contains
 The value of this keyword MUST be a valid JSON Schema.
@@ -2605,7 +2602,7 @@ Passing results (annotations)
 For convenience, JSON Schema has been provided to validate output generated by
 implementations. Its IRI is: <https://json-schema.org/draft/next/output/schema>.
 
-## Security Considerations
+## Security Considerations {#security-considerations}
 Both schemas and instances are JSON values. As such, all security considerations
 defined in [RFC 8259](#rfc8259) apply.
 
@@ -2647,13 +2644,13 @@ Required parameters:: N/A
 Encoding considerations:: Encoding considerations are identical to those
 specified for the `application/json` media type. See [JSON](#rfc8259).
 
-Security considerations:: See [Section 13](#13-security-considerations) above.
+Security considerations:: See {{security-considerations}} above.
 
 Interoperability considerations:: See Sections
 [6.2](#62-programming-language-independence), [6.3](#63-mathematical-integers),
 and [6.4](#64-regular-expressions) above.
 
-Fragment identifier considerations:: See [Section 5](#5-fragment-identifiers)
+Fragment identifier considerations:: See {{fragment-identifiers}}
 
 ### application/schema-instance+json
 The proposed MIME media type for JSON Schema Instances that require a JSON
@@ -2668,13 +2665,13 @@ Required parameters:: N/A
 Encoding considerations:: Encoding considerations are identical to those
 specified for the `application/json` media type. See [JSON](#rfc8259).
 
-Security considerations:: See [Section 13](#13-security-considerations) above.
+Security considerations:: See {{security-considerations}} above.
 
 Interoperability considerations:: See Sections
 [6.2](#62-programming-language-independence), [6.3](#63-mathematical-integers),
 and [6.4](#64-regular-expressions) above.
 
-Fragment identifier considerations:: See [Section 5](#5-fragment-identifiers)
+Fragment identifier considerations:: See {{fragment-identifiers}}
 
 ## References
 
@@ -2797,8 +2794,8 @@ name fragment identifiers.
 
 The schemas at the following IRI-encoded [JSON Pointers](#rfc6901) (relative to
 the root schema) have the following base IRIs, and are identifiable by any
-listed IRI in accordance with [Section 5](#5-fragment-identifiers) and [Section
-9.2.1](#921-json-pointer-fragments-and-embedded-schema-resources) above.
+listed IRI in accordance with {{fragment-identifiers}} and
+#section(json-pointer-embedded) above.
 
 `#` (document root): canonical (and base) IRI: `https://example.com/root.json`
 canonical resource IRI plus pointer fragment: `https://example.com/root.json#`
@@ -2837,9 +2834,7 @@ determines the canonical nature of the resulting full IRI.[^18]
 
 [^18]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
 and direct you to read the CREF located in the [JSON Pointer fragments and
-embedded schema
-resources](#921-json-pointer-fragments-and-embedded-schema-resources) section
-for futher comments.
+embedded schema resources](#json-pointer-embedded) section for further comments.
 
 ## [Appendix] Manipulating schema documents and references
 Various tools have been created to rearrange schema documents based on how and

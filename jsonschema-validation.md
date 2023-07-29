@@ -53,10 +53,9 @@ document-wide validation process.
 
 This specification defines a set of assertion keywords, as well as a small
 vocabulary of metadata keywords that can be used to annotate the JSON instance
-with useful information. The [Section
-7](#7-vocabularies-for-semantic-content-with-format) keyword is intended
+with useful information. The {{format-vocabulary}} keyword is intended
 primarily as an annotation, but can optionally be used as an assertion. The
-[Section 8](#8-a-vocabulary-for-the-contents-of-string-encoded-data) keywords
+{{content-vocabulary}} keywords
 are annotations for working with documents embedded as JSON strings.
 
 ## Interoperability Considerations
@@ -269,7 +268,7 @@ the name of a property in the instance.
 
 Omitting this keyword has the same behavior as an empty object.
 
-## Vocabularies for Semantic Content With format
+## Vocabularies for Semantic Content With format {#format-vocabulary}
 
 ### Foreword
 Structural validation alone may be insufficient to allow an application to
@@ -519,7 +518,7 @@ Implementations that validate formats MUST accept at least the subset of
 ECMA-262 defined in the [Regular Expressions](#43-regular-expressions) section
 of this specification, and SHOULD accept all valid ECMA-262 expressions.
 
-## A Vocabulary for the Contents of String-Encoded Data
+## A Vocabulary for the Contents of String-Encoded Data {#content-vocabulary}
 
 ### Foreword
 Annotations defined in this section indicate that an instance contains non-JSON
