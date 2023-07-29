@@ -7,9 +7,12 @@ import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkFlexibleContainers from "remark-flexible-containers";
 import remarkGfm from "remark-gfm";
+import remarkHeadingId from "remark-heading-id";
+import remarkHeadings from "@vcarl/remark-headings";
 import remarkNumberHeadings from "./remark-number-headings.js";
 import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
 import remarkRehype from "remark-rehype";
+import remarkSectionLinks from "./remark-section-links.js";
 import remarkToc from "remark-toc";
 import remarkValidateLinks from "remark-validate-links";
 import torchLight from "remark-torchlight";
@@ -24,12 +27,15 @@ dotenv.config();
     .use(remarkGfm)
     .use(torchLight)
     .use(remarkFlexibleContainers)
+    .use(remarkHeadingId)
     .use(remarkNumberHeadings, {
       startDepth: 2,
       skip: ["Abstract", "Note to Readers", "Table of Contents", "Authors' Addresses", "\\[.*\\]", "draft-.*"],
       appendixToken: "[Appendix]",
       appendixPrefix: "Appendix"
     })
+    .use(remarkHeadings)
+    .use(remarkSectionLinks)
     .use(remarkToc, {
       tight: true,
       heading: "Table of Contents",
