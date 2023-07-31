@@ -1,6 +1,7 @@
 # JSON Schema Validation: A Vocabulary for Structural Validation of JSON
 
 ## Abstract
+
 JSON Schema (application/schema+json) has several purposes, one of which is JSON
 instance validation. This document specifies a vocabulary for JSON Schema to
 describe the meaning of JSON documents, provide hints for user interfaces
@@ -8,6 +9,7 @@ working with JSON data, and to make assertions about what a valid document must
 look like.
 
 ## Note to Readers
+
 The issues list for this draft can be found at
 <https://github.com/json-schema-org/json-schema-spec/issues>.
 
@@ -19,6 +21,7 @@ the homepage, or email the document editors.
 ## Table of Contents
 
 ## Introduction
+
 JSON Schema can be used to require that a given JSON document (an instance)
 satisfies a certain number of criteria. These criteria are asserted by using
 keywords described in this specification. In addition, a set of keywords is also
@@ -40,6 +43,7 @@ Elements in an array value are said to be unique if no two elements of this
 array are [equal](#json-schema).
 
 ## Overview
+
 JSON Schema validation asserts constraints on the structure of instance data.
 An instance location that satisfies all asserted constraints is then annotated
 with any keywords that contain non-assertion information, such as descriptive
@@ -53,31 +57,34 @@ document-wide validation process.
 
 This specification defines a set of assertion keywords, as well as a small
 vocabulary of metadata keywords that can be used to annotate the JSON instance
-with useful information. The {{format-vocabulary}} keyword is intended
-primarily as an annotation, but can optionally be used as an assertion. The
-{{content-vocabulary}} keywords
+with useful information. The {{format}} keyword is intended primarily as an
+annotation, but can optionally be used as an assertion. The {{content}} keywords
 are annotations for working with documents embedded as JSON strings.
 
 ## Interoperability Considerations
 
 ### Validation of String Instances
+
 It should be noted that the nul character (\u0000) is valid in a JSON string. An
 instance to validate may contain a string value with this character, regardless
 of the ability of the underlying programming language to deal with such data.
 
 ### Validation of Numeric Instances
+
 The JSON specification allows numbers with arbitrary precision, and JSON Schema
 does not add any such bounds. This means that numeric instances processed by
 JSON Schema can be arbitrarily large and/or have an arbitrarily long decimal
 part, regardless of the ability of the underlying programming language to deal
 with such data.
 
-### Regular Expressions
+### Regular Expressions {#regexinterop}
+
 Keywords that use regular expressions, or constrain the instance value to be a
 regular expression, are subject to the interoperability considerations for
 regular expressions in the [JSON Schema Core](#json-schema) specification.
 
-## Meta-Schema
+## Meta-Schema {#meta-schema}
+
 The current IRI for the default JSON Schema dialect meta-schema is
 `https://json-schema.org/draft/next/schema`. For schema author convenience, this
 meta-schema describes a dialect consisting of all vocabularies defined in this
@@ -93,6 +100,7 @@ after this specification draft and before the next to indicate the same syntax
 and semantics as those listed here.
 
 ## A Vocabulary for Structural Validation
+
 Validation keywords in a schema impose requirements for successful validation of
 an instance. These keywords are all assertions without any annotation behavior.
 
@@ -105,9 +113,10 @@ The current IRI for this vocabulary, known as the Validation vocabulary, is:
 The current IRI for the corresponding meta-schema is:
 `https://json-schema.org/draft/next/meta/validation`.
 
-### Validation Keywords for Any Instance Type
+### Validation Keywords for Any Instance Type {#general}
 
 #### type
+
 The value of this keyword MUST be either a string or an array. If it is an
 array, elements of the array MUST be strings and MUST be unique.
 
@@ -120,7 +129,8 @@ its type matches the type represented by the value of the string. If the value
 of "type" is an array, then an instance validates successfully if its type
 matches any of the types indicated by the strings in the array.
 
-#### enum
+#### enum {#enum}
+
 The value of this keyword MUST be an array. This array SHOULD have at least one
 element. Elements in the array SHOULD be unique.
 
@@ -130,23 +140,26 @@ one of the elements in this keyword's array value.
 Elements in the array might be of any type, including null.
 
 #### const
+
 The value of this keyword MAY be of any type, including null.
 
-Use of this keyword is functionally equivalent to an [`enum`](#612-enum) with a
+Use of this keyword is functionally equivalent to an [`enum`](#enum) with a
 single value.
 
 An instance validates successfully against this keyword if its value is equal to
 the value of the keyword.
 
-### Validation Keywords for Numeric Instances (number and integer)
+### Validation Keywords for Numeric Instances (number and integer) {#numeric}
 
 #### multipleOf
+
 The value of `multipleOf` MUST be a number, strictly greater than 0.
 
 A numeric instance is valid only if division by this keyword's value results in
 an integer.
 
 #### maximum
+
 The value of `maximum` MUST be a number, representing an inclusive upper limit
 for a numeric instance.
 
@@ -154,6 +167,7 @@ If the instance is a number, then this keyword validates only if the instance is
 less than or exactly equal to `maximum`.
 
 #### exclusiveMaximum
+
 The value of `exclusiveMaximum` MUST be a number, representing an exclusive
 upper limit for a numeric instance.
 
@@ -161,6 +175,7 @@ If the instance is a number, then the instance is valid only if it has a value
 strictly less than (not equal to) `exclusiveMaximum`.
 
 #### minimum
+
 The value of `minimum` MUST be a number, representing an inclusive lower limit
 for a numeric instance.
 
@@ -168,15 +183,17 @@ If the instance is a number, then this keyword validates only if the instance is
 greater than or exactly equal to `minimum`.
 
 #### exclusiveMinimum
+
 The value of `exclusiveMinimum` MUST be a number, representing an exclusive
 lower limit for a numeric instance.
 
 If the instance is a number, then the instance is valid only if it has a value
 strictly greater than (not equal to) `exclusiveMinimum`.
 
-### Validation Keywords for Strings
+### Validation Keywords for Strings {#string}
 
 #### maxLength
+
 The value of this keyword MUST be a non-negative integer.
 
 A string instance is valid against this keyword if its length is less than, or
@@ -186,6 +203,7 @@ The length of a string instance is defined as the number of its characters as
 defined by [RFC 8259](#rfc8259).
 
 #### minLength
+
 The value of this keyword MUST be a non-negative integer.
 
 A string instance is valid against this keyword if its length is greater than,
@@ -196,7 +214,8 @@ defined by [RFC 8259](#rfc8259).
 
 Omitting this keyword has the same behavior as a value of 0.
 
-#### pattern
+#### pattern {#pattern}
+
 The value of this keyword MUST be a string. This string SHOULD be a valid
 regular expression, according to the ECMA-262 regular expression dialect.
 
@@ -206,12 +225,14 @@ instance successfully. Recall: regular expressions are not implicitly anchored.
 ### Validation Keywords for Arrays
 
 #### maxItems
+
 The value of this keyword MUST be a non-negative integer.
 
 An array instance is valid against `maxItems` if its size is less than, or equal
 to, the value of this keyword.
 
 #### minItems
+
 The value of this keyword MUST be a non-negative integer.
 
 An array instance is valid against `minItems` if its size is greater than, or
@@ -220,6 +241,7 @@ equal to, the value of this keyword.
 Omitting this keyword has the same behavior as a value of 0.
 
 #### uniqueItems
+
 The value of this keyword MUST be a boolean.
 
 If this keyword has boolean value false, the instance validates successfully. If
@@ -231,12 +253,14 @@ Omitting this keyword has the same behavior as a value of false.
 ### Validation Keywords for Objects
 
 #### maxProperties
+
 The value of this keyword MUST be a non-negative integer.
 
 An object instance is valid against `maxProperties` if its number of properties
 is less than, or equal to, the value of this keyword.
 
 #### minProperties
+
 The value of this keyword MUST be a non-negative integer.
 
 An object instance is valid against `minProperties` if its number of properties
@@ -245,6 +269,7 @@ is greater than, or equal to, the value of this keyword.
 Omitting this keyword has the same behavior as a value of 0.
 
 #### required
+
 The value of this keyword MUST be an array. Elements of this array, if any, MUST
 be strings, and MUST be unique.
 
@@ -254,6 +279,7 @@ the name of a property in the instance.
 Omitting this keyword has the same behavior as an empty array.
 
 #### dependentRequired
+
 The value of this keyword MUST be an object. Properties in this object, if any,
 MUST be arrays. Elements in each array, if any, MUST be strings, and MUST be
 unique.
@@ -268,9 +294,10 @@ the name of a property in the instance.
 
 Omitting this keyword has the same behavior as an empty object.
 
-## Vocabularies for Semantic Content With format {#format-vocabulary}
+## Vocabularies for Semantic Content With format {#format}
 
 ### Foreword
+
 Structural validation alone may be insufficient to allow an application to
 correctly utilize certain values. The `format` annotation keyword is defined to
 allow schema authors to convey semantic information for a fixed subset of values
@@ -311,12 +338,13 @@ functionally equivalent to specifying only the Format-Assertion vocabulary since
 its requirements are a superset of the Format-Annotation vocabulary.
 
 ### Implementation Requirements
+
 The `format` keyword functions as defined by the vocabulary which is referenced.
 
-#### Format-Annotation Vocabulary
-The value of format MUST be collected as an annotation, if the implementation
-supports annotation collection. This enables application-level validation when
-schema validation is unavailable or inadequate.
+#### Format-Annotation Vocabulary The value of format MUST be collected as an
+annotation, if the implementation supports annotation collection. This enables
+application-level validation when schema validation is unavailable or
+inadequate.
 
 Implementations MAY still treat `format` as an assertion in addition to an
 annotation and attempt to validate the value's conformance to the specified
@@ -332,9 +360,9 @@ full validation support when the Format-Assertion vocabulary is not specified.
 When the implementation is configured for assertion behavior, it:
 
 - SHOULD provide an implementation-specific best effort validation for each
-format attribute defined below;
+  format attribute defined below;
 - MAY choose to implement validation of any or all format attributes as a no-op
-by always producing a validation result of true;[^3]
+  by always producing a validation result of true;[^3]
 
 [^3]: This matches the current reality of implementations, which provide widely
 varying levels of validation, including no validation at all, for some or all
@@ -343,6 +371,7 @@ annotation behavior and performing semantic validation in the application, which
 is the recommended best practice.
 
 #### Format-Assertion Vocabulary
+
 When the Format-Assertion vocabulary is declared with a value of true,
 implementations MUST provide full validation support for all of the formats
 defined by this specificaion. Implementations that cannot provide full
@@ -350,12 +379,12 @@ validation support MUST refuse to process the schema.
 
 An implementation that supports the Format-Assertion vocabulary:
 - MUST still collect `format` as an annotation if the implementation supports
-annotation collection;
+  annotation collection;
 - MUST evaluate `format` as an assertion;
 - MUST implement syntactic validation for all format attributes defined in this
-specification, and for any additional format attributes that it recognizes, such
-that there exist possible instance values of the correct type that will fail
-validation. The requirement for minimal validation of format attributes is
+  specification, and for any additional format attributes that it recognizes,
+such that there exist possible instance values of the correct type that will
+fail validation. The requirement for minimal validation of format attributes is
 intentionally vague and permissive, due to the complexity involved in many of
 the attributes. Note in particular that the requirement is limited to syntactic
 checking; it is not to be expected that an implementation would send an email,
@@ -375,7 +404,7 @@ It is RECOMMENDED that implementations use a common parsing library for each
 format, or a well-known regular expression. Implementations SHOULD clearly
 document how and to what degree each format attribute is validated.
 
-The [standard core and validation meta-schema](#5-meta-schema) includes this
+The [standard core and validation meta-schema](#meta-schema) includes this
 vocabulary in its `$vocabulary` keyword with a value of false, since by default
 implementations are not required to support this keyword as an assertion.
 Supporting the format vocabulary with a value of true is understood to greatly
@@ -383,6 +412,7 @@ increase code size and in some cases execution time, and will not be appropriate
 for all implementations.
 
 #### Custom format attributes
+
 Implementations MAY support custom format attributes. Save for agreement between
 parties, schema authors SHALL NOT expect a peer implementation to support such
 custom format attributes. An implementation MUST NOT fail to collect unknown
@@ -398,6 +428,7 @@ desired.
 ### Defined Formats
 
 #### Dates, Times, and Duration
+
 These attributes apply to string instances.
 
 Date and time format names are derived from [RFC 3339, section 5.6](#rfc3339).
@@ -408,13 +439,13 @@ Implementations supporting formats SHOULD implement support for the following
 attributes:
 
 - *date-time:* A string instance is valid against this attribute if it is a
-valid representation according to the "date-time" ABNF rule (referenced above)
+  valid representation according to the "date-time" ABNF rule (referenced above)
 - *date:* A string instance is valid against this attribute if it is a valid
-representation according to the "full-date" ABNF rule (referenced above)
+  representation according to the "full-date" ABNF rule (referenced above)
 - *time:* A string instance is valid against this attribute if it is a valid
-representation according to the "full-time" ABNF rule (referenced above)
+  representation according to the "full-time" ABNF rule (referenced above)
 - *duration:* A string instance is valid against this attribute if it is a valid
-representation according to the "duration" ABNF rule (referenced above)
+  representation according to the "duration" ABNF rule (referenced above)
 
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. If "full-date" or "full-time" are implemented, the
@@ -430,6 +461,7 @@ implementation requirements will become more flexible in general, or these will
 likely either be promoted to fully specified attributes or dropped.
 
 #### Email Addresses
+
 These attributes apply to string instances.
 
 A string instance is valid against these attributes if it is a valid Internet
@@ -437,48 +469,49 @@ email address as follows: - *email:* As defined by the "Mailbox" ABNF rule in
 [RFC 5321, section 4.1.2](#rfc5321).
 
 - *idn-email:* As defined by the extended "Mailbox" ABNF rule in [RFC 6531,
-section 3.3](#rfc6531). Note that all strings valid against the "email"
-attribute are also valid against the "idn-email" attribute.
+  section 3.3](#rfc6531). Note that all strings valid against the "email"
+  attribute are also valid against the "idn-email" attribute.
 
 #### Hostnames
+
 These attributes apply to string instances.
 
 A string instance is valid against these attributes if it is a valid
 representation for an Internet hostname as follows:
 
 - *hostname:* As defined by [RFC 1123, section 2.1](#rfc1123), including host
-names produced using the Punycode algorithm specified in [RFC 5891, section
-4.4](#rfc5891).
+  names produced using the Punycode algorithm specified in [RFC 5891, section
+  4.4](#rfc5891).
 - *idn-hostname:* As defined by either RFC 1123 as for hostname, or an
-internationalized hostname as defined by [RFC 5890, section 2.3.2.3](#rfc5890).
-Note that all strings valid against the "hostname" attribute are also valid
-against the "idn-hostname" attribute.
+  internationalized hostname as defined by [RFC 5890, section
+  2.3.2.3](#rfc5890).  Note that all strings valid against the "hostname"
+  attribute are also valid against the "idn-hostname" attribute.
 
 #### IP Addresses
+
 These attributes apply to string instances.
 
 A string instance is valid against these attributes if it is a valid
 representation of an IP address as follows:
 
 - *ipv4:* An IPv4 address according to the "dotted-quad" ABNF syntax as defined
-in [RFC 2673, section 3.2](#rfc2673).
+  in [RFC 2673, section 3.2](#rfc2673).
 - *ipv6:* An IPv6 address as defined in [RFC 4291, section 2.2](#rfc4291).
 
-#### Resource Identifiers
-These attributes apply to string instances.
+#### Resource Identifiers These attributes apply to string instances.
 
 - *uri:* A string instance is valid against this attribute if it is a valid IRI,
-according to [Appendix RFC3987](#rfc3987).
+  according to [RFC3987](#rfc3987).
 - *uri-reference:* A string instance is valid against this attribute if it is a
-valid URI Reference (either a URI or a relative-reference), according to
-[Appendix RFC3986](#rfc3986).
+  valid URI Reference (either a URI or a relative-reference), according to
+  [RFC3986](#rfc3986).
 - *iri:* A string instance is valid against this attribute if it is a valid IRI,
-according to [Appendix RFC3987](#rfc3987).
+  according to [RFC3987](#rfc3987).
 - *iri-reference:* A string instance is valid against this attribute if it is a
-valid IRI Reference (either an IRI or a relative-reference), according to
-[Appendix RFC3987](#rfc3987).
+  valid IRI Reference (either an IRI or a relative-reference), according to
+  [RFC3987](#rfc3987).
 - *uuid:* A string instance is valid against this attribute if it is a valid
-string representation of a UUID, according to [Appendix RFC4122](#rfc4122).
+  string representation of a UUID, according to [RFC4122](#rfc4122).
 
 Note that all valid URIs are valid IRIs, and all valid URI References are also
 valid IRI References.
@@ -489,38 +522,42 @@ example is "f81d4fae-7dec-11d0-a765-00a0c91e6bf6". For UUIDs as URNs, use the
 the URI scheme and URN namespace.
 
 #### uri-template
+
 This attribute applies to string instances.
 
 A string instance is valid against this attribute if it is a valid URI Template
-(of any level), according to [Appendix RFC6570](#rfc6570).
+(of any level), according to [RFC6570](#rfc6570).
 
 Note that URI Templates may be used for IRIs; there is no separate IRI Template
 specification.
 
 #### JSON Pointers
+
 These attributes apply to string instances.
 
 - *json-pointer:* A string instance is valid against this attribute if it is a
-valid JSON string representation of a JSON Pointer, according to [RFC 6901,
-section 5](#rfc6901).
+  valid JSON string representation of a JSON Pointer, according to [RFC 6901,
+  section 5](#rfc6901).
 - *relative-json-pointer:* A string instance is valid against this attribute if
-it is a valid [Relative JSON Pointer](#relative-json-pointer). To allow for both
-absolute and relative JSON Pointers, use `anyOf` or `oneOf` to indicate support
-for either format.
+  it is a valid [Relative JSON Pointer](#relative-json-pointer). To allow for
+  both absolute and relative JSON Pointers, use `anyOf` or `oneOf` to indicate
+  support for either format.
 
 #### regex
+
 This attribute applies to string instances.
 
 A regular expression, which SHOULD be valid according to the
 [ECMA-262](#ecma262) regular expression dialect.
 
 Implementations that validate formats MUST accept at least the subset of
-ECMA-262 defined in the [Regular Expressions](#43-regular-expressions) section
-of this specification, and SHOULD accept all valid ECMA-262 expressions.
+ECMA-262 defined in {{regexinterop}}), and SHOULD accept all valid ECMA-262
+expressions.
 
-## A Vocabulary for the Contents of String-Encoded Data {#content-vocabulary}
+## A Vocabulary for the Contents of String-Encoded Data {#content}
 
 ### Foreword
+
 Annotations defined in this section indicate that an instance contains non-JSON
 data encoded in a JSON string.
 
@@ -540,6 +577,7 @@ The current IRI for the corresponding meta-schema is:
 `https://json-schema.org/draft/next/meta/content`.
 
 ### Implementation Requirements
+
 Due to security and performance concerns, as well as the open-ended nature of
 possible content types, implementations MUST NOT automatically decode, parse,
 and/or validate the string contents. Applications are expected to use these
@@ -549,6 +587,7 @@ All keywords in this section apply only to strings, and have no effect on other
 data types.
 
 ### contentEncoding
+
 If the instance value is a string, this property defines that the string SHOULD
 be interpreted as encoded binary data and applications wishing to decode it
 SHOULD do so using the encoding named by this property.
@@ -574,6 +613,7 @@ needed in order to represent the content in a UTF-8 string.
 The value of this property MUST be a string.
 
 ### contentMediaType
+
 If the instance is a string, this property indicates the media type of the
 contents of the string. If `contentEncoding` is present, this property describes
 the decoded string.
@@ -582,6 +622,7 @@ The value of this property MUST be a string, which MUST be a media type, as
 defined by [RFC 2046](#rfc2046).
 
 ### contentSchema
+
 If the instance is a string, and if `contentMediaType` is present, this property
 contains a schema which describes the structure of the string.
 
@@ -597,6 +638,7 @@ safe if the schema is an embedded resource with both `$schema` and an
 absolute-IRI `$id`.
 
 ### Example
+
 Here is an example schema, illustrating the use of `contentEncoding` and
 `contentMediaType`:
 
@@ -662,11 +704,11 @@ structures: first the header, and then the payload. Since the JWT media type
 ensures that the JWT can be represented in a JSON string, there is no need for
 further encoding or decoding.
 
-## A Vocabulary for Basic Meta-Data Annotations
-These general-purpose annotation keywords provide commonly used information for
-documentation and user interface display purposes. They are not intended to form
-a comprehensive set of features. Rather, additional vocabularies can be defined
-for more complex annotation-based applications.
+## A Vocabulary for Basic Meta-Data Annotations These general-purpose annotation
+keywords provide commonly used information for documentation and user interface
+display purposes. They are not intended to form a comprehensive set of features.
+Rather, additional vocabularies can be defined for more complex annotation-based
+applications.
 
 Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
 vocabulary as if its IRI were present with a value of true.
@@ -678,6 +720,7 @@ The current IRI for the corresponding meta-schema is:
 `https://json-schema.org/draft/next/meta/meta-data`.
 
 ### title and description
+
 The value of both of these keywords MUST be a string.
 
 Both of these keywords can be used to decorate a user interface with information
@@ -686,6 +729,7 @@ short, whereas a description will provide explanation about the purpose of the
 instance described by this schema.
 
 ### default
+
 There are no restrictions placed on the value of this keyword. When multiple
 occurrences of this keyword are applicable to a single sub-instance,
 implementations SHOULD remove duplicates.
@@ -695,6 +739,7 @@ particular schema. It is RECOMMENDED that a default value be valid against the
 associated schema.
 
 ### deprecated
+
 The value of this keyword MUST be a boolean. When multiple occurrences of this
 keyword are applicable to a single sub-instance, applications SHOULD consider
 the instance location to be deprecated if any occurrence specifies a true value.
@@ -714,6 +759,7 @@ containing array or object is not.
 Omitting this keyword has the same behavior as a value of false.
 
 ### readOnly and writeOnly
+
 The value of these keywords MUST be a boolean. When multiple occurrences of
 these keywords are applicable to a single sub-instance, the resulting behavior
 SHOULD be as for a true value if any occurrence specifies a true value, and
@@ -748,6 +794,7 @@ they are typed for write-only fields.
 Omitting these keywords has the same behavior as values of false.
 
 ### examples
+
 The value of this keyword MUST be an array. There are no restrictions placed on
 the values within the array. When multiple occurrences of this keyword are
 applicable to a single sub-instance, implementations MUST provide a flat array
@@ -760,7 +807,8 @@ these values be valid against the associated schema.
 Implementations MAY use the value(s) of `default`, if present, as an additional
 example. If `examples` is absent, `default` MAY still be used in this manner.
 
-## Security Considerations
+## Security Considerations {#security}
+
 JSON Schema validation defines a vocabulary for JSON Schema core and concerns
 all the security considerations listed there.
 
@@ -787,102 +835,122 @@ ECMAScript encoded within a JSON string.
 
 ### Normative References
 
-#### [RFC2119]
+#### [RFC2119] {#rfc2119}
+
 Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14,
 RFC 2119, DOI 10.17487/RFC2119, March 1997,
 <<https://www.rfc-editor.org/info/rfc2119>>.
 
-#### [RFC1123]
+#### [RFC1123] {#rfc1123}
+
 Braden, R., Ed., "Requirements for Internet Hosts - Application and Support",
 STD 3, RFC 1123, DOI 10.17487/RFC1123, October 1989,
 <<https://www.rfc-editor.org/info/rfc1123>>.
 
-#### [RFC2045]
+#### [RFC2045] {#rfc2045}
+
 Freed, N. and N. Borenstein, "Multipurpose Internet Mail Extensions (MIME) Part
 One: Format of Internet Message Bodies", RFC 2045, DOI 10.17487/RFC2045,
 November 1996, <<https://www.rfc-editor.org/info/rfc2045>>.
 
-#### [RFC2046]
+#### [RFC2046] {#rfc2046}
+
 Freed, N. and N. Borenstein, "Multipurpose Internet Mail Extensions (MIME) Part
 Two: Media Types", RFC 2046, DOI 10.17487/RFC2046, November 1996,
 <<https://www.rfc-editor.org/info/rfc2046>>.
 
-#### [RFC2673]
+#### [RFC2673] {#rfc2673}
+
 Crawford, M., "Binary Labels in the Domain Name System", RFC 2673, DOI
 10.17487/RFC2673, August 1999, <<https://www.rfc-editor.org/info/rfc2673>>.
 
-#### [RFC3339]
+#### [RFC3339] {#rfc3339}
+
 Klyne, G. and C. Newman, "Date and Time on the Internet: Timestamps", RFC 3339,
 DOI 10.17487/RFC3339, July 2002, <<https://www.rfc-editor.org/info/rfc3339>>.
 
-#### [RFC3986]
+#### [RFC3986] {#rfc3986}
+
 Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifier
 (URI): Generic Syntax", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005,
 <<https://www.rfc-editor.org/info/rfc3986>>.
 
-#### [RFC3987]
+#### [RFC3987] {#rfc3987}
+
 Duerst, M. and M. Suignard, "Internationalized Resource Identifiers (IRIs)", RFC
 3987, DOI 10.17487/RFC3987, January 2005,
 <<https://www.rfc-editor.org/info/rfc3987>>.
 
-#### [RFC4122]
+#### [RFC4122] {#rfc4122}
+
 Leach, P., Mealling, M., and R. Salz, "A Universally Unique IDentifier (UUID)
 URN Namespace", RFC 4122, DOI 10.17487/RFC4122, July 2005,
 <<https://www.rfc-editor.org/info/rfc4122>>.
 
-#### [RFC4291]
+#### [RFC4291] {#rfc4291}
+
 Hinden, R. and S. Deering, "IP Version 6 Addressing Architecture", RFC 4291, DOI
 10.17487/RFC4291, February 2006, <<https://www.rfc-editor.org/info/rfc4291>>.
 
-#### [RFC4648]
+#### [RFC4648] {#rfc4648}
+
 Josefsson, S., "The Base16, Base32, and Base64 Data Encodings", RFC 4648, DOI
 10.17487/RFC4648, October 2006, <<https://www.rfc-editor.org/info/rfc4648>>.
 
-#### [RFC5321]
+#### [RFC5321] {#rfc5321}
+
 Klensin, J., "Simple Mail Transfer Protocol", RFC 5321, DOI 10.17487/RFC5321,
 October 2008, <<https://www.rfc-editor.org/info/rfc5321>>.
 
-#### [RFC5890]
+#### [RFC5890] {#rfc5890}
+
 Klensin, J., "Internationalized Domain Names for Applications (IDNA):
 Definitions and Document Framework", RFC 5890, DOI 10.17487/RFC5890, August
 2010, <<https://www.rfc-editor.org/info/rfc5890>>.
 
-#### [RFC5891]
+#### [RFC5891] {#rfc5891}
+
 Klensin, J., "Internationalized Domain Names in Applications (IDNA): Protocol",
 RFC 5891, DOI 10.17487/RFC5891, August 2010,
 <<https://www.rfc-editor.org/info/rfc5891>>.
 
-#### [RFC6570]
+#### [RFC6570] {#rfc6570}
+
 Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, "URI
 Template", RFC 6570, DOI 10.17487/RFC6570, March 2012,
 <<https://www.rfc-editor.org/info/rfc6570>>.
 
-#### [RFC6531]
+#### [RFC6531] {#rfc6531}
 
 Yao, J. and W. Mao, "SMTP Extension for Internationalized Email", RFC 6531, DOI
 10.17487/RFC6531, February 2012, <<https://www.rfc-editor.org/info/rfc6531>>.
 
-#### [RFC6901]
+#### [RFC6901] {#rfc6901}
+
 Bryan, P., Ed., Zyp, K., and M. Nottingham, Ed., "JavaScript Object Notation
 (JSON) Pointer", RFC 6901, DOI 10.17487/RFC6901, April 2013,
 <<https://www.rfc-editor.org/info/rfc6901>>.
 
-#### [RFC8259]
+#### [RFC8259] {#rfc8259}
+
 Bray, T., Ed., "The JavaScript Object Notation (JSON) Data Interchange Format",
 STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017,
 <<https://www.rfc-editor.org/info/rfc8259>>.
 
-#### [ecma262]
-"ECMA-262, 11th edition specification", June 2020,
+#### [ecma262] {#ecma262}
+
+ECMA-262, 11th edition specification", June 2020,
 <<https://www.ecma-international.org/ecma-262/11.0>>.
 
-#### [relative-json-pointer]
+#### [relative-json-pointer] {#relative-json-pointer}
+
 Luff, G., Andrews, H., and B. Hutton, Ed., "Relative JSON Pointers", Work in
 Progress, Internet-Draft, draft-handrews-relative-json-pointer-01, December
 2020,
 <<https://datatracker.ietf.org/doc/html/draft-handrews-relative-json-pointer-01>>.
 
-#### [json-schema]
+#### [json-schema] {#json-schema}
+
 Wright, A., Andrews, H., Hutton, B., and G. Dennis, "JSON Schema: A Media Type
 for Describing JSON Documents", Work in Progress, Internet-Draft,
 draft-bhutton-json-schema-01, June 2022,
@@ -890,44 +958,47 @@ draft-bhutton-json-schema-01, June 2022,
 
 ### Informative References
 
-#### [RFC4329]
+#### [RFC4329] {#rfc4329}
+
 Hoehrmann, B., "Scripting Media Types", RFC 4329, DOI 10.17487/RFC4329, April
 2006, <<https://www.rfc-editor.org/info/rfc4329>>.
 
 ## [Appendix] Keywords Moved from Validation to Core
+
 Several keywords have been moved from this document into the [Core
 Specification](#json-schema) starting with draft 2019-09, in some cases with
 re-naming or other changes. This affects the following former validation
 keywords:
 
 - *`definitions`* Renamed to `$defs` to match `$ref` and be shorter to type.
-Schema vocabulary authors SHOULD NOT define a `definitions` keyword with
-different behavior in order to avoid invalidating schemas that still use the
-older name. While `definitions` is absent in the single-vocabulary meta-schemas
-referenced by this document, it remains present in the default meta-schema, and
-implementations SHOULD assume that `$defs` and `definitions` have the same
-behavior when that meta-schema is used.
+  Schema vocabulary authors SHOULD NOT define a `definitions` keyword with
+  different behavior in order to avoid invalidating schemas that still use the
+  older name. While `definitions` is absent in the single-vocabulary
+  meta-schemas referenced by this document, it remains present in the default
+  meta-schema, and implementations SHOULD assume that `$defs` and `definitions`
+  have the same behavior when that meta-schema is used.
 - *`allOf`, `anyOf`, `oneOf`, `not`, `if`, `then`, `else`, `items`,
-`additionalItems`, `contains`, `propertyNames`, `properties`,
-`patternProperties`, `additionalProperties`* All of these keywords apply
-subschemas to the instance and combine their results, without asserting any
-conditions of their own. Without assertion keywords, these applicators can only
-cause assertion failures by using the false boolean schema, or by inverting the
-result of the true boolean schema (or equivalent schema objects). For this
-reason, they are better defined as a generic mechanism on which validation,
-hyper-schema, and extension vocabularies can all be based.
+  `additionalItems`, `contains`, `propertyNames`, `properties`,
+  `patternProperties`, `additionalProperties`* All of these keywords apply
+  subschemas to the instance and combine their results, without asserting any
+  conditions of their own. Without assertion keywords, these applicators can
+  only cause assertion failures by using the false boolean schema, or by
+  inverting the result of the true boolean schema (or equivalent schema
+  objects). For this reason, they are better defined as a generic mechanism on
+  which validation, hyper-schema, and extension vocabularies can all be based.
 - *`maxContains`, `minContains`* These keywords modify the behavior of
-`contains`, and are therefore grouped with it in the applicator vocabulary.
+  `contains`, and are therefore grouped with it in the applicator vocabulary.
 - *`dependencies`* This keyword had two different modes of behavior, which made
-it relatively challenging to implement and reason about. The schema form has
-been moved to Core and renamed to `dependentSchemas`, as part of the applicator
-vocabulary. It is analogous to `properties`, except that instead of applying its
-subschema to the property value, it applies it to the object containing the
-property. The property name array form is retained here and renamed to
-`dependentRequired`, as it is an assertion which is a shortcut for the
-conditional use of the `required` assertion keyword.
+  it relatively challenging to implement and reason about. The schema form has
+  been moved to Core and renamed to `dependentSchemas`, as part of the
+  applicator vocabulary. It is analogous to `properties`, except that instead of
+  applying its subschema to the property value, it applies it to the object
+  containing the property. The property name array form is retained here and
+  renamed to `dependentRequired`, as it is an assertion which is a shortcut for
+  the conditional use of the `required` assertion keyword.
 
 ## [Appendix] Acknowledgments
+
 Thanks to Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, and Henry
 Andrews for their work on the initial drafts of JSON Schema.
 
@@ -955,7 +1026,7 @@ to the document.
     - Grouped keywords into formal vocabularies
     - Update `format` implementation requirements in terms of vocabularies
     - By default, `format` MUST NOT be validated, although validation can be
-       enabled
+      enabled
     - A vocabulary declaration can be used to require `format` validation
     - Moved `definitions` to the core spec as `$defs`
     - Moved applicator keywords to the core spec
