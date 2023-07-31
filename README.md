@@ -43,19 +43,37 @@ features they make available to you.
 - [remark-gfm](https://github.com/remarkjs/remark-gfm) -- Adds support for
   Github Flavored Markdown specific markdown features such as autolink literals,
   footnotes, strikethrough, tables, and tasklists.
-- [remark-number-headings](/json-schema-org/json-schema-spec/blob/main/remark-number-headings.js)
-  -- Adds hierarchical section numbers to headings.
-- [remark-toc](https://github.com/remarkjs/remark-toc) -- Adds a table of
-  contents in a section with a header called "Table of Contents".
+- [remark-heading-id](https://github.com/imcuttle/remark-heading-id) -- Adds
+  support for `{#my-anchor}` syntax to add an `id` to an element so it can be
+  referenced using URI fragment syntax.
+- [remark-headings](/json-schema-org/json-schema-spec/blob/main/remark-headings.js)
+  -- A collection of enhancements for headings.
+  - Adds hierarchical section numbers to headings.
+    - Use the `[Appendix]` prefix on headings that should be numbered as an
+      appendix.
+  - Adds id anchors to headers that don't have one
+    - Example: `#section-2-13`
+    - Example: `#appendix-a`
+  - Makes the heading a link utilizing its anchor
+- [remark-reference-links](/json-schema-org/json-schema-spec/blob/main/remark-reference-link.js)
+  -- Adds new syntax for referencing a section of the spec using the section
+  number as the link text.
+    - Example:
+    ```markdown
+    ## Foo {#foo}
+
+    ## Bar
+    This is covered in {{foo}} // --> Renders to "This is covered in [Section 2.3](#foo)"
+    - Link text will use "Section" or "Appendix" as needed
+    ```
+- [remark-table-of-contents](/json-schema-org/json-schema-spec/blob/main/remark-table-of-contents.js)
+  -- Adds a table of contents in a section with a header called "Table of
+  Contents".
 - [remark-torchlight](https://github.com/torchlight-api/remark-torchlight) --
   Syntax highlighting and more using https://torchlight.dev. Features include
   line numbers and line highlighting.
-- [rehype-slug](https://github.com/rehypejs/rehype-slug) -- Adds `id` anchors to
-  header so they can be linked to with URI fragment syntax.
-- [rehype-autolink-headings](https://github.com/rehypejs/rehype-autolink-headings)
-  -- Makes headings clickable.
 - [remark-flexible-containers](https://github.com/ipikuka/remark-flexible-containers)
-  -- Add a callout box using the following syntax. Supported container types are
+  - Add a callout box using the following syntax. Supported container types are
   `warning`, `note`, and `experimental`.
 
     ```

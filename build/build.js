@@ -2,20 +2,17 @@ import dotenv from "dotenv";
 import { readFileSync, writeFileSync } from "node:fs";
 import { reporter } from "vfile-reporter";
 import { remark } from "remark";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeSlug from "rehype-slug";
-import rehypeStringify from "rehype-stringify";
 import remarkFlexibleContainers from "remark-flexible-containers";
 import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
-import remarkHeadings from "@vcarl/remark-headings";
-import remarkNumberHeadings from "./remark-number-headings.js";
+import remarkHeadings from "./remark-headings.js";
 import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
 import remarkRehype from "remark-rehype";
-import remarkSectionLinks from "./remark-section-links.js";
-import remarkToc from "remark-toc";
+import remarkReferenceLinks from "./remark-reference-links.js";
+import remarkTableOfContents from "./remark-table-of-contents.js";
+import remarkTorchLight from "remark-torchlight";
 import remarkValidateLinks from "remark-validate-links";
-import torchLight from "remark-torchlight";
+import rehypeStringify from "rehype-stringify";
 
 
 dotenv.config();
@@ -25,26 +22,20 @@ dotenv.config();
   const html = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
     .use(remarkGfm)
-    .use(torchLight)
-    .use(remarkFlexibleContainers)
     .use(remarkHeadingId)
-    .use(remarkNumberHeadings, {
+    .use(remarkHeadings, {
       startDepth: 2,
-      skip: ["Abstract", "Note to Readers", "Table of Contents", "Authors' Addresses", "\\[.*\\]", "draft-.*"],
-      appendixToken: "[Appendix]",
-      appendixPrefix: "Appendix"
+      skip: ["Abstract", "Note to Readers", "Table of Contents", "Authors' Addresses", "\\[.*\\]", "draft-.*"]
     })
-    .use(remarkHeadings)
-    .use(remarkSectionLinks)
-    .use(remarkToc, {
-      tight: true,
-      heading: "Table of Contents",
-      skip: "\\[.*\\]|draft-.*"
+    .use(remarkReferenceLinks)
+    .use(remarkFlexibleContainers)
+    .use(remarkTorchLight)
+    .use(remarkTableOfContents, {
+      startDepth: 2,
+      skip: ["Abstract", "Note to Readers", "\\[.*\\]", "Authors' Addresses", "draft-.*"]
     })
     .use(remarkValidateLinks)
     .use(remarkRehype)
-    .use(rehypeSlug)
-    .use(rehypeAutolinkHeadings, { behavior: "wrap" })
     .use(rehypeStringify)
     .process(md);
 
@@ -122,7 +113,7 @@ dotenv.config();
     </style>
   </head>
   <body>
-    ${String(html)}
+    ${html.toString()}
   </body>
 </html>`);
 
