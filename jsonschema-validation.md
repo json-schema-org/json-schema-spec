@@ -115,7 +115,7 @@ The current IRI for the corresponding meta-schema is:
 
 ### Validation Keywords for Any Instance Type {#general}
 
-#### type
+#### `type`
 
 The value of this keyword MUST be either a string or an array. If it is an
 array, elements of the array MUST be strings and MUST be unique.
@@ -125,11 +125,12 @@ String values MUST be one of the six primitive types ("null", "boolean",
 with a zero fractional part.
 
 If the value of "type" is a string, then an instance validates successfully if
-its type matches the type represented by the value of the string. If the value
-of "type" is an array, then an instance validates successfully if its type
-matches any of the types indicated by the strings in the array.
+its type matches the type represented by the value of the string.
 
-#### enum {#enum}
+If the value of "type" is an array, then an instance validates successfully if
+its type matches any of the types indicated by the strings in the array.
+
+#### `enum` {#enum}
 
 The value of this keyword MUST be an array. This array SHOULD have at least one
 element. Elements in the array SHOULD be unique.
@@ -139,7 +140,7 @@ one of the elements in this keyword's array value.
 
 Elements in the array might be of any type, including null.
 
-#### const
+#### `const`
 
 The value of this keyword MAY be of any type, including null.
 
@@ -151,14 +152,14 @@ the value of the keyword.
 
 ### Validation Keywords for Numeric Instances (number and integer) {#numeric}
 
-#### multipleOf
+#### `multipleOf`
 
 The value of `multipleOf` MUST be a number, strictly greater than 0.
 
 A numeric instance is valid only if division by this keyword's value results in
 an integer.
 
-#### maximum
+#### `maximum`
 
 The value of `maximum` MUST be a number, representing an inclusive upper limit
 for a numeric instance.
@@ -166,7 +167,7 @@ for a numeric instance.
 If the instance is a number, then this keyword validates only if the instance is
 less than or exactly equal to `maximum`.
 
-#### exclusiveMaximum
+#### `exclusiveMaximum`
 
 The value of `exclusiveMaximum` MUST be a number, representing an exclusive
 upper limit for a numeric instance.
@@ -174,7 +175,7 @@ upper limit for a numeric instance.
 If the instance is a number, then the instance is valid only if it has a value
 strictly less than (not equal to) `exclusiveMaximum`.
 
-#### minimum
+#### `minimum`
 
 The value of `minimum` MUST be a number, representing an inclusive lower limit
 for a numeric instance.
@@ -182,7 +183,7 @@ for a numeric instance.
 If the instance is a number, then this keyword validates only if the instance is
 greater than or exactly equal to `minimum`.
 
-#### exclusiveMinimum
+#### `exclusiveMinimum`
 
 The value of `exclusiveMinimum` MUST be a number, representing an exclusive
 lower limit for a numeric instance.
@@ -192,7 +193,7 @@ strictly greater than (not equal to) `exclusiveMinimum`.
 
 ### Validation Keywords for Strings {#string}
 
-#### maxLength
+#### `maxLength`
 
 The value of this keyword MUST be a non-negative integer.
 
@@ -202,7 +203,7 @@ equal to, the value of this keyword.
 The length of a string instance is defined as the number of its characters as
 defined by [RFC 8259](#rfc8259).
 
-#### minLength
+#### `minLength`
 
 The value of this keyword MUST be a non-negative integer.
 
@@ -214,7 +215,7 @@ defined by [RFC 8259](#rfc8259).
 
 Omitting this keyword has the same behavior as a value of 0.
 
-#### pattern {#pattern}
+#### `pattern` {#pattern}
 
 The value of this keyword MUST be a string. This string SHOULD be a valid
 regular expression, according to the ECMA-262 regular expression dialect.
@@ -224,14 +225,14 @@ instance successfully. Recall: regular expressions are not implicitly anchored.
 
 ### Validation Keywords for Arrays
 
-#### maxItems
+#### `maxItems`
 
 The value of this keyword MUST be a non-negative integer.
 
 An array instance is valid against `maxItems` if its size is less than, or equal
 to, the value of this keyword.
 
-#### minItems
+#### `minItems`
 
 The value of this keyword MUST be a non-negative integer.
 
@@ -240,7 +241,7 @@ equal to, the value of this keyword.
 
 Omitting this keyword has the same behavior as a value of 0.
 
-#### uniqueItems
+#### `uniqueItems`
 
 The value of this keyword MUST be a boolean.
 
@@ -252,14 +253,14 @@ Omitting this keyword has the same behavior as a value of false.
 
 ### Validation Keywords for Objects
 
-#### maxProperties
+#### `maxProperties`
 
 The value of this keyword MUST be a non-negative integer.
 
 An object instance is valid against `maxProperties` if its number of properties
 is less than, or equal to, the value of this keyword.
 
-#### minProperties
+#### `minProperties`
 
 The value of this keyword MUST be a non-negative integer.
 
@@ -268,7 +269,7 @@ is greater than, or equal to, the value of this keyword.
 
 Omitting this keyword has the same behavior as a value of 0.
 
-#### required
+#### `required`
 
 The value of this keyword MUST be an array. Elements of this array, if any, MUST
 be strings, and MUST be unique.
@@ -278,7 +279,7 @@ the name of a property in the instance.
 
 Omitting this keyword has the same behavior as an empty array.
 
-#### dependentRequired
+#### `dependentRequired`
 
 The value of this keyword MUST be an object. Properties in this object, if any,
 MUST be arrays. Elements in each array, if any, MUST be strings, and MUST be
@@ -294,7 +295,7 @@ the name of a property in the instance.
 
 Omitting this keyword has the same behavior as an empty object.
 
-## Vocabularies for Semantic Content With format {#format}
+## Vocabularies for Semantic Content With `format` {#format}
 
 ### Foreword
 
@@ -341,10 +342,11 @@ its requirements are a superset of the Format-Annotation vocabulary.
 
 The `format` keyword functions as defined by the vocabulary which is referenced.
 
-#### Format-Annotation Vocabulary The value of format MUST be collected as an
-annotation, if the implementation supports annotation collection. This enables
-application-level validation when schema validation is unavailable or
-inadequate.
+#### Format-Annotation Vocabulary
+
+The value of format MUST be collected as an annotation, if the implementation
+supports annotation collection. This enables application-level validation when
+schema validation is unavailable or inadequate.
 
 Implementations MAY still treat `format` as an assertion in addition to an
 annotation and attempt to validate the value's conformance to the specified
@@ -378,13 +380,16 @@ defined by this specificaion. Implementations that cannot provide full
 validation support MUST refuse to process the schema.
 
 An implementation that supports the Format-Assertion vocabulary:
+
 - MUST still collect `format` as an annotation if the implementation supports
   annotation collection;
 - MUST evaluate `format` as an assertion;
 - MUST implement syntactic validation for all format attributes defined in this
   specification, and for any additional format attributes that it recognizes,
-such that there exist possible instance values of the correct type that will
-fail validation. The requirement for minimal validation of format attributes is
+  such that there exist possible instance values of the correct type that will
+  fail validation.
+
+The requirement for minimal validation of format attributes is
 intentionally vague and permissive, due to the complexity involved in many of
 the attributes. Note in particular that the requirement is limited to syntactic
 checking; it is not to be expected that an implementation would send an email,
@@ -465,9 +470,10 @@ likely either be promoted to fully specified attributes or dropped.
 These attributes apply to string instances.
 
 A string instance is valid against these attributes if it is a valid Internet
-email address as follows: - *email:* As defined by the "Mailbox" ABNF rule in
-[RFC 5321, section 4.1.2](#rfc5321).
+email address as follows:
 
+- *email:* As defined by the "Mailbox" ABNF rule in [RFC 5321, section
+  4.1.2](#rfc5321).
 - *idn-email:* As defined by the extended "Mailbox" ABNF rule in [RFC 6531,
   section 3.3](#rfc6531). Note that all strings valid against the "email"
   attribute are also valid against the "idn-email" attribute.
@@ -586,7 +592,7 @@ annotations to invoke the appropriate libraries separately.
 All keywords in this section apply only to strings, and have no effect on other
 data types.
 
-### contentEncoding
+### `contentEncoding`
 
 If the instance value is a string, this property defines that the string SHOULD
 be interpreted as encoded binary data and applications wishing to decode it
@@ -612,7 +618,7 @@ needed in order to represent the content in a UTF-8 string.
 
 The value of this property MUST be a string.
 
-### contentMediaType
+### `contentMediaType`
 
 If the instance is a string, this property indicates the media type of the
 contents of the string. If `contentEncoding` is present, this property describes
@@ -621,7 +627,7 @@ the decoded string.
 The value of this property MUST be a string, which MUST be a media type, as
 defined by [RFC 2046](#rfc2046).
 
-### contentSchema
+### `contentSchema`
 
 If the instance is a string, and if `contentMediaType` is present, this property
 contains a schema which describes the structure of the string.
@@ -719,7 +725,7 @@ The current IRI for this vocabulary, known as the Meta-Data vocabulary, is:
 The current IRI for the corresponding meta-schema is:
 `https://json-schema.org/draft/next/meta/meta-data`.
 
-### title and description
+### `title` and `description`
 
 The value of both of these keywords MUST be a string.
 
@@ -728,7 +734,7 @@ about the data produced by this user interface. A title will preferably be
 short, whereas a description will provide explanation about the purpose of the
 instance described by this schema.
 
-### default
+### `default`
 
 There are no restrictions placed on the value of this keyword. When multiple
 occurrences of this keyword are applicable to a single sub-instance,
@@ -738,7 +744,7 @@ This keyword can be used to supply a default JSON value associated with a
 particular schema. It is RECOMMENDED that a default value be valid against the
 associated schema.
 
-### deprecated
+### `deprecated`
 
 The value of this keyword MUST be a boolean. When multiple occurrences of this
 keyword are applicable to a single sub-instance, applications SHOULD consider
@@ -758,7 +764,7 @@ containing array or object is not.
 
 Omitting this keyword has the same behavior as a value of false.
 
-### readOnly and writeOnly
+### `readOnly` and `writeOnly`
 
 The value of these keywords MUST be a boolean. When multiple occurrences of
 these keywords are applicable to a single sub-instance, the resulting behavior
@@ -793,7 +799,7 @@ they are typed for write-only fields.
 
 Omitting these keywords has the same behavior as values of false.
 
-### examples
+### `examples`
 
 The value of this keyword MUST be an array. There are no restrictions placed on
 the values within the array. When multiple occurrences of this keyword are

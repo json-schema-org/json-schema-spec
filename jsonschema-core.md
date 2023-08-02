@@ -122,19 +122,14 @@ interpreted according to this data model is called an "instance".
 An instance has one of six primitive types, and a range of possible values
 depending on the type:
 
-null: A JSON "null" value
-
-boolean: A "true" or "false" value, from the JSON "true" or "false" value
-
-object: An unordered set of properties mapping a string to an instance, from the
-JSON "object" value
-
-array: An ordered list of instances, from the JSON "array" value
-
-number: An arbitrary-precision, base-10 decimal number value, from the JSON
-"number" value
-
-string: A string of Unicode code points, from the JSON "string" value
+- *null*: A JSON "null" value
+- boolean: A "true" or "false" value, from the JSON "true" or "false" value
+- *object*: An unordered set of properties mapping a string to an instance, from
+  the JSON "object" value
+- *array*: An ordered list of instances, from the JSON "array" value
+- *number*: An arbitrary-precision, base-10 decimal number value, from the JSON
+  "number" value
+- *string*: A string of Unicode code points, from the JSON "string" value
 
 Whitespace and formatting concerns, including different lexical representations
 of numbers that are equal within the data model, are thus outside the scope of
@@ -201,18 +196,14 @@ A JSON Schema MUST be an object or a boolean.
 Object properties that are applied to the instance are called keywords, or
 schema keywords. Broadly speaking, keywords fall into one of five categories:
 
-identifiers: control schema identification through setting a IRI for the schema
-and/or changing how the base IRI is determined
-
-assertions: produce a boolean result when applied to an instance
-
-annotations: attach information to an instance for application use
-
-applicators: apply one or more subschemas to a particular location in the
-instance, and combine or modify their results
-
-reserved locations: do not directly affect results, but reserve a place for a
-specific purpose to ensure interoperability
+- *identifiers*: control schema identification through setting a IRI for the
+  schema and/or changing how the base IRI is determined
+- *assertions*: produce a boolean result when applied to an instance
+- *annotations*: attach information to an instance for application use
+- *applicators*: apply one or more subschemas to a particular location in the
+  instance, and combine or modify their results
+- *reserved locations*: do not directly affect results, but reserve a place for
+  a specific purpose to ensure interoperability
 
 Keywords may fall into multiple categories, although applicators SHOULD only
 produce assertion results based on their subschemas' results. They should not
@@ -241,9 +232,8 @@ schema processing optimizations. They behave identically to the following schema
 objects (where `not` is part of the subschema application vocabulary defined in
 this document).
 
-`true`: Always passes validation, as if the empty schema `{}`
-
-`false`: Always fails validation, as if the schema `{ "not": {} }`
+- `true`: Always passes validation, as if the empty schema `{}`
+- `false`: Always fails validation, as if the schema `{ "not": {} }`
 
 While the empty schema object is unambiguous, there are many possible
 equivalents to the `false` schema. Using the boolean values ensures that the
@@ -890,7 +880,7 @@ vocabulary's keywords.
 Meta-schema authoring is an advanced usage of JSON Schema, so the design of
 meta-schema features emphasizes flexibility over simplicity.
 
-#### The $schema Keyword {#keyword-schema}
+#### The `$schema` Keyword {#keyword-schema}
 
 The `$schema` keyword is both used as a JSON Schema dialect identifier and as
 the identifier of a resource which is itself a JSON Schema, which describes the
@@ -917,7 +907,7 @@ the following options:
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
 
-#### The $vocabulary Keyword
+#### The `$vocabulary` Keyword
 
 The `$vocabulary` keyword is used in meta-schemas to identify the vocabularies
 available for use in schemas described by that meta-schema, and whether each
@@ -1048,7 +1038,7 @@ Several keywords can accept a relative [IRI-reference](#rfc3987), or a value
 used to construct a relative IRI-reference. For these keywords, it is necessary
 to establish a base IRI in order to resolve the reference.
 
-#### The $id Keyword {#id-keyword}
+#### The `$id` Keyword {#id-keyword}
 
 The `$id` keyword identifies a schema resource with its [canonical](#rfc6596)
 IRI.
@@ -1128,10 +1118,11 @@ as the same IRI through the use of `$id`, `$anchor`, `$dynamicAnchor`, or any
 other mechanism, implementations SHOULD raise an error condition. Otherwise the
 result is undefined, and even if documented will not be interoperable.
 
-#### Schema References {#references} Several keywords can be used to reference a
-schema which is to be applied to the current instance location. `$ref` and
-`$dynamicRef` are applicator keywords, applying the referenced schema to the
-instance.
+#### Schema References {#references}
+
+Several keywords can be used to reference a schema which is to be applied to the
+current instance location. `$ref` and `$dynamicRef` are applicator keywords,
+applying the referenced schema to the instance.
 
 As the values of `$ref` and `$dynamicRef` are IRI References, this allows the
 possibility to externalise or divide a schema across multiple files, and
@@ -1143,7 +1134,7 @@ if it is a network-addressable URL, and implementations SHOULD NOT assume they
 should perform a network operation when they encounter a network-addressable
 IRI.
 
-##### Direct References with $ref {#ref}
+##### Direct References with `$ref` {#ref}
 
 The `$ref` keyword is an applicator that is used to reference a statically
 identified schema. Its results are the results of the referenced schema.[^5]
@@ -1156,7 +1147,7 @@ Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
 
-##### Dynamic References with $dynamicRef {#dynamic-ref}
+##### Dynamic References with `$dynamicRef` {#dynamic-ref}
 
 The `$dynamicRef` keyword is an applicator that allows for deferring the full
 resolution until runtime, at which point it is resolved each time it is
@@ -1182,7 +1173,7 @@ For a full example using these keyword, see {{recursive-example}}.[^6]
 [^6]: The difference between the hyper-schema meta-schema in pre-2019 drafts and
 an this draft dramatically demonstrates the utility of these keywords.
 
-#### Schema Re-Use With $defs {#defs}
+#### Schema Re-Use With `$defs` {#defs}
 
 The `$defs` keyword reserves a location for schema authors to inline re-usable
 JSON Schemas into a more general schema. The keyword does not directly affect
@@ -1207,7 +1198,7 @@ the positive integer constraint is a subschema in `$defs`:
 }
 ```
 
-### Comments With $comment
+### Comments With `$comment`
 
 This keyword reserves a location for comments from schema authors to readers or
 maintainers of the schema.
@@ -1650,7 +1641,7 @@ annotation collection, although they enable the same annotation keyword to be
 applied to an instance location with different values. Annotation keywords
 define their own rules for combining such values.
 
-##### allOf {#allof}
+##### `allOf` {#allof}
 
 This keyword's value MUST be a non-empty array. Each item of the array MUST be a
 valid JSON Schema.
@@ -1658,7 +1649,7 @@ valid JSON Schema.
 An instance validates successfully against this keyword if it validates
 successfully against all schemas defined by this keyword's value.
 
-##### anyOf
+##### `anyOf`
 
 This keyword's value MUST be a non-empty array. Each item of the array MUST be a
 valid JSON Schema.
@@ -1668,7 +1659,7 @@ successfully against at least one schema defined by this keyword's value. Note
 that when annotations are being collected, all subschemas MUST be examined so
 that annotations are collected from each subschema that validates successfully.
 
-##### oneOf
+##### `oneOf`
 
 This keyword's value MUST be a non-empty array. Each item of the array MUST be a
 valid JSON Schema.
@@ -1676,7 +1667,7 @@ valid JSON Schema.
 An instance validates successfully against this keyword if it validates
 successfully against exactly one schema defined by this keyword's value.
 
-##### not {#not}
+##### `not` {#not}
 
 This keyword's value MUST be a valid JSON Schema.
 
@@ -1698,7 +1689,7 @@ present. In particular, they MUST NOT be treated as if present with an empty
 schema, and when `if` is not present, both `then` and `else` MUST be entirely
 ignored.
 
-##### if
+##### `if`
 
 This keyword's value MUST be a valid JSON Schema.
 
@@ -1716,7 +1707,7 @@ If [annotations](#annotations) are being collected, they are collected from this
 keyword's subschema in the usual way, including when the keyword is present
 without either `then` or `else`.
 
-##### then
+##### `then`
 
 This keyword's value MUST be a valid JSON Schema.
 
@@ -1729,7 +1720,7 @@ validate against its subschema. Implementations MUST NOT evaluate the instance
 against this keyword, for either validation or annotation collection purposes,
 in such cases.
 
-##### else
+##### `else`
 
 This keyword's value MUST be a valid JSON Schema.
 
@@ -1742,7 +1733,7 @@ successfully validates against its subschema. Implementations MUST NOT evaluate
 the instance against this keyword, for either validation or annotation
 collection purposes, in such cases.
 
-##### dependentSchemas
+##### `dependentSchemas`
 
 This keyword specifies subschemas that are evaluated if the instance is an
 object and contains a certain property.
@@ -1756,7 +1747,7 @@ property.
 
 Omitting this keyword has the same behavior as an empty object.
 
-##### propertyDependencies
+##### `propertyDependencies`
 
 This keyword specifies subschemas that are evaluated if the instance is an
 object and contains a certain property with a certain string value.
@@ -1779,7 +1770,7 @@ results.
 
 #### Keywords for Applying Subschemas to Arrays
 
-##### prefixItems
+##### `prefixItems`
 
 The value of "prefixItems` MUST be a non-empty array of valid JSON Schemas.
 
@@ -1795,7 +1786,7 @@ keyword. This annotation affects the behavior of `items` and `unevaluatedItems`.
 
 Omitting this keyword has the same assertion behavior as an empty array.
 
-##### items {#items}
+##### `items` {#items}
 
 The value of `items` MUST be a valid JSON Schema.
 
@@ -1825,7 +1816,7 @@ collection MUST do so.
 
 #### Keywords for Applying Subschemas to Objects
 
-##### properties
+##### `properties`
 
 The value of `properties` MUST be an object. Each value of this object MUST be a
 valid JSON Schema.
@@ -1841,7 +1832,7 @@ the Unevaluated vocabulary.
 
 Omitting this keyword has the same assertion behavior as an empty object.
 
-##### patternProperties
+##### `patternProperties`
 
 The value of `patternProperties` MUST be an object. Each property name of this
 object SHOULD be a valid regular expression, according to the ECMA-262 regular
@@ -1861,7 +1852,7 @@ behavior of `additionalProperties` (in this vocabulary) and
 
 Omitting this keyword has the same assertion behavior as an empty object.
 
-##### additionalProperties {#additionalproperties}
+##### `additionalProperties` {#additionalproperties}
 
 The value of `additionalProperties` MUST be a valid JSON Schema.
 
@@ -1895,7 +1886,7 @@ failing schemas are dropped. See our [Decision
 Record](https://github.com/json-schema-org/json-schema-spec/tree/HEAD/adr/2022-04-08-cref-for-ambiguity-and-fix-later-gh-spec-issue-1172.md)
 for further details.
 
-##### propertyNames
+##### `propertyNames`
 
 The value of `propertyNames` MUST be a valid JSON Schema.
 
@@ -1907,7 +1898,7 @@ Omitting this keyword has the same behavior as an empty schema.
 
 #### Other Keywords for Applying Subschemas
 
-##### maxContains
+##### `maxContains`
 
 The value of this keyword MUST be a non-negative integer.
 
@@ -1917,7 +1908,7 @@ as described below in the section for that keyword.
 Validation MUST always succeed against this keyword. The value of this keyword
 is used as its annotation result.
 
-##### minContains
+##### `minContains`
 
 The value of this keyword MUST be a non-negative integer.
 
@@ -1931,7 +1922,7 @@ Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation results.
 However, as described in the section for `contains`, the absence of this
 keyword's annotation causes `contains` to assume a minimum value of 1.
 
-##### contains
+##### `contains`
 
 The value of this keyword MUST be a valid JSON Schema.
 
@@ -2015,7 +2006,7 @@ outcomes. However, the keywords in this vocabulary are notable exceptions:
   from `properties`, `patternProperties`, `additionalProperties`, `contains`,
   and itself
 
-### unevaluatedItems {#unevaluateditems}
+### `unevaluatedItems` {#unevaluateditems}
 
 The value of `unevaluatedItems` MUST be a valid JSON Schema.
 
@@ -2046,7 +2037,7 @@ the behavior of `items`. This annotation affects the behavior of
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
-### unevaluatedProperties {#unevaluatedproperties}
+### `unevaluatedProperties` {#unevaluatedproperties}
 
 The value of `unevaluatedProperties` MUST be a valid JSON Schema.
 
@@ -2238,7 +2229,7 @@ if they contain the same units, in any order.
 
 The JSON key for these additional results is "details".
 
-### 12.4. Output Structure
+### Output Structure
 
 The output MUST be an object containing a boolean property named "valid". When
 additional information about the result is required, the output MUST also
@@ -2728,7 +2719,7 @@ action based on `$comment` contents.
 
 ## IANA Considerations
 
-### application/schema+json
+### `application/schema+json`
 
 The proposed MIME media type for JSON Schema is defined as follows:
 
@@ -2748,7 +2739,7 @@ Interoperability considerations:: See Sections [6.2](#language),
 
 Fragment identifier considerations:: See {{fragments}}
 
-### application/schema-instance+json
+### `application/schema-instance+json`
 
 The proposed MIME media type for JSON Schema Instances that require a JSON
 Schema-specific media type is defined as follows:
