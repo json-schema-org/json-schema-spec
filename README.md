@@ -69,11 +69,23 @@ features they make available to you.
 - [remark-table-of-contents](/json-schema-org/json-schema-spec/blob/main/remark-table-of-contents.js)
   -- Adds a table of contents in a section with a header called "Table of
   Contents".
+- [remark-code-titles](/json-schema-org/json-schema-spec/blob/main/remark-code-titles.js)
+  -- Add titles to code blocks
+  - Example:
+    ```markdown
+    \`\`\`jsonschema "My Fun Title"
+    { "type": "string" }
+    \`\`\`
+    ```
+  - The languages `jsonschema` and `json` have special styling
+  - The title will be parsed as a JSON string, but you have to double escape
+    escaped characters. So, to get `My "quoted" title`, you would need to be
+    `"My \\\\"quoted\\\\" title"`.
 - [remark-torchlight](https://github.com/torchlight-api/remark-torchlight) --
   Syntax highlighting and more using https://torchlight.dev. Features include
   line numbers and line highlighting.
 - [remark-flexible-containers](https://github.com/ipikuka/remark-flexible-containers)
-  - Add a callout box using the following syntax. Supported container types are
+  -- Add a callout box using the following syntax. Supported container types are
   `warning`, `note`, and `experimental`.
 
     ```

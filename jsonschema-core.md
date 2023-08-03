@@ -290,7 +290,7 @@ Schema document and resource concepts will be clarified in a future draft.
 
 Some keywords take schemas themselves, allowing JSON Schemas to be nested:
 
-```json
+```jsonschema
 {
   "title": "root",
   "items": {
@@ -628,7 +628,7 @@ of multiple primitive types. The companion validation vocabulary also includes a
 primitive types. This allows for a concise expression of use cases such as a
 function that might return either a string of a certain length or a null value:
 
-```json
+```jsonschema
 {
   "type": ["string", "null"],
   "maxLength": 255
@@ -696,7 +696,7 @@ the [Validation specification](#json-schema-validation):
 
 Note that some lines are wrapped for clarity.
 
-```json
+```jsonschema
 {
   "title": "Feature list",
   "type": "array",
@@ -775,7 +775,7 @@ subschemas.
 Note that the overall schema results may still include annotations collected
 from other schema locations. Given this schema:
 
-```json
+```jsonschema
 {
   "oneOf": [
     {
@@ -1185,7 +1185,7 @@ a valid JSON Schema.
 As an example, here is a schema describing an array of positive integers, where
 the positive integer constraint is a subschema in `$defs`:
 
-```json
+```jsonschema
 {
   "type": "array",
   "items": { "$ref": "#/$defs/positiveInteger" },
@@ -1305,7 +1305,7 @@ that schema SHOULD be used automatically.
 
 For example, consider this schema:
 
-```json
+```jsonschema
 {
   "$id": "https://example.net/root.json",
   "type": "array",
@@ -1361,7 +1361,7 @@ identify embedded schema resources or locations within them.
 Consider the following schema document that contains another schema resource
 embedded within it:
 
-```json
+```jsonschema
 {
   "$id": "https://example.com/foo",
   "items": {
@@ -1383,7 +1383,7 @@ object, but that object's IRI relative to its resource's canonical IRI is
 Now consider the following two schema resources linked by reference using a IRI
 value for `$ref`:
 
-```json
+```jsonschema
 {
   "$id": "https://example.com/foo",
   "items": {
@@ -1392,10 +1392,10 @@ value for `$ref`:
 }
 ```
 
-```json
+```jsonschema
 {
   "$id": "https://example.com/bar",
-  "additionalProperties": { }
+  "additionalProperties": {}
 }
 ```
 
@@ -2240,8 +2240,7 @@ details: the collection of results produced by subschemas
 
 For these examples, the following schema and instances will be used.
 
-Schema
-```json
+```jsonschema
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://json-schema.org/schemas/example",
@@ -2284,16 +2283,15 @@ Schema
 }
 ```
 
-Failing instance
-```json
+
+```json "Failing instance"
 {
   "foo": {"foo-prop": "not 1", "other-prop": false},
   "bar": {"bar-prop": 2}
 }
 ```
 
-Passing instance
-```json
+```json "Passing instance"
 {
   "foo": {
     "foo-prop": 1,
@@ -2381,8 +2379,7 @@ Output units which do not contain errors or annotations SHOULD be excluded from
 this format, however implementations MAY choose to include them for
 completeness.
 
-Failing results
-```json
+```json "Failing results"
 {
   "valid": false,
   "details": [
@@ -2417,8 +2414,7 @@ Failing results
 }
 ```
 
-Passing results
-```json
+```json "Passing results"
 {
   "valid": true,
   "details": [
@@ -2495,8 +2491,7 @@ All output units are included in this format.
 
 The location properties of the root output unit MAY be omitted.
 
-Failing results (errors)
-```json
+```json "Failing results (errors)"
 {
   "valid": false,
   "evaluationPath": "",
@@ -2586,8 +2581,7 @@ Failing results (errors)
 }
 ```
 
-Passing results (annotations)
-```json
+```json "Passing results (annotations)"
 {
   "valid": true,
   "evaluationPath": "",
@@ -2875,7 +2869,7 @@ Consider the following schema, which shows `$id` being used to identify both the
 root schema and various subschemas, and `$anchor` being used to define plain
 name fragment identifiers.
 
-```json
+```jsonschema
 {
   "$id": "https://example.com/root.json",
   "$defs": {
@@ -2998,8 +2992,7 @@ schema allows and ignores other instance properties. The second is more strict
 and only allows the "data" and "children" properties. An example instance with
 "data" misspelled as "daat" is also shown.
 
-Tree schema, extensible
-```json
+```jsonschema "Tree schema, extensible"
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/tree",
@@ -3018,8 +3011,7 @@ Tree schema, extensible
 }
 ```
 
-Strict-tree schema, guards against misspelled properties
-```json
+```jsonschema "Strict-tree schema, guards against misspelled properties"
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/strict-tree",
@@ -3030,8 +3022,7 @@ Strict-tree schema, guards against misspelled properties
 }
 ```
 
-Instance with misspelled field
-```json
+```jsonschema "Instance with misspelled field"
 {
   "children": [ { "daat": 1 } ]
 }
@@ -3161,7 +3152,7 @@ which they are understood.
 
 This meta-schema combines several vocabularies for general use.
 
-```json
+```jsonschema
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/meta/general-use-example",
@@ -3192,7 +3183,7 @@ This meta-schema combines several vocabularies for general use.
 
 This meta-schema describes only a single extension vocabulary.
 
-```json
+```jsonschema
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://example.com/meta/example-vocab",
@@ -3246,7 +3237,7 @@ generator should consider the reference target to be a distinct class, and how
 those classes are related. Note that this example is solely for illustrative
 purposes, and is not intended to propose a functional code generation keyword.
 
-```json
+```jsonschema
 {
   "allOf": [
     {

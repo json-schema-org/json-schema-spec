@@ -648,7 +648,7 @@ absolute-IRI `$id`.
 Here is an example schema, illustrating the use of `contentEncoding` and
 `contentMediaType`:
 
-```json
+```jsonschema
 {
   "type": "string",
   "contentEncoding": "base64",
@@ -661,7 +661,7 @@ should be interpretable as base64-encoded PNG images.
 
 Another example:
 
-```json
+```jsonschema
 {
   "type": "string",
   "contentMediaType": "text/html"
@@ -676,7 +676,7 @@ UTF-8.
 This example describes a JWT that is MACed using the HMAC SHA-256 algorithm, and
 requires the "iss" and "exp" fields in its claim set.
 
-```json
+```jsonschema
 {
   "type": "string",
   "contentMediaType": "application/jwt",
