@@ -2089,10 +2089,9 @@ other means.
 This specification defines three output formats. See the "Output Structure"
 section for the requirements of each format.
 
-Flag: A boolean which simply indicates the overall validation result with no
-further details.
-
-List: Provides validation information in a flat list structure.
+- *Flag*: A boolean which simply indicates the overall validation result with no
+  further details.
+- *List*: Provides validation information in a flat list structure.
 
 Hierarchical: Provides validation information in a hierarchical structure that
 follows the evaluation paths generated while processing the schema.

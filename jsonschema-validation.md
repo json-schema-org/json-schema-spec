@@ -124,10 +124,10 @@ String values MUST be one of the six primitive types ("null", "boolean",
 "object", "array", "number", or "string"), or "integer" which matches any number
 with a zero fractional part.
 
-If the value of "type" is a string, then an instance validates successfully if
+If the value of `type` is a string, then an instance validates successfully if
 its type matches the type represented by the value of the string.
 
-If the value of "type" is an array, then an instance validates successfully if
+If the value of `type` is an array, then an instance validates successfully if
 its type matches any of the types indicated by the strings in the array.
 
 #### `enum` {#enum}
