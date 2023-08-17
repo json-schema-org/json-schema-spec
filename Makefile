@@ -2,8 +2,6 @@ XML2RFC ?= xml2rfc
 VENV ?= .venv
 
 OUT = \
-	jsonschema-core.html jsonschema-core.txt \
-	jsonschema-validation.html jsonschema-validation.txt \
 	relative-json-pointer.html relative-json-pointer.txt
 
 all: $(VENV) $(OUT)
