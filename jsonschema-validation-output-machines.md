@@ -12,25 +12,25 @@ There are no requirements on the form of IRI itself, except that it MUST be abso
 
 JSON Schema output is defined using the JSON Schema data instance model as described in [JSON Schema](#json-schema) "Instance Data Model".  Implementations MAY deviate from this in their internal modelling, as supported by their specific languages and platforms, however it is RECOMMENDED that the output be convertible to the JSON format defined herein via serialization or other means.
 
-## Output Formats
-
-This specification defines three output formats.  See [Output Structure]{#output-structure} for the requirements of each format.
-
-- **Flag** - A boolean which simply indicates the overall validation result with no further details.
-- **List** - Provides validation information in a flat list structure.
-- **Hierarchical** - Provides validation information in a hierarchical structure that follows the evaluation paths generated while processing the schema.
-
-An implementation MUST provide the "flag" format and SHOULD provide at least one of the "list" or "hierarchical" formats. Implementations SHOULD specify in their documentation which formats they support.
-
 ## Minimum Information
 
-Beyond the simplistic "flag" output, additional information is useful to aid in debugging evaluation of an instance by a schema.  Each sub-result MUST contain the [validation result](#validation-result) for the associated subschema as well as the following information defined by [JSON Schema](#json-schema) "Output Formatting".
+Beyond the simplistic "flag" output, additional information is useful to aid in debugging evaluation of an instance by a schema.
+
+The output of a subschema validation is considered an "output unit."  The contents of each output unit is specified by this section.
+
+Each output unit MUST contain the [validation result](#validation-result) for the associated subschema as well as the following information defined by [JSON Schema](#json-schema) "Output Formatting":
 
 - Evaluation Path
 - Schema Location
 - Instance Location
 
-A single object that contains all of these components is considered an "output unit."
+The following information MAY be included conditionally:
+
+- When subschema validation has succeeded
+  - Annotations
+- When subschema validation has failed
+  - Errors
+  - Dropped Annotations
 
 Implementations MAY elect to provide additional information.
 
@@ -50,14 +50,19 @@ For "hierarchical", this property will contain results in a tree structure where
 
 The sequence of output units within this list is not specified and MAY be determined by the implementation.  Sets of output units are considered equivalent if they contain the same units, in any order.
 
+<!-- Not sure if it's necessary to mention equivalence. -->
+
 The JSON key for these additional results is `details`.
 
 ## Output Structure {#output-structure}
 
-The output MUST be an object containing a boolean property named `valid`.  When additional information about the result is required, the output MUST also contain `details` as described below.
+This specification defines three output formats.
 
-- `valid` - a boolean value indicating the overall validation success or failure
-- `details` - the collection of results produced by subschemas
+- **Flag** - A boolean which simply indicates the overall validation result with no further details.
+- **List** - Provides validation information in a flat list structure.
+- **Hierarchical** - Provides validation information in a hierarchical structure that follows the evaluation paths generated while processing the schema.
+
+An implementation MUST provide the "flag" format and SHOULD provide at least one of the "list" or "hierarchical" formats. Implementations SHOULD specify in their documentation which formats they support.
 
 For these examples, the following schema and instances will be used.
 
