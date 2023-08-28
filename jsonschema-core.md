@@ -337,13 +337,13 @@ identifiers](#w3cwd-fragid-best-practices-20121025), plain name fragment
 identifiers in `application/schema+json` are reserved for referencing locally
 named schemas.
 
-Plain name fragments MUST follow XML's [NCName production](#xml-names), which
+Plain name fragments MUST follow XML's [`NCName` production](#xml-names), which
 allows for compatibility with the recommended plain name
 [syntax](#W3C.REC-xptr-framework-20030325) for XML-based media types.  For
 convenience, the `NCName` syntax is reproduced here in ABNF form, using
 a minimal set of rules: [^20]
 
-[^20] Note that the previous syntax for plain name fragment is a subset of this syntax, which used only the first line of each of the `NCNameStartChar`` and `NCNameChar`` rules.
+[^20] Note that the previous syntax for plain name fragment is a subset of this syntax, which used only the first line of each of the `NCNameStartChar` and `NCNameChar` rules.
 
 ```abnf
 NCName          = NCNameStartChar *NCNameChar
