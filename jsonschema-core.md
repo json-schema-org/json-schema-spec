@@ -337,11 +337,26 @@ identifiers](#w3cwd-fragid-best-practices-20121025), plain name fragment
 identifiers in `application/schema+json` are reserved for referencing locally
 named schemas.
 
-Plain name fragments MUST start with a letter ([A-Za-z]) or underscore ("\_"),
-followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores
-("\_"), and periods ("."). This matches the US-ASCII part of XML's [NCName
-production](#xml-names), which allows for compatibility with the recommended
-plain name [syntax](#w3crec-xptr-framework-20030325) for XML-based media types.
+Plain name fragments MUST follow XML's [NCName production](#xml-names), which
+allows for compatibility with the recommended plain name
+[syntax](#W3C.REC-xptr-framework-20030325) for XML-based media types.  For
+convenience, the `NCName`` syntax is reproduced here in ABNF form, using
+a minimal set of rules: [^20]
+
+[^20] Note that the previous syntax for plain name fragment is a subset of this syntax, which used only the first line of each of the `NCNameStartChar`` and `NCNameChar`` rules.
+
+```abnf
+NCName          = NCNameStartChar *NCNameChar
+NCNameStartChar = "_" / ALPHA
+                      / %xC0-D6 / %xD8-F6 / %xF8-2FF
+                      / %x370-37D / %x37F-1FFF
+                      / %x200C-200D / %x2070-218F
+                      / %x2C00-2FEF / %x3001-D7FF
+                      / %xF900-FDCF / %xFDF0-FFFD
+                      / %x10000-EFFFF
+NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
+                      / %xB7 / %x0300-036F / %x203F-2040
+```
 
 All fragment identifiers that do not match the JSON Pointer syntax MUST be
 interpreted as plain name fragment identifiers.
