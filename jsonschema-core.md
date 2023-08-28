@@ -2079,10 +2079,10 @@ consumers will need to properly interpret validation results.
 ### Format
 
 JSON Schema output is defined using the JSON Schema data instance model as
-described in [Instance Data Model](#data-model). Implementations MAY deviate from this as supported
-by their specific languages and platforms, however it is RECOMMENDED that the
-output be convertible to the JSON format defined herein via serialization or
-other means.
+described in [Instance Data Model](#data-model). Implementations MAY deviate
+from this as supported by their specific languages and platforms, however it
+is RECOMMENDED that the output be convertible to the JSON format defined herein
+via serialization or other means.
 
 ### Output Formats
 
