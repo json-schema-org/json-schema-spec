@@ -1,20 +1,20 @@
-# A Specification for Machine-Readable JSON Schema Output
+# A Specification for Machine-Readable Output for JSON Schema Validation and Annotation
 
 JSON Schema is defined to be platform-independent.  As such, to increase compatibility across platforms, implementations SHOULD conform to a standard validation output format.  This section describes the minimum requirements that consumers will need to properly interpret validation results.
 
 ## Schema Identifiers
 
-The output defined in this specification requires that the evaluation root be defined with an absolute IRI.  In the event an absolute IRI has not been defined, the implementation MUST generate one.
+The output defined in this specification requires that the evaluation root be defined with an absolute IRI, i.e. using the `$id` keyword.  In the event an absolute IRI has not been defined, the implementation MUST generate one.
 
 There are no requirements on the form of IRI itself, except that it MUST be absolute.
 
 ## Textual Format and Encoding
 
-JSON Schema output is defined using the JSON Schema data instance model as described in [JSON Schema, section 4.2.1]().  Implementations MAY deviate from this as supported by their specific languages and platforms, however it is RECOMMENDED that the output be convertible to the JSON format defined herein via serialization or other means.
+JSON Schema output is defined using the JSON Schema data instance model as described in [JSON Schema](#json-schema) "Instance Data Model".  Implementations MAY deviate from this in their internal modelling, as supported by their specific languages and platforms, however it is RECOMMENDED that the output be convertible to the JSON format defined herein via serialization or other means.
 
 ## Output Formats
 
-This specification defines three output formats.  See the "Output Structure" section for the requirements of each format.
+This specification defines three output formats.  See [Output Structure]{#output-structure} for the requirements of each format.
 
 - **Flag** - A boolean which simply indicates the overall validation result with no further details.
 - **List** - Provides validation information in a flat list structure.
@@ -24,85 +24,21 @@ An implementation MUST provide the "flag" format and SHOULD provide at least one
 
 ## Minimum Information
 
-Beyond the simplistic "flag" output, additional information is useful to aid in debugging a schema or instance.  Each sub-result MUST contain the information contained within this section at a minimum, unless otherwise specified.
+Beyond the simplistic "flag" output, additional information is useful to aid in debugging evaluation of an instance by a schema.  Each sub-result MUST contain the [validation result](#validation-result) for the associated subschema as well as the following information defined by [JSON Schema](#json-schema) "Output Formatting".
+
+- Evaluation Path
+- Schema Location
+- Instance Location
 
 A single object that contains all of these components is considered an "output unit."
 
 Implementations MAY elect to provide additional information.
 
-### Evaluation path
+### Validation Result {#validation-result}
 
-The evaluation path to the schema object that produced the output unit. The value MUST be expressed as a JSON Pointer, and it MUST include any by-reference applicators such as `$ref` or `$dynamicRef`.
+The validation result is a boolean that indicates whether the local instance passed validation by the local subschema.
 
-<!--
-The schema may not actually have a value at the location indicated by this pointer. It is provided as an indication of the traversal path only.
--->
-
-```
-/properties/width/$ref/allOf/1
-```
-
-Note that this pointer may not be resolvable by the normal JSON Pointer process due to the inclusion of these by-reference applicator keywords.
-
-The JSON key for this information is `evaluationPath`.
-
-### Schema Location
-
-The absolute, dereferenced location of the schema object that produced the output unit.  The value MUST be expressed using the canonical IRI of the relevant schema resource plus a JSON Pointer fragment that indicates the schema object that produced the output.  It MUST NOT include by-reference applicators such as `$ref` or `$dynamicRef`.
-
-<!--
-Note that "absolute" here is in the sense of "absolute filesystem path" (meaning the complete location) rather than the "absolute-IRI" terminology from RFC 3987 (meaning with scheme and without fragment). Schema locations will have a fragment in order to identify the specific schema object.
--->
-
-```
-https://example.com/schemas/common#/$defs/allOf/1
-```
-
-The JSON key for this information is `schemaLocation`.
-
-### Instance Location
-
-The location of the JSON value within the instance being validated.  The value MUST be expressed as a JSON Pointer.
-
-The JSON key for this information is `instanceLocation`.
-
-### Errors
-
-Any errors produced by the validation.  This property MUST NOT be included if the validation was successful.  The value
-for this property MUST be an object where the keys are the names of keywords and the values are the error message produced by the associated keyword.
-
-If the subschema itself is producing the error, that error MUST be listed with an empty string key.
-
-<!--
-Although there may be other cases where a subschema can produce an error, the most common case is the "false" schema.  In cases like these, there is no keyword that produces the error, so there is nothing to use as a key.  Thus the empty string is used instead.
--->
-
-The specific wording for the message is not defined by this specification.  Implementations will need to provide this.
-
-The JSON key for this information is `errors`.
-
-### Annotations
-
-Any annotations produced by the evaluation.  This property MUST NOT be included if the validation result of the containing subschema was unsuccessful.
-
-The value for this property MUST be an object where the keys are the names of keywords and the values are the annotations
-produced by the associated keyword.
-
-Each keyword defines its own annotation data type (e.g. `properties` produces a list of object keys, whereas `title` produces a string).
-
-The JSON key for this information is `annotations`.
-
-### Dropped Annotations
-
-Any annotations produced and subsequently dropped by the evaluation due to an unsuccessful validation result of the containing subschema. This property MAY be included if the validation result of the containing subschema was unsuccessful.  It MUST NOT be included if the local validation result of the containing subschema was successful.
-
-Implementations that wish to provide these annotations MUST NOT provide them as their default behavior.  These annotations MUST only be included by explicitly configuring the implementation to do so.
-
-The value for this property MUST be an object where the keys are the names of keywords and the values are the annotations produced by the associated keyword.
-
-Each keyword defines its own annotation data type (e.g. `properties` produces a list of object keys, whereas `title` produces a string).
-
-The JSON key for this information is `droppedAnnotations`.
+The JSON key for these additional results is `valid`.
 
 ### Results from Subschemas
 
@@ -116,7 +52,7 @@ The sequence of output units within this list is not specified and MAY be determ
 
 The JSON key for these additional results is `details`.
 
-## Output Structure
+## Output Structure {#output-structure}
 
 The output MUST be an object containing a boolean property named `valid`.  When additional information about the result is required, the output MUST also contain `details` as described below.
 
@@ -603,3 +539,44 @@ Reasons to omit output units may include, but are not limited to:
 Output units which include annotations MUST NOT be pruned.
 
 Implementations which provide this behavior SHOULD provide configuration mechanisms appropriate for their users' needs.
+
+## References
+
+### Normative References
+
+#### [RFC2119] {#rfc2119}
+
+Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14,
+RFC 2119, DOI 10.17487/RFC2119, March 1997,
+<<https://www.rfc-editor.org/info/rfc2119>>.
+
+#### [RFC3986] {#rfc3986}
+
+Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifier
+(URI): Generic Syntax", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005,
+<<https://www.rfc-editor.org/info/rfc3986>>.
+
+#### [RFC3987] {#rfc3987}
+
+Duerst, M. and M. Suignard, "Internationalized Resource Identifiers (IRIs)", RFC
+3987, DOI 10.17487/RFC3987, January 2005,
+<<https://www.rfc-editor.org/info/rfc3987>>.
+
+#### [RFC6901] {#rfc6901}
+
+Bryan, P., Ed., Zyp, K., and M. Nottingham, Ed., "JavaScript Object Notation
+(JSON) Pointer", RFC 6901, DOI 10.17487/RFC6901, April 2013,
+<<https://www.rfc-editor.org/info/rfc6901>>.
+
+#### [RFC8259] {#rfc8259}
+
+Bray, T., Ed., "The JavaScript Object Notation (JSON) Data Interchange Format",
+STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017,
+<<https://www.rfc-editor.org/info/rfc8259>>.
+
+#### [json-schema] {#json-schema}
+
+Wright, A., Andrews, H., Hutton, B., and G. Dennis, "JSON Schema: A Media Type
+for Describing JSON Documents", Work in Progress, Internet-Draft,
+draft-bhutton-json-schema-01, June 2022,
+<<https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema-01>>.
