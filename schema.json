@@ -14,13 +14,13 @@
 
     "title": "Core and Validation specifications meta-schema",
     "allOf": [
-        {"$ref": "meta/core"},
-        {"$ref": "meta/applicator"},
-        {"$ref": "meta/unevaluated"},
-        {"$ref": "meta/validation"},
-        {"$ref": "meta/meta-data"},
-        {"$ref": "meta/format-annotation"},
-        {"$ref": "meta/content"}
+        "meta/core",
+        "meta/applicator",
+        "meta/unevaluated",
+        "meta/validation",
+        "meta/meta-data",
+        "meta/format-annotation",
+        "meta/content"
     ],
     "type": ["object", "boolean"],
     "$comment": "This meta-schema also defines keywords that have appeared in previous drafts in order to prevent incompatible extensions as they remain in common use.",
@@ -38,7 +38,7 @@
             "additionalProperties": {
                 "anyOf": [
                     { "$dynamicRef": "#meta" },
-                    { "$ref": "meta/validation#/$defs/stringArray" }
+                    "meta/validation#/$defs/stringArray"
                 ]
             },
             "deprecated": true,

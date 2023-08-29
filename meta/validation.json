@@ -4,14 +4,15 @@
     "$dynamicAnchor": "meta",
 
     "title": "Validation vocabulary meta-schema",
-    "type": ["object", "boolean"],
+    "type": ["object", "boolean", "string"],
+    "format": "iri-reference",
     "properties": {
         "type": {
             "anyOf": [
-                { "$ref": "#/$defs/simpleTypes" },
+                "#/$defs/simpleTypes",
                 {
                     "type": "array",
-                    "items": { "$ref": "#/$defs/simpleTypes" },
+                    "items": "#/$defs/simpleTypes",
                     "minItems": 1,
                     "uniqueItems": true
                 }
@@ -38,26 +39,24 @@
         "exclusiveMinimum": {
             "type": "number"
         },
-        "maxLength": { "$ref": "#/$defs/nonNegativeInteger" },
-        "minLength": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
+        "maxLength": "#/$defs/nonNegativeInteger",
+        "minLength": "#/$defs/nonNegativeIntegerDefault0",
         "pattern": {
             "type": "string",
             "format": "regex"
         },
-        "maxItems": { "$ref": "#/$defs/nonNegativeInteger" },
-        "minItems": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
+        "maxItems": "#/$defs/nonNegativeInteger",
+        "minItems": "#/$defs/nonNegativeIntegerDefault0",
         "uniqueItems": {
             "type": "boolean",
             "default": false
         },
-        "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
-        "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
-        "required": { "$ref": "#/$defs/stringArray" },
+        "maxProperties": "#/$defs/nonNegativeInteger",
+        "minProperties": "#/$defs/nonNegativeIntegerDefault0",
+        "required": "#/$defs/stringArray",
         "dependentRequired": {
             "type": "object",
-            "additionalProperties": {
-                "$ref": "#/$defs/stringArray"
-            }
+            "additionalProperties": "#/$defs/stringArray"
         }
     },
     "$defs": {

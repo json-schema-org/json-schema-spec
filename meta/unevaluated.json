@@ -4,7 +4,8 @@
     "$dynamicAnchor": "meta",
 
     "title": "Unevaluated applicator vocabulary meta-schema",
-    "type": ["object", "boolean"],
+    "type": ["object", "boolean", "string"],
+    "format": "iri-reference",
     "properties": {
         "unevaluatedItems": { "$dynamicRef": "#meta" },
         "unevaluatedProperties": { "$dynamicRef": "#meta" }
