@@ -245,17 +245,27 @@ intent is clear to both human readers and implementations.
 A string schema operates as an implicit reference to another schema object.
 A string schema is a shorthand for a schema containing only the `$ref` keyword.
 
-For example, the string schema
+For example, the schema
 
 ```json
-"https://example.com/schema"
+{
+  "type": "object",
+  "properties": {
+    "foo": "https://example.com/schema"
+  }
+}
 ```
 
 is equivalent to
 
 ```json
 {
-  "$ref": "https://example.com/schema"
+  "type": "array",
+  "properties": {
+    "foo": {
+      "$ref": "https://example.com/schema"
+    }
+  }
 }
 ```
 
