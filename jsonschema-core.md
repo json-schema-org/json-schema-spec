@@ -339,7 +339,7 @@ named schemas.
 
 Plain name fragments MUST follow XML's [`NCName` production](#xml-names), which
 allows for compatibility with the recommended plain name
-[syntax](#W3C.REC-xptr-framework-20030325) for XML-based media types.  For
+[syntax](#w3crec-xptr-framework-20030325) for XML-based media types.  For
 convenience, the `NCName` syntax is reproduced here in ABNF form, using
 a minimal set of rules: [^20]
 
