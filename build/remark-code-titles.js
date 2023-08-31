@@ -25,6 +25,9 @@ const remarkNumberHeadings = () => (tree) => {
     } else if (language.toLowerCase() === "json") {
       title = "JSON";
       titleClasses.push("code-title-json");
+    } else if (language.toLowerCase() === "jsonc") {
+      title = "JSON";
+      titleClasses.push("code-title-json");
     } else {
       titleClasses.push("code-title-unknown");
     }
