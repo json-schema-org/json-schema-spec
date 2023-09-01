@@ -138,8 +138,8 @@ For these examples, the following schema and instances will be used.
 
 ```json "failing instance"
 {
-  "foo": {"foo-prop": "not 1", "other-prop": false},
-  "bar": {"bar-prop": 2}
+  "foo": { "foo-prop": "not 1", "other-prop": false },
+  "bar": { "bar-prop": 2 }
 }
 ```
 
