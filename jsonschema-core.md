@@ -260,7 +260,7 @@ is equivalent to
 
 ```json
 {
-  "type": "array",
+  "type": "object",
   "properties": {
     "foo": {
       "$ref": "https://example.com/schema"
