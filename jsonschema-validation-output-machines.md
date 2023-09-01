@@ -118,9 +118,7 @@ For these examples, the following schema and instances will be used.
         }
       ]
     },
-    "bar": {
-      "$ref": "#/$defs/bar"
-    }
+    "bar": { "$ref": "#/$defs/bar" }
   },
   "$defs": {
     "bar": {
