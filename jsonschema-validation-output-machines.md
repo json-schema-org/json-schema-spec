@@ -104,7 +104,7 @@ For these examples, the following schema and instances will be used.
   "properties": {
     "foo": {
       "allOf": [
-        { "required": [ "unspecified-prop" ] },
+        { "required": ["unspecified-prop"] },
         {
           "type": "object",
           "title": "foo-title",
