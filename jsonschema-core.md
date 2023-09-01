@@ -2071,34 +2071,44 @@ Omitting this keyword has the same assertion behavior as an empty schema.
 
 ## Output Formatting {#output}
 
-In order to foster increased usability and interoperability, implementations SHOULD adhere to well-defined output formats.
+In order to foster increased usability and interoperability, implementations
+SHOULD adhere to well-defined output formats.
 
-Because JSON Schema has multiple uses cases, and those uses cases have different intended consumers, this specification defers the details of any output formats to other documents.  Implementations are encouraged to support multiple output formats as required by their target user base.
+Because JSON Schema has multiple uses cases, and those uses cases have different
+intended consumers, this specification defers the details of any output formats
+to other documents. Implementations are encouraged to support multiple output
+formats as required by their target user base.
 
-The scope of this section, therefore, is limited to defining common terms that SHOULD be used in JSON Schema output specifications in order to align the vernacular across differing formats.  Output specifications which use this information MUST use this terminology to describe it.  Conversely, output specifications which use these terms MUST maintain their meaning.
+The scope of this section, therefore, is limited to defining common terms that
+SHOULD be used in JSON Schema output specifications in order to align the
+vernacular across differing formats. Output specifications which use this
+information MUST use this terminology to describe it. Conversely, output
+specifications which use these terms MUST maintain their meaning.
 
 ### Evaluation path
 
-The evaluation path is the set of keys, starting from the schema root, through which evaluation passes to reach the schema object that produced a specific result.
-The value MUST be expressed as a JSON Pointer, and it MUST include any by-reference
-applicators such as `$ref` or `$dynamicRef`.
+The evaluation path is the set of keys, starting from the schema root, through
+which evaluation passes to reach the schema object that produced a specific
+result. The value MUST be expressed as a JSON Pointer, and it MUST include any
+by-reference applicators such as `$ref` or `$dynamicRef`.
 
 ```
 /properties/width/$ref/allOf/1
 ```
 
-Note that this pointer may not be resolvable on the root schema by the normal JSON Pointer process.
-It is intended as an indication of the traversal path only.
+Note that this pointer may not be resolvable on the root schema by the normal
+JSON Pointer process. It is intended as an indication of the traversal path
+only.
 
 When represented in JSON, the key for this information MUST be "evaluationPath".
 
 ### Schema Location
 
-The schema location is the absolute, dereferenced location of the schema object that produced a result.
-The value MUST be expressed using the canonical IRI of the relevant
-schema resource plus a JSON Pointer fragment that indicates the schema object
-that produced the output. It MUST NOT include by-reference applicators such as
-`$ref` or `$dynamicRef`.[^14]
+The schema location is the absolute, dereferenced location of the schema object
+that produced a result. The value MUST be expressed using the canonical IRI of
+the relevant schema resource plus a JSON Pointer fragment that indicates the
+schema object that produced the output. It MUST NOT include by-reference
+applicators such as `$ref` or `$dynamicRef`.[^14]
 
 [^14]: Note that "absolute" here is in the sense of "absolute filesystem path"
 (meaning the complete location) rather than the "absolute-IRI" terminology from
@@ -2113,36 +2123,44 @@ When represented in JSON, the key for this information MUST be "schemaLocation".
 
 ### Instance Location
 
-The instance location is the location of the JSON value within the root instance being validated.
-The value MUST be expressed as a JSON Pointer.
+The instance location is the location of the JSON value within the root instance
+being validated. The value MUST be expressed as a JSON Pointer.
 
-When represented in JSON, the key for this information MUST be "instanceLocation".
+When represented in JSON, the key for this information MUST be
+"instanceLocation".
 
 ### Errors
 
-Errors are textual representations of individual validation failures, often intended for human consumers.  This specification contains no requirements for the content of these errors.
+Errors are textual representations of individual validation failures, often
+intended for human consumers. This specification contains no requirements for
+the content of these errors.
 
 When represented in JSON, the key for this information MUST be "errors".
 
 ### Annotations
 
-Many keywords are defined to produce annotations, whether intended for inter-keyword communication (e.g. between `properties` and `unevaluatedProperties`) or for application consumption (e.g. `title` or `readOnly`).  Annotation values may be of any type and are defined by the keywords that produced them.
+Many keywords are defined to produce annotations, whether intended for
+inter-keyword communication (e.g. between `properties` and
+`unevaluatedProperties`) or for application consumption (e.g. `title` or
+`readOnly`). Annotation values may be of any type and are defined by the
+keywords that produced them.
 
 When represented in JSON, the key for this information MUST be "annotations".
 
 ### Dropped Annotations
 
-A dropped annotation is any annotation produced and subsequently dropped by the evaluation due to an
-unsuccessful validation result of the containing subschema.
-This information MAY be included if the validation result of the containing subschema was unsuccessful.
-It MUST NOT be included if the local validation result of the containing
-subschema was successful.
+A dropped annotation is any annotation produced and subsequently dropped by the
+evaluation due to an unsuccessful validation result of the containing subschema.
+This information MAY be included if the validation result of the containing
+subschema was unsuccessful. It MUST NOT be included if the local validation
+result of the containing subschema was successful.
 
-Implementations that wish to provide dropped annotations MUST NOT provide them as
-their default behavior. Dropped annotations MUST only be included when the
+Implementations that wish to provide dropped annotations MUST NOT provide them
+as their default behavior. Dropped annotations MUST only be included when the
 implementations is explicitly configured to do so.
 
-When represented in JSON, the key for this information MUST be "droppedAnnotations".
+When represented in JSON, the key for this information MUST be
+"droppedAnnotations".
 
 ## Security Considerations {#security}
 
