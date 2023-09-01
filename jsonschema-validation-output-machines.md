@@ -149,7 +149,7 @@ For these examples, the following schema and instances will be used.
     "foo-prop": 1,
     "unspecified-prop": true
   },
-  "bar": {"bar-prop": 20}
+  "bar": { "bar-prop": 20 }
 }
 ```
 
