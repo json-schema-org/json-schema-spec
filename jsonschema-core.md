@@ -886,7 +886,7 @@ The `$schema` keyword is both used as a JSON Schema dialect identifier and as
 the identifier of a resource which is itself a JSON Schema, which describes the
 set of valid schemas written for this particular dialect.
 
-The value of this keyword MUST be a [IRI](#rfc3987) (containing a scheme) and
+The value of this keyword MUST be an [IRI](#rfc3987) (containing a scheme) and
 this IRI MUST be normalized. The current schema MUST be valid against the
 meta-schema identified by this IRI.
 
@@ -895,14 +895,22 @@ type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
 be used in the root schema objects of embedded schema resources. It MUST NOT
-appear in non-resource root schema objects. If absent from the document root
-schema, the resulting behavior is implementation-defined, but MUST fall within
-the following options:
+appear in non-resource root schema objects.
 
-- Refuse to process the schema, as with unsupported required vocabularies
-- Assume a specific, documented meta-schema
-- Document the process by which it examines the schema and determines which of a
-  specific set of meta-schemas to assume
+If present in the document root schema, an implementation MUST process the
+schema in accordance with the associated dialect.
+
+If absent from the document root schema, and an `application/schema+json` media
+type with a `schema` parameter is available, then the schema MUST be processed
+in accordance with the dialect indicated by the `schema` parameter.
+
+For cases where the `$schema` keyword is absent from the document root, no media
+type is provided, and/or the media type has no `schema` parameter, an
+implementation MAY offer a mechanism for the user to explicitly set the
+dialect.
+
+If the dialect is not specified through one of these methods, the implementation
+MUST refuse to process the schema, as with unsupported required vocabularies.
 
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
