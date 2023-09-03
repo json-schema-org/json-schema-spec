@@ -1058,7 +1058,10 @@ IRI.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
 the case of a network-addressable URL, a schema need not be downloadable from
-its canonical IRI.
+its canonical IRI. However, schema authors SHOULD refrain from creating schemas
+that use a locatable `$id` value unless the schema will be available at the
+indicated location. Otherwise, an IRI which does not convey location semantics
+SHOULD be used.
 
 If present, the value for this keyword MUST be a string, and MUST represent a
 valid [IRI-reference](#rfc3987). This IRI-reference SHOULD be normalized, and
