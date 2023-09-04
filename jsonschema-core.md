@@ -1146,9 +1146,8 @@ provides the ability to validate recursive structures through self-reference.
 
 The resolved IRI produced by these keywords is not necessarily a network
 locator, only an identifier. A schema need not be downloadable from the address
-if it is a network-addressable URL, and implementations SHOULD NOT assume they
-should perform a network operation when they encounter a network-addressable
-IRI.
+if it is a network-addressable URL. Implementations which can access the network
+SHOULD default to operating offline.
 
 ##### Direct References with `$ref` {#ref}
 
