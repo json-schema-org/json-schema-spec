@@ -3165,7 +3165,7 @@ This meta-schema combines several vocabularies for general use.
     {"$ref": "https://json-schema.org/draft/next/meta/core"},
     {"$ref": "https://json-schema.org/draft/next/meta/applicator"},
     {"$ref": "https://json-schema.org/draft/next/meta/validation"},
-    {"$ref": "https://example.com/meta/example-vocab",
+    {"$ref": "https://example.com/meta/example-vocab"},
   ],
   "patternProperties": {
     "^unevaluated": false
