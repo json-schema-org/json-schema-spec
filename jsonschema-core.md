@@ -242,8 +242,9 @@ intent is clear to both human readers and implementations.
 
 #### String JSON Schemas
 
-A string schema operates as an implicit reference to another schema object.
-A string schema is a shorthand for a schema containing only the `$ref` keyword.
+A string schema operates as an implicit reference to another schema resource. A
+string schema is a shorthand for a schema object containing only the `$ref`
+keyword.
 
 For example, the schema
 
