@@ -1277,16 +1277,18 @@ The use of IRIs to identify remote schemas does not necessarily mean anything is
 downloaded, but instead JSON Schema implementations SHOULD understand ahead of
 time which schemas they will be using, and the IRIs that identify them.
 
-When schemas are downloaded, for example by a generic user-agent that does not
-know until runtime which schemas to download, see [Usage for
-Hypermedia](#hypermedia).
-
 Implementations SHOULD be able to associate arbitrary IRIs with an arbitrary
 schema and/or automatically associate a schema's `$id`-given IRI, depending on
 the trust that the validator has in the schema. Such IRIs and schemas can be
 supplied to an implementation prior to processing instances, or may be noted
 within a schema document as it is processed, producing associations as shown in
 {{idexamples}}.
+
+Implementations MAY provide functionality to automatically fetch schemas based
+on location semantics expressed by the URI, however such functionality MUST be
+disabled by default to prefer offline operation. When schemas are downloaded,
+for example by a generic user-agent that does not know until runtime which
+schemas to download, see {{hypermedia}}.
 
 #### Detecting a Meta-Schema
 
