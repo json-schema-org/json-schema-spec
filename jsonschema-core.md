@@ -884,7 +884,10 @@ meta-schema features emphasizes flexibility over simplicity.
 
 The `$schema` keyword is both used as a JSON Schema dialect identifier and as
 the identifier of a resource which is itself a JSON Schema, which describes the
-set of valid schemas written for this particular dialect.
+set of valid schemas written for this particular dialect. The identified dialect
+applies to the resource in which it is declared as well as any embedded schema
+resources, unless such a resource itself declares a different dialect by
+including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an [IRI](#rfc3987) (containing a scheme) and
 this IRI MUST be normalized. The current schema MUST be valid against the
@@ -894,20 +897,21 @@ If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
-be used in the root schema objects of embedded schema resources. It MUST NOT
-appear in non-resource root schema objects.
+be used in the root schema objects of embedded schema resources. When the
+keyword appears in non-resource root schema object, the behavior is undefined.
 
-If present in the document root schema, an implementation MUST process the
+If present in the resource root schema, an implementation MUST process the
 schema in accordance with the associated dialect.
 
-If absent from the document root schema, and an `application/schema+json` media
-type with a `schema` parameter is available, then the schema MUST be processed
-in accordance with the dialect indicated by the `schema` parameter.
+If absent from the resource root schema, and no parent dialect is defined, the
+schema MUST be processed with the following priorities:
 
-For cases where the `$schema` keyword is absent from the document root, no media
-type is provided, and/or the media type has no `schema` parameter, an
-implementation MAY offer a mechanism for the user to explicitly set the
-dialect.
+1. If the implementation accepts media type parameter inputs, and an
+   `application/schema+json` media type with a `schema` parameter is available,
+   then the schema MUST be processed in accordance with the dialect indicated by
+   the `schema` parameter.
+2. An implementation MAY offer a mechanism for the user to explicitly set the
+   dialect.
 
 If the dialect is not specified through one of these methods, the implementation
 MUST refuse to process the schema, as with unsupported required vocabularies.
