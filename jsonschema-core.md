@@ -924,7 +924,7 @@ type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
 be used in the root schema objects of embedded schema resources. When the
-keyword appears in non-resource root schema object, the behavior is undefined.
+keyword appears in a non-resource root schema object, the behavior is undefined.
 
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
