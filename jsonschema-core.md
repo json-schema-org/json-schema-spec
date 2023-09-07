@@ -884,17 +884,18 @@ meta-schema features emphasizes flexibility over simplicity.
 
 #### Dialect Determination
 
-When the schema evaluation process begins, the first task is to determine the
-dialect used by the schema. To do this, implementations MUST determine the
-dialect using the following prioritized steps.
+When the evaluation encounters a new schema resource (i.e. the lexical scope
+changes), the first task is to determine the dialect used by the schema. To do
+this, implementations MUST determine the dialect using the following prioritized
+steps.
 
 1. The `$schema` keyword - Implementations MUST process the schema according to
    the dialect it declares.
 2. `application/schema+json` media type with a `schema` parameter -
    Implementations which support media type parameter inputs MUST process the
    schema according to the dialect the parameter declares. A media type will
-   generally only be available if the schema has been retrieved and only applies
-   to the document root.
+   generally only be available if the schema has been retrieved from an external
+   source and only applies to the document root.
 3. Parent dialect - An embedded schema resource which does not itself contain a
    `$schema` keyword MUST be processed using the same dialect as the schema
    which contains it.
