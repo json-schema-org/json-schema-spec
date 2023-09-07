@@ -884,7 +884,7 @@ meta-schema features emphasizes flexibility over simplicity.
 
 #### Dialect Determination
 
-When the evaluation encounters a new schema resource (i.e. the lexical scope
+When evaluation encounters a new schema resource (i.e. the lexical scope
 changes), the first task is to determine the dialect used by the schema. To do
 this, implementations MUST determine the dialect using the following prioritized
 steps.
