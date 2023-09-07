@@ -882,7 +882,7 @@ vocabulary's keywords.
 Meta-schema authoring is an advanced usage of JSON Schema, so the design of
 meta-schema features emphasizes flexibility over simplicity.
 
-### Dialect Determination
+#### Dialect Determination
 
 When the schema evaluation process begins, the first task is to determine the
 dialect used by the schema. To do this, implementations MUST determine the
