@@ -365,14 +365,6 @@ values described in the data model. Be aware, however, that some languages and
 JSON parsers may not be able to represent in memory the full range of values
 describable by JSON.
 
-### Mathematical Integers {#integers}
-
-Some programming languages and parsers use different internal representations
-for floating point numbers than they do for integers.
-
-For consistency, integer JSON numbers SHOULD NOT be encoded with a fractional
-part.
-
 ### Regular Expressions {#regex}
 
 Keywords MAY use regular expressions to express constraints, or constrain the
