@@ -885,8 +885,8 @@ meta-schema features emphasizes flexibility over simplicity.
 #### Dialect Determination
 
 When evaluation encounters a new schema resource (i.e. the lexical scope
-changes), the first task is to determine the dialect used by the schema. To do
-this, implementations MUST determine the dialect using the following prioritized
+changes), the first task is to determine the dialect used by the schema.
+Implementations MUST determine the dialect using the following prioritized
 steps.
 
 1. The `$schema` keyword - Implementations MUST process the schema according to
@@ -898,7 +898,9 @@ steps.
    source and only applies to the document root.
 3. Parent dialect - An embedded schema resource which does not itself contain a
    `$schema` keyword MUST be processed using the same dialect as the schema
-   which contains it.
+   which contains it. If the schema is embedded in a non-schema document, the
+   semantics for determining the dialect MAY be determined by any specification
+   which applies to that document.
 4. User configuration - Implementations MAY provide means for the user to
    configure the dialect under which a schema should be processed.
 
