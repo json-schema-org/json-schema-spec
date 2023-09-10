@@ -917,8 +917,7 @@ resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an [IRI](#rfc3987) (containing a scheme) and
-this IRI MUST be normalized. The current schema MUST be valid against the
-meta-schema identified by this IRI.
+this IRI MUST be normalized.
 
 If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
