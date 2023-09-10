@@ -2079,10 +2079,10 @@ consumers will need to properly interpret validation results.
 ### Format
 
 JSON Schema output is defined using the JSON Schema data instance model as
-described in section 4.2.1. Implementations MAY deviate from this as supported
-by their specific languages and platforms, however it is RECOMMENDED that the
-output be convertible to the JSON format defined herein via serialization or
-other means.
+described in [Instance Data Model](#data-model). Implementations MAY deviate
+from this as supported by their specific languages and platforms, however it
+is RECOMMENDED that the output be convertible to the JSON format defined herein
+via serialization or other means.
 
 ### Output Formats
 
@@ -2092,8 +2092,7 @@ section for the requirements of each format.
 - *Flag*: A boolean which simply indicates the overall validation result with no
   further details.
 - *List*: Provides validation information in a flat list structure.
-
-Hierarchical: Provides validation information in a hierarchical structure that
+- *Hierarchical*: Provides validation information in a hierarchical structure that
 follows the evaluation paths generated while processing the schema.
 
 An implementation MUST provide the "flag" format and SHOULD provide at least one
@@ -2283,7 +2282,6 @@ For these examples, the following schema and instances will be used.
 }
 ```
 
-
 ```json "Failing instance"
 {
   "foo": {"foo-prop": "not 1", "other-prop": false},
@@ -2324,9 +2322,9 @@ allows their users to craft their own messages.
 
 The passing instance will produce the following annotations:
 
-- The keyword `title` evaluated at `` by following the path `` will produce
+- The keyword `title` evaluated at the instance root by the root schema will produce
   `"root"`.
-- The keyword `properties` evaluated at `` by following the path `` will produce
+- The keyword `properties` evaluated at instance root by the root schema will produce
   `["foo", "bar"]`.
 - The keyword `title` evaluated at `/properties/foo` by following the path
   `/properties/foo` will produce `"foo-title"`.
