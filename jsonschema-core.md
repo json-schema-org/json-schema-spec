@@ -2104,16 +2104,10 @@ When represented in JSON, the key for this information MUST be "evaluationPath".
 
 ### Schema Location
 
-The schema location is the absolute, dereferenced location of the schema object
-that produced a result. The value MUST be expressed using the canonical IRI of
-the relevant schema resource plus a JSON Pointer fragment that indicates the
-schema object that produced the output. It MUST NOT include by-reference
-applicators such as `$ref` or `$dynamicRef`.[^14]
-
-[^14]: Note that "absolute" here is in the sense of "absolute filesystem path"
-(meaning the complete location) rather than the "absolute-IRI" terminology from
-RFC 3987 (meaning with scheme and without fragment). Schema locations will have
-a fragment in order to identify the specific schema object.
+The schema location is the canonical URI of the schema object plus a JSON
+Pointer fragment indicating the subschema that produced a result. In contrast
+with the evaluation path, the schema location MUST NOT include by-reference
+applicators such as `$ref` or `$dynamicRef`.
 
 ```
 https://example.com/schemas/common#/$defs/allOf/1
