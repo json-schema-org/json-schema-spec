@@ -3287,8 +3287,33 @@ to the document.
 ### draft-bhutton-json-schema-next
 - `contains` now applies to objects as well as arrays
 - Use IRIs instead of URIs
+- Clarify that detecting duplicate IRIs for different schemas SHOULD raise an error
+- Consolidate and clarify the syntax and rationale for plain-name fragments
+- "$id" MUST be an absolute-IRI, without any fragment, even an empty one
+- Note that an empty string "$id" results in duplicate IRIs for different schemas
+- Define empty schemas as empty (no longer allowing unrecognized keywords)
+- Clarify that if unknown properties are not treated as annotations, they MUST be ignored
+- Remove outdated pre-annotation-collection section on annotation-applicator interaction
+- Clarify that regular expressions are not anchored
+- Specify valid implementation-defined options for handling schemas without "$schema"
+- Clarify that vocabularies omitted from "$vocabulary" MUST NOT be available for use
+- Clarify that standard keywords are only available as vocabulary keywords, subject to "$vocabulary" control
+- Clarify the nature and purpose of optional (set to false in "$vocabulary") vocabularies
+- Clarify that optional simple-annotation-only vocabularies can be supported without custom code
+- Fix typo that "$vocabulary" can only be in a document root; it is legal in resource roots
 - Remove bookending requirement for `$dynamicRef`
+- Clarify that "prefixItems" does not constrain the length of an array
+- Move "minContains" and "maxContains" to the applicator vocabulary from validation
+- "minContains" and "maxContains" no longer have their own assertion results
+- "contains" assertion result now depends on "minContains" and "maxContains"
+- Affirm that no keyword can un-fail an adjacent keyword ("minContains" previously violated this)
+- "contains", "minContains", and "maxContains" now apply to objects as well as arrays
+- As an object keyword, "contains" now affects "unevaluatedProperties"
 - Add `propertyDependencies` keyword
+- Add new "list" and "hierarchical" output formats in place of "basic", "detailed", and "verbose"
+- Rename "absoluteKeywordLocation" and "keywordLocation" to "schemaLocation" and "evaluationPath"
+- Output units in new format group by "schemaLocation", "instanceLocation", and "evaluationPath"
+- Add "droppedAnnotations" to output formats
 
 ### draft-bhutton-json-schema-01
 - Improve and clarify the `type`, `contains`, `unevaluatedProperties`, and

@@ -1018,6 +1018,9 @@ to the document.
 
 - *draft-next*
     - Use IRIs instead of URIs
+    - Move "minContains" and "maxContains" to the applicator vocabulary (see also that changelog)
+    - Remove the optional automatic second-pass validation of "content*" keywords
+    - Clarify that "contentSchema"'s value is a schema just like any other subschema
 - *draft-bhutton-json-schema-validation-01*
     - Improve and clarify the `minContains` keyword explanation
     - Remove the use of "production" in favour of "ABNF rule"
