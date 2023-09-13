@@ -95,7 +95,7 @@ documentation which formats they support.
 
 For these examples, the following schema and instances will be used.
 
-```jsonschema "schema"
+```jsonschema "Example Schema"
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://json-schema.org/schemas/example",
@@ -136,14 +136,14 @@ For these examples, the following schema and instances will be used.
 }
 ```
 
-```json "failing instance"
+```json "Failing Instance"
 {
   "foo": { "foo-prop": "not 1", "other-prop": false },
   "bar": { "bar-prop": 2 }
 }
 ```
 
-```json "passing instance"
+```json "Passing Instance"
 {
   "foo": {
     "foo-prop": 1,
@@ -223,7 +223,7 @@ In the simplest case, merely the boolean result for the `valid` valid property
 needs to be fulfilled. For this format, all other information is explicitly
 omitted.
 
-```json
+```json "Flag Results"
 {
   "valid": false
 }
