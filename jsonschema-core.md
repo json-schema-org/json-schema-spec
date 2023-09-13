@@ -2113,23 +2113,16 @@ applicators such as `$ref` or `$dynamicRef`.
 https://example.com/schemas/common#/$defs/allOf/1
 ```
 
-When represented in JSON, the key for this information MUST be "schemaLocation".
-
 ### Instance Location
 
 The instance location is the location of the JSON value within the root instance
 being validated. The value MUST be expressed as a JSON Pointer.
-
-When represented in JSON, the key for this information MUST be
-"instanceLocation".
 
 ### Errors
 
 Errors are textual representations of individual validation failures, often
 intended for human consumers. This specification contains no requirements for
 the content of these errors.
-
-When represented in JSON, the key for this information MUST be "errors".
 
 ### Annotations
 
@@ -2139,8 +2132,6 @@ inter-keyword communication (e.g. between `properties` and
 `readOnly`). Annotation values may be of any type and are defined by the
 keywords that produced them.
 
-When represented in JSON, the key for this information MUST be "annotations".
-
 ### Dropped Annotations
 
 A dropped annotation is any annotation produced and subsequently dropped by the
@@ -2149,12 +2140,11 @@ This information MAY be included if the validation result of the containing
 subschema was unsuccessful. It MUST NOT be included if the local validation
 result of the containing subschema was successful.
 
-Implementations that wish to provide dropped annotations MUST NOT provide them
-as their default behavior. Dropped annotations MUST only be included when the
-implementations is explicitly configured to do so.
-
-When represented in JSON, the key for this information MUST be
-"droppedAnnotations".
+As the intended purpose for including these annotations is debugging,
+implementations that wish to provide dropped annotations SHOULD NOT provide them
+as their default behavior. Dropped annotations SHOULD only be included when the
+implementation is explicitly configured to do so or if the implementation is
+specifically intended to be used as a debugging tool.
 
 ## Security Considerations {#security}
 
