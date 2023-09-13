@@ -2124,6 +2124,10 @@ Errors are textual representations of individual validation failures, often
 intended for human consumers. This specification contains no requirements for
 the content of these errors.
 
+Output specifications which include errors SHOULD be written such that the
+sources (schema and instance) of a given error is easily identifiable and SHOULD
+use the terms defined by this document to do so.
+
 ### Annotations
 
 Many keywords are defined to produce annotations, whether intended for
@@ -2131,6 +2135,10 @@ inter-keyword communication (e.g. between `properties` and
 `unevaluatedProperties`) or for application consumption (e.g. `title` or
 `readOnly`). Annotation values may be of any type and are defined by the
 keywords that produced them.
+
+Output specifications which include annotations SHOULD be written such that they
+can be easily associated with the data defined in {{collect}} and SHOULD use the
+terms defined by this document to do so.
 
 ### Dropped Annotations
 
@@ -2145,6 +2153,10 @@ implementations that wish to provide dropped annotations SHOULD NOT provide them
 as their default behavior. Dropped annotations SHOULD only be included when the
 implementation is explicitly configured to do so or if the implementation is
 specifically intended to be used as a debugging tool.
+
+Output specifications which include dropped annotations SHOULD be written such
+that they can be easily associated with the data defined in {{collect}} and
+SHOULD use the terms defined by this document to do so.
 
 ## Security Considerations {#security}
 
