@@ -250,8 +250,7 @@ Output units which do not contain errors or annotations SHOULD be excluded from
 this format, however implementations MAY choose to include them for
 completeness.
 
-```jsonc
-// failing results
+```json "Failing Results"
 {
   "valid": false,
   "details": [
@@ -284,8 +283,9 @@ completeness.
     }
   ]
 }
+```
 
-// passing results
+```json "Passing Results"
 {
   "valid": true,
   "details": [
@@ -362,8 +362,7 @@ All output units are included in this format.
 
 The location properties of the root output unit MAY be omitted.
 
-```jsonc
-// failing results (errors)
+```json "failing Results
 {
   "valid": false,
   "evaluationPath": "",
@@ -451,8 +450,9 @@ The location properties of the root output unit MAY be omitted.
     }
   ]
 }
+```
 
-// passing results (annotations)
+```json "Passing Results
 {
   "valid": true,
   "evaluationPath": "",
