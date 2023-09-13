@@ -1144,7 +1144,7 @@ provides the ability to validate recursive structures through self-reference.
 The resolved IRI produced by these keywords is not necessarily a network
 locator, only an identifier. A schema need not be downloadable from the address
 if it is a network-addressable URL. Implementations which can access the network
-SHOULD default to operating offline.
+MUST default to operating offline.
 
 ##### Direct References with `$ref` {#ref}
 
@@ -1282,7 +1282,7 @@ within a schema document as it is processed, producing associations as shown in
 {{idexamples}}.
 
 Implementations MAY provide functionality to automatically fetch schemas based
-on location semantics expressed by the URI, however such functionality SHOULD be
+on location semantics expressed by the URI, however such functionality MUST be
 disabled by default to prefer offline operation. When schemas are downloaded,
 for example by a generic user-agent that does not know until runtime which
 schemas to download, see {{hypermedia}}.
