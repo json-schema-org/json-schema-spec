@@ -1561,6 +1561,35 @@ behave correctly under implementations that attempt to use any reference target
 as a schema. However, this behavior is implementation-specific and MUST NOT be
 relied upon for interoperability.
 
+#### Failure to resolve references
+
+If for any reason a reference cannot be resolved, the evaluation MUST halt and
+return an indeterminant result. Specifically, it MUST NOT return a passing or
+failing validation result or any annotations. Instead it MUST inform the
+consuming application or user of the evaluation failure via other means. It is
+RECOMMENDED that implementations utilize native functionality for this purpose,
+such as, but not limited to, raising an exception or other error.
+
+In the cases where optimizations are enabled and a schema containing a
+non-resolvable reference would be skipped, as in the example below, behavior is
+implementation-defined.
+
+```json
+{
+  "anyOf": [
+    true,
+    { "$ref": "https://json-schema.org/does-not-exist" }
+  ]
+}
+```
+
+Here, an optimized evaluation may recognize that `/anyOf/0` will satisfy the
+`anyOf` constraint, regardless of the validation result of `/anyOf/1`, and so
+`/anyOf/1` may be skipped altogether.
+
+However, an unoptimized evaluation of this schema (for example one that expects
+all annotation results), would result in a resolution failure.
+
 ### Associating Instances and Schemas
 
 #### Usage for Hypermedia {#hypermedia}
