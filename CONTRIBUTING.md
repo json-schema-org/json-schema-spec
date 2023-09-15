@@ -12,7 +12,7 @@ However, contributions that _do_ meaningfully change the interpretation of the
 
 ## Issues
 
-Issues should identify a problem, enhancement, or use case; and propose some course of action for the draft. For alternate support channels, see the [json-schema.org website](http://json-schema.org/) or join our [Slack workspace](https://json-schema.org/slack)**.
+Issues should identify a problem, enhancement, or use case; and propose some course of action for the draft. For alternate support channels, see the [SUPPORT.md](https://github.com/json-schema-org/.github/blob/main/SUPPORT.md).
 
 ## Pull Requests
 
@@ -38,7 +38,7 @@ The `draft-future` milestone is for issues for which there is an agreement tha
 
 ## Code of Conduct
 
-All official channels including the mailing list, GitHub organization, Slack server, and IRC channels, follow our [Code of Conduct](https://github.com/json-schema-org/.github/blob/main/CODE_OF_CONDUCT.md).
+All official channels including the mailing list, GitHub organization and Slack server, follow our [Code of Conduct](https://github.com/json-schema-org/.github/blob/main/CODE_OF_CONDUCT.md).
 
 ## Have Questions?
 
