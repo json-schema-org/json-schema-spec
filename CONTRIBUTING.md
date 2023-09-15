@@ -42,5 +42,5 @@ All official channels including the mailing list, GitHub organization, Slack ser
 
 ## Have Questions?
 
-You can join the `#specification` channel in our [Slack workspace](https://json-schema.org/slack)** to interact with other community members involved in the Specification development, share new ideas and ask questions.
+You can join the `#specification` channel in our [Slack workspace](https://json-schema.org/slack) to interact with other community members involved in the Specification development, share new ideas and ask questions.
 
