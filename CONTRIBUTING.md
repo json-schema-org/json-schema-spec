@@ -12,7 +12,7 @@ However, contributions that _do_ meaningfully change the interpretation of the
 
 ## Issues
 
-Issues should identify an problem, enhancement, or use case; and propose some course of action for the draft. For alternate support channels, see the [json-schema.org website](http://json-schema.org/) or join our [Slack workspace](https://json-schema.org/slack)**.
+Issues should identify a problem, enhancement, or use case; and propose some course of action for the draft. For alternate support channels, see the [json-schema.org website](http://json-schema.org/) or join our [Slack workspace](https://json-schema.org/slack)**.
 
 ## Pull Requests
 
