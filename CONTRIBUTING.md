@@ -8,7 +8,7 @@ JSON Schema is an evolving language. This repository contains the specification 
 
 Contributions that do not change the interpretation of the spec but instead improve legibility, fix editorial errors, clear up ambiguity and improve examples are encouraged and are often merged by a spec editor with little process.
 
-However, contributions that _do_ meaningfully change the interpretation of the spec must follow the Specification Development Process which is ⚠️already under discussion and development⚠️. 
+However, contributions that _do_ meaningfully change the interpretation of the spec must follow the Specification Development Process which is ⚠️currently under discussion and development⚠️. 
 
 ## Issues
 
