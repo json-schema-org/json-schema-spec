@@ -30,10 +30,11 @@ and interaction control of JSON data.
 This specification defines JSON Schema core terminology and mechanisms,
 including pointing to another JSON Schema by reference, dereferencing a JSON
 Schema reference, specifying the dialect being used, specifying a dialect's
-vocabulary requirements, and defining the expected output.
+vocabulary requirements, and defining terms.
 
 Other specifications define the vocabularies that perform assertions about
-validation, linking, annotation, navigation, and interaction.
+validation, linking, annotation, navigation, and interaction as well as output
+formats.
 
 ## Conventions and Terminology
 
