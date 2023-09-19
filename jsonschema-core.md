@@ -1282,7 +1282,7 @@ within a schema document as it is processed, producing associations as shown in
 {{idexamples}}.
 
 Implementations MAY provide functionality to automatically fetch schemas based
-on location semantics expressed by the IRI, however such functionality MUST be
+on location semantics expressed by the IRI, however such functionality SHOULD be
 disabled by default to prefer offline operation. When schemas are downloaded,
 for example by a generic user-agent that does not know until runtime which
 schemas to download, see {{hypermedia}}.
