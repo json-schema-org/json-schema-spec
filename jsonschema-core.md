@@ -875,7 +875,9 @@ The meta-schema serves two purposes:
 Declaring the vocabularies in use: The `$vocabulary` keyword, when it appears in
 a meta-schema, declares which vocabularies are available to be used in schemas
 that refer to that meta-schema. Vocabularies define keyword semantics, as well
-as their general syntax.
+as their general syntax. By combining various vocabularies, distinct
+sets of keywords can be made available for use in a schema. This collection of
+vocabularies defines a dialect.
 
 Describing valid schema syntax: A schema MUST successfully validate against its
 meta-schema, which constrains the syntax of the available keywords. The syntax
@@ -893,29 +895,51 @@ vocabulary's keywords.
 Meta-schema authoring is an advanced usage of JSON Schema, so the design of
 meta-schema features emphasizes flexibility over simplicity.
 
+#### Dialect Determination
+
+When evaluation encounters a new schema resource (i.e. the lexical scope
+changes), the first task is to determine the dialect used by the schema.
+Implementations MUST determine the dialect using the following prioritized
+steps.
+
+1. The `$schema` keyword - Implementations MUST process the schema according to
+   the dialect it declares.
+2. `application/schema+json` media type with a `schema` parameter -
+   Implementations which support media type parameter inputs MUST process the
+   schema according to the dialect the parameter declares. A media type will
+   generally only be available if the schema has been retrieved from an external
+   source and only applies to the document root.
+3. Parent dialect - An embedded schema resource which does not itself contain a
+   `$schema` keyword MUST be processed using the same dialect as the schema
+   which contains it. If the schema is embedded in a non-schema document, the
+   semantics for determining the dialect MAY be determined by any specification
+   which applies to that document.
+4. User configuration - Implementations MAY provide means for the user to
+   configure the dialect under which a schema should be processed.
+
+(Note that steps 2 and 3 are mutually exclusive.)
+
+If the dialect is not specified through one of these methods, the implementation
+MUST refuse to process the schema, as with unsupported required vocabularies.
+
 #### The `$schema` Keyword {#keyword-schema}
 
 The `$schema` keyword is both used as a JSON Schema dialect identifier and as
 the identifier of a resource which is itself a JSON Schema, which describes the
-set of valid schemas written for this particular dialect.
+set of valid schemas written for this particular dialect. The identified dialect
+applies to the resource in which it is declared as well as any embedded schema
+resources, unless such a resource itself declares a different dialect by
+including the `$schema` keyword with a different value.
 
-The value of this keyword MUST be a [IRI](#rfc3987) (containing a scheme) and
-this IRI MUST be normalized. The current schema MUST be valid against the
-meta-schema identified by this IRI.
+The value of this keyword MUST be an [IRI](#rfc3987) (containing a scheme) and
+this IRI MUST be normalized.
 
 If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
-be used in the root schema objects of embedded schema resources. It MUST NOT
-appear in non-resource root schema objects. If absent from the document root
-schema, the resulting behavior is implementation-defined, but MUST fall within
-the following options:
-
-- Refuse to process the schema, as with unsupported required vocabularies
-- Assume a specific, documented meta-schema
-- Document the process by which it examines the schema and determines which of a
-  specific set of meta-schemas to assume
+be used in the root schema objects of embedded schema resources. When the
+keyword appears in a non-resource root schema object, the behavior is undefined.
 
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
