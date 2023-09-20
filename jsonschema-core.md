@@ -523,11 +523,23 @@ to inform the user of the evaluation path that produced the error or annotation.
 
 ### Keyword Interactions
 
-Keyword behavior MAY be defined in terms of the annotation results of
-[subschemas](#root) and/or adjacent keywords (keywords within the same schema
-object) and their subschemas. Such keywords MUST NOT result in a circular
-dependency. Keywords MAY modify their behavior based on the presence or absence
-of another keyword in the same [schema object](#schema-document).
+Keywords MAY modify their behavior based on the presence or absence of another
+keyword in the same [schema object](#schema-document). Such keywords MUST NOT
+result in a circular dependency.
+
+Unless otherwise specified, keywords act independently.
+
+#### Annotations as an Interaction Mechanism
+
+This document uses annotations as a mechanism to describe the interactions
+between keywords, however this is for illustrative purposes and not
+prescriptive. Implementations SHOULD use whatever mechanisms makes sense given
+their architecture and language needs in order to achieve the specified
+behaviors. Implementations are not required to collect annotations in order to
+manage keyword interaction.
+
+Supplementary specifications are also encouraged to use annotations to describe
+any interactions of the keywords they define.
 
 ### Default Behaviors {#default-behaviors}
 
