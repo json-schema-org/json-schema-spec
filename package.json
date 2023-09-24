@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint build/",
-    "build": "npm run build-core && npm run build-validation && npm run build-output",
+    "build": "npm run build-core && npm run build-validation && npm run build-output && npm run build-propertyDependencies",
     "build-core": "node build/build.js < jsonschema-core.md > jsonschema-core.html",
     "build-validation": "node build/build.js < jsonschema-validation.md > jsonschema-validation.html",
     "build-output": "node build/build.js < jsonschema-validation-output-machines.md > jsonschema-validation-output-machines.html",
