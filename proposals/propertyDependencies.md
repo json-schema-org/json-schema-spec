@@ -50,13 +50,13 @@ also apply to this document.
 
 <!-- Where does this change go? -->
 
-This proposal will add the {{propertyDependencies}} section contained herein as
+This proposal will add the {{propertydependencies}} section contained herein as
 a subsection of JSON Schema Core, section 10.2.2 "Keywords for Applying
 Subschemas Conditionally."
 
 <!-- What is the exact change? -->
 
-### New Keyword: `propertyDependencies` {#propertyDependencies}
+### New Keyword: `propertyDependencies` {#propertydependencies}
 
 This keyword specifies subschemas that are evaluated if the instance is an
 object and contains a certain property with a certain string value.
