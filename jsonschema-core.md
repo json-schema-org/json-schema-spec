@@ -533,7 +533,7 @@ Unless otherwise specified, keywords act independently.
 
 This document uses annotations as a mechanism to describe the interactions
 between keywords, however this is for illustrative purposes and not
-prescriptive. Implementations SHOULD use whatever mechanisms makes sense given
+prescriptive. Implementations MAY use whatever mechanisms makes sense given
 their architecture and language needs in order to achieve the specified
 behaviors. Implementations are not required to collect annotations in order to
 manage keyword interaction.
