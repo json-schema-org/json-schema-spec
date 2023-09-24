@@ -48,13 +48,9 @@ also apply to this document.
 
 ### Target for Change
 
-<!-- Where does this change go? -->
-
 This proposal will add the {{propertydependencies}} section contained herein as
 a subsection of JSON Schema Core, section 10.2.2 "Keywords for Applying
 Subschemas Conditionally."
-
-<!-- What is the exact change? -->
 
 ### New Keyword: `propertyDependencies` {#propertydependencies}
 
