@@ -1714,62 +1714,35 @@ against the schema defined by this keyword.
 
 #### Keywords for Applying Subschemas Conditionally {#conditional}
 
-Three of these keywords work together to implement conditional application of a
-subschema based on the outcome of another subschema. The fourth is a shortcut
-for a specific conditional case.
+These keywords contain subschemas which are conditionally applied based on the
+instance.
 
-`if`, `then`, and `else` MUST NOT interact with each other across subschema
-boundaries. In other words, an `if` in one branch of an `allOf` MUST NOT have an
-impact on a `then` or `else` in another branch.
+##### `if`, `then`, and `else`
 
-There is no default behavior for `if`, `then`, or `else` when they are not
-present. In particular, they MUST NOT be treated as if present with an empty
-schema, and when `if` is not present, both `then` and `else` MUST be entirely
-ignored.
+These three keywords work together to implement conditional application of a
+subschema based on the outcome of another subschema.
 
-##### `if`
+The value for each of these keywords value MUST be a valid JSON Schema.
 
-This keyword's value MUST be a valid JSON Schema.
+The `if` keyword produces an annotation which is the boolean validation result
+of its subschema against the instance. The validation outcome of the `if`
+keyword's subschema MUST NOT directly effect the overall validation result.
 
-This validation outcome of this keyword's subschema has no direct effect on the
-overall validation result. Rather, it controls which of the `then` or `else`
-keywords are evaluated.
+The `then` and `else` keywords each consume the annotation from an adjacent `if`
+keyword and conditionally apply their subschemas to the instance as follows:
 
-Instances that successfully validate against this keyword's subschema MUST also
-be valid against the subschema value of the `then` keyword, if present.
+- When the annotation from the `if` keyword is `true`, the `then` keyword's
+  subschema MUST be applied to the instance and the `else` keyword's subschema
+  MUST be ignored.
+- When the annotation from the `if` keyword is `false`, the `else` keyword's
+  subschema MUST be applied to the instance and the `then` keyword's subschema
+  MUST be ignored.
+- When there is no adjacent `if` keyword, no annotation can be produced, so both
+  the `then` and `else` keywords' subschemas MUST be ignored.
 
-Instances that fail to validate against this keyword's subschema MUST also be
-valid against the subschema value of the `else` keyword, if present.
-
-If [annotations](#annotations) are being collected, they are collected from this
-keyword's subschema in the usual way, including when the keyword is present
-without either `then` or `else`.
-
-##### `then`
-
-This keyword's value MUST be a valid JSON Schema.
-
-When `if` is present, and the instance successfully validates against its
-subschema, then validation succeeds against this keyword if the instance also
-successfully validates against this keyword's subschema.
-
-This keyword has no effect when `if` is absent, or when the instance fails to
-validate against its subschema. Implementations MUST NOT evaluate the instance
-against this keyword, for either validation or annotation collection purposes,
-in such cases.
-
-##### `else`
-
-This keyword's value MUST be a valid JSON Schema.
-
-When `if` is present, and the instance fails to validate against its subschema,
-then validation succeeds against this keyword if the instance successfully
-validates against this keyword's subschema.
-
-This keyword has no effect when `if` is absent, or when the instance
-successfully validates against its subschema. Implementations MUST NOT evaluate
-the instance against this keyword, for either validation or annotation
-collection purposes, in such cases.
+If [annotations](#annotations) are being collected, they are collected from the
+subschemas which are evaluated, including from the `if` keyword's subschema when
+it is present without adjacent `then` or `else` keywords.
 
 ##### `dependentSchemas`
 
