@@ -2032,8 +2032,7 @@ outcomes. However, the keywords in this vocabulary are notable exceptions:
 - `unevaluatedItems`, whose behavior is defined in terms of annotations from
   `prefixItems`, `items`, `contains`, and itself
 - `unevaluatedProperties`, whose behavior is defined in terms of annotations
-  from `properties`, `patternProperties`, `additionalProperties`, `contains`,
-  and itself
+  from `properties`, `patternProperties`, `additionalProperties`, and itself
 
 ### `unevaluatedItems` {#unevaluateditems}
 
