@@ -2072,25 +2072,25 @@ The value of `unevaluatedProperties` MUST be a valid JSON Schema.
 
 The behavior of this keyword depends on the annotation results of adjacent
 keywords that apply to the instance location being validated. Specifically, the
-annotations from `properties`, `patternProperties`, `contains`, and
-`additionalProperties`, which can come from those keywords when they are
-adjacent to the `unevaluatedProperties` keyword. Those four annotations, as well
-as `unevaluatedProperties`, can also result from any and all adjacent [in-place
+annotations from `properties`, `patternProperties`, and `additionalProperties`,
+which can come from those keywords when they are adjacent to the
+`unevaluatedProperties` keyword. Those four annotations, as well as
+`unevaluatedProperties`, can also result from any and all adjacent [in-place
 applicator](#in-place) keywords. This includes but is not limited to the
 in-place applicators defined in this document.
 
 Validation with `unevaluatedProperties` applies only to the child values of
 instance names that do not appear in the `properties`, `patternProperties`,
-`additionalProperties`, `contains`, or `unevaluatedProperties` annotation
-results that apply to the instance location being validated.
+`additionalProperties`, or `unevaluatedProperties` annotation results that apply
+to the instance location being validated.
 
 For all such properties, validation succeeds if the child instance validates
 against the `unevaluatedProperties` schema.
 
-This means that `properties`, `patternProperties`, `additionalProperties`,
-`contains` and all in-place applicators MUST be evaluated before this keyword
-can be evaluated. Authors of extension keywords MUST NOT define an in-place
-applicator that would need to be evaluated after this keyword.
+This means that `properties`, `patternProperties`, `additionalProperties`, and
+all in-place applicators MUST be evaluated before this keyword can be evaluated.
+Authors of extension keywords MUST NOT define an in-place applicator that would
+need to be evaluated after this keyword.
 
 The annotation result of this keyword is the set of instance property names
 validated by this keyword's subschema. This annotation affects the behavior of
