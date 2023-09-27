@@ -1956,11 +1956,11 @@ keyword's annotation causes `contains` to assume a minimum value of 1.
 
 The value of this keyword MUST be a valid JSON Schema.
 
-This keyword applies its subschema to array elements or object property values.
+This keyword applies its subschema to array elements.
 
-An instance is valid against `contains` if the number of elements or property
-values that are valid against its subschema is with the inclusive range of the
-minimum and (if any) maximum number of occurrences.
+An instance is valid against `contains` if the number of elements that are valid
+against its subschema is with the inclusive range of the minimum and (if any)
+maximum number of occurrences.
 
 The maximum number of occurrences is provided by the `maxContains` keyword
 within the same schema object as `contains`. If `maxContains` is absent, the
@@ -1970,24 +1970,23 @@ The minimum number of occurrences is provided by the `minContains` keyword
 within the same schema object as `contains`. If `minContains` is absent, the
 minimum number of occurrences MUST be 1.
 
-Implementations MAY implement the dependency on `minContians` and `maxContains`
+Implementations MAY implement the dependency on `minContains` and `maxContains`
 by inspecting their values rather than reading annotations produced by those
 keywords.
 
-This keyword produces an annotation value which is an array of the indexes or
-property names to which this keyword validates successfully when applying its
-subschema, in ascending order. The value MAY be a boolean `true` if the
-subschema validates successfully when applied to every index or property value
-of the instance. The annotation MUST be present if the instance array or object
-to which this keyword's schema applies is empty.
+This keyword produces an annotation value which is an array of the indexes to
+which this keyword validates successfully when applying its subschema, in
+ascending order. The value MAY be a boolean `true` if the subschema validates
+successfully when applied to every index of the instance. The annotation MUST be
+present if the instance array or object to which this keyword's schema applies
+is empty.
 
 This annotation affects the behavior of `unevaluatedItems` in the Unevaluated
 vocabulary.
 
-The subschema MUST be applied to every array element or object property value
-even after the first match has been found, in order to collect annotations for
-use by other keywords. This is to ensure that all possible annotations are
-collected.
+The subschema MUST be applied to every array element even after the first match
+has been found, in order to collect annotations for use by other keywords. This
+is to ensure that all possible annotations are collected.
 
 ## A Vocabulary for Unevaluated Locations
 
