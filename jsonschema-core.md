@@ -3314,7 +3314,6 @@ to the document.
 [^19]: This section to be removed before leaving Internet-Draft status.
 
 ### draft-bhutton-json-schema-next
-- `contains` now applies to objects as well as arrays
 - Use IRIs instead of URIs, including allowing unicode in plain-name fragments
 - Clarify that detecting duplicate IRIs for different schemas SHOULD raise an error
 - Consolidate and clarify the syntax and rationale for plain-name fragments
