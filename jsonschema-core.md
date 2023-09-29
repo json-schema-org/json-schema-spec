@@ -529,6 +529,8 @@ MUST NOT result in a circular dependency.
 
 Unless otherwise specified, keywords act independently.
 
+Supplementary specifications are encouraged to specify any interactive behavior as part of the keyword whose behavior is modified.
+
 #### Annotations as an Interaction Mechanism
 
 This document uses annotations as a mechanism to describe the interactions
