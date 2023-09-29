@@ -523,9 +523,9 @@ to inform the user of the evaluation path that produced the error or annotation.
 
 ### Keyword Interactions
 
-Keywords MAY modify their behavior based on the presence or absence of another
-keyword or its value in the same [schema object](#schema-document). Such
-keywords MUST NOT result in a circular dependency.
+Keywords MAY modify their behavior based on the presence, absence, or value of
+another keyword in the same [schema object](#schema-document). Such keywords
+MUST NOT result in a circular dependency.
 
 Unless otherwise specified, keywords act independently.
 
