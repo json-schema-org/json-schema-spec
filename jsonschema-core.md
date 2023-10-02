@@ -1726,7 +1726,7 @@ The value for each of these keywords value MUST be a valid JSON Schema.
 
 The `if` keyword produces an annotation which is the boolean validation result
 of its subschema against the instance. The validation outcome of the `if`
-keyword's subschema MUST NOT directly effect the overall validation result.
+keyword's subschema MUST NOT directly affect the overall validation result.
 
 The `then` and `else` keywords each consume the annotation from an adjacent `if`
 keyword and conditionally apply their subschemas to the instance as follows:
