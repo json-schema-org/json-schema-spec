@@ -1978,7 +1978,7 @@ This keyword produces an annotation value which is an array of the indexes to
 which this keyword validates successfully when applying its subschema, in
 ascending order. The value MAY be a boolean `true` if the subschema validates
 successfully when applied to every index of the instance. The annotation MUST be
-present if the instance array or object to which this keyword's schema applies
+present if the instance array to which this keyword's schema applies
 is empty.
 
 This annotation affects the behavior of `unevaluatedItems` in the Unevaluated
