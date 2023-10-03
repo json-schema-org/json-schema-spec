@@ -4,7 +4,7 @@
 JSON Schema is a vocabulary that allows you to validate, annotate, and manipulate JSON documents.
 
 This repository contains the sources for the **work in progress** of the next set of JSON Schema IETF Internet Draft (I-D) documents.
-For the latest released I-Ds, please see the [Specification page](http://json-schema.org/documentation.html) on the website.
+For the latest released I-Ds, please see the [Specification page](http://json-schema.org/specification.html) on the website.
 
 ## Call for contributions and feedback
 
