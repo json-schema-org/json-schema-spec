@@ -1722,7 +1722,7 @@ instance.
 These three keywords work together to implement conditional application of a
 subschema based on the outcome of another subschema.
 
-The value for each of these keywords value MUST be a valid JSON Schema.
+The value for each of these keywords MUST be a valid JSON Schema.
 
 The `if` keyword produces an annotation which is the boolean validation result
 of its subschema against the instance. The validation outcome of the `if`
