@@ -28,7 +28,16 @@ const build = async (filename) => {
     .use(remarkHeadingId)
     .use(remarkHeadings, {
       startDepth: 2,
-      skip: ["Abstract", "Note to Readers", "Table of Contents", "Authors' Addresses", "\\[.*\\]", "draft-.*"]
+      skip: [
+        "Abstract",
+        "Status",
+        "Note to Readers",
+        "Table of Contents",
+        "Authors' Addresses",
+        "Champions",
+        "\\[.*\\]",
+        "draft-.*"
+      ]
     })
     .use(remarkReferenceLinks)
     .use(remarkFlexibleContainers)
@@ -36,7 +45,14 @@ const build = async (filename) => {
     .use(remarkTorchLight)
     .use(remarkTableOfContents, {
       startDepth: 2,
-      skip: ["Abstract", "Note to Readers", "\\[.*\\]", "Authors' Addresses", "draft-.*"]
+      skip: [
+        "Abstract",
+        "Note to Readers",
+        "Authors' Addresses",
+        "Champions",
+        "\\[.*\\]",
+        "draft-.*"
+      ]
     })
     .use(remarkValidateLinks)
     .use(remarkRehype)
