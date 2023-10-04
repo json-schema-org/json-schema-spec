@@ -15,6 +15,16 @@ For example
 
 This document proposes a change to the ??? specification by adding ???.
 
+## Status
+
+**Current Status**: PROPOSAL
+
+<!-- TODO: We should have a short standard blurb outlining the stages involved in a
+feature making its way to stable status. -->
+
+<!-- TODO: Link to a document that describes the proposal => stable process in
+detail. -->
+
 ## Note to Readers
 
 <!--
@@ -45,7 +55,7 @@ also apply to this document.
 
 ### Solution
 
-<!-- What is the solution? -->
+<!-- What is the solution?  Include examples of use. -->
 
 ### Alternatives
 
@@ -55,13 +65,9 @@ also apply to this document.
 
 <!-- Are there any limitations inherent to the proposal? -->
 
-### Examples
+## Change Details
 
-<!-- How will this feature be used? -->
-
-## Proposal
-
-### Target for Change
+### Target
 
 <!--
 Where does this change go?
@@ -81,7 +87,11 @@ a subsection of ???.
 
 <!-- What is the text that will appear in the specification? -->
 
-## Champions
+## [Appendix] Change Log
+
+* [MMMM YYYY] Created
+
+## [Appendix] Champions
 
 | Champion                   | Company | Email                   | URI                              |
 |----------------------------|---------|-------------------------|----------------------------------|
