@@ -544,7 +544,7 @@ following mechanics:
 
 These mechanics are used merely to describe dependencies; they are for
 illustrative purposes and not prescriptive. Implementations MAY use whatever
-mechanisms makes sense given the needs of their architecture and language in
+mechanisms make sense given the needs of their architecture and language in
 order to achieve the specified behaviors.
 
 ### Default Behaviors {#default-behaviors}
