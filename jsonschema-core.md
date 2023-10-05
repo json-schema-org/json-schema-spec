@@ -30,10 +30,11 @@ and interaction control of JSON data.
 This specification defines JSON Schema core terminology and mechanisms,
 including pointing to another JSON Schema by reference, dereferencing a JSON
 Schema reference, specifying the dialect being used, specifying a dialect's
-vocabulary requirements, and defining the expected output.
+vocabulary requirements, and defining terms.
 
 Other specifications define the vocabularies that perform assertions about
-validation, linking, annotation, navigation, and interaction.
+validation, linking, annotation, navigation, and interaction as well as output
+formats.
 
 ## Conventions and Terminology
 
@@ -2130,613 +2131,92 @@ Omitting this keyword has the same assertion behavior as an empty schema.
 
 ## Output Formatting {#output}
 
-JSON Schema is defined to be platform-independent. As such, to increase
-compatibility across platforms, implementations SHOULD conform to a standard
-validation output format. This section describes the minimum requirements that
-consumers will need to properly interpret validation results.
+In order to foster increased usability and interoperability, implementations
+SHOULD adhere to well-defined output formats.
 
-### Format
+Because JSON Schema has multiple uses cases, and those uses cases have different
+intended consumers, this specification defers the details of any output formats
+to other documents. Implementations are encouraged to support multiple output
+formats as required by their target user base.
 
-JSON Schema output is defined using the JSON Schema data instance model as
-described in [Instance Data Model](#data-model). Implementations MAY deviate
-from this as supported by their specific languages and platforms, however it
-is RECOMMENDED that the output be convertible to the JSON format defined herein
-via serialization or other means.
+The scope of this section, therefore, is limited to defining common terms that
+SHOULD be used in JSON Schema output specifications in order to align the
+vernacular across differing formats. Output specifications which use this
+information MUST use this terminology to describe it. Conversely, output
+specifications which use these terms MUST maintain their meaning.
 
-### Output Formats
+### Evaluation path
 
-This specification defines three output formats. See the "Output Structure"
-section for the requirements of each format.
-
-- *Flag*: A boolean which simply indicates the overall validation result with no
-  further details.
-- *List*: Provides validation information in a flat list structure.
-- *Hierarchical*: Provides validation information in a hierarchical structure that
-follows the evaluation paths generated while processing the schema.
-
-An implementation MUST provide the "flag" format and SHOULD provide at least one
-of the "list" or "hierarchical" formats. Implementations SHOULD specify in their
-documentation which formats they support.
-
-### Minimum Information
-
-Beyond the simplistic "flag" output, additional information is useful to aid in
-debugging a schema or instance. Each sub-result SHOULD contain the information
-contained within this section at a minimum.
-
-A single object that contains all of these components is considered an output
-unit.
-
-Implementations MAY elect to provide additional information.
-
-#### Evaluation path
-
-The evaluation path to the schema object that produced the output unit. The
-value MUST be expressed as a JSON Pointer, and it MUST include any by-reference
-applicators such as `$ref` or `$dynamicRef`.[^13]
-
-[^13]: The schema may not actually have a value at the location indicated by
-this pointer. It is provided as an indication of the traversal path only.
+The evaluation path is the set of keys, starting from the schema root, through
+which evaluation passes to reach the schema object that produced a specific
+result. The value MUST be expressed as a JSON Pointer, and it MUST include any
+by-reference applicators such as `$ref` or `$dynamicRef`.
 
 ```
 /properties/width/$ref/allOf/1
 ```
 
-Note that this pointer may not be resolvable by the normal JSON Pointer process
-due to the inclusion of these by-reference applicator keywords.
+Note that this pointer may not be resolvable on the root schema by the normal
+JSON Pointer process. It is intended as an indication of the traversal path
+only.
 
-The JSON key for this information is "evaluationPath".
+When represented in JSON, the key for this information MUST be "evaluationPath".
 
-#### Schema Location
+### Schema Location
 
-The absolute, dereferenced location of the schema object that produced the
-output unit. The value MUST be expressed using the canonical IRI of the relevant
-schema resource plus a JSON Pointer fragment that indicates the schema object
-that produced the output. It MUST NOT include by-reference applicators such as
-`$ref` or `$dynamicRef`.[^14]
-
-[^14]: Note that "absolute" here is in the sense of "absolute filesystem path"
-(meaning the complete location) rather than the "absolute-IRI" terminology from
-RFC 3987 (meaning with scheme and without fragment). Schema locations will have
-a fragment in order to identify the specific schema object.
+The schema location is the canonical URI of the schema object plus a JSON
+Pointer fragment indicating the subschema that produced a result. In contrast
+with the evaluation path, the schema location MUST NOT include by-reference
+applicators such as `$ref` or `$dynamicRef`.
 
 ```
 https://example.com/schemas/common#/$defs/allOf/1
 ```
 
-The JSON key for this information is "schemaLocation".
+### Instance Location
 
-#### Instance Location
+The instance location is the location of the JSON value within the root instance
+being validated. The value MUST be expressed as a JSON Pointer.
 
-The location of the JSON value within the instance being validated. The value
-MUST be expressed as a JSON Pointer.
+### Errors
 
-The JSON key for this information is "instanceLocation".
+Errors are textual representations of individual validation failures, often
+intended for human consumers. This specification contains no requirements for
+the content of these errors.
 
-#### Errors
+Output specifications which include errors SHOULD be written such that the
+sources (schema and instance) of a given error is easily identifiable and SHOULD
+use the terms defined by this document to do so.
 
-Any errors produced by the validation. This property MUST NOT be included if the
-validation was successful. The value for this property MUST be an object where
-the keys are the names of keywords and the values are the error message produced
-by the associated keyword.
+### Annotations
 
-If the subschema itself is producing the error, that error MUST be listed with
-an empty string key.[^15]
+Many keywords are defined to produce annotations, whether intended for
+inter-keyword communication (e.g. between `properties` and
+`unevaluatedProperties`) or for application consumption (e.g. `title` or
+`readOnly`). Annotation values may be of any type and are defined by the
+keywords that produced them.
 
-[^15]: Although there may be other cases where a subschema can produce an error,
-the most common case is the `false` schema. In cases like these, there is no
-keyword that produces the error, so there is nothing to use as a key. Thus the
-empty string is used instead.
+Output specifications which include annotations SHOULD be written such that they
+can be easily associated with the data defined in {{collect}} and SHOULD use the
+terms defined by this document to do so.
 
-The specific wording for the message is not defined by this specification.
-Implementations will need to provide this.
+### Dropped Annotations
 
-The JSON key for this information is "errors".
+A dropped annotation is any annotation produced and subsequently dropped by the
+evaluation due to an unsuccessful validation result of the containing subschema.
+This information MAY be included if the validation result of the containing
+subschema was unsuccessful. It MUST NOT be included if the local validation
+result of the containing subschema was successful.
 
-#### Annotations
+As the intended purpose for including these annotations is debugging,
+implementations that wish to provide dropped annotations SHOULD NOT provide them
+as their default behavior. Dropped annotations SHOULD only be included when the
+implementation is explicitly configured to do so or if the implementation is
+specifically intended to be used as a debugging tool.
 
-Any annotations produced by the evaluation. This property MUST NOT be included
-if the validation result of the containing subschema was unsuccessful.
-
-The value for this property MUST be an object where the keys are the names of
-keywords and the values are the annotations produced by the associated keyword.
-
-Each keyword defines its own annotation data type (e.g. `properties` produces a
-list of keywords, whereas `title` produces a string).
-
-The JSON key for this information is "annotations".
-
-#### Dropped Annotations
-
-Any annotations produced and subsequently dropped by the evaluation due to an
-unsuccessful validation result of the containing subschema. This property MAY be
-included if the validation result of the containing subschema was unsuccessful.
-It MUST NOT be included if the local validation result of the containing
-subschema was successful.
-
-Implementations that wish to provide these annotations MUST NOT provide them as
-their default behavior. These annotations MUST only be included by explicitly
-configuring the implementation to do so.
-
-The value for this property MUST be an object where the keys are the names of
-keywords and the values are the annotations produced by the associated keyword.
-
-Each keyword defines its own annotation data type (e.g. `properties` produces a
-list of keywords, whereas `title` produces a string).
-
-The JSON key for this information is "droppedAnnotations".
-
-#### Results from Subschemas
-
-Evaluation results generated by applying a subschema to the instance or a child
-of the instance. Keywords which have multiple subschemas (e.g. `anyOf`) will
-generally generate an output unit for each subschema. In order to accommodate
-potentially multiple results, the value of this property MUST be an array of
-output units, even if only a single output unit is produced.
-
-For "list", this property will appear only at the root output unit and will hold
-all output units in a flat list.
-
-For "hierarchical", this property will contain results in a tree structure where
-each output unit may itself have further nested results.
-
-The sequence of output units within this list is not specified and MAY be
-determined by the implementation. Sets of output units are considered equivalent
-if they contain the same units, in any order.
-
-The JSON key for these additional results is "details".
-
-### Output Structure
-
-The output MUST be an object containing a boolean property named "valid". When
-additional information about the result is required, the output MUST also
-contain "details" as described below.
-
-valid: a boolean value indicating the overall validation success or failure
-
-details: the collection of results produced by subschemas
-
-For these examples, the following schema and instances will be used.
-
-```jsonschema
-{
-  "$schema": "https://json-schema.org/draft/next/schema",
-  "$id": "https://json-schema.org/schemas/example",
-  "type": "object",
-  "title": "root",
-  "properties": {
-    "foo": {
-      "allOf": [
-        { "required": [ "unspecified-prop" ] },
-        {
-          "type": "object",
-          "title": "foo-title",
-          "properties": {
-            "foo-prop": {
-              "const": 1,
-              "title": "foo-prop-title"
-            }
-          },
-          "additionalProperties": { "type": "boolean" }
-        }
-      ]
-    },
-    "bar": {
-      "$ref": "#/$defs/bar"
-    }
-  },
-  "$defs": {
-    "bar": {
-      "type": "object",
-      "title": "bar-title",
-      "properties": {
-        "bar-prop": {
-          "type": "integer",
-          "minimum": 10,
-          "title": "bar-prop-title"
-        }
-      }
-    }
-  }
-}
-```
-
-```json "Failing instance"
-{
-  "foo": {"foo-prop": "not 1", "other-prop": false},
-  "bar": {"bar-prop": 2}
-}
-```
-
-```json "Passing instance"
-{
-  "foo": {
-    "foo-prop": 1,
-    "unspecified-prop": true
-  },
-  "bar": {"bar-prop": 20}
-}
-```
-
-The failing instance will produce the following errors:
-
-- The value at `/foo` evaluated at `/properties/foo/allOf/0` by following the
-  path `/properties/foo/allOf/0` by the `required` keyword is missing the
-  property `unspecified-prop`.
-- The value at `/foo/foo-prop` evaluated at
-  `/properties/foo/allOf/1/properties/foo-prop` by following the path
-  `/properties/foo/allOf/1/properties/foo-prop` by the `const` keyword is not
-  the constant value 1.
-- The value at `/bar/bar-prop` evaluated at `/$defs/bar/properties/bar-prop` by
-  following the path `/properties/bar/$ref/properties/bar-prop` by the `type`
-  keyword is not a number.[^16][^17]
-
-[^16]: `minimum` doesn't produce an error because it only operates on instances
-that are numbers.
-
-[^17]: Note that the error message wording as depicted in the examples below is
-not a requirement of this specification. Implementations SHOULD craft error
-messages tailored for their audience or provide a templating mechanism that
-allows their users to craft their own messages.
-
-The passing instance will produce the following annotations:
-
-- The keyword `title` evaluated at the instance root by the root schema will produce
-  `"root"`.
-- The keyword `properties` evaluated at instance root by the root schema will produce
-  `["foo", "bar"]`.
-- The keyword `title` evaluated at `/properties/foo` by following the path
-  `/properties/foo` will produce `"foo-title"`.
-- The keyword `properties` evaluated at `/properties/foo/allOf/1` by following
-  the path `/properties/foo/allOf/1` will produce `["foo-prop"]`.
-- The keyword `additionalProperties` evaluated at `/properties/foo/allOf/1` by
-  following the path `/properties/foo/allOf/1` will produce
-  `["unspecified-prop"]`.
-- The keyword `title` evaluated at `/properties/foo/allOf/1/properties/foo-prop`
-  by following the path `/properties/foo/allOf/1/properties/foo-prop` will
-  produce `"foo-prop-title"`.
-- The keyword `title` evaluated at `/$defs/bar` by following the path
-  `/properties/bar/$ref` will produce `"bar-title"`.
-- The keyword `properties` evaluated at `/$defs/bar` by following the path
-  `/properties/var/$ref` will produce `["bar-prop"]`.
-- The keyword `title` evaluated at `/$defs/bar/properties/bar-prop` by following
-  the path `/properties/bar/$ref/properties/bar-prop` will produce
-  `"bar-prop-title"`.
-
-#### Flag
-
-In the simplest case, merely the boolean result for the "valid" valid property
-needs to be fulfilled. For this format, all other information is explicitly
-omitted.
-
-```json
-{
-  "valid": false
-}
-```
-
-Because no errors or annotations are returned with this format, it is
-RECOMMENDED that implementations use short-circuiting logic to return failure or
-success as soon as the outcome can be determined. For example, if an `anyOf`
-keyword contains five subschemas, and the second one passes, there is no need to
-check the other three. The logic can simply return with success.
-
-#### List
-
-The "List" structure is a flat list of output units contained within a root
-output unit.
-
-The root output unit contains "valid" for the overall result and "details" for
-the list of specific results. All other information is explicitly omitted from
-the root output unit. If the root schema produces errors or annotations, then
-the output node for the root MUST be present within the root output unit's
-"details" list with those errors or annotations.
-
-Output units which do not contain errors or annotations SHOULD be excluded from
-this format, however implementations MAY choose to include them for
-completeness.
-
-```json "Failing results"
-{
-  "valid": false,
-  "details": [
-    {
-      "valid": false,
-      "evaluationPath": "/properties/foo/allOf/0",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
-      "instanceLocation": "/foo",
-      "errors": {
-        "required": "Required properties [\"unspecified-prop\"] were not present"
-      }
-    },
-    {
-      "valid": false,
-      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
-      "instanceLocation": "/foo/foo-prop",
-      "errors": {
-        "const": "Expected \"1\""
-      }
-    },
-    {
-      "valid": false,
-      "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
-      "instanceLocation": "/bar/bar-prop",
-      "errors": {
-        "minimum": "2 is less than or equal to 10"
-      }
-    }
-  ]
-}
-```
-
-```json "Passing results"
-{
-  "valid": true,
-  "details": [
-    {
-      "valid": true,
-      "evaluationPath": "",
-      "schemaLocation": "https://json-schema.org/schemas/example#",
-      "instanceLocation": "",
-      "annotations": {
-        "title": "root",
-        "properties": [
-          "foo",
-          "bar"
-        ]
-      }
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties/foo/allOf/1",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
-      "instanceLocation": "/foo",
-      "annotations": {
-        "title": "foo-title",
-        "properties": [
-          "foo-prop"
-        ],
-        "additionalProperties": [
-          "unspecified-prop"
-        ]
-      }
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties/bar/$ref",
-      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
-      "instanceLocation": "/bar",
-      "annotations": {
-        "title": "bar-title",
-        "properties": [
-          "bar-prop"
-        ]
-      }
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
-      "instanceLocation": "/foo/foo-prop",
-      "annotations": {
-        "title": "foo-prop-title"
-      }
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-      "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
-      "instanceLocation": "/bar/bar-prop",
-      "annotations": {
-        "title": "bar-prop-title"
-      }
-    }
-  ]
-}
-```
-
-#### Hierarchical
-
-The "Hierarchical" structure is a tree structure that follows the evaluation
-path during the validation process. Typically, it will resemble the schema as if
-all referenced schemas were inlined in place of their associated by-reference
-keywords.
-
-All output units are included in this format.
-
-The location properties of the root output unit MAY be omitted.
-
-```json "Failing results (errors)"
-{
-  "valid": false,
-  "evaluationPath": "",
-  "schemaLocation": "https://json-schema.org/schemas/example#",
-  "instanceLocation": "",
-  "details": [
-    {
-      "valid": false,
-      "evaluationPath": "/properties/foo",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
-      "instanceLocation": "/foo",
-      "details": [
-        {
-          "valid": false,
-          "evaluationPath": "/properties/foo/allOf/0",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
-          "instanceLocation": "/foo",
-          "errors": {
-            "required": "Required properties [\"unspecified-prop\"] were not present"
-          }
-        },
-        {
-          "valid": false,
-          "evaluationPath": "/properties/foo/allOf/1",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
-          "instanceLocation": "/foo",
-          "droppedAnnotations": {
-            "properties": [ "foo-prop" ],
-            "title": "foo-title"
-          },
-          "details": [
-            {
-              "valid": false,
-              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
-              "instanceLocation": "/foo/foo-prop",
-              "errors": {
-                "const": "Expected \"1\""
-              },
-              "droppedAnnotations": {
-                "title": "foo-prop-title"
-              }
-            },
-            {
-              "valid": true,
-              "evaluationPath": "/properties/foo/allOf/1/additionalProperties",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/additionalProperties",
-              "instanceLocation": "/foo/other-prop"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "valid": false,
-      "evaluationPath": "/properties/bar",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
-      "instanceLocation": "/bar",
-      "details": [
-        {
-          "valid": false,
-          "evaluationPath": "/properties/bar/$ref",
-          "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
-          "instanceLocation": "/bar",
-          "droppedAnnotations": {
-            "properties": [ "bar-prop" ],
-            "title": "bar-title"
-          },
-          "details": [
-            {
-              "valid": false,
-              "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
-              "instanceLocation": "/bar/bar-prop",
-              "errors": {
-                "minimum": "2 is less than or equal to 10"
-              },
-              "droppedAnnotations": {
-                "title": "bar-prop-title"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-```json "Passing results (annotations)"
-{
-  "valid": true,
-  "evaluationPath": "",
-  "schemaLocation": "https://json-schema.org/schemas/example#",
-  "instanceLocation": "",
-  "annotations": {
-    "title": "root",
-    "properties": [
-      "foo",
-      "bar"
-    ]
-  },
-  "details": [
-    {
-      "valid": true,
-      "evaluationPath": "/properties/foo",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo",
-      "instanceLocation": "/foo",
-      "details": [
-        {
-          "valid": true,
-          "evaluationPath": "/properties/foo/allOf/0",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/0",
-          "instanceLocation": "/foo"
-        },
-        {
-          "valid": true,
-          "evaluationPath": "/properties/foo/allOf/1",
-          "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1",
-          "instanceLocation": "/foo",
-          "annotations": {
-            "title": "foo-title",
-            "properties": [
-              "foo-prop"
-            ],
-            "additionalProperties": [
-              "unspecified-prop"
-            ]
-          },
-          "details": [
-            {
-              "valid": true,
-              "evaluationPath": "/properties/foo/allOf/1/properties/foo-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/properties/foo-prop",
-              "instanceLocation": "/foo/foo-prop",
-              "annotations": {
-                "title": "foo-prop-title"
-              }
-            },
-            {
-              "valid": true,
-              "evaluationPath": "/properties/foo/allOf/1/additionalProperties",
-              "schemaLocation": "https://json-schema.org/schemas/example#/properties/foo/allOf/1/additionalProperties",
-              "instanceLocation": "/foo/unspecified-prop"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "valid": true,
-      "evaluationPath": "/properties/bar",
-      "schemaLocation": "https://json-schema.org/schemas/example#/properties/bar",
-      "instanceLocation": "/bar",
-      "details": [
-        {
-          "valid": true,
-          "evaluationPath": "/properties/bar/$ref",
-          "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar",
-          "instanceLocation": "/bar",
-          "annotations": {
-            "title": "bar-title",
-            "properties": [
-              "bar-prop"
-            ]
-          },
-          "details": [
-            {
-              "valid": true,
-              "evaluationPath": "/properties/bar/$ref/properties/bar-prop",
-              "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
-              "instanceLocation": "/bar/bar-prop",
-              "annotations": {
-                "title": "bar-prop-title"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-#### Output validation schemas
-
-For convenience, JSON Schema has been provided to validate output generated by
-implementations. Its IRI is: <https://json-schema.org/draft/next/output/schema>.
+Output specifications which include dropped annotations SHOULD be written such
+that they can be easily associated with the data defined in {{collect}} and
+SHOULD use the terms defined by this document to do so.
 
 ## Security Considerations {#security}
 
