@@ -523,25 +523,29 @@ to inform the user of the evaluation path that produced the error or annotation.
 
 ### Keyword Interactions
 
-Keywords MAY modify their behavior based on the presence, absence, or value of
-another keyword in the same [schema object](#schema-document). Such keywords
-MUST NOT result in a circular dependency.
-
 Unless otherwise specified, keywords act independently.
 
-Supplementary specifications are encouraged to specify any interactive behavior as part of the keyword whose behavior is modified.
+Keywords MAY modify their behavior based on the presence, absence, or value of
+another keyword in the same schema object. Such keywords MUST NOT result in a
+circular dependency.
 
-#### Annotations as an Interaction Mechanism
+Supplementary specifications are encouraged to specify any dependencies as part
+of the dependent keyword (i.e. the keyword whose behavior is modified).
 
-This document uses annotations as a mechanism to describe the interactions
-between keywords, however this is for illustrative purposes and not
-prescriptive. Implementations MAY use whatever mechanisms makes sense given
-their architecture and language needs in order to achieve the specified
-behaviors. Implementations are not required to collect annotations in order to
-manage keyword interaction.
+Within this document, keyword dependencies are expressed using one of the
+following mechanics:
 
-Supplementary specifications are also encouraged to use annotations to describe
-any interactions of the keywords they define.
+- Static dependencies, in which the dependency relies on the presence or
+  contents of another keyword.
+- Dynamic dependencies, in which the dependency relies on the evaluation of
+  another keyword against an instance. This dependency may be on either the
+  annotations produced by the keyword or the validation result of its
+  subschema(s).
+
+These mechanics are used merely to describe dependencies; they are for
+illustrative purposes and not prescriptive. Implementations MAY use whatever
+mechanisms makes sense given the needs of their architecture and language in
+order to achieve the specified behaviors.
 
 ### Default Behaviors {#default-behaviors}
 
