@@ -533,7 +533,7 @@ Supplementary specifications are encouraged to specify any dependencies as part
 of the dependent keyword (i.e. the keyword whose behavior is modified).
 
 Within this document, keyword dependencies are expressed using one of the
-following mechanics:
+following mechanisms:
 
 - Static dependencies, in which the dependency relies on the presence or
   contents of another keyword.
