@@ -36,14 +36,15 @@ specification](../jsonschema-core.html) also apply to this document.
 ## Overview
 
 ### Problem Statement
-A common need in JSON Schema is to select between one schema or another to
+
+A common need in JSON Schema is to select between one or more schemas to use to
 validate an instance based on the value of some property in the JSON instance.
 There are a several patterns people use to accomplish this, but they all have
 significant [problems](#problems).
 
 OpenAPI solves this problem with the `discriminator` keyword. However, their
 approach is more oriented toward code generation concerns, is poorly specified
-when it comes to validation, and is couple to OpenAPI concepts that don't exist
+when it comes to validation, and is coupled to OpenAPI concepts that don't exist
 is JSON Schema. Therefore, it's necessary to define something new rather than
 adopt `discriminator`.
 
@@ -63,7 +64,7 @@ build on that concept to solve this problem.
 }
 ```
 
-The validation result is equivalent to the following schema.
+The validation behavior of this schema is equivalent to the following schema.
 
 ```jsonschema
 {
@@ -79,9 +80,9 @@ The validation result is equivalent to the following schema.
 
 ### Limitations
 
-The problem of choosing an alternative based on a property value could apply for
-a value of any JSON type, but `propertyDependencies` only solves this problem
-when the value is a string. One of the main goals of this keyword is to define
+The problem of choosing a subschema based on a property value could apply for a
+value of any JSON type, but `propertyDependencies` only solves this problem when
+the value is a string. One of the main goals of this keyword is to define
 something that's intuitive enough and easy enough to use that people will
 actually use it rather than fallback to `oneOf` because it's simple. Achieving
 those goals means that some trade-offs need to be made. {{alternatives}} lists
@@ -131,10 +132,10 @@ not wide-spread or consistent behavior, nor is it expected or required from
 implementations.
 
 This pattern is also inefficient. Generally, there is a single value in the
-object that determines which alternative to chose, but the `oneOf` pattern has
-no way to specify what that value is and therefore needs to evaluate the entire
-schema. This is made worse in that every alternative needs to be fully validated
-to ensure that only one of the alternative passes and all the others fail. This
+object that determines which subschema to chose, but the `oneOf` pattern has no
+way to specify what that value is and therefore needs to evaluate the entire
+schema. This is made worse in that every subschema needs to be fully validated
+to ensure that only one of the subschemas passes and all the others fail. This
 last problem can be avoided by using `anyOf` instead, but that pattern is much
 less used.
 
@@ -142,10 +143,9 @@ less used.
 
 We can describe this kind of constraint more efficiently and with with better
 error messaging by using `if`/`then`. This allows the user to explicitly specify
-the constraint to be used to select which alternative the schema should be used
-to validate the schema. However, this pattern has problems of it's own. It's
-verbose, error prone, and not particularly intuitive, which leads most people to
-avoid it.
+the constraint to be used to select which subschema should be used.  However,
+this pattern has problems of it's own. It's verbose, error prone, and not
+particularly intuitive, which leads most people to avoid it.
 
 ```jsonschema
 {
