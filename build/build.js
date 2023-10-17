@@ -20,6 +20,17 @@ import rehypeStringify from "rehype-stringify";
 
 dotenv.config();
 
+const skip = [
+  "Abstract",
+  "Status",
+  "Note to Readers",
+  "Table of Contents",
+  "Authors' Addresses",
+  "Champions",
+  "\\[.*\\]",
+  "draft-.*"
+];
+
 const build = async (filename) => {
   const md = readFileSync(filename, "utf-8");
   const html = await remark()
@@ -28,16 +39,7 @@ const build = async (filename) => {
     .use(remarkHeadingId)
     .use(remarkHeadings, {
       startDepth: 2,
-      skip: [
-        "Abstract",
-        "Status",
-        "Note to Readers",
-        "Table of Contents",
-        "Authors' Addresses",
-        "Champions",
-        "\\[.*\\]",
-        "draft-.*"
-      ]
+      skip: skip
     })
     .use(remarkReferenceLinks)
     .use(remarkFlexibleContainers)
@@ -45,14 +47,7 @@ const build = async (filename) => {
     .use(remarkTorchLight)
     .use(remarkTableOfContents, {
       startDepth: 2,
-      skip: [
-        "Abstract",
-        "Note to Readers",
-        "Authors' Addresses",
-        "Champions",
-        "\\[.*\\]",
-        "draft-.*"
-      ]
+      skip: skip
     })
     .use(remarkValidateLinks)
     .use(remarkRehype)
