@@ -1,4 +1,4 @@
-# JSON Schema: The `propertyDependencies` Keyword
+# JSON Schema Proposal: Add `propertyDependencies` Keyword
 
 ## Abstract
 
@@ -26,13 +26,6 @@ For additional information, see <https://json-schema.org/>.
 To provide feedback, use this issue tracker or any of the communication methods
 listed on the homepage.
 
-## Table of Contents
-
-## Conventions and Terminology
-
-All conventions and terms used and defined by the [JSON Schema Core
-specification](../jsonschema-core.html) also apply to this document.
-
 ## Overview
 
 ### Problem Statement
@@ -40,83 +33,12 @@ specification](../jsonschema-core.html) also apply to this document.
 A common need in JSON Schema is to select between one or more schemas to use to
 validate an instance based on the value of some property in the JSON instance.
 There are a several patterns people use to accomplish this, but they all have
-significant [problems](#problems).
-
-OpenAPI solves this problem with the `discriminator` keyword. However, their
-approach is more oriented toward code generation concerns, is poorly specified
-when it comes to validation, and is coupled to OpenAPI concepts that don't exist
-is JSON Schema. Therefore, it's necessary to define something new rather than
-adopt `discriminator`.
-
-### Solution
-
-The `dependentSchemas` keyword is very close to what is needed except it checks
-for the presence of a property rather than it's value. The chosen solution is to
-build on that concept to solve this problem.
-
-```jsonschema
-{
-  "propertyDependencies": {
-    "foo": {
-      "aaa": { "$ref": "#/$defs/foo-aaa" }
-    }
-  }
-}
-```
-
-The validation behavior of this schema is equivalent to the following schema.
-
-```jsonschema
-{
-  "if": {
-    "properties": {
-      "foo": { "const": "aaa" }
-    },
-    "required": ["foo"]
-  },
-  "then": { "$ref": "#/$defs/foo-aaa" }
-}
-```
-
-### Limitations
-
-The problem of choosing a subschema based on a property value could apply for a
-value of any JSON type, but `propertyDependencies` only solves this problem when
-the value is a string. One of the main goals of this keyword is to define
-something that's intuitive enough and easy enough to use that people will
-actually use it rather than fallback to `oneOf` because it's simple. Achieving
-those goals means that some trade-offs need to be made. {{alternatives}} lists
-some alternatives that we considered.
-
-## A Vocabulary for Applying Subschemas
-
-This document adds the `propertyDependencies` keyword to the
-`https://json-schema.org/vocab/applicator` [applicator
-vocabulary](../jsonschema-core.html#applicatorvocab).
-
-### `propertyDependencies`
-
-This keyword specifies subschemas that are evaluated if the instance is an
-object and contains a certain property with a certain string value.
-
-This keyword's value MUST be an object. Each value in the object MUST be an
-object whose values MUST be valid JSON Schemas.
-
-If the outer object key is a property in the instance and the inner object key
-is equal to the value of that property, the entire instance must validate
-against the schema. Its use is dependent on the presence and value of the
-property.
-
-Omitting this keyword has the same behavior as an empty object.
-
-## [Appendix] Problems With Existing Patterns {#problems}
-
-### `oneOf`/`anyOf`
+significant problems.
 
 The pattern of using `oneOf` to describe a choice between two schemas has become
 ubiquitous.
 
-```jsonschema
+```json
 {
   "oneOf": [
     { "$ref": "#/$defs/aaa" },
@@ -139,15 +61,13 @@ to ensure that only one of the subschemas passes and all the others fail. This
 last problem can be avoided by using `anyOf` instead, but that pattern is much
 less used.
 
-### `if`/`then`
-
 We can describe this kind of constraint more efficiently and with with better
 error messaging by using `if`/`then`. This allows the user to explicitly specify
 the constraint to be used to select which subschema should be used.  However,
 this pattern has problems of it's own. It's verbose, error prone, and not
 particularly intuitive, which leads most people to avoid it.
 
-```jsonschema
+```json
 {
   "allOf": [
     {
@@ -172,7 +92,53 @@ particularly intuitive, which leads most people to avoid it.
 }
 ```
 
-## [Appendix] Alternatives Considered {#alternatives}
+OpenAPI solves this problem with the `discriminator` keyword. However, their
+approach is more oriented toward code generation concerns, is poorly specified
+when it comes to validation, and is coupled to OpenAPI concepts that don't exist
+is JSON Schema. Therefore, it's necessary to define something new rather than
+adopt `discriminator`.
+
+### Solution
+
+The `dependentSchemas` keyword is very close to what is needed except it checks
+for the presence of a property rather than it's value. The chosen solution is to
+build on that concept to solve this problem.
+
+```json
+{
+  "propertyDependencies": {
+    "foo": {
+      "aaa": { "$ref": "#/$defs/foo-aaa" }
+    }
+  }
+}
+```
+
+The validation behavior of this schema is equivalent to the following schema.
+
+```json
+{
+  "if": {
+    "properties": {
+      "foo": { "const": "aaa" }
+    },
+    "required": ["foo"]
+  },
+  "then": { "$ref": "#/$defs/foo-aaa" }
+}
+```
+
+### Limitations
+
+The problem of choosing a subschema based on a property value could apply for a
+value of any JSON type, but `propertyDependencies` only solves this problem when
+the value is a string. One of the main goals of this keyword is to define
+something that's intuitive enough and easy enough to use that people will
+actually use it rather than fallback to `oneOf` because it's simple. Achieving
+those goals means that some trade-offs need to be made. The next section lists
+some alternatives that we considered.
+
+### Alternatives
 
 Here are some alternatives that were considered that support all value types.
 All examples have the same validation behavior as the examples above.
@@ -183,7 +149,7 @@ JSON Schema. There aren't any keywords remotely like this. It's also still too
 verbose. It's a little more intuitive than `if`/`then` and definitely less error
 prone.
 
-```jsonschema
+```json
 {
   "propertyDependencies": [
     {
@@ -203,7 +169,7 @@ prone.
 A slight variation on that example is to make it a map of keyword to dependency
 object. It's still too verbose.
 
-```jsonschema
+```json
 {
   "propertyDependencies": {
     "foo": [
@@ -223,7 +189,7 @@ object. It's still too verbose.
 This one is a little more consistent with the JSON Schema style (poor keyword
 naming aside), but otherwise has all the same problems as the other examples.
 
-```jsonschema
+```json
 {
   "allOf": [
     {
@@ -245,7 +211,7 @@ to reduce boilerplate. It's also essentially a variation of the previous example
 with better names. This avoids to error proneness problem, but it's still too
 verbose.
 
-```jsonschema
+```json
 {
   "allOf": [
     {
@@ -270,7 +236,7 @@ but it successfully addresses the problems we're concerned about with the
 current approaches. The only issue with this alternative is that it's not as
 intuitive as the chosen solution.
 
-```jsonschema
+```json
 {
   "propertyDepenencies": {
     "foo": [
@@ -281,7 +247,13 @@ intuitive as the chosen solution.
 }
 ```
 
-## [Appendix] Change Log
+## Specification
+
+<!-- TODO: Update to where this actually ends up getting hosted. This is a guess
+for now. -->
+<https://json-schema.org/specification/extensions/propertyDependencies.html>
+
+## Change Log
 
 * [October 2023] Created
 
