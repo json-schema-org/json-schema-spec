@@ -1986,11 +1986,11 @@ keyword's annotation causes `contains` to assume a minimum value of 1.
 
 The value of this keyword MUST be a valid JSON Schema.
 
-This keyword applies its subschema to array elements or object property values.
+This keyword applies its subschema to array elements.
 
-An instance is valid against `contains` if the number of elements or property
-values that are valid against its subschema is with the inclusive range of the
-minimum and (if any) maximum number of occurrences.
+An instance is valid against `contains` if the number of elements that are valid
+against its subschema is with the inclusive range of the minimum and (if any)
+maximum number of occurrences.
 
 The maximum number of occurrences is provided by the `maxContains` keyword
 within the same schema object as `contains`. If `maxContains` is absent, the
@@ -2000,24 +2000,23 @@ The minimum number of occurrences is provided by the `minContains` keyword
 within the same schema object as `contains`. If `minContains` is absent, the
 minimum number of occurrences MUST be 1.
 
-Implementations MAY implement the dependency on `minContians` and `maxContains`
+Implementations MAY implement the dependency on `minContains` and `maxContains`
 by inspecting their values rather than reading annotations produced by those
 keywords.
 
-This keyword produces an annotation value which is an array of the indexes or
-property names to which this keyword validates successfully when applying its
-subschema, in ascending order. The value MAY be a boolean `true` if the
-subschema validates successfully when applied to every index or property value
-of the instance. The annotation MUST be present if the instance array or object
-to which this keyword's schema applies is empty.
+This keyword produces an annotation value which is an array of the indexes to
+which this keyword validates successfully when applying its subschema, in
+ascending order. The value MAY be a boolean `true` if the subschema validates
+successfully when applied to every index of the instance. The annotation MUST be
+present if the instance array to which this keyword's schema applies
+is empty.
 
 This annotation affects the behavior of `unevaluatedItems` in the Unevaluated
 vocabulary.
 
-The subschema MUST be applied to every array element or object property value
-even after the first match has been found, in order to collect annotations for
-use by other keywords. This is to ensure that all possible annotations are
-collected.
+The subschema MUST be applied to every array element even after the first match
+has been found, in order to collect annotations for use by other keywords. This
+is to ensure that all possible annotations are collected.
 
 ## A Vocabulary for Unevaluated Locations
 
@@ -2063,8 +2062,7 @@ outcomes. However, the keywords in this vocabulary are notable exceptions:
 - `unevaluatedItems`, whose behavior is defined in terms of annotations from
   `prefixItems`, `items`, `contains`, and itself
 - `unevaluatedProperties`, whose behavior is defined in terms of annotations
-  from `properties`, `patternProperties`, `additionalProperties`, `contains`,
-  and itself
+  from `properties`, `patternProperties`, `additionalProperties`, and itself
 
 ### `unevaluatedItems` {#unevaluateditems}
 
@@ -2103,25 +2101,25 @@ The value of `unevaluatedProperties` MUST be a valid JSON Schema.
 
 The behavior of this keyword depends on the annotation results of adjacent
 keywords that apply to the instance location being validated. Specifically, the
-annotations from `properties`, `patternProperties`, `contains`, and
-`additionalProperties`, which can come from those keywords when they are
-adjacent to the `unevaluatedProperties` keyword. Those four annotations, as well
-as `unevaluatedProperties`, can also result from any and all adjacent [in-place
+annotations from `properties`, `patternProperties`, and `additionalProperties`,
+which can come from those keywords when they are adjacent to the
+`unevaluatedProperties` keyword. Those four annotations, as well as
+`unevaluatedProperties`, can also result from any and all adjacent [in-place
 applicator](#in-place) keywords. This includes but is not limited to the
 in-place applicators defined in this document.
 
 Validation with `unevaluatedProperties` applies only to the child values of
 instance names that do not appear in the `properties`, `patternProperties`,
-`additionalProperties`, `contains`, or `unevaluatedProperties` annotation
-results that apply to the instance location being validated.
+`additionalProperties`, or `unevaluatedProperties` annotation results that apply
+to the instance location being validated.
 
 For all such properties, validation succeeds if the child instance validates
 against the `unevaluatedProperties` schema.
 
-This means that `properties`, `patternProperties`, `additionalProperties`,
-`contains` and all in-place applicators MUST be evaluated before this keyword
-can be evaluated. Authors of extension keywords MUST NOT define an in-place
-applicator that would need to be evaluated after this keyword.
+This means that `properties`, `patternProperties`, `additionalProperties`, and
+all in-place applicators MUST be evaluated before this keyword can be evaluated.
+Authors of extension keywords MUST NOT define an in-place applicator that would
+need to be evaluated after this keyword.
 
 The annotation result of this keyword is the set of instance property names
 validated by this keyword's subschema. This annotation affects the behavior of
@@ -2824,7 +2822,6 @@ to the document.
 [^19]: This section to be removed before leaving Internet-Draft status.
 
 ### draft-bhutton-json-schema-next
-- `contains` now applies to objects as well as arrays
 - Use IRIs instead of URIs, including allowing unicode in plain-name fragments
 - Clarify that detecting duplicate IRIs for different schemas SHOULD raise an error
 - Consolidate and clarify the syntax and rationale for plain-name fragments
