@@ -53,7 +53,7 @@ Conformance tests for JSON Schema and its vocabularies may be found
 
 The JSON Schema web site is at http://json-schema.org/
 
-The source for the website is [maintained in a separate repository](https://github.com/json-schema-org/json-schema-org.github.io).
+The source for the website is [maintained in a separate repository](https://github.com/json-schema-org/website).
 
 ## Contributors
 
