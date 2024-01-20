@@ -1832,7 +1832,7 @@ results.
 
 ##### `prefixItems`
 
-The value of "prefixItems` MUST be a non-empty array of valid JSON Schemas.
+The value of `prefixItems` MUST be a non-empty array of valid JSON Schemas.
 
 Validation succeeds if each element of the instance validates against the
 subschema at the same position, if any. This keyword does not constrain the
