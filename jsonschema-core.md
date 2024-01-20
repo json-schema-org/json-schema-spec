@@ -1844,8 +1844,6 @@ this keyword applied a subschema. The value MAY be a boolean true if a subschema
 was applied to every index of the instance, such as is produced by the `items`
 keyword. This annotation affects the behavior of `items` and `unevaluatedItems`.
 
-Omitting this keyword has the same assertion behavior as an empty array.
-
 ##### `items` {#items}
 
 The value of `items` MUST be a valid JSON Schema.
