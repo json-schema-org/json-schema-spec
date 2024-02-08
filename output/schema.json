@@ -3,11 +3,25 @@
   "$id": "https://json-schema.org/draft/next/output/schema",
   "description": "A schema that validates the minimum requirements for validation output",
 
-  "anyOf": [
-    { "$ref": "#/$defs/flag" },
-    { "$ref": "#/$defs/list" },
-    { "$ref": "#/$defs/hierarchical" }
-  ],
+  "properties": {
+    "dialect": {
+      "type": "string",
+      "format": "iri"
+    },
+    "baseUri": {
+      "type": "string",
+      "format": "iri"
+    },
+    "valid": { "type": "boolean" },
+    "details": {
+      "anyOf": [
+        { "$ref": "#/$defs/list" },
+        { "$ref": "#/$defs/hierarchical" }
+      ]
+    }
+  },
+  "requires": [ "dialect", "baseUri", "valid" ],
+
   "$defs": {
     "outputUnit":{
       "properties": {
@@ -18,7 +32,7 @@
         },
         "schemaLocation": {
           "type": "string",
-          "format": "uri"
+          "format": "iri"
         },
         "instanceLocation": {
           "type": "string",
@@ -75,21 +89,7 @@
       "type": "array",
       "items": { "$ref": "#/$defs/outputUnit" }
     },
-    "flag": {
-      "properties": {
-        "valid": { "type": "boolean" }
-      },
-      "required": [ "valid" ]
-    },
-    "list": {
-      "properties": {
-        "valid": { "type": "boolean" },
-        "nested": {
-          "$ref": "#/$defs/outputUnitArray"
-        }
-      },
-      "required": [ "valid", "nested" ]
-    },
+    "list": { "$ref": "#/$defs/outputUnitArray" },
     "hierarchical": { "$ref": "#/$defs/outputUnit" }
   }
 }
