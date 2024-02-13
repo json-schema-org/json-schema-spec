@@ -39,8 +39,7 @@ the following metadata regarding the validation:
 
 | JSON Property Name | Description |
 |:-:|:-|
-| `dialect` | Schema dialect (`$schema` value) |
-| `baseUri` | Schema base URI (`$id` value) |
+| `baseUri` | Evaluation root base URI (`$id` value) |
 | `valid` | Boolean containing the overall validation result |
 | `details` | Contains the detailed subschema evaluation results in one of the [formats](#output-structure) below<br> Required only for "list" and "hierarchical" formats |
 <!-- Placeholder for other metadata ideas -->
@@ -245,7 +244,6 @@ completeness.
 
 ```json "Failing Results"
 {
-  "dialect": "https://json-schema.org/draft/next/schema",
   "baseUri": "https://json-schema.org/schemas/example",
   "valid": false,
   "details": [
@@ -282,7 +280,6 @@ completeness.
 
 ```json "Passing Results"
 {
-  "dialect": "https://json-schema.org/draft/next/schema",
   "baseUri": "https://json-schema.org/schemas/example",
   "valid": true,
   "details": [
@@ -366,7 +363,6 @@ All output units are included in this format.
 
 ```json "failing Results
 {
-  "dialect": "https://json-schema.org/draft/next/schema",
   "baseUri": "https://json-schema.org/schemas/example",
   "valid": false,
   "details": {
@@ -461,7 +457,6 @@ All output units are included in this format.
 
 ```json "Passing Results
 {
-  "dialect": "https://json-schema.org/draft/next/schema",
   "baseUri": "https://json-schema.org/schemas/example",
   "valid": false,
   "details": {
