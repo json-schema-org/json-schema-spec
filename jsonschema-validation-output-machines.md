@@ -221,7 +221,6 @@ format, all other information is explicitly omitted.
 
 ```json "Flag Results"
 {
-  "dialect": "https://json-schema.org/draft/next/schema",
   "baseUri": "https://json-schema.org/schemas/example",
   "results": false
 }
