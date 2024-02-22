@@ -400,11 +400,11 @@ tokens:
 
 - individual Unicode characters, as defined by the [JSON
   specification](#rfc8259);
+- simple atoms: "." (any character except line terminator);
 - simple character classes ("[abc]"), range character classes ("[a-z]");
 - complemented simple character classes ("[^abc]"),
   complemented range character classes ("[^a-z]");
-- simple quantifiers: "." (any character except line terminator),
-  "+" (one or more), "*" (zero or more), "?" (zero or one),
+- simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or one),
   and their lazy versions ("+?", "*?", "??");
 - range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at most
   y, occurrences), {x,} (x occurrences or more), and their lazy versions;
