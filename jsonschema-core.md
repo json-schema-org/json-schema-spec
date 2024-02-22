@@ -402,8 +402,8 @@ tokens:
   specification](#rfc8259);
 - simple atoms: `.` (any character except line terminator);
 - simple character classes (`[abc]`), range character classes (`[a-z]`);
-- complemented simple character classes (`[^abc]`),
-  complemented range character classes (`[^a-z]`);
+- complemented simple character classes (`[^abc]`);
+- complemented range character classes (`[^a-z]`);
 - simple quantifiers: `+` (one or more), `*` (zero or more), `?` (zero or one),
   and their lazy versions (`+?`, `*?`, `??`);
 - range quantifiers: `{x}` (exactly x occurrences), `{x,y}` (at least x, at most
