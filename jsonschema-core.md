@@ -409,7 +409,7 @@ tokens:
 - range quantifiers: `{x}` (exactly x occurrences), `{x,y}` (at least x, at most
   y, occurrences), {x,} (x occurrences or more), and their lazy versions;
 - the beginning-of-input (`^`) and end-of-input (`$`) anchors;
-- simple grouping (`(` and `)`) and alternation (`|`).
+- simple grouping (using `(` and `)`) and alternation (`|`).
 
 Finally, implementations MUST NOT take regular expressions to be anchored,
 neither at the beginning nor at the end. This means, for instance, the pattern
