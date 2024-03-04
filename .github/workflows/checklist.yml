@@ -1,0 +1,34 @@
+name: Checklist Handler
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  add-checklist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get Comment Body
+        id: get-comment-body
+        run: |
+          existing="${{ github.event.pull_request.body }}"
+          body="${existing}$(cat .github/workflows/checklist.md)"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+      - name: Update comment
+        if: github.event.action == 'opened'
+        uses: AsasInnab/pr-body-action@v1
+        with:
+          body: ${{ steps.get-comment-body.outputs.body }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  enforce-checklist:
+    runs-on: ubuntu-latest
+    needs: add-checklist
+    steps:
+      - uses: mheap/require-checklist-action@v1
+        with:
+          requireChecklist: false # If this is true and there are no checklists detected, the action will fail
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
