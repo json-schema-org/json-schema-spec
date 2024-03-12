@@ -400,14 +400,16 @@ tokens:
 
 - individual Unicode characters, as defined by the [JSON
   specification](#rfc8259);
-- simple character classes ([abc]), range character classes ([a-z]);
-- complemented character classes ([^abc], [^a-z]);
-- simple quantifiers: "+" (one or more), "*" (zero or more), "?" (zero or one),
-  and their lazy versions ("+?", "*?", "??");
-- range quantifiers: "{x}" (exactly x occurrences), "{x,y}" (at least x, at most
+- simple atoms: `.` (any character except line terminator);
+- simple character classes (`[abc]`), range character classes (`[a-z]`);
+- complemented simple character classes (`[^abc]`);
+- complemented range character classes (`[^a-z]`);
+- simple quantifiers: `+` (one or more), `*` (zero or more), `?` (zero or one),
+  and their lazy versions (`+?`, `*?`, `??`);
+- range quantifiers: `{x}` (exactly x occurrences), `{x,y}` (at least x, at most
   y, occurrences), {x,} (x occurrences or more), and their lazy versions;
-- the beginning-of-input ("^") and end-of-input ("$") anchors;
-- simple grouping ("(...)") and alternation ("|").
+- the beginning-of-input (`^`) and end-of-input (`$`) anchors;
+- simple grouping (using `(` and `)`) and alternation (`|`).
 
 Finally, implementations MUST NOT take regular expressions to be anchored,
 neither at the beginning nor at the end. This means, for instance, the pattern
