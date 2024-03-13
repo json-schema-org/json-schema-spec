@@ -1655,7 +1655,7 @@ User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
 Clients SHOULD be able to make requests with a "From" header so that server
 operators can contact the owner of a potentially misbehaving script.
 
-## A Vocabulary for Applying Subschemas
+## A Vocabulary for Applying Subschemas {#applicatorvocab}
 
 This section defines a vocabulary of applicator keywords that are RECOMMENDED
 for use as the basis of other vocabularies.
@@ -1793,7 +1793,7 @@ successfully validates against its subschema. Implementations MUST NOT evaluate
 the instance against this keyword, for either validation or annotation
 collection purposes, in such cases.
 
-##### `dependentSchemas`
+##### `dependentSchemas` {#dependent-schemas}
 
 This keyword specifies subschemas that are evaluated if the instance is an
 object and contains a certain property.
@@ -1803,21 +1803,6 @@ JSON Schema.
 
 If the object key is a property in the instance, the entire instance must
 validate against the subschema. Its use is dependent on the presence of the
-property.
-
-Omitting this keyword has the same behavior as an empty object.
-
-##### `propertyDependencies`
-
-This keyword specifies subschemas that are evaluated if the instance is an
-object and contains a certain property with a certain string value.
-
-This keyword's value MUST be an object. Each value in the object MUST be an
-object whose values MUST be valid JSON Schemas.
-
-If the outer object key is a property in the instance and the inner object key
-is equal to the value of that property, the entire instance must validate
-against the schema. Its use is dependent on the presence and value of the
 property.
 
 Omitting this keyword has the same behavior as an empty object.
