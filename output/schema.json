@@ -24,7 +24,7 @@
           "type": "string",
           "format": "json-pointer"
         },
-        "nested": {
+        "details": {
           "$ref": "#/$defs/outputUnitArray"
         },
         "annotations": {
@@ -84,11 +84,11 @@
     "list": {
       "properties": {
         "valid": { "type": "boolean" },
-        "nested": {
+        "details": {
           "$ref": "#/$defs/outputUnitArray"
         }
       },
-      "required": [ "valid", "nested" ]
+      "required": [ "valid", "details" ]
     },
     "hierarchical": { "$ref": "#/$defs/outputUnit" }
   }
