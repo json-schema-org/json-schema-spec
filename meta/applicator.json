@@ -4,11 +4,12 @@
     "$dynamicAnchor": "meta",
 
     "title": "Applicator vocabulary meta-schema",
-    "type": ["object", "boolean"],
+    "type": ["object", "boolean", "string"],
+    "format": "iri-reference",
     "properties": {
-        "prefixItems": { "$ref": "#/$defs/schemaArray" },
+        "prefixItems": "#/$defs/schemaArray",
         "items": { "$dynamicRef": "#meta" },
-        "maxContains": { "$ref": "#/$defs/nonNegativeInteger" },
+        "maxContains": "#/$defs/nonNegativeInteger",
         "minContains": {
             "$ref": "#/$defs/nonNegativeInteger",
             "default": 1
@@ -44,9 +45,9 @@
         "if": { "$dynamicRef": "#meta" },
         "then": { "$dynamicRef": "#meta" },
         "else": { "$dynamicRef": "#meta" },
-        "allOf": { "$ref": "#/$defs/schemaArray" },
-        "anyOf": { "$ref": "#/$defs/schemaArray" },
-        "oneOf": { "$ref": "#/$defs/schemaArray" },
+        "allOf": "#/$defs/schemaArray",
+        "anyOf": "#/$defs/schemaArray",
+        "oneOf": "#/$defs/schemaArray",
         "not": { "$dynamicRef": "#meta" }
     },
     "$defs": {

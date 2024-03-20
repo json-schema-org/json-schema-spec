@@ -4,21 +4,22 @@
     "$dynamicAnchor": "meta",
 
     "title": "Core vocabulary meta-schema",
-    "type": ["object", "boolean"],
+    "type": ["object", "boolean", "string"],
+    "format": "iri-reference",
     "properties": {
         "$id": {
             "$ref": "#/$defs/iriReferenceString",
             "$comment": "Fragments not allowed.",
             "pattern": "^[^#]*$"
         },
-        "$schema": { "$ref": "#/$defs/iriString" },
-        "$ref": { "$ref": "#/$defs/iriReferenceString" },
-        "$anchor": { "$ref": "#/$defs/anchorString" },
-        "$dynamicRef": { "$ref": "#/$defs/iriReferenceString" },
-        "$dynamicAnchor": { "$ref": "#/$defs/anchorString" },
+        "$schema": "#/$defs/iriString",
+        "$ref": "#/$defs/iriReferenceString",
+        "$anchor": "#/$defs/anchorString",
+        "$dynamicRef": "#/$defs/iriReferenceString",
+        "$dynamicAnchor": "#/$defs/anchorString",
         "$vocabulary": {
             "type": "object",
-            "propertyNames": { "$ref": "#/$defs/iriString" },
+            "propertyNames": "#/$defs/iriString",
             "additionalProperties": {
                 "type": "boolean"
             }
