@@ -2581,7 +2581,7 @@ a IRI with a fragment created by `$dynamicAnchor`. Therefore we must examine the
 dynamic scope before following the reference.
 
 At this point, the evaluation path is
-`#/$ref/properties/children/items/$dynamicRef`, with a dynamic scope containing
+`/$ref/properties/children/items/$dynamicRef`, with a dynamic scope containing
 (from the outermost scope to the innermost):
 
 1. `https://example.com/strict-tree#`
