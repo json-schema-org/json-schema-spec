@@ -1,0 +1,169 @@
+# JSON Schema Specification Development and Publication Process
+
+## Purpose
+
+This document describes the development and publication process for the JSON Schema specifications contained within this repository.
+
+- [JSON Schema Core](./jsonschema-core.md)
+- [JSON Schema Validation](./jsonschema-validation.md)
+
+## Definitions
+
+### Defined Behavior
+
+Some behaviors within JSON Schema may be explicitly or implicitly undefined by the specifications for various reasons.  How to handle these behaviors is generally left to implementations.
+
+A defined behavior is one that is fully defined by the specifications.
+
+### Stability and Breaking Changes
+
+Stability is defined using the level of compatibility between sequential releases.  If all schemas which are written to one release produce the same defined behavior under the following release, then those releases are compatible, and the specification is said to be stable between them.
+
+If an existing schema under the new release exhibits defined behavior that is contrary to defined behavior under the previous release, the new release is said to contain breaking changes and the specification is unstable between those releases.
+
+If a new release fully defines a previously undefined (or under-defined) behavior, the new release is still considered compatible, even if it contradicts the decision of any particular implementation.
+
+### Release
+
+A release is any single publication of the JSON Schema specifications (as a group).
+
+### Version
+
+Consecutive releases which maintain compatibility with each other comprise a version.
+
+## Release and Version
+
+The JSON Schema specification will aim to publish annually on or about the first of January each year.  Releases are identified by the year they are published.
+
+When a new release contains breaking changes, that release begins a new version of JSON Schema.
+
+The version will be identified as an integer, starting with `1` and incrementing as needed.
+
+Stability will be prioritized when making changes to the specification.  Breaking changes are undesired and should be avoided when possible.
+
+## Publication
+
+### Specifications
+
+The specifications will be published on the JSON Schema website, https://json-schema.org/, using a path comprised of the version, year, and document name.  For example,
+
+```
+https://json-schema.org/1/2025/core.html
+https://json-schema.org/1/2025/validation.html
+```
+
+### Meta-schemas
+
+A release meta-schema will be published under the same path using `schema` as the file name.
+
+```
+https://json-schema.org/1/2025/schema
+```
+
+The meta-schema for the latest release in a version will also be published under the version path with `schema` as the file name.
+
+```
+https://json-schema.org/1/schema
+```
+
+The latest-release meta-schemas will be updated with proposals as indicated by the [Proposal section](#proposal) of this document.
+
+```diff
+@@ These are merely publication URLs.  The spec will define the `$id` values for the meta-schemas. @@
+```
+
+## Feature Life Cycle
+
+New features will progress through a sequence of stages before being added to the specification, and existing stable features must be formally deprecated before being removed. The stages of the life cycle, in order, are:
+
+- Concept
+- Proposal
+- Experimentation
+- Stable
+- Deprecated
+- Removed
+
+The flow through these stages is depicted below:
+
+![Feature Life Cycle Flow](./feature-life-cycle.png)
+
+### Concept
+
+The feature life cycle begins with an idea expressed in a GitHub issue in this repository.  Initial discussion may occur in Slack or another space, but the life cycle does not formally begin until a GitHub issue is created.
+
+The discussion should cover how the feature could work, use cases, syntax, alternatives, whether it’s a breaking change, etc., with a goal of deciding rough requirements.
+
+During this stage, members of the Core Team will implement private prototypes of the ideas expressed in the issue to get a feel for how it integrates with the stable features.  Questions to address may include:
+
+- Does the idea operate within the confines of existing JSON Schema evaluation processes, or does it define something new?
+- Is the idea merely a shortcut for some existing functionality (syntactic sugar), or does it solve a previously unsolvable problem?
+- What is the expected complexity for implementing the feature?
+
+### Proposal
+
+Once a rough consensus for the idea has been reached, a formal proposal will be written, separate from the specification, with the goal of precisely defining specification changes.
+
+The proposal will use the [Proposal Template]() and be stored in this repository's `proposals` folder.
+
+```diff
+@@ TODO: Define Proposal Template and fill in the link. @@
+```
+
+Proposed keywords will be added to the appropriate vocabulary meta-schemas in:
+
+- latest published release and
+- the `main` branch of this repository.
+
+The subschema for the proposed keyword will contain only a `$comment` keyword indicating that the feature is experimental and containing a link to the proposal document.  Aside from the `$comment` keyword, the subschema will be empty.
+
+_This is done so that a proposed keyword is allowed but not validated as its syntax may change during the proposal/experimentation process.  It also permits different implementations to support different variations of each proposal separately throughout this process. It will be up to the implementation to validate these keywords in accordance with their support._
+
+Tests for the proposal are added to the JSON Schema Test Suite.
+
+```diff
+@@ TODO: Identify a location within the test suite for proposals. @@
+```
+
+### Experimentation
+
+Once the initial proposal has been completed, implementations may begin to support the new feature.
+
+Feedback from implementers and users are result in refinements to the proposal, which will then be updated in the implementations.
+
+Breaking changes to a proposed feature MAY occur, but are highly discouraged.
+
+In order to proceed to the next stage ([Stable](#stable)):
+
+- at least five (5) implementations support the feature
+- there is sufficient evidence of use
+- no changes are requested for a period of six (6) weeks
+
+```diff
+@@ TODO: Determine usage metrics. @@
+```
+
+Experimental features are not considered to be interoperable across implementations.
+
+If a proposal cannot advance to the next stage, it may be removed.  The proposal document is moved to an `archive` subfolder, the keyword is removed from the meta-schemas, and any tests are moved to an `archive` subfolder. The removal of a non-stable feature is not considered a breaking change.
+
+### Stable
+
+The proposal is incorporated into the specification in the `main` branch, and the feature will be required as of the next release.
+
+The appropriate vocabulary meta-schema in the `main` branch is updated to include a subschema that validates the feature's syntax requirements.  This will be made available with the next release.
+
+The published meta-schema (for the current release) will have the keyword removed.
+
+The appropriate tests are incorporated into the main suite.
+
+### Deprecated
+
+If a feature is no longer useful, e.g. it has been replaced, it may be deprecated by indicating it as such in the specification.
+
+Implementations must support deprecated features.
+
+### Removed
+
+A feature must have been published as deprecated for at least one release before it can be considered for removal.
+
+Feature removal is considered a breaking change.
