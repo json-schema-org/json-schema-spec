@@ -25,12 +25,12 @@ If a new release fully defines a previously undefined (or under-defined) behavio
 
 For reference, this table shows the validation results of a hypothetical schema and instance across two consecutive releases to illustrate the compatibility of those releases:
 
- <table>
+<table>
   <tr>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next➡️<br>⬇️Current</td>
-    <th width="100" align="center">pass</th>
-    <th width="100" align="center">fail</th> 
-    <th width="100" align="center">indeterminant</th> 
+    <th width="150" align="center">pass</th>
+    <th width="150" align="center">fail</th> 
+    <th width="150" align="center">indeterminant</th> 
   </tr>
   <tr>
     <th align="center">pass</th>
