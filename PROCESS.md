@@ -28,18 +28,18 @@ For reference, this table shows the validation results of a hypothetical schema 
  <table>
   <tr>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next➡️<br>⬇️Current</td>
-    <th width="100" align="center">true</th>
-    <th width="100" align="center">false</th> 
+    <th width="100" align="center">pass</th>
+    <th width="100" align="center">fail</th> 
     <th width="100" align="center">indeterminant</th> 
   </tr>
   <tr>
-    <th align="center">true</th>
+    <th align="center">pass</th>
     <td align="center">✅</td> 
     <td align="center">❌</td>
     <td align="center">❌</td>
   </tr>
   <tr>
-    <th align="center">false</th>
+    <th align="center">fail</th>
     <td align="center">❌</td> 
     <td align="center">✅</td>
     <td align="center">❌</td>
