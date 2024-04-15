@@ -13,7 +13,7 @@ This document describes the development and publication process for the JSON Sch
 
 Some behaviors within JSON Schema may be explicitly or implicitly undefined by the specifications for various reasons.  How to handle these behaviors is generally left to implementations.
 
-A defined behavior is one that is fully defined by the specifications.
+A defined behavior is one that is fully and unambiguously defined by the specifications.
 
 ### Stability and Breaking Changes
 
@@ -22,6 +22,35 @@ Stability is defined using the level of compatibility between sequential release
 If an existing schema under the new release exhibits defined behavior that is contrary to defined behavior under the previous release, the new release is said to contain breaking changes and the specification is unstable between those releases.
 
 If a new release fully defines a previously undefined (or under-defined) behavior, the new release is still considered compatible, even if it contradicts the decision of any particular implementation.
+
+For reference, this table shows the validation results of a hypothetical schema and instance across two consecutive releases to illustrate the compatibility of those releases:
+
+ <table>
+  <tr>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next➡️<br>⬇️Current</td>
+    <th width="100" align="center">true</th>
+    <th width="100" align="center">false</th> 
+    <th width="100" align="center">indeterminant</th> 
+  </tr>
+  <tr>
+    <th align="center">true</th>
+    <td align="center">✅</td> 
+    <td align="center">❌</td>
+    <td align="center">❌</td>
+  </tr>
+  <tr>
+    <th align="center">false</th>
+    <td align="center">❌</td> 
+    <td align="center">✅</td>
+    <td align="center">❌</td>
+  </tr>
+  <tr>
+    <th align="center">indeterminant</th>
+    <td align="center">✅</td> 
+    <td align="center">✅</td> 
+    <td align="center">✅</td>
+  </tr>
+</table>
 
 ### Release
 
@@ -33,7 +62,7 @@ Consecutive releases which maintain compatibility with each other comprise a ver
 
 ## Release and Version
 
-The JSON Schema specification will aim to publish annually on or about the first of January each year.  Releases are identified by the year they are published.
+The JSON Schema specification will aim to publish annually on or about the First of January each year.  Releases are identified by the year they are published.
 
 When a new release contains breaking changes, that release begins a new version of JSON Schema.
 
@@ -69,7 +98,7 @@ https://json-schema.org/1/schema
 The latest-release meta-schemas will be updated with proposals as indicated by the [Proposal section](#proposal) of this document.
 
 ```diff
-@@ These are merely publication URLs.  The spec will define the `$id` values for the meta-schemas. @@
+@@ These are merely publication URLs.  The specification will define the `$id` values for the meta-schemas. @@
 ```
 
 ## Feature Life Cycle
@@ -128,7 +157,7 @@ Tests for the proposal are added to the JSON Schema Test Suite.
 
 Once the initial proposal has been completed, implementations may begin to support the new feature.
 
-Feedback from implementers and users are result in refinements to the proposal, which will then be updated in the implementations.
+Feedback from implementers and users are expected to result in refinements to the proposal, which will then be updated in the implementations.
 
 Breaking changes to a proposed feature MAY occur, but are highly discouraged.
 
@@ -144,7 +173,7 @@ In order to proceed to the next stage ([Stable](#stable)):
 
 Experimental features are not considered to be interoperable across implementations.
 
-If a proposal cannot advance to the next stage, it may be removed.  The proposal document is moved to an `archive` subfolder, the keyword is removed from the meta-schemas, and any tests are moved to an `archive` subfolder. The removal of a non-stable feature is not considered a breaking change.
+If a proposal cannot advance to the next stage, it may be removed.  The proposal document is moved to an `archive` subfolder, the keyword is removed from the meta-schemas, and any tests are moved to an `archive` subfolder. The removal of a feature which has not reached the stable state is not considered a breaking change.
 
 ### Stable
 
@@ -152,7 +181,7 @@ The proposal is incorporated into the specification in the `main` branch, and th
 
 The appropriate vocabulary meta-schema in the `main` branch is updated to include a subschema that validates the feature's syntax requirements.  This will be made available with the next release.
 
-The published meta-schema (for the current release) will have the keyword removed.
+Upon publication of the new release, the meta-schema for the lapsed release will have the keyword removed.
 
 The appropriate tests are incorporated into the main suite.
 
