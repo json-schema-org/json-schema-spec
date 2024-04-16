@@ -81,6 +81,8 @@ https://json-schema.org/1/2025/core.html
 https://json-schema.org/1/2025/validation.html
 ```
 
+Once a specification document has been published, neither the document (save for minor errata such as spelling mistakes) nor its publication URL may change.  If the TSC elects to alter the above URL scheme, the new scheme only applies to future publications and are not retroactive.
+
 ### Meta-schemas
 
 A release meta-schema will be published under the same path using `schema` as the file name.
