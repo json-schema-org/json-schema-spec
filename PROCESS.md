@@ -15,6 +15,8 @@ Some behaviors within JSON Schema may be explicitly or implicitly undefined by t
 
 A defined behavior is one that is fully and unambiguously defined by the specifications.
 
+An undefined behavior is said to have an "indeterminate" validation result since implementations may resolve the behavior in different ways.
+
 ### Stability and Breaking Changes
 
 Stability is defined using the level of compatibility between sequential releases.  If all schemas which are written to one release produce the same defined behavior under the following release, then those releases are compatible, and the specification is said to be stable between them.
@@ -30,7 +32,7 @@ For reference, this table shows the validation results of a hypothetical schema 
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next➡️<br>⬇️Current</td>
     <th width="150" align="center">pass</th>
     <th width="150" align="center">fail</th> 
-    <th width="150" align="center">indeterminant</th> 
+    <th width="150" align="center">indeterminate</th> 
   </tr>
   <tr>
     <th align="center">pass</th>
@@ -45,7 +47,7 @@ For reference, this table shows the validation results of a hypothetical schema 
     <td align="center">❌</td>
   </tr>
   <tr>
-    <th align="center">indeterminant</th>
+    <th align="center">indeterminate</th>
     <td align="center">✅</td> 
     <td align="center">✅</td> 
     <td align="center">✅</td>
@@ -130,6 +132,8 @@ During this stage, members of the Core Team will implement private prototypes of
 - Is the idea merely a shortcut for some existing functionality (syntactic sugar), or does it solve a previously unsolvable problem?
 - What is the expected complexity for implementing the feature?
 
+At least two (2) Core Team members must have implemented prototypes before the concept can continue to the formal proposal process.
+
 ### Proposal
 
 Once a rough consensus for the idea has been reached, a formal proposal will be written, separate from the specification, with the goal of precisely defining specification changes.
@@ -155,9 +159,11 @@ Tests for the proposal are added to the JSON Schema Test Suite.
 @@ TODO: Identify a location within the test suite for proposals. @@
 ```
 
+Once an initial draft of the proposal has been completed and published, the feature moves into Experimentation.
+
 ### Experimentation
 
-Once the initial proposal has been completed, implementations may begin to support the new feature.
+Implementations may begin to support the new feature.
 
 Feedback from implementers and users are expected to result in refinements to the proposal, which will then be updated in the implementations.
 
