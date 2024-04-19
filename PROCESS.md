@@ -87,22 +87,27 @@ Once a specification document has been published, neither the document (save for
 
 ### Meta-schemas
 
-A release meta-schema will be published under the same path using `schema` as the file name.
+A release meta-schema will be published under the same path using `schema.json` as the file name.
 
 ```
-https://json-schema.org/1/2025/schema
+https://json-schema.org/1/2025/schema.json
 ```
 
-The meta-schema for the latest release in a version will also be published under the version path with `schema` as the file name.
+The website will also be configured to:
 
-```
-https://json-schema.org/1/schema
-```
+- serve the meta-schema from its release folder
+  ```
+  https://json-schema.org/1/2025/
+  ```
+- serve the meta-schema for the latest release in a version from its version folder
+  ```
+  https://json-schema.org/1/
+  ```
 
 The latest-release meta-schemas will be updated with proposals as indicated by the [Proposal section](#proposal) of this document.
 
 ```diff
-@@ These are merely publication URLs.  The specification will define the `$id` values for the meta-schemas. @@
+@@ These are only publication and availability URLs.  The specification will define the `$id` values for the meta-schemas. @@
 ```
 
 ## Feature Life Cycle
