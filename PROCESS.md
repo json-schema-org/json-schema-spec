@@ -29,7 +29,7 @@ For reference, this table shows the validation results of a hypothetical schema 
 
 <table>
   <tr>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next➡️<br>⬇️Current</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Next</em>➡️<br>⬇️<em>Current</em></td>
     <th width="150" align="center">pass</th>
     <th width="150" align="center">fail</th> 
     <th width="150" align="center">indeterminate</th> 
