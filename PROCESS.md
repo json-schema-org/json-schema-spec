@@ -27,32 +27,11 @@ If a new release fully defines a previously undefined (or under-defined) behavio
 
 For reference, this table shows the validation results of a hypothetical schema and instance across two consecutive releases to illustrate the compatibility of those releases:
 
-<table>
-  <tr>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Next</em>➡️<br>⬇️<em>Current</em></td>
-    <th width="150" align="center">pass</th>
-    <th width="150" align="center">fail</th> 
-    <th width="150" align="center">indeterminate</th> 
-  </tr>
-  <tr>
-    <th align="center">pass</th>
-    <td align="center">✅</td> 
-    <td align="center">❌</td>
-    <td align="center">❌</td>
-  </tr>
-  <tr>
-    <th align="center">fail</th>
-    <td align="center">❌</td> 
-    <td align="center">✅</td>
-    <td align="center">❌</td>
-  </tr>
-  <tr>
-    <th align="center">indeterminate</th>
-    <td align="center">✅</td> 
-    <td align="center">✅</td> 
-    <td align="center">✅</td>
-  </tr>
-</table>
+| _Next_ ➡️<br>⬇️ _Current_ | pass | fail | indeterminate |
+|:---:|:---:|:---:|:---:|
+| **pass** | ✅ | ❌ | ❌ |
+| **fail** | ❌ | ✅ | ❌ |
+| **indeterminate** | ✅ | ✅ | ✅ |
 
 ### Release
 
