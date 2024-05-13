@@ -122,11 +122,9 @@ At least two (2) Core Team members must have implemented prototypes before the c
 
 Once a rough consensus for the idea has been reached, a formal proposal will be written, separate from the specification, with the goal of precisely defining specification changes.
 
-The proposal will use the [Proposal Template]() and be stored in this repository's `proposals` folder.
+The proposal will use the [Proposal Template](./proposals/proposal-template.md) and be stored in this repository's `proposals` folder.
 
-```diff
-@@ TODO: Define Proposal Template and fill in the link. @@
-```
+Additionally, a draft ADR will be included using the file name of the proposal document with an `-adr` suffix: `{proposal-file-name}-adr.md`.  This ADR will include additional information from the "Concept" discussion.
 
 Proposed keywords will be added to the appropriate vocabulary meta-schemas in:
 
@@ -169,7 +167,9 @@ If a proposal cannot advance to the next stage, it may be removed.  The proposal
 
 ### Stable
 
-The proposal is incorporated into the specification in the `main` branch, and the feature will be required as of the next release.
+The feature is incorporated into the specification in the `main` branch as specified by the proposal document, and the feature will be required as of the next release.
+
+The draft ADR is completed, dated, and moved to the `adr` folder.
 
 The appropriate vocabulary meta-schema in the `main` branch is updated to include a subschema that validates the feature's syntax requirements.  This will be made available with the next release.
 
