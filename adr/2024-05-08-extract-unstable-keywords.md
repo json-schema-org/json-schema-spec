@@ -1,7 +1,7 @@
 # Extract Unstable Features for Initial Release
 
 * Status: accepted
-* Deciders: @gregsdennis @jdrosiers @bhutton
+* Deciders: @gregsdennis @jdesrosiers @bhutton
 * Date: 2024-05-08
 
 Technical Story:
