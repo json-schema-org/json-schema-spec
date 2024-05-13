@@ -79,6 +79,9 @@ those goals means that some trade-offs need to be made.
 
 ## Change Description
 
+The `propertyDependencies` keyword will be added to the `https://json-schema.org/vocab/applicator` [applicator
+vocabulary](../jsonschema-core.html#applicatorvocab).
+
 1. The following will be added to the JSON Schema Core specification as a
 subsection of "Keywords for Applying Subschemas Conditionally".
     > ### `propertyDependencies`
