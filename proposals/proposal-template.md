@@ -15,15 +15,12 @@ For example
 
 This document proposes a change to the ??? specification by adding ???.
 
-## Status
+## Current Status
 
-**Current Status**: PROPOSAL
-
-<!-- TODO: We should have a short standard blurb outlining the stages involved in a
-feature making its way to stable status. -->
-
-<!-- TODO: Link to a document that describes the proposal => stable process in
-detail. -->
+<!--
+Status is free text: just something to explain where the proposal is in
+its journey.  This status does not align with the SLDC feature life cycle.
+-->
 
 ## Note to Readers
 
@@ -56,10 +53,6 @@ also apply to this document.
 ### Solution
 
 <!-- What is the solution?  Include examples of use. -->
-
-### Alternatives
-
-<!-- What other options have been considered? (summary, not detailed) -->
 
 ### Limitations
 
