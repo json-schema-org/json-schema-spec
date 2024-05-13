@@ -15,7 +15,7 @@ Also the [SDLC proposal](https://github.com/orgs/json-schema-org/discussions/671
 In creating a stable spec release, it's important that all included features are well-developed and their behaviors are finalized.  As such, the following features will be extracted before the stable release.
 
 - `$vocabulary` - This feature is still in development.
-- Output formats - This feature is still in development.
+- Output formats - This feature is being extracted to its own spec anyway.  (See [PR](https://github.com/json-schema-org/json-schema-spec/pull/1429) for more info and link to discussion.)
 - `propertyDependencies` - This feature is not technically in the spec and should go through the proposal process.
 
 ## Decision Drivers <!-- optional -->
