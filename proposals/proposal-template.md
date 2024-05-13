@@ -19,7 +19,7 @@ This document proposes a change to the ??? specification by adding ???.
 
 <!--
 Status is free text: just something to explain where the proposal is in
-its journey.  This status does not align with the SLDC feature life cycle.
+its journey.  This status does not align with the SDLC feature life cycle.
 -->
 
 ## Note to Readers
@@ -60,25 +60,26 @@ also apply to this document.
 
 ## Change Details
 
-### Target
-
 <!--
-Where does this change go?
+This is where the specification changes are defined. This must be precise as
+these changes will be made verbatim.
 
 For example
 
-    This proposal will add the {{propertyDependencies}} section contained herein as
-    a subsection of JSON Schema Core, section 10.2.2 "Keywords for Applying
-    Subschemas Conditionally."
-
+1. The following section will be added to the JSON Schema Core specification as
+   a subsection of "Keywords for Applying Subschemas Conditionally".
+    > ### {New section name}
+    >
+    > {Feature description}
+2. The following subschema will be added to the Applicator Vocabulary schema,
+   `https://json-schema.org/<version>/<release>/meta/applicator`, at
+   `/properties/{keyword}`:
+    ```jsonc
+    {
+      // keyword schema
+    }
+    ```
 -->
-
-This proposal will add the {{???}} section contained herein as
-a subsection of ???.
-
-### ???
-
-<!-- What is the text that will appear in the specification? -->
 
 ## [Appendix] Change Log
 
