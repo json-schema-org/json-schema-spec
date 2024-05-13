@@ -75,8 +75,7 @@ a value of any JSON type, but `propertyDependencies` only solves this problem
 when the value is a string. One of the main goals of this keyword is to define
 something that's intuitive enough and easy enough to use that people will
 actually use it rather than fallback to `oneOf` because it's simple. Achieving
-those goals means that some trade-offs need to be made. {{alternatives}} lists
-some alternatives that we considered.
+those goals means that some trade-offs need to be made.
 
 ## Change Description
 
