@@ -7,7 +7,7 @@
 Technical Story:
 
 - Issue discussing feature - https://github.com/json-schema-org/json-schema-spec/issues/1082
-- PR to add to the spec - https://github.com/json-schema-org/json-schema-spec/issues/1082
+- PR to add to the spec - https://github.com/json-schema-org/json-schema-spec/pull/1143
 - ADR to extract from the spec and use feature life cycle - https://github.com/json-schema-org/json-schema-spec/pull/1505
 
 ## Context and Problem Statement
