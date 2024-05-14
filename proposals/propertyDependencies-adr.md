@@ -1,4 +1,4 @@
-# [short title of solved problem and solution]
+# Add New Keyword: `propertyDependencies`
 
 * Status: proposed
 * Deciders: @gregsdennis, @jdesrosiers, @relequestual
@@ -64,6 +64,11 @@ that concept to solve this problem.
 }
 ```
 
+* Good, because it handle the most common use case: string property values
+* Good, because all property values are grouped together
+* Good, because it's less verbose
+* Bad, because it doesn't handle non-string property values
+
 ### Option 2
 
 This version uses an array of objects. Each object is a collection of the
@@ -89,6 +94,11 @@ prone.
 }
 ```
 
+* Good, because it supports all use cases
+* Bad, because properties are not naturally grouped together
+* Bad, because it's quite verbose
+* Bad, because we have no precedent for a keyword which explicitly defines its own properties.  This would be new operational functionality, which we try to avoid if we can.
+
 ### Option 3
 
 A slight variation on that example is to make it a map of keyword to dependency
@@ -110,6 +120,11 @@ object. It's still too verbose.
   }
 }
 ```
+
+* Good, because it supports all use cases
+* Good, because all property values are grouped together
+* Bad, because it's quite verbose
+* Bad, because we have no precedent for a keyword which explicitly defines its own properties.  This would be new operational functionality, which we try to avoid if we can.
 
 ### Option 4
 
@@ -133,7 +148,12 @@ naming aside), but otherwise has all the same problems as the other examples.
 }
 ```
 
-### Option 4
+* Good, because it supports all use cases
+* Bad, because properties are not naturally grouped together
+* Bad, because it's very verbose
+* Bad, because it introduces a lot of inter-keyword dependencies, which we'd have to exhaustively define
+
+### Option 5
 
 This one is a variation of `if` that combines `if`, `properties`, and `required`
 to reduce boilerplate. It's also essentially a variation of the previous example
@@ -159,6 +179,12 @@ verbose.
 }
 ```
 
+* Good, because it supports all use cases
+* Good, because it's a familiar syntax
+* Bad, because properties are not naturally grouped together
+* Bad, because it's very verbose
+* Bad, because `ifProperties` is very niche.  Will this spawn a new series of `if*` keywords?  How would it interact with `if`?
+
 ### Option 6
 
 All of the previous alternatives use a schema as the discriminator. This
@@ -178,6 +204,9 @@ intuitive as the chosen solution.
 }
 ```
 
+* Good, because it supports all use cases
+* Bad, because it's an unintuitive syntax and easy to get wrong
+* Bad, because properties are not naturally grouped together
 
 ## Decision Outcome
 
@@ -196,58 +225,6 @@ cases carried a lower priority.
 
 - Properties with non-string values cannot be supported using this keyword and
   the `allOf`-`if`-`then` pattern must still be used.
-
-## Pros and Cons of the Options <!-- optional -->
-
-### [option 1]
-
-[example | description | pointer to more information | …] <!-- optional -->
-
-* Good, because it handle the most common use case: string property values
-* Good, because all property values are grouped together
-* Good, because it's less verbose
-* Bad, because it doesn't handle non-string property values
-
-### [option 2]
-
-* Good, because it supports all use cases
-* Bad, because properties are not naturally grouped together
-* Bad, because it's quite verbose
-* Bad, because we have no precedent for a keyword which explicitly defines its own properties.  This would be new operational functionality, which we try to avoid if we can.
-
-### [option 3]
-
-* Good, because it supports all use cases
-* Good, because all property values are grouped together
-* Bad, because it's quite verbose
-* Bad, because we have no precedent for a keyword which explicitly defines its own properties.  This would be new operational functionality, which we try to avoid if we can.
-
-### [option 4]
-
-* Good, because it supports all use cases
-* Bad, because properties are not naturally grouped together
-* Bad, because it's very verbose
-* Bad, because it introduces a lot of inter-keyword dependencies, which we'd have to exhaustively define
-
-### [option 5]
-
-* Good, because it supports all use cases
-* Good, because it's a familiar syntax
-* Bad, because properties are not naturally grouped together
-* Bad, because it's very verbose
-* Bad, because `ifProperties` is very niche.  Will this spawn a new series of `if*` keywords?  How would it interact with `if`?
-
-### [option 6]
-
-* Good, because it supports all use cases
-* Bad, because it's an unintuitive syntax and easy to get wrong
-* Bad, because properties are not naturally grouped together
-
-## Links <!-- optional -->
-
-* [Link type] [Link to ADR] <!-- example: Refined by [ADR-0005](0005-example.md) -->
-* … <!-- numbers of links can vary -->
-
 
 ## [Appendix] Problems With Existing Patterns {#problems}
 
