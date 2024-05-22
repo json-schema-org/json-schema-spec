@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import { readFileSync, writeFileSync } from "node:fs";
+import { dirname, basename } from "node:path";
+import { argv } from "node:process";
 import { reporter } from "vfile-reporter";
 import { remark } from "remark";
 import remarkCodeTitles from "./remark-code-titles.js";
@@ -18,15 +20,24 @@ import rehypeStringify from "rehype-stringify";
 
 dotenv.config();
 
-(async function () {
-  const md = readFileSync(0, "utf-8");
+const build = async (filename) => {
+  const md = readFileSync(filename, "utf-8");
   const html = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
     .use(remarkGfm)
     .use(remarkHeadingId)
     .use(remarkHeadings, {
       startDepth: 2,
-      skip: ["Abstract", "Note to Readers", "Table of Contents", "Authors' Addresses", "\\[.*\\]", "draft-.*"]
+      skip: [
+        "Abstract",
+        "Status",
+        "Note to Readers",
+        "Table of Contents",
+        "Authors' Addresses",
+        "Champions",
+        "\\[.*\\]",
+        "draft-.*"
+      ]
     })
     .use(remarkReferenceLinks)
     .use(remarkFlexibleContainers)
@@ -34,14 +45,22 @@ dotenv.config();
     .use(remarkTorchLight)
     .use(remarkTableOfContents, {
       startDepth: 2,
-      skip: ["Abstract", "Note to Readers", "\\[.*\\]", "Authors' Addresses", "draft-.*"]
+      skip: [
+        "Abstract",
+        "Note to Readers",
+        "Authors' Addresses",
+        "Champions",
+        "\\[.*\\]",
+        "draft-.*"
+      ]
     })
     .use(remarkValidateLinks)
     .use(remarkRehype)
     .use(rehypeStringify)
     .process(md);
 
-  writeFileSync(1, `<!DOCTYPE html>
+  const outfile = `${dirname(filename)}/${basename(filename, ".md")}.html`;
+  writeFileSync(outfile, `<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
@@ -149,4 +168,17 @@ dotenv.config();
 </html>`);
 
   console.error(reporter(html));
+};
+
+(async function () {
+  const files = argv.slice(2);
+  if (files.length === 0) {
+    console.error("WARNING: No files built. Usage: 'npm run build -- filename.md'");
+  }
+
+  for (const filename of files) {
+    console.log(`Building: ${filename} ...`);
+    await build(filename);
+    console.log("");
+  }
 }());
