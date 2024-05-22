@@ -55,11 +55,11 @@ which it applies. This greatly simplifies the implementation requirements for
 validators by ensuring that they do not need to maintain state across the
 document-wide validation process.
 
-This specification defines a set of assertion keywords, as well as a small
-vocabulary of metadata keywords that can be used to annotate the JSON instance
-with useful information. The {{format}} keyword is intended primarily as an
-annotation, but can optionally be used as an assertion. The {{content}} keywords
-are annotations for working with documents embedded as JSON strings.
+This specification defines a set of assertion keywords, as well as a number of
+metadata keywords that can be used to annotate the JSON instance with useful
+information. The {{format}} keyword is intended primarily as an annotation, but
+can optionally be used as an assertion. The {{content}} keywords are annotations
+for working with documents embedded as JSON strings.
 
 ## Interoperability Considerations
 
@@ -87,31 +87,20 @@ regular expressions in the [JSON Schema Core](#json-schema) specification.
 
 The current IRI for the default JSON Schema dialect meta-schema is
 `https://json-schema.org/draft/next/schema`. For schema author convenience, this
-meta-schema describes a dialect consisting of all vocabularies defined in this
-specification and the JSON Schema Core specification, as well as two former
-keywords which are reserved for a transitional period. Individual vocabulary and
-vocabulary meta-schema IRIs are given for each section below. Certain
-vocabularies are optional to support, which is explained in detail in the
-relevant sections.
+meta-schema describes a dialect consisting of all keywords defined in this
+specification and the JSON Schema Core specification. Certain keywords specify
+some functionality which is optional to support and is explained in detail in
+the relevant sections.
 
-Updated vocabulary and meta-schema IRIs MAY be published between specification
-drafts in order to correct errors. Implementations SHOULD consider IRIs dated
-after this specification draft and before the next to indicate the same syntax
-and semantics as those listed here.
+Updated meta-schema IRIs MAY be published between specification drafts in order
+to correct errors. Implementations SHOULD consider IRIs dated after this
+specification draft and before the next to indicate the same syntax and
+semantics as those listed here.
 
-## A Vocabulary for Structural Validation
+## Keywords for Structural Validation
 
 Validation keywords in a schema impose requirements for successful validation of
 an instance. These keywords are all assertions without any annotation behavior.
-
-Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
-vocabulary as if its IRI were present with a value of true.
-
-The current IRI for this vocabulary, known as the Validation vocabulary, is:
-`https://json-schema.org/draft/next/vocab/validation`.
-
-The current IRI for the corresponding meta-schema is:
-`https://json-schema.org/draft/next/meta/validation`.
 
 ### Validation Keywords for Any Instance Type {#general}
 
@@ -295,7 +284,7 @@ the name of a property in the instance.
 
 Omitting this keyword has the same behavior as an empty object.
 
-## Vocabularies for Semantic Content With `format` {#format}
+## Semantic Content With `format` {#format}
 
 ### Foreword
 
@@ -320,83 +309,26 @@ can be used alongside the `type` keyword with a value of "integer", or could be
 explicitly defined to always pass if the number is not an integer, which
 produces essentially the same behavior as only applying to integers.
 
-The current IRI for this vocabulary, known as the Format-Annotation vocabulary,
-is: `https://json-schema.org/draft/next/vocab/format-annotation`. The current
-IRI for the corresponding meta-schema is:
-`https://json-schema.org/draft/next/meta/format-annotation`. Implementing
-support for this vocabulary is REQUIRED.
+Implementing support for `format` as an annotation is REQUIRED (if the
+implementation supports annotation collection).
 
-In addition to the Format-Annotation vocabulary, a secondary vocabulary is
-available for custom meta-schemas that defines `format` as an assertion. The IRI
-for the Format-Assertion vocabulary, is:
-`https://json-schema.org/draft/next/vocab/format-assertion`. The current IRI for
-the corresponding meta-schema is:
-`https://json-schema.org/draft/next/meta/format-assertion`. Implementing support
-for the Format-Assertion vocabulary is OPTIONAL.
+Implementing support for `format` as an assertion is OPTIONAL. Implementations
+which choose to support assertion behavior:
 
-Specifying both the Format-Annotation and the Format-Assertion vocabularies is
-functionally equivalent to specifying only the Format-Assertion vocabulary since
-its requirements are a superset of the Format-Annotation vocabulary.
-
-### Implementation Requirements
-
-The `format` keyword functions as defined by the vocabulary which is referenced.
-
-#### Format-Annotation Vocabulary
-
-The value of format MUST be collected as an annotation, if the implementation
-supports annotation collection. This enables application-level validation when
-schema validation is unavailable or inadequate.
-
-Implementations MAY still treat `format` as an assertion in addition to an
-annotation and attempt to validate the value's conformance to the specified
-semantics. The implementation MUST provide options to enable and disable such
-evaluation and MUST be disabled by default. Implementations SHOULD document
-their level of support for such validation.[^2]
-
-[^2]: Specifying the Format-Annotation vocabulary and enabling validation in an
-implementation should not be viewed as being equivalent to specifying the
-Format-Assertion vocabulary since implementations are not required to provide
-full validation support when the Format-Assertion vocabulary is not specified.
-
-When the implementation is configured for assertion behavior, it:
-
+- MUST still collect the keyword's value as an annotation (if the implementation
+  supports annotation collection),
+- MUST provide a configuration option to enable assertion behavior, defaulting to
+  annotation-only behavior
 - SHOULD provide an implementation-specific best effort validation for each
-  format attribute defined below;
+  format attribute defined below;[^3]
 - MAY choose to implement validation of any or all format attributes as a no-op
-  by always producing a validation result of true;[^3]
+  by always producing a validation result of true;[^4]
+- SHOULD use a common parsing library for each format, or a well-known regular
+  expression;
+- SHOULD clearly document how and to what degree each format attribute is
+  validated.
 
-[^3]: This matches the current reality of implementations, which provide widely
-varying levels of validation, including no validation at all, for some or all
-format attributes. It is also designed to encourage relying only on the
-annotation behavior and performing semantic validation in the application, which
-is the recommended best practice.
-
-#### Format-Assertion Vocabulary
-
-When the Format-Assertion vocabulary is declared with a value of true,
-implementations MUST provide full validation support for all of the formats
-defined by this specification. Implementations that cannot provide full
-validation support MUST refuse to process the schema.
-
-An implementation that supports the Format-Assertion vocabulary:
-
-- MUST still collect `format` as an annotation if the implementation supports
-  annotation collection;
-- MUST evaluate `format` as an assertion;
-- MUST implement syntactic validation for all format attributes defined in this
-  specification, and for any additional format attributes that it recognizes,
-  such that there exist possible instance values of the correct type that will
-  fail validation.
-
-The requirement for minimal validation of format attributes is
-intentionally vague and permissive, due to the complexity involved in many of
-the attributes. Note in particular that the requirement is limited to syntactic
-checking; it is not to be expected that an implementation would send an email,
-attempt to connect to a URL, or otherwise check the existence of an entity
-identified by a format instance.[^4]
-
-[^4]: The expectation is that for simple formats such as date-time, syntactic
+[^3]: The expectation is that for simple formats such as date-time, syntactic
 validation will be thorough. For a complex format such as email addresses, which
 are the amalgamation of various standards and numerous adjustments over time,
 with obscure and/or obsolete rules that may or may not be restricted by other
@@ -405,30 +337,29 @@ example, an instance string that does not contain an "@" is clearly not a valid
 email address, and an "email" or "hostname" containing characters outside of
 7-bit ASCII is likewise clearly invalid.
 
-It is RECOMMENDED that implementations use a common parsing library for each
-format, or a well-known regular expression. Implementations SHOULD clearly
-document how and to what degree each format attribute is validated.
+[^4]: This matches the current reality of implementations, which provide widely
+varying levels of validation, including no validation at all, for some or all
+format attributes. It is also designed to encourage relying only on the
+annotation behavior and performing semantic validation in the application, which
+is the recommended best practice.
 
-The [standard core and validation meta-schema](#meta-schema) includes this
-vocabulary in its `$vocabulary` keyword with a value of false, since by default
-implementations are not required to support this keyword as an assertion.
-Supporting the format vocabulary with a value of true is understood to greatly
-increase code size and in some cases execution time, and will not be appropriate
-for all implementations.
+The requirement for minimal validation of format attributes is
+intentionally vague and permissive, due to the complexity involved in many of
+the attributes. Note in particular that the requirement is limited to syntactic
+checking; it is not to be expected that an implementation would send an email,
+attempt to connect to a URL, or otherwise check the existence of an entity
+identified by a format instance.
 
 #### Custom format attributes
 
 Implementations MAY support custom format attributes. Save for agreement between
 parties, schema authors SHALL NOT expect a peer implementation to support such
-custom format attributes. An implementation MUST NOT fail to collect unknown
-formats as annotations. When the Format-Assertion vocabulary is specified,
-implementations MUST fail upon encountering unknown formats.
+custom format attributes.
 
-Vocabularies do not support specifically declaring different value sets for
-keywords.  Due to this limitation, and the historically uneven implementation of
-this keyword, it is RECOMMENDED to define additional keywords in a custom
-vocabulary rather than additional format attributes if interoperability is
-desired.
+An implementation MUST NOT fail to collect unknown formats as annotations.
+
+When configured for assertion behavior for `format`, implementations MUST fail
+upon encountering unknown formats.
 
 ### Defined Formats
 
@@ -560,7 +491,7 @@ Implementations that validate formats MUST accept at least the subset of
 ECMA-262 defined in {{regexinterop}}), and SHOULD accept all valid ECMA-262
 expressions.
 
-## A Vocabulary for the Contents of String-Encoded Data {#content}
+## Keywords for the Contents of String-Encoded Data {#content}
 
 ### Foreword
 
@@ -572,15 +503,6 @@ as rich multimedia documents. They describe the type of content, how it is
 encoded, and/or how it may be validated. They do not function as validation
 assertions; a malformed string-encoded document MUST NOT cause the containing
 instance to be considered invalid.
-
-Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
-vocabulary as if its IRI were present with a value of true.
-
-The current IRI for this vocabulary, known as the Content vocabulary, is:
-`https://json-schema.org/draft/next/vocab/content`.
-
-The current IRI for the corresponding meta-schema is:
-`https://json-schema.org/draft/next/meta/content`.
 
 ### Implementation Requirements
 
@@ -710,20 +632,12 @@ structures: first the header, and then the payload. Since the JWT media type
 ensures that the JWT can be represented in a JSON string, there is no need for
 further encoding or decoding.
 
-## A Vocabulary for Basic Meta-Data Annotations These general-purpose annotation
-keywords provide commonly used information for documentation and user interface
-display purposes. They are not intended to form a comprehensive set of features.
-Rather, additional vocabularies can be defined for more complex annotation-based
-applications.
+## Keywords for Basic Meta-Data Annotations
 
-Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
-vocabulary as if its IRI were present with a value of true.
-
-The current IRI for this vocabulary, known as the Meta-Data vocabulary, is:
-`https://json-schema.org/draft/next/vocab/meta-data`.
-
-The current IRI for the corresponding meta-schema is:
-`https://json-schema.org/draft/next/meta/meta-data`.
+These general-purpose annotation keywords provide commonly used information for
+documentation and user interface display purposes. They are not intended to form
+a comprehensive set of features. Rather, additional keywords can be defined
+for more complex annotation-based applications.
 
 ### `title` and `description`
 
@@ -815,10 +729,10 @@ example. If `examples` is absent, `default` MAY still be used in this manner.
 
 ## Security Considerations {#security}
 
-JSON Schema validation defines a vocabulary for JSON Schema core and concerns
-all the security considerations listed there.
+JSON Schema Validation assumes all the security considerations listed in the
+JSON Schema Core specification.
 
-JSON Schema validation allows the use of Regular Expressions, which have
+JSON Schema Validation allows the use of Regular Expressions, which have
 numerous different (often incompatible) implementations. Some implementations
 allow the embedding of arbitrary code, which is outside the scope of JSON Schema
 and MUST NOT be permitted. Regular expressions can often also be crafted to be
@@ -968,40 +882,6 @@ draft-bhutton-json-schema-01, June 2022,
 
 Hoehrmann, B., "Scripting Media Types", RFC 4329, DOI 10.17487/RFC4329, April
 2006, <<https://www.rfc-editor.org/info/rfc4329>>.
-
-## [Appendix] Keywords Moved from Validation to Core
-
-Several keywords have been moved from this document into the [Core
-Specification](#json-schema) starting with draft 2019-09, in some cases with
-re-naming or other changes. This affects the following former validation
-keywords:
-
-- *`definitions`* Renamed to `$defs` to match `$ref` and be shorter to type.
-  Schema vocabulary authors SHOULD NOT define a `definitions` keyword with
-  different behavior in order to avoid invalidating schemas that still use the
-  older name. While `definitions` is absent in the single-vocabulary
-  meta-schemas referenced by this document, it remains present in the default
-  meta-schema, and implementations SHOULD assume that `$defs` and `definitions`
-  have the same behavior when that meta-schema is used.
-- *`allOf`, `anyOf`, `oneOf`, `not`, `if`, `then`, `else`, `items`,
-  `additionalItems`, `contains`, `propertyNames`, `properties`,
-  `patternProperties`, `additionalProperties`* All of these keywords apply
-  subschemas to the instance and combine their results, without asserting any
-  conditions of their own. Without assertion keywords, these applicators can
-  only cause assertion failures by using the false boolean schema, or by
-  inverting the result of the true boolean schema (or equivalent schema
-  objects). For this reason, they are better defined as a generic mechanism on
-  which validation, hyper-schema, and extension vocabularies can all be based.
-- *`maxContains`, `minContains`* These keywords modify the behavior of
-  `contains`, and are therefore grouped with it in the applicator vocabulary.
-- *`dependencies`* This keyword had two different modes of behavior, which made
-  it relatively challenging to implement and reason about. The schema form has
-  been moved to Core and renamed to `dependentSchemas`, as part of the
-  applicator vocabulary. It is analogous to `properties`, except that instead of
-  applying its subschema to the property value, it applies it to the object
-  containing the property. The property name array form is retained here and
-  renamed to `dependentRequired`, as it is an assertion which is a shortcut for
-  the conditional use of the `required` assertion keyword.
 
 ## [Appendix] Acknowledgments
 
