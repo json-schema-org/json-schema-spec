@@ -376,7 +376,7 @@ is the recommended best practice.
 
 When the Format-Assertion vocabulary is declared with a value of true,
 implementations MUST provide full validation support for all of the formats
-defined by this specificaion. Implementations that cannot provide full
+defined by this specification. Implementations that cannot provide full
 validation support MUST refuse to process the schema.
 
 An implementation that supports the Format-Assertion vocabulary:
