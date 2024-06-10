@@ -45,13 +45,20 @@ also apply to this document.
 
 ### Problem Statement
 
-The specification allows implementations to support user-defined keywords.  However, this vague and open allowance has drawbacks.
+The specification allows implementations to support user-defined keywords.
+However, this vague and open allowance has drawbacks.
 
-1. This isn't a requirement, it is a permission. An implementation could just as easily choose _not_ to support user-defined keywords.
-2. There is no prescribed mechanism by which an implementation should provide this support.  As a result, each implementation that _does_ have the feature supports it in different ways.
-3. Support for any given user-defined keyword will be limited to that implementation.  There is no guarantee that the keyword will be supported in another implementation, and unless the user explicitly configures the other implementation, their keywords likely will not be supported.
+1. This isn't a requirement, it is a permission. An implementation could just as
+   easily (_more_ easily) choose _not_ to support user-defined keywords.
+2. There is no prescribed mechanism by which an implementation should provide
+   this support. As a result, each implementation that _does_ have the feature
+   supports it in different ways.
+3. Support for any given user-defined keyword will be limited to that
+   implementation. Unless the user explicitly configures another
+   implementation, their keywords likely will not be supported.
 
-This exposes a need for the specification(s) to define a way for implementations to share knowledge of a keyword or group of keywords.
+This exposes a need for the specification(s) to define a way for implementations
+to share knowledge of a keyword or group of keywords.
 
 ### Solution
 
