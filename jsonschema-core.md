@@ -542,7 +542,7 @@ following mechanisms:
   annotations produced by the keyword or the validation result of its
   subschema(s).
 
-These mechanics are used merely to describe dependencies; they are for
+These mechanisms are used merely to describe dependencies; they are for
 illustrative purposes and not prescriptive. Implementations MAY use whatever
 mechanisms make sense given the needs of their architecture and language in
 order to achieve the specified behaviors.
