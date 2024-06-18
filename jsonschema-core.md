@@ -1837,7 +1837,7 @@ results.
 
 ##### `prefixItems`
 
-The value of "prefixItems` MUST be a non-empty array of valid JSON Schemas.
+The value of `prefixItems` MUST be a non-empty array of valid JSON Schemas.
 
 Validation succeeds if each element of the instance validates against the
 subschema at the same position, if any. This keyword does not constrain the
@@ -1848,8 +1848,6 @@ This keyword produces an annotation value which is the largest index to which
 this keyword applied a subschema. The value MAY be a boolean true if a subschema
 was applied to every index of the instance, such as is produced by the `items`
 keyword. This annotation affects the behavior of `items` and `unevaluatedItems`.
-
-Omitting this keyword has the same assertion behavior as an empty array.
 
 ##### `items` {#items}
 
