@@ -226,7 +226,7 @@ never produce annotation results.
 
 These boolean schemas exist to clarify schema author intent and facilitate
 schema processing optimizations. They behave identically to the following schema
-objects (where `not` is defined in [later this document](#not)).
+objects (where `not` is defined [later in this document](#not)).
 
 - `true`: Always passes validation, as if the empty schema `{}`
 - `false`: Always fails validation, as if the schema `{ "not": {} }`
