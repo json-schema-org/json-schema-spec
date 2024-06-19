@@ -1,4 +1,4 @@
-# JSON Schema Validation: A Vocabulary for Structural Validation of JSON
+e# JSON Schema Validation: A Vocabulary for Structural Validation of JSON
 
 ## Abstract
 
@@ -105,7 +105,7 @@ Validation keywords in a schema impose requirements for successful validation of
 an instance. These keywords are all assertions without any annotation behavior.
 
 Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
-vocabulary as if its IRI were present with a value of true.
+vocabulary as if its IRI were present with a value of `true`.
 
 The current IRI for this vocabulary, known as the Validation vocabulary, is:
 `https://json-schema.org/draft/next/vocab/validation`.
@@ -245,11 +245,11 @@ Omitting this keyword has the same behavior as a value of 0.
 
 The value of this keyword MUST be a boolean.
 
-If this keyword has boolean value false, the instance validates successfully. If
-it has boolean value true, the instance validates successfully if all of its
+If this keyword has boolean value `false`, the instance validates successfully. If
+it has boolean value `true`, the instance validates successfully if all of its
 elements are unique.
 
-Omitting this keyword has the same behavior as a value of false.
+Omitting this keyword has the same behavior as a value of `false`.
 
 ### Validation Keywords for Objects
 
@@ -364,7 +364,7 @@ When the implementation is configured for assertion behavior, it:
 - SHOULD provide an implementation-specific best effort validation for each
   format attribute defined below;
 - MAY choose to implement validation of any or all format attributes as a no-op
-  by always producing a validation result of true;[^3]
+  by always producing a validation result of `true`;[^3]
 
 [^3]: This matches the current reality of implementations, which provide widely
 varying levels of validation, including no validation at all, for some or all
@@ -374,7 +374,7 @@ is the recommended best practice.
 
 #### Format-Assertion Vocabulary
 
-When the Format-Assertion vocabulary is declared with a value of true,
+When the Format-Assertion vocabulary is declared with a value of `true`,
 implementations MUST provide full validation support for all of the formats
 defined by this specification. Implementations that cannot provide full
 validation support MUST refuse to process the schema.
@@ -410,9 +410,9 @@ format, or a well-known regular expression. Implementations SHOULD clearly
 document how and to what degree each format attribute is validated.
 
 The [standard core and validation meta-schema](#meta-schema) includes this
-vocabulary in its `$vocabulary` keyword with a value of false, since by default
+vocabulary in its `$vocabulary` keyword with a value of `false`, since by default
 implementations are not required to support this keyword as an assertion.
-Supporting the format vocabulary with a value of true is understood to greatly
+Supporting the format vocabulary with a value of `true` is understood to greatly
 increase code size and in some cases execution time, and will not be appropriate
 for all implementations.
 
@@ -574,7 +574,7 @@ assertions; a malformed string-encoded document MUST NOT cause the containing
 instance to be considered invalid.
 
 Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
-vocabulary as if its IRI were present with a value of true.
+vocabulary as if its IRI were present with a value of `true`.
 
 The current IRI for this vocabulary, known as the Content vocabulary, is:
 `https://json-schema.org/draft/next/vocab/content`.
@@ -717,7 +717,7 @@ Rather, additional vocabularies can be defined for more complex annotation-based
 applications.
 
 Meta-schemas that do not use `$vocabulary` SHOULD be considered to require this
-vocabulary as if its IRI were present with a value of true.
+vocabulary as if its IRI were present with a value of `true`.
 
 The current IRI for this vocabulary, known as the Meta-Data vocabulary, is:
 `https://json-schema.org/draft/next/vocab/meta-data`.
@@ -748,13 +748,13 @@ associated schema.
 
 The value of this keyword MUST be a boolean. When multiple occurrences of this
 keyword are applicable to a single sub-instance, applications SHOULD consider
-the instance location to be deprecated if any occurrence specifies a true value.
+the instance location to be deprecated if any occurrence specifies a `true` value.
 
-If `deprecated` has a value of boolean true, it indicates that applications
+If `deprecated` has a value of boolean `true`, it indicates that applications
 SHOULD refrain from usage of the declared property. It MAY mean the property is
 going to be removed in the future.
 
-A root schema containing `deprecated` with a value of true indicates that the
+A root schema containing `deprecated` with a value of `true` indicates that the
 entire resource being described MAY be removed in the future.
 
 The `deprecated` keyword applies to each instance location to which the schema
@@ -762,25 +762,25 @@ object containing the keyword successfully applies. This can result in scenarios
 where every array item or object property is deprecated even though the
 containing array or object is not.
 
-Omitting this keyword has the same behavior as a value of false.
+Omitting this keyword has the same behavior as a value of `false`.
 
 ### `readOnly` and `writeOnly`
 
 The value of these keywords MUST be a boolean. When multiple occurrences of
 these keywords are applicable to a single sub-instance, the resulting behavior
-SHOULD be as for a true value if any occurrence specifies a true value, and
-SHOULD be as for a false value otherwise.
+SHOULD be as for a `true` value if any occurrence specifies a `true` value, and
+SHOULD be as for a `false` value otherwise.
 
-If `readOnly` has a value of boolean true, it indicates that the value of the
+If `readOnly` has a value of boolean `true`, it indicates that the value of the
 instance is managed exclusively by the owning authority, and attempts by an
-application to modify the value of this property are expected to be ignored or
+application to modify the value of an instance are expected to be ignored or
 rejected by that owning authority.
 
 An instance document that is marked as `readOnly` for the entire document MAY be
 ignored if sent to the owning authority, or MAY result in an error, at the
 authority's discretion.
 
-If `writeOnly` has a value of boolean true, it indicates that the value is never
+If `writeOnly` has a value of boolean `true`, it indicates that the value is never
 present when the instance is retrieved from the owning authority. It can be
 present when sent to the owning authority to update or create the document (or
 the resource it represents), but it will not be included in any updated or newly
@@ -797,7 +797,7 @@ These keywords can be used to assist in user interface instance generation. In
 particular, an application MAY choose to use a widget that hides input values as
 they are typed for write-only fields.
 
-Omitting these keywords has the same behavior as values of false.
+Omitting these keywords has the same behavior as values of `false`.
 
 ### `examples`
 
@@ -988,8 +988,8 @@ keywords:
   `patternProperties`, `additionalProperties`* All of these keywords apply
   subschemas to the instance and combine their results, without asserting any
   conditions of their own. Without assertion keywords, these applicators can
-  only cause assertion failures by using the false boolean schema, or by
-  inverting the result of the true boolean schema (or equivalent schema
+  only cause assertion failures by using the `false` boolean schema, or by
+  inverting the result of the `true` boolean schema (or equivalent schema
   objects). For this reason, they are better defined as a generic mechanism on
   which validation, hyper-schema, and extension vocabularies can all be based.
 - *`maxContains`, `minContains`* These keywords modify the behavior of
