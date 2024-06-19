@@ -438,8 +438,8 @@ vocabularies MUST NOT define any keywords which begin with this prefix.
 
 #### Handling of unrecognized or unsupported keywords {#unrecognized}
 
-Implementations MUST refuse to process schemas which contain keywords they do
-not recognize, or that they recognize but do not support.
+Implementations MUST refuse to evaluate schemas which contain keywords which
+they do not know how to process or explicitly choose not to process.
 
 ## Keyword Behaviors
 
