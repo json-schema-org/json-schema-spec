@@ -1,4 +1,4 @@
-e# JSON Schema Validation: A Vocabulary for Structural Validation of JSON
+# JSON Schema Validation: A Vocabulary for Structural Validation of JSON
 
 ## Abstract
 
@@ -771,9 +771,10 @@ these keywords are applicable to a single sub-instance, the resulting behavior
 SHOULD be as for a `true` value if any occurrence specifies a `true` value, and
 SHOULD be as for a `false` value otherwise.
 
-If `readOnly` has a value of boolean `true`, it indicates that the value of the
-instance is managed exclusively by the owning authority, and attempts by an
-application to modify the value of an instance are expected to be ignored or
+If `readOnly` has a value of boolean `true`, it indicates that the
+corresponding value in the instance is
+managed exclusively by the owning authority, and attempts by an
+application to modify the value are expected to be ignored or
 rejected by that owning authority.
 
 An instance document that is marked as `readOnly` for the entire document MAY be
