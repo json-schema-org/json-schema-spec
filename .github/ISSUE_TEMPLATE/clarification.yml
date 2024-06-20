@@ -1,0 +1,33 @@
+name: 🧹 Clarification Needed
+description: Something in the specification is unclear
+title: "🧹 Clarification: "
+labels: ["🧹 Clarification", "Status: Triage"]
+body:
+- type: textarea
+  attributes:
+    label: Specification section
+    description:  Which specification document needs clarification?  Which section?
+    placeholder: |
+      [Core | Validation], Section: ? 
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: What is unclear?
+    description: Please quote the current text and explain why it's unclear.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Proposal
+    description: Do you have an idea to make the text more clear?
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Do you think this work might require an [Architectural Decision Record (ADR)]? (significant or noteworthy)
+    options:
+      - 'Yes'
+      - 'No'
+  validations:
+    required: true
