@@ -67,7 +67,7 @@ support for them.
 
 ### Solution
 
-Two new concepts, vocabularies and dialects, will be introduced into the Core
+This proposal introduces vocabularies as a new concept to be added to the Core
 specification.
 
 A vocabulary is identified by an absolute URI and is used to define a set of
@@ -95,8 +95,9 @@ said to "include" that vocabulary.
 }
 ```
 
-A dialect is the set of vocabularies listed by a meta-schema. It is ephemeral
-and carries no identifier.
+Whereas in the current specification, a dialect is merely the set of keywords
+used by a schema, with this proposal a dialect is defined by the set of
+vocabularies listed by a meta-schema. It is ephemeral and carries no identifier.
 
 _**NOTE** It is possible for two meta-schemas, which would have different `$id`
 values, to share a common dialect if they both declare the same set of
@@ -194,13 +195,6 @@ This proposal, in its current state, seeks to mimic the behavior defined in the
 unknown keywords presents a problem for schemas that use keywords from optional
 vocabularies. (This is the topic of the discussion at
 https://github.com/orgs/json-schema-org/discussions/342.)
-
-In short, if a schema uses a keyword from an unknown _optional_ vocabulary, the
-implementation cannot proceed because unknown keywords are explicitly
-disallowed. However, not being able to proceed with evaluation is the behavior
-prescribed for _required_ vocabularies. Thus, if the behaviors for required and
-optional vocabularies is the same, then the boolean value is moot, which
-highlights that the structure of `$vocabulary` needs to be reconsidered.
 
 #### Machine Readability
 

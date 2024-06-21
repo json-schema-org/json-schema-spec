@@ -27,19 +27,23 @@ and a new Core keyword, `$vocabulary` to support it.
 
 ### Current design as included in 2019-09 and 2020-12.
 
-Vocabularies are external documents that describe how new keywords function.
-They can be in a specification style, or a blog post, or some other format.
+Vocabularies are collections of keywords and are defined by vocabulary document.
+For the 2019-09 and 2020-12 vocabularies, the documents are integrated into the
+specifications themselves.
 
-An implementation declares support for a particular vocabulary via
-implementation of its keywords and documentation.
+With vocabularies as the primary method for defining individual keywords,
+dialects can be created by combining different vocabularies.
+
+Users must confirm with an implementation's documentation whether a given
+vocabulary is supported.
 
 `$vocabulary` keyword is an object with URI keys and boolean values. The URIs
 identify each vocab, and the values indicate whether the implementation must
 "understand" that vocab in order to process the schema. This keyword is only
 processed when it is found as part of a meta-schema.
 
-* Good because it provides a language-agnostic mechanism that's built into JSON
-  Schema itself
+* Good because it provides a language-agnostic method of defining extension
+  keywords that's built into JSON Schema itself
 * Bad because unknown keywords are now unsupported, which implies that
   [unknown vocabularies are implicitly unsupported](https://github.com/orgs/json-schema-org/discussions/342)
 
