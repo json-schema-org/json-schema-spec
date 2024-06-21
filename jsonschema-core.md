@@ -821,8 +821,8 @@ processing JSON Schema. These keywords inform implementations how to process any
 schema or meta-schema, including those split across multiple documents, or exist
 to reserve keywords for purposes that require guaranteed interoperability.
 
-Support for these keywords MUST be considered mandatory at all times in order to
-bootstrap the processing of further keywords.
+Support for these keywords MUST be considered mandatory at all times as they are
+necessary to navigate and process any schema.
 
 The "$" prefix is reserved for use by this specification. Extensions MUST NOT
 define new keywords that begin with "$".
