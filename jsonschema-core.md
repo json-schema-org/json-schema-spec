@@ -426,11 +426,13 @@ Implementations MAY provide the ability to register or load handlers for
 vocabularies that they do not support directly. The exact mechanism for
 registering and implementing such handlers is implementation-dependent.
 
-#### Explicit annotation keywords {#explicit-annotations}
+#### Implicit annotation keywords {#implicit-annotations}
 
-The values of keywords which begin with "x-" MUST be collected as annotations.
+Keywords which begin with "x-" are implicitly defined as annotation keywords.
 
-Keywords which begin with "x-" symbol MUST NOT affect evaluation of a schema in
+The values of such keywords MUST be collected as annotations.
+
+Implicit annotation keywords MUST NOT affect evaluation of a schema in
 any way other than annotation collection.
 
 Consequently, the "x-" prefix is reserved for this purpose, and extension
