@@ -201,9 +201,7 @@ https://github.com/orgs/json-schema-org/discussions/342.)
 The vocabulary URI is an opaque value. There is no data that an implementation
 can reference to identify the keywords defined by the vocabulary. The vocabulary
 schema _implies_ this, but scanning a `properties` keyword isn't very reliable.
-Moreover, such a system cannot provide metadata about the keywords. As such, the
-user must explicitly ensure that the implementation recognizes and supports the
-vocabulary, which isn't much of an improvement over the current state.
+Moreover, such a system cannot provide metadata about the keywords.
 
 Having some sort of "vocabulary definition" file could alleviate this.
 
@@ -213,6 +211,12 @@ to process the keywords, thus performing that same explicit configuration
 anyway. (Such information cannot be gleaned from a vocabulary specification. For
 example, an implementation can't know what to do with a hypothetical `minDate`
 keyword.)
+
+Several ideas have been offeree for this sort of document:
+
+- https://github.com/json-schema-org/json-schema-spec/issues/1523
+- https://github.com/json-schema-org/json-schema-spec/issues/1423
+- https://github.com/json-schema-org/json-schema-spec/pull/1257
 
 #### Implicit Inclusion of Core Vocabulary
 
