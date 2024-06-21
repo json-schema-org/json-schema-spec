@@ -67,9 +67,7 @@ identified in a meta-schema.
 
 JSON Schema can be extended either by defining additional vocabularies, or less
 formally by defining additional keywords outside of any vocabulary. Unrecognized
-individual keywords simply have their values collected as annotations, while the
-behavior with respect to an unrecognized vocabulary can be controlled when
-declaring which vocabularies are in use.
+individual keywords are not supported.
 
 This document defines a core vocabulary that MUST be supported by any
 implementation, and cannot be disabled. Its keywords are each prefixed with a
@@ -216,8 +214,8 @@ adjacent keywords.
 Extension keywords, meaning those defined outside of this document and its
 companions, are free to define other behaviors as well.
 
-A JSON Schema MAY contain properties which are not schema keywords or are not
-recognized as schema keywords. The behavior of such keywords is governed by
+A JSON Schema MUST NOT contain properties which are not schema keywords or are
+not recognized as schema keywords. The behavior of such keywords is governed by
 {{unrecognized}}.
 
 An empty schema is a JSON Schema with no properties.
@@ -440,10 +438,8 @@ vocabularies MUST NOT define any keywords which begin with this prefix.
 
 #### Handling of unrecognized or unsupported keywords {#unrecognized}
 
-Implementations SHOULD treat keywords they do not recognize, or that they
-recognize but do not support, as annotations, where the value of the keyword is
-the value of the annotation. Whether an implementation collects these
-annotations or not, they MUST otherwise ignore the keywords.
+Implementations MUST refuse to evaluate schemas which contain keywords which
+they do not know how to process or explicitly choose not to process.
 
 ## Keyword Behaviors
 
@@ -831,11 +827,6 @@ re-use. These keywords do not affect validation or annotation results. Their
 purpose in the core vocabulary is to ensure that locations are available for
 certain purposes and will not be redefined by extension keywords.
 
-While these keywords do not directly affect results, as explained in
-{{non-schemas}} unrecognized extension keywords that reserve locations for
-re-usable schemas may have undesirable interactions with references in certain
-circumstances.
-
 ### Loading Instance Data
 
 While none of the vocabularies defined as part of this or the associated
@@ -1008,13 +999,7 @@ refuse to process that schema.
 
 Implementations that do not support a vocabulary that is optionally used by a
 schema SHOULD proceed with processing the schema. The keywords will be
-considered to be unrecognized keywords as addressed by {{unrecognized}}. Note
-that since the recommended behavior for such keywords is to collect them as
-annotations, vocabularies consisting only of annotations will have the same
-behavior when used optionally whether the implementation supports them or not.
-This allows annotation-only vocabularies to be supported without custom code,
-even in implementations that do not support providing custom code for extension
-vocabularies.
+considered to be unrecognized keywords as addressed by {{unrecognized}}.
 
 ##### Vocabularies are schema resource-scoped
 
@@ -1579,21 +1564,6 @@ applicator keywords or with location-reserving keywords such as [`$defs`](#defs)
 that take one or more subschemas as a value. These keywords may be `$defs` and
 the standard applicators from this document, or extension keywords from a known
 vocabulary, or implementation-specific custom keywords.
-
-Multi-level structures of unknown keywords are capable of introducing nested
-subschemas, which would be subject to the processing rules for `$id`. Therefore,
-having a reference target in such an unrecognized structure cannot be reliably
-implemented, and the resulting behavior is undefined. Similarly, a reference
-target under a known keyword, for which the value is known not to be a schema,
-results in undefined behavior in order to avoid burdening implementations with
-the need to detect such targets.[^10]
-
-[^10]: These scenarios are analogous to fetching a schema over HTTP but
-receiving a response with a Content-Type other than `application/schema+json`.
-An implementation can certainly try to interpret it as a schema, but the origin
-server offered no guarantee that it actually is any such thing. Therefore,
-interpreting it as such has security implication and may produce unpredictable
-results.
 
 Note that single-level custom keywords with identical syntax and semantics to
 `$defs` do not allow for any intervening `$id` keywords, and therefore will
