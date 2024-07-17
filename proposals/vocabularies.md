@@ -212,7 +212,7 @@ anyway. (Such information cannot be gleaned from a vocabulary specification. For
 example, an implementation can't know what to do with a hypothetical `minDate`
 keyword.)
 
-Several ideas have been offeree for this sort of document:
+Several ideas have been offered for this sort of document:
 
 - https://github.com/json-schema-org/json-schema-spec/issues/1523
 - https://github.com/json-schema-org/json-schema-spec/issues/1423
