@@ -27,7 +27,7 @@ and a new Core keyword, `$vocabulary` to support it.
 
 ### Current design as included in 2019-09 and 2020-12.
 
-Vocabularies are collections of keywords and are defined by vocabulary document.
+A vocabulary is a collection of keywords and is defined by a vocabulary document.
 For the 2019-09 and 2020-12 vocabularies, the documents are integrated into the
 specifications themselves.
 
