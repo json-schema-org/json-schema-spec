@@ -112,7 +112,7 @@ The boolean values in `$vocabulary` signify implementation requirements for each
 vocabulary.
 
 - A `true` value indicates that the implementation must recognize the vocabulary
-  and be able to process each of the keywords defined it. If an implementation
+  and be able to process each of the keywords defined in it. If an implementation
   does not recognize the vocabulary or cannot process all of its defined
   keywords, the implementation must refuse to process the schema. These
   vocabularies are also known as "required" vocabularies.
