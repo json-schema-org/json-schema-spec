@@ -912,8 +912,9 @@ the case of a network-addressable URL, a schema need not be downloadable from
 its canonical IRI.
 
 If present, the value for this keyword MUST be a string, and MUST represent a
-valid [IRI reference](#rfc3987). This IRI reference SHOULD be normalized, and
-MUST resolve to an [absolute IRI](#rfc3987) (without a fragment).
+valid [IRI reference](#rfc3987). This IRI reference SHOULD be normalized per RFC
+3987, section 5.3, and MUST resolve to an [absolute IRI](#rfc3987) (without a
+fragment).
 
 The resulting absolute IRI serves as the base IRI for relative IRI references in
 keywords within the schema resource, in accordance with [RFC 3987 section
