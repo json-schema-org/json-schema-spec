@@ -452,8 +452,8 @@ The lexical scope of a keyword is determined by the nested JSON data structure
 of objects and arrays. The largest such scope is an entire schema document.  The
 smallest scope is a single schema object with no subschemas.
 
-Keywords MAY be defined with a partial value, such as a IRI-reference, which
-must be resolved against another value, such as another IRI-reference or a full
+Keywords MAY be defined with a partial value, such as a IRI reference, which
+must be resolved against another value, such as another IRI reference or a full
 IRI, which is found through the lexical structure of the JSON document. The
 `$id`, `$ref`, and `$dynamicRef` core keywords, and the "base" JSON Hyper-Schema
 keyword, are examples of this sort of behavior.
@@ -542,7 +542,7 @@ Identifiers define IRIs for a schema, or affect how such IRIs are resolved in
 keywords, most notably `$id`.
 
 Canonical schema IRIs MUST NOT change while processing an instance, but keywords
-that affect IRI-reference resolution MAY have behavior that is only fully
+that affect IRI reference resolution MAY have behavior that is only fully
 determined at runtime.
 
 While custom identifier keywords are possible, extension designers should take
@@ -898,8 +898,8 @@ To differentiate between schemas in a vast ecosystem, schemas are identified by
 [IRI](#rfc3987), and can embed references to other schemas by specifying their
 IRI.
 
-Several keywords can accept a relative [IRI-reference](#rfc3987), or a value
-used to construct a relative IRI-reference. For these keywords, it is necessary
+Several keywords can accept a relative [IRI reference](#rfc3987), or a value
+used to construct a relative IRI reference. For these keywords, it is necessary
 to establish a base IRI in order to resolve the reference.
 
 #### The `$id` Keyword {#id-keyword}
@@ -912,10 +912,10 @@ the case of a network-addressable URL, a schema need not be downloadable from
 its canonical IRI.
 
 If present, the value for this keyword MUST be a string, and MUST represent a
-valid [IRI-reference](#rfc3987). This IRI-reference SHOULD be normalized, and
-MUST resolve to an [absolute-IRI](#rfc3987) (without a fragment).
+valid [IRI reference](#rfc3987). This IRI reference SHOULD be normalized, and
+MUST resolve to an [absolute IRI](#rfc3987) (without a fragment).
 
-The resulting absolute-IRI serves as the base IRI for relative IRI-references in
+The resulting absolute IRI serves as the base IRI for relative IRI references in
 keywords within the schema resource, in accordance with [RFC 3987 section
 6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
 embedded in content.
@@ -924,7 +924,7 @@ The presence of `$id` in a subschema indicates that the subschema constitutes a
 distinct schema resource within a single schema document. Furthermore, in
 accordance with [RFC 3987 section 6.5](#rfc3987) and [RFC 3986 section
 5.1.2](#rfc3986) regarding encapsulating entities, if an `$id` in a subschema is
-a relative IRI-reference, the base IRI for resolving that reference is the IRI
+a relative IRI reference, the base IRI for resolving that reference is the IRI
 of the parent schema resource. Note that an `$id` consisting of an empty IRI or
 of the empty fragment only will result in the embedded resource having the same
 IRI as the encapsulating resource, which SHOULD be considered an error per
@@ -937,7 +937,7 @@ given in the [previous section.](initial-base)
 ##### Identifying the root schema
 
 The root schema of a JSON Schema document SHOULD contain an `$id` keyword with
-an [absolute-IRI](#rfc3987) (containing a scheme, but no fragment).
+an [absolute IRI](#rfc3987) (containing a scheme, but no fragment).
 
 #### Defining location-independent identifiers {#anchors}
 
@@ -971,7 +971,7 @@ If present, the value of these keywords MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.[^4]
 
 [^4]: Note that the anchor string does not include the "#" character, as it is
-not a IRI-reference. An `$anchor`: "foo" becomes the fragment `#foo` when used
+not a IRI reference. An `$anchor`: "foo" becomes the fragment `#foo` when used
 in a IRI. See below for full examples.
 
 #### Duplicate schema identifiers {#duplicate-iris}
@@ -1005,7 +1005,7 @@ identified schema. Its results are the results of the referenced schema.[^5]
 [^5]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
 
-The value of the `$ref` keyword MUST be a string which is a IRI-Reference.
+The value of the `$ref` keyword MUST be a string which is a IRI reference.
 Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
@@ -1022,7 +1022,7 @@ reference themselves). The extension point is defined with `$dynamicAnchor` and
 only exhibits runtime dynamic behavior when referenced with `$dynamicRef`.
 
 The value of the `$dynamicRef` property MUST be a string which is a
-IRI-Reference that contains a valid [plain name fragment](#anchors). Resolved
+IRI reference that contains a valid [plain name fragment](#anchors). Resolved
 against the current IRI base, it indicates the schema resource used as the
 starting point for runtime resolution. This initial resolution is safe to
 perform on schema load.
@@ -2284,9 +2284,9 @@ simplify coding so that various invocations of JSON Schema libraries do not have
 to keep track of and load a large number of resources.
 
 This transformation can be safely and reversibly done as long as all static
-references (e.g. `$ref`) use IRI-references that resolve to IRIs using the
+references (e.g. `$ref`) use IRI references that resolve to IRIs using the
 canonical resource IRI as the base, and all schema resources have an
-absolute-IRI as the `$id` in their root schema.
+absolute IRI as the `$id` in their root schema.
 
 With these conditions met, each external resource can be copied under `$defs`,
 without breaking any references among the resources' schema objects, and without
@@ -2470,7 +2470,7 @@ to the document.
 - Clarify that detecting duplicate IRIs for different schemas SHOULD raise an
   error
 - Consolidate and clarify the syntax and rationale for plain-name fragments
-- "$id" MUST be an absolute-IRI, without any fragment, even an empty one
+- "$id" MUST be an absolute IRI, without any fragment, even an empty one
 - Note that an empty string "$id" results in duplicate IRIs for different
   schemas
 - Define empty schemas as empty (no longer allowing unrecognized keywords)

@@ -444,7 +444,7 @@ representation of an IP address as follows:
   [RFC3986](#rfc3986).
 - *iri:* A string instance is valid against this attribute if it is a valid IRI,
   according to [RFC3987](#rfc3987).
-- *iri-reference:* A string instance is valid against this attribute if it is a
+- *IRI reference:* A string instance is valid against this attribute if it is a
   valid IRI Reference (either an IRI or a relative-reference), according to
   [RFC3987](#rfc3987).
 - *uuid:* A string instance is valid against this attribute if it is a valid
@@ -563,7 +563,7 @@ The value of this property MUST be a valid JSON schema. It SHOULD be ignored if
 location IRI included as part of the annotation will ensure that it is correctly
 processed as a subschema. Using the extracted annotation value directly is only
 safe if the schema is an embedded resource with both `$schema` and an
-absolute-IRI `$id`.
+absolute IRI `$id`.
 
 ### Example
 
@@ -952,7 +952,7 @@ schema form to the core spec
     - Restored "regex" format (removal was unintentional)
     - Added "date" and "time" formats, and reserved additional RFC 3339 format
       names
-    - I18N formats: "iri", "iri-reference", "idn-hostname", "idn-email"
+    - I18N formats: "iri", "IRI reference", "idn-hostname", "idn-email"
     - Clarify that "json-pointer" format means string encoding, not URI fragment
     - Fixed typo that inverted the meaning of `minimum` and `exclusiveMinimum`
     - Move format syntax references into Normative References
