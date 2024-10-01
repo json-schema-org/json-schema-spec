@@ -933,7 +933,7 @@ IRI as the encapsulating resource, which SHOULD be considered an error per
 
 If no parent schema object explicitly identifies itself as a resource with
 `$id`, the base IRI is that of the entire document, as established by the steps
-given in the [previous section.](initial-base)
+given in {{initial-base}}.
 
 ##### Identifying the root schema
 
@@ -1191,15 +1191,9 @@ automatically.
 
 When an implementation encounters the reference to "other.json", it resolves
 this to `https://example.net/other.json`, which is not defined in this document.
-If a schema with that identifier has otherwise been supplied to the
-implementation, it can also be used automatically.[^7]
-
-[^7]: What should implementations do when the referenced schema is not known?
-Are there circumstances in which automatic network dereferencing is allowed? A
-same origin policy? A user-configurable option? In the case of an evolving API
-described by Hyper-Schema, it is expected that new schemas will be added to the
-system dynamically, so placing an absolute requirement of pre-loading schema
-documents is not feasible.
+If an implementation has been configured to resolve that identifier to a schema
+via pre-loading or other means, it can be used automatically; otherwise, the
+behavior described in {{failed-refs}} MUST be used.
 
 #### JSON Pointer fragments and embedded schema resources {#embedded}
 
@@ -1272,10 +1266,10 @@ the `$id` of the embedded or referenced resource unless it is specifically
 desired to identify the object containing the `$ref` in the second
 (non-embedded) arrangement.
 
-An implementation MAY choose not to support addressing schema resource contents
-by IRIs using a base other than the resource's canonical IRI, plus a JSON
-Pointer fragment relative to that base. Therefore, schema authors SHOULD NOT
-rely on such IRIs, as using them may reduce interoperability.[^8]
+Due to the potential break in functionality described above, the behavior for
+using JSON Pointer fragments that point to or cross a resource boundary is
+undefined.  Schema authors SHOULD NOT rely on such IRIs, as using them may
+reduce interoperability.
 
 [^8]: This is to avoid requiring implementations to keep track of a whole stack
 of possible base IRIs and JSON Pointer fragments for each, given that all but
@@ -1408,7 +1402,7 @@ behave correctly under implementations that attempt to use any reference target
 as a schema. However, this behavior is implementation-specific and MUST NOT be
 relied upon for interoperability.
 
-#### Failure to resolve references
+#### Failure to resolve references {#failed-refs}
 
 If for any reason a reference cannot be resolved, the evaluation MUST halt and
 return an indeterminant result. Specifically, it MUST NOT return a passing or
@@ -2231,32 +2225,22 @@ listed IRI in accordance with {{fragments}} and {{embedded}} above.
 `#/$defs/B`: canonical (and base) `IRI: https://example.com/other.json`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/B`
 
 `#/$defs/B/$defs/X`: base IRI: `https://example.com/other.json`
 - canonical resource IRI plus plain fragment:
   `https://example.com/other.json#bar`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#/$defs/X`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/B/$defs/X`
 
 `#/$defs/B/$defs/Y`: canonical (and base) IRI:
 `https://example.com/t/inner.json`
 - canonical IRI plus plain fragment: `https://example.com/t/inner.json#bar`
 - canonical IRI plus pointer fragment: `https://example.com/t/inner.json#`
-- base IRI of enclosing (other.json) resource plus fragment:
-  `https://example.com/other.json#/$defs/Y`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/B/$defs/Y`
 
 `#/$defs/C`: canonical (and base) IRI:
 `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f`
 - canonical IRI plus pointer fragment:
   `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/C`
 
 Note: The fragment part of the IRI does not make it canonical or non-canonical,
 rather, the base IRI used (as part of the full IRI with any fragment) is what
@@ -2265,6 +2249,28 @@ determines the canonical nature of the resulting full IRI.[^18]
 [^18]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
 and direct you to read the CREF located in the [JSON Pointer fragments and
 embedded schema resources](#embedded) section for further comments.
+
+While the following IRIs do correctly indicate specific schemas, per the reasons outlined in {{embedded}}, they are to be avoided:
+
+`#/$defs/B`: canonical (and base) `IRI: https://example.com/other.json`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/B`
+
+`#/$defs/B/$defs/X`: base IRI: `https://example.com/other.json`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/B/$defs/X`
+
+`#/$defs/B/$defs/Y`: canonical (and base) IRI:
+`https://example.com/t/inner.json`
+- base IRI of enclosing (other.json) resource plus fragment:
+  `https://example.com/other.json#/$defs/Y`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/B/$defs/Y`
+
+`#/$defs/C`: canonical (and base) IRI:
+`urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/C`
 
 ## [Appendix] Manipulating schema documents and references
 
