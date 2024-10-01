@@ -2235,7 +2235,8 @@ determines the canonical nature of the resulting full IRI.[^18]
 and direct you to read the CREF located in the [JSON Pointer fragments and
 embedded schema resources](#embedded) section for further comments.
 
-While the following IRIs do correctly indicate specific schemas, per the reasons outlined in {{embedded}}, they are to be avoided:
+While the following IRIs do correctly indicate specific schemas, per the reasons
+outlined in {{embedded}}, they are to be avoided:
 
 `#/$defs/B`: canonical (and base) `IRI: https://example.com/other.json`
 - base IRI of enclosing (root.json) resource plus fragment:
