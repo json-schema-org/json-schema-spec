@@ -1313,7 +1313,7 @@ When the Schema Resource referenced by a by-reference applicator is bundled, it
 is RECOMMENDED that the Schema Resource be located as a value of a `$defs`
 object at the containing schema's root. The key of the `$defs` for the now
 embedded Schema Resource MAY be the `$id` of the bundled schema or some other
-form of application defined unique identifer (such as a UUID). This key is not
+form of application defined unique identifier (such as a UUID). This key is not
 intended to be referenced in JSON Schema, but may be used by an application to
 aid the bundling process.
 
@@ -1380,21 +1380,6 @@ applicator keywords or with location-reserving keywords such as
 [`$defs`](#defs) that take one or more subschemas as a value. These keywords may
 be `$defs` and the standard applicators from this document or
 implementation-specific custom keywords.
-
-Multi-level structures of unknown keywords are capable of introducing nested
-subschemas, which would be subject to the processing rules for `$id`. Therefore,
-having a reference target in such an unrecognized structure cannot be reliably
-implemented, and the resulting behavior is undefined. Similarly, a reference
-target under a known keyword, for which the value is known not to be a schema,
-results in undefined behavior in order to avoid burdening implementations with
-the need to detect such targets.[^10]
-
-[^10]: These scenarios are analogous to fetching a schema over HTTP but
-receiving a response with a Content-Type other than `application/schema+json`.
-An implementation can certainly try to interpret it as a schema, but the origin
-server offered no guarantee that it actually is any such thing. Therefore,
-interpreting it as such has security implication and may produce unpredictable
-results.
 
 Note that single-level custom keywords with identical syntax and semantics to
 `$defs` do not allow for any intervening `$id` keywords, and therefore will
