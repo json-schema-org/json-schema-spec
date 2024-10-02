@@ -1269,7 +1269,7 @@ desired to identify the object containing the `$ref` in the second
 Due to the potential break in functionality described above, the behavior for
 using JSON Pointer fragments that point to or cross a resource boundary is
 undefined.  Schema authors SHOULD NOT rely on such IRIs, as using them may
-reduce interoperability.
+reduce interoperability.[^8]
 
 [^8]: This is to avoid requiring implementations to keep track of a whole stack
 of possible base IRIs and JSON Pointer fragments for each, given that all but
@@ -2194,35 +2194,42 @@ name fragment identifiers.
 }
 ```
 
-The schemas at the following IRI-encoded [JSON Pointers](#rfc6901) (relative to
-the root schema) have the following base IRIs, and are identifiable by any
-listed IRI in accordance with {{fragments}} and {{embedded}} above.
+The schemas at the following locations (indicated by plain
+[JSON Pointers](#rfc6901) relative to the root document) have the following base
+IRIs, and are identifiable by any listed IRI in accordance with {{fragments}}
+and {{embedded}} above.
 
-`#` (document root): canonical (and base) IRI: `https://example.com/root.json`
+Document root:
+- canonical (and base) IRI: `https://example.com/root.json`
 - canonical resource IRI plus pointer fragment: `https://example.com/root.json#`
 
-`#/$defs/A`: base IRI: `https://example.com/root.json`
+Document location `/$defs/A`:
+- base IRI: `https://example.com/root.json`
 - canonical resource IRI plus plain fragment:
   `https://example.com/root.json#foo`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/root.json#/$defs/A`
 
-`#/$defs/B`: canonical (and base) `IRI: https://example.com/other.json`
+Document location `/$defs/B`:
+- canonical (and base) `IRI: https://example.com/other.json`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#`
 
-`#/$defs/B/$defs/X`: base IRI: `https://example.com/other.json`
+Document location `/$defs/B/$defs/X`:
+- base IRI: `https://example.com/other.json`
 - canonical resource IRI plus plain fragment:
   `https://example.com/other.json#bar`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#/$defs/X`
 
-`#/$defs/B/$defs/Y`: canonical (and base) IRI:
+Document location `/$defs/B/$defs/Y`:
+- canonical (and base) IRI:
 `https://example.com/t/inner.json`
 - canonical IRI plus plain fragment: `https://example.com/t/inner.json#bar`
 - canonical IRI plus pointer fragment: `https://example.com/t/inner.json#`
 
-`#/$defs/C`: canonical (and base) IRI:
+Document location `/$defs/C`:
+- canonical (and base) IRI:
 `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f`
 - canonical IRI plus pointer fragment:
   `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#`
@@ -2232,28 +2239,31 @@ rather, the base IRI used (as part of the full IRI with any fragment) is what
 determines the canonical nature of the resulting full IRI.[^18]
 
 [^18]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
-and direct you to read the CREF located in the [JSON Pointer fragments and
-embedded schema resources](#embedded) section for further comments.
+and direct you to read the CREF located in {{#embedded}} for further comments.
 
 While the following IRIs do correctly indicate specific schemas, per the reasons
 outlined in {{embedded}}, they are to be avoided:
 
-`#/$defs/B`: canonical (and base) `IRI: https://example.com/other.json`
+Document location `/$defs/B`:
+- canonical (and base) `IRI: https://example.com/other.json`
 - base IRI of enclosing (root.json) resource plus fragment:
   `https://example.com/root.json#/$defs/B`
 
-`#/$defs/B/$defs/X`: base IRI: `https://example.com/other.json`
+Document location `/$defs/B/$defs/X`:
+- base IRI: `https://example.com/other.json`
 - base IRI of enclosing (root.json) resource plus fragment:
   `https://example.com/root.json#/$defs/B/$defs/X`
 
-`#/$defs/B/$defs/Y`: canonical (and base) IRI:
+Document location `/$defs/B/$defs/Y`:
+- canonical (and base) IRI:
 `https://example.com/t/inner.json`
 - base IRI of enclosing (other.json) resource plus fragment:
   `https://example.com/other.json#/$defs/Y`
 - base IRI of enclosing (root.json) resource plus fragment:
   `https://example.com/root.json#/$defs/B/$defs/Y`
 
-`#/$defs/C`: canonical (and base) IRI:
+Document location `/$defs/C`:
+- canonical (and base) IRI:
 `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f`
 - base IRI of enclosing (root.json) resource plus fragment:
   `https://example.com/root.json#/$defs/C`
