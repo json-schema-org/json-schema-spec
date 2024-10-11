@@ -895,9 +895,9 @@ by other parties.
 ### Base IRI, Anchors, and Dereferencing
 
 To differentiate between schemas in a vast ecosystem, schemas are identified by
-[absolute IRIs](#rfc3987) (without fragments), and can embed references to other
-schemas by specifying their IRI. When comparing IRIs, implementations SHOULD
-interpret them using the normalization procedures defined in
+[absolute IRIs](#rfc3987) (without fragments) and can embed references to other
+schemas by specifying their respective IRIs. When comparing IRIs,
+implementations SHOULD first follow the IRI normalization procedures defined in
 [RFC 3987](#rfc3987), section 5.3.
 
 Several keywords can accept a relative [IRI reference](#rfc3987), or a value
