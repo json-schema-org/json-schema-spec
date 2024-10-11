@@ -895,8 +895,10 @@ by other parties.
 ### Base IRI, Anchors, and Dereferencing
 
 To differentiate between schemas in a vast ecosystem, schemas are identified by
-[IRI](#rfc3987), and can embed references to other schemas by specifying their
-IRI.
+[absolute IRIs](#rfc3987) (without fragments), and can embed references to other
+schemas by specifying their IRI. When comparing IRIs, implementations SHOULD
+interpret them using the normalization procedures defined in
+[RFC 3987](#rfc3987), section 5.3.
 
 Several keywords can accept a relative [IRI reference](#rfc3987), or a value
 used to construct a relative IRI reference. For these keywords, it is necessary
@@ -904,32 +906,23 @@ to establish a base IRI in order to resolve the reference.
 
 #### The `$id` Keyword {#id-keyword}
 
-The `$id` keyword identifies a schema resource with its [canonical](#rfc6596)
-IRI.
+The `$id` keyword identifies a schema resource. The value for this keyword MUST
+be a string, and MUST represent a valid [IRI reference](#rfc3987) (without a
+fragment).
+
+When the value of this keyword is resolved against the current base IRI, the
+resulting absolute IRI then serves as the identifier for the schema resource and
+as a base IRI for relative IRI references in keywords within that schema
+resource, in accordance with [RFC 3987 section 6.5](#rfc3987) and
+[RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs embedded in content.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
 the case of a network-addressable URL, a schema need not be downloadable from
 its canonical IRI.
 
-If present, the value for this keyword MUST be a string, and MUST represent a
-valid [IRI reference](#rfc3987). This IRI reference SHOULD be normalized per RFC
-3987, section 5.3, and MUST resolve to an [absolute IRI](#rfc3987) (without a
-fragment).
-
-The resulting absolute IRI serves as the base IRI for relative IRI references in
-keywords within the schema resource, in accordance with [RFC 3987 section
-6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
-embedded in content.
-
-The presence of `$id` in a subschema indicates that the subschema constitutes a
-distinct schema resource within a single schema document. Furthermore, in
-accordance with [RFC 3987 section 6.5](#rfc3987) and [RFC 3986 section
-5.1.2](#rfc3986) regarding encapsulating entities, if an `$id` in a subschema is
-a relative IRI reference, the base IRI for resolving that reference is the IRI
-of the parent schema resource. Note that an `$id` consisting of an empty IRI or
-of the empty fragment only will result in the embedded resource having the same
-IRI as the encapsulating resource, which SHOULD be considered an error per
-{{duplicate-iris}}.
+Also note that an `$id` consisting of an empty IRI only will result in the
+embedded resource having the same IRI as the encapsulating resource, which
+SHOULD be considered an error per {{duplicate-iris}}.
 
 If no parent schema object explicitly identifies itself as a resource with
 `$id`, the base IRI is that of the entire document, as established by the steps
@@ -1386,6 +1379,17 @@ Note that single-level custom keywords with identical syntax and semantics to
 behave correctly under implementations that attempt to use any reference target
 as a schema. However, this behavior is implementation-specific and MUST NOT be
 relied upon for interoperability.
+
+A reference target under a keyword for which the value is known not to be a
+schema results in undefined behavior in order to avoid burdening implementations
+with the need to detect such targets.[^10]
+
+[^10]: These scenarios are analogous to fetching a schema over HTTP but
+receiving a response with a Content-Type other than `application/schema+json`.
+An implementation can certainly try to interpret it as a schema, but the origin
+server offered no guarantee that it actually is any such thing. Therefore,
+interpreting it as such has security implication and may produce unpredictable
+results.
 
 #### Failure to resolve references {#failed-refs}
 
