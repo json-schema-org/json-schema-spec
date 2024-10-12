@@ -1717,11 +1717,10 @@ The presence of this keyword affects the behavior of
 
 The value of `additionalProperties` MUST be a valid JSON Schema.
 
-The behavior of this keyword depends on the presence and annotation results of
-`properties` and `patternProperties` within the same schema object. Validation
-with `additionalProperties` applies only to the child values of instance names
-that do not appear in the annotation results of either `properties` or
-`patternProperties`.
+The behavior of this keyword depends on the presence of `properties` and
+`patternProperties` within the same schema object. Validation with
+`additionalProperties` applies only to the property values for which neither
+`properties` nor `patternProperties` apply.
 
 For all such properties, validation succeeds if the child instance validates
 against the `additionalProperties` schema.
