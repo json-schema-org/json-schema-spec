@@ -1859,14 +1859,16 @@ limited to, `prefixItems`, `items`, and `contains`, itself, and all
 [in-place applicators](#in-place) defined in this document.
 
 This keyword applies its subschema to any array elements which have not been
-deemed "evaluated" by other keywords per {#unevaluated}. Validation passes if
+deemed "evaluated" by other keywords per {{#unevaluated}}. Validation passes if
 the keyword's subschema validates against all applicable array elements.
 
 If the `unevaluatedItems` subschema is applied to any positions within the
 instance array, it produces an annotation result of boolean true, analogous to
 the behavior of `items`.
 
-The presence of this keyword affects the behavior of other `unevaluatedItems` keywords found earlier in the dynamic scope that apply to the same instance location.
+The presence of this keyword affects the behavior of other `unevaluatedItems`
+keywords found earlier in the dynamic scope that apply to the same instance
+location.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
@@ -1874,31 +1876,23 @@ Omitting this keyword has the same assertion behavior as an empty schema.
 
 The value of `unevaluatedProperties` MUST be a valid JSON Schema.
 
-The behavior of this keyword depends on the annotation results of adjacent
-keywords that apply to the instance location being validated. Specifically, the
-annotations from `properties`, `patternProperties`, and `additionalProperties`,
-which can come from those keywords when they are adjacent to the
-`unevaluatedProperties` keyword. Those four annotations, as well as
-`unevaluatedProperties`, can also result from any and all adjacent [in-place
-applicator](#in-place) keywords. This includes but is not limited to the
-in-place applicators defined in this document.
+This keyword applies to object instances by applying its subschema to the object's
+property values.
 
-Validation with `unevaluatedProperties` applies only to the child values of
-instance names that do not appear in the `properties`, `patternProperties`,
-`additionalProperties`, or `unevaluatedProperties` annotation results that apply
-to the instance location being validated.
+The behavior of this keyword depends on all adjacent keywords as well as
+keywords in successfully validated subschemas that apply to the same instance
+location by evaluating the instance's property values. This includes, but is not limited
+to, `properties`, `patternProperties`, and `additionalProperties`, itself, and
+all [in-place applicators](#in-place) defined in this document.
 
-For all such properties, validation succeeds if the child instance validates
-against the `unevaluatedProperties` schema.
-
-This means that `properties`, `patternProperties`, `additionalProperties`, and
-all in-place applicators MUST be evaluated before this keyword can be evaluated.
-Authors of extension keywords MUST NOT define an in-place applicator that would
-need to be evaluated after this keyword.
+This keyword applies its subschema to any property values which have not benn deemed "evaluated" by other keywords per {{#unevaluated}}. Validation passes if the keyword's subschema validates against all applicable property values.
 
 The annotation result of this keyword is the set of instance property names
-validated by this keyword's subschema. This annotation affects the behavior of
-`unevaluatedProperties` in parent schemas.
+validated by this keyword's subschema.
+
+The presence of this keyword affects the behavior of other `unevaluatedProperty`
+keywords found earlier in the dynamic scope that apply to the same instance
+location.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
