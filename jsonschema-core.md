@@ -1645,27 +1645,23 @@ and the instance value are affected by this keyword.
 This keyword produces an annotation value which is the largest index to which
 this keyword applied a subschema. The value MAY be a boolean true if a subschema
 was applied to every index of the instance, such as is produced by the `items`
-keyword. This annotation affects the behavior of `items` and `unevaluatedItems`.
+keyword.
+
+The presence of this keyword affects the behaviors of [`items`](#items) and
+[`unevaluatedItems`](#unevaluateditems).
 
 ##### `items` {#items}
 
 The value of `items` MUST be a valid JSON Schema.
 
-This keyword applies its subschema to all instance elements at indexes greater
-than the length of the `prefixItems` array in the same schema object, as
-reported by the annotation result of that `prefixItems` keyword. If no such
-annotation result exists, `items` applies its subschema to all instance array
-elements.[^11]
-
-[^11]: Note that the behavior of `items` without `prefixItems` is identical to
-that of the schema form of `items` in prior drafts. When `prefixItems` is
-present, the behavior of `items` is identical to the former `additionalItems`
-keyword.
+This keyword applies its subschema to all instance elements at indices greater
+than the length of the `prefixItems` array in the same schema object. If
+`prefixItems` does not exist within the same schema object, `items` applies its
+subschema to all instance array elements.
 
 If the `items` subschema is applied to any positions within the instance array,
 it produces an annotation result of boolean true, indicating that all remaining
-array elements have been evaluated against this keyword's subschema. This
-annotation affects the behavior of `unevaluatedItems`.
+array elements have been evaluated against this keyword's subschema.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
@@ -1673,6 +1669,9 @@ Implementations MAY choose to implement or optimize this keyword in another way
 that produces the same effect, such as by directly checking for the presence and
 size of a `prefixItems` array. Implementations that do not support annotation
 collection MUST do so.
+
+The presence of this keyword affects the behavior of
+[`unevaluatedItems`](#unevaluateditems).
 
 #### Keywords for Applying Subschemas to Objects
 
@@ -1685,11 +1684,13 @@ Validation succeeds if, for each name that appears in both the instance and as a
 name within this keyword's value, the child instance for that name successfully
 validates against the corresponding schema.
 
-The annotation result of this keyword is the set of instance property names
-which are also present under this keyword. This annotation affects the behavior
-of `additionalProperties` and `unevaluatedProperties`.
-
 Omitting this keyword has the same assertion behavior as an empty object.
+
+The annotation result of this keyword is the set of instance property names
+which are also present under this keyword.
+
+The presence of this keyword affects the behavior of
+[`additionalProperties`(#additionalProperties) and [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `patternProperties`
 
@@ -1704,11 +1705,13 @@ instance for that name successfully validates against each schema that
 corresponds to a matching regular expression. Recall: regular expressions are
 not implicitly anchored.
 
-The annotation result of this keyword is the set of instance property names
-matched by at least one property under this keyword. This annotation affects the
-behavior of `additionalProperties` and `unevaluatedProperties`.
-
 Omitting this keyword has the same assertion behavior as an empty object.
+
+The annotation result of this keyword is the set of instance property names
+matched by at least one property under this keyword.
+
+The presence of this keyword affects the behavior of
+[`additionalProperties`(#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `additionalProperties` {#additionalproperties}
 
@@ -1723,26 +1726,13 @@ that do not appear in the annotation results of either `properties` or
 For all such properties, validation succeeds if the child instance validates
 against the `additionalProperties` schema.
 
-The annotation result of this keyword is the set of instance property names
-validated by this keyword's subschema. This annotation affects the behavior of
-`unevaluatedProperties`.
-
 Omitting this keyword has the same assertion behavior as an empty schema.
 
-Implementations MAY choose to implement or optimize this keyword in another way
-that produces the same effect, such as by directly checking the names in
-`properties` and the patterns in `patternProperties` against the instance
-property set. Implementations that do not support annotation collection MUST do
-so.[^12]
+The annotation result of this keyword is the set of instance property names
+validated by this keyword's subschema.
 
-[^12]: In defining this option, it seems there is the potential for ambiguity in
-the output format. The ambiguity does not affect validation results, but it does
-affect the resulting output format. The ambiguity allows for multiple valid
-output results depending on whether annotations are used or a solution that
-"produces the same effect" as draft-07. It is understood that annotations from
-failing schemas are dropped. See our [Decision
-Record](https://github.com/json-schema-org/json-schema-spec/tree/HEAD/adr/2022-04-08-cref-for-ambiguity-and-fix-later-gh-spec-issue-1172.md)
-for further details.
+The presence of this keyword affects the behavior of
+[`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `propertyNames`
 
