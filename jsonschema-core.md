@@ -1774,7 +1774,7 @@ keyword's annotation causes `contains` to assume a minimum value of 1.
 
 The value of this keyword MUST be a valid JSON Schema.
 
-This keyword applies its subschema to array elements.
+This keyword applies to array instances by applying its subschema to the array's elements.
 
 An instance is valid against `contains` if the number of elements that are valid
 against its subschema is with the inclusive range of the minimum and (if any)
@@ -1788,22 +1788,24 @@ The minimum number of occurrences is provided by the `minContains` keyword
 within the same schema object as `contains`. If `minContains` is absent, the
 minimum number of occurrences MUST be 1.
 
-Implementations MAY implement the dependency on `minContains` and `maxContains`
-by inspecting their values rather than reading annotations produced by those
-keywords.
-
-This keyword produces an annotation value which is an array of the indexes to
+This keyword produces an annotation value which is an array of the indices for
 which this keyword validates successfully when applying its subschema, in
 ascending order. The value MAY be a boolean `true` if the subschema validates
 successfully when applied to every index of the instance. The annotation MUST be
 present if the instance array to which this keyword's schema applies
 is empty.
 
-This annotation affects the behavior of `unevaluatedItems`.
+The presence of this keyword affects the behavior of
+[`unevaluatedItems`](#unevaluateditems).
 
-The subschema MUST be applied to every array element even after the first match
-has been found, in order to collect annotations for use by other keywords. This
-is to ensure that all possible annotations are collected.
+Under most circumstances, the `contains` subschema MAY be short-circuited.
+However, for the following cases, the `contains` subschema MUST be applied to
+every array element.
+
+- If `unevaluatedItems` appears in any subschema in the dynamic scope that
+  applies to the same instance location, to ensure that all evaluated items are
+  accounted for.
+- When collecting annotations, to ensure that all annotations are found.
 
 ## Keywords for Unevaluated Locations
 
@@ -1821,16 +1823,15 @@ If an item in an array or an object property is "successfully evaluated", it is
 logically considered to be valid in terms of the representation of the object or
 array that's expected. For example if a subschema represents a car, which
 requires between 2-4 wheels, and the value of "wheels" is 6, the instance object
-is not "evaluated" to be a car, and the "wheels" property is considered
-"unevaluated (successfully as a known thing)", and does not retain any
-annotations.
+is not "evaluated" to be a car, and thus the "wheels" property is considered
+"unevaluated".
 
 Recall that adjacent keywords are keywords within the same schema object, and
 that the dynamic-scope subschemas include reference targets as well as lexical
 subschemas.
 
-The behavior of these keywords depend on the annotation results of adjacent
-keywords that apply to the instance location being validated.
+The behaviors of these keywords depend on adjacent keywords as well as any
+keywords in subschemas that apply to the instance location being evaluated.
 
 ### Keyword Independence
 
