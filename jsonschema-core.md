@@ -1774,7 +1774,8 @@ keyword's annotation causes `contains` to assume a minimum value of 1.
 
 The value of this keyword MUST be a valid JSON Schema.
 
-This keyword applies to array instances by applying its subschema to the array's elements.
+This keyword applies to array instances by applying its subschema to the array's
+elements.
 
 An instance is valid against `contains` if the number of elements that are valid
 against its subschema is with the inclusive range of the minimum and (if any)
@@ -1807,7 +1808,7 @@ every array element.
   accounted for.
 - When collecting annotations, to ensure that all annotations are found.
 
-## Keywords for Unevaluated Locations
+## Keywords for Unevaluated Locations {#unevaluated}
 
 The purpose of these keywords is to enable schema authors to apply subschemas to
 array items or object properties that have not been successfully evaluated
@@ -1831,7 +1832,8 @@ that the dynamic-scope subschemas include reference targets as well as lexical
 subschemas.
 
 The behaviors of these keywords depend on adjacent keywords as well as any
-keywords in subschemas that apply to the instance location being evaluated.
+keywords in successfully validated subschemas that apply to the same instance
+location.
 
 ### Keyword Independence
 
@@ -1847,30 +1849,24 @@ outcomes. However, these keywords are notable exceptions:
 
 The value of `unevaluatedItems` MUST be a valid JSON Schema.
 
-The behavior of this keyword depends on the annotation results of adjacent
-keywords that apply to the instance location being validated. Specifically, the
-annotations from `prefixItems`, `items`, and `contains`, which can come from
-those keywords when they are adjacent to the `unevaluatedItems` keyword. Those
-three annotations, as well as `unevaluatedItems`, can also result from any and
-all adjacent [in-place applicator](#in-place) keywords. This includes but is not
-limited to the in-place applicators defined in this document.
+This keyword applies to array instances by applying its subschema to the array's
+elements.
 
-If no relevant annotations are present, the `unevaluatedItems` subschema MUST be
-applied to all locations in the array. If a boolean true value is present from
-any of the relevant annotations, `unevaluatedItems` MUST be ignored. Otherwise,
-the subschema MUST be applied to any index greater than the largest annotation
-value for `prefixItems`, which does not appear in any annotation value for
-`contains`.
+The behavior of this keyword depends on all adjacent keywords as well as
+keywords in successfully validated subschemas that apply to the same instance
+location by evaluating the instance's elements. This includes, but is not
+limited to, `prefixItems`, `items`, and `contains`, itself, and all
+[in-place applicators](#in-place) defined in this document.
 
-This means that `prefixItems`, `items`, `contains`, and all in-place applicators
-MUST be evaluated before this keyword can be evaluated. Authors of extension
-keywords MUST NOT define an in-place applicator that would need to be evaluated
-after this keyword.
+This keyword applies its subschema to any array elements which have not been
+deemed "evaluated" by other keywords per {#unevaluated}. Validation passes if
+the keyword's subschema validates against all applicable array elements.
 
 If the `unevaluatedItems` subschema is applied to any positions within the
 instance array, it produces an annotation result of boolean true, analogous to
-the behavior of `items`. This annotation affects the behavior of
-`unevaluatedItems` in parent schemas.
+the behavior of `items`.
+
+The presence of this keyword affects the behavior of other `unevaluatedItems` keywords found earlier in the dynamic scope that apply to the same instance location.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
