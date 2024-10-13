@@ -1689,7 +1689,7 @@ Omitting this keyword has the same assertion behavior as an empty object.
 The annotation result of this keyword is the set of instance property names
 which are also present under this keyword.
 
-The presence of this keyword affects the behavior of
+The presence of this keyword affects the behaviors of
 [`additionalProperties`(#additionalProperties) and [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `patternProperties`
@@ -1710,7 +1710,7 @@ Omitting this keyword has the same assertion behavior as an empty object.
 The annotation result of this keyword is the set of instance property names
 matched by at least one property under this keyword.
 
-The presence of this keyword affects the behavior of
+The presence of this keyword affects the behaviors of
 [`additionalProperties`(#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `additionalProperties` {#additionalproperties}
@@ -1858,8 +1858,8 @@ limited to, `prefixItems`, `items`, and `contains`, itself, and all
 [in-place applicators](#in-place) defined in this document.
 
 This keyword applies its subschema to any array elements which have not been
-deemed "evaluated" by other keywords per {{#unevaluated}}. Validation passes if
-the keyword's subschema validates against all applicable array elements.
+deemed "evaluated" per {{#unevaluated}}. Validation passes if the keyword's
+subschema validates against all applicable array elements.
 
 If the `unevaluatedItems` subschema is applied to any positions within the
 instance array, it produces an annotation result of boolean true, analogous to
@@ -1884,7 +1884,9 @@ location by evaluating the instance's property values. This includes, but is not
 to, `properties`, `patternProperties`, and `additionalProperties`, itself, and
 all [in-place applicators](#in-place) defined in this document.
 
-This keyword applies its subschema to any property values which have not benn deemed "evaluated" by other keywords per {{#unevaluated}}. Validation passes if the keyword's subschema validates against all applicable property values.
+This keyword applies its subschema to any property values which have not been
+deemed "evaluated" per {{#unevaluated}}. Validation passes if the keyword's
+subschema validates against all applicable property values.
 
 The annotation result of this keyword is the set of instance property names
 validated by this keyword's subschema.
