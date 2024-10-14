@@ -1891,7 +1891,7 @@ subschema validates against all applicable property values.
 The annotation result of this keyword is the set of instance property names
 validated by this keyword's subschema.
 
-The presence of this keyword affects the behavior of other `unevaluatedProperty`
+The presence of this keyword affects the behavior of other `unevaluatedProperties`
 keywords found earlier in the dynamic scope that apply to the same instance
 location.
 
