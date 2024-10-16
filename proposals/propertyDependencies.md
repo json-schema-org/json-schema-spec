@@ -39,7 +39,8 @@ specification](../jsonschema-core.html) also apply to this document.
 A common need in JSON Schema is to select between one schema or another to
 validate an instance based on the value of some property in the JSON instance.
 There are a several patterns people use to accomplish this, but they all have
-significant [problems](propertyDependencies-adr.md#problems). <!-- Update when moving ADR -->
+significant [problems](propertyDependencies-adr.md#problems). <!-- Update when
+moving ADR -->
 
 OpenAPI solves this problem with the `discriminator` keyword. However, their
 approach is more oriented toward code generation concerns, is poorly specified
@@ -88,26 +89,31 @@ those goals means that some trade-offs need to be made.
 
 ## Change Description
 
-The `propertyDependencies` keyword will be added to the `https://json-schema.org/vocab/applicator` [applicator
+The `propertyDependencies` keyword will be added to the
+`https://json-schema.org/vocab/applicator` [applicator
 vocabulary](../jsonschema-core.html#applicatorvocab).
 
-1. The following will be added to the JSON Schema Core specification as a
+1.  The following will be added to the JSON Schema Core specification as a
 subsection of "Keywords for Applying Subschemas Conditionally".
     > ### `propertyDependencies`
     >
     > This keyword specifies subschemas that are evaluated if the instance is an
     > object and contains a certain property with a certain string value.
     >
-    > This keyword's value MUST be an object. Each value in the object MUST be an
-    > object whose values MUST be valid JSON Schemas.
+    > This keyword's value MUST be an object. Each value in the object MUST be
+    > an object whose values MUST be valid JSON Schemas.
     >
-    > If the outer object key is a property in the instance and the inner object key
-    > is equal to the value of that property, the entire instance must validate
-    > against the schema. Its use is dependent on the presence and value of the
-    > property.
+    > If the outer object key is a property in the instance and the inner object
+    > key is equal to the value of that property, the entire instance must
+    > validate against the schema. Its use is dependent on the presence and
+    > value of the property.
     >
     > Omitting this keyword has the same behavior as an empty object.
-2. The following subschema will be added to the Applicator Vocabulary schema, `https://json-schema.org/<version>/<release>/meta/applicator` at `/properties/propertyDependencies`:
+
+2.  The following subschema will be added to the Applicator Vocabulary schema,
+   `https://json-schema.org/<version>/<release>/meta/applicator` at
+   `/properties/propertyDependencies`:
+
     ```json
     {
       "type": "object",
@@ -124,9 +130,9 @@ subsection of "Keywords for Applying Subschemas Conditionally".
 
 ## [Appendix] Change Log
 
-* [March 2021] - Initially proposed
-* [October 2021] Added to specification document
-* [May 2024] Extracted from specification document as experimental feature
+- [March 2021] - Initially proposed
+- [October 2021] Added to specification document
+- [May 2024] Extracted from specification document as experimental feature
 
 ## Champions
 

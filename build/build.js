@@ -11,6 +11,7 @@ import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
 import remarkHeadings from "./remark-headings.js";
 import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
+import remarkLintMaximumHeadingLength from "remark-lint-maximum-heading-length";
 import remarkRehype from "remark-rehype";
 import remarkReferenceLinks from "./remark-reference-links.js";
 import remarkTableOfContents from "./remark-table-of-contents.js";
@@ -25,6 +26,7 @@ const build = async (filename) => {
   const md = readFileSync(filename, "utf-8");
   const file = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
+    .use(remarkLintMaximumHeadingLength, false)
     .use(remarkGfm)
     .use(remarkHeadingId)
     .use(remarkHeadings, {
