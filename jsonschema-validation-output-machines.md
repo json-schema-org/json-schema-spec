@@ -172,10 +172,14 @@ The failing instance will produce the following errors:
   is not a number.
 
 <!--
-"minimum" doesn't produce an error because it only operates on instances that are numbers.
+"minimum" doesn't produce an error because it only operates on instances that
+are numbers.
 -->
 <!--
-Note that the error message wording as depicted in the examples below is not a requirement of this specification.  Implementations SHOULD craft error messages tailored for their audience or provide a templating mechanism that allows their users to craft their own messages.
+Note that the error message wording as depicted in the examples below is not a
+requirement of this specification. Implementations SHOULD craft error messages
+tailored for their audience or provide a templating mechanism that allows their
+users to craft their own messages.
 -->
 
 The passing instance will produce the following annotations:

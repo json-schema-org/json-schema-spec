@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import dotenv from "dotenv";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, basename } from "node:path";
@@ -10,6 +11,7 @@ import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
 import remarkHeadings from "./remark-headings.js";
 import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
+import remarkLintMaximumHeadingLength from "remark-lint-maximum-heading-length";
 import remarkRehype from "remark-rehype";
 import remarkReferenceLinks from "./remark-reference-links.js";
 import remarkTableOfContents from "./remark-table-of-contents.js";
@@ -22,8 +24,9 @@ dotenv.config();
 
 const build = async (filename) => {
   const md = readFileSync(filename, "utf-8");
-  const html = await remark()
+  const file = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
+    .use(remarkLintMaximumHeadingLength, false)
     .use(remarkGfm)
     .use(remarkHeadingId)
     .use(remarkHeadings, {
@@ -163,11 +166,13 @@ const build = async (filename) => {
     </style>
   </head>
   <body>
-    ${html.toString()}
+    ${file.toString()}
   </body>
 </html>`);
 
-  console.error(reporter(html));
+  console.error(reporter(file));
+
+  return file.messages.length;
 };
 
 (async function () {
@@ -176,9 +181,14 @@ const build = async (filename) => {
     console.error("WARNING: No files built. Usage: 'npm run build -- filename.md'");
   }
 
+  let messageCount = 0;
   for (const filename of files) {
     console.log(`Building: ${filename} ...`);
-    await build(filename);
+    messageCount += await build(filename);
     console.log("");
+  }
+
+  if (messageCount > 0) {
+    process.exit(1);
   }
 }());

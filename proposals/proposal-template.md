@@ -3,8 +3,8 @@
 ## Abstract
 
 <!--
-Fill in the specification(s) that will change.  If adding a keyword, which vocabulary
-will contain it?
+Fill in the specification(s) that will change.  If adding a keyword, which
+vocabulary will contain it?
 
 For example
 
