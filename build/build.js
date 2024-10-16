@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import dotenv from "dotenv";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, basename } from "node:path";
