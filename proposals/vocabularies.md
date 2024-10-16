@@ -112,9 +112,9 @@ The boolean values in `$vocabulary` signify implementation requirements for each
 vocabulary.
 
 - A `true` value indicates that the implementation must recognize the vocabulary
-  and be able to process each of the keywords defined in it. If an implementation
-  does not recognize the vocabulary or cannot process all of its defined
-  keywords, the implementation must refuse to process the schema. These
+  and be able to process each of the keywords defined in it. If an
+  implementation does not recognize the vocabulary or cannot process all of its
+  defined keywords, the implementation must refuse to process the schema. These
   vocabularies are also known as "required" vocabularies.
 - A `false` value indicates that the implementation is not required to recognize
   the vocabulary or its keywords and may continue processing the schema anyway.
@@ -153,7 +153,8 @@ reference (via `$ref`) to the vocabulary schema's `$id` value.
 Finally, the keywords in both the Core and Validation specifications will be
 divided into multiple vocabularies. The keyword definitions will be removed from
 the meta-schema and added to vocabulary schemas to which the meta-schema will
-contain references. In this way, the meta-schema's functionality remains the same.
+contain references. In this way, the meta-schema's functionality remains the
+same.
 
 ```json
 {
@@ -252,7 +253,10 @@ For example
     ```
 -->
 
-_**NOTE** Since the design of vocabularies will be changing anyway, it's not worth the time and effort to fill in this section just yet.  As such, please read the above sections for loose requirements.  For tighter requirements, please assume conformance with the 2020-12 Core and Validation specifications._
+***NOTE** Since the design of vocabularies will be changing anyway, it's not
+worth the time and effort to fill in this section just yet.  As such, please
+read the above sections for loose requirements.  For tighter requirements,
+please assume conformance with the 2020-12 Core and Validation specifications.*
 
 ## [Appendix] Change Log
 
@@ -260,6 +264,6 @@ _**NOTE** Since the design of vocabularies will be changing anyway, it's not wor
 
 ## [Appendix] Champions
 
-| Champion                   | Company | Email                   | URI                              |
-|----------------------------|---------|-------------------------|----------------------------------|
-| Greg Dennis                |         | gregsdennis@yahoo.com   | https://github.com/gregsennis    |
+| Champion    | Company | Email                          | URI                             |
+|-------------|---------|--------------------------------|---------------------------------|
+| Greg Dennis |         | <mailto:gregsdennis@yahoo.com> | <https://github.com/gregsennis> |

@@ -1,14 +1,16 @@
 # Add New Keyword: `propertyDependencies`
 
-* Status: proposed
-* Deciders: @gregsdennis, @jdesrosiers, @relequestual
-* Date: 2022-04-07
+- Status: proposed
+- Deciders: @gregsdennis, @jdesrosiers, @relequestual
+- Date: 2022-04-07
 
 Technical Story:
 
-- Issue discussing feature - https://github.com/json-schema-org/json-schema-spec/issues/1082
-- PR to add to the spec - https://github.com/json-schema-org/json-schema-spec/pull/1143
-- ADR to extract from the spec and use feature life cycle - https://github.com/json-schema-org/json-schema-spec/pull/1505
+- Issue discussing feature - <https://github.com/json-schema-org/json-schema-spec/issues/1082>
+- PR to add to the spec - <https://github.com/json-schema-org/json-schema-spec/pull/1143>
+- ADR to extract from the spec and use feature life cycle - <https://github.com/json-schema-org/json-schema-spec/pull/1505>
+
+## Table of Contents
 
 ## Context and Problem Statement
 
@@ -33,7 +35,8 @@ adopt or redefine `discriminator`.
 
 ## Considered Options
 
-All of the following options have the same validation result as the following schema.
+All of the following options have the same validation result as the following
+schema.
 
 ```json
 {
@@ -64,10 +67,10 @@ that concept to solve this problem.
 }
 ```
 
-* Good, because it handle the most common use case: string property values
-* Good, because all property values are grouped together
-* Good, because it's less verbose
-* Bad, because it doesn't handle non-string property values
+- Good, because it handle the most common use case: string property values
+- Good, because all property values are grouped together
+- Good, because it's less verbose
+- Bad, because it doesn't handle non-string property values
 
 ### Option 2
 
@@ -97,7 +100,9 @@ prone.
 * Good, because it supports all use cases
 * Bad, because properties are not naturally grouped together
 * Bad, because it's quite verbose
-* Bad, because we have no precedent for a keyword which explicitly defines its own properties.  This would be new operational functionality, which we try to avoid if we can.
+* Bad, because we have no precedent for a keyword which explicitly defines its
+  own properties. This would be new operational functionality, which we try to
+  avoid if we can.
 
 ### Option 3
 
@@ -124,7 +129,9 @@ object. It's still too verbose.
 * Good, because it supports all use cases
 * Good, because all property values are grouped together
 * Bad, because it's quite verbose
-* Bad, because we have no precedent for a keyword which explicitly defines its own properties.  This would be new operational functionality, which we try to avoid if we can.
+* Bad, because we have no precedent for a keyword which explicitly defines its
+  own properties. This would be new operational functionality, which we try to
+  avoid if we can.
 
 ### Option 4
 
@@ -148,10 +155,11 @@ naming aside), but otherwise has all the same problems as the other examples.
 }
 ```
 
-* Good, because it supports all use cases
-* Bad, because properties are not naturally grouped together
-* Bad, because it's very verbose
-* Bad, because it introduces a lot of inter-keyword dependencies, which we'd have to exhaustively define
+- Good, because it supports all use cases
+- Bad, because properties are not naturally grouped together
+- Bad, because it's very verbose
+- Bad, because it introduces a lot of inter-keyword dependencies, which we'd
+  have to exhaustively define
 
 ### Option 5
 
@@ -183,7 +191,8 @@ verbose.
 * Good, because it's a familiar syntax
 * Bad, because properties are not naturally grouped together
 * Bad, because it's very verbose
-* Bad, because `ifProperties` is very niche.  Will this spawn a new series of `if*` keywords?  How would it interact with `if`?
+* Bad, because `ifProperties` is very niche.  Will this spawn a new series of
+  `if*` keywords?  How would it interact with `if`?
 
 ### Option 6
 

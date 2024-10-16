@@ -234,9 +234,9 @@ Omitting this keyword has the same behavior as a value of 0.
 
 The value of this keyword MUST be a boolean.
 
-If this keyword has boolean value `false`, the instance validates successfully. If
-it has boolean value `true`, the instance validates successfully if all of its
-elements are unique.
+If this keyword has boolean value `false`, the instance validates successfully.
+If it has boolean value `true`, the instance validates successfully if all of
+its elements are unique.
 
 Omitting this keyword has the same behavior as a value of `false`.
 
@@ -317,8 +317,8 @@ which choose to support assertion behavior:
 
 - MUST still collect the keyword's value as an annotation (if the implementation
   supports annotation collection),
-- MUST provide a configuration option to enable assertion behavior, defaulting to
-  annotation-only behavior
+- MUST provide a configuration option to enable assertion behavior, defaulting
+  to annotation-only behavior
 - SHOULD provide an implementation-specific best effort validation for each
   format attribute defined below;[^3]
 - MAY choose to implement validation of any or all format attributes as a no-op
@@ -662,7 +662,8 @@ associated schema.
 
 The value of this keyword MUST be a boolean. When multiple occurrences of this
 keyword are applicable to a single sub-instance, applications SHOULD consider
-the instance location to be deprecated if any occurrence specifies a `true` value.
+the instance location to be deprecated if any occurrence specifies a `true`
+value.
 
 If `deprecated` has a value of boolean `true`, it indicates that applications
 SHOULD refrain from usage of the declared property. It MAY mean the property is
@@ -695,11 +696,11 @@ An instance document that is marked as `readOnly` for the entire document MAY be
 ignored if sent to the owning authority, or MAY result in an error, at the
 authority's discretion.
 
-If `writeOnly` has a value of boolean `true`, it indicates that the value is never
-present when the instance is retrieved from the owning authority. It can be
-present when sent to the owning authority to update or create the document (or
-the resource it represents), but it will not be included in any updated or newly
-created version of the instance.
+If `writeOnly` has a value of boolean `true`, it indicates that the value is
+never present when the instance is retrieved from the owning authority. It can
+be present when sent to the owning authority to update or create the document
+(or the resource it represents), but it will not be included in any updated or
+newly created version of the instance.
 
 An instance document that is marked as `writeOnly` for the entire document MAY
 be returned as a blank document of some sort, or MAY produce an error upon
@@ -899,9 +900,12 @@ to the document.
 
 - *draft-next*
     - Use IRIs instead of URIs
-    - Move "minContains" and "maxContains" to the applicator vocabulary (see also that changelog)
-    - Remove the optional automatic second-pass validation of "content*" keywords
-    - Clarify that "contentSchema"'s value is a schema just like any other subschema
+    - Move "minContains" and "maxContains" to the applicator vocabulary (see
+      also that changelog)
+    - Remove the optional automatic second-pass validation of "content*"
+      keywords
+    - Clarify that "contentSchema"'s value is a schema just like any other
+      subschema
 - *draft-bhutton-json-schema-validation-01*
     - Improve and clarify the `minContains` keyword explanation
     - Remove the use of "production" in favour of "ABNF rule"
