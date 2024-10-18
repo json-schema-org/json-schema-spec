@@ -102,7 +102,18 @@ New features will progress through a sequence of stages before being added to th
 
 The flow through these stages is depicted below:
 
-![Feature Life Cycle Flow](./feature-life-cycle.png)
+```mermaid
+stateDiagram-v2 
+  direction LR
+  Concept --> Proposal
+  state Development {
+    Proposal --> Experimentation
+    Experimentation --> Proposal
+  }
+  Development --> Stable
+  Stable --> Deprectated
+  Deprectated --> Removed
+```
 
 ### Concept
 
