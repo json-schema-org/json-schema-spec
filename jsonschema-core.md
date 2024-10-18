@@ -1858,7 +1858,7 @@ limited to, `prefixItems`, `items`, and `contains`, itself, and all
 [in-place applicators](#in-place) defined in this document.
 
 This keyword applies its subschema to any array elements which have not been
-deemed "evaluated" per {{#unevaluated}}. Validation passes if the keyword's
+deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
 subschema validates against all applicable array elements.
 
 If the `unevaluatedItems` subschema is applied to any positions within the
@@ -1885,7 +1885,7 @@ to, `properties`, `patternProperties`, and `additionalProperties`, itself, and
 all [in-place applicators](#in-place) defined in this document.
 
 This keyword applies its subschema to any property values which have not been
-deemed "evaluated" per {{#unevaluated}}. Validation passes if the keyword's
+deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
 subschema validates against all applicable property values.
 
 The annotation result of this keyword is the set of instance property names
