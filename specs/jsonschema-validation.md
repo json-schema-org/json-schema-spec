@@ -210,7 +210,8 @@ Omitting this keyword has the same behavior as a value of 0.
 #### `pattern` {#pattern}
 
 The value of this keyword MUST be a string. This string SHOULD be a valid
-regular expression, according to the ECMA-262 regular expression dialect.
+regular expression as indicated in {{jsonschema-core#regex}}.
+<!-- need to verify the {{section}} syntax works across files somehow -->
 
 A string instance is considered valid if the regular expression matches the
 instance successfully. Recall: regular expressions are not implicitly anchored.
