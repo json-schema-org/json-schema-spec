@@ -1594,7 +1594,7 @@ subschema, then validation succeeds against this keyword if the instance also
 successfully validates against this keyword's subschema.
 
 This keyword has no effect when `if` is absent, or when the instance fails to
-validate against its subschema. Implementations MUST NOT evaluate the instance
+validate against the `if` subschema. Implementations MUST NOT evaluate the instance
 against this keyword, for either validation or annotation collection purposes,
 in such cases.
 
@@ -1607,7 +1607,7 @@ then validation succeeds against this keyword if the instance successfully
 validates against this keyword's subschema.
 
 This keyword has no effect when `if` is absent, or when the instance
-successfully validates against its subschema. Implementations MUST NOT evaluate
+successfully validates against the `if` subschema. Implementations MUST NOT evaluate
 the instance against this keyword, for either validation or annotation
 collection purposes, in such cases.
 
