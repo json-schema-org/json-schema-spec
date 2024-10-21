@@ -1488,19 +1488,6 @@ operators can contact the owner of a potentially misbehaving script.
 This section defines a set of keywords that enable schema combinations and
 composition.
 
-### Keyword Independence
-
-Schema keywords typically operate independently, without affecting each other's
-outcomes.
-
-For schema author convenience, there are some exceptions among these keywords:
-
-- `additionalProperties`, whose behavior is defined in terms of `properties` and
-  `patternProperties`
-- `items`, whose behavior is defined in terms of `prefixItems`
-- `contains`, whose behavior is affected by the presence and value of
-  `minContains`
-
 ### Keywords for Applying Subschemas in Place {#in-place}
 
 These keywords apply subschemas to the same location in the instance as the
@@ -1841,16 +1828,6 @@ subschemas.
 
 The behavior of these keywords depend on the annotation results of adjacent
 keywords that apply to the instance location being validated.
-
-### Keyword Independence
-
-Schema keywords typically operate independently, without affecting each other's
-outcomes. However, these keywords are notable exceptions:
-
-- `unevaluatedItems`, whose behavior is defined in terms of annotations from
-  `prefixItems`, `items`, `contains`, and itself
-- `unevaluatedProperties`, whose behavior is defined in terms of annotations
-  from `properties`, `patternProperties`, `additionalProperties`, and itself
 
 ### `unevaluatedItems` {#unevaluateditems}
 
