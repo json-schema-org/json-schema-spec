@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import dotenv from "dotenv";
-import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, basename } from "node:path";
-import { argv } from "node:process";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, resolve, relative } from "node:path";
+import { argv, cwd } from "node:process";
 import { reporter } from "vfile-reporter";
 import { remark } from "remark";
 import remarkCodeTitles from "./remark-code-titles.js";
@@ -22,8 +22,8 @@ import rehypeStringify from "rehype-stringify";
 
 dotenv.config();
 
-const build = async (filename) => {
-  const md = readFileSync(filename, "utf-8");
+const build = async (filePath) => {
+  const md = await readFile(filePath, "utf-8");
   const file = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
     .use(remarkLintMaximumHeadingLength, false)
@@ -62,8 +62,12 @@ const build = async (filename) => {
     .use(rehypeStringify)
     .process(md);
 
-  const outfile = `${dirname(filename)}/${basename(filename, ".md")}.html`;
-  writeFileSync(outfile, `<!DOCTYPE html>
+  const rootPath = resolve(import.meta.dirname, "..");
+  const outPath = resolve(rootPath, "web");
+  const sourceRelativePath = relative(rootPath, filePath);
+  const outfile = resolve(outPath, sourceRelativePath).replace(/\.md$/, ".html");
+  await mkdir(dirname(outfile), { recursive: true });
+  await writeFile(outfile, `<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
@@ -184,7 +188,8 @@ const build = async (filename) => {
   let messageCount = 0;
   for (const filename of files) {
     console.log(`Building: ${filename} ...`);
-    messageCount += await build(filename);
+    const filePath = resolve(cwd(), filename);
+    messageCount += await build(filePath);
     console.log("");
   }
 

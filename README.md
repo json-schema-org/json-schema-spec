@@ -29,7 +29,8 @@ To build the spec files to HTML from the Markdown sources, run `npm run
 build-all`.
 You can also build each individually with `npm run build -- filename.md`
 (Example: `npm run build -- jsonschema-core.md`). You can also use wildcards to
-build multiple specs at the same time: `npm run build -- jsonschema-*.md`.
+build multiple specs at the same time: `npm run build -- jsonschema-*.md`. The
+HTML files will be available in the `web` folder.
 
 The spec is built using [Remark](https://remark.js.org/), a markdown engine with
 good support for plugins and lots of existing plugins we can use.
