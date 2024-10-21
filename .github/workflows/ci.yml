@@ -4,14 +4,32 @@ on:
   - pull_request
 
 jobs:
-  specs:
+  specs-markdown:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: latest
-        cache: npm
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run build-all
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build-all
+
+  specs-ietf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - run: pip install --requirement requirements.txt
+      - run: xml2rfc --version
+      - run: make all
+      - uses: actions/upload-artifact@v3
+        with:
+          name: specification-docs
+          path: |
+              *.html
+              *.txt
+              !requirements.txt
