@@ -907,8 +907,8 @@ to establish a base IRI in order to resolve the reference.
 #### The `$id` Keyword {#id-keyword}
 
 The `$id` keyword identifies a schema resource. The value for this keyword MUST
-be a string, and MUST represent a valid [IRI reference](#rfc3987) (without a
-fragment).
+be a string, and MUST represent a valid [IRI reference](#rfc3987) without a
+fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
@@ -1262,7 +1262,7 @@ desired to identify the object containing the `$ref` in the second
 
 Due to the potential break in functionality described above, the behavior for
 using JSON Pointer fragments that point to or cross a resource boundary is
-undefined.  Schema authors SHOULD NOT rely on such IRIs, as using them may
+undefined. Schema authors SHOULD NOT rely on such IRIs, as using them may
 reduce interoperability.[^8]
 
 [^8]: This is to avoid requiring implementations to keep track of a whole stack
