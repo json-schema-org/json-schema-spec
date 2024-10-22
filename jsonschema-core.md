@@ -2244,7 +2244,7 @@ rather, the base IRI used (as part of the full IRI with any fragment) is what
 determines the canonical nature of the resulting full IRI.[^18]
 
 [^18]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
-and direct you to read the CREF located in {{#embedded}} for further comments.
+and direct you to read the CREF located in {{embedded}} for further comments.
 
 While the following IRIs do correctly indicate specific schemas, per the reasons
 outlined in {{embedded}}, they are to be avoided as they may not work in all implementations:
