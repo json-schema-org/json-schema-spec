@@ -12,6 +12,7 @@ import remarkHeadingId from "remark-heading-id";
 import remarkHeadings from "./remark-headings.js";
 import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-style-guide";
 import remarkLintMaximumHeadingLength from "remark-lint-maximum-heading-length";
+import remarkLintListItemIndent from "remark-lint-list-item-indent";
 import remarkRehype from "remark-rehype";
 import remarkReferenceLinks from "./remark-reference-links.js";
 import remarkTableOfContents from "./remark-table-of-contents.js";
@@ -27,6 +28,7 @@ const build = async (filePath) => {
   const file = await remark()
     .use(remarkPresetLintMarkdownStyleGuide)
     .use(remarkLintMaximumHeadingLength, false)
+    .use(remarkLintListItemIndent, "one")
     .use(remarkGfm)
     .use(remarkHeadingId)
     .use(remarkHeadings, {
