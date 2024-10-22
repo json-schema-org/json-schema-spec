@@ -93,7 +93,7 @@ The `propertyDependencies` keyword will be added to the
 `https://json-schema.org/vocab/applicator` [applicator
 vocabulary](../jsonschema-core.html#applicatorvocab).
 
-1.  The following will be added to the JSON Schema Core specification as a
+1. The following will be added to the JSON Schema Core specification as a
 subsection of "Keywords for Applying Subschemas Conditionally".
     > ### `propertyDependencies`
     >
@@ -110,7 +110,7 @@ subsection of "Keywords for Applying Subschemas Conditionally".
     >
     > Omitting this keyword has the same behavior as an empty object.
 
-2.  The following subschema will be added to the Applicator Vocabulary schema,
+2. The following subschema will be added to the Applicator Vocabulary schema,
    `https://json-schema.org/<version>/<release>/meta/applicator` at
    `/properties/propertyDependencies`:
 
