@@ -563,7 +563,7 @@ The value of this property MUST be a valid JSON schema. It SHOULD be ignored if
 location IRI included as part of the annotation will ensure that it is correctly
 processed as a subschema. Using the extracted annotation value directly is only
 safe if the schema is an embedded resource with both `$schema` and an
-absolute-IRI `$id`.
+absolute IRI `$id`.
 
 ### Example
 
