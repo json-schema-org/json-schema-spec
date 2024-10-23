@@ -895,8 +895,8 @@ by other parties.
 ### Base IRI, Anchors, and Dereferencing
 
 To differentiate between schemas in a vast ecosystem, schema resources are
-identified by [absolute IRIs](#rfc3987) (without fragments).  These identifiers
-are used to created references between schema resources. When comparing IRIs for
+identified by [absolute IRIs](#rfc3987) (without fragments). These identifiers
+are used to create references between schema resources. When comparing IRIs for
 the purposes of resource identification, implementations SHOULD first follow the
 IRI normalization procedures defined in [RFC 3987](#rfc3987), section 5.3.
 
