@@ -906,14 +906,14 @@ to establish a base IRI in order to resolve the reference.
 
 #### The `$id` Keyword {#id-keyword}
 
-The `$id` keyword identifies a schema resource. The value for this keyword MUST
-be a string, and MUST represent a valid [IRI reference](#rfc3987) without a
-fragment.
+An `$id` keyword in a schema or subschema identifies that schema or subschema as
+a distinct schema resource. The value for this keyword MUST be a string, and
+MUST represent a valid [IRI reference](#rfc3987) without a fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
 as a base IRI for relative IRI references in keywords within that schema
-resource and for nested schema resources, in accordance with [RFC 3987 section
+resource and for embedded schema resources, in accordance with [RFC 3987 section
 6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
 embedded in content.
 
@@ -1370,20 +1370,15 @@ recursive nesting like this; the behavior is undefined.
 #### References to Possible Non-Schemas {#non-schemas}
 
 Subschema objects (or booleans) are recognized by their use with known
-applicator keywords or with location-reserving keywords such as
-[`$defs`](#defs) that take one or more subschemas as a value. These keywords may
-be `$defs` and the standard applicators from this document or
-implementation-specific custom keywords.
+applicator keywords or with location-reserving keywords, such as
+[`$defs`](#defs), that take one or more subschemas as a value. These keywords
+include the standard applicators from this document or implementation-specific
+custom keywords.
 
-Note that single-level custom keywords with identical syntax and semantics to
-`$defs` do not allow for any intervening `$id` keywords, and therefore will
-behave correctly under implementations that attempt to use any reference target
-as a schema. However, this behavior is implementation-specific and MUST NOT be
-relied upon for interoperability.
-
-A reference target under a keyword for which the value is known not to be a
-schema results in undefined behavior in order to avoid burdening implementations
-with the need to detect such targets.[^10]
+A reference target under a keyword for which the value is not explicitly known
+to be a schema results in undefined behavior. Implementations MAY support
+references to these locations, however such behavior is not considered
+interoperable and should not be relied upon.[^10]
 
 [^10]: These scenarios are analogous to fetching a schema over HTTP but
 receiving a response with a Content-Type other than `application/schema+json`.
