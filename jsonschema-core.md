@@ -1654,10 +1654,11 @@ The presence of this keyword affects the behaviors of [`items`](#items) and
 
 The value of `items` MUST be a valid JSON Schema.
 
-This keyword applies its subschema to all instance elements at indices greater
-than the length of the `prefixItems` array in the same schema object. If
-`prefixItems` does not exist within the same schema object, `items` applies its
-subschema to all instance array elements.
+This keyword ignores elements in the instance array equal to the number of
+subschemas found in the `prefixItems` array in the same schema object, starting
+from the beginning of the instance array. It then applies its subschema to
+remaining instance elements. If `prefixItems` does not exist within the same
+schema object, `items` applies its subschema to all instance array elements.
 
 If the `items` subschema is applied to any positions within the instance array,
 it produces an annotation result of boolean true, indicating that all remaining
@@ -1766,10 +1767,10 @@ Validation MUST always succeed against this keyword. The value of this keyword
 is used as its annotation result.
 
 Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation results.
-However, as described in the section for `contains`, the absence of this
-keyword's annotation causes `contains` to assume a minimum value of 1.
+However, as described in {{contains}}, the absence of this keyword's annotation
+causes `contains` to assume a minimum value of 1.
 
-##### `contains`
+##### `contains` {#contains}
 
 The value of this keyword MUST be a valid JSON Schema.
 
@@ -1777,7 +1778,7 @@ This keyword applies to array instances by applying its subschema to the array's
 elements.
 
 An instance is valid against `contains` if the number of elements that are valid
-against its subschema is with the inclusive range of the minimum and (if any)
+against its subschema is within the inclusive range of the minimum and (if any)
 maximum number of occurrences.
 
 The maximum number of occurrences is provided by the `maxContains` keyword
