@@ -1633,6 +1633,12 @@ results.
 
 #### Keywords for Applying Subschemas to Arrays
 
+##### Indexing Arrays {#array-index}
+
+When working with arrays and indices, JSON Schema uses zero-based indexing. This
+aligns with both JSON's JavaScript heritage and its usage of JSON Pointer for
+references and annotations.
+
 ##### `prefixItems`
 
 The value of `prefixItems` MUST be a non-empty array of valid JSON Schemas.
@@ -1657,19 +1663,19 @@ The value of `items` MUST be a valid JSON Schema.
 This keyword ignores elements in the instance array equal to the number of
 subschemas found in the `prefixItems` array in the same schema object, starting
 from the beginning of the instance array. It then applies its subschema to
-remaining instance elements. If `prefixItems` does not exist within the same
-schema object, `items` applies its subschema to all instance array elements.
+remaining elements.
+
+If `prefixItems` contains more subschemas than the number of elements in the
+instance array, `items` applies its subschema to no elements.
+
+If `prefixItems` does not exist within the same schema object, `items` applies
+its subschema to all elements.
 
 If the `items` subschema is applied to any positions within the instance array,
 it produces an annotation result of boolean true, indicating that all remaining
 array elements have been evaluated against this keyword's subschema.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
-
-Implementations MAY choose to implement or optimize this keyword in another way
-that produces the same effect, such as by directly checking for the presence and
-size of a `prefixItems` array. Implementations that do not support annotation
-collection MUST do so.
 
 The presence of this keyword affects the behavior of
 [`unevaluatedItems`](#unevaluateditems).
@@ -1712,7 +1718,8 @@ The annotation result of this keyword is the set of instance property names
 matched by at least one property under this keyword.
 
 The presence of this keyword affects the behaviors of
-[`additionalProperties`(#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
+[`additionalProperties`(#additionalproperties) and
+[`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `additionalProperties` {#additionalproperties}
 
@@ -1789,12 +1796,12 @@ The minimum number of occurrences is provided by the `minContains` keyword
 within the same schema object as `contains`. If `minContains` is absent, the
 minimum number of occurrences MUST be 1.
 
-This keyword produces an annotation value which is an array of the indices for
-which this keyword validates successfully when applying its subschema, in
-ascending order. The value MAY be a boolean `true` if the subschema validates
-successfully when applied to every index of the instance. The annotation MUST be
-present if the instance array to which this keyword's schema applies
-is empty.
+This keyword produces an annotation value which is an array of the zero-based
+indices for which this keyword validates successfully when applying its
+subschema, in ascending order. The value MAY be a boolean `true` if the
+subschema validates successfully when applied to every index of the instance.
+The annotation MUST be present if the instance array to which this keyword's
+schema applies is empty.
 
 The presence of this keyword affects the behavior of
 [`unevaluatedItems`](#unevaluateditems).
