@@ -26,14 +26,16 @@ Labels are assigned based on [Sensible Github Labels](https://github.com/Releque
 
 ### Specification
 To build the spec files to HTML from the Markdown sources, run `npm run
-build-all`.
-You can also build each individually with `npm run build -- filename.md`
-(Example: `npm run build -- jsonschema-core.md`). You can also use wildcards to
-build multiple specs at the same time: `npm run build -- jsonschema-*.md`. The
-HTML files will be available in the `web` folder.
+build-all`. You can also build each individually with `npm run build --
+specs/filename.md` (Example: `npm run build -- specs/jsonschema-core.md`). You
+can also use wildcards to build multiple specs at the same time: `npm run build
+-- specs/jsonschema-*.md`. The HTML files will be available in the `web` folder.
 
 The spec is built using [Remark](https://remark.js.org/), a markdown engine with
-good support for plugins and lots of existing plugins we can use.
+good support for plugins and lots of existing plugins we can use. Remark also
+has a [language server](https://github.com/remarkjs/remark-language-server) and
+a [VSCode extension](https://github.com/remarkjs/vscode-remark) we can use to
+get linting an link checking while developing the spec.
 
 #### Plugins
 The following is a not-necessarily-complete list of configured plugins and the

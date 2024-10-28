@@ -30,7 +30,7 @@ listed on the homepage.
 ## Conventions and Terminology
 
 All conventions and terms used and defined by the [JSON Schema Core
-specification](../jsonschema-core.html) also apply to this document.
+specification](../jsonschema-core.md) also apply to this document.
 
 ## Overview
 
@@ -91,10 +91,11 @@ those goals means that some trade-offs need to be made.
 
 The `propertyDependencies` keyword will be added to the
 `https://json-schema.org/vocab/applicator` [applicator
-vocabulary](../jsonschema-core.html#applicatorvocab).
+vocabulary](../jsonschema-core.md#applicators).
 
-1.  The following will be added to the JSON Schema Core specification as a
-subsection of "Keywords for Applying Subschemas Conditionally".
+1. The following will be added to the JSON Schema Core specification as a
+   subsection of "Keywords for Applying Subschemas Conditionally".
+
     > ### `propertyDependencies`
     >
     > This keyword specifies subschemas that are evaluated if the instance is an
@@ -110,7 +111,7 @@ subsection of "Keywords for Applying Subschemas Conditionally".
     >
     > Omitting this keyword has the same behavior as an empty object.
 
-2.  The following subschema will be added to the Applicator Vocabulary schema,
+1. The following subschema will be added to the Applicator Vocabulary schema,
    `https://json-schema.org/<version>/<release>/meta/applicator` at
    `/properties/propertyDependencies`:
 
@@ -120,8 +121,8 @@ subsection of "Keywords for Applying Subschemas Conditionally".
       "additionalProperties": {
         "type": "object",
         "additionalProperties": {
-          "$dynamicRef": "#meta",
-          "default": true
+         "$dynamicRef": "#meta",
+           "default": true
         },
         "default": {}
       }
@@ -130,12 +131,12 @@ subsection of "Keywords for Applying Subschemas Conditionally".
 
 ## [Appendix] Change Log
 
-- [March 2021] - Initially proposed
-- [October 2021] Added to specification document
-- [May 2024] Extracted from specification document as experimental feature
+- \[March 2021\] - Initially proposed
+- \[October 2021\] Added to specification document
+- \[May 2024\] Extracted from specification document as experimental feature
 
 ## Champions
 
 | Champion                   | Company | Email                | URI                              |
-|----------------------------|---------|----------------------|----------------------------------|
+| -------------------------- | ------- | -------------------- | -------------------------------- |
 | Jason Desrosiers           | Postman | <jdesrosi@gmail.com> | <https://github.com/jdesrosiers> |
