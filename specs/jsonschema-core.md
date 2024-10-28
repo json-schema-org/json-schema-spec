@@ -2456,8 +2456,6 @@ to the document.
 
 ## [Appendix] Change Log[^19]
 
-[^19]: This section to be removed before leaving Internet-Draft status.
-
 ### draft-bhutton-json-schema-next
 - Use IRIs instead of URIs, including allowing unicode in plain-name fragments
 - Clarify that detecting duplicate IRIs for different schemas SHOULD raise an
@@ -2619,7 +2617,9 @@ to the document.
 
 ## Authors' Addresses
 | Author                   | Company | Email                   | URI                              |
-|--------------------------|---------|-------------------------|----------------------------------|
+| ------------------------ | ------- | ----------------------- | -------------------------------- |
 | Austin Wright (*editor*) |         | <aaa@bzfx.net>          |                                  |
 | Ben Hutton (*editor*)    | Postman | <ben@jsonschema.dev>    | <https://jsonschema.dev>         |
 | Greg Dennis              |         | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
+
+[^19]: This section to be removed before leaving Internet-Draft status.

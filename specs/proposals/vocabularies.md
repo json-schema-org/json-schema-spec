@@ -260,10 +260,10 @@ please assume conformance with the 2020-12 Core and Validation specifications.*
 
 ## [Appendix] Change Log
 
-* 2024-06-10 - Created
+- 2024-06-10 - Created
 
 ## [Appendix] Champions
 
 | Champion    | Company | Email                          | URI                             |
-|-------------|---------|--------------------------------|---------------------------------|
+| ----------- | ------- | ------------------------------ | ------------------------------- |
 | Greg Dennis |         | <mailto:gregsdennis@yahoo.com> | <https://github.com/gregsennis> |

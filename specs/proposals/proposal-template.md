@@ -83,10 +83,10 @@ For example
 
 ## [Appendix] Change Log
 
-* [MMMM YYYY] Created
+- \[MMMM YYYY\] Created
 
 ## [Appendix] Champions
 
 | Champion                   | Company | Email                   | URI                              |
-|----------------------------|---------|-------------------------|----------------------------------|
+| -------------------------- | ------- | ----------------------- | -------------------------------- |
 | Your Name                  |         |                         | < GitHub profile page >          |

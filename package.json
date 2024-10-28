@@ -5,32 +5,31 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint build/",
-    "build-all": "node build/build.js jsonschema-*.md proposals/*.md output/*.md",
-    "build": "node build/build.js"
+    "lint": "eslint . ; remark --no-stdout --frail specs/",
+    "build-all": "remark --rc-path specs/.remarkrc-build.js --output web/ specs/",
+    "build": "remark --rc-path specs/.remarkrc-build.js --output web/"
   },
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@stylistic/eslint-plugin": "^2.9.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.13.0",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-plugin-import": "^2.31.0",
     "mdast-builder": "^1.1.1",
     "mdast-util-find-and-replace": "^3.0.1",
     "mdast-util-to-string": "^4.0.0",
+    "rehype-document": "^7.0.3",
     "rehype-stringify": "^10.0.1",
-    "remark": "^15.0.1",
+    "remark-cli": "^12.0.1",
     "remark-flexible-containers": "^1.2.1",
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
+    "remark-preset-lint-consistent": "^6.0.0",
     "remark-preset-lint-markdown-style-guide": "^6.0.0",
+    "remark-preset-lint-recommended": "^7.0.0",
     "remark-rehype": "^11.1.1",
     "remark-torchlight": "^0.0.5",
-    "remark-validate-links": "^13.0.1",
-    "unist-builder": "^4.0.0",
-    "vfile-reporter": "^8.1.1"
-  },
-  "devDependencies": {
-    "dotenv": "^16.4.5",
-    "eslint": "^9.12.0",
-    "eslint-import-resolver-node": "^0.3.9",
-    "eslint-plugin-import": "^2.31.0"
+    "remark-validate-links": "^13.0.1"
   }
 }

@@ -1,3 +1,4 @@
+<!-- lint ignore maximum-heading-length -->
 # JSON Schema Validation: A Vocabulary for Structural Validation of JSON
 
 ## Abstract
@@ -880,7 +881,7 @@ draft-bhutton-json-schema-01, June 2022,
 
 ### Informative References
 
-#### [RFC4329] {#rfc4329}
+#### \[RFC4329\] {#rfc4329}
 
 Hoehrmann, B., "Scripting Media Types", RFC 4329, DOI 10.17487/RFC4329, April
 2006, <<https://www.rfc-editor.org/info/rfc4329>>.
@@ -895,108 +896,107 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## [Appendix] ChangeLog[^6]
-[^6]: This section to be removed before leaving Internet-Draft status.
+## [Appendix] Change Log[^6]
 
 - *draft-next*
-    - Use IRIs instead of URIs
-    - Move "minContains" and "maxContains" to the applicator vocabulary (see
-      also that changelog)
-    - Remove the optional automatic second-pass validation of "content*"
-      keywords
-    - Clarify that "contentSchema"'s value is a schema just like any other
-      subschema
+  - Use IRIs instead of URIs
+  - Move "minContains" and "maxContains" to the applicator vocabulary (see also
+    that changelog)
+  - Remove the optional automatic second-pass validation of "content*" keywords
+  - Clarify that "contentSchema"'s value is a schema just like any other
+    subschema
 - *draft-bhutton-json-schema-validation-01*
-    - Improve and clarify the `minContains` keyword explanation
-    - Remove the use of "production" in favour of "ABNF rule"
+  - Improve and clarify the `minContains` keyword explanation
+  - Remove the use of "production" in favour of "ABNF rule"
 - *draft-bhutton-json-schema-validation-00*
-    - Correct email format RFC reference to 5321 instead of 5322
-    - Clarified the set and meaning of `contentEncoding` values
-    - Reference ECMA-262, 11th edition for regular expression support
-    - Split `format` into an annotation only vocabulary and an assertion
-      vocabulary
-    - Clarify `deprecated` when applicable to arrays
+  - Correct email format RFC reference to 5321 instead of 5322
+  - Clarified the set and meaning of `contentEncoding` values
+  - Reference ECMA-262, 11th edition for regular expression support
+  - Split `format` into an annotation only vocabulary and an assertion
+    vocabulary
+  - Clarify `deprecated` when applicable to arrays
 - *draft-handrews-json-schema-validation-02*
-    - Grouped keywords into formal vocabularies
-    - Update `format` implementation requirements in terms of vocabularies
-    - By default, `format` MUST NOT be validated, although validation can be
-      enabled
-    - A vocabulary declaration can be used to require `format` validation
-    - Moved `definitions` to the core spec as `$defs`
-    - Moved applicator keywords to the core spec
-    - Renamed the array form of `dependencies` to `dependentRequired`, moved the
-schema form to the core spec
-    - Specified all `content*` keywords as annotations, not assertions
-    - Added `contentSchema` to allow applying a schema to a string-encoded
-      document
-    - Also allow RFC 4648 encodings in `contentEncoding`
-    - Added `minContains` and `maxContains`
-    - Update RFC reference for nhostname" and "idn-hostname"
-    - Add "uuid" and "duration" formats
+  - Grouped keywords into formal vocabularies
+  - Update `format` implementation requirements in terms of vocabularies
+  - By default, `format` MUST NOT be validated, although validation can be
+    enabled
+  - A vocabulary declaration can be used to require `format` validation
+  - Moved `definitions` to the core spec as `$defs`
+  - Moved applicator keywords to the core spec
+  - Renamed the array form of `dependencies` to `dependentRequired`, moved the
+    schema form to the core spec
+  - Specified all `content*` keywords as annotations, not assertions
+  - Added `contentSchema` to allow applying a schema to a string-encoded
+    document
+  - Also allow RFC 4648 encodings in `contentEncoding`
+  - Added `minContains` and `maxContains`
+  - Update RFC reference for nhostname" and "idn-hostname"
+  - Add "uuid" and "duration" formats
 - *draft-handrews-json-schema-validation-01*
-    - This draft is purely a clarification with no functional changes
-    - Provided the general principle behind ignoring annotations under `not` and
-      similar cases
-    - Clarified `if`/`then`/`else` validation interactions
-    - Clarified `if`/`then`/`else` behavior for annotation
-    - Minor formatting and cross-referencing improvements
+  - This draft is purely a clarification with no functional changes
+  - Provided the general principle behind ignoring annotations under `not` and
+    similar cases
+  - Clarified `if`/`then`/`else` validation interactions
+  - Clarified `if`/`then`/`else` behavior for annotation
+  - Minor formatting and cross-referencing improvements
 - *draft-handrews-json-schema-validation-00*
-    - Added `if`/`then`/`else`
-    - Classify keywords as assertions or annotations per the core spec
-    - Warn of possibly removing `dependencies` in the future
-    - Grouped validation keywords into sub-sections for readability
-    - Moved `readOnly` from hyper-schema to validation meta-data
-    - Added `writeOnly`
-    - Added string-encoded media section, with former hyper-schema `media`
-      keywords
-    - Restored "regex" format (removal was unintentional)
-    - Added "date" and "time" formats, and reserved additional RFC 3339 format
-      names
-    - I18N formats: "iri", "iri-reference", "idn-hostname", "idn-email"
-    - Clarify that "json-pointer" format means string encoding, not URI fragment
-    - Fixed typo that inverted the meaning of `minimum` and `exclusiveMinimum`
-    - Move format syntax references into Normative References
-    - JSON is a normative requirement
+  - Added `if`/`then`/`else`
+  - Classify keywords as assertions or annotations per the core spec
+  - Warn of possibly removing `dependencies` in the future
+  - Grouped validation keywords into sub-sections for readability
+  - Moved `readOnly` from hyper-schema to validation meta-data
+  - Added `writeOnly`
+  - Added string-encoded media section, with former hyper-schema `media`
+    keywords
+  - Restored "regex" format (removal was unintentional)
+  - Added "date" and "time" formats, and reserved additional RFC 3339 format
+    names
+  - I18N formats: "iri", "iri-reference", "idn-hostname", "idn-email"
+  - Clarify that "json-pointer" format means string encoding, not URI fragment
+  - Fixed typo that inverted the meaning of `minimum` and `exclusiveMinimum`
+  - Move format syntax references into Normative References
+  - JSON is a normative requirement
 - *draft-wright-json-schema-validation-01*
-    - Standardized on hyphenated format names with full words ("uriref" becomes
-      "uri-reference")
-    - Add the formats "uri-template" and "json-pointer"
-    - Changed `exclusiveMaximum`/`exclusiveMinimum` from boolean modifiers of
-      `maximum`/`minimum` to independent numeric fields.
-    - Split the additionalItems/items into two sections
-    - Reworked properties/patternProperties/additionalProperties definition
-    - Added `examples` keyword
-    - Added `contains` keyword
-    - Allow empty `required` and `dependencies` arrays
-    - Fixed `type` reference to primitive types
-    - Added `const` keyword
-    - Added `propertyNames` keyword
+  - Standardized on hyphenated format names with full words ("uriref" becomes
+    "uri-reference")
+  - Add the formats "uri-template" and "json-pointer"
+  - Changed `exclusiveMaximum`/`exclusiveMinimum` from boolean modifiers of
+    `maximum`/`minimum` to independent numeric fields.
+  - Split the additionalItems/items into two sections
+  - Reworked properties/patternProperties/additionalProperties definition
+  - Added `examples` keyword
+  - Added `contains` keyword
+  - Allow empty `required` and `dependencies` arrays
+  - Fixed `type` reference to primitive types
+  - Added `const` keyword
+  - Added `propertyNames` keyword
 - *draft-wright-json-schema-validation-00*
-    - Added additional security considerations
-    - Removed reference to "latest version" meta-schema, use numbered version
-      instead
-    - Rephrased many keyword definitions for brevity
-    - Added "uriref" format that also allows relative URI references
+  - Added additional security considerations
+  - Removed reference to "latest version" meta-schema, use numbered version
+    instead
+  - Rephrased many keyword definitions for brevity
+  - Added "uriref" format that also allows relative URI references
 - *draft-fge-json-schema-validation-00*
-    - Initial draft.
-    - Salvaged from draft v3.
-    - Redefine the `required` keyword.
-    - Remove `extends`, `disallow`
-    - Add `anyOf`, `allOf`, `oneOf`, `not`, `definitions`, `minProperties`,
-      `maxProperties`.
-    - `dependencies` member values can no longer be single strings; at least one
-      element is required in a property dependency array.
-    - Rename `divisibleBy` to `multipleOf`.
-    - `type` arrays can no longer have schemas; remove `any` as a possible
-      value.
-    - Rework the `format` section; make support optional.
-    - `format": remove attributes "phone", "style", "color"; rename "ip-address"
-      to "ipv4"; add references for all attributes.
-    - Provide algorithms to calculate schema(s) for array/object instances.
-    - Add interoperability considerations.
+  - Initial draft.
+  - Salvaged from draft v3.
+  - Redefine the `required` keyword.
+  - Remove `extends`, `disallow`
+  - Add `anyOf`, `allOf`, `oneOf`, `not`, `definitions`, `minProperties`,
+    `maxProperties`.
+  - `dependencies` member values can no longer be single strings; at least one
+    element is required in a property dependency array.
+  - Rename `divisibleBy` to `multipleOf`.
+  - `type` arrays can no longer have schemas; remove `any` as a possible value.
+  - Rework the `format` section; make support optional.
+  - `format": remove attributes "phone", "style", "color"; rename "ip-address"
+    to "ipv4"; add references for all attributes.
+  - Provide algorithms to calculate schema(s) for array/object instances.
+  - Add interoperability considerations.
 
 ## Authors' Addresses
 | Author                   | Company | Email                | URI                      |
-|--------------------------|---------|----------------------|--------------------------|
+| ------------------------ | ------- | -------------------- | ------------------------ |
 | Austin Wright (*editor*) |         | <aaa@bzfx.net>       |                          |
 | Ben Hutton (*editor*)    | Postman | <ben@jsonschema.dev> | <https://jsonschema.dev> |
+
+[^6]: This section to be removed before leaving Internet-Draft status.

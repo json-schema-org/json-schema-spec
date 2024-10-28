@@ -3,6 +3,7 @@ import globals from "globals";
 import stylistic from "@stylistic/eslint-plugin";
 import importPlugin from "eslint-plugin-import";
 
+
 export default [
   js.configs.recommended,
   importPlugin.flatConfigs.recommended,
@@ -34,7 +35,7 @@ export default [
 
       // Imports
       "import/extensions": ["error", "ignorePackages"],
-      "import/newline-after-import": ["error", { count: 2, exactCount: false, considerComments: true }], // Doesn't respect @import
+      "import/newline-after-import": ["error", { count: 2, exactCount: false, considerComments: true }],
 
       // Stylistic
       "@stylistic/yield-star-spacing": ["error", "after"],
