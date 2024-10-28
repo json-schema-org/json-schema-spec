@@ -293,39 +293,46 @@ Structural validation alone may be insufficient to allow an application to
 correctly utilize certain values. The `format` annotation keyword is defined to
 allow schema authors to convey semantic information for a fixed subset of values
 which are accurately described by authoritative resources, be they RFCs or other
-external specifications.
+external specifications. Format values defined externally to this document
+SHOULD also be based on such authoritative resources in order to foster
+interoperability.
 
-The value of this keyword is called a format attribute. It MUST be a string. A
-format attribute can generally only validate a given set of instance types. If
-the type of the instance to validate is not in this set, validation for this
-format attribute and instance SHOULD succeed. All format attributes defined in
-this section apply to strings, but a format attribute can be specified to apply
-to any instance types defined in the data model defined in the [core JSON
-Schema.](#json-schema)[^1]
+The value of this keyword MUST be a string. While this keyword can validate any
+type, each distinct value will generally only validate a given set of instance
+types. If the type of the instance to validate is not in this set, validation
+for this keyword SHOULD succeed. All format values defined in this section apply
+to strings, but a format value can be specified to apply to any instance types
+defined in the data model defined in the [core JSON Schema](#json-schema)[^1].
 
 [^1]: Note that the `type` keyword in this specification defines an "integer"
 type which is not part of the data model. Therefore a format attribute can be
 limited to numbers, but not specifically to integers. However, a numeric format
-can be used alongside the `type` keyword with a value of "integer", or could be
-explicitly defined to always pass if the number is not an integer, which
+can be used alongside the `type` keyword with a value of "integer", or it could
+be explicitly defined to always pass if the number is not an integer, which
 produces essentially the same behavior as only applying to integers.
 
-Implementing support for `format` as an annotation is REQUIRED (if the
-implementation supports annotation collection).
+Implementations SHOULD provide assertion behavior for the format values defined
+by this document[^2] and MUST refuse to process any schema which contains an
+unsupported format value.
 
-Implementing support for `format` as an assertion is OPTIONAL. Implementations
-which choose to support assertion behavior:
+[^2]: Assertion behavior is called out very explicitly because it is a departure
+from previous iterations of this specification. Previously, `format` was an
+annotation-only keyword by default and implementations that supported assertion
+were required to offer some configuration that allowed users to explicitly
+enable assertion. Assertion is now a requirement in order to meet user
+expectations. See [json-schema-org/json-schema-spec #1520](https://github.com/json-schema-org/json-schema-spec/issues/1520) for more.
 
-- MUST still collect the keyword's value as an annotation (if the implementation
-  supports annotation collection),
-- MUST provide a configuration option to enable assertion behavior, defaulting
-  to annotation-only behavior
+In addition to the assertion behavior, this keyword also produces its value as
+an annotation.
+
+Implementations:
+
 - SHOULD provide an implementation-specific best effort validation for each
-  format attribute defined below;[^3]
-- MAY choose to implement validation of any or all format attributes as a no-op
-  by always producing a validation result of true;[^4]
-- SHOULD use a common parsing library for each format, or a well-known regular
-  expression;
+  format attribute defined in this document;[^3]
+- MAY support format values not defined in this document, but such support MUST
+  be configurable and disabled by default;
+- SHOULD use a common parsing library or a well-known regular expression for
+  each format;
 - SHOULD clearly document how and to what degree each format attribute is
   validated.
 
@@ -338,29 +345,17 @@ example, an instance string that does not contain an "@" is clearly not a valid
 email address, and an "email" or "hostname" containing characters outside of
 7-bit ASCII is likewise clearly invalid.
 
-[^4]: This matches the current reality of implementations, which provide widely
-varying levels of validation, including no validation at all, for some or all
-format attributes. It is also designed to encourage relying only on the
-annotation behavior and performing semantic validation in the application, which
-is the recommended best practice.
-
-The requirement for minimal validation of format attributes is
+The requirement for minimal validation of format values in general is
 intentionally vague and permissive, due to the complexity involved in many of
 the attributes. Note in particular that the requirement is limited to syntactic
-checking; it is not to be expected that an implementation would send an email,
-attempt to connect to a URL, or otherwise check the existence of an entity
-identified by a format instance.
+checking; implementations SHOULD NOT attempt to send an email, connect to a URL,
+or otherwise check the existence of an entity identified by a format instance.
 
 #### Custom format attributes
 
 Implementations MAY support custom format attributes. Save for agreement between
 parties, schema authors SHALL NOT expect a peer implementation to support such
 custom format attributes.
-
-An implementation MUST NOT fail to collect unknown formats as annotations.
-
-When configured for assertion behavior for `format`, implementations MUST fail
-upon encountering unknown formats.
 
 ### Defined Formats
 
@@ -372,22 +367,17 @@ Date and time format names are derived from [RFC 3339, section 5.6](#rfc3339).
 The duration format is from the ISO 8601 ABNF as given in Appendix A of RFC
 3339.
 
-Implementations supporting formats SHOULD implement support for the following
-attributes:
-
-- *date-time:* A string instance is valid against this attribute if it is a
+- *date-time*: A string instance is valid against this attribute if it is a
   valid representation according to the "date-time" ABNF rule (referenced above)
-- *date:* A string instance is valid against this attribute if it is a valid
+- *date*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-date" ABNF rule (referenced above)
-- *time:* A string instance is valid against this attribute if it is a valid
+- *time*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-time" ABNF rule (referenced above)
-- *duration:* A string instance is valid against this attribute if it is a valid
+- *duration*: A string instance is valid against this attribute if it is a valid
   representation according to the "duration" ABNF rule (referenced above)
 
 Implementations MAY support additional attributes using the other format names
-defined anywhere in that RFC. If "full-date" or "full-time" are implemented, the
-corresponding short form ("date" or "time" respectively) MUST be implemented,
-and MUST behave identically. Implementations SHOULD NOT define extension
+defined anywhere in that RFC. Implementations SHOULD NOT define extension
 attributes with any name matching an RFC 3339 format unless it validates
 according to the rules of that format.[^5]
 
@@ -401,7 +391,7 @@ likely either be promoted to fully specified attributes or dropped.
 
 These attributes apply to string instances.
 
-A string instance is valid against these attributes if it is a valid Internet
+A string instance is valid against these format values if it is a valid Internet
 email address as follows:
 
 - *email:* As defined by the "Mailbox" ABNF rule in [RFC 5321, section
@@ -489,7 +479,7 @@ A regular expression, which SHOULD be valid according to the
 [ECMA-262](#ecma262) regular expression dialect.
 
 Implementations that validate formats MUST accept at least the subset of
-ECMA-262 defined in {{regexinterop}}), and SHOULD accept all valid ECMA-262
+ECMA-262 defined in {{regexinterop}}, and SHOULD accept all valid ECMA-262
 expressions.
 
 ## Keywords for the Contents of String-Encoded Data {#content}
