@@ -42,7 +42,7 @@ For the "list" and "hierarchical" formats, the following is also required:
 
 | `details` | A collection of output units to provide additional details. Must be an array, even when containing a single output unit. |
 
-### Output Unit
+### Output Unit {#output-unit}
 
 An output unit describes the evaluation of a single subschema against the appropriate instance location.
 
