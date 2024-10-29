@@ -915,7 +915,7 @@ resulting absolute IRI then serves as the identifier for the schema resource and
 as a base IRI for relative IRI references in keywords within that schema
 resource and for embedded schema resources, in accordance with [RFC 3987 section
 6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
-embedded in content.
+embedded in content and RFC 3986 section 5.1.2 regarding encapsulating entities.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
 the case of a network-addressable URL, a schema need not be downloadable from
