@@ -6,13 +6,13 @@ OUT = \
 
 all: $(VENV) $(OUT)
 
-%.txt: %.xml
+%.txt: specs/%.xml
 	$(XML2RFC) --text $< -o $@
 
-%.pdf: %.xml
+%.pdf: specs/%.xml
 	$(XML2RFC) --pdf $< -o $@
 
-%.html: %.xml
+%.html: specs/%.xml
 	$(XML2RFC) --html $< -o $@
 
 json-schema.tar.gz: $(OUT)
