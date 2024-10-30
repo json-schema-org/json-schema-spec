@@ -129,7 +129,7 @@ vocabulary](../jsonschema-core.md#applicators).
     }
     ```
 
-## [Appendix] Change Log
+## %appendix% Change Log
 
 - \[March 2021\] - Initially proposed
 - \[October 2021\] Added to specification document

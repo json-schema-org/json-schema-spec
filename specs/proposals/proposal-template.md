@@ -81,11 +81,11 @@ For example
     ```
 -->
 
-## [Appendix] Change Log
+## %appendix% Change Log
 
 - \[MMMM YYYY\] Created
 
-## [Appendix] Champions
+## %appendix% Champions
 
 | Champion                   | Company | Email                   | URI                              |
 | -------------------------- | ------- | ----------------------- | -------------------------------- |

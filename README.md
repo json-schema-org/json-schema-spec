@@ -54,7 +54,7 @@ features they make available to you.
 - [remark-headings](/json-schema-org/json-schema-spec/blob/main/remark-headings.js)
   -- A collection of enhancements for headings.
   - Adds hierarchical section numbers to headings.
-    - Use the `[Appendix]` prefix on headings that should be numbered as an
+    - Use the `%appendix%` prefix on headings that should be numbered as an
       appendix.
   - Adds id anchors to headers that don't have one
     - Example: `#section-2-13`

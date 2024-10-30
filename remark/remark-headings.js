@@ -7,7 +7,7 @@ import { toString as nodeToString } from "mdast-util-to-string";
 const defaultOptions = {
   startDepth: 1,
   skip: [],
-  appendixToken: "[Appendix]",
+  appendixToken: "%appendix%",
   appendixPrefix: "Appendix"
 };
 
