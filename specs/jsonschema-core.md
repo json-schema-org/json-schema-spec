@@ -2156,7 +2156,7 @@ Bray, T., Ed., Hollander, D., Ed., Layman, A., Ed., and R. Tobin, Ed.,
 "Namespaces in XML 1.1 (Second Edition)", August 2006,
 <<http://www.w3.org/TR/2006/REC-xml-names11-20060816>>.
 
-## [Appendix] Schema identification examples {#idexamples}
+## %appendix% Schema identification examples {#idexamples}
 
 Consider the following schema, which shows `$id` being used to identify both the
 root schema and various subschemas, and `$anchor` being used to define plain
@@ -2258,7 +2258,7 @@ Document location `/$defs/C`:
 - base IRI of enclosing (root.json) resource plus fragment:
   `https://example.com/root.json#/$defs/C`
 
-## [Appendix] Manipulating schema documents and references
+## %appendix% Manipulating schema documents and references
 
 Various tools have been created to rearrange schema documents based on how and
 where references (`$ref`) appear. This appendix discusses which use cases and
@@ -2300,7 +2300,7 @@ scope of this specification to determine or provide a set of safe `$ref` removal
 transformations, as they depend not only on the schema structure but also on the
 intended usage.
 
-## [Appendix] Example of recursive schema extension {#recursive-example}
+## %appendix% Example of recursive schema extension {#recursive-example}
 
 Consider the following two schemas describing a simple recursive tree structure,
 where each node in the tree can have a "data" field of any type. The first
@@ -2394,7 +2394,7 @@ of the node schema objects were moved under `$defs`. It is the matching
 `$dynamicAnchor` values which tell us how to resolve the dynamic reference, not
 any sort of correlation in JSON structure.
 
-## [Appendix] References and generative use cases
+## %appendix% References and generative use cases
 
 While the presence of references is expected to be transparent to validation
 results, generative use cases such as code generators and UI renderers often
@@ -2444,7 +2444,7 @@ instance of a distinct class.
 This style of usage requires the annotation to be in the same object as the
 reference, which must be recognizable as a reference.
 
-## [Appendix] Acknowledgments
+## %appendix% Acknowledgments
 
 Thanks to Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, and Henry
 Andrews for their work on the initial drafts of JSON Schema.
@@ -2454,7 +2454,7 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## [Appendix] Change Log[^19]
+## %appendix% Change Log[^19]
 
 ### draft-bhutton-json-schema-next
 - Use IRIs instead of URIs, including allowing unicode in plain-name fragments

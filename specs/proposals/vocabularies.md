@@ -258,11 +258,11 @@ worth the time and effort to fill in this section just yet.  As such, please
 read the above sections for loose requirements.  For tighter requirements,
 please assume conformance with the 2020-12 Core and Validation specifications.*
 
-## [Appendix] Change Log
+## %appendix% Change Log
 
 - 2024-06-10 - Created
 
-## [Appendix] Champions
+## %appendix% Champions
 
 | Champion    | Company | Email                          | URI                             |
 | ----------- | ------- | ------------------------------ | ------------------------------- |

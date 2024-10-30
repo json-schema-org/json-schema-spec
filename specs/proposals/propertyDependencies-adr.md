@@ -235,7 +235,7 @@ cases carried a lower priority.
 - Properties with non-string values cannot be supported using this keyword and
   the `allOf`-`if`-`then` pattern must still be used.
 
-## [Appendix] Problems With Existing Patterns {#problems}
+## %appendix% Problems With Existing Patterns {#problems}
 
 ### `oneOf`/`anyOf`
 

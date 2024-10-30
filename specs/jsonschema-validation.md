@@ -886,7 +886,7 @@ draft-bhutton-json-schema-01, June 2022,
 Hoehrmann, B., "Scripting Media Types", RFC 4329, DOI 10.17487/RFC4329, April
 2006, <<https://www.rfc-editor.org/info/rfc4329>>.
 
-## [Appendix] Acknowledgments
+## %appendix% Acknowledgments
 
 Thanks to Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, and Henry
 Andrews for their work on the initial drafts of JSON Schema.
@@ -896,7 +896,7 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## [Appendix] Change Log[^6]
+## %appendix% Change Log[^6]
 
 - *draft-next*
   - Use IRIs instead of URIs
