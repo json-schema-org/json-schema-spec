@@ -452,8 +452,8 @@ The lexical scope of a keyword is determined by the nested JSON data structure
 of objects and arrays. The largest such scope is an entire schema document.  The
 smallest scope is a single schema object with no subschemas.
 
-Keywords MAY be defined with a partial value, such as a IRI-reference, which
-must be resolved against another value, such as another IRI-reference or a full
+Keywords MAY be defined with a partial value, such as a IRI reference, which
+must be resolved against another value, such as another IRI reference or a full
 IRI, which is found through the lexical structure of the JSON document. The
 `$id`, `$ref`, and `$dynamicRef` core keywords, and the "base" JSON Hyper-Schema
 keyword, are examples of this sort of behavior.
@@ -542,7 +542,7 @@ Identifiers define IRIs for a schema, or affect how such IRIs are resolved in
 keywords, most notably `$id`.
 
 Canonical schema IRIs MUST NOT change while processing an instance, but keywords
-that affect IRI-reference resolution MAY have behavior that is only fully
+that affect IRI reference resolution MAY have behavior that is only fully
 determined at runtime.
 
 While custom identifier keywords are possible, extension designers should take
@@ -894,50 +894,45 @@ by other parties.
 
 ### Base IRI, Anchors, and Dereferencing
 
-To differentiate between schemas in a vast ecosystem, schemas are identified by
-[IRI](#rfc3987), and can embed references to other schemas by specifying their
-IRI.
+To differentiate between schemas in a vast ecosystem, schema resources are
+identified by [absolute IRIs](#rfc3987) (without fragments). These identifiers
+are used to create references between schema resources. When comparing IRIs for
+the purposes of resource identification, implementations SHOULD first follow the
+IRI normalization procedures defined in [RFC 3987](#rfc3987), section 5.3.
 
-Several keywords can accept a relative [IRI-reference](#rfc3987), or a value
-used to construct a relative IRI-reference. For these keywords, it is necessary
+Several keywords can accept a relative [IRI reference](#rfc3987), or a value
+used to construct a relative IRI reference. For these keywords, it is necessary
 to establish a base IRI in order to resolve the reference.
 
 #### The `$id` Keyword {#id-keyword}
 
-The `$id` keyword identifies a schema resource with its [canonical](#rfc6596)
-IRI.
+An `$id` keyword in a schema or subschema identifies that schema or subschema as
+a distinct schema resource. The value for this keyword MUST be a string, and
+MUST represent a valid [IRI reference](#rfc3987) without a fragment.
+
+When the value of this keyword is resolved against the current base IRI, the
+resulting absolute IRI then serves as the identifier for the schema resource and
+as a base IRI for relative IRI references in keywords within that schema
+resource and for embedded schema resources, in accordance with [RFC 3987 section
+6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
+embedded in content and RFC 3986 section 5.1.2 regarding encapsulating entities.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
 the case of a network-addressable URL, a schema need not be downloadable from
 its canonical IRI.
 
-If present, the value for this keyword MUST be a string, and MUST represent a
-valid [IRI-reference](#rfc3987). This IRI-reference SHOULD be normalized, and
-MUST resolve to an [absolute-IRI](#rfc3987) (without a fragment).
-
-The resulting absolute-IRI serves as the base IRI for relative IRI-references in
-keywords within the schema resource, in accordance with [RFC 3987 section
-6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
-embedded in content.
-
-The presence of `$id` in a subschema indicates that the subschema constitutes a
-distinct schema resource within a single schema document. Furthermore, in
-accordance with [RFC 3987 section 6.5](#rfc3987) and [RFC 3986 section
-5.1.2](#rfc3986) regarding encapsulating entities, if an `$id` in a subschema is
-a relative IRI-reference, the base IRI for resolving that reference is the IRI
-of the parent schema resource. Note that an `$id` consisting of an empty IRI or
-of the empty fragment only will result in the embedded resource having the same
-IRI as the encapsulating resource, which SHOULD be considered an error per
-{{duplicate-iris}}.
+Also note that an `$id` consisting of an empty IRI only will result in the
+embedded resource having the same IRI as the encapsulating resource, which
+SHOULD be considered an error per {{duplicate-iris}}.
 
 If no parent schema object explicitly identifies itself as a resource with
 `$id`, the base IRI is that of the entire document, as established by the steps
-given in the [previous section.](initial-base)
+given in {{initial-base}}.
 
 ##### Identifying the root schema
 
 The root schema of a JSON Schema document SHOULD contain an `$id` keyword with
-an [absolute-IRI](#rfc3987) (containing a scheme, but no fragment).
+an [absolute IRI](#rfc3987) (containing a scheme, but no fragment).
 
 #### Defining location-independent identifiers {#anchors}
 
@@ -971,7 +966,7 @@ If present, the value of these keywords MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.[^4]
 
 [^4]: Note that the anchor string does not include the "#" character, as it is
-not a IRI-reference. An `$anchor`: "foo" becomes the fragment `#foo` when used
+not a IRI reference. An `$anchor`: "foo" becomes the fragment `#foo` when used
 in a IRI. See below for full examples.
 
 #### Duplicate schema identifiers {#duplicate-iris}
@@ -1005,7 +1000,7 @@ identified schema. Its results are the results of the referenced schema.[^5]
 [^5]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
 
-The value of the `$ref` keyword MUST be a string which is a IRI-Reference.
+The value of the `$ref` keyword MUST be a string which is a IRI reference.
 Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
@@ -1022,7 +1017,7 @@ reference themselves). The extension point is defined with `$dynamicAnchor` and
 only exhibits runtime dynamic behavior when referenced with `$dynamicRef`.
 
 The value of the `$dynamicRef` property MUST be a string which is a
-IRI-Reference that contains a valid [plain name fragment](#anchors). Resolved
+IRI reference that contains a valid [plain name fragment](#anchors). Resolved
 against the current IRI base, it indicates the schema resource used as the
 starting point for runtime resolution. This initial resolution is safe to
 perform on schema load.
@@ -1190,15 +1185,9 @@ automatically.
 
 When an implementation encounters the reference to "other.json", it resolves
 this to `https://example.net/other.json`, which is not defined in this document.
-If a schema with that identifier has otherwise been supplied to the
-implementation, it can also be used automatically.[^7]
-
-[^7]: What should implementations do when the referenced schema is not known?
-Are there circumstances in which automatic network dereferencing is allowed? A
-same origin policy? A user-configurable option? In the case of an evolving API
-described by Hyper-Schema, it is expected that new schemas will be added to the
-system dynamically, so placing an absolute requirement of pre-loading schema
-documents is not feasible.
+If an implementation has been configured to resolve that identifier to a schema
+via pre-loading or other means, it can be used automatically; otherwise, the
+behavior described in {{failed-refs}} MUST be used.
 
 #### JSON Pointer fragments and embedded schema resources {#embedded}
 
@@ -1271,10 +1260,10 @@ the `$id` of the embedded or referenced resource unless it is specifically
 desired to identify the object containing the `$ref` in the second
 (non-embedded) arrangement.
 
-An implementation MAY choose not to support addressing schema resource contents
-by IRIs using a base other than the resource's canonical IRI, plus a JSON
-Pointer fragment relative to that base. Therefore, schema authors SHOULD NOT
-rely on such IRIs, as using them may reduce interoperability.[^8]
+Due to the potential break in functionality described above, the behavior for
+using JSON Pointer fragments that point to or cross a resource boundary is
+undefined. Schema authors SHOULD NOT rely on such IRIs, as using them may
+reduce interoperability.[^8]
 
 [^8]: This is to avoid requiring implementations to keep track of a whole stack
 of possible base IRIs and JSON Pointer fragments for each, given that all but
@@ -1318,7 +1307,7 @@ When the Schema Resource referenced by a by-reference applicator is bundled, it
 is RECOMMENDED that the Schema Resource be located as a value of a `$defs`
 object at the containing schema's root. The key of the `$defs` for the now
 embedded Schema Resource MAY be the `$id` of the bundled schema or some other
-form of application defined unique identifer (such as a UUID). This key is not
+form of application defined unique identifier (such as a UUID). This key is not
 intended to be referenced in JSON Schema, but may be used by an application to
 aid the bundling process.
 
@@ -1381,18 +1370,15 @@ recursive nesting like this; the behavior is undefined.
 #### References to Possible Non-Schemas {#non-schemas}
 
 Subschema objects (or booleans) are recognized by their use with known
-applicator keywords or with location-reserving keywords such as
-[`$defs`](#defs) that take one or more subschemas as a value. These keywords may
-be `$defs` and the standard applicators from this document or
-implementation-specific custom keywords.
+applicator keywords or with location-reserving keywords, such as
+[`$defs`](#defs), that take one or more subschemas as a value. These keywords
+include the standard applicators from this document or implementation-specific
+custom keywords.
 
-Multi-level structures of unknown keywords are capable of introducing nested
-subschemas, which would be subject to the processing rules for `$id`. Therefore,
-having a reference target in such an unrecognized structure cannot be reliably
-implemented, and the resulting behavior is undefined. Similarly, a reference
-target under a known keyword, for which the value is known not to be a schema,
-results in undefined behavior in order to avoid burdening implementations with
-the need to detect such targets.[^10]
+A reference target under a keyword for which the value is not explicitly known
+to be a schema results in undefined behavior. Implementations MAY support
+references to these locations, however such behavior is not considered
+interoperable and should not be relied upon.[^10]
 
 [^10]: These scenarios are analogous to fetching a schema over HTTP but
 receiving a response with a Content-Type other than `application/schema+json`.
@@ -1401,13 +1387,7 @@ server offered no guarantee that it actually is any such thing. Therefore,
 interpreting it as such has security implication and may produce unpredictable
 results.
 
-Note that single-level custom keywords with identical syntax and semantics to
-`$defs` do not allow for any intervening `$id` keywords, and therefore will
-behave correctly under implementations that attempt to use any reference target
-as a schema. However, this behavior is implementation-specific and MUST NOT be
-relied upon for interoperability.
-
-#### Failure to resolve references
+#### Failure to resolve references {#failed-refs}
 
 If for any reason a reference cannot be resolved, the evaluation MUST halt and
 return an indeterminant result. Specifically, it MUST NOT return a passing or
@@ -2214,56 +2194,79 @@ name fragment identifiers.
 }
 ```
 
-The schemas at the following IRI-encoded [JSON Pointers](#rfc6901) (relative to
-the root schema) have the following base IRIs, and are identifiable by any
-listed IRI in accordance with {{fragments}} and {{embedded}} above.
+The schemas at the following locations (indicated by plain
+[JSON Pointers](#rfc6901) relative to the root document) have the following base
+IRIs, and are identifiable by any listed IRI in accordance with {{fragments}}
+and {{embedded}} above.
 
-`#` (document root): canonical (and base) IRI: `https://example.com/root.json`
+Document root:
+- canonical (and base) IRI: `https://example.com/root.json`
 - canonical resource IRI plus pointer fragment: `https://example.com/root.json#`
 
-`#/$defs/A`: base IRI: `https://example.com/root.json`
+Document location `/$defs/A`:
+- base IRI: `https://example.com/root.json`
 - canonical resource IRI plus plain fragment:
   `https://example.com/root.json#foo`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/root.json#/$defs/A`
 
-`#/$defs/B`: canonical (and base) `IRI: https://example.com/other.json`
+Document location `/$defs/B`:
+- canonical (and base) `IRI: https://example.com/other.json`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/B`
 
-`#/$defs/B/$defs/X`: base IRI: `https://example.com/other.json`
+Document location `/$defs/B/$defs/X`:
+- base IRI: `https://example.com/other.json`
 - canonical resource IRI plus plain fragment:
   `https://example.com/other.json#bar`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#/$defs/X`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/B/$defs/X`
 
-`#/$defs/B/$defs/Y`: canonical (and base) IRI:
+Document location `/$defs/B/$defs/Y`:
+- canonical (and base) IRI:
 `https://example.com/t/inner.json`
 - canonical IRI plus plain fragment: `https://example.com/t/inner.json#bar`
 - canonical IRI plus pointer fragment: `https://example.com/t/inner.json#`
-- base IRI of enclosing (other.json) resource plus fragment:
-  `https://example.com/other.json#/$defs/Y`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/B/$defs/Y`
 
-`#/$defs/C`: canonical (and base) IRI:
+Document location `/$defs/C`:
+- canonical (and base) IRI:
 `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f`
 - canonical IRI plus pointer fragment:
   `urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f#`
-- base IRI of enclosing (root.json) resource plus fragment:
-  `https://example.com/root.json#/$defs/C`
 
 Note: The fragment part of the IRI does not make it canonical or non-canonical,
 rather, the base IRI used (as part of the full IRI with any fragment) is what
 determines the canonical nature of the resulting full IRI.[^18]
 
 [^18]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
-and direct you to read the CREF located in the [JSON Pointer fragments and
-embedded schema resources](#embedded) section for further comments.
+and direct you to read the CREF located in {{embedded}} for further comments.
+
+While the following IRIs do correctly indicate specific schemas, per the reasons
+outlined in {{embedded}}, they are to be avoided as they may not work in all implementations:
+
+Document location `/$defs/B`:
+- canonical (and base) `IRI: https://example.com/other.json`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/B`
+
+Document location `/$defs/B/$defs/X`:
+- base IRI: `https://example.com/other.json`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/B/$defs/X`
+
+Document location `/$defs/B/$defs/Y`:
+- canonical (and base) IRI:
+`https://example.com/t/inner.json`
+- base IRI of enclosing (other.json) resource plus fragment:
+  `https://example.com/other.json#/$defs/Y`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/B/$defs/Y`
+
+Document location `/$defs/C`:
+- canonical (and base) IRI:
+`urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f`
+- base IRI of enclosing (root.json) resource plus fragment:
+  `https://example.com/root.json#/$defs/C`
 
 ## [Appendix] Manipulating schema documents and references
 
@@ -2284,9 +2287,9 @@ simplify coding so that various invocations of JSON Schema libraries do not have
 to keep track of and load a large number of resources.
 
 This transformation can be safely and reversibly done as long as all static
-references (e.g. `$ref`) use IRI-references that resolve to IRIs using the
+references (e.g. `$ref`) use IRI references that resolve to IRIs using the
 canonical resource IRI as the base, and all schema resources have an
-absolute-IRI as the `$id` in their root schema.
+absolute IRI as the `$id` in their root schema.
 
 With these conditions met, each external resource can be copied under `$defs`,
 without breaking any references among the resources' schema objects, and without
@@ -2470,7 +2473,7 @@ to the document.
 - Clarify that detecting duplicate IRIs for different schemas SHOULD raise an
   error
 - Consolidate and clarify the syntax and rationale for plain-name fragments
-- "$id" MUST be an absolute-IRI, without any fragment, even an empty one
+- "$id" MUST be an absolute IRI, without any fragment, even an empty one
 - Note that an empty string "$id" results in duplicate IRIs for different
   schemas
 - Define empty schemas as empty (no longer allowing unrecognized keywords)
