@@ -327,8 +327,8 @@ an annotation.
 
 Implementations:
 
-- SHOULD provide an implementation-specific best effort validation for each
-  format attribute defined in this document;[^3]
+- SHOULD provide validation for each format attribute defined in this
+  document;
 - MAY support format values not defined in this document, but such support MUST
   be configurable and disabled by default;
 - SHOULD use a common parsing library or a well-known regular expression for
@@ -336,20 +336,10 @@ Implementations:
 - SHOULD clearly document how and to what degree each format attribute is
   validated.
 
-[^3]: The expectation is that for simple formats such as date-time, syntactic
-validation will be thorough. For a complex format such as email addresses, which
-are the amalgamation of various standards and numerous adjustments over time,
-with obscure and/or obsolete rules that may or may not be restricted by other
-applications making use of the value, a minimal validation is sufficient. For
-example, an instance string that does not contain an "@" is clearly not a valid
-email address, and an "email" or "hostname" containing characters outside of
-7-bit ASCII is likewise clearly invalid.
-
-The requirement for minimal validation of format values in general is
-intentionally vague and permissive, due to the complexity involved in many of
-the attributes. Note in particular that the requirement is limited to syntactic
-checking; implementations SHOULD NOT attempt to send an email, connect to a URL,
-or otherwise check the existence of an entity identified by a format instance.
+The requirement for validation of format values in general is limited to
+syntactic checking; implementations SHOULD NOT attempt to send an email, connect
+to a URL, or otherwise check the existence of an entity identified by a format
+instance.
 
 #### Custom format attributes
 
