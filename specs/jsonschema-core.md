@@ -1012,21 +1012,19 @@ resolution until runtime, at which point it is resolved each time it is
 encountered while evaluating an instance.
 
 Together with `$dynamicAnchor`, `$dynamicRef` implements a cooperative extension
-mechanism that is primarily useful with recursive schemas (schemas that
-reference themselves). The extension point is defined with `$dynamicAnchor` and
-only exhibits runtime dynamic behavior when referenced with `$dynamicRef`.
+mechanism that is primarily useful to extend recursive schemas. The extension
+point is defined with `$dynamicAnchor` and only exhibits runtime dynamic
+behavior when referenced with `$dynamicRef`.
 
-The value of the `$dynamicRef` property MUST be a string which is a
-IRI reference that contains a valid [plain name fragment](#anchors). Resolved
-against the current IRI base, it indicates the schema resource used as the
-starting point for runtime resolution. This initial resolution is safe to
-perform on schema load.
+The value of the `$dynamicRef` property MUST be a valid
+[plain name fragment](#anchors).
 
-The schema to apply is the outermost schema resource in the [dynamic
-scope](#scopes) that defines a `$dynamicAnchor` that matches the plain name
-fragment in the initially resolved IRI.
+Resolution of `$dynamicRef` begins by identifying the the outermost schema
+resource in the [dynamic scope](#scopes) which defines a matching
+`$dynamicAnchor`. The schema to apply is the subschema of this resource which
+contains the matching `$dynamicAnchor`.
 
-For a full example using these keyword, see {{recursive-example}}.[^6]
+For a full example using these keywords, see {{recursive-example}}.[^6]
 
 [^6]: The difference between the hyper-schema meta-schema in pre-2019 drafts and
 an this draft dramatically demonstrates the utility of these keywords.
