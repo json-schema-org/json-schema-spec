@@ -947,7 +947,7 @@ They are identifier keywords that can only be used to create plain name
 fragments, rather than absolute IRIs as seen with `$id`.
 
 `$anchor` defines a reference target for `$ref`. The fragment defined by this
-keyword is appended is the IRI of the schema resource containing it. As
+keyword is appended to the IRI of the schema resource containing it. As
 discussed in {{id-keyword}}, this is either the nearest `$id` in the same or an
 ancestor schema object, or the base IRI for the document as determined according
 to [RFC 3987](#rfc3987) and [RFC 3986](#rfc3986).
