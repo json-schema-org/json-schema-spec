@@ -1023,7 +1023,7 @@ The value of the `$dynamicRef` property MUST be a valid
 [^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`; the
 `$dynamicRef` that references it uses a URI fragment syntax, e.g. `#foo`.
 
-Resolution of `$dynamicRef` begins by identifying the the outermost schema
+Resolution of `$dynamicRef` begins by identifying the outermost schema
 resource in the [dynamic scope](#scopes) which defines a matching
 `$dynamicAnchor`. The schema to apply is the subschema of this resource which
 contains the matching `$dynamicAnchor`.
