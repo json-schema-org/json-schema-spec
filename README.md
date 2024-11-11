@@ -18,7 +18,8 @@ Please read our [guidelines for contributing](CONTRIBUTING.md).
 
 ## Status
 
-For the current status of issues and pull requests, please see the following labels
+For the current status of issues and pull requests, please see the following
+labels
 
 [![Available](https://img.shields.io/github/issues/json-schema-org/json-schema-spec/Status:%20Available.svg?color=brightgreen)](https://github.com/json-schema-org/json-schema-spec/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Available%22)
 [![In Progress](https://img.shields.io/github/issues/json-schema-org/json-schema-spec/Status:%20In%20Progress.svg)](https://github.com/json-schema-org/json-schema-spec/labels/Status:%20In%20Progress)
@@ -62,7 +63,7 @@ features they make available to you.
 - [remark-heading-id](https://github.com/imcuttle/remark-heading-id) -- Adds
   support for `{#my-anchor}` syntax to add an `id` to an element so it can be
   referenced using URI fragment syntax.
-- [remark-headings](/json-schema-org/json-schema-spec/blob/main/build/remark-headings.js)
+- [remark-headings](/json-schema-org/json-schema-spec/blob/main/remark/remark-headings.js)
   -- A collection of enhancements for headings.
   - Adds hierarchical section numbers to headings.
     - Use the `%appendix%` prefix on headings that should be numbered as an
@@ -71,22 +72,20 @@ features they make available to you.
     - Example: `#section-2-13`
     - Example: `#appendix-a`
   - Makes the heading a link utilizing its anchor
-- [remark-reference-links](/json-schema-org/json-schema-spec/blob/main/build/remark-reference-links.js)
+- [remark-reference-links](/json-schema-org/json-schema-spec/blob/main/remark/remark-reference-links.js)
   -- Adds new syntax for referencing a section of the spec using the section
   number as the link text.
-    - Example:
+  - Example:
     ```markdown
     ## Foo {#foo}
-
     ## Bar
-
     This is covered in {{foo}} // --> Renders to "This is covered in [Section 2.3](#foo)"
     - Link text will use "Section" or "Appendix" as needed
     ```
-- [remark-table-of-contents](/json-schema-org/json-schema-spec/blob/main/build/remark-table-of-contents.js)
+- [remark-table-of-contents](/json-schema-org/json-schema-spec/blob/main/remark/remark-table-of-contents.js)
   -- Adds a table of contents in a section with a header called "Table of
   Contents".
-- [remark-code-titles](/json-schema-org/json-schema-spec/blob/main/build/remark-code-titles.js)
+- [remark-code-titles](/json-schema-org/json-schema-spec/blob/main/remark/remark-code-titles.js)
   -- Add titles to code blocks
   - Example:
     ```markdown
@@ -104,12 +103,11 @@ features they make available to you.
 - [remark-flexible-containers](https://github.com/ipikuka/remark-flexible-containers)
   -- Add a callout box using the following syntax. Supported container types are
   `warning`, `note`, and `experimental`.
-
-    ```
-    ::: {type} {title}
-    {content}
-    :::
-    ```
+  ```markdown
+  ::: {type} {title}
+  {content}
+  :::
+  ```
 
 ### Internet-Drafts
 
@@ -148,19 +146,16 @@ The source for the website is [maintained in a separate repository](https://gith
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute.
-[[Contribute](CONTRIBUTING.md)]. <a
-href="https://github.com/json-schema-org/json-schema-spec/graphs/contributors"><img
-src="https://opencollective.com/json-schema/contributors.svg?width=890&button=false"
-/></a>
+This project exists thanks to all the people who contribute. \[[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/json-schema-org/json-schema-spec/graphs/contributors"><img src="https://opencollective.com/json-schema/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
 
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/json-schema/contribute)]
+Become a financial contributor and help us sustain our community. \[[Contribute](https://opencollective.com/json-schema/contribute)]
 
 #### Sponsors
 
-Here are our top sponsors. You could be next! [[Become a sponsor](https://opencollective.com/json-schema#sponsor)]
+Here are our top sponsors. You could be next! \[[Become a sponsor](https://opencollective.com/json-schema#sponsor)]
 
 <a href="https://opencollective.com/json-schema/sponsor/0/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/json-schema/sponsor/1/website" target="_blank"><img src="https://opencollective.com/json-schema/sponsor/1/avatar.svg"></a>

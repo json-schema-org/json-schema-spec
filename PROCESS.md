@@ -1,3 +1,4 @@
+<!--lint ignore maximum-heading-length-->
 # JSON Schema Specification Development and Publication Process
 
 ## Purpose
@@ -5,8 +6,8 @@
 This document describes the development and publication process for the JSON
 Schema specifications contained within this repository.
 
-- [JSON Schema Core](./jsonschema-core.md)
-- [JSON Schema Validation](./jsonschema-validation.md)
+- [JSON Schema Core](./specs/jsonschema-core.md)
+- [JSON Schema Validation](./specs/jsonschema-validation.md)
 
 ## Definitions
 
@@ -43,18 +44,20 @@ and instance across two consecutive releases to illustrate the compatibility of
 those releases:
 
 | *Next* ➡️<br>⬇️ *Current* | pass | fail | indeterminate |
-|:-----------------------:|:----:|:----:|:-------------:|
+| :-----------------------: | :--: | :--: | :-----------: |
 |          **pass**         |  ✅   |  ❌   |       ❌       |
 |          **fail**         |  ❌   |  ✅   |       ❌       |
 |     **indeterminate**     |  ✅   |  ✅   |       ✅       |
 
 ### Release
 
-A release is any single publication of the JSON Schema specifications (as a group).
+A release is any single publication of the JSON Schema specifications (as a
+group).
 
 ### Version
 
-Consecutive releases which maintain compatibility with each other comprise a version.
+Consecutive releases which maintain compatibility with each other comprise a
+version.
 
 ## Release and Version
 
@@ -78,10 +81,8 @@ The specifications will be published on the JSON Schema website,
 <https://json-schema.org/>, using a path comprised of the version, year, and
 document name. For example,
 
-```
-https://json-schema.org/1/2025/core.html
-https://json-schema.org/1/2025/validation.html
-```
+- `https://json-schema.org/1/2025/core.html`
+- `https://json-schema.org/1/2025/validation.html`
 
 Once a specification document has been published, neither the document (save for
 minor errata such as spelling mistakes) nor its publication URL may change. If
@@ -93,29 +94,21 @@ future publications and are not retroactive.
 A release meta-schema will be published under the same path using `schema.json`
 as the file name.
 
-```
-https://json-schema.org/1/2025/schema.json
-```
+- `https://json-schema.org/1/2025/schema.json`
 
 The website will also be configured to:
 
-- serve the meta-schema from its release folder
-  ```
-  https://json-schema.org/1/2025/
-  ```
+- serve the meta-schema from its release folder:
+  `https://json-schema.org/1/2025/`
 - serve the meta-schema for the latest release in a version from its version
-  folder
-  ```
-  https://json-schema.org/1/
-  ```
+  folder: `https://json-schema.org/1/`
 
 The latest-release meta-schemas will be updated with proposals as indicated by
 the [Proposal section](#proposal) of this document.
 
-> [!IMPORTANT]
+> \[!IMPORTANT]
 > These are only publication and availability URLs. The specification will
 > define the `$id` values for the meta-schemas.
-
 
 ## Feature Life Cycle
 
@@ -168,14 +161,15 @@ stable features. Questions to address may include:
 At least two (2) Core Team members must have implemented prototypes before the
 concept can continue to the formal proposal process.
 
-### Proposal {#proposal}
+### Proposal
 
 Once a rough consensus for the idea has been reached, a formal proposal will be
 written, separate from the specification, with the goal of precisely defining
 specification changes.
 
-The proposal will use the [Proposal Template](./proposals/proposal-template.md)
-and be stored in this repository's `proposals` folder.
+The proposal will use the [Proposal
+Template](./specs/proposals/proposal-template.md) and be stored in this
+repository's `proposals` folder.
 
 Additionally, a draft ADR will be included using the file name of the proposal
 document with an `-adr` suffix: `{proposal-file-name}-adr.md`. This ADR will
@@ -191,7 +185,7 @@ indicating that the feature is experimental and containing a link to the
 proposal document. Aside from the `$comment` keyword, the subschema will be
 empty.
 
-> [!NOTE]
+> \[!NOTE]
 > This is done so that a proposed keyword is allowed but not validated as its
 > syntax may change during the proposal/experimentation process. It also permits
 > different implementations to support different variations of each proposal
@@ -226,7 +220,8 @@ In order to proceed to the next stage ([Stable](#stable)):
 @@ TODO: Determine usage metrics. @@
 ```
 
-Experimental features are not considered to be interoperable across implementations.
+Experimental features are not considered to be interoperable across
+implementations.
 
 If a proposal cannot advance to the next stage, it may be removed. The proposal
 document is moved to an `archive` subfolder, the keyword is removed from the
@@ -234,7 +229,7 @@ meta-schemas, and any tests are moved to an `archive` subfolder. The removal of
 a feature which has not reached the stable state is not considered a breaking
 change.
 
-### Stable {#stable}
+### Stable
 
 The feature is incorporated into the specification in the `main` branch as
 specified by the proposal document, and the feature will be required as of the

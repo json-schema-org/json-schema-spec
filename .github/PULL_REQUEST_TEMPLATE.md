@@ -15,9 +15,9 @@ Thanks for submitting a pull request! Please provide enough information so that 
 ### Issue & Discussion References
 
 <!-- Pick at least one of the below options, and remove those which don't apply. -->
--  Closes #___ <!-- Replace ___ with the issue number this PR resolves -->
--  Related to #___ <!-- Use when the PR doesn't completely resolve an issue -->
--  Others? <!-- Add any additional notes or references here -->
+- Closes #___ <!-- Replace ___ with the issue number this PR resolves -->
+- Related to #___ <!-- Use when the PR doesn't completely resolve an issue -->
+- Others? <!-- Add any additional notes or references here -->
 
 ### Summary
 
