@@ -108,7 +108,8 @@ an instance. These keywords are all assertions without any annotation behavior.
 #### `type`
 
 The value of this keyword MUST be either a string or an array. If it is an
-array, elements of the array MUST be strings and MUST be unique.
+array, it MUST be non-empty, and elements of the array MUST be strings and MUST
+be unique.
 
 String values MUST be one of the six primitive types ("null", "boolean",
 "object", "array", "number", or "string"), or "integer" which matches any number
