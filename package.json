@@ -5,7 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . ; remark --no-stdout --frail specs/",
+    "lint:js": "eslint .",
+    "lint:md": "remark --no-stdout --frail specs/",
     "build": "remark --rc-path specs/.remarkrc-build.js --output web/"
   },
   "license": "MIT",

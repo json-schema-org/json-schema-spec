@@ -13,7 +13,8 @@ jobs:
           node-version: latest
           cache: npm
       - run: npm ci
-      - run: npm run lint
+      - run: npm run lint:js
+      - run: npm run lint:md
       - run: npm run build -- specs
 
   specs-ietf:
