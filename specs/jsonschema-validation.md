@@ -312,8 +312,8 @@ be explicitly defined to always pass if the number is not an integer, which
 produces essentially the same behavior as only applying to integers.
 
 Implementations SHOULD provide assertion behavior for the format values defined
-by this document[^2] and MUST refuse to process any schema which contains an
-unsupported format value.
+by this document[^2] and MUST refuse to process any schema which contains a
+format value it doesn't support.
 
 [^2]: Assertion behavior is called out very explicitly because it is a departure
 from previous iterations of this specification. Previously, `format` was an
