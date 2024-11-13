@@ -341,11 +341,11 @@ syntactic checking; implementations SHOULD NOT attempt to send an email, connect
 to a URL, or otherwise check the existence of an entity identified by a format
 instance.
 
-#### Custom format attributes
+#### Custom format values
 
-Implementations MAY support custom format attributes. Save for agreement between
+Implementations MAY support custom format values. Save for agreement between
 parties, schema authors SHALL NOT expect a peer implementation to support such
-custom format attributes.
+custom format values.
 
 ### Defined Formats
 
