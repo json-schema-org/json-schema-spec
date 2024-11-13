@@ -2,10 +2,13 @@
 
 * Status: proposed
   <!-- will update below to only those who participated in the vote -->
-* Deciders: @gregsdennis @jdesrosiers @jviotti @mwadams @karenetheridge @awwright @benjam @relequestual
+* Deciders: @gregsdennis @jdesrosiers @julian @jviotti @mwadams @karenetheridge @relequestual
 * Date: 2024-11-02
 * Technical Story: https://github.com/json-schema-org/json-schema-spec/issues/1520
 * Voting issue: https://github.com/json-schema-org/TSC/issues/19
+    For - @gregsdennis @jdesrosiers @jviotti @mwadams @karenetheridge
+    Neutral - @relequestual
+    Against - @julian
 
 ## Context and Problem Statement
 
@@ -25,8 +28,8 @@ However, the fact remains that our users consistently report (via questions in S
 
 Due to this consistency in user expectations, we have decided to:
 
-1. make format an assertion keyword and strictly,
-2. enforce it by moving the appropriate tests into the required section of the Test Suite.
+1. make format an assertion keyword, and
+2. strictly enforce it by moving the appropriate tests into the required section of the Test Suite and building them more completely.
 
 ## Decision Drivers
 
@@ -65,7 +68,8 @@ The TSC has decided via vote (see voting issue above) that we should change `for
 
 ### Negative Consequences <!-- optional -->
 
-* This is a breaking change, which means that we will likely have to re-educate our users.
+* This is a breaking change, which means that we will likely have to re-educate the users who correctly treat it as an annotation.
+* Older schemas which do not specify a version (`$schema`) may change their validation outcome.
 * The burden on implementations will be greater since format validation was previously optional.
 
 ## Links <!-- optional -->
