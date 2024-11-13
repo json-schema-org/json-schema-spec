@@ -23,7 +23,7 @@ In 2020-12, we further refined this by offering two separate vocabularies, one t
 
 However, the fact remains that our users consistently report (via questions in Slack, GitHub, and StackOverflow) that they expect format to validate. (The most recent case I can think of was only last week, in .Net's effort to build a short-term solution for schema generation from types.)
 
-Due to this consistency in user expectations have decided to:
+Due to this consistency in user expectations, we have decided to:
 
 1. make format an assertion keyword and strictly,
 2. enforce it by moving the appropriate tests into the required section of the Test Suite.
