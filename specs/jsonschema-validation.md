@@ -302,7 +302,7 @@ type, each distinct value will generally only validate a given set of instance
 types. If the type of the instance to validate is not in this set, validation
 for this keyword SHOULD succeed. All format values defined in this section apply
 to strings, but a format value can be specified to apply to any instance types
-defined in the data model defined in the [core JSON Schema](#json-schema)[^1].
+defined in the data model defined in the [core JSON Schema](#json-schema) specification[^1].
 
 [^1]: Note that the `type` keyword in this specification defines an "integer"
 type which is not part of the data model. Therefore a format attribute can be
