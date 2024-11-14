@@ -862,7 +862,7 @@ STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017,
 
 #### [ecma262] {#ecma262}
 
-ECMA-262, 11th edition specification", June 2020,
+"ECMA-262, 11th edition specification", June 2020,
 <<https://www.ecma-international.org/ecma-262/11.0>>.
 
 #### [relative-json-pointer] {#relative-json-pointer}
