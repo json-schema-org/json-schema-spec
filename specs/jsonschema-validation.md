@@ -533,19 +533,24 @@ defined by [RFC 2046](#rfc2046).
 
 ### `contentSchema`
 
-If the instance is a string, and if `contentMediaType` is present, this property
-contains a schema which describes the structure of the string.
+If the instance is a string, and if `contentMediaType` is present, this
+property's subschema describes the structure of the string.
 
 This keyword MAY be used with any media type that can be mapped into JSON
 Schema's data model. Specifying such mappings is outside of the scope of this
 specification.
 
-The value of this property MUST be a valid JSON schema. It SHOULD be ignored if
-`contentMediaType` is not present. Accessing the schema through the schema
-location IRI included as part of the annotation will ensure that it is correctly
-processed as a subschema. Using the extracted annotation value directly is only
-safe if the schema is an embedded resource with both `$schema` and an
-absolute IRI `$id`.
+The value of this property MUST be a valid JSON schema. The subschema is
+produced as an annotation.
+
+Since `contentMediaType` is required to provide instruction on how to interpret
+the string content, the annotation schema produced by this keyword has no
+meaning if `contentMediaType` is not present.
+
+Accessing the schema through the schema location IRI included as part of the
+annotation will ensure that it is correctly processed as a subschema. Using the
+extracted annotation value directly is only safe if the subschema is an embedded
+resource with both `$schema` and an absolute IRI `$id`.
 
 ### Example
 
