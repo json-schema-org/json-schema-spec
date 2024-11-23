@@ -547,10 +547,18 @@ Since `contentMediaType` is required to provide instruction on how to interpret
 string content, the annotation schema produced by this keyword has no meaning if
 `contentMediaType` is not present.
 
-Accessing the schema through the schema location IRI included as part of the
-annotation will ensure that it is correctly processed as a subschema. Using the
-extracted annotation value directly is only safe if the subschema is an embedded
-resource with both `$schema` and an absolute IRI `$id`.
+Note that evaluating the `contentSchema` subschema in-place (i.e. as part of its
+parent schema) will ensure that it is correctly processed. Independent use of
+the extracted subschema (as returned in an annotation) is only safe if the
+subschema is an embedded reource which defines both a `$schema` and an absolute
+IRI `$id`.[^7]
+
+[^7] Processing a non-resource subschema in place will ensure that any
+references (e.g. `$ref`) are always resolved properly. This isn't a problem when
+the subschema is itself a resource. See
+https://github.com/json-schema-org/json-schema-spec/issues/1381 for several
+examples where processing this subschema independently can cause `$ref`
+resolution failure.
 
 ### Example
 
