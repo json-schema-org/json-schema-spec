@@ -1,31 +1,35 @@
 # Selecting a new specification development process
 
-* Status: accepted
-* Deciders: @jdesrosiers @relequestual @awwright @handrews @gregsdennis
-* Date: 2022-11-02
+- Status: accepted
+- Deciders: @jdesrosiers @relequestual @awwright @handrews @gregsdennis
+- Date: 2022-11-02
 
 ## Context and Problem Statement
+
 We've chosen to decouple our process from IETF, so we need to choose a new
 specification development process to replace it.
 
 ## Decision Drivers
-* Dropping the "draft" label is an important driver of this change. It's mostly
+
+- Dropping the "draft" label is an important driver of this change. It's mostly
   an artifact of the IETF process and has proven to be confusing for the
   community.
-* The community wants a stable version of JSON Schema.
-* There is a need for JSON Schema to continue to evolve to meet evolving
+- The community wants a stable version of JSON Schema.
+- There is a need for JSON Schema to continue to evolve to meet evolving
   needs.
-* There is a demand for custom keywords/vocabularies/dialects and we want to
+- There is a demand for custom keywords/vocabularies/dialects and we want to
   continue to support those use cases.
-* There is a need to ease the burden of implementations supporting multiple
+- There is a need to ease the burden of implementations supporting multiple
   versions of JSON Schema.
 
 ## Considered Options
+
 There have been two proposals put forward. Both address the goal of a stable
 specification with the ability to evolve. The third option represents sticking
 with the status quo.
 
 ### Option 1 - TC-39 Inspired
+
 The spec would be converted from I-D XML to Markdown, but can otherwise be
 structured however we choose. A system would be put in place to allow us to flag
 the stability level of any feature in the spec. There would be only one version
@@ -43,6 +47,7 @@ unstable features to "stable" status. Releases would happen once a year and be
 designated by the year they were released.
 
 ### Option 2 - IETF Inspired
+
 The spec would be reorganized into two parts: "Core Semantics" and "Standard
 Extensions". Changes to either spec are subject to strict backward and forward
 compatibility requirements and would be released as a new spec that replaces and
@@ -65,6 +70,7 @@ ubiquitous that they should be considered essential for implementations to
 support.
 
 ### Option 3 - Minimal Change
+
 Option 3 represents the minimal amount of change to our process from what we
 have been doing. The spec would need to be converted from I-D XML to a Markdown
 version that would be served on the website, but otherwise we would continue to
@@ -73,6 +79,7 @@ patch releases mid-cycle. Each release is a distinct version of JSON Schema and
 has no compatibility guarantees between versions.
 
 ## Decision Outcome
+
 The decision is to go with Option 1 while leaving discussion open for aspects of
 Option 2 that could be adopted within the constraints of Option 1.
 
@@ -90,6 +97,7 @@ the spec and restructuring is allowed at any time as long as it doesn't break
 compatibility requirements.
 
 ## Pros and Cons of the Options
+
 The biggest benefit is shared between Option 1 and Option 2. Both approaches
 result in a stable spec. This will have benefits for both implementers and
 users. Because of the compatibility requirements, whenever you write a schema,
@@ -99,7 +107,9 @@ separate code with different semantics in different versions. They just need to
 code for the current release and they will automatically have support for past
 releases (not including "draft" releases).
 
+<!--lint ignore no-duplicate-headings-->
 ### Option 1 - TC-39 Inspired
+
 The two things that make this option stand out are the stability model governing
 spec evolution and the mutability of the spec document.
 
@@ -138,7 +148,9 @@ take two years for a feature to reach stability which could be a long time to
 wait for users who need to stick to the stable feature set but could benefit
 greatly from a new feature.
 
+<!--lint ignore no-duplicate-headings-->
 ### Option 2 - IETF Inspired
+
 The benefit of this approach is that it's compatible with the IETF process
 without imposing some of the constraints and perception issues that we had with
 our previous process. We can pursue an RFC in the future if we choose to without
@@ -159,6 +171,7 @@ compatibility requirements, so we have to go extra slow to make sure we get it
 right.
 
 ### Option 3 - Minimal Changes
+
 The benefit of this solution is that we don't have the overhead of defining
 and/or learning a new process. In the short term, we can put more effort into
 improving JSON Schema if we don't have the distraction of defining a whole new
@@ -167,15 +180,15 @@ with the "draft" label and doesn't provide the stability the community is
 looking for.
 
 ## Links
-* https://github.com/jdesrosiers/json-schema-spec/blob/main/adr/2022-09-decouple-from-ietf.md -
-  The ADR for the decision to decouple from IETF
-* https://github.com/orgs/json-schema-org/discussions/234 - Proposal submitted
+- <https://github.com/jdesrosiers/json-schema-spec/blob/main/adr/2022-09-decouple-from-ietf.md>
+  \- The ADR for the decision to decouple from IETF
+- <https://github.com/orgs/json-schema-org/discussions/234> - Proposal submitted
   by @jdesrosiers for a process to replace the IETF based process we'd been
   using.
-* https://github.com/orgs/json-schema-org/discussions/257 - @awwright's vision
+- <https://github.com/orgs/json-schema-org/discussions/257> - @awwright's vision
   for JSON Schema including how it can continue to evolve while still having a
   stable core.
-* https://github.com/json-schema-org/community/discussions/119 - When we first
+- <https://github.com/json-schema-org/community/discussions/119> - When we first
   started talking about forward compatibility and a stable spec.
-  * https://json-schema.org/blog/posts/future-of-json-schema - User friendly
+  - <https://json-schema.org/blog/posts/future-of-json-schema> - User friendly
     comments on decoupling from the IETF.

@@ -1,15 +1,15 @@
 # Decoupling from IETF
 
-* Status: accepted
-* Deciders: @jdesrosiers @relequestual @awwright @handrews @gregsdennis
-* Date: 2022-09-27
+- Status: accepted
+- Deciders: @jdesrosiers @relequestual @awwright @handrews @gregsdennis
+- Date: 2022-09-27
 
 Related Issues:
-* https://github.com/orgs/json-schema-org/discussions/69 - This issue is about
+- <https://github.com/orgs/json-schema-org/discussions/69> - This issue is about
   dropping the "draft" prefix from our releases. This ADR doesn't cover that,
   but much of the discussion about whether or not to decouple from IETF is in
   that discussion.
-* This topic has been discussed in many other places as well that are difficult
+- This topic has been discussed in many other places as well that are difficult
   to link to here including Slack, Twitter, OCWMs, and conference discussions.
 
 ## Context and Problem Statement
@@ -26,29 +26,29 @@ that our "drafts" are intended for use in production.
 
 ## Decision Drivers
 
-* IETF's draft versioning system doesn't work for JSON Schema and we stopped
+- IETF's draft versioning system doesn't work for JSON Schema and we stopped
   using it to version our releases a while ago. We now use date based versioning
   and even have more than one draft submission per release (the initial release
   and the patch release).
-* The IETF process is optimized for working on a draft until it's done and then
+- The IETF process is optimized for working on a draft until it's done and then
   disbanding. In some cases, the RFC may be revisited and revised in the future,
   but this is rare and generally contains little more than clarifications and
   reference updates. JSON Schema is not like that. JSON Schema is more like a
   programming language. When it stops evolving, it will lose its relevance.
   When we finish a release of JSON Schema, we don't disband, we start work on
   the next release.
-* Since the project resumed activity after the gap following draft-04, every one
+- Since the project resumed activity after the gap following draft-04, every one
   of our releases is expected to be used in production and will be depended on
   for many years forward. This is not consistent with normal IETF drafts. Even
   if we don't publicly use the term "draft", we're still using the IETF I-D
   system in a way that's not intended.
-* Under IETF, JSON Schema fits under the category of "draft". The community has
+- Under IETF, JSON Schema fits under the category of "draft". The community has
   repeatedly told us that they perceive this to meant that JSON Schema
   "incomplete" and not "not ready for production use". This is the wrong message
   for us to be sending as all of our releases are intended to be used in
   production. This ADR doesn't decide whether or not to drop the "draft" from
   our releases, but decoupling from IETF gives us that option.
-* Several members of the JSON Schema team have interacted with JSON-related IETF
+- Several members of the JSON Schema team have interacted with JSON-related IETF
   working groups. Some of these interactions demonstrated an indifference or
   hostility to JSON Schema, and a preference for projects taking a different
   approach. Equally important was a lack of any active interest or constructive
@@ -66,12 +66,12 @@ that our "drafts" are intended for use in production.
 
 1. Continue to submit I-Ds, while using our customized process with no intention
    of pursing standards track RFC status.
-2. Go all-in with IETF and pursue a standards track RFC with the IETF. The
+1. Go all-in with IETF and pursue a standards track RFC with the IETF. The
    approach would be to describe the essential characteristics of evaluating a
    JSON Schema: the keywords that everybody is guaranteed to support, and any
    extension mechanisms.
-3. Join W3C and pursue a standards track with them using their process.
-4. Decouple completely from any standards organization and come up with our own
+1. Join W3C and pursue a standards track with them using their process.
+1. Decouple completely from any standards organization and come up with our own
    specification development lifecycle (SDLC) model inspired by well established
    projects with an SDLC that more closely meets or needs.
 
@@ -140,20 +140,20 @@ to be an exception to the rule, and not frequently used.
 
 ### Positive Consequences
 
-* Decoupling from IETF allows us to distance ourselves from the assumptions that
+- Decoupling from IETF allows us to distance ourselves from the assumptions that
   people make about JSON Schema because they assume it works like a typical I-D.
-* Decoupling from IETF allows us to customize our SDLC model to what works best
+- Decoupling from IETF allows us to customize our SDLC model to what works best
   for JSON Schema.
 
 ### Negative Consequences
 
-* If we don't go the standardization route with IETF or W3C, we lose access to
+- If we don't go the standardization route with IETF or W3C, we lose access to
   their expert review process.
-* Not being associated with a recognized standards organization such as IETF,
+- Not being associated with a recognized standards organization such as IETF,
   W3C, or IEEE reduces the credibility of JSON Schema in the eyes of some.
   However, we have received feedback that our membership with OpenJS/Linux
   Foundation provides the credibility that we need.
-* One of the benefits of an RFC is other standards can normatively reference it,
+- One of the benefits of an RFC is other standards can normatively reference it,
   and use JSON Schema to define their JSON-based syntaxes. However, we have
   received feedback from people involved in standards development that told us
   that they were comfortable referencing OpenAPI's self published specification
@@ -162,7 +162,7 @@ to be an exception to the rule, and not frequently used.
   member of the OpenJS Foundation, which is a sub-group of the Linux Foundation,
   so we expect standards developers to be just as comfortable referencing JSON
   Schema as they are referencing OpenAPI.
-* Defining our own SLDC process will be a lot of work and none of us have
+- Defining our own SLDC process will be a lot of work and none of us have
   expertise in defining such a process. However, we can take inspiration from
   existing well established projects and we would have the freedom to update our
   process as we learn what works and what doesn't.

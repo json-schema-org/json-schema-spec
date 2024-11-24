@@ -5,6 +5,7 @@ import remarkPresetLintMarkdownStyleGuide from "remark-preset-lint-markdown-styl
 import remarkLintListItemIndent from "remark-lint-list-item-indent";
 import remarkLintListItemSpacing from "remark-lint-list-item-spacing";
 import remarkLintNoFileNameMixedCase from "remark-lint-no-file-name-mixed-case";
+import remarkLintNoFileNameIrregularCharacters from "remark-lint-no-file-name-irregular-characters";
 
 
 export default {
@@ -15,6 +16,7 @@ export default {
     remarkPresetLintMarkdownStyleGuide,
     [remarkLintListItemIndent, "one"],
     [remarkLintListItemSpacing, { checkBlanks: true }],
-    [remarkLintNoFileNameMixedCase, false]
+    [remarkLintNoFileNameMixedCase, false],
+    [remarkLintNoFileNameIrregularCharacters, false]
   ]
 };
