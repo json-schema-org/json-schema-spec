@@ -1030,8 +1030,8 @@ contains the matching `$dynamicAnchor`.
 
 For a full example using these keywords, see {{recursive-example}}.[^6]
 
-[^6]: The difference between the hyper-schema meta-schema in pre-2019 drafts and
-an this draft dramatically demonstrates the utility of these keywords.
+[^6]: The differences in the hyper-schema meta-schemas from draft-07 and draft
+2019-09 dramatically demonstrates the utility of these keywords.
 
 #### Schema Re-Use With `$defs` {#defs}
 
