@@ -1,12 +1,12 @@
-# [short title of solved problem and solution]
+# `format` as an assertion
 
 - Status: proposed
   <!-- will update below to only those who participated in the vote -->
 - Deciders: @gregsdennis @jdesrosiers @julian @jviotti @mwadams @karenetheridge
   @relequestual
 - Date: 2024-11-02
-- Technical Story: https://github.com/json-schema-org/json-schema-spec/issues/1520
-- Voting issue: https://github.com/json-schema-org/TSC/issues/19
+- Technical Story: <https://github.com/json-schema-org/json-schema-spec/issues/1520>
+- Voting issue: <https://github.com/json-schema-org/TSC/issues/19>
   - For - @gregsdennis @jdesrosiers @jviotti @mwadams @karenetheridge
   - Neutral - @relequestual
   - Against - @julian
@@ -16,9 +16,9 @@
 There's a long and sticky history around format.
 
 1. Going back all the way to Draft 01, format has never required validation.
-2. Whether to support format validation has always been the decision of the
+1. Whether to support format validation has always been the decision of the
    implementation.
-3. The extent to which formats are validated has also been the decision of the
+1. The extent to which formats are validated has also been the decision of the
    implementation.
 
 The result of all of this is that implementation support for validation has been
@@ -45,7 +45,7 @@ short-term solution for schema generation from types.)
 Due to this consistency in user expectations, we have decided to:
 
 1. make format an assertion keyword, and
-2. strictly enforce it by moving the appropriate tests into the required section
+1. strictly enforce it by moving the appropriate tests into the required section
    of the Test Suite and building them more completely.
 
 ## Decision Drivers
@@ -63,8 +63,8 @@ This is the current state. The primary benefit is that we don't need to make a
 breaking change.
 
 The primary downside is that the current system of (1) configuring the tool or
-(2) incluing the `format-assertion` vocab[^1] is confusing for many and doesn't
-align with user expectations.
+(2) incluing the `format-assertion` vocab is confusing for many and doesn't
+align with user expectations.[^1]
 
 [^1] The `format-assertion` vocabulary will no longer be an option since we have
 demoted vocabularies to a proposal for the stable release. This leaves tool
@@ -76,7 +76,8 @@ We change the spec to require `format` validation. Furthermore:
 
 - Implementations SHOULD support `format` with the defined values
 - Implementations MAY support others, but only by explicit config
-- Implementations MUST refuse to process a schema that contains an unsupported format
+- Implementations MUST refuse to process a schema that contains an unsupported
+  format
 
 ## Decision Outcome
 
@@ -86,7 +87,8 @@ The TSC has decided via vote (see voting issue above) that we should change
 ### Positive Consequences <!-- optional -->
 
 - Aligns with user expectations.
-- Users are still able to have purely annotative behavior through use of something like `x-format`.
+- Users are still able to have purely annotative behavior through use of
+  something like `x-format`.
 - Increased consistency for `format` validation across implementations.
 
 ### Negative Consequences <!-- optional -->
