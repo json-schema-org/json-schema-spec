@@ -1018,7 +1018,7 @@ mechanism that is primarily useful to extend recursive schemas, where
 target.
 
 The value of the `$dynamicRef` property MUST be a valid
-[plain name fragment](#anchors).[^3]
+[plain name fragment](#fragments).[^3]
 
 [^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`; the
 `$dynamicRef` that references it uses a URI fragment syntax, e.g. `#foo`.
