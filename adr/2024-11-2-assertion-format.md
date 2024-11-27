@@ -66,10 +66,6 @@ The primary downside is that the current system of (1) configuring the tool or
 (2) incluing the `format-assertion` vocab[^1] is confusing for many and doesn't
 align with user expectations.
 
-[^1]: The `format-assertion` vocabulary will no longer be an option since we have
-demoted vocabularies to a proposal for the stable release. This leaves tool
-configuration as the only option to enable `format` validation.
-
 ### `format` becomes an assertion keyword by default
 
 We change the spec to require `format` validation. Furthermore:
@@ -99,3 +95,7 @@ The TSC has decided via vote (see voting issue above) that we should change
   validation outcome.
 - The burden on implementations will be greater since format validation was
   previously optional.
+
+[^1]: The `format-assertion` vocabulary will no longer be an option since we
+have demoted vocabularies to a proposal for the stable release. This leaves tool
+configuration as the only option to enable `format` validation.
