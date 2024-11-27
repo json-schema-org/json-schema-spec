@@ -1014,7 +1014,7 @@ encountered while evaluating an instance.
 
 Together with `$dynamicAnchor`, `$dynamicRef` implements a cooperative extension
 mechanism that is primarily useful to extend recursive schemas, where
-`$dynamicRef` defines the extension point, and `$dynamicAnchor` defines the
+`$dynamicRef` defines the extension point and `$dynamicAnchor` defines the
 target.
 
 The value of the `$dynamicRef` property MUST be a valid
