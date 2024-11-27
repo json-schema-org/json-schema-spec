@@ -63,10 +63,10 @@ This is the current state. The primary benefit is that we don't need to make a
 breaking change.
 
 The primary downside is that the current system of (1) configuring the tool or
-(2) incluing the `format-assertion` vocab is confusing for many and doesn't
-align with user expectations.[^1]
+(2) incluing the `format-assertion` vocab[^1] is confusing for many and doesn't
+align with user expectations.
 
-[^1] The `format-assertion` vocabulary will no longer be an option since we have
+[^1]: The `format-assertion` vocabulary will no longer be an option since we have
 demoted vocabularies to a proposal for the stable release. This leaves tool
 configuration as the only option to enable `format` validation.
 
