@@ -98,8 +98,7 @@ interchangeable because of the data model it defines in {{data-model}}.
 
 JSON Schema is only defined over JSON documents. However, any document or memory
 structure that can be parsed into or processed according to the JSON Schema data
-model can be interpreted against a JSON Schema, including media types like
-[CBOR](#rfc7049).
+model can be interpreted against a JSON Schema.
 
 ### Instance
 
