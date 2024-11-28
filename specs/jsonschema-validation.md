@@ -544,7 +544,7 @@ The value of this property MUST be a valid JSON schema. The subschema is
 produced as an annotation.
 
 Since `contentMediaType` is required to provide instruction on how to interpret
-string content, the annotation schema produced by this keyword has no meaning if
+string content, `contentSchema` SHOULD NOT produce an annotation if
 `contentMediaType` is not present.
 
 Note that evaluating the `contentSchema` subschema in-place (i.e. as part of its
