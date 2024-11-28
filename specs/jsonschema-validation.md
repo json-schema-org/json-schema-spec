@@ -534,7 +534,7 @@ defined by [RFC 2046](#rfc2046).
 ### `contentSchema`
 
 If the instance is a string, and if `contentMediaType` is present, this
-property's subschema describes the structure of the string.
+keyword's subschema describes the structure of the string.
 
 This keyword MAY be used with any media type that can be mapped into JSON
 Schema's data model. Specifying such mappings is outside of the scope of this
