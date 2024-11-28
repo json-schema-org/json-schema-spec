@@ -833,9 +833,11 @@ Meta-schemas are used to inform an implementation how to interpret a schema.
 Every schema has a meta-schema, which can be explicitly declared using the
 `$schema` keyword.
 
-The meta-schema serves to describe valid schema syntax. A schema MUST
+The meta-schema serves to describe valid schema syntax. A schema resource MUST
 successfully validate against its meta-schema, which constrains the syntax of
-the available keywords. The syntax described for a given keyword is expected to
+the available keywords. (See {{compound-validation}} for information on
+validating schemas which contain embedded schema resources that declare a
+different meta-schema.) The syntax described for a given keyword is expected to
 be compatible with the document which defines the keyword; while it is possible
 to describe an incompatible syntax, such a meta-schema would be unlikely to be
 useful.
@@ -1339,7 +1341,7 @@ Since any schema that can be referenced can also be embedded, embedded schema
 resources MAY specify different processing dialects using the `$schema` values
 from their enclosing resource.
 
-#### Validating
+#### Validating {#compound-validation}
 
 Given that a Compound Schema Document may have embedded resources which identify
 as using different dialects, these documents SHOULD NOT be validated by applying
