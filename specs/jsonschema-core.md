@@ -947,17 +947,18 @@ The `$anchor` and `$dynamicAnchor` keywords are used to specify such fragments.
 They are identifier keywords that can only be used to create plain name
 fragments, rather than absolute IRIs as seen with `$id`.
 
-The base IRI to which the resulting fragment is appended is the canonical IRI of
-the schema resource containing the `$anchor` or `$dynamicAnchor` in question.
-As discussed in the previous section, this is either the nearest `$id` in the
-same or parent schema object, or the base IRI for the document as determined
-according to [RFC 3987](#rfc3987) and [RFC 3986](#rfc3986).
+`$anchor` defines a reference target for `$ref`. The fragment defined by this
+keyword is appended to the IRI of the schema resource containing it. As
+discussed in {{id-keyword}}, this is either the nearest `$id` in the same or an
+ancestor schema object, or the base IRI for the document as determined according
+to [RFC 3987](#rfc3987) and [RFC 3986](#rfc3986).
 
-Separately from the usual usage of IRIs, `$dynamicAnchor` indicates that the
-fragment is an extension point when used with the `$dynamicRef` keyword. This
-low-level, advanced feature makes it easier to extend recursive schemas such as
-the meta-schemas, without imposing any particular semantics on that extension.
-See the section on [`$dynamicRef`](#dynamic-ref) for details.
+In contrast, `$dynamicAnchor` operates independently of resource IRIs and is
+instead dependent on the dynamic scope of the evaluation. `$dynamicAnchor`
+defines a reference target for the `$dynamicRef` keyword. This advanced feature
+makes it easier to extend recursive schemas such as the meta-schemas, without
+imposing any particular semantics on that extension. See {{dynamic-ref}} for
+details.
 
 In most cases, the normal fragment behavior both suffices and is more intuitive.
 Therefore it is RECOMMENDED that `$anchor` be used to create plain name
@@ -1013,24 +1014,25 @@ resolution until runtime, at which point it is resolved each time it is
 encountered while evaluating an instance.
 
 Together with `$dynamicAnchor`, `$dynamicRef` implements a cooperative extension
-mechanism that is primarily useful with recursive schemas (schemas that
-reference themselves). The extension point is defined with `$dynamicAnchor` and
-only exhibits runtime dynamic behavior when referenced with `$dynamicRef`.
+mechanism that is primarily useful to extend recursive schemas, where
+`$dynamicRef` defines the extension point and `$dynamicAnchor` defines the
+target.
 
-The value of the `$dynamicRef` property MUST be a string which is a
-IRI reference that contains a valid [plain name fragment](#anchors). Resolved
-against the current IRI base, it indicates the schema resource used as the
-starting point for runtime resolution. This initial resolution is safe to
-perform on schema load.
+The value of the `$dynamicRef` property MUST be a valid
+[plain name fragment](#fragments).[^3]
 
-The schema to apply is the outermost schema resource in the [dynamic
-scope](#scopes) that defines a `$dynamicAnchor` that matches the plain name
-fragment in the initially resolved IRI.
+[^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`; the
+`$dynamicRef` that references it uses a URI fragment syntax, e.g. `#foo`.
 
-For a full example using these keyword, see {{recursive-example}}.[^6]
+Resolution of `$dynamicRef` begins by identifying the outermost schema
+resource in the [dynamic scope](#scopes) which defines a matching
+`$dynamicAnchor`. The schema to apply is the subschema of this resource which
+contains the matching `$dynamicAnchor`.
 
-[^6]: The difference between the hyper-schema meta-schema in pre-2019 drafts and
-an this draft dramatically demonstrates the utility of these keywords.
+For a full example using these keywords, see {{recursive-example}}.[^6]
+
+[^6]: The differences in the hyper-schema meta-schemas from draft-07 and draft
+2019-09 dramatically demonstrates the utility of these keywords.
 
 #### Schema Re-Use With `$defs` {#defs}
 
