@@ -547,8 +547,8 @@ determined at runtime.
 
 While custom identifier keywords are possible, extension designers should take
 care not to disrupt the functioning of core keywords. For example, the
-`$dynamicAnchor` keyword in this specification limits its IRI resolution effects
-to the matching `$dynamicRef` keyword, leaving the behavior of `$ref`
+`$dynamicAnchor` keyword in this specification limits its resolution behavior
+to matching `$dynamicRef` keywords, leaving the behavior of `$ref`
 undisturbed.
 
 ### Applicators {#applicators}
@@ -980,18 +980,9 @@ result is undefined, and even if documented will not be interoperable.
 
 #### Schema References {#references}
 
-Several keywords can be used to reference a schema which is to be applied to the
-current instance location. `$ref` and `$dynamicRef` are applicator keywords,
-applying the referenced schema to the instance.
-
-As the values of `$ref` and `$dynamicRef` are IRI References, this allows the
-possibility to externalise or divide a schema across multiple files, and
-provides the ability to validate recursive structures through self-reference.
-
-The resolved IRI produced by these keywords is not necessarily a network
-locator, only an identifier. A schema need not be downloadable from the address
-if it is a network-addressable URL. Implementations which can access the network
-SHOULD default to operating offline.
+`$ref` and `$dynamicRef` can be used to reference a schema which is to be
+applied to the current instance location. As such, they are considered
+applicators, applying the referenced schema to the instance.
 
 ##### Direct References with `$ref` {#ref}
 
@@ -1006,6 +997,11 @@ Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
 
+The resolved IRI produced by `$ref` is not necessarily a network
+locator, only an identifier. A schema need not be downloadable from the address
+if it is a network-addressable URL. Implementations which can access the network
+SHOULD default to operating offline.
+
 ##### Dynamic References with `$dynamicRef` {#dynamic-ref}
 
 The `$dynamicRef` keyword is an applicator that allows for deferring the full
@@ -1013,15 +1009,16 @@ resolution until runtime, at which point it is resolved each time it is
 encountered while evaluating an instance.
 
 Together with `$dynamicAnchor`, `$dynamicRef` implements a cooperative extension
-mechanism that is primarily useful to extend recursive schemas, where
+mechanism that is primarily useful to to create open schemas, where
 `$dynamicRef` defines the extension point and `$dynamicAnchor` defines the
 target.
 
-The value of the `$dynamicRef` property MUST be a valid
-[plain name fragment](#fragments).[^3]
+The value of the `$dynamicRef` property MUST be formatted as a valid
+[IRI plain name fragment](#fragments).[^3]
 
-[^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`; the
-`$dynamicRef` that references it uses a URI fragment syntax, e.g. `#foo`.
+[^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`. Although
+the value of `$dynamicRef` is not an IRI fragment, for historical reasons, the
+value still uses an IRI fragment syntax, e.g. `#foo`.
 
 Resolution of `$dynamicRef` begins by identifying the outermost schema
 resource in the [dynamic scope](#scopes) which defines a matching
