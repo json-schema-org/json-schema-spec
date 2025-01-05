@@ -39,11 +39,11 @@ such as output formats.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-interpreted as described in [RFC 2119](#rfc2119).
+interpreted as described in [RFC 2119](https://www.rfc-editor.org/info/rfc2119).
 
 The terms "JSON", "JSON text", "JSON value", "member", "element", "object",
 "array", "number", "string", "boolean", "true", "false", and "null" in this
-document are to be interpreted as defined in [RFC 8259](#rfc8259).
+document are to be interpreted as defined in [RFC 8259](https://www.rfc-editor.org/info/rfc8259).
 
 ## Overview
 
@@ -242,10 +242,10 @@ are using.
 
 #### Root Schema and Subschemas and Resources {#root}
 
-A JSON Schema resource is a schema which is [canonically](#rfc6596) identified
-by an [absolute IRI](#rfc3987). Schema resources MAY also be identified by IRIs,
+A JSON Schema resource is a schema which is [canonically](https://www.rfc-editor.org/info/rfc6596) identified
+by an [absolute IRI](https://www.rfc-editor.org/info/rfc3987). Schema resources MAY also be identified by IRIs,
 including IRIs with fragments, if the resulting secondary resource (as defined
-by [section 3.5 of RFC 3986](#rfc3986)) is identical to the primary resource.
+by [section 3.5 of RFC 3986](https://www.rfc-editor.org/info/rfc3986)) is identical to the primary resource.
 This can occur with the empty fragment, or when one schema resource is embedded
 in another. Any such IRIs with fragments are considered to be non-canonical.
 
@@ -285,7 +285,7 @@ are processed in the same way, with the same available behaviors.
 
 ## Fragment Identifiers {#fragments}
 
-In accordance with section 3.1 of [RFC 6839](#rfc6839), the syntax and semantics
+In accordance with section 3.1 of [RFC 6839](https://www.rfc-editor.org/info/rfc6839), the syntax and semantics
 of fragment identifiers specified for any +json media type SHOULD be as
 specified for `application/json`. (At publication of this document, there is no
 fragment identification syntax defined for `application/json`.)
@@ -296,7 +296,7 @@ identifier structures: plain names and JSON Pointers. The
 structure: JSON Pointers.
 
 The use of JSON Pointers as IRI fragment identifiers is described in [RFC
-6901](#rfc6901). For `application/schema+json`, which supports two fragment
+6901](https://www.rfc-editor.org/info/rfc6901). For `application/schema+json`, which supports two fragment
 identifier syntaxes, fragment identifiers matching the JSON Pointer syntax,
 including the empty string, MUST be interpreted as JSON Pointer fragment
 identifiers.
@@ -306,9 +306,9 @@ identifiers](#w3cwd-fragid-best-practices-20121025), plain name fragment
 identifiers in `application/schema+json` are reserved for referencing locally
 named schemas.
 
-Plain name fragments MUST follow XML's [`NCName` production](#xml-names), which
+Plain name fragments MUST follow XML's [`NCName` production](http://www.w3.org/TR/2006/REC-xml-names11-20060816), which
 allows for compatibility with the recommended plain name
-[syntax](#w3crec-xptr-framework-20030325) for XML-based media types.  For
+[syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based media types.  For
 convenience, the `NCName` syntax is reproduced here in ABNF form, using
 a minimal set of rules:
 
@@ -336,7 +336,7 @@ keyword](#anchors) section.
 
 ### Range of JSON Values
 
-An instance may be any valid JSON value as defined by [JSON](#rfc8259). JSON
+An instance may be any valid JSON value as defined by [JSON](https://www.rfc-editor.org/info/rfc8259). JSON
 Schema imposes no restrictions on type: JSON Schema can describe any JSON value,
 including, for example, null.
 
@@ -352,7 +352,7 @@ describable by JSON.
 Keywords MAY use regular expressions to express constraints, or constrain the
 instance value to be a regular expression. These regular expressions SHOULD be
 valid according to the regular expression dialect described in [ECMA-262,
-section 21.2.1](#ecma262).
+section 21.2.1](https://www.ecma-international.org/ecma-262/11.0/index.html).
 
 Unless otherwise specified by a keyword, regular expressions MUST NOT be
 considered to be implicitly anchored at either end. All regular expression
@@ -367,7 +367,7 @@ schema authors SHOULD limit themselves to the following regular expression
 tokens:
 
 - individual Unicode characters, as defined by the [JSON
-  specification](#rfc8259);
+  specification](https://www.rfc-editor.org/info/rfc8259);
 - simple atoms: `.` (any character except line terminator);
 - simple character classes (`[abc]`), range character classes (`[a-z]`);
 - complemented simple character classes (`[^abc]`);
@@ -653,7 +653,7 @@ behalf of applications.
 
 Unless otherwise specified, the value of an annotation keyword is the keyword's
 value. However, other behaviors are possible. For example, [JSON
-Hyper-Schema's](#json-hyper-schema) `links` keyword is a complex annotation that
+Hyper-Schema's](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-hyperschema-02) `links` keyword is a complex annotation that
 produces a value based in part on the instance data.
 
 While "short-circuit" evaluation is possible for assertions, collecting
@@ -685,7 +685,7 @@ based on the schema location that contributed the value. This is intended to
 allow flexible usage. Collecting the schema location facilitates such usage.
 
 For example, consider this schema, which uses annotations and assertions from
-the [Validation specification](#json-schema-validation):
+the [Validation specification](./jsonschema-validation):
 
 Note that some lines are wrapped for clarity.
 
@@ -880,7 +880,7 @@ applies to the resource in which it is declared as well as any embedded schema
 resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
-The value of this keyword MUST be an [IRI](#rfc3987) (containing a scheme) and
+The value of this keyword MUST be an [IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme) and
 this IRI MUST be normalized.
 
 If this IRI identifies a retrievable resource, that resource SHOULD be of media
@@ -896,12 +896,12 @@ by other parties.
 ### Base IRI, Anchors, and Dereferencing
 
 To differentiate between schemas in a vast ecosystem, schema resources are
-identified by [absolute IRIs](#rfc3987) (without fragments). These identifiers
+identified by [absolute IRIs](https://www.rfc-editor.org/info/rfc3987) (without fragments). These identifiers
 are used to create references between schema resources. When comparing IRIs for
 the purposes of resource identification, implementations SHOULD first follow the
-IRI normalization procedures defined in [RFC 3987](#rfc3987), section 5.3.
+IRI normalization procedures defined in [RFC 3987](https://www.rfc-editor.org/info/rfc3987), section 5.3.
 
-Several keywords can accept a relative [IRI reference](#rfc3987), or a value
+Several keywords can accept a relative [IRI reference](https://www.rfc-editor.org/info/rfc3987), or a value
 used to construct a relative IRI reference. For these keywords, it is necessary
 to establish a base IRI in order to resolve the reference.
 
@@ -909,13 +909,13 @@ to establish a base IRI in order to resolve the reference.
 
 An `$id` keyword in a schema or subschema identifies that schema or subschema as
 a distinct schema resource. The value for this keyword MUST be a string, and
-MUST represent a valid [IRI reference](#rfc3987) without a fragment.
+MUST represent a valid [IRI reference](https://www.rfc-editor.org/info/rfc3987) without a fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
 as a base IRI for relative IRI references in keywords within that schema
 resource and for embedded schema resources, in accordance with [RFC 3987 section
-6.5](#rfc3987) and [RFC 3986 section 5.1.1](#rfc3986) regarding base IRIs
+6.5](https://www.rfc-editor.org/info/rfc3987) and [RFC 3986 section 5.1.1](https://www.rfc-editor.org/info/rfc3986) regarding base IRIs
 embedded in content and RFC 3986 section 5.1.2 regarding encapsulating entities.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
@@ -933,7 +933,7 @@ given in {{initial-base}}.
 ##### Identifying the root schema
 
 The root schema of a JSON Schema document SHOULD contain an `$id` keyword with
-an [absolute IRI](#rfc3987) (containing a scheme, but no fragment).
+an [absolute IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme, but no fragment).
 
 #### Defining location-independent identifiers {#anchors}
 
@@ -951,7 +951,8 @@ fragments, rather than absolute IRIs as seen with `$id`.
 keyword is appended to the IRI of the schema resource containing it. As
 discussed in {{id-keyword}}, this is either the nearest `$id` in the same or an
 ancestor schema object, or the base IRI for the document as determined according
-to [RFC 3987](#rfc3987) and [RFC 3986](#rfc3986).
+to [RFC 3987](https://www.rfc-editor.org/info/rfc3987) and
+[RFC 3986](https://www.rfc-editor.org/info/rfc3986).
 
 In contrast, `$dynamicAnchor` operates independently of resource IRIs and is
 instead dependent on the dynamic scope of the evaluation. `$dynamicAnchor`
@@ -1086,7 +1087,7 @@ MUST NOT be collected as an annotation result.
 
 #### Initial Base IRI {#initial-base}
 
-[RFC 3987 Section 6.5](#rfc3987) and [RFC 3986 Section 5.1](#rfc3986) defines
+[RFC 3987 Section 6.5](https://www.rfc-editor.org/info/rfc3987) and [RFC 3986 Section 5.1](https://www.rfc-editor.org/info/rfc3986) defines
 how to determine the default base IRI of a document.
 
 Informatively, the initial base IRI of a schema is the IRI at which it was
@@ -1094,12 +1095,12 @@ found, whether that was a network location, a local filesystem, or any other
 situation identifiable by a IRI of any known scheme.
 
 If a schema document defines no explicit base IRI with `$id` (embedded in
-content), the base IRI is that determined per [RFC 3987 Section 6.5](#rfc3987)
-and [RFC 3986 section 5](#rfc3986).
+content), the base IRI is that determined per [RFC 3987 Section 6.5](https://www.rfc-editor.org/info/rfc3987)
+and [RFC 3986 section 5](https://www.rfc-editor.org/info/rfc3986).
 
 If no source is known, or no IRI scheme is known for the source, a suitable
 implementation-specific default IRI MAY be used as described in [RFC 3987
-Section 6.5](#rfc3987) and [RFC 3986 Section 5.1.4](#rfc3986). It is RECOMMENDED
+Section 6.5](https://www.rfc-editor.org/info/rfc3987) and [RFC 3986 Section 5.1.4](https://www.rfc-editor.org/info/rfc3986). It is RECOMMENDED
 that implementations document any default base IRI that they assume.
 
 If a schema object is embedded in a document of another media type, then the
@@ -1151,7 +1152,7 @@ expect such features to be interoperable across implementations.
 Schemas can be identified by any IRI that has been given to them, including a
 JSON Pointer or their IRI given directly by `$id`. In all cases, dereferencing a
 `$ref` reference involves first resolving its value as a IRI reference against
-the current base IRI per [RFC 3986](#rfc3986).
+the current base IRI per [RFC 3986](https://www.rfc-editor.org/info/rfc3986).
 
 If the resulting IRI identifies a schema within the current document, or within
 another schema document that has been made available to the implementation, then
@@ -1423,16 +1424,16 @@ all annotation results), would result in a resolution failure.
 JSON has been adopted widely by HTTP servers for automated APIs and robots. This
 section describes how to enhance processing of JSON documents in a more RESTful
 manner when used with protocols that support media types and [Web
-linking](#rfc8288).
+linking](https://www.rfc-editor.org/info/rfc8288).
 
 ##### Linking to a Schema
 
 It is RECOMMENDED that instances described by a schema provide a link to a
 downloadable JSON Schema using the link relation "describedby", as defined by
-[Linked Data Protocol 1.0, section 8.1](#w3crec-ldp-20150226).
+[Linked Data Protocol 1.0, section 8.1](https://www.w3.org/TR/2015/REC-ldp-20150226).
 
 In HTTP, such links can be attached to any response using the [Link
-header](#rfc8288). An example of such a header would be:
+header](https://www.rfc-editor.org/info/rfc8288). An example of such a header would be:
 
 ```
 Link: <https://example.com/my-hyper-schema>; rel="describedby"
@@ -1440,7 +1441,7 @@ Link: <https://example.com/my-hyper-schema>; rel="describedby"
 
 ##### Usage Over HTTP
 
-When used for hypermedia systems over a network, [HTTP](#rfc7231) is frequently
+When used for hypermedia systems over a network, [HTTP](https://www.rfc-editor.org/info/rfc7231) is frequently
 the protocol of choice for distributing schemas. Misbehaving clients can pose
 problems for server maintainers if they pull a schema over the network more
 frequently than necessary, when it's instead possible to cache a schema for a
@@ -1954,7 +1955,7 @@ SHOULD use the terms defined by this document to do so.
 ## Security Considerations {#security}
 
 Both schemas and instances are JSON values. As such, all security considerations
-defined in [RFC 8259](#rfc8259) apply.
+defined in [RFC 8259](https://www.rfc-editor.org/info/rfc8259) apply.
 
 Instances and schemas are both frequently written by untrusted third parties, to
 be deployed on public Internet servers. Implementations should take care that
@@ -1993,7 +1994,7 @@ Subtype name:: schema+json
 Required parameters:: N/A
 
 Encoding considerations:: Encoding considerations are identical to those
-specified for the `application/json` media type. See [JSON](#rfc8259).
+specified for the `application/json` media type. See [JSON](https://www.rfc-editor.org/info/rfc8259).
 
 Security considerations:: See {{security}} above.
 
@@ -2014,7 +2015,7 @@ Subtype name:: schema-instance+json
 Required parameters:: N/A
 
 Encoding considerations:: Encoding considerations are identical to those
-specified for the `application/json` media type. See [JSON](#rfc8259).
+specified for the `application/json` media type. See [JSON](https://www.rfc-editor.org/info/rfc8259).
 
 Security considerations:: See {{security}} above.
 
@@ -2022,116 +2023,6 @@ Interoperability considerations:: See Sections [6.2](#language),
 [6.3](#data-model), and [6.4](#regex) above.
 
 Fragment identifier considerations:: See {{fragments}}
-
-## References
-
-### Normative References
-
-#### [RFC2119] {#rfc2119}
-
-Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14,
-RFC 2119, DOI 10.17487/RFC2119, March 1997,
-<<https://www.rfc-editor.org/info/rfc2119>>.
-
-#### [RFC3986] {#rfc3986}
-
-Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifier
-(URI): Generic Syntax", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005,
-<<https://www.rfc-editor.org/info/rfc3986>>.
-
-#### [RFC3987] {#rfc3987}
-
-Duerst, M. and M. Suignard, "Internationalized Resource Identifiers (IRIs)", RFC
-3987, DOI 10.17487/RFC3987, January 2005,
-<<https://www.rfc-editor.org/info/rfc3987>>.
-
-#### [RFC6839] {#rfc6839}
-
-Hansen, T. and A. Melnikov, "Additional Media Type Structured Syntax Suffixes",
-RFC 6839, DOI 10.17487/RFC6839, January 2013,
-<<https://www.rfc-editor.org/info/rfc6839>>.
-
-#### [RFC6901] {#rfc6901}
-
-Bryan, P., Ed., Zyp, K., and M. Nottingham, Ed., "JavaScript Object Notation
-(JSON) Pointer", RFC 6901, DOI 10.17487/RFC6901, April 2013,
-<<https://www.rfc-editor.org/info/rfc6901>>.
-
-#### [RFC8259] {#rfc8259}
-
-Bray, T., Ed., "The JavaScript Object Notation (JSON) Data Interchange Format",
-STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017,
-<<https://www.rfc-editor.org/info/rfc8259>>.
-
-#### [W3C.REC-ldp-20150226] {#w3crec-ldp-20150226}
-
-Malhotra, A., Ed., Arwe, J., Ed., and S. Speicher, Ed., "Linked Data Platform
-1.0", W3C REC REC-ldp-20150226, W3C REC-ldp-20150226, 26 February 2015,
-<<https://www.w3.org/TR/2015/REC-ldp-20150226/>>.
-
-#### [ecma262] {#ecma262}
-
-"ECMA-262, 11th edition specification", June 2020,
-<<https://www.ecma-international.org/ecma-262/11.0/index.html>>.
-
-### Informative References
-
-#### [RFC6596] {#rfc6596}
-
-Ohye, M. and J. Kupke, "The Canonical Link Relation", RFC 6596, DOI
-10.17487/RFC6596, April 2012, <<https://www.rfc-editor.org/info/rfc6596>>.
-
-#### [RFC7049] {#rfc7049}
-
-Bormann, C. and P. Hoffman, "Concise Binary Object Representation (CBOR)", RFC
-7049, DOI 10.17487/RFC7049, October 2013,
-<<https://www.rfc-editor.org/info/rfc7049>>.
-
-#### [RFC7231] {#rfc7231}
-
-Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer Protocol (HTTP/1.1):
-Semantics and Content", RFC 7231, DOI 10.17487/RFC7231, June 2014,
-<<https://www.rfc-editor.org/info/rfc7231>>.
-
-#### [RFC8288] {#rfc8288}
-
-Nottingham, M., "Web Linking", RFC 8288, DOI 10.17487/RFC8288, October 2017,
-<<https://www.rfc-editor.org/info/rfc8288>>.
-
-#### [W3C.WD-fragid-best-practices-20121025]
-{#w3cwd-fragid-best-practices-20121025}
-
-Tennison, J., Ed., "Best Practices for Fragment Identifiers and Media Type
-Definitions", W3C WD WD-fragid-best-practices-20121025, W3C
-WD-fragid-best-practices-20121025, 25 October 2012,
-<<https://www.w3.org/TR/2012/WD-fragid-best-practices-20121025/>>.
-
-#### [W3C.REC-xptr-framework-20030325] {#w3crec-xptr-framework-20030325}
-
-Maler, E., Ed., Marsh, J., Ed., Walsh, N., Ed., and P. Grosso, Ed., "XPointer
-Framework", W3C REC REC-xptr-framework-20030325, W3C
-REC-xptr-framework-20030325, 25 March 2003,
-<<https://www.w3.org/TR/2003/REC-xptr-framework-20030325/>>.
-
-#### [json-schema-validation] {#json-schema-validation}
-
-Wright, A., Andrews, H., and B. Hutton, "JSON Schema Validation: A Vocabulary
-for Structural Validation of JSON", Work in Progress, Internet-Draft,
-draft-bhutton-json-schema-validation-01, June 2022,
-<<https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema-validation-01>>.
-
-#### [json-hyper-schema] {#json-hyper-schema}
-
-Andrews, H. and A. Wright, "JSON Hyper-Schema: A Vocabulary for Hypermedia
-Annotation of JSON", Work in Progress, Internet-Draft,
-draft-handrews-json-schema-hyperschema-02, November 2017,
-<<https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-hyperschema-02>>.
-
-#### [xml-names] {#xml-names}
-
-Bray, T., Ed., Hollander, D., Ed., Layman, A., Ed., and R. Tobin, Ed.,
-"Namespaces in XML 1.1 (Second Edition)", August 2006,
-<<http://www.w3.org/TR/2006/REC-xml-names11-20060816>>.
 
 ## %appendix% Schema identification examples {#idexamples}
 
@@ -2162,7 +2053,7 @@ name fragment identifiers.
 ```
 
 The schemas at the following locations (indicated by plain
-[JSON Pointers](#rfc6901) relative to the root document) have the following base
+[JSON Pointers](https://www.rfc-editor.org/info/rfc6901) relative to the root document) have the following base
 IRIs, and are identifiable by any listed IRI in accordance with {{fragments}}
 and {{embedded}} above.
 

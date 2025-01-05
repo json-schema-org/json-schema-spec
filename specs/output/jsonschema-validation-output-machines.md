@@ -20,7 +20,7 @@ absolute.
 ## Textual Format and Encoding
 
 JSON Schema output is defined using the JSON Schema data instance model as
-described in [JSON Schema](#json-schema) "Instance Data Model". Implementations
+described in [JSON Schema](./jsonschema-core) "Instance Data Model". Implementations
 MAY deviate from this in their internal modelling, as supported by their
 specific languages and platforms, however it is RECOMMENDED that the output be
 convertible to the JSON format defined herein via serialization or other means.
@@ -35,7 +35,7 @@ contents of each output unit is specified by this section.
 
 Each output unit MUST contain the [validation result](#validation-result) for
 the associated subschema as well as the following information defined by
-[JSON Schema](#json-schema) "Output Formatting":
+[JSON Schema](./jsonschema-core) "Output Formatting":
 
 - Evaluation Path
 - Schema Location
@@ -617,44 +617,3 @@ Output units which include annotations MUST NOT be pruned.
 
 Implementations which provide this behavior SHOULD provide configuration
 mechanisms appropriate for their users' needs.
-
-## References
-
-### Normative References
-
-#### \[RFC2119\] {#rfc2119}
-
-Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14,
-RFC 2119, DOI 10.17487/RFC2119, March 1997,
-<<https://www.rfc-editor.org/info/rfc2119>>.
-
-#### \[RFC3986\] {#rfc3986}
-
-Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifier
-(URI): Generic Syntax", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005,
-<<https://www.rfc-editor.org/info/rfc3986>>.
-
-#### \[RFC3987\] {#rfc3987}
-
-Duerst, M. and M. Suignard, "Internationalized Resource Identifiers (IRIs)", RFC
-3987, DOI 10.17487/RFC3987, January 2005,
-<<https://www.rfc-editor.org/info/rfc3987>>.
-
-#### \[RFC6901\] {#rfc6901}
-
-Bryan, P., Ed., Zyp, K., and M. Nottingham, Ed., "JavaScript Object Notation
-(JSON) Pointer", RFC 6901, DOI 10.17487/RFC6901, April 2013,
-<<https://www.rfc-editor.org/info/rfc6901>>.
-
-#### \[RFC8259\] {#rfc8259}
-
-Bray, T., Ed., "The JavaScript Object Notation (JSON) Data Interchange Format",
-STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017,
-<<https://www.rfc-editor.org/info/rfc8259>>.
-
-#### \[json-schema\] {#json-schema}
-
-Wright, A., Andrews, H., Hutton, B., and G. Dennis, "JSON Schema: A Media Type
-for Describing JSON Documents", Work in Progress, Internet-Draft,
-draft-bhutton-json-schema-01, June 2022,
-<<https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema-01>>.

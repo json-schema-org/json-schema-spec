@@ -29,19 +29,19 @@ keywords described in this specification. In addition, a set of keywords is also
 defined to assist in interactive user interface instance generation.
 
 This specification will use the concepts, syntax, and terminology defined by the
-[JSON Schema core](#json-schema) specification.
+[JSON Schema core](./jsonschema-core) specification.
 
 ## Conventions and Terminology
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-interpreted as described in [RFC 2119](#rfc2119).
+interpreted as described in [RFC 2119](https://www.rfc-editor.org/info/rfc2119).
 
 This specification uses the term "container instance" to refer to both array and
 object instances. It uses the term "children instances" to refer to array
 elements or object member values.
 
 Elements in an array value are said to be unique if no two elements of this
-array are [equal](#json-schema).
+array are [equal](./jsonschema-core).
 
 ## Overview
 
@@ -82,7 +82,7 @@ with such data.
 
 Keywords that use regular expressions, or constrain the instance value to be a
 regular expression, are subject to the interoperability considerations for
-regular expressions in the [JSON Schema Core](#json-schema) specification.
+regular expressions in the [JSON Schema Core](./jsonschema-core) specification.
 
 ## Meta-Schema {#meta-schema}
 
@@ -192,7 +192,7 @@ A string instance is valid against this keyword if its length is less than, or
 equal to, the value of this keyword.
 
 The length of a string instance is defined as the number of its characters as
-defined by [RFC 8259](#rfc8259).
+defined by [RFC 8259](https://www.rfc-editor.org/info/rfc8259).
 
 #### `minLength`
 
@@ -202,7 +202,7 @@ A string instance is valid against this keyword if its length is greater than,
 or equal to, the value of this keyword.
 
 The length of a string instance is defined as the number of its characters as
-defined by [RFC 8259](#rfc8259).
+defined by [RFC 8259](https://www.rfc-editor.org/info/rfc8259).
 
 Omitting this keyword has the same behavior as a value of 0.
 
@@ -303,7 +303,7 @@ type, each distinct value will generally only validate a given set of instance
 types. If the type of the instance to validate is not in this set, validation
 for this keyword SHOULD succeed. All format values defined in this section apply
 to strings, but a format value can be specified to apply to any instance types
-defined in the data model defined in the [core JSON Schema](#json-schema) specification[^1].
+defined in the data model defined in the [core JSON Schema](./jsonschema-core) specification[^1].
 
 [^1]: Note that the `type` keyword in this specification defines an "integer"
 type which is not part of the data model. Therefore a format attribute can be
@@ -354,7 +354,7 @@ custom format values.
 
 These attributes apply to string instances.
 
-Date and time format names are derived from [RFC 3339, section 5.6](#rfc3339).
+Date and time format names are derived from [RFC 3339, section 5.6](https://www.rfc-editor.org/info/rfc3339).
 The duration format is from the ISO 8601 ABNF as given in Appendix A of RFC
 3339.
 
@@ -386,9 +386,9 @@ A string instance is valid against these format values if it is a valid Internet
 email address as follows:
 
 - *email:* As defined by the "Mailbox" ABNF rule in [RFC 5321, section
-  4.1.2](#rfc5321).
+  4.1.2](https://www.rfc-editor.org/info/rfc5321).
 - *idn-email:* As defined by the extended "Mailbox" ABNF rule in [RFC 6531,
-  section 3.3](#rfc6531). Note that all strings valid against the "email"
+  section 3.3](https://www.rfc-editor.org/info/rfc6531). Note that all strings valid against the "email"
   attribute are also valid against the "idn-email" attribute.
 
 #### Hostnames
@@ -398,12 +398,12 @@ These attributes apply to string instances.
 A string instance is valid against these attributes if it is a valid
 representation for an Internet hostname as follows:
 
-- *hostname:* As defined by [RFC 1123, section 2.1](#rfc1123), including host
+- *hostname:* As defined by [RFC 1123, section 2.1](https://www.rfc-editor.org/info/rfc1123), including host
   names produced using the Punycode algorithm specified in [RFC 5891, section
-  4.4](#rfc5891).
+  4.4](https://www.rfc-editor.org/info/rfc5891).
 - *idn-hostname:* As defined by either RFC 1123 as for hostname, or an
   internationalized hostname as defined by [RFC 5890, section
-  2.3.2.3](#rfc5890).  Note that all strings valid against the "hostname"
+  2.3.2.3](https://www.rfc-editor.org/info/rfc5890).  Note that all strings valid against the "hostname"
   attribute are also valid against the "idn-hostname" attribute.
 
 #### IP Addresses
@@ -414,23 +414,23 @@ A string instance is valid against these attributes if it is a valid
 representation of an IP address as follows:
 
 - *ipv4:* An IPv4 address according to the "dotted-quad" ABNF syntax as defined
-  in [RFC 2673, section 3.2](#rfc2673).
-- *ipv6:* An IPv6 address as defined in [RFC 4291, section 2.2](#rfc4291).
+  in [RFC 2673, section 3.2](https://www.rfc-editor.org/info/rfc2673).
+- *ipv6:* An IPv6 address as defined in [RFC 4291, section 2.2](https://www.rfc-editor.org/info/rfc4291).
 
 #### Resource Identifiers These attributes apply to string instances.
 
 - *uri:* A string instance is valid against this attribute if it is a valid IRI,
-  according to [RFC3987](#rfc3987).
+  according to [RFC3987](https://www.rfc-editor.org/info/rfc3987).
 - *uri-reference:* A string instance is valid against this attribute if it is a
   valid URI Reference (either a URI or a relative-reference), according to
-  [RFC3986](#rfc3986).
+  [RFC3986](https://www.rfc-editor.org/info/rfc3986).
 - *iri:* A string instance is valid against this attribute if it is a valid IRI,
-  according to [RFC3987](#rfc3987).
+  according to [RFC3987](https://www.rfc-editor.org/info/rfc3987).
 - *iri-reference:* A string instance is valid against this attribute if it is a
   valid IRI Reference (either an IRI or a relative-reference), according to
-  [RFC3987](#rfc3987).
+  [RFC3987](https://www.rfc-editor.org/info/rfc3987).
 - *uuid:* A string instance is valid against this attribute if it is a valid
-  string representation of a UUID, according to [RFC4122](#rfc4122).
+  string representation of a UUID, according to [RFC4122](https://www.rfc-editor.org/info/rfc4122).
 
 Note that all valid URIs are valid IRIs, and all valid URI References are also
 valid IRI References.
@@ -445,7 +445,7 @@ the URI scheme and URN namespace.
 This attribute applies to string instances.
 
 A string instance is valid against this attribute if it is a valid URI Template
-(of any level), according to [RFC6570](#rfc6570).
+(of any level), according to [RFC6570](https://www.rfc-editor.org/info/rfc6570).
 
 Note that URI Templates may be used for IRIs; there is no separate IRI Template
 specification.
@@ -456,9 +456,9 @@ These attributes apply to string instances.
 
 - *json-pointer:* A string instance is valid against this attribute if it is a
   valid JSON string representation of a JSON Pointer, according to [RFC 6901,
-  section 5](#rfc6901).
+  section 5](https://www.rfc-editor.org/info/rfc6901).
 - *relative-json-pointer:* A string instance is valid against this attribute if
-  it is a valid [Relative JSON Pointer](#relative-json-pointer). To allow for
+  it is a valid [Relative JSON Pointer](https://datatracker.ietf.org/doc/html/draft-handrews-relative-json-pointer-01). To allow for
   both absolute and relative JSON Pointers, use `anyOf` or `oneOf` to indicate
   support for either format.
 
@@ -467,7 +467,7 @@ These attributes apply to string instances.
 This attribute applies to string instances.
 
 A regular expression, which SHOULD be valid according to the
-[ECMA-262](#ecma262) regular expression dialect.
+[ECMA-262](https://www.ecma-international.org/ecma-262/11.0/index.html) regular expression dialect.
 
 Implementations that validate formats MUST accept at least the subset of
 ECMA-262 defined in {{regexinterop}}, and SHOULD accept all valid ECMA-262
@@ -503,8 +503,8 @@ be interpreted as encoded binary data and applications wishing to decode it
 SHOULD do so using the encoding named by this property.
 
 Possible values indicating base 16, 32, and 64 encodings with several variations
-are listed in [RFC 4648](#rfc4648). Additionally, sections 6.7 and 6.8 of [RFC
-2045](#rfc2045) provide encodings used in MIME. This keyword is derived from
+are listed in [RFC 4648](https://www.rfc-editor.org/info/rfc4648). Additionally, sections 6.7 and 6.8 of [RFC
+2045](https://www.rfc-editor.org/info/rfc2045) provide encodings used in MIME. This keyword is derived from
 MIME's Content-Transfer-Encoding header, which was designed to map binary data
 into ASCII characters. It is not related to HTTP's Content-Encoding header,
 which is used to encode (e.g. compress or encrypt) the content of HTTP request
@@ -529,7 +529,7 @@ contents of the string. If `contentEncoding` is present, this property describes
 the decoded string.
 
 The value of this property MUST be a string, which MUST be a media type, as
-defined by [RFC 2046](#rfc2046).
+defined by [RFC 2046](https://www.rfc-editor.org/info/rfc2046).
 
 ### `contentSchema`
 
@@ -574,7 +574,7 @@ Another example:
 
 Instances described by this schema are expected to be strings containing HTML,
 using whatever character set the JSON string was decoded into. Per section 8.1
-of [RFC 8259](#rfc8259), outside of an entirely closed system, this MUST be
+of [RFC 8259](https://www.rfc-editor.org/info/rfc8259), outside of an entirely closed system, this MUST be
 UTF-8.
 
 This example describes a JWT that is MACed using the HMAC SHA-256 algorithm, and
@@ -732,128 +732,128 @@ authority).
 
 Processing a media type or encoding is subject to the security considerations of
 that media type or encoding. For example, the security considerations of [RFC
-4329 Scripting Media Types](#rfc4329) apply when processing JavaScript or
+4329 Scripting Media Types](https://www.rfc-editor.org/info/rfc4329) apply when processing JavaScript or
 ECMAScript encoded within a JSON string.
 
 ## References
 
 ### Normative References
 
-#### [RFC2119] {#rfc2119}
+#### [RFC2119] {https://www.rfc-editor.org/info/rfc2119}
 
 Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14,
 RFC 2119, DOI 10.17487/RFC2119, March 1997,
 <<https://www.rfc-editor.org/info/rfc2119>>.
 
-#### [RFC1123] {#rfc1123}
+#### [RFC1123] {https://www.rfc-editor.org/info/rfc1123}
 
 Braden, R., Ed., "Requirements for Internet Hosts - Application and Support",
 STD 3, RFC 1123, DOI 10.17487/RFC1123, October 1989,
 <<https://www.rfc-editor.org/info/rfc1123>>.
 
-#### [RFC2045] {#rfc2045}
+#### [RFC2045] {https://www.rfc-editor.org/info/rfc2045}
 
 Freed, N. and N. Borenstein, "Multipurpose Internet Mail Extensions (MIME) Part
 One: Format of Internet Message Bodies", RFC 2045, DOI 10.17487/RFC2045,
 November 1996, <<https://www.rfc-editor.org/info/rfc2045>>.
 
-#### [RFC2046] {#rfc2046}
+#### [RFC2046] {https://www.rfc-editor.org/info/rfc2046}
 
 Freed, N. and N. Borenstein, "Multipurpose Internet Mail Extensions (MIME) Part
 Two: Media Types", RFC 2046, DOI 10.17487/RFC2046, November 1996,
 <<https://www.rfc-editor.org/info/rfc2046>>.
 
-#### [RFC2673] {#rfc2673}
+#### [RFC2673] {https://www.rfc-editor.org/info/rfc2673}
 
 Crawford, M., "Binary Labels in the Domain Name System", RFC 2673, DOI
 10.17487/RFC2673, August 1999, <<https://www.rfc-editor.org/info/rfc2673>>.
 
-#### [RFC3339] {#rfc3339}
+#### [RFC3339] {https://www.rfc-editor.org/info/rfc3339}
 
 Klyne, G. and C. Newman, "Date and Time on the Internet: Timestamps", RFC 3339,
 DOI 10.17487/RFC3339, July 2002, <<https://www.rfc-editor.org/info/rfc3339>>.
 
-#### [RFC3986] {#rfc3986}
+#### [RFC3986] {https://www.rfc-editor.org/info/rfc3986}
 
 Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifier
 (URI): Generic Syntax", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005,
 <<https://www.rfc-editor.org/info/rfc3986>>.
 
-#### [RFC3987] {#rfc3987}
+#### [RFC3987] {https://www.rfc-editor.org/info/rfc3987}
 
 Duerst, M. and M. Suignard, "Internationalized Resource Identifiers (IRIs)", RFC
 3987, DOI 10.17487/RFC3987, January 2005,
 <<https://www.rfc-editor.org/info/rfc3987>>.
 
-#### [RFC4122] {#rfc4122}
+#### [RFC4122] {https://www.rfc-editor.org/info/rfc4122}
 
 Leach, P., Mealling, M., and R. Salz, "A Universally Unique IDentifier (UUID)
 URN Namespace", RFC 4122, DOI 10.17487/RFC4122, July 2005,
 <<https://www.rfc-editor.org/info/rfc4122>>.
 
-#### [RFC4291] {#rfc4291}
+#### [RFC4291] {https://www.rfc-editor.org/info/rfc4291}
 
 Hinden, R. and S. Deering, "IP Version 6 Addressing Architecture", RFC 4291, DOI
 10.17487/RFC4291, February 2006, <<https://www.rfc-editor.org/info/rfc4291>>.
 
-#### [RFC4648] {#rfc4648}
+#### [RFC4648] {https://www.rfc-editor.org/info/rfc4648}
 
 Josefsson, S., "The Base16, Base32, and Base64 Data Encodings", RFC 4648, DOI
 10.17487/RFC4648, October 2006, <<https://www.rfc-editor.org/info/rfc4648>>.
 
-#### [RFC5321] {#rfc5321}
+#### [RFC5321] {https://www.rfc-editor.org/info/rfc5321}
 
 Klensin, J., "Simple Mail Transfer Protocol", RFC 5321, DOI 10.17487/RFC5321,
 October 2008, <<https://www.rfc-editor.org/info/rfc5321>>.
 
-#### [RFC5890] {#rfc5890}
+#### [RFC5890] {https://www.rfc-editor.org/info/rfc5890}
 
 Klensin, J., "Internationalized Domain Names for Applications (IDNA):
 Definitions and Document Framework", RFC 5890, DOI 10.17487/RFC5890, August
 2010, <<https://www.rfc-editor.org/info/rfc5890>>.
 
-#### [RFC5891] {#rfc5891}
+#### [RFC5891] {https://www.rfc-editor.org/info/rfc5891}
 
 Klensin, J., "Internationalized Domain Names in Applications (IDNA): Protocol",
 RFC 5891, DOI 10.17487/RFC5891, August 2010,
 <<https://www.rfc-editor.org/info/rfc5891>>.
 
-#### [RFC6570] {#rfc6570}
+#### [RFC6570] {https://www.rfc-editor.org/info/rfc6570}
 
 Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, "URI
 Template", RFC 6570, DOI 10.17487/RFC6570, March 2012,
 <<https://www.rfc-editor.org/info/rfc6570>>.
 
-#### [RFC6531] {#rfc6531}
+#### [RFC6531] {https://www.rfc-editor.org/info/rfc6531}
 
 Yao, J. and W. Mao, "SMTP Extension for Internationalized Email", RFC 6531, DOI
 10.17487/RFC6531, February 2012, <<https://www.rfc-editor.org/info/rfc6531>>.
 
-#### [RFC6901] {#rfc6901}
+#### [RFC6901] {https://www.rfc-editor.org/info/rfc6901}
 
 Bryan, P., Ed., Zyp, K., and M. Nottingham, Ed., "JavaScript Object Notation
 (JSON) Pointer", RFC 6901, DOI 10.17487/RFC6901, April 2013,
 <<https://www.rfc-editor.org/info/rfc6901>>.
 
-#### [RFC8259] {#rfc8259}
+#### [RFC8259] {https://www.rfc-editor.org/info/rfc8259}
 
 Bray, T., Ed., "The JavaScript Object Notation (JSON) Data Interchange Format",
 STD 90, RFC 8259, DOI 10.17487/RFC8259, December 2017,
 <<https://www.rfc-editor.org/info/rfc8259>>.
 
-#### [ecma262] {#ecma262}
+#### [ecma262] {https://www.ecma-international.org/ecma-262/11.0/index.html}
 
 ECMA-262, 11th edition specification", June 2020,
 <<https://www.ecma-international.org/ecma-262/11.0>>.
 
-#### [relative-json-pointer] {#relative-json-pointer}
+#### [relative-json-pointer] {https://datatracker.ietf.org/doc/html/draft-handrews-relative-json-pointer-01}
 
 Luff, G., Andrews, H., and B. Hutton, Ed., "Relative JSON Pointers", Work in
 Progress, Internet-Draft, draft-handrews-relative-json-pointer-01, December
 2020,
 <<https://datatracker.ietf.org/doc/html/draft-handrews-relative-json-pointer-01>>.
 
-#### [json-schema] {#json-schema}
+#### [json-schema] {./jsonschema-core}
 
 Wright, A., Andrews, H., Hutton, B., and G. Dennis, "JSON Schema: A Media Type
 for Describing JSON Documents", Work in Progress, Internet-Draft,
@@ -862,7 +862,7 @@ draft-bhutton-json-schema-01, June 2022,
 
 ### Informative References
 
-#### \[RFC4329\] {#rfc4329}
+#### \[RFC4329\] {https://www.rfc-editor.org/info/rfc4329}
 
 Hoehrmann, B., "Scripting Media Types", RFC 4329, DOI 10.17487/RFC4329, April
 2006, <<https://www.rfc-editor.org/info/rfc4329>>.
