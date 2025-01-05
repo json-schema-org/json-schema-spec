@@ -243,9 +243,9 @@ are using.
 #### Root Schema and Subschemas and Resources {#root}
 
 A JSON Schema resource is a schema which is [canonically](https://www.rfc-editor.org/info/rfc6596) identified
-by an [absolute IRI](https://www.rfc-editor.org/info/rfc3987). Schema resources MAY also be identified by IRIs,
+by an [absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2). Schema resources MAY also be identified by IRIs,
 including IRIs with fragments, if the resulting secondary resource (as defined
-by [section 3.5 of RFC 3986](https://www.rfc-editor.org/info/rfc3986)) is identical to the primary resource.
+by [section 3.5 of RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html#section-3.5)) is identical to the primary resource.
 This can occur with the empty fragment, or when one schema resource is embedded
 in another. Any such IRIs with fragments are considered to be non-canonical.
 
@@ -285,7 +285,7 @@ are processed in the same way, with the same available behaviors.
 
 ## Fragment Identifiers {#fragments}
 
-In accordance with section 3.1 of [RFC 6839](https://www.rfc-editor.org/info/rfc6839), the syntax and semantics
+In accordance with [section 3.1 of RFC 6839](https://www.rfc-editor.org/rfc/rfc6839.html#section-3.1), the syntax and semantics
 of fragment identifiers specified for any +json media type SHOULD be as
 specified for `application/json`. (At publication of this document, there is no
 fragment identification syntax defined for `application/json`.)
@@ -306,9 +306,9 @@ identifiers](#w3cwd-fragid-best-practices-20121025), plain name fragment
 identifiers in `application/schema+json` are reserved for referencing locally
 named schemas.
 
-Plain name fragments MUST follow XML's [`NCName` production](http://www.w3.org/TR/2006/REC-xml-names11-20060816), which
-allows for compatibility with the recommended plain name
-[syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based media types.  For
+Plain name fragments MUST follow XML's [`NCName` production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName), which
+allows for compatibility with the recommended [plain name
+syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based media types.  For
 convenience, the `NCName` syntax is reproduced here in ABNF form, using
 a minimal set of rules:
 
@@ -896,12 +896,12 @@ by other parties.
 ### Base IRI, Anchors, and Dereferencing
 
 To differentiate between schemas in a vast ecosystem, schema resources are
-identified by [absolute IRIs](https://www.rfc-editor.org/info/rfc3987) (without fragments). These identifiers
+identified by [absolute IRIs](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2) (without fragments). These identifiers
 are used to create references between schema resources. When comparing IRIs for
 the purposes of resource identification, implementations SHOULD first follow the
 IRI normalization procedures defined in [RFC 3987](https://www.rfc-editor.org/info/rfc3987), section 5.3.
 
-Several keywords can accept a relative [IRI reference](https://www.rfc-editor.org/info/rfc3987), or a value
+Several keywords can accept a relative [IRI reference](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2), or a value
 used to construct a relative IRI reference. For these keywords, it is necessary
 to establish a base IRI in order to resolve the reference.
 
@@ -909,13 +909,13 @@ to establish a base IRI in order to resolve the reference.
 
 An `$id` keyword in a schema or subschema identifies that schema or subschema as
 a distinct schema resource. The value for this keyword MUST be a string, and
-MUST represent a valid [IRI reference](https://www.rfc-editor.org/info/rfc3987) without a fragment.
+MUST represent a valid [IRI reference](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2) without a fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
 as a base IRI for relative IRI references in keywords within that schema
 resource and for embedded schema resources, in accordance with [RFC 3987 section
-6.5](https://www.rfc-editor.org/info/rfc3987) and [RFC 3986 section 5.1.1](https://www.rfc-editor.org/info/rfc3986) regarding base IRIs
+6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5) and [RFC 3986 section 5.1.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1.1) regarding base IRIs
 embedded in content and RFC 3986 section 5.1.2 regarding encapsulating entities.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
@@ -933,7 +933,7 @@ given in {{initial-base}}.
 ##### Identifying the root schema
 
 The root schema of a JSON Schema document SHOULD contain an `$id` keyword with
-an [absolute IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme, but no fragment).
+an [absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2) (containing a scheme, but no fragment).
 
 #### Defining location-independent identifiers {#anchors}
 
@@ -1087,7 +1087,7 @@ MUST NOT be collected as an annotation result.
 
 #### Initial Base IRI {#initial-base}
 
-[RFC 3987 Section 6.5](https://www.rfc-editor.org/info/rfc3987) and [RFC 3986 Section 5.1](https://www.rfc-editor.org/info/rfc3986) defines
+[RFC 3987 Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5) and [RFC 3986 Section 5.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1) defines
 how to determine the default base IRI of a document.
 
 Informatively, the initial base IRI of a schema is the IRI at which it was
@@ -1095,12 +1095,12 @@ found, whether that was a network location, a local filesystem, or any other
 situation identifiable by a IRI of any known scheme.
 
 If a schema document defines no explicit base IRI with `$id` (embedded in
-content), the base IRI is that determined per [RFC 3987 Section 6.5](https://www.rfc-editor.org/info/rfc3987)
-and [RFC 3986 section 5](https://www.rfc-editor.org/info/rfc3986).
+content), the base IRI is that determined per [RFC 3987 Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5)
+and [RFC 3986 section 5](https://www.rfc-editor.org/rfc/rfc3986.html#section-5).
 
 If no source is known, or no IRI scheme is known for the source, a suitable
 implementation-specific default IRI MAY be used as described in [RFC 3987
-Section 6.5](https://www.rfc-editor.org/info/rfc3987) and [RFC 3986 Section 5.1.4](https://www.rfc-editor.org/info/rfc3986). It is RECOMMENDED
+Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5) and [RFC 3986 Section 5.1.4](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1.4). It is RECOMMENDED
 that implementations document any default base IRI that they assume.
 
 If a schema object is embedded in a document of another media type, then the
@@ -1430,7 +1430,7 @@ linking](https://www.rfc-editor.org/info/rfc8288).
 
 It is RECOMMENDED that instances described by a schema provide a link to a
 downloadable JSON Schema using the link relation "describedby", as defined by
-[Linked Data Protocol 1.0, section 8.1](https://www.w3.org/TR/2015/REC-ldp-20150226).
+[Linked Data Protocol 1.0, section 8.1](https://www.w3.org/TR/2015/REC-ldp-20150226/#link-relation-describedby).
 
 In HTTP, such links can be attached to any response using the [Link
 header](https://www.rfc-editor.org/info/rfc8288). An example of such a header would be:
