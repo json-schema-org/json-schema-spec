@@ -242,12 +242,15 @@ are using.
 
 #### Root Schema and Subschemas and Resources {#root}
 
-A JSON Schema resource is a schema which is [canonically](https://www.rfc-editor.org/info/rfc6596) identified
-by an [absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2). Schema resources MAY also be identified by IRIs,
-including IRIs with fragments, if the resulting secondary resource (as defined
-by [section 3.5 of RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html#section-3.5)) is identical to the primary resource.
-This can occur with the empty fragment, or when one schema resource is embedded
-in another. Any such IRIs with fragments are considered to be non-canonical.
+A JSON Schema resource is a schema which is
+[canonically](https://www.rfc-editor.org/info/rfc6596) identified by an
+[absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2). Schema
+resources MAY also be identified by IRIs, including IRIs with fragments, if the
+resulting secondary resource (as defined by
+[section 3.5 of RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html#section-3.5))
+is identical to the primary resource. This can occur with the empty fragment, or
+when one schema resource is embedded in another. Any such IRIs with fragments
+are considered to be non-canonical.
 
 The root schema is the schema that comprises the entire JSON document in
 question. The root schema is always a schema resource, where the IRI is
@@ -285,10 +288,12 @@ are processed in the same way, with the same available behaviors.
 
 ## Fragment Identifiers {#fragments}
 
-In accordance with [section 3.1 of RFC 6839](https://www.rfc-editor.org/rfc/rfc6839.html#section-3.1), the syntax and semantics
-of fragment identifiers specified for any +json media type SHOULD be as
-specified for `application/json`. (At publication of this document, there is no
-fragment identification syntax defined for `application/json`.)
+In accordance with
+[section 3.1 of RFC 6839](https://www.rfc-editor.org/rfc/rfc6839.html#section-3.1),
+the syntax and semantics of fragment identifiers specified for any +json media
+type SHOULD be as specified for `application/json`. (At publication of this
+document, there is no fragment identification syntax defined for
+`application/json`.)
 
 Additionally, the `application/schema+json` media type supports two fragment
 identifier structures: plain names and JSON Pointers. The
@@ -301,16 +306,17 @@ identifier syntaxes, fragment identifiers matching the JSON Pointer syntax,
 including the empty string, MUST be interpreted as JSON Pointer fragment
 identifiers.
 
-Per the W3C's [best practices for fragment
-identifiers](#w3cwd-fragid-best-practices-20121025), plain name fragment
-identifiers in `application/schema+json` are reserved for referencing locally
-named schemas.
+Per the W3C's
+[best practices for fragment identifiers](https://www.w3.org/TR/2012/WD-fragid-best-practices-20121025),
+plain name fragment identifiers in `application/schema+json` are reserved for
+referencing locally named schemas.
 
-Plain name fragments MUST follow XML's [`NCName` production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName), which
-allows for compatibility with the recommended [plain name
-syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based media types.  For
-convenience, the `NCName` syntax is reproduced here in ABNF form, using
-a minimal set of rules:
+Plain name fragments MUST follow XML's
+[`NCName` production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName),
+which allows for compatibility with the recommended [plain name
+syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based
+media types. For convenience, the `NCName` syntax is reproduced here in ABNF
+form, using a minimal set of rules:
 
 ```abnf
 NCName          = NCNameStartChar *NCNameChar
@@ -653,8 +659,9 @@ behalf of applications.
 
 Unless otherwise specified, the value of an annotation keyword is the keyword's
 value. However, other behaviors are possible. For example, [JSON
-Hyper-Schema's](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-hyperschema-02) `links` keyword is a complex annotation that
-produces a value based in part on the instance data.
+Hyper-Schema's](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-hyperschema-02)
+`links` keyword is a complex annotation that produces a value based in part on
+the instance data.
 
 While "short-circuit" evaluation is possible for assertions, collecting
 annotations requires examining all schemas that apply to an instance location,
@@ -880,8 +887,9 @@ applies to the resource in which it is declared as well as any embedded schema
 resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
-The value of this keyword MUST be an [IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme) and
-this IRI MUST be normalized.
+The value of this keyword MUST be an
+[IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme) and this
+IRI MUST be normalized.
 
 If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
@@ -896,10 +904,12 @@ by other parties.
 ### Base IRI, Anchors, and Dereferencing
 
 To differentiate between schemas in a vast ecosystem, schema resources are
-identified by [absolute IRIs](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2) (without fragments). These identifiers
-are used to create references between schema resources. When comparing IRIs for
-the purposes of resource identification, implementations SHOULD first follow the
-IRI normalization procedures defined in [RFC 3987][RFC3987], section 5.3.
+identified by
+[absolute IRIs](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2)
+(without fragments). These identifiers are used to create references between
+schema resources. When comparing IRIs for the purposes of resource
+identification, implementations SHOULD first follow the IRI normalization
+procedures defined in [RFC 3987][RFC3987], section 5.3.
 
 Several keywords can accept a relative IRI reference, or a value
 used to construct a relative IRI reference. For these keywords, it is necessary
@@ -915,8 +925,10 @@ When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
 as a base IRI for relative IRI references in keywords within that schema
 resource and for embedded schema resources, in accordance with [RFC 3987 section
-6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5) and [RFC 3986 section 5.1.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1.1) regarding base IRIs
-embedded in content and RFC 3986 section 5.1.2 regarding encapsulating entities.
+6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5) and
+[RFC 3986 section 5.1.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1.1)
+regarding base IRIs embedded in content and RFC 3986 section 5.1.2 regarding
+encapsulating entities.
 
 Note that this IRI is an identifier and not necessarily a network locator. In
 the case of a network-addressable URL, a schema need not be downloadable from
@@ -933,7 +945,8 @@ given in {{initial-base}}.
 ##### Identifying the root schema
 
 The root schema of a JSON Schema document SHOULD contain an `$id` keyword with
-an [absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2) (containing a scheme, but no fragment).
+an [absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2)
+(containing a scheme, but no fragment).
 
 #### Defining location-independent identifiers {#anchors}
 
@@ -999,10 +1012,10 @@ Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
 
-The resolved IRI produced by `$ref` is not necessarily a network
-locator, only an identifier. A schema need not be downloadable from the address
-if it is a network-addressable URL. Implementations which can access the network
-SHOULD default to operating offline.
+The resolved IRI produced by `$ref` is not necessarily a network locator, only
+an identifier. A schema need not be downloadable from the address if it is a
+network-addressable URL. Implementations which can access the network SHOULD
+default to operating offline.
 
 ##### Dynamic References with `$dynamicRef` {#dynamic-ref}
 
@@ -1087,8 +1100,10 @@ MUST NOT be collected as an annotation result.
 
 #### Initial Base IRI {#initial-base}
 
-[RFC 3987 Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5) and [RFC 3986 Section 5.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1) defines
-how to determine the default base IRI of a document.
+[RFC 3987 Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5)
+and
+[RFC 3986 Section 5.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1)
+defines how to determine the default base IRI of a document.
 
 Informatively, the initial base IRI of a schema is the IRI at which it was
 found, whether that was a network location, a local filesystem, or any other
@@ -1441,11 +1456,12 @@ Link: <https://example.com/my-hyper-schema>; rel="describedby"
 
 ##### Usage Over HTTP
 
-When used for hypermedia systems over a network, [HTTP](https://www.rfc-editor.org/info/rfc7231) is frequently
-the protocol of choice for distributing schemas. Misbehaving clients can pose
-problems for server maintainers if they pull a schema over the network more
-frequently than necessary, when it's instead possible to cache a schema for a
-long period of time.
+When used for hypermedia systems over a network,
+[HTTP](https://www.rfc-editor.org/info/rfc7231) is frequently the protocol of
+choice for distributing schemas. Misbehaving clients can pose problems for
+server maintainers if they pull a schema over the network more frequently than
+necessary, when it's instead possible to cache a schema for a long period of
+time.
 
 HTTP servers SHOULD set long-lived caching headers on JSON Schemas. HTTP clients
 SHOULD observe caching headers and not re-request documents within their
@@ -1846,9 +1862,9 @@ property values.
 
 The behavior of this keyword depends on all adjacent keywords as well as
 keywords in successfully validated subschemas that apply to the same instance
-location by evaluating the instance's property values. This includes, but is not limited
-to, `properties`, `patternProperties`, and `additionalProperties`, itself, and
-all [in-place applicators](#in-place) defined in this document.
+location by evaluating the instance's property values. This includes, but is not
+limited to, `properties`, `patternProperties`, and `additionalProperties`,
+itself, and all [in-place applicators](#in-place) defined in this document.
 
 This keyword applies its subschema to any property values which have not been
 deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
