@@ -354,9 +354,9 @@ custom format values.
 
 These attributes apply to string instances.
 
-Date and time format names are derived from [RFC 3339, section 5.6](https://www.rfc-editor.org/info/rfc3339).
-The duration format is from the ISO 8601 ABNF as given in Appendix A of RFC
-3339.
+Date and time format names are derived from
+[RFC 3339, section 5.6](https://www.rfc-editor.org/info/rfc3339). The duration
+format is from the ISO 8601 ABNF as given in Appendix A of RFC 3339.
 
 - *date-time*: A string instance is valid against this attribute if it is a
   valid representation according to the "date-time" ABNF rule (referenced above)
@@ -424,15 +424,15 @@ representation of an IP address as follows:
 #### Resource Identifiers These attributes apply to string instances.
 
 - *uri:* A string instance is valid against this attribute if it is a valid IRI,
-  according to [RFC 3987][RFC3987].
+  according to [RFC 3987][rfc3987].
 - *uri-reference:* A string instance is valid against this attribute if it is a
   valid URI Reference (either a URI or a relative-reference), according to
   [RFC 3986](https://www.rfc-editor.org/info/rfc3986).
 - *iri:* A string instance is valid against this attribute if it is a valid IRI,
-  according to [RFC 3987][RFC3987].
+  according to [RFC 3987][rfc3987].
 - *iri-reference:* A string instance is valid against this attribute if it is a
   valid IRI Reference (either an IRI or a relative-reference), according to
-  [RFC 3987][RFC3987].
+  [RFC 3987][rfc3987].
 - *uuid:* A string instance is valid against this attribute if it is a valid
   string representation of a UUID, according to
   [RFC 4122](https://www.rfc-editor.org/info/rfc4122).
@@ -741,8 +741,8 @@ authority).
 
 Processing a media type or encoding is subject to the security considerations of
 that media type or encoding. For example, the security considerations of [RFC
-4329 Scripting Media Types](https://www.rfc-editor.org/info/rfc4329) apply when processing JavaScript or
-ECMAScript encoded within a JSON string.
+4329 Scripting Media Types](https://www.rfc-editor.org/info/rfc4329) apply when
+processing JavaScript or ECMAScript encoded within a JSON string.
 
 ## %appendix% Acknowledgments
 
@@ -859,5 +859,5 @@ to the document.
 
 [^6]: This section to be removed before leaving Internet-Draft status.
 
-[RFC3987]: https://www.rfc-editor.org/info/rfc3987
-[RFC8259]: https://www.rfc-editor.org/info/rfc8259
+[rfc3987]: https://www.rfc-editor.org/info/rfc3987
+[rfc8259]: https://www.rfc-editor.org/info/rfc8259
