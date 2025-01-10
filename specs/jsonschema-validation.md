@@ -192,7 +192,7 @@ A string instance is valid against this keyword if its length is less than, or
 equal to, the value of this keyword.
 
 The length of a string instance is defined as the number of its characters as
-defined by [RFC 8259][RFC 8259].
+defined by [RFC 8259][rfc8259].
 
 #### `minLength`
 
@@ -202,7 +202,7 @@ A string instance is valid against this keyword if its length is greater than,
 or equal to, the value of this keyword.
 
 The length of a string instance is defined as the number of its characters as
-defined by [RFC 8259][RFC 8259].
+defined by [RFC 8259][rfc8259].
 
 Omitting this keyword has the same behavior as a value of 0.
 
@@ -583,7 +583,7 @@ Another example:
 
 Instances described by this schema are expected to be strings containing HTML,
 using whatever character set the JSON string was decoded into. Per section 8.1
-of [RFC 8259][RFC 8259], outside of an entirely closed system, this MUST be
+of [RFC 8259][rfc8259], outside of an entirely closed system, this MUST be
 UTF-8.
 
 This example describes a JWT that is MACed using the HMAC SHA-256 algorithm, and
