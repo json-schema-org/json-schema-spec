@@ -63,7 +63,7 @@ features they make available to you.
 - [remark-heading-id](https://github.com/imcuttle/remark-heading-id) -- Adds
   support for `{#my-anchor}` syntax to add an `id` to an element so it can be
   referenced using URI fragment syntax.
-- [remark-headings](/json-schema-org/json-schema-spec/blob/main/remark/remark-headings.js)
+- [remark-headings](/remark/remark-headings.js)
   -- A collection of enhancements for headings.
   - Adds hierarchical section numbers to headings.
     - Use the `%appendix%` prefix on headings that should be numbered as an
@@ -72,7 +72,7 @@ features they make available to you.
     - Example: `#section-2-13`
     - Example: `#appendix-a`
   - Makes the heading a link utilizing its anchor
-- [remark-reference-links](/json-schema-org/json-schema-spec/blob/main/remark/remark-reference-links.js)
+- [remark-reference-links](/remark/remark-reference-links.js)
   -- Adds new syntax for referencing a section of the spec using the section
   number as the link text.
   - Example:
@@ -82,10 +82,10 @@ features they make available to you.
     This is covered in {{foo}} // --> Renders to "This is covered in [Section 2.3](#foo)"
     - Link text will use "Section" or "Appendix" as needed
     ```
-- [remark-table-of-contents](/json-schema-org/json-schema-spec/blob/main/remark/remark-table-of-contents.js)
+- [remark-table-of-contents](/remark/remark-table-of-contents.js)
   -- Adds a table of contents in a section with a header called "Table of
   Contents".
-- [remark-code-titles](/json-schema-org/json-schema-spec/blob/main/remark/remark-code-titles.js)
+- [remark-code-titles](/remark/remark-code-titles.js)
   -- Add titles to code blocks
   - Example:
     ```markdown
