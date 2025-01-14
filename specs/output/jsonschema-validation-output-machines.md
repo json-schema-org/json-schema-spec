@@ -20,10 +20,11 @@ absolute.
 ## Textual Format and Encoding
 
 JSON Schema output is defined using the JSON Schema data instance model as
-described in [JSON Schema](./jsonschema-core) "Instance Data Model". Implementations
-MAY deviate from this in their internal modelling, as supported by their
-specific languages and platforms, however it is RECOMMENDED that the output be
-convertible to the JSON format defined herein via serialization or other means.
+described in [JSON Schema](../jsonschema-core.md) "Instance Data Model".
+Implementations MAY deviate from this in their internal modelling, as supported
+by their specific languages and platforms, however it is RECOMMENDED that the
+output be convertible to the JSON format defined herein via serialization or
+other means.
 
 ## Minimum Information
 
@@ -35,7 +36,7 @@ contents of each output unit is specified by this section.
 
 Each output unit MUST contain the [validation result](#validation-result) for
 the associated subschema as well as the following information defined by
-[JSON Schema](./jsonschema-core) "Output Formatting":
+[JSON Schema](../jsonschema-core.md) "Output Formatting":
 
 - Evaluation Path
 - Schema Location

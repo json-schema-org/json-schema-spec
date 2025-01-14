@@ -692,7 +692,7 @@ based on the schema location that contributed the value. This is intended to
 allow flexible usage. Collecting the schema location facilitates such usage.
 
 For example, consider this schema, which uses annotations and assertions from
-the [Validation specification](./jsonschema-validation):
+the [Validation specification](./jsonschema-validation.md):
 
 Note that some lines are wrapped for clarity.
 

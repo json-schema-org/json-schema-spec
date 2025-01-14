@@ -29,7 +29,7 @@ keywords described in this specification. In addition, a set of keywords is also
 defined to assist in interactive user interface instance generation.
 
 This specification will use the concepts, syntax, and terminology defined by the
-[JSON Schema core](./jsonschema-core) specification.
+[JSON Schema core](./jsonschema-core.md) specification.
 
 ## Conventions and Terminology
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
@@ -41,7 +41,7 @@ object instances. It uses the term "children instances" to refer to array
 elements or object member values.
 
 Elements in an array value are said to be unique if no two elements of this
-array are [equal](./jsonschema-core).
+array are [equal](./jsonschema-core.md).
 
 ## Overview
 
@@ -82,7 +82,8 @@ with such data.
 
 Keywords that use regular expressions, or constrain the instance value to be a
 regular expression, are subject to the interoperability considerations for
-regular expressions in the [JSON Schema Core](./jsonschema-core) specification.
+regular expressions in the [JSON Schema Core](./jsonschema-core.md)
+specification.
 
 ## Meta-Schema {#meta-schema}
 
@@ -303,7 +304,8 @@ type, each distinct value will generally only validate a given set of instance
 types. If the type of the instance to validate is not in this set, validation
 for this keyword SHOULD succeed. All format values defined in this section apply
 to strings, but a format value can be specified to apply to any instance types
-defined in the data model defined in the [core JSON Schema](./jsonschema-core) specification[^1].
+defined in the data model defined in the [core JSON
+Schema](./jsonschema-core.md) specification[^1].
 
 [^1]: Note that the `type` keyword in this specification defines an "integer"
 type which is not part of the data model. Therefore a format attribute can be
@@ -321,7 +323,9 @@ from previous iterations of this specification. Previously, `format` was an
 annotation-only keyword by default and implementations that supported assertion
 were required to offer some configuration that allowed users to explicitly
 enable assertion. Assertion is now a requirement in order to meet user
-expectations. See [json-schema-org/json-schema-spec #1520](https://github.com/json-schema-org/json-schema-spec/issues/1520) for more.
+expectations. See [json-schema-org/json-schema-spec
+#1520](https://github.com/json-schema-org/json-schema-spec/issues/1520) for
+more.
 
 In addition to the assertion behavior, this keyword also produces its value as
 an annotation.
