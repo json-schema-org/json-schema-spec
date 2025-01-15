@@ -334,10 +334,10 @@ an annotation.
 
 Implementations:
 
-- SHOULD provide validation for each format attribute defined in this
-  document;
-- MAY support format values not defined in this document, but such support MUST
-  be configurable and disabled by default;
+- SHOULD provide validation for each format attribute defined in this document
+  and listed in the {{format-registry}};
+- MAY support format values not defined in this document or listed in the
+  registry, but such support MUST be configurable and disabled by default;
 - SHOULD use a common parsing library or a well-known regular expression for
   each format;
 - SHOULD clearly document how and to what degree each format attribute is
@@ -348,7 +348,13 @@ syntactic checking; implementations SHOULD NOT attempt to send an email, connect
 to a URL, or otherwise check the existence of an entity identified by a format
 instance.
 
-#### Custom format values
+#### Format Registry {#format-registry}
+
+In addition to the formats defined by this document, JSON Schema also maintains a registry of formats defined by other specifications and organizations. As of the publication of this document, the format registry can be found at https://github.com/json-schema-org/json-schema-spec/blob/main/specs/format-registry.json.
+
+Implementations SHOULD support the formats listed in this registry as if they were defined by this document.
+
+#### Custom `format` Values
 
 Implementations MAY support custom format values. Save for agreement between
 parties, schema authors SHALL NOT expect a peer implementation to support such
