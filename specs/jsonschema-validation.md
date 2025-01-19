@@ -62,6 +62,21 @@ information. The {{format}} keyword is intended primarily as an annotation, but
 can optionally be used as an assertion. The {{content}} keywords are annotations
 for working with documents embedded as JSON strings.
 
+## Keyword Behaviors
+
+The keywords defined by this document exhibit one or more behaviors as defined by
+the [JSON Schema Core Specification](./jsonschema-core.md#keyword-behaviors).
+
+Keywords which are not defined to exhibit a particular behavior MUST NOT affect
+that aspect of the evalution outcome. In particular, the keywords defined in
+{{annotations}} produce no assertion result and therefore are not considered
+during validation.
+
+For the purposes of this document, an instance "validating against a keyword"
+means that the keyword produces an assertion result of `true` if the instance
+satisfies the given constraint; otherwise an assertion result of `false` is
+produced.
+
 ## Interoperability Considerations
 
 ### Validation of String Instances
@@ -642,7 +657,7 @@ structures: first the header, and then the payload. Since the JWT media type
 ensures that the JWT can be represented in a JSON string, there is no need for
 further encoding or decoding.
 
-## Keywords for Basic Meta-Data Annotations
+## Keywords for Basic Meta-Data Annotations {#annotations}
 
 These general-purpose annotation keywords provide commonly used information for
 documentation and user interface display purposes. They are not intended to form
