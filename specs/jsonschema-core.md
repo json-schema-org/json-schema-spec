@@ -651,8 +651,8 @@ which are provided to applications to use as they see fit. JSON Schema
 implementations are not expected to make use of the collected information on
 behalf of applications.
 
-Unless otherwise specified, the value of an annotation keyword is the keyword's
-value. However, other behaviors are possible. For example, [JSON
+Unless otherwise specified, a keyword's annotation value is the value of the
+keyword itself. However, other behaviors are possible. For example, [JSON
 Hyper-Schema's](#json-hyper-schema) `links` keyword is a complex annotation that
 produces a value based in part on the instance data.
 
