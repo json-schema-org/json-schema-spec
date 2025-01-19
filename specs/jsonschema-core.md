@@ -45,46 +45,45 @@ The terms "JSON", "JSON text", "JSON value", "member", "element", "object",
 "array", "number", "string", "boolean", "true", "false", and "null" in this
 document are to be interpreted as defined in [RFC 8259](#rfc8259).
 
-## Overview
+## Validation
 
-This document proposes a new media type `application/schema+json` to identify a
-JSON Schema for describing JSON data. It also proposes a further optional media
-type, `application/schema-instance+json`, to provide additional integration
-features. JSON Schemas are themselves JSON documents. This, and related
-specifications, define keywords allowing authors to describe JSON data in
-several ways.
+A JSON Schema document describes a validator (also known as a "recognizer" or
+"acceptor") which classifies a provided JSON document as "accepted" or
+"rejected."
 
-JSON Schema uses keywords to assert constraints on JSON instances or annotate
-those instances with additional information. Additional keywords are used to
-apply assertions and annotations to more complex JSON data structures, or based
-on some sort of condition.
+It supports "structural validation" (context-free grammars), and certain more
+complicated conditions. Validation follows JSON semantics, so two documents that
+are value-equal, but vary only by character escapes, property ordering, or
+whitespace, will validate with the same result.
 
-To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
-consists of a list of keywords, together with their syntax and semantics. A
-dialect is defined as a set of vocabularies and their required support
-identified in a meta-schema.
+A condition for accepting a document is called an "assertion". Assertions impose
+constraints that instances must conform to. Given a schema and an instance, the
+schema "accepts" an input whenever all the assertions are met, and the schema
+"rejects" when any of the assertions fail. Schemas without any assertions accept
+all JSON documents.
 
-JSON Schema can be extended either by defining additional vocabularies, or less
-formally by defining additional keywords outside of any vocabulary. Unrecognized
-individual keywords are not supported.
+Assertions are encoded into a JSON Schema using "keywords," described below.
 
-This document defines a set of core keywords that MUST be supported by any
-implementation, and cannot be disabled. These keywords are each prefixed with a
-"$" character to emphasize their required nature. These keywords are essential
-to the functioning of the `application/schema+json` media type.
+## Annotations
 
-Additionally, this document defines a RECOMMENDED set of keywords for
-applying subschemas conditionally, and for applying subschemas to the contents
-of objects and arrays. These keywords, or a set very much like them, are
-required to write schemas for non-trivial JSON instances, whether those schemas
-are intended for assertion validation, annotation, or both. While not part of
-the required core set, for maximum interoperability this additional
-set is included in this document and its use is strongly encouraged.
+A schema may also describe an "annotator," a way to read an instance and output
+a set of "annotations." Annotations can be any output metadata about that
+instance.
 
-Further keywords for purposes such as structural validation or hypermedia
-annotation are defined in other documents. These other documents each define a
-dialect collecting the standard sets of keywords needed to write schemas for
-that document's purpose.
+For example, you can document the meaning of a property, suggest a default value
+for new instances, generate a list of hyperlinks from the instance, or declare
+relationships between data. Applications may make use of annotations to query
+for arbitrary information; for example, to extract a list of names from a
+document with a known structure. Annotations may also describe values within the
+instance in a standard way; for example, extracting a common type of hyperlink
+from many different types of documents, using a different
+
+Like assertions, the instructions for producing annotations are encoded in a
+schema using keywords. Output is only defined over valid instances, so
+annotations are not returned until the input has been validated. However, not
+all valid input is meaningful or true to a given application. That is, if you
+process an arbitrary instance with nonsense data, the resulting annotations may
+not necessarily be true, even though the input is valid.
 
 ## Definitions
 
