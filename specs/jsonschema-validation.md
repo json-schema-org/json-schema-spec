@@ -550,7 +550,7 @@ string content, `contentSchema` SHOULD NOT produce an annotation if
 Note that evaluating the `contentSchema` subschema in-place (i.e. as part of its
 parent schema) will ensure that it is correctly processed. Independent use of
 the extracted subschema (as returned in an annotation) is only safe if the
-subschema is an embedded reource which defines both a `$schema` and an absolute
+subschema is an embedded resource which defines both a `$schema` and an absolute
 IRI `$id`.[^7]
 
 [^7] Processing a non-resource subschema in place will ensure that any
