@@ -442,7 +442,7 @@ means that the keyword produces an assertion result of `true` if the instance
 satisfies the given constraint; otherwise an assertion result of `false` is
 produced.
 
-<!-- The next two paragraphs and the following section seem to have to more to
+<!-- The next two paragraphs and the following section seem to have more to
 do with schema evaluation than keywords specifically. I'd like to move them out
 of the "keyword behaviors" h2, but will do so separately. [TODO: GD] -->
 

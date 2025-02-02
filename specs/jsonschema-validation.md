@@ -68,7 +68,7 @@ The keywords defined by this document exhibit one or more behaviors as defined b
 the [JSON Schema Core Specification](./jsonschema-core.md#keyword-behaviors).
 
 Keywords which are not defined to exhibit a particular behavior MUST NOT affect
-that aspect of the evalution outcome. In particular, the keywords defined in
+that aspect of the evaluation outcome. In particular, the keywords defined in
 {{annotations}} produce no assertion result and therefore are not considered
 during validation.
 
