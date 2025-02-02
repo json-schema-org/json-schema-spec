@@ -416,19 +416,36 @@ keywords MUST NOT begin with this prefix.
 Implementations MUST refuse to evaluate schemas which contain keywords which
 they do not know how to process or explicitly choose not to process.
 
-## Keyword Behaviors
+## Keyword Behaviors {#keyword-behaviors}
 
-JSON Schema keywords fall into several general behavior categories. Assertions
-validate that an instance satisfies constraints, producing a boolean result.
-Annotations attach information that applications may use in any way they see
-fit. Applicators apply subschemas to parts of the instance and combine their
-results.
+JSON Schema keywords may exhibit one or more behaviors. This specification
+defines three such behaviors:
 
-Extension keywords SHOULD stay within these categories, keeping in mind that
+- Assertions validate that an instance satisfies constraints, producing a
+  boolean result: `true` if the constraints are satisfied; `false` otherwise.
+- Annotations attach information that applications may use in any way they see
+  fit.
+- Applicators apply subschemas to parts of the instance and combine their
+  results.
+
+Extension keywords SHOULD be defined using these behaviors, keeping in mind that
 annotations in particular are extremely flexible. Complex behavior is usually
 better delegated to applications on the basis of annotation data than
 implemented directly as schema keywords. However, extension keywords MAY define
 other behaviors for specialized purposes.
+
+Keywords which are not defined to exhibit a particular behavior MUST NOT affect
+that aspect of evaluation. For example, a keyword which does not act as an
+assertion MUST NOT affect the validation result.
+
+For the purposes of this document, an instance "validating against a keyword"
+means that the keyword produces an assertion result of `true` if the instance
+satisfies the given constraint; otherwise an assertion result of `false` is
+produced.
+
+<!-- The next two paragraphs and the following section seem to have more to
+do with schema evaluation than keywords specifically. I'd like to move them out
+of the "keyword behaviors" h2, but will do so separately. [TODO: GD] -->
 
 Evaluating an instance against a schema involves processing all of the keywords
 in the schema against the appropriate locations within the instance. Typically,
@@ -570,11 +587,11 @@ the keyword's value. Alternatively, an applicator may refer to a schema
 elsewhere in the same schema document, or in a different one. The mechanism for
 identifying such referenced schemas is defined by the keyword.
 
-Applicator keywords also define how subschema or referenced schema boolean
-[assertion](#assertions) results are modified and/or combined to produce the
-boolean result of the applicator. Applicators may apply any boolean logic
-operation to the assertion results of subschemas, but MUST NOT introduce new
-assertion conditions of their own.
+Applicator keywords also behave as assertions by defining how subschema or
+referenced schema boolean [assertion](#assertions) results are modified and/or
+combined to produce the boolean result of the applicator. Applicators may apply
+any boolean logic operation to the assertion results of subschemas, but MUST NOT
+introduce new assertion conditions of their own.
 
 [Annotation](#annotations) results from subschemas are preserved in accordance
 with {{collect}} so that applications can decide how to interpret multiple
@@ -1007,7 +1024,7 @@ identified schema. Its results are the results of the referenced schema.[^5]
 [^5]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
 
-The value of the `$ref` keyword MUST be a string which is a IRI reference.
+The value of the `$ref` keyword MUST be a string which is an IRI reference.
 Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
@@ -1021,7 +1038,8 @@ default to operating offline.
 
 The `$dynamicRef` keyword is an applicator that allows for deferring the full
 resolution until runtime, at which point it is resolved each time it is
-encountered while evaluating an instance.
+encountered while evaluating an instance. Its results are the results of the
+referenced schema.
 
 Together with `$dynamicAnchor`, `$dynamicRef` implements a cooperative extension
 mechanism that is primarily useful to to create open schemas, where
@@ -1482,8 +1500,8 @@ operators can contact the owner of a potentially misbehaving script.
 
 ## Keywords for Applying Subschemas
 
-This section defines a set of keywords that enable schema combinations and
-composition.
+This section defines a set of applicator keywords that enable schema
+combinations and composition.
 
 ### Keywords for Applying Subschemas in Place {#in-place}
 
@@ -1744,8 +1762,8 @@ The value of this keyword MUST be a non-negative integer.
 This keyword modifies the behavior of `contains` within the same schema object,
 as described below in the section for that keyword.
 
-Validation MUST always succeed against this keyword. The value of this keyword
-is used as its annotation result.
+This keyword produces no assertion result. The value of this keyword is used as
+its annotation result.
 
 ##### `minContains`
 
@@ -1754,8 +1772,8 @@ The value of this keyword MUST be a non-negative integer.
 This keyword modifies the behavior of `contains` within the same schema object,
 as described below in the section for that keyword.
 
-Validation MUST always succeed against this keyword. The value of this keyword
-is used as its annotation result.
+This keyword produces no assertion result. The value of this keyword is used as
+its annotation result.
 
 Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation results.
 However, as described in {{contains}}, the absence of this keyword's annotation
