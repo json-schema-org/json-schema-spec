@@ -661,11 +661,11 @@ the instance location to be deprecated if any occurrence specifies a `true`
 value.
 
 If `deprecated` has a value of boolean `true`, it indicates that applications
-SHOULD refrain from usage of the declared property. It MAY mean the property is
+SHOULD refrain from usage of the declared property. It may mean the property is
 going to be removed in the future.
 
 A root schema containing `deprecated` with a value of `true` indicates that the
-entire resource being described MAY be removed in the future.
+entire resource being described may be removed in the future.
 
 The `deprecated` keyword applies to each instance location to which the schema
 object containing the keyword successfully applies. This can result in scenarios
@@ -687,8 +687,8 @@ managed exclusively by the owning authority, and attempts by an
 application to modify the value are expected to be ignored or
 rejected by that owning authority.
 
-An instance document that is marked as `readOnly` for the entire document MAY be
-ignored if sent to the owning authority, or MAY result in an error, at the
+An instance document that is marked as `readOnly` for the entire document may be
+ignored if sent to the owning authority, or may result in an error, at the
 authority's discretion.
 
 If `writeOnly` has a value of boolean `true`, it indicates that the value is
@@ -697,8 +697,8 @@ be present when sent to the owning authority to update or create the document
 (or the resource it represents), but it will not be included in any updated or
 newly created version of the instance.
 
-An instance document that is marked as `writeOnly` for the entire document MAY
-be returned as a blank document of some sort, or MAY produce an error upon
+An instance document that is marked as `writeOnly` for the entire document may
+be returned as a blank document of some sort, or may produce an error upon
 retrieval, or have the retrieval request ignored, at the authority's discretion.
 
 For example, `readOnly` would be used to mark a database-generated serial number
