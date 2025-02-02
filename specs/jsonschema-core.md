@@ -434,7 +434,7 @@ implemented directly as schema keywords. However, extension keywords MAY define
 other behaviors for specialized purposes.
 
 Keywords which are not defined to exhibit a particular behavior MUST NOT affect
-that aspect of evalution. For example, a keyword which does not act as an
+that aspect of evaluation. For example, a keyword which does not act as an
 assertion MUST NOT affect the validation result.
 
 For the purposes of this document, an instance "validating against a keyword"
