@@ -1686,9 +1686,8 @@ The presence of this keyword affects the behaviors of
 ##### `patternProperties`
 
 The value of `patternProperties` MUST be an object. Each property name of this
-object SHOULD be a valid regular expression, according to the ECMA-262 regular
-expression dialect. Each property value of this object MUST be a valid JSON
-Schema.
+object SHOULD be a valid regular expression as indicated in {{regex}}. Each
+property value of this object MUST be a valid JSON Schema.
 
 Validation succeeds if, for each instance name that matches any regular
 expressions that appear as a property name in this keyword's value, the child
