@@ -379,9 +379,9 @@ tokens:
 - complemented simple character classes (`[^abc]`);
 - complemented range character classes (`[^a-z]`);
 - simple quantifiers: `+` (one or more), `*` (zero or more), `?` (zero or one),
-  and their lazy versions (`+?`, `*?`, `??`);
+  and their non-greedy versions (`+?`, `*?`, `??`);
 - range quantifiers: `{x}` (exactly x occurrences), `{x,y}` (at least x, at most
-  y, occurrences), {x,} (x occurrences or more), and their lazy versions;
+  y, occurrences), `{x,}` (x occurrences or more), and their non-greedy versions;
 - the beginning-of-input (`^`) and end-of-input (`$`) anchors;
 - simple grouping (using `(` and `)`) and alternation (`|`).
 
