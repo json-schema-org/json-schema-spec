@@ -450,21 +450,31 @@ further change the assertion result.
 
 While most JSON Schema keywords can be evaluated on their own, or at most need
 to take into account the values or results of adjacent keywords in the same
-schema object, a few have more complex behavior.
+schema object, a few have more complex behavior. This behavior is generally
+governed by the scope of the keyword.
+
+This specification defines two such scopes: lexical and dynamic.
+
+#### Lexical Scope
 
 The lexical scope of a keyword is determined by the nested JSON data structure
 of objects and arrays. The largest such scope is an entire schema document.  The
 smallest scope is a single schema object with no subschemas.
 
-Keywords MAY be defined with a partial value, such as a IRI reference, which
-must be resolved against another value, such as another IRI reference or a full
-IRI, which is found through the lexical structure of the JSON document. The
-`$id`, `$ref`, and `$dynamicRef` core keywords, and the "base" JSON Hyper-Schema
-keyword, are examples of this sort of behavior.
+Keywords MAY be defined with a partial value which must be resolved against
+another value found within the lexical structure of the JSON document. The
+`$id`, `$schema`, and `$ref` core keywords, and the `base` JSON Hyper-Schema
+keyword, are some such keywords. For example, an `$id` keyword found in an
+embedded schema resource may have a value that is a relative IRI. This value
+must be resolved against another `$id` keyword found in an ancestor subschema,
+or the root schema, to produce an absolute IRI which fully identifies that
+embedded schema resource.
 
 Note that some keywords, such as `$schema`, apply to the lexical scope of the
 entire schema resource, and therefore MUST only appear in a schema resource's
-root schema.
+root object.
+
+#### Dynamic Scope
 
 Other keywords may take into account the dynamic scope that exists during the
 evaluation of a schema, typically together with an instance document. The
@@ -894,8 +904,10 @@ If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
-be used in the root schema objects of embedded schema resources. When the
-keyword appears in a non-resource root schema object, the behavior is undefined.
+be used in the root schema objects of embedded schema resources. This keyword
+MUST NOT appear in a subschema that is not also the root object of a schema
+resource (see {{id-keyword}} for more information regarding defining embedded
+schema resources.)
 
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
@@ -917,8 +929,9 @@ to establish a base IRI in order to resolve the reference.
 #### The `$id` Keyword {#id-keyword}
 
 An `$id` keyword in a schema or subschema identifies that schema or subschema as
-a distinct schema resource. The value for this keyword MUST be a string, and
-MUST represent a valid IRI reference without a fragment.
+a distinct schema resource and defines a new lexical scope. The value for this
+keyword MUST be a string, and MUST represent a valid IRI reference without a
+fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
