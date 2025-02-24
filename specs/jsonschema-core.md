@@ -458,8 +458,9 @@ This specification defines two such scopes: lexical and dynamic.
 #### Lexical Scope
 
 The lexical scope of a keyword is determined by the nested JSON data structure
-of objects and arrays. The largest such scope is an entire schema document.  The
-smallest scope is a single schema object with no subschemas.
+of objects and arrays. The smallest such scope is a single schema object with no
+subschemas. The largest scope is an entire schema document, recursively
+including all of its subschemas.
 
 Keywords MAY be defined with a partial value which must be resolved against
 another value found within the lexical structure of the JSON document. The
@@ -476,12 +477,13 @@ root object.
 
 #### Dynamic Scope
 
-Other keywords may take into account the dynamic scope that exists during the
-evaluation of a schema, typically together with an instance document. The
-outermost dynamic scope is the schema object at which processing begins, even if
-it is not a schema resource root. The path from this root schema to any
-particular keyword (that includes any `$ref` and `$dynamicRef` keywords that may
-have been resolved) is considered the keyword's "evaluation path."
+The dynamic scope is the ordered collection of schema objects navigated during
+evaluation, starting at the root and ending at the subschema under evaluation.
+The outermost dynamic scope is the schema object at which processing begins,
+even if it is not a schema resource root. The path that evaluation takes,
+starting from this root schema to any particular subschema (including any `$ref`
+and `$dynamicRef` keywords that may have been resolved), is considered the
+"evaluation path".
 
 Lexical and dynamic scopes align until a reference keyword is encountered. While
 following the reference keyword moves processing from one lexical scope into a
@@ -489,7 +491,7 @@ different one, from the perspective of dynamic scope, following a reference is
 no different from descending into a subschema present as a value. A keyword on
 the far side of that reference that resolves information through the dynamic
 scope will consider the originating side of the reference to be their dynamic
-parent, rather than examining the local lexically enclosing parent.
+parent rather than examining the local lexically enclosing parent.
 
 The concept of dynamic scope is primarily used with `$dynamicRef` and
 `$dynamicAnchor`, and should be considered an advanced feature and used with
@@ -929,9 +931,9 @@ to establish a base IRI in order to resolve the reference.
 #### The `$id` Keyword {#id-keyword}
 
 An `$id` keyword in a schema or subschema identifies that schema or subschema as
-a distinct schema resource and defines a new lexical scope. The value for this
-keyword MUST be a string, and MUST represent a valid IRI reference without a
-fragment.
+a distinct schema resource and applies to the entire lexical scope of that
+schema resource. The value for this keyword MUST be a string, and MUST represent
+a valid IRI reference without a fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
