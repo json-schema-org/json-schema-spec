@@ -963,7 +963,7 @@ fragments as an alternative to JSON Pointers.[^4] See {{fragments}}.
 
 [^4]: Note that the anchor string does not include the "#" character, as it is
 just a fragment identifier not an IRI reference. To reference the "foo"
-`$anchor` from the same Schema Resource, you would use the fragment-only IRI
+`$anchor` from the same schema resource, you would use the fragment-only IRI
 `#foo`. See below for full examples.
 
 `$dynamicAnchor` defines a different kind of identifier that only has meaning
@@ -993,8 +993,7 @@ applicators, applying the referenced schema to the instance.
 ##### Direct References with `$ref` {#ref}
 
 The `$ref` keyword is an applicator that is used to reference a statically
-identified schema. Its results are the results of evaluating the referenced
-schema.[^5]
+identified schema. Its results are the results of the referenced schema.[^5]
 
 [^5]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
@@ -1206,10 +1205,11 @@ each resource is a separate document connected with [schema
 references](#referenced), or is structured as a single document with one or more
 schema resources embedded as subschemas.
 
-Since IRIs with JSON Pointer fragments relative to the parent schema
-resource's IRI cease to be valid when the embedded schema is moved to a separate
-document and referenced, applications and schemas SHOULD NOT use such IRIs to
-identify embedded schema resources or locations within them.
+Since IRIs with JSON Pointer fragments are relative to the parent schema
+resource's IRI, they cease to be valid when the embedded schema is moved to a
+separate document and referenced. Because of this, applications and schemas
+SHOULD NOT use such IRIs to identify embedded schema resources or locations
+within them.
 
 Consider the following schema document that contains another schema resource
 embedded within it:
