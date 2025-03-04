@@ -873,16 +873,17 @@ default to using the current location if a default is desireable.
 
 ## The JSON Schema Core Keywords {#core}
 
-Keywords declared in this section, which all begin with "$", are essential to
-processing JSON Schema. These keywords inform implementations how to process any
-schema or meta-schema, including those split across multiple documents, or exist
-to reserve keywords for purposes that require guaranteed interoperability.
+Keywords declared in this section, which all begin with a dollar sign (`$`), are
+essential to processing JSON Schema. These keywords inform implementations how
+to process any schema or meta-schema, including those split across multiple
+documents, or exist to reserve keywords for purposes that require guaranteed
+interoperability.
 
 Support for these keywords MUST be considered mandatory at all times as they are
 necessary to navigate and process any schema.
 
-The "$" prefix is reserved for use by this specification. Extensions MUST NOT
-define new keywords that begin with "$".
+The `$` prefix is reserved for use by this specification. Extensions MUST NOT
+define new keywords that begin with `$`.
 
 ### Meta-Schemas
 
