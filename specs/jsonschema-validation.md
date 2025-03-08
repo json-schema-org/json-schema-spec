@@ -103,16 +103,31 @@ specification.
 ## Meta-Schema {#meta-schema}
 
 The current IRI for the default JSON Schema dialect meta-schema is
-`https://json-schema.org/draft/next/schema`. For schema author convenience, this
-meta-schema describes a dialect consisting of all keywords defined in this
+`https://json-schema.org/1/2025`. This IRI encodes the specifications iteration
+value and release year. Because all schemas written to conform to a given
+version are guaranteed to be compatible with later releases within the same
+iteration, the meta-schema IRI `https://json-schema.org/1` is also recognized to
+represent the latest release within the indicated iteration.
+
+The meta-schema describes a dialect consisting of all keywords defined in this
 specification and the JSON Schema Core specification. Certain keywords specify
 some functionality which is optional to support and is explained in detail in
 the relevant sections.
 
-Updated meta-schema IRIs MAY be published between specification drafts in order
-to correct errors. Implementations SHOULD consider IRIs dated after this
-specification draft and before the next to indicate the same syntax and
-semantics as those listed here.
+Where the meta-schema conflicts with either this specification or the JSON
+Schema Core specification, the specifications take precedence, and the
+meta-schema is to be considered in error. The meta-schema may be occasionally
+updated to correct any such errors.
+
+Although the IRI for the default JSON Schema dialect meta-schema is also a valid
+URL, implementations MUST NOT assume that a document is provided at this
+location. Rather than performing a network request to retrieve the meta-schema,
+implementations SHOULD include a copy of the meta-schema and MAY encode it as
+required by the language or framework used by the implementation.
+
+## Specification Versioning
+
+The meta-schema IRI format encodes two values that will assist users in determining compatibiility between releases of the JSON Schema specifications.
 
 ## Keywords for Structural Validation
 
