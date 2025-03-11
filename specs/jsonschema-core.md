@@ -240,7 +240,7 @@ A schema that itself describes a schema is called a meta-schema. Meta-schemas
 are used to validate JSON Schemas and specify the set of keywords those schemas
 are using.
 
-#### Root Schema and Subschemas and Resources {#root}
+#### Root Schema, Subschemas, and Resources {#root}
 
 A JSON Schema resource is a schema which is
 [canonically](https://www.rfc-editor.org/info/rfc6596) identified by an
@@ -334,9 +334,8 @@ NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
 All fragment identifiers that do not match the JSON Pointer syntax MUST be
 interpreted as plain name fragment identifiers.
 
-Defining and referencing a plain name fragment identifier within an
-`application/schema+json` document are specified in the [`$anchor`
-keyword](#anchors) section.
+Defining a plain name fragment identifier within an `application/schema+json`
+document is specified in the [`$anchor` keyword](#anchors) section.
 
 ## General Considerations
 
@@ -950,40 +949,35 @@ an [absolute IRI](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2)
 
 #### Defining location-independent identifiers {#anchors}
 
-Using JSON Pointer fragments requires knowledge of the structure of the schema.
-When writing schema documents with the intention to provide re-usable schemas,
-it may be preferable to use a plain name fragment that is not tied to any
-particular structural location. This allows a subschema to be relocated without
-requiring JSON Pointer references to be updated.
+Using JSON Pointers in IRI fragments to reference subschemas couples the IRI to
+the structure of the schema. Using plain name fragment identifiers in IRI
+fragments to identify subschemas is sometimes preferable because it is not tied
+to a particular structural location. This allows a subschema to be relocated
+without requiring references to be updated.
 
-The `$anchor` and `$dynamicAnchor` keywords are used to specify such fragments.
-They are identifier keywords that can only be used to create plain name
-fragments, rather than absolute IRIs as seen with `$id`.
+The `$anchor` and `$dynamicAnchor` keywords are used to define
+location-independent identifiers for subschemas within a schema resource.
 
-`$anchor` defines a reference target for `$ref`. The fragment defined by this
-keyword is appended to the IRI of the schema resource containing it. As
-discussed in {{id-keyword}}, this is either the nearest `$id` in the same or an
-ancestor schema object, or the base IRI for the document as determined according
-to [RFC 3987][rfc3987] and
-[RFC 3986][rfc3986].
-
-In contrast, `$dynamicAnchor` operates independently of resource IRIs and is
-instead dependent on the dynamic scope of the evaluation. `$dynamicAnchor`
-defines a reference target for the `$dynamicRef` keyword. This advanced feature
-makes it easier to extend recursive schemas such as the meta-schemas, without
-imposing any particular semantics on that extension. See {{dynamic-ref}} for
-details.
-
-In most cases, the normal fragment behavior both suffices and is more intuitive.
-Therefore it is RECOMMENDED that `$anchor` be used to create plain name
-fragments unless there is a clear need for `$dynamicAnchor`.
-
-If present, the value of these keywords MUST be a string and MUST conform to the
-plain name fragment identifier syntax defined in {{fragments}}.[^4]
+`$anchor` defines a plain name fragment identifier that can be used in IRI
+fragments as an alternative to JSON Pointers.[^4] See {{fragments}}.
 
 [^4]: Note that the anchor string does not include the "#" character, as it is
-not a IRI reference. An `$anchor`: "foo" becomes the fragment `#foo` when used
-in a IRI. See below for full examples.
+just a fragment identifier not an IRI reference. To reference the "foo"
+`$anchor` from the same schema resource, you would use the fragment-only IRI
+`#foo`. See below for full examples.
+
+`$dynamicAnchor` defines a different kind of fragment identifier that only has
+meaning when used with `$dynamicRef`. It's not a normal fragment identifier and
+therefore can't be used anywhere other than `$dynamicRef`. Normal [fragment
+identifiers](https://www.rfc-editor.org/rfc/rfc3986#section-3.5) identify the
+secondary resource (the subschema) while the rest of the IRI identifies the
+primary resource (the schema resource). The fragment identifiers defined by
+`$dynamicAnchor` are not normal fragment identifies because they identify both
+the primary resource and the secondary resource. See {{dynamic-ref}} for
+details.
+
+If present, the value of these keywords MUST be a string and MUST conform to the
+plain name fragment identifier syntax defined in {{fragments}}.
 
 #### Duplicate schema identifiers {#duplicate-iris}
 
@@ -1007,7 +1001,7 @@ identified schema. Its results are the results of the referenced schema.[^5]
 [^5]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
 
-The value of the `$ref` keyword MUST be a string which is a IRI reference.
+The value of the `$ref` keyword MUST be a string which is an IRI reference.
 Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
@@ -1019,28 +1013,25 @@ default to operating offline.
 
 ##### Dynamic References with `$dynamicRef` {#dynamic-ref}
 
-The `$dynamicRef` keyword is an applicator that allows for deferring the full
-resolution until runtime, at which point it is resolved each time it is
-encountered while evaluating an instance.
-
-Together with `$dynamicAnchor`, `$dynamicRef` implements a cooperative extension
-mechanism that is primarily useful to to create open schemas, where
-`$dynamicRef` defines the extension point and `$dynamicAnchor` defines the
-target.
+The `$dynamicRef` keyword is an applicator that is used when the referencing
+schema might need to override where a reference in the referenced schema will
+resolve. This is useful for cases such as authoring a recursive schema that can
+be extended or a generic schema such as a list whose items are defined by the
+referencing schema.
 
 The value of the `$dynamicRef` property MUST be formatted as a valid
-[IRI plain name fragment](#fragments).[^3]
+[fragment-only IRI](#fragments).[^3]
 
-[^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`. Although
-the value of `$dynamicRef` is not an IRI fragment, for historical reasons, the
-value still uses an IRI fragment syntax, e.g. `#foo`.
+[^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`. Although,
+for historical reasons, the value of `$dynamicRef` still uses a fragment-only
+IRI syntax, e.g. `#foo`.
 
-Resolution of `$dynamicRef` begins by identifying the outermost schema
-resource in the [dynamic scope](#scopes) which defines a matching
-`$dynamicAnchor`. The schema to apply is the subschema of this resource which
-contains the matching `$dynamicAnchor`.
+Resolution of `$dynamicRef` begins by identifying the outermost schema resource
+in the [dynamic scope](#scopes) which defines a matching `$dynamicAnchor`. The
+schema to apply is the subschema of this resource which contains the matching
+`$dynamicAnchor`. If no matching `$dynamicAnchor` is found, see {{failed-refs}}.
 
-For a full example using these keywords, see {{recursive-example}}.[^6]
+For a full example using these keywords, see {{dynamic-example}}.[^6]
 
 [^6]: The differences in the hyper-schema meta-schemas from draft-07 and draft
 2019-09 dramatically demonstrates the utility of these keywords.
@@ -1205,22 +1196,23 @@ If an implementation has been configured to resolve that identifier to a schema
 via pre-loading or other means, it can be used automatically; otherwise, the
 behavior described in {{failed-refs}} MUST be used.
 
-#### JSON Pointer fragments and embedded schema resources {#embedded}
+#### JSON Pointer fragment identifiers and embedded schema resources {#embedded}
 
-Since JSON Pointer IRI fragments are constructed based on the structure of the
-schema document, an embedded schema resource and its subschemas can be
-identified by JSON Pointer fragments relative to either its own canonical IRI,
-or relative to any containing resource's IRI.
+Since JSON Pointer fragment identifiers are based on the structure of the schema
+document, an embedded schema resource and its subschemas can be identified using
+JSON Pointer IRI fragments relative to either its own IRI, or relative to any
+containing resource's IRI.
 
 Conceptually, a set of linked schema resources should behave identically whether
 each resource is a separate document connected with [schema
 references](#referenced), or is structured as a single document with one or more
 schema resources embedded as subschemas.
 
-Since IRIs involving JSON Pointer fragments relative to the parent schema
-resource's IRI cease to be valid when the embedded schema is moved to a separate
-document and referenced, applications and schemas SHOULD NOT use such IRIs to
-identify embedded schema resources or locations within them.
+Since IRIs with JSON Pointer fragments are relative to the parent schema
+resource's IRI, they cease to be valid when the embedded schema is moved to a
+separate document and referenced. Because of this, applications and schemas
+SHOULD NOT use such IRIs to identify embedded schema resources or locations
+within them.
 
 Consider the following schema document that contains another schema resource
 embedded within it:
@@ -1244,7 +1236,7 @@ For the `additionalProperties` schema within that embedded resource, the IRI
 object, but that object's IRI relative to its resource's canonical IRI is
 `https://example.com/bar#/additionalProperties`.
 
-Now consider the following two schema resources linked by reference using a IRI
+Now consider the following two schema resources linked by reference using an IRI
 value for `$ref`:
 
 ```jsonschema
@@ -1264,10 +1256,11 @@ value for `$ref`:
 ```
 
 Here we see that `https://example.com/bar#/additionalProperties`, using a JSON
-Pointer fragment appended to the canonical IRI of the "bar" schema resource, is
-still valid, while `https://example.com/foo#/items/additionalProperties`, which
-relied on a JSON Pointer fragment appended to the canonical IRI of the "foo"
-schema resource, no longer resolves to anything.
+Pointer fragment identifier appended to the canonical IRI of the "bar" schema
+resource, is still valid, while
+`https://example.com/foo#/items/additionalProperties`, which relied on a JSON
+Pointer fragment identifier appended to the canonical IRI of the "foo" schema
+resource, no longer resolves to anything.
 
 Note also that `https://example.com/foo#/items` is valid in both arrangements,
 but resolves to a different value. This IRI ends up functioning similarly to a
@@ -1282,14 +1275,15 @@ undefined. Schema authors SHOULD NOT rely on such IRIs, as using them may
 reduce interoperability.[^8]
 
 [^8]: This is to avoid requiring implementations to keep track of a whole stack
-of possible base IRIs and JSON Pointer fragments for each, given that all but
-one will be fragile if the schema resources are reorganized. Some have argued
-that this is easy so there is no point in forbidding it, while others have
-argued that it complicates schema identification and should be forbidden.
-Feedback on this topic is encouraged. After some discussion, we feel that we
-need to remove the use of "canonical" in favour of talking about JSON Pointers
-which reference across schema resource boundaries as undefined or even forbidden
-behavior (<https://github.com/json-schema-org/json-schema-spec/issues/937>,
+    of possible base IRIs and JSON Pointer fragment identifiers for each, given
+that all but one will be fragile if the schema resources are reorganized. Some
+have argued that this is easy so there is no point in forbidding it, while
+others have argued that it complicates schema identification and should be
+forbidden. Feedback on this topic is encouraged. After some discussion, we feel
+that we need to remove the use of "canonical" in favour of talking about JSON
+Pointers which reference across schema resource boundaries as undefined or even
+forbidden behavior
+(<https://github.com/json-schema-org/json-schema-spec/issues/937>,
 <https://github.com/json-schema-org/json-schema-spec/issues/1183>)
 
 Further examples of such non-canonical IRI construction, as well as the
@@ -1578,9 +1572,9 @@ subschema, then validation succeeds against this keyword if the instance also
 successfully validates against this keyword's subschema.
 
 This keyword has no effect when `if` is absent, or when the instance fails to
-validate against the `if` subschema. Implementations MUST NOT evaluate the instance
-against this keyword, for either validation or annotation collection purposes,
-in such cases.
+validate against the `if` subschema. Implementations MUST NOT evaluate the
+instance against this keyword, for either validation or annotation collection
+purposes, in such cases.
 
 ##### `else`
 
@@ -1591,8 +1585,8 @@ then validation succeeds against this keyword if the instance successfully
 validates against this keyword's subschema.
 
 This keyword has no effect when `if` is absent, or when the instance
-successfully validates against the `if` subschema. Implementations MUST NOT evaluate
-the instance against this keyword, for either validation or annotation
+successfully validates against the `if` subschema. Implementations MUST NOT
+evaluate the instance against this keyword, for either validation or annotation
 collection purposes, in such cases.
 
 ##### `dependentSchemas` {#dependent-schemas}
@@ -1856,8 +1850,8 @@ Omitting this keyword has the same assertion behavior as an empty schema.
 
 The value of `unevaluatedProperties` MUST be a valid JSON Schema.
 
-This keyword applies to object instances by applying its subschema to the object's
-property values.
+This keyword applies to object instances by applying its subschema to the
+object's property values.
 
 The behavior of this keyword depends on all adjacent keywords as well as
 keywords in successfully validated subschemas that apply to the same instance
@@ -1872,9 +1866,9 @@ subschema validates against all applicable property values.
 The annotation result of this keyword is the set of instance property names
 validated by this keyword's subschema.
 
-The presence of this keyword affects the behavior of other `unevaluatedProperties`
-keywords found earlier in the dynamic scope that apply to the same instance
-location.
+The presence of this keyword affects the behavior of other
+`unevaluatedProperties` keywords found earlier in the dynamic scope that apply
+to the same instance location.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
@@ -2115,7 +2109,8 @@ determines the canonical nature of the resulting full IRI.[^18]
 and direct you to read the CREF located in {{embedded}} for further comments.
 
 While the following IRIs do correctly indicate specific schemas, per the reasons
-outlined in {{embedded}}, they are to be avoided as they may not work in all implementations:
+outlined in {{embedded}}, they are to be avoided as they may not work in all
+implementations:
 
 Document location `/$defs/B`:
 - canonical (and base) `IRI: https://example.com/other.json`
@@ -2183,7 +2178,7 @@ scope of this specification to determine or provide a set of safe `$ref` removal
 transformations, as they depend not only on the schema structure but also on the
 intended usage.
 
-## %appendix% Example of recursive schema extension {#recursive-example}
+## %appendix% Example of recursive schema extension {#dynamic-example}
 
 Consider the following two schemas describing a simple recursive tree structure,
 where each node in the tree can have a "data" field of any type. The first
@@ -2235,7 +2230,7 @@ the following full schema IRIs:
 - `https://example.com/strict-tree#node`
 
 In addition, JSON Schema implementations keep track of the fact that these
-fragments were created with `$dynamicAnchor`.
+fragment identifiers were created with `$dynamicAnchor`.
 
 If we apply the "strict-tree" schema to the instance, we will follow the `$ref`
 to the "tree" schema, examine its "children" subschema, and find the
@@ -2253,25 +2248,25 @@ At this point, the evaluation path is
 1. `https://example.com/tree#/properties/children`
 1. `https://example.com/tree#/properties/children/items`
 
-Since we are looking for a plain name fragment, which can be defined anywhere
-within a schema resource, the JSON Pointer fragments are irrelevant to this
-check. That means that we can remove those fragments and eliminate consecutive
-duplicates, producing:
+Since we are looking for a plain name fragment identifier, which can be defined
+anywhere within a schema resource, the JSON Pointer IRI fragments are irrelevant
+to this check. That means that we can remove the fragments and eliminate
+consecutive duplicates, producing:
 
 1. `https://example.com/strict-tree`
 1. `https://example.com/tree`
 
-In this case, the outermost resource also has a "node" fragment defined by
-`$dynamicAnchor`. Therefore instead of resolving the `$dynamicRef` to
+In this case, the outermost resource also has a "node" fragment identifier
+defined by `$dynamicAnchor`. Therefore instead of resolving the `$dynamicRef` to
 `https://example.com/tree#node`, we resolve it to
 `https://example.com/strict-tree#node`.
 
-This way, the recursion in the "tree" schema recurses to the root of
-"strict-tree", instead of only applying "strict-tree" to the instance root, but
-applying "tree" to instance children.
+The reference in the "tree" schema resolves to the root of "strict-tree", so
+"strict-tree" is applied not only to the tree instance's root, but also its
+children.
 
 This example shows both `$dynamicAnchor`s in the same place in each schema,
-specifically the resource root schema. Since plain-name fragments are
+specifically the resource root schema. Since plain-name fragment identifiers are
 independent of the JSON structure, this would work just as well if one or both
 of the node schema objects were moved under `$defs`. It is the matching
 `$dynamicAnchor` values which tell us how to resolve the dynamic reference, not
