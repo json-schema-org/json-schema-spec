@@ -486,11 +486,11 @@ and `$dynamicRef` keywords that may have been resolved), is considered the
 "evaluation path".
 
 Lexical and dynamic scopes align until a reference keyword is encountered. While
-following the reference keyword moves processing from one lexical scope into a
+following the reference moves processing from one lexical scope into a
 different one, from the perspective of dynamic scope, following a reference is
 no different from descending into a subschema present as a value. A keyword on
 the far side of that reference that resolves information through the dynamic
-scope will consider the originating side of the reference to be their dynamic
+scope will consider the originating side of the reference to be its dynamic
 parent rather than examining the local lexically enclosing parent.
 
 The concept of dynamic scope is primarily used with `$dynamicRef` and
