@@ -2250,7 +2250,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Tree schema, extensible"
 {
-  "$schema": "https://json-schema.org/draft/next/schema",
+  "$schema": "https://json-schema.org/1/2025",
   "$id": "https://example.com/tree",
   "$dynamicAnchor": "node",
 
@@ -2269,7 +2269,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Strict-tree schema, guards against misspelled properties"
 {
-  "$schema": "https://json-schema.org/draft/next/schema",
+  "$schema": "https://json-schema.org/1/2025",
   "$id": "https://example.com/strict-tree",
   "$dynamicAnchor": "node",
 
