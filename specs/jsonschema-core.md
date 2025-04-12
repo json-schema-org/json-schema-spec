@@ -418,7 +418,7 @@ they do not know how to process or explicitly choose not to process.
 ## Keyword Behaviors {#keyword-behaviors}
 
 JSON Schema keywords may exhibit one or more behaviors. This specification
-defines three such behaviors:
+defines three such behaviors[^7]:
 
 - Assertions validate that an instance satisfies constraints, producing a
   boolean result: `true` if the constraints are satisfied; `false` otherwise.
@@ -426,6 +426,12 @@ defines three such behaviors:
   fit.
 - Applicators apply subschemas to parts of the instance and combine their
   results.
+
+[^7]: This specification also defines several operational directive keywords,
+such as `$id` and `$schema`. As such, these keywords do not exhibit these
+behaviors. However, it is recommended that extensions avoid defining additional
+directive keywords as they could interfere with schema processing and produce
+unexpected or undesirable results.
 
 Extension keywords SHOULD be defined using these behaviors, keeping in mind that
 annotations in particular are extremely flexible. Complex behavior is usually
@@ -589,8 +595,14 @@ identifying such referenced schemas is defined by the keyword.
 Applicator keywords also behave as assertions by defining how subschema or
 referenced schema boolean [assertion](#assertions) results are modified and/or
 combined to produce the boolean result of the applicator. Applicators may apply
-any boolean logic operation to the assertion results of subschemas, but MUST NOT
-introduce new assertion conditions of their own.
+any boolean logic operation to the assertion results of subschemas, but SHOULD
+NOT introduce new assertion conditions of their own.[^2]
+
+[^2]: It is recommended that keywords have a single resposibility. An example of
+this in action is the separation between `properties`, which verifies object
+property values have the right data _if_ they exist, and `required`, which
+verifies that object properties exist. Separating these concerns allows for more
+reusable components.
 
 [Annotation](#annotations) results from subschemas are preserved in accordance
 with {{collect}} so that applications can decide how to interpret multiple
