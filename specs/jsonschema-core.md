@@ -429,9 +429,13 @@ they do not know how to process or explicitly choose not to process.
 
 ## Specification Versioning and Compatibility
 
-This specification is versioned by two values: iteration and release year.
+This specification is identified collectively by two values: version and release
+year.
 
-A schema written to conform with the requirements of a given version (iteration and release year) is compatible with specifications published with the same iteration value and either the same or greater release year value.  Thus, JSON Schema provides a guarantee of compatibility for future releases within an iteration.
+A schema written to conform with the requirements of a given version is
+compatible with successive specifications, which are published with the same
+version and either the same or greater release year value. Thus, JSON Schema
+provides a guarantee of compatibility for future releases within a version.
 
 ## Keyword Behaviors {#keyword-behaviors}
 
