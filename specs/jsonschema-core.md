@@ -422,7 +422,7 @@ defines three such behaviors[^7]:
 
 - Assertions validate that an instance satisfies constraints, producing a
   boolean result: `true` if the constraints are satisfied; `false` otherwise.
-- Annotations attach information that applications may use in any way they see
+- Annotations attach information to instance locations that applications may use in any way they see
   fit.
 - Applicators apply subschemas to parts of the instance and combine their
   results.
