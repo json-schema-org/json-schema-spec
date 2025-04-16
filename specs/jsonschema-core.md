@@ -477,27 +477,27 @@ root object.
 
 #### Dynamic Scope
 
-The dynamic scope is the ordered collection of schema objects navigated during
-evaluation, starting at the root and ending at the subschema under evaluation.
-The outermost dynamic scope is the schema object at which processing begins,
-even if it is not a schema resource root. The path that evaluation takes,
-starting from this root schema to any particular subschema (including any `$ref`
+The dynamic scope is the ordered collection of schema resources navigated during
+evaluation, starting at the root and ending at the schema resource which
+contains the subschema under evaluation. The outermost dynamic scope is the
+schema resource at which processing begins. The path that evaluation takes,
+starting from the subschema to any particular subschema (including any `$ref`
 and `$dynamicRef` keywords that may have been resolved), is considered the
 "evaluation path".
 
 Lexical and dynamic scopes align until a reference keyword is encountered. While
-following the reference moves processing from one lexical scope into a
-different one, from the perspective of dynamic scope, following a reference is
-no different from descending into a subschema present as a value. A keyword on
-the far side of that reference that resolves information through the dynamic
-scope will consider the originating side of the reference to be its dynamic
-parent rather than examining the local lexically enclosing parent.
+following the reference moves processing from one lexical scope into a different
+one, from the perspective of dynamic scope, following a reference is no
+different from descending into a subschema. A keyword on the far side of the
+reference that resolves information through the dynamic scope will consider the
+originating side of the reference to be its dynamic parent rather than examining
+the local lexically enclosing parent.
 
 The concept of dynamic scope is primarily used with `$dynamicRef` and
 `$dynamicAnchor`, and should be considered an advanced feature and used with
 caution when defining additional keywords. It also appears when reporting errors
 and collected annotations, as it may be possible to revisit the same lexical
-scope repeatedly with different dynamic scopes. In such cases, it is important
+scope repeatedly with different dynamic scopes. For this reason, it is important
 to inform the user of the evaluation path that produced the error or annotation.
 
 ### Keyword Interactions
