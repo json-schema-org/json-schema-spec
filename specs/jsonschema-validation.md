@@ -103,7 +103,7 @@ specification.
 ## Meta-Schema {#meta-schema}
 
 The current IRI for the default JSON Schema dialect meta-schema is
-`https://json-schema.org/1/2025`. This IRI encodes the specifications version
+`https://json-schema.org/1/2025`. This IRI encodes the specification's version
 and release year. Because all schemas written to conform to a given version are
 guaranteed to be compatible with later releases within the same iteration, the
 meta-schema IRI `https://json-schema.org/1` is also recognized to represent the
