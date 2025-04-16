@@ -325,9 +325,9 @@ from previous iterations of this specification. Previously, `format` was an
 annotation-only keyword by default and implementations that supported assertion
 were required to offer some configuration that allowed users to explicitly
 enable assertion. Assertion is now a requirement in order to meet user
-expectations. See [json-schema-org/json-schema-spec
-#1520](https://github.com/json-schema-org/json-schema-spec/issues/1520) for
-more.
+expectations. See
+[json-schema-org/json-schema-spec #1520](https://github.com/json-schema-org/json-schema-spec/issues/1520)
+for more.
 
 In addition to the assertion behavior, this keyword also produces its value as
 an annotation.
@@ -350,9 +350,13 @@ instance.
 
 #### Format Registry {#format-registry}
 
-In addition to the formats defined by this document, JSON Schema also maintains a registry of formats defined by other specifications and organizations. As of the publication of this document, the format registry can be found at <https://github.com/json-schema-org/json-schema-spec/blob/main/specs/registries/format.json>.
+In addition to the formats defined by this document, JSON Schema also maintains
+a registry of formats defined by other specifications and organizations. As of
+the publication of this document, the format registry can be found at
+<https://github.com/json-schema-org/json-schema-spec/blob/main/specs/registries/format.json>.
 
-Implementations SHOULD support the formats listed in this registry as if they were defined by this document.
+Implementations SHOULD support the formats listed in this registry as if they
+were defined by this document.
 
 #### Custom `format` Values
 
