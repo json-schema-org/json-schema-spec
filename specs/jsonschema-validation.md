@@ -334,14 +334,14 @@ an annotation.
 
 Implementations:
 
-- SHOULD provide validation for each format attribute defined in this document
-  and listed in the {{format-registry}};
+- SHOULD provide validation for each format attribute defined in this document;
+- are encouraged to provide validation for format attributes listed in the
+  {{format-registry}};
 - MAY support format values not defined in this document or listed in the
   registry, but such support MUST be configurable and disabled by default;
 - SHOULD use a common parsing library or a well-known regular expression for
   each format;
-- SHOULD clearly document how and to what degree each format attribute is
-  validated.
+- SHOULD clearly document any limitations regarding format validation.
 
 The requirement for validation of format values in general is limited to
 syntactic checking; implementations SHOULD NOT attempt to send an email, connect
