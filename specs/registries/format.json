@@ -1,0 +1,375 @@
+{
+    "base64url": {
+        "description": "Binary data encoded as a url-safe string as defined in RFC4648",
+        "types": ["string"],
+        "examples": ["U3dhZ2dlciByb2Nrcw"],
+        "deprecated": true,
+        "supportedBy": []
+    },
+    "binary": {
+        "description": "Any sequence of octets",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/v3.0.3.html#data-types",
+        "types": ["string"],
+        "examples": ["binary data"],
+        "deprecated": true,
+        "supportedBy": []
+    },
+    "byte": {
+        "description": "Base64 encoded data as defined in RFC4648",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/v3.0.3.html#data-types",
+        "types": ["string"],
+        "examples": ["U3dhZ2dlciByb2Nrcw=="],
+        "deprecated": true,
+        "supportedBy": []
+    },
+    "char": {
+        "description": "A single character",
+        "types": ["string"],
+        "examples": ["a"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "commonmark": {
+        "description": "Commonmark-formatted text",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/latest.html#data-types",
+        "types": ["string"],
+        "examples": ["# Heading\n\nSome **bold** text."],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "date": {
+        "description": "Date as defined by full-date - RFC3339",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-dates-times-and-duration",
+        "types": ["string"],
+        "examples": ["2017-07-21"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "date-time": {
+        "description": "Date and time as defined by date-time - RFC3339",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-dates-times-and-duration",
+        "types": ["string"],
+        "examples": ["2017-07-21T17:32:28Z"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "decimal": {
+        "description": "A fixed point decimal number of unspecified precision and range",
+        "types": ["string", "number"],
+        "examples": ["123.45"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "decimal128": {
+        "description": "A decimal floating-point number with 34 significant decimal digits",
+        "types": ["string", "number"],
+        "examples": ["123.4567890123456789012345678901234"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "double": {
+        "description": "Double precision floating point number",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/latest.html#data-types",
+        "types": ["number"],
+        "examples": [-1.7976931348623157e+308, -1, -4.9406564584124654e-324, 0, 4.9406564584124654e-324, 1, 1.7976931348623157e+308],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "double-int": {
+        "description": "An integer that can be stored in an IEEE 754 double-precision number without loss of precision",
+        "types": ["number"],
+        "examples": [9007199254740991],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "duration": {
+        "description": "Duration as defined by duration - RFC3339",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-dates-times-and-duration",
+        "types": ["string"],
+        "examples": ["P3Y6M4DT12H30M5S"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "email": {
+        "description": "An email address as defined as Mailbox in RFC5321",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-email-addresses",
+        "types": ["string"],
+        "examples": ["user@example.com"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "float": {
+        "description": "Single precision floating point number",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/latest.html#data-types",
+        "types": ["number"],
+        "examples": [-3.40282347e+38, -1, -1.17549435e-38, 0, 1.17549435e-38, 1, 3.40282347e+38],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "hostname": {
+        "description": "A host name as defined by RFC1123",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-hostnames",
+        "types": ["string"],
+        "examples": ["example.com"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "html": {
+        "description": "HTML-formatted text",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/latest.html#data-types",
+        "types": ["string"],
+        "examples": ["<p>This is a paragraph.</p>"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "http-date": {
+        "description": "Date and time as defined by HTTP-date - RFC7231",
+        "types": ["string"],
+        "examples": ["Sun, 06 Nov 1994 08:49:37 GMT"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "idn-email": {
+        "description": "An email address as defined as Mailbox in RFC6531",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-email-addresses",
+        "types": ["string"],
+        "examples": ["user@exämple.com"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "idn-hostname": {
+        "description": "An internationalized host name as defined by RFC5890",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-hostnames",
+        "types": ["string"],
+        "examples": ["exämple.com"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "int16": {
+        "description": "Signed 16-bit integer",
+        "types": ["number"],
+        "examples": [-32768, -1, 0, 1, 32767],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "int32": {
+        "description": "Signed 32-bit integer",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/v3.1.1.html#data-type-format",
+        "types": ["number"],
+        "examples": [-2147483648, -1, 0, 1, 2147483647],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "int64": {
+        "description": "Signed 64-bit integer",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/v3.1.1.html#data-type-format",
+        "types": ["number"],
+        "examples": [-9223372036854775808, -1, 0, 1, 9223372036854775807],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "int8": {
+        "description": "Signed 8-bit integer",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/latest.html#data-types",
+        "types": ["number"],
+        "examples": [-128, -1, 0, 1, 127],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "ipv4": {
+        "description": "An IPv4 address as defined as dotted-quad by RFC2673",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-ip-addresses",
+        "types": ["string"],
+        "examples": ["192.168.0.1"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "ipv6": {
+        "description": "An IPv6 address as defined by RFC4673",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-ip-addresses",
+        "types": ["string"],
+        "examples": ["2001:0db8:85a3:0000:0000:8a2e:0370:7334"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "iri": {
+        "description": "An Internationalized Resource Identifier as defined in RFC3987",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
+        "types": ["string"],
+        "examples": ["https://example.com/rosé"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "iri-reference": {
+        "description": "An Internationalized Resource Identifier as defined in RFC3987",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
+        "types": ["string"],
+        "examples": ["../resource.json"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "json-pointer": {
+        "description": "A JSON string representation of a JSON Pointer as defined in RFC6901",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-json-pointers",
+        "types": ["string"],
+        "examples": ["/foo/bar"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "media-range": {
+        "description": "A media type as defined by the media-range ABNF production in RFC9110.",
+        "definingBody": "OpenAPI",
+        "definition": "https://www.rfc-editor.org/rfc/rfc9110#field.accept",
+        "types": ["string"],
+        "examples": ["text/html"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "regex": {
+        "description": "A regular expression as defined in ECMA-262",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-regex",
+        "types": ["string"],
+        "examples": ["^[a-zA-Z0-9]+$"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "relative-json-pointer": {
+        "description": "A JSON string representation of a relative JSON Pointer as defined in draft RFC 01",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-json-pointers",
+        "types": ["string"],
+        "examples": ["1/0"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "sf-binary": {
+        "description": "Structured fields byte sequence as defined in RFC8941",
+        "definingBody": "RFC 8941",
+        "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-byte-sequences",
+        "types": ["string"],
+        "examples": ["U3dhZ2dlciByb2Nrcw=="],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "sf-boolean": {
+        "description": "Structured fields boolean as defined in RFC8941",
+        "definingBody": "RFC 8941",
+        "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-booleans",
+        "types": ["string"],
+        "examples": ["true", "false"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "sf-decimal": {
+        "description": "Structured fields decimal as defined in RFC8941",
+        "definingBody": "RFC 8941",
+        "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-decimals",
+        "types": ["number"],
+        "examples": ["123.45"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "sf-integer": {
+        "description": "Structured fields integer as defined in RFC8941",
+        "definingBody": "RFC 8941",
+        "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-integers",
+        "types": ["number"],
+        "examples": [123],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "sf-string": {
+        "description": "Structured fields string as defined in RFC8941",
+        "definingBody": "RFC 8941",
+        "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-strings",
+        "types": ["string"],
+        "examples": ["example"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "sf-token": {
+        "description": "Structured fields token as defined in RFC8941",
+        "definingBody": "RFC 8941",
+        "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-tokens",
+        "types": ["string"],
+        "examples": ["token"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "time": {
+        "description": "Time as defined by full-time - RFC3339",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-dates-times-and-duration",
+        "types": ["string"],
+        "examples": ["13:45:30Z", "13:45:30+01:00"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "uint8": {
+        "description": "Unsigned 8-bit integer",
+        "definingBody": "OpenAPI",
+        "definition": "https://spec.openapis.org/oas/latest.html#data-types",
+        "types": ["number"],
+        "examples": [0, 1, 255],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "uri": {
+        "description": "A Uniform Resource Identifier as defined in RFC3986",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
+        "types": ["string"],
+        "examples": ["https://example.com"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "uri-reference": {
+        "description": "A URI reference as defined in RFC3986",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
+        "types": ["string"],
+        "examples": ["../resource.json"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "uri-template": {
+        "description": "A URI Template as defined in RFC6570",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-uri-template",
+        "types": ["string"],
+        "examples": ["https://example.com/{id}"],
+        "deprecated": false,
+        "supportedBy": []
+    },
+    "uuid": {
+        "description": "A Universally Unique IDentifier as defined in RFC4122",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
+        "types": ["string"],
+        "examples": ["f81d4fae-7dec-11d0-a765-00a0c91e6bf6"],
+        "deprecated": false,
+        "supportedBy": []
+    }
+}
