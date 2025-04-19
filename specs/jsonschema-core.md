@@ -394,6 +394,18 @@ Additional schema keywords MAY be defined by any entity. Save for explicit
 agreement, schema authors SHALL NOT expect these additional keywords to be
 supported by implementations that do not explicitly document such support.
 
+Extension keywords MUST NOT interfere with the operation of keywords defined by
+this document or the companion JSON Schema Validation specificiation, and SHOULD
+NOT interfere with the operation of keywords defined by other extension
+documents.[^11]
+
+[^11]: JSON Schema currently does not have a namespacing mechanism, which would
+allow multiple extensions to define the same keyword differently while also
+giving the schema author the ability to declare which definition is intended.
+Such a feature is planned for future releases. See the
+[Vocabularies / Extensions project](https://github.com/orgs/json-schema-org/projects/28/views/2)
+in GitHub for more information.
+
 Implementations MAY provide the ability to register or load handlers for
 keywords that they do not support directly. The exact mechanism for registering
 and implementing such handlers is implementation-dependent.
@@ -422,16 +434,15 @@ defines three such behaviors[^7]:
 
 - Assertions validate that an instance satisfies constraints, producing a
   boolean result: `true` if the constraints are satisfied; `false` otherwise.
-- Annotations attach information to instance locations that applications may use in any way they see
-  fit.
+- Annotations attach information to instance locations that applications may use
+  in any way they see fit.
 - Applicators apply subschemas to parts of the instance and combine their
   results.
 
 [^7]: This specification also defines several operational directive keywords,
-such as `$id` and `$schema`. As such, these keywords do not exhibit these
-behaviors. However, it is recommended that extensions avoid defining additional
-directive keywords as they could interfere with schema processing and produce
-unexpected or undesirable results.
+such as `$id` and `$schema`, which do not exhibit these behaviors. Instead,
+these keywords provide metadata that instruct implementations on how to
+interpret and process the schema.
 
 Extension keywords SHOULD be defined using these behaviors, keeping in mind that
 annotations in particular are extremely flexible. Complex behavior is usually
@@ -439,9 +450,7 @@ better delegated to applications on the basis of annotation data than
 implemented directly as schema keywords. However, extension keywords MAY define
 other behaviors for specialized purposes.
 
-Keywords which are not defined to exhibit a particular behavior MUST NOT affect
-that aspect of evaluation. For example, a keyword which does not act as an
-assertion MUST NOT affect the validation result.
+Implementations SHOULD NOT add unspecified behaviors to keywords.
 
 For the purposes of this document, an instance "validating against a keyword"
 means that the keyword produces an assertion result of `true` if the instance
