@@ -1040,15 +1040,10 @@ identified schema. Its results are the results of the referenced schema.[^5]
 other keywords can appear alongside of `$ref` in the same schema object.
 
 The value of the `$ref` keyword MUST be a string which is an IRI reference.
-The value of the `$ref` keyword MUST be a string which is an IRI reference.
 Resolved against the current IRI base, it produces the IRI of the schema to
 apply. This resolution is safe to perform on schema load, as the process of
 evaluating an instance cannot change how the reference resolves.
 
-The resolved IRI produced by `$ref` is not necessarily a network locator, only
-an identifier. A schema need not be downloadable from the address if it is a
-network-addressable URL. Implementations which can access the network SHOULD
-default to operating offline.
 The resolved IRI produced by `$ref` is not necessarily a network locator, only
 an identifier. A schema need not be downloadable from the address if it is a
 network-addressable URL. Implementations which can access the network SHOULD
