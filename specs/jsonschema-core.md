@@ -1990,6 +1990,12 @@ A malicious schema author could place executable code or other dangerous
 material within a `$comment`. Implementations MUST NOT parse or otherwise take
 action based on `$comment` contents.
 
+When encoutering an IRI that is also a valid URL, implementations SHOULD NOT
+presume a network operation should be performed. Implementations which have
+access to the internet SHOULD default to operating offline. Network operations
+should be limited to hypermedia APIs and similar applications where this risk
+already exists and is built into the architecture.
+
 ## IANA Considerations
 
 ### `application/schema+json`
