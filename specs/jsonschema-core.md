@@ -450,42 +450,54 @@ further change the assertion result.
 
 While most JSON Schema keywords can be evaluated on their own, or at most need
 to take into account the values or results of adjacent keywords in the same
-schema object, a few have more complex behavior.
+schema object, a few have more complex behavior. This behavior is generally
+governed by the scope of the keyword.
+
+This specification defines two such scopes: lexical and dynamic.
+
+#### Lexical Scope
 
 The lexical scope of a keyword is determined by the nested JSON data structure
-of objects and arrays. The largest such scope is an entire schema document.  The
-smallest scope is a single schema object with no subschemas.
+of objects and arrays. The smallest such scope is a single schema object with no
+subschemas. The largest scope is an entire schema document, recursively
+including all of its subschemas.
 
-Keywords MAY be defined with a partial value, such as a IRI reference, which
-must be resolved against another value, such as another IRI reference or a full
-IRI, which is found through the lexical structure of the JSON document. The
-`$id`, `$ref`, and `$dynamicRef` core keywords, and the "base" JSON Hyper-Schema
-keyword, are examples of this sort of behavior.
+Keywords MAY be defined with a partial value which must be resolved against
+another value found within the lexical structure of the JSON document. The
+`$id`, `$schema`, and `$ref` core keywords, and the `base` JSON Hyper-Schema
+keyword, are some such keywords. For example, an `$id` keyword found in an
+embedded schema resource may have a value that is a relative IRI. This value
+must be resolved against another `$id` keyword found in an ancestor subschema,
+or the root schema, to produce an absolute IRI which fully identifies that
+embedded schema resource.
 
 Note that some keywords, such as `$schema`, apply to the lexical scope of the
 entire schema resource, and therefore MUST only appear in a schema resource's
-root schema.
+root object.
 
-Other keywords may take into account the dynamic scope that exists during the
-evaluation of a schema, typically together with an instance document. The
-outermost dynamic scope is the schema object at which processing begins, even if
-it is not a schema resource root. The path from this root schema to any
-particular keyword (that includes any `$ref` and `$dynamicRef` keywords that may
-have been resolved) is considered the keyword's "evaluation path."
+#### Dynamic Scope
+
+The dynamic scope is the ordered collection of schema resources navigated during
+evaluation, starting at the root and ending at the schema resource which
+contains the subschema under evaluation. The outermost dynamic scope is the
+schema resource at which processing begins. The path that evaluation takes,
+starting from the subschema to any particular subschema (including any `$ref`
+and `$dynamicRef` keywords that may have been resolved), is considered the
+"evaluation path".
 
 Lexical and dynamic scopes align until a reference keyword is encountered. While
-following the reference keyword moves processing from one lexical scope into a
-different one, from the perspective of dynamic scope, following a reference is
-no different from descending into a subschema present as a value. A keyword on
-the far side of that reference that resolves information through the dynamic
-scope will consider the originating side of the reference to be their dynamic
-parent, rather than examining the local lexically enclosing parent.
+following the reference moves processing from one lexical scope into a different
+one, from the perspective of dynamic scope, following a reference is no
+different from descending into a subschema. A keyword on the far side of the
+reference that resolves information through the dynamic scope will consider the
+originating side of the reference to be its dynamic parent rather than examining
+the local lexically enclosing parent.
 
 The concept of dynamic scope is primarily used with `$dynamicRef` and
 `$dynamicAnchor`, and should be considered an advanced feature and used with
 caution when defining additional keywords. It also appears when reporting errors
 and collected annotations, as it may be possible to revisit the same lexical
-scope repeatedly with different dynamic scopes. In such cases, it is important
+scope repeatedly with different dynamic scopes. For this reason, it is important
 to inform the user of the evaluation path that produced the error or annotation.
 
 ### Keyword Interactions
@@ -894,8 +906,10 @@ If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
-be used in the root schema objects of embedded schema resources. When the
-keyword appears in a non-resource root schema object, the behavior is undefined.
+be used in the root schema objects of embedded schema resources. This keyword
+MUST NOT appear in a subschema that is not also the root object of a schema
+resource (see {{id-keyword}} for more information regarding defining embedded
+schema resources.)
 
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
@@ -917,8 +931,9 @@ to establish a base IRI in order to resolve the reference.
 #### The `$id` Keyword {#id-keyword}
 
 An `$id` keyword in a schema or subschema identifies that schema or subschema as
-a distinct schema resource. The value for this keyword MUST be a string, and
-MUST represent a valid IRI reference without a fragment.
+a distinct schema resource and applies to the entire lexical scope of that
+schema resource. The value for this keyword MUST be a string, and MUST represent
+a valid IRI reference without a fragment.
 
 When the value of this keyword is resolved against the current base IRI, the
 resulting absolute IRI then serves as the identifier for the schema resource and
