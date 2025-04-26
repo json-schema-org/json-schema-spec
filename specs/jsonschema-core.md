@@ -256,7 +256,7 @@ A root schema, which may comprise the entire JSON document, is the top-level
 schema that is identified by the absolute IRI. The root schema is always a
 schema resource, where the IRI is determined as described in {{initial-base}}.
 
-Documents formats which embed JSON Schemas within them will not necessarily have
+Document formats which embed JSON Schemas within them will not necessarily have
 a single root schema in this sense. How root schemas are identified within such
 documents SHOULD be defined by the specifications which govern them.
 
