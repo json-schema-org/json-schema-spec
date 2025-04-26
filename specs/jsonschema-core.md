@@ -604,10 +604,10 @@ identifying such referenced schemas is defined by the keyword.
 Applicator keywords also behave as assertions, using the assertion results of
 each subschema or referenced schema of the keyword. These boolean results are
 modified (e.g. the `not` keyword negates its subschema's assertion) and/or
-combined (e.g. `allOf` takes the conjunction of its subschemas' assertions)
-to produce the boolean result of the applicator.
-any boolean logic operation to the assertion results of subschemas, but SHOULD
-NOT introduce new assertion conditions of their own.[^2]
+combined (e.g. `allOf` takes the conjunction of its subschemas' assertions) to
+produce the boolean result of the applicator. Applicators may apply any boolean
+logic operation to the assertion results of subschemas, but SHOULD NOT introduce
+new assertion conditions of their own.[^2]
 
 [^2]: It is recommended that keywords have a single resposibility. An example of
 this in action is the separation between `properties`, which verifies object
