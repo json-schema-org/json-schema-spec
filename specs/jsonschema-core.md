@@ -420,7 +420,7 @@ they do not know how to process or explicitly choose not to process.
 This specification is identified collectively by two values: version and release
 year.
 
-A schema written to conform with the requirements of a given version is
+A schema written to conform with the requirements of a given release is
 compatible with successive specifications, which are published with the same
 version and either the same or greater release year value. Thus, JSON Schema
 provides a guarantee of compatibility for future releases within a version.
