@@ -1785,7 +1785,7 @@ The value of this keyword MUST be a non-negative integer.
 This keyword modifies the behavior of `contains` within the same schema object,
 as described below in the section for that keyword.
 
-This keyword produces no assertion result. The value of this keyword is used as
+This keyword has no assertion behavior. The value of this keyword is used as
 its annotation result.
 
 Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation results.
