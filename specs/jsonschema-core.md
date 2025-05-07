@@ -394,9 +394,9 @@ Additional schema keywords MAY be defined by any entity. Save for explicit
 agreement, schema authors SHALL NOT expect these additional keywords to be
 supported by implementations that do not explicitly document such support.
 
-Extension keywords MUST NOT interfere with the operation of keywords defined by
+Extension keywords MUST NOT directly modify the operation of keywords defined by
 this document or the companion JSON Schema Validation specificiation, and SHOULD
-NOT interfere with the operation of keywords defined by other extension
+NOT directly modify the operation of keywords defined by other extension
 documents.[^11]
 
 [^11]: JSON Schema currently does not have a namespacing mechanism, which would
