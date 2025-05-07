@@ -1991,7 +1991,7 @@ material within a `$comment`. Implementations MUST NOT parse or otherwise take
 action based on `$comment` contents.
 
 When encountering an IRI that also represents a valid file system or network
-location, implementations are discouraged to automatically an operation to
+location, implementations are discouraged from automatically making an operation to
 access that location. Schema authors should take care when configuring
 implementations to operate over a file system or network as this could expose
 the host system to various security vulnerabilities, such as man-in-the-middle
