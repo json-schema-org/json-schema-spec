@@ -252,13 +252,13 @@ is identical to the primary resource. This can occur with the empty fragment, or
 when one schema resource is embedded in another. Any such IRIs with fragments
 are considered to be non-canonical.
 
-The root schema is the schema that comprises the entire JSON document in
-question. The root schema is always a schema resource, where the IRI is
-determined as described in {{initial-base}}.[^1]
+A root schema, which may comprise the entire JSON document, is the top-level
+schema that is identified by the absolute IRI. The root schema is always a
+schema resource, where the IRI is determined as described in {{initial-base}}.
 
-[^1]: Note that documents that embed schemas in another format will not have a
-root schema resource in this sense. Exactly how such usages fit with the JSON
-Schema document and resource concepts will be clarified in a future draft.
+Document formats which embed JSON Schemas within them will not necessarily have
+a single root schema in this sense. How root schemas are identified within such
+documents SHOULD be defined by the specifications which govern them.
 
 Some keywords take schemas themselves, allowing JSON Schemas to be nested:
 
