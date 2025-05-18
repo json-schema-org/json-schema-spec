@@ -427,6 +427,16 @@ keywords MUST NOT begin with this prefix.
 Implementations MUST refuse to evaluate schemas which contain keywords which
 they do not know how to process or explicitly choose not to process.
 
+## Specification Versioning and Compatibility
+
+This specification is identified collectively by two values: version and release
+year.
+
+A schema written to conform with the requirements of a given version is
+compatible with successive specifications, which are published with the same
+version and either the same or greater release year value. Thus, JSON Schema
+provides a guarantee of compatibility for future releases within a version.
+
 ## Keyword Behaviors {#keyword-behaviors}
 
 JSON Schema keywords may exhibit one or more behaviors. This specification
@@ -873,16 +883,17 @@ default to using the current location if a default is desireable.
 
 ## The JSON Schema Core Keywords {#core}
 
-Keywords declared in this section, which all begin with "$", are essential to
-processing JSON Schema. These keywords inform implementations how to process any
-schema or meta-schema, including those split across multiple documents, or exist
-to reserve keywords for purposes that require guaranteed interoperability.
+Keywords declared in this section, which all begin with a dollar sign (`$`), are
+essential to processing JSON Schema. These keywords inform implementations how
+to process any schema or meta-schema, including those split across multiple
+documents, or exist to reserve keywords for purposes that require guaranteed
+interoperability.
 
 Support for these keywords MUST be considered mandatory at all times as they are
 necessary to navigate and process any schema.
 
-The "$" prefix is reserved for use by this specification. Extensions MUST NOT
-define new keywords that begin with "$".
+The `$` prefix is reserved for use by this specification. Extensions MUST NOT
+define new keywords that begin with `$`.
 
 ### Meta-Schemas
 
@@ -2243,7 +2254,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Tree schema, extensible"
 {
-  "$schema": "https://json-schema.org/draft/next/schema",
+  "$schema": "https://json-schema.org/1/2025",
   "$id": "https://example.com/tree",
   "$dynamicAnchor": "node",
 
@@ -2262,7 +2273,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Strict-tree schema, guards against misspelled properties"
 {
-  "$schema": "https://json-schema.org/draft/next/schema",
+  "$schema": "https://json-schema.org/1/2025",
   "$id": "https://example.com/strict-tree",
   "$dynamicAnchor": "node",
 
