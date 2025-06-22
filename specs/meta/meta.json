@@ -147,7 +147,8 @@
         }
     },
     "patternProperties": {
-        "^x-": true
+        "^x-": true,
+        "^(?!(?:\\$id|\\$schema|\\$ref|\\$anchor|\\$dynamicRef|\\$dynamicAnchor|\\$comment|\\$defs)$).*": false
     },
     "$defs": {
         "anchorString": {
