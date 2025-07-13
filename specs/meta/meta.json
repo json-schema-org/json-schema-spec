@@ -1,6 +1,6 @@
 {
-    "$schema": "https://json-schema.org/version/year/meta",
-    "$id": "https://json-schema.org/version/year/meta",
+    "$schema": "https://json-schema.org/1/2025",
+    "$id": "https://json-schema.org/1/2025",
     "$dynamicAnchor": "meta",
 
     "title": "JSON Schema Core and Validation specification meta-schema",
@@ -147,8 +147,10 @@
         }
     },
     "patternProperties": {
-        "^x-": true,
-        "^(?!(?:\\$id|\\$schema|\\$ref|\\$anchor|\\$dynamicRef|\\$dynamicAnchor|\\$comment|\\$defs)$)\\$.*": false
+        "^x-": true
+    },
+    "propertyNames": {
+      "pattern": "^[^$]|^\\$(id|schema|ref|anchor|dynamicRef|dynamicAnchor|comment|defs)$"
     },
     "$defs": {
         "anchorString": {
@@ -186,6 +188,12 @@
                 "object",
                 "string"
             ]
+        },
+        "stringArray": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true,
+            "default": []
         }
     }
 }
