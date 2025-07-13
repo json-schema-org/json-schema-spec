@@ -409,7 +409,7 @@ format is from the ISO 8601 ABNF as given in Appendix A of RFC 3339.
 - *time*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-time" ABNF rule in RFC 3339
 - *duration*: A string instance is valid against this attribute if it is a valid
-  representation according to the "duration" ABNF rule in ISO 8601
+  representation according to the "duration" ABNF rule in RFC 3339 Appendix A
 
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. Implementations SHOULD NOT define extension
