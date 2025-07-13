@@ -399,7 +399,7 @@ These attributes apply to string instances.
 Date and time format names are derived from
 [RFC 9557, section 4.1](https://www.rfc-editor.org/info/rfc9557) which extends
 [RFC 3339, section 5.6](https://www.rfc-editor.org/info/rfc3339). The duration
-format is from the ISO 8601 ABNF as given in Appendix A of RFC 3339.
+format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
   valid representation according to the "date-time" ABNF rule in RFC 3339,
