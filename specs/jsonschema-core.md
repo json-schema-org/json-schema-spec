@@ -437,6 +437,13 @@ compatible with successive specifications, which are published with the same
 version and either the same or greater release year value. Thus, JSON Schema
 provides a guarantee of compatibility for future releases within a version.
 
+### Future Development and Support of Proposals
+
+Continued development of this specifications and support requirments for
+proposed features is managed in the
+[json-schema-org/json-schema-spec](https://github.com/json-schema-org/json-schema-spec)
+GitHub repository and defined by _PROCESS.md_.
+
 ## Keyword Behaviors {#keyword-behaviors}
 
 JSON Schema keywords may exhibit one or more behaviors. This specification

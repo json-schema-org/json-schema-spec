@@ -106,7 +106,7 @@ The website will also be configured to:
 The latest-release meta-schemas will be updated with proposals as indicated by
 the [Proposal section](#proposal) of this document.
 
-> \[!IMPORTANT]
+> [!IMPORTANT]
 > These are only publication and availability URLs. The specification will
 > define the `$id` values for the meta-schemas.
 
