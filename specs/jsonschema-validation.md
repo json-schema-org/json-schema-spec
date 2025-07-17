@@ -402,8 +402,7 @@ Date and time format names are derived from
 format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
-  valid representation of either the "date-time" ABNF rule in RFC 3339 or the
-  "date-time-ext" rule in RFC 9557
+  valid representation of the "date-time-ext" rule in RFC 9557
 - *date*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-date" ABNF rule in RFC 3339
 - *time*: A string instance is valid against this attribute if it is a valid
