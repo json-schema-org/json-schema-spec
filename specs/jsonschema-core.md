@@ -439,7 +439,7 @@ provides a guarantee of compatibility for future releases within a version.
 
 ### Future Development and Support of Proposals
 
-Continued development of this specifications and support requirments for
+Continued development of these specifications and support requirments for
 proposed features is managed in the
 [json-schema-org/json-schema-spec](https://github.com/json-schema-org/json-schema-spec)
 GitHub repository and defined by _PROCESS.md_.
