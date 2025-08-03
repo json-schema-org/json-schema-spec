@@ -152,7 +152,12 @@
     "propertyNames": {
       "pattern": "^[^$]|^\\$(id|schema|ref|anchor|dynamicRef|dynamicAnchor|comment|defs)$"
     },
+    "$dynamicRef": "#extension",
+    "unevaluatedProperties": false,
     "$defs": {
+        "extension": {
+            "$dynamicAnchor": "extension"
+        },
         "anchorString": {
             "type": "string",
             "pattern": "^[A-Za-z_][-A-Za-z0-9._]*$"
