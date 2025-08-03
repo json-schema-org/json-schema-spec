@@ -1,8 +1,10 @@
 # JSON Schema Meta-Schema
 
-The _meta.json_ file contains the meta-schema for the in-progress JSON Schema
-specifications. You can find the latest published version on the
-[JSON Schema website](https://json-schema.org).
+The *meta.json* file contains the meta-schema for the in-progress JSON Schema
+specifications. You can find the latest published version on the [JSON Schema
+website](https://json-schema.org).
+
+## Table of Contents
 
 ## Meta-Schemas
 
@@ -71,4 +73,5 @@ schemas to make use of the new `odds` and `evens` keywords.
 }
 ```
 
-This schema will validate arrays whose items alternate between strings and numbers.
+This schema will validate arrays whose items alternate between strings and
+numbers.
