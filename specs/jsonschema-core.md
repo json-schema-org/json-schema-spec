@@ -2029,32 +2029,129 @@ SHOULD use the terms defined by this document to do so.
 
 ## Security Considerations {#security}
 
-Both schemas and instances are JSON values. As such, all security considerations
-defined in [RFC 8259][rfc8259] apply.
+While schemas and instances are not always represented as JSON text, they are
+defined in terms of the JSON data model. As such, the security considerations
+defined in [RFC 8259][rfc8259] may still apply in environments where text-based
+representations are used, particularly those considerations related to parsing,
+number precision, and structural limitations.
 
-Instances and schemas are both frequently written by untrusted third parties, to
-be deployed on public Internet servers. Implementations should take care that
-the parsing and evaluating against schemas does not consume excessive system
-resources. Implementations MUST NOT fall into an infinite loop.
+Schemas and instances are frequently authored by untrusted parties.
+Implementations that accept or evaluate such inputs may be exposed to several
+classes of attack, particularly denial-of-service (DoS) by means of resource
+exhaustion.
 
-A malicious party could cause an implementation to repeatedly collect a copy of
-a very large value as an annotation. Implementations SHOULD guard against
-excessive consumption of system resources in such a scenario.
+### Nested `anyOf`/`oneOf`
 
-Servers MUST ensure that malicious parties cannot change the functionality of
-existing schemas by uploading a schema with a pre-existing or very similar
-`$id`.
+One risk for resource exhaustion in JSON Schema arises from the nested use of
+`anyOf` and `oneOf`. While a single combinator keyword with multiple subschemas
+is typically manageable, nesting them causes the number of evaluation paths to
+grow exponentially.
 
-Individual JSON Schema extensions are liable to also have their own security
-considerations. Consult the respective specifications for more information.
+For example, a `oneOf` with 5 subschemas, each containing another `oneOf` with 5
+options, results in 25 evaluation paths. Adding a third level increases this to
+125, and so on. Attackers can exploit this by crafting schemas that force
+validators to explore a large number of branches.
 
-Schema authors should take care with `$comment` contents, as a malicious
-implementation can display them to end-users in violation of a spec, or fail to
-strip them if such behavior is expected.
+This evaluation explosion is particularly dangerous when each path involves
+expensive work such as collecting large annotations or evaluating complex
+regular expressions. These effects multiply across paths and can result in
+excessive CPU or memory consumption, leading to denial-of-service.
 
-A malicious schema author could place executable code or other dangerous
-material within a `$comment`. Implementations MUST NOT parse or otherwise take
-action based on `$comment` contents.
+Implementations that evaluate untrusted schema are encouraged to take steps to
+mitigate these threats with measures such as bounding combinator keyword depth
+and breadth, limiting memory used for annotation collection, and guarding
+against resource-intensive validations such as pathological regexes.
+
+### Dynamic References
+
+The paper ["The Complexity of JSON Schema: Undecidable, Expensive, Yet
+Tractable" (Caroni et al., 2024)](https://doi.org/10.1145/3632891) has shown
+that validation in the presence of dynamic references is PSPACE-complete. The
+paper describes a method for replacing dynamic references with static ones, but
+doing so can cause the size of the schema to grow exponentially. Implementations
+should be aware of this risk and may wish to implement the method described in
+the paper or impose limits on dynamic reference resolution.
+
+### Infinite Loops and Cycles
+
+Infinite loops can occur when evaluating schemas that produce cycles during
+reference resolution. These cycles may involve multiple schemas. Not all
+recursive schemas create loops, but implementations are advised to detect and
+break these cycles when they are encountered.
+
+### Schema Identity and Collisions
+
+Schemas may declare an `$id` to identify themselves or have embedded schemas
+that declare an `$id`. An attacker may attempt to register a schema with an
+`$id` that collides with a previously registered schema, or that differs only by
+case, encoding, or other URI normalization quirks. Such collisions could result
+in overwriting or shadowing of trusted schemas.
+
+Implementations should consider rejecting schemas that have identifiers
+(including embedded schema identifiers) that conflict with registered schemas
+and should apply consistent URI normalization and comparison logic to detect and
+prevent conflicts.
+
+### External Schema Resolution
+
+JSON Schema implementations are expected to resolve external references using a
+local registry. Although the specification allows for dynamic retrieval
+(`https:` to fetch schemas over HTTP, or `file:` to read schemas from disk),
+this behavior is discouraged unless it's intrinsic to the use case, such as with
+JSON Hyper-Schema.
+
+Resolving schemas dynamically introduces several security concerns, each of
+which can be mitigated by limiting or controlling resolution behavior. A tightly
+scoped schema resolution policy significantly reduces the attack surface,
+especially when validating untrusted data.
+
+Implementations are advised to disable dynamic retrieval by default and limit
+external schema resolution to the local registry unless dynamic retrieval is
+explicitly enabled. If enabled, they should consider limiting the number of
+dynamic retrievals a validation can perform and defining timeouts on dynamic
+retrievals to reduce the risk of resource exhaustion.
+
+#### HTTP(S) Specific Threats
+
+Allowing schema references to resolve over HTTP or HTTPS introduces several
+threats:
+
+* **Denial of Service (DoS)**: Validation may hang or become slow if a
+  referenced schema URL is slow to respond or never returns.
+* **Server-Side Request Forgery (SSRF)**: Malicious schemas can reference
+  internal-only services using hostnames like localhost or private IPs.
+  Implementations are advised to restrict HTTP schema retrieval to a
+  configurable allowlist of trusted domains.
+* **Lack of Integrity Guarantees**: Retrieved schemas may be altered in transit
+  or change between validations. If network retrieval is allowed,
+  implementations are advised to only allow retrieval over HTTPS unless
+  specifically configured to allow unsecured transport.
+
+#### File System Specific Threats
+
+Allowing resolution from the local filesystem (`file:` URIs) raises different
+issues:
+
+* **Information Disclosure**: Malicious schemas may access sensitive files on
+  the system. Implementations should consider restricting filesystem access to
+  a specific schema directory tree.
+* **Cross-Context Access**: A schema fetched from HTTP may try to reference a
+  schema on the filesystem. Implementations are advised to allow resolving
+  `file:` references only when the referencing schema was itself loaded from the
+  file system, similar to same-origin policies in web browsers.
+* **Exposing Internal Paths**: Schemas that use `file:` URIs may reveal
+  host-specific filesystem details in two ways: through the `$id` itself or
+  through schema locations in validation output. Implementations are advised to
+  reject `$id` values that use the `file:` scheme. If `file:` URIs are permitted
+  internally, implementations are advised to sanitize them (for example, by
+  converting them to relative URIs) to avoid exposing host filesystem structure
+  to users.
+
+### Vocabulary-Specific Risks
+
+Third-party JSON Schema vocabularies may introduce additional risks.
+Implementers are advised to consult the specifications of any extensions they
+support and take into account their security considerations as well.
 
 ## IANA Considerations
 
