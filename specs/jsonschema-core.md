@@ -2076,8 +2076,8 @@ the paper or impose limits on dynamic reference resolution.
 
 Infinite loops can occur when evaluating schemas that produce cycles during
 reference resolution. These cycles may involve multiple schemas. Not all
-recursive schemas create loops, but implementations are advised to detect and
-break these cycles when they are encountered.
+recursive schemas create loops, but implementations are advised to detect these
+cycles and terminate evaluation when they are encountered.
 
 ### Schema Identity and Collisions
 
