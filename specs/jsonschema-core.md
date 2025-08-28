@@ -2089,8 +2089,8 @@ in overwriting or shadowing of trusted schemas.
 
 Implementations should consider rejecting schemas that have identifiers
 (including embedded schema identifiers) that conflict with registered schemas
-and should apply consistent URI normalization and comparison logic to detect and
-prevent conflicts.
+and should apply any URI normalization and comparison logic consistently to
+detect and prevent conflicts.
 
 ### External Schema Resolution
 
