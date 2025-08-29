@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint . ; remark --no-stdout --frail .",
-    "build": "remark --rc-path specs/.remarkrc-build.js --output web/"
+    "build": "remark --rc-path specs/.remarkrc-build.js --output web/",
+    "build-ietf": "docker-compose run --rm build"
   },
   "license": "MIT",
   "devDependencies": {
