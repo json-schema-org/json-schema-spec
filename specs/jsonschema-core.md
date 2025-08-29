@@ -2147,11 +2147,11 @@ issues:
   converting them to relative URIs) to avoid exposing host filesystem structure
   to users.
 
-### Vocabulary-Specific Risks
+### Extension-Specific Risks
 
-Third-party JSON Schema vocabularies may introduce additional risks.
-Implementers are advised to consult the specifications of any extensions they
-support and take into account their security considerations as well.
+Third-party JSON Schema extensions may introduce additional risks. Implementers
+are advised to consult the specifications of any extensions they support and
+take into account their security considerations as well.
 
 ## IANA Considerations
 
