@@ -978,9 +978,18 @@ To differentiate between schemas in a vast ecosystem, schema resources are
 identified by
 [absolute IRIs](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2)
 (without fragments). These identifiers are used to create references between
-schema resources. When comparing IRIs for the purposes of resource
-identification, implementations SHOULD first follow the IRI normalization
-procedures defined in [RFC 3987][rfc3987], section 5.3.
+schema resources. ### IRI comparison for identity tokens
+
+When IRIs are used as **identity tokens** (not locators), implementations **MUST use Simple String Comparison** as defined in RFC 3987 section 5.3.1.  
+Normalization or scheme-based comparison is **not required** in this context.
+
+Example:
+
+- `https://example.com/schema/α`  
+- `https://example.com/schema/α`  
+
+These two IRIs are considered identical only if their strings match exactly, without performing additional normalization.
+
 
 Several keywords can accept a relative IRI reference, or a value
 used to construct a relative IRI reference. For these keywords, it is necessary
