@@ -113,17 +113,7 @@ features they make available to you.
 ### Internet-Drafts
 
 To build components that are being maintained as IETF Internet-Drafts, run
-`make`. The Makefile will create the necessary Python venv for you as part of
-the regular make target.
-
-`make clean` will remove all output including the venv. To clean just the spec
-output and keep the venv, use `make spec-clean`.
-
-If you want to run `xml2rfc` manually after running make for the first time, you
-will need to activate the virtual environment: `source .venv/bin/activate`.
-
-The version of "xml2rfc" that this project uses is updated by modifying
-`requirements.in` and running `pip-compile requirements.in`.
+`npm run build-ietf`.
 
 Descriptions of the xml2rfc, I-D documents, and RFC processes:
 
