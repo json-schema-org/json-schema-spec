@@ -1,13 +1,13 @@
-# JSON Schema: A Media Type for Describing JSON Documents
+# JSON Schema: A Language for Validating and Annotating JSON
 
 ## Abstract
 
-JSON Schema defines the media type `application/schema+json`, a JSON-based
-format for describing the structure of JSON data. JSON Schema asserts what a
-JSON document must look like, ways to extract information from it, and how to
-interact with it. The `application/schema-instance+json` media type provides
-additional feature-rich integration with `application/schema+json` beyond what
-can be offered for `application/json` documents.
+This document specifies JSON Schema, a domain-specific, declarative language for
+validating and annotating JSON documents. It defines a vocabulary for creating
+schemas that describe the structure, constraints, and meta-data associated with
+a JSON document. JSON Schema provides a standardized way to define the contracts
+for JSON-based APIs and data formats, facilitating automated validation,
+documentation, and other related tooling.
 
 ## Note to Readers
 
@@ -23,17 +23,54 @@ the homepage, or email the document editors.
 
 ## Introduction
 
-JSON Schema is a JSON media type for defining the structure of JSON data. JSON
-Schema is intended to define validation, documentation, hyperlink navigation,
-and interaction control of JSON data.
+JSON is a widely used, language-independent data format. While it is excellent
+for data exchange, JSON itself lacks a native mechanism for formally describing
+its structure and constraints. This absence can lead to ambiguity and errors in
+data interchange, particularly in contexts such as API development,
+configuration files, and data storage.
 
-This specification defines JSON Schema core terminology and mechanisms,
-including pointing to another JSON Schema by reference, dereferencing a JSON
-Schema reference, specifying the dialect being used, and defining terms.
+This document defines JSON Schema, a domain-specific, declarative language for
+validating and annotating JSON documents. JSON Schema can be represented as a
+JSON document itself, which makes it easily portable and machine-readable.
 
-Other specifications define keywords that perform assertions about validation,
-linking, annotation, navigation, interaction, as well as other related concepts
-such as output formats.
+JSON Schema draws inspiration from the architecture of the World Wide Web,
+including concepts such as URIs for identifying and linking schemas. While it
+can be applied in many domains, those qualities make it especially well-suited
+for describing and validating data exchanged in web APIs.
+
+A JSON Schema serves as a contract for data. It is primarily designed for two
+purposes: validation and annotation. Validation ensures that a JSON instance
+conforms to a specific structure and set of constraints. Annotation attaches
+metadata to values in a JSON document, which can be used by applications in a
+variety of ways.
+
+JSON Schema can also be used for a variety of other use cases, including
+documentation generation, HTML form builders, and type code generation. Although
+it is not specifically designed for those tasks, JSON Schema can be extended to
+fill any gaps required to support these secondary uses.
+
+The JSON Schema specification is defined in a series of documents, each
+addressing a different aspect of the language. This document, the Core
+specification, defines the fundamental keywords and concepts. It is intended to
+be implemented as the foundational layer upon which other related specifications
+can build to define additional vocabularies or features for specific use cases.
+
+This document defines a set of core keywords that MUST be supported by any
+implementation, and cannot be disabled. These keywords are each prefixed with a
+"$" character to emphasize their required nature. These keywords are considered
+essential to the functioning of JSON Schema.
+
+Additionally, this document defines a RECOMMENDED set of keywords for
+conditionally applying subschemas and for applying subschemas to the contents of
+objects and arrays. These keywords, or a set very much like them, are necessary
+to write schemas for non-trivial JSON instances, whether those schemas are
+intended for validation, annotation, or both. For maximum interoperability, this
+additional set is included in this document and its use is strongly encouraged.
+
+This document obsoletes the previous "draft" releases for JSON Schema and
+provides the basis for a stable, standardized version. Implementations MAY
+continue to support "draft" releases in order to facilitate the transition,
+typically by inspecting the value of the `$schema` keyword.
 
 ## Conventions and Terminology
 
@@ -47,44 +84,22 @@ document are to be interpreted as defined in [RFC 8259][rfc8259].
 
 ## Overview
 
-This document proposes a new media type `application/schema+json` to identify a
-JSON Schema for describing JSON data. It also proposes a further optional media
-type, `application/schema-instance+json`, to provide additional integration
-features. JSON Schemas are themselves JSON documents. This, and related
-specifications, define keywords allowing authors to describe JSON data in
-several ways.
+A JSON Schema represents a set of constraints and annotations that are applied
+to a JSON value. These constraints and annotations are declared using
+"keywords". A JSON value is considered valid against a schema if, and only if,
+it satisfies the constraint defined by every keyword in that schema.
 
-JSON Schema uses keywords to assert constraints on JSON instances or annotate
-those instances with additional information. Additional keywords are used to
-apply assertions and annotations to more complex JSON data structures, or based
-on some sort of condition.
+Schema evaluation is a recursive process. Some keywords contain one or more
+subschemas. These keywords can be used to create complex constraints or to
+describe compound values like arrays and objects. For example, to describe a
+JSON object, a schema can use the `type` keyword to declare that the value MUST
+be an object, and the `properties` keyword to apply separate schemas to each of
+the object's properties. This allows for the evaluation of a complex JSON
+document using a uniform recursive algorithm.
 
-To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
-consists of a list of keywords, together with their syntax and semantics. A
-dialect is defined as a set of vocabularies and their required support
-identified in a meta-schema.
-
-JSON Schema can be extended either by defining additional vocabularies, or less
-formally by defining additional keywords outside of any vocabulary. Unrecognized
-individual keywords are not supported.
-
-This document defines a set of core keywords that MUST be supported by any
-implementation, and cannot be disabled. These keywords are each prefixed with a
-"$" character to emphasize their required nature. These keywords are essential
-to the functioning of the `application/schema+json` media type.
-
-Additionally, this document defines a RECOMMENDED set of keywords for
-applying subschemas conditionally, and for applying subschemas to the contents
-of objects and arrays. These keywords, or a set very much like them, are
-required to write schemas for non-trivial JSON instances, whether those schemas
-are intended for assertion validation, annotation, or both. While not part of
-the required core set, for maximum interoperability this additional
-set is included in this document and its use is strongly encouraged.
-
-Further keywords for purposes such as structural validation or hypermedia
-annotation are defined in other documents. These other documents each define a
-dialect collecting the standard sets of keywords needed to write schemas for
-that document's purpose.
+JSON Schema defines an official collection of keywords (called a dialect), but
+it also includes a flexible extension model that allows for third-parties to
+define their own dialects of JSON Schema.
 
 ## Definitions
 
