@@ -303,54 +303,19 @@ are processed in the same way, with the same available behaviors.
 
 ## Fragment Identifiers {#fragments}
 
-In accordance with
-[section 3.1 of RFC 6839](https://www.rfc-editor.org/rfc/rfc6839.html#section-3.1),
-the syntax and semantics of fragment identifiers specified for any +json media
-type SHOULD be as specified for `application/json`. (At publication of this
-document, there is no fragment identification syntax defined for
-`application/json`.)
-
-Additionally, the `application/schema+json` media type supports two fragment
-identifier structures: plain names and JSON Pointers. The
-`application/schema-instance+json` media type supports one fragment identifier
-structure: JSON Pointers.
+JSON Schema uses two fragment identifier structures: plain names and JSON
+Pointers. Any media types defined for JSON Schema MUST support these structures.
 
 The use of JSON Pointers as IRI fragment identifiers is described in [RFC
-6901][rfc6901]. For `application/schema+json`, which supports two fragment
-identifier syntaxes, fragment identifiers matching the JSON Pointer syntax,
-including the empty string, MUST be interpreted as JSON Pointer fragment
-identifiers.
+6901][rfc6901]. Fragment identifiers that start with `/` or are the empty
+string, MUST be interpreted as JSON Pointer fragment identifiers.
 
-Per the W3C's
-[best practices for fragment identifiers](https://www.w3.org/TR/2012/WD-fragid-best-practices-20121025),
-plain name fragment identifiers in `application/schema+json` are reserved for
-referencing locally named schemas.
+Plain name fragment identifiers are reserved for referencing locally named
+schemas. All fragment identifiers that are not interpreted as JSON Pointers MUST
+be interpreted as plain name fragment identifiers.
 
-Plain name fragments MUST follow XML's
-[`NCName` production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName),
-which allows for compatibility with the recommended [plain name
-syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based
-media types. For convenience, the `NCName` syntax is reproduced here in ABNF
-form, using a minimal set of rules:
-
-```abnf
-NCName          = NCNameStartChar *NCNameChar
-NCNameStartChar = "_" / ALPHA
-                      / %xC0-D6 / %xD8-F6 / %xF8-2FF
-                      / %x370-37D / %x37F-1FFF
-                      / %x200C-200D / %x2070-218F
-                      / %x2C00-2FEF / %x3001-D7FF
-                      / %xF900-FDCF / %xFDF0-FFFD
-                      / %x10000-EFFFF
-NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
-                      / %xB7 / %x0300-036F / %x203F-2040
-```
-
-All fragment identifiers that do not match the JSON Pointer syntax MUST be
-interpreted as plain name fragment identifiers.
-
-Defining a plain name fragment identifier within an `application/schema+json`
-document is specified in the [`$anchor` keyword](#anchors) section.
+Defining a plain name fragment identifier within a schema resource is specified
+in the [`$anchor` keyword](#anchors) section.
 
 ## General Considerations
 
@@ -1066,6 +1031,25 @@ details.
 
 If present, the value of these keywords MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.
+
+`$anchor`, `$dynamicAnchor`, and any extensions that define a plain name
+fragment identifiers MUST match XML's [`NCName`
+production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName). For
+convenience, the `NCName` syntax is reproduced here in ABNF form, using a
+minimal set of rules:
+
+```abnf
+NCName          = NCNameStartChar *NCNameChar
+NCNameStartChar = "_" / ALPHA
+                      / %xC0-D6 / %xD8-F6 / %xF8-2FF
+                      / %x370-37D / %x37F-1FFF
+                      / %x200C-200D / %x2070-218F
+                      / %x2C00-2FEF / %x3001-D7FF
+                      / %xF900-FDCF / %xFDF0-FFFD
+                      / %x10000-EFFFF
+NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
+                      / %xB7 / %x0300-036F / %x203F-2040
+```
 
 #### Duplicate schema identifiers {#duplicate-iris}
 
