@@ -218,8 +218,8 @@ The value of this keyword MUST be a non-negative integer.
 A string instance is valid against this keyword if its length is less than, or
 equal to, the value of this keyword.
 
-The length of a string instance is defined as the number of its characters as
-defined by [RFC 8259][rfc8259].
+The length of a string instance is defined as the number of [Unicode] code
+points that make up the string.
 
 #### `minLength`
 
@@ -228,8 +228,8 @@ The value of this keyword MUST be a non-negative integer.
 A string instance is valid against this keyword if its length is greater than,
 or equal to, the value of this keyword.
 
-The length of a string instance is defined as the number of its characters as
-defined by [RFC 8259][rfc8259].
+The length of a string instance is defined as the number of [Unicode] code
+points that make up the string.
 
 Omitting this keyword has the same behavior as a value of 0.
 
@@ -917,3 +917,4 @@ to the document.
 
 [rfc3987]: https://www.rfc-editor.org/info/rfc3987
 [rfc8259]: https://www.rfc-editor.org/info/rfc8259
+[Unicode]: https://www.unicode.org/versions/Unicode16.0.0/
