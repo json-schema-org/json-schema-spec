@@ -957,8 +957,8 @@ resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an
-[IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme) and this
-IRI MUST be normalized.
+[IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme). This
+IRI MUST be normalized and MUST NOT contain a fragment.
 
 If this IRI identifies a retrievable resource, that resource SHOULD be of media
 type `application/schema+json`.
