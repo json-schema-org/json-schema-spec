@@ -81,8 +81,8 @@ The specifications will be published on the JSON Schema website,
 <https://json-schema.org/>, using a path comprised of the version, year, and
 document name. For example,
 
-- `https://json-schema.org/1/2025/core.html`
-- `https://json-schema.org/1/2025/validation.html`
+- `https://json-schema.org/v1/2026/core.html`
+- `https://json-schema.org/v1/2026/validation.html`
 
 Once a specification document has been published, neither the document (save for
 minor errata such as spelling mistakes) nor its publication URL may change. If
@@ -94,14 +94,14 @@ future publications and are not retroactive.
 A release meta-schema will be published under the same path using `schema.json`
 as the file name.
 
-- `https://json-schema.org/1/2025/schema.json`
+- `https://json-schema.org/v1/2026/schema.json`
 
 The website will also be configured to:
 
 - serve the meta-schema from its release folder:
-  `https://json-schema.org/1/2025/`
+  `https://json-schema.org/v1/2026/`
 - serve the meta-schema for the latest release in a version from its version
-  folder: `https://json-schema.org/1/`
+  folder: `https://json-schema.org/v1/`
 
 The latest-release meta-schemas will be updated with proposals as indicated by
 the [Proposal section](#proposal) of this document.
