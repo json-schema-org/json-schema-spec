@@ -135,14 +135,14 @@ depending on the type:
 - *array*: An ordered list of instances, from the JSON "array" value
 - *number*: An arbitrary-precision, base-10 decimal number value, from the JSON
   "number" value
-- *string*: A string of Unicode code points, from the JSON "string" value
+- *string*: A string of [Unicode] code points, from the JSON "string" value
 
 Whitespace and formatting concerns, including different lexical representations
 of numbers that are equal within the data model, are thus outside the scope of
 JSON Schema. Extensions to JSON Schema that wish to work with such differences
 in lexical representations SHOULD define keywords to precisely interpret
 formatted strings within the data model rather than relying on having the
-original JSON representation Unicode characters available.
+original JSON representation available.
 
 Since an object cannot have two properties with the same key, behavior for a
 JSON document that tries to define two properties with the same key in a single
@@ -335,14 +335,14 @@ considered to be implicitly anchored at either end. All regular expression
 keywords in this specification and its companion documents are un-anchored.
 
 Regular expressions SHOULD be built with the "u" flag (or equivalent) to provide
-Unicode support, or processed in such a way which provides Unicode support as
+[Unicode] support, or processed in such a way which provides Unicode support as
 defined by ECMA-262.
 
 Furthermore, given the high disparity in regular expression constructs support,
 schema authors SHOULD limit themselves to the following regular expression
 tokens:
 
-- individual Unicode characters, as defined by the [JSON
+- individual Unicode code points, as defined by the [JSON
   specification][rfc8259];
 - simple atoms: `.` (any character except line terminator);
 - simple character classes (`[abc]`), range character classes (`[a-z]`);
@@ -2628,3 +2628,4 @@ to the document.
 [rfc8259]: https://www.rfc-editor.org/info/rfc8259
 [rfc8288]: https://www.rfc-editor.org/info/rfc8288
 [application/schema+json]: ../ietf/json-schema-media-types.md
+[Unicode]: https://www.unicode.org/versions/Unicode16.0.0/
