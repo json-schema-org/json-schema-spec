@@ -1,13 +1,13 @@
-# JSON Schema: A Media Type for Describing JSON Documents
+# JSON Schema: A Language for Validating and Annotating JSON
 
 ## Abstract
 
-JSON Schema defines the media type `application/schema+json`, a JSON-based
-format for describing the structure of JSON data. JSON Schema asserts what a
-JSON document must look like, ways to extract information from it, and how to
-interact with it. The `application/schema-instance+json` media type provides
-additional feature-rich integration with `application/schema+json` beyond what
-can be offered for `application/json` documents.
+This document specifies JSON Schema, a domain-specific, declarative language for
+validating and annotating JSON documents. It defines a vocabulary for creating
+schemas that describe the structure, constraints, and meta-data associated with
+a JSON document. JSON Schema provides a standardized way to define the contracts
+for JSON-based APIs and data formats, facilitating automated validation,
+documentation, and other related tooling.
 
 ## Note to Readers
 
@@ -23,17 +23,54 @@ the homepage, or email the document editors.
 
 ## Introduction
 
-JSON Schema is a JSON media type for defining the structure of JSON data. JSON
-Schema is intended to define validation, documentation, hyperlink navigation,
-and interaction control of JSON data.
+JSON is a widely used, language-independent data format. While it is excellent
+for data exchange, JSON itself lacks a native mechanism for formally describing
+its structure and constraints. This absence can lead to ambiguity and errors in
+data interchange, particularly in contexts such as API development,
+configuration files, and data storage.
 
-This specification defines JSON Schema core terminology and mechanisms,
-including pointing to another JSON Schema by reference, dereferencing a JSON
-Schema reference, specifying the dialect being used, and defining terms.
+This document defines JSON Schema, a domain-specific, declarative language for
+validating and annotating JSON documents. JSON Schema can be represented as a
+JSON document itself, which makes it easily portable and machine-readable.
 
-Other specifications define keywords that perform assertions about validation,
-linking, annotation, navigation, interaction, as well as other related concepts
-such as output formats.
+JSON Schema draws inspiration from the architecture of the World Wide Web,
+including concepts such as URIs for identifying and linking schemas. While it
+can be applied in many domains, those qualities make it especially well-suited
+for describing and validating data exchanged in web APIs.
+
+A JSON Schema serves as a contract for data. It is primarily designed for two
+purposes: validation and annotation. Validation ensures that a JSON instance
+conforms to a specific structure and set of constraints. Annotation attaches
+metadata to values in a JSON document, which can be used by applications in a
+variety of ways.
+
+JSON Schema can also be used for a variety of other use cases, including
+documentation generation, HTML form builders, and type code generation. Although
+it is not specifically designed for those tasks, JSON Schema can be extended to
+fill any gaps required to support these secondary uses.
+
+The JSON Schema specification is defined in a series of documents, each
+addressing a different aspect of the language. This document, the Core
+specification, defines the fundamental keywords and concepts. It is intended to
+be implemented as the foundational layer upon which other related specifications
+can build to define additional vocabularies or features for specific use cases.
+
+This document defines a set of core keywords that MUST be supported by any
+implementation, and cannot be disabled. These keywords are each prefixed with a
+"$" character to emphasize their required nature. These keywords are considered
+essential to the functioning of JSON Schema.
+
+Additionally, this document defines a RECOMMENDED set of keywords for
+conditionally applying subschemas and for applying subschemas to the contents of
+objects and arrays. These keywords, or a set very much like them, are necessary
+to write schemas for non-trivial JSON instances, whether those schemas are
+intended for validation, annotation, or both. For maximum interoperability, this
+additional set is included in this document and its use is strongly encouraged.
+
+This document obsoletes the previous "draft" releases for JSON Schema and
+provides the basis for a stable, standardized version. Implementations MAY
+continue to support "draft" releases in order to facilitate the transition,
+typically by inspecting the value of the `$schema` keyword.
 
 ## Conventions and Terminology
 
@@ -47,51 +84,29 @@ document are to be interpreted as defined in [RFC 8259][rfc8259].
 
 ## Overview
 
-This document proposes a new media type `application/schema+json` to identify a
-JSON Schema for describing JSON data. It also proposes a further optional media
-type, `application/schema-instance+json`, to provide additional integration
-features. JSON Schemas are themselves JSON documents. This, and related
-specifications, define keywords allowing authors to describe JSON data in
-several ways.
+A JSON Schema represents a set of constraints and annotations that are applied
+to a JSON value. These constraints and annotations are declared using
+"keywords". A JSON value is considered valid against a schema if, and only if,
+it satisfies the constraint defined by every keyword in that schema.
 
-JSON Schema uses keywords to assert constraints on JSON instances or annotate
-those instances with additional information. Additional keywords are used to
-apply assertions and annotations to more complex JSON data structures, or based
-on some sort of condition.
+Schema evaluation is a recursive process. Some keywords contain one or more
+subschemas. These keywords can be used to create complex constraints or to
+describe compound values like arrays and objects. For example, to describe a
+JSON object, a schema can use the `type` keyword to declare that the value MUST
+be an object, and the `properties` keyword to apply separate schemas to each of
+the object's properties. This allows for the evaluation of a complex JSON
+document using a uniform recursive algorithm.
 
-To facilitate re-use, keywords can be organized into vocabularies. A vocabulary
-consists of a list of keywords, together with their syntax and semantics. A
-dialect is defined as a set of vocabularies and their required support
-identified in a meta-schema.
-
-JSON Schema can be extended either by defining additional vocabularies, or less
-formally by defining additional keywords outside of any vocabulary. Unrecognized
-individual keywords are not supported.
-
-This document defines a set of core keywords that MUST be supported by any
-implementation, and cannot be disabled. These keywords are each prefixed with a
-"$" character to emphasize their required nature. These keywords are essential
-to the functioning of the `application/schema+json` media type.
-
-Additionally, this document defines a RECOMMENDED set of keywords for
-applying subschemas conditionally, and for applying subschemas to the contents
-of objects and arrays. These keywords, or a set very much like them, are
-required to write schemas for non-trivial JSON instances, whether those schemas
-are intended for assertion validation, annotation, or both. While not part of
-the required core set, for maximum interoperability this additional
-set is included in this document and its use is strongly encouraged.
-
-Further keywords for purposes such as structural validation or hypermedia
-annotation are defined in other documents. These other documents each define a
-dialect collecting the standard sets of keywords needed to write schemas for
-that document's purpose.
+JSON Schema defines an official collection of keywords (called a dialect), but
+it also includes a flexible extension model that allows for third-parties to
+define their own dialects of JSON Schema.
 
 ## Definitions
 
 ### JSON Document
 
-A JSON document is an information resource (series of octets) described by the
-`application/json` media type.
+In JSON Schema, the terms "JSON document", "JSON data", and "JSON value" are
+interchangeable and refer to the data model defined in {{data-model}}.
 
 In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are
 interchangeable because of the data model it defines in {{data-model}}.
@@ -102,13 +117,8 @@ model can be interpreted against a JSON Schema.
 
 ### Instance
 
-A JSON document to which a schema is applied is known as an "instance".
-
-JSON Schema is defined over `application/json` or compatible documents,
-including media types with the `+json` structured syntax suffix.
-
-Among these, this specification defines the `application/schema-instance+json`
-media type which defines handling for fragments in the IRI.
+A JSON document to which a schema is applied is known as a "JSON instance" or
+just an "instance".
 
 #### Instance Data Model {#data-model}
 
@@ -178,12 +188,8 @@ use of the `const` keyword.
 
 ### JSON Schema Documents {#schema-document}
 
-A JSON Schema document, or simply a schema, is a JSON document used to describe
-an instance. A schema can itself be interpreted as an instance, but SHOULD
-always be given the media type `application/schema+json` rather than
-`application/schema-instance+json`. The `application/schema+json` media type is
-defined to offer a superset of the fragment identifier syntax and semantics
-provided by `application/schema-instance+json`.
+A JSON Schema document, or simply a schema, is used to describe an instance. A
+schema can itself be interpreted as an instance.
 
 A JSON Schema MUST be an object or a boolean.
 
@@ -288,54 +294,19 @@ are processed in the same way, with the same available behaviors.
 
 ## Fragment Identifiers {#fragments}
 
-In accordance with
-[section 3.1 of RFC 6839](https://www.rfc-editor.org/rfc/rfc6839.html#section-3.1),
-the syntax and semantics of fragment identifiers specified for any +json media
-type SHOULD be as specified for `application/json`. (At publication of this
-document, there is no fragment identification syntax defined for
-`application/json`.)
-
-Additionally, the `application/schema+json` media type supports two fragment
-identifier structures: plain names and JSON Pointers. The
-`application/schema-instance+json` media type supports one fragment identifier
-structure: JSON Pointers.
+JSON Schema uses two fragment identifier structures: plain names and JSON
+Pointers. Any media types defined for JSON Schema MUST support these structures.
 
 The use of JSON Pointers as IRI fragment identifiers is described in [RFC
-6901][rfc6901]. For `application/schema+json`, which supports two fragment
-identifier syntaxes, fragment identifiers matching the JSON Pointer syntax,
-including the empty string, MUST be interpreted as JSON Pointer fragment
-identifiers.
+6901][rfc6901]. Fragment identifiers that start with `/` or are the empty
+string, MUST be interpreted as JSON Pointer fragment identifiers.
 
-Per the W3C's
-[best practices for fragment identifiers](https://www.w3.org/TR/2012/WD-fragid-best-practices-20121025),
-plain name fragment identifiers in `application/schema+json` are reserved for
-referencing locally named schemas.
+Plain name fragment identifiers are reserved for referencing locally named
+schemas. All fragment identifiers that are not interpreted as JSON Pointers MUST
+be interpreted as plain name fragment identifiers.
 
-Plain name fragments MUST follow XML's
-[`NCName` production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName),
-which allows for compatibility with the recommended [plain name
-syntax](https://www.w3.org/TR/2003/REC-xptr-framework-20030325/) for XML-based
-media types. For convenience, the `NCName` syntax is reproduced here in ABNF
-form, using a minimal set of rules:
-
-```abnf
-NCName          = NCNameStartChar *NCNameChar
-NCNameStartChar = "_" / ALPHA
-                      / %xC0-D6 / %xD8-F6 / %xF8-2FF
-                      / %x370-37D / %x37F-1FFF
-                      / %x200C-200D / %x2070-218F
-                      / %x2C00-2FEF / %x3001-D7FF
-                      / %xF900-FDCF / %xFDF0-FFFD
-                      / %x10000-EFFFF
-NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
-                      / %xB7 / %x0300-036F / %x203F-2040
-```
-
-All fragment identifiers that do not match the JSON Pointer syntax MUST be
-interpreted as plain name fragment identifiers.
-
-Defining a plain name fragment identifier within an `application/schema+json`
-document is specified in the [`$anchor` keyword](#anchors) section.
+Defining a plain name fragment identifier within a schema resource is specified
+in the [`$anchor` keyword](#anchors) section.
 
 ## General Considerations
 
@@ -929,20 +900,24 @@ steps.
 
 1. The `$schema` keyword - Implementations MUST process the schema according to
    the dialect it declares.
-2. `application/schema+json` media type with a `schema` parameter -
-   Implementations which support media type parameter inputs MUST process the
-   schema according to the dialect the parameter declares. A media type will
-   generally only be available if the schema has been retrieved from an external
-   source and only applies to the document root.
-3. Parent dialect - An embedded schema resource which does not itself contain a
-   `$schema` keyword MUST be processed using the same dialect as the schema
-   which contains it. If the schema is embedded in a non-schema document, the
-   semantics for determining the dialect MAY be determined by any specification
-   which applies to that document.
+2. Parent schema dialect - A schema resource embedded within another schema
+   resource which does not itself contain a `$schema` keyword MUST be processed
+   using the same dialect as the schema which contains it.
+3. External context - In some contexts, there is a default dialect or a way to
+   declare the dialect external from the schema resource in question. Examples
+   include the following.
+    - If the schema is embedded in a non-schema document (such as an OpenAPI
+      Document), the semantics for determining the dialect MUST be determined by
+      the specification that applies to that document.
+    - If the media type of the schema is known and the media type defines a
+      default dialect or a way to declare a dialect, the dialect MUST be
+      determined by the rules of that media types. For example, the
+      [application/schema+json] media type includes a `schema` parameter that
+      can be used to declare the dialect. A media type will generally only be
+      available if the schema has been retrieved from an external source and
+      only applies to the document root.
 4. User configuration - Implementations MAY provide means for the user to
    configure the dialect under which a schema should be processed.
-
-(Note that steps 2 and 3 are mutually exclusive.)
 
 If the dialect is not specified through one of these methods, the implementation
 MUST refuse to process the schema.
@@ -959,9 +934,6 @@ including the `$schema` keyword with a different value.
 The value of this keyword MUST be an
 [IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme) and this
 IRI MUST be normalized.
-
-If this IRI identifies a retrievable resource, that resource SHOULD be of media
-type `application/schema+json`.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
 be used in the root schema objects of embedded schema resources. This keyword
@@ -1051,6 +1023,25 @@ details.
 
 If present, the value of these keywords MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.
+
+`$anchor`, `$dynamicAnchor`, and any extensions that define a plain name
+fragment identifiers MUST match XML's [`NCName`
+production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName). For
+convenience, the `NCName` syntax is reproduced here in ABNF form, using a
+minimal set of rules:
+
+```abnf
+NCName          = NCNameStartChar *NCNameChar
+NCNameStartChar = "_" / ALPHA
+                      / %xC0-D6 / %xD8-F6 / %xF8-2FF
+                      / %x370-37D / %x37F-1FFF
+                      / %x200C-200D / %x2070-218F
+                      / %x2C00-2FEF / %x3001-D7FF
+                      / %xF900-FDCF / %xFDF0-FFFD
+                      / %x10000-EFFFF
+NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
+                      / %xB7 / %x0300-036F / %x203F-2040
+```
 
 #### Duplicate schema identifiers {#duplicate-iris}
 
@@ -1144,11 +1135,10 @@ this string to end users. Tools for editing schemas SHOULD support displaying
 and editing this keyword. The value of this keyword MAY be used in debug or
 error output which is intended for developers making use of schemas.
 
-Tools that translate other media types or programming languages to and from
-`application/schema+json` MAY choose to convert that media type or programming
-language's native comments to or from `$comment` values. The behavior of such
-translation when both native comments and `$comment` properties are present is
-implementation-dependent.
+Tools that translate schemas between media types or programming languages MAY
+choose to convert that media type or programming language's native comments to
+or from `$comment` values. The behavior of such translation when both native
+comments and `$comment` properties are present is implementation-dependent.
 
 Implementations MAY strip `$comment` values at any point during processing. In
 particular, this allows for shortening schemas when the size of deployed schemas
@@ -1182,8 +1172,8 @@ implementation-specific default IRI MAY be used as described in RFC 3987 Section
 6.5 and RFC 3986 Section 5.1.4. It is RECOMMENDED that implementations document
 any default base IRI that they assume.
 
-If a schema object is embedded in a document of another media type, then the
-initial base IRI is determined according to the rules of that media type.
+If a schema object is embedded in a document that is not a schema, then the
+initial base IRI is determined according to the rules of that document.
 
 Unless the `$id` keyword described in an earlier section is present in the root
 schema, this base IRI SHOULD be considered the canonical IRI of the schema
@@ -1461,14 +1451,17 @@ custom keywords.
 A reference target under a keyword for which the value is not explicitly known
 to be a schema results in undefined behavior. Implementations MAY support
 references to these locations, however such behavior is not considered
-interoperable and should not be relied upon.[^10]
+interoperable and should not be relied upon.
 
-[^10]: These scenarios are analogous to fetching a schema over HTTP but
-receiving a response with a Content-Type other than `application/schema+json`.
-An implementation can certainly try to interpret it as a schema, but the origin
-server offered no guarantee that it actually is any such thing. Therefore,
-interpreting it as such has security implication and may produce unpredictable
-results.
+When a schema is resolved over HTTP or another protocol that declares the media
+type of the response, implementations SHOULD refuse to evaluate schemas whose
+declared media type is not a known and supported JSON Schema media type such as
+[application/schema+json].[^10]
+
+[^10]: An implementation can certainly try to interpret it as a schema, but
+there's no guarantee that it can be parsed and evaluated as a schema. Therefore,
+interpreting it as such has security implications and may produce unpredictable
+or malicious results.
 
 #### Failure to resolve references {#failed-refs}
 
@@ -2160,49 +2153,6 @@ Third-party JSON Schema extensions may introduce additional risks. Implementers
 are advised to consult the specifications of any extensions they support and
 take into account their security considerations as well.
 
-## IANA Considerations
-
-### `application/schema+json`
-
-The proposed MIME media type for JSON Schema is defined as follows:
-
-Type name:: application
-
-Subtype name:: schema+json
-
-Required parameters:: N/A
-
-Encoding considerations:: Encoding considerations are identical to those
-specified for the `application/json` media type. See [JSON][rfc8259].
-
-Security considerations:: See {{security}} above.
-
-Interoperability considerations:: See Sections [6.2](#language),
-[6.3](#data-model), and [6.4](#regex) above.
-
-Fragment identifier considerations:: See {{fragments}}
-
-### `application/schema-instance+json`
-
-The proposed MIME media type for JSON Schema Instances that require a JSON
-Schema-specific media type is defined as follows:
-
-Type name:: application
-
-Subtype name:: schema-instance+json
-
-Required parameters:: N/A
-
-Encoding considerations:: Encoding considerations are identical to those
-specified for the `application/json` media type. See [JSON][rfc8259].
-
-Security considerations:: See {{security}} above.
-
-Interoperability considerations:: See Sections [6.2](#language),
-[6.3](#data-model), and [6.4](#regex) above.
-
-Fragment identifier considerations:: See {{fragments}}
-
 ## %appendix% Schema identification examples {#idexamples}
 
 Consider the following schema, which shows `$id` being used to identify both the
@@ -2677,3 +2627,4 @@ to the document.
 [rfc6901]: https://www.rfc-editor.org/info/rfc6901
 [rfc8259]: https://www.rfc-editor.org/info/rfc8259
 [rfc8288]: https://www.rfc-editor.org/info/rfc8288
+[application/schema+json]: ../ietf/json-schema-media-types.md
