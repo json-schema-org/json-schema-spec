@@ -400,8 +400,8 @@ they do not know how to process or explicitly choose not to process.
 
 ## Specification Versioning and Compatibility
 
-This specification is identified collectively by two values: version and release
-year.
+This specification is identified collectively by two values: version, denoted as
+the letter "v" and the version number, and release year.  For example,
 
 A schema written to conform with the requirements of a given version is
 compatible with successive specifications, which are published with the same
@@ -2308,7 +2308,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Tree schema, extensible"
 {
-  "$schema": "https://json-schema.org/1/2025",
+  "$schema": "https://json-schema.org/v1/2026",
   "$id": "https://example.com/tree",
   "$dynamicAnchor": "node",
 
@@ -2327,7 +2327,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Strict-tree schema, guards against misspelled properties"
 {
-  "$schema": "https://json-schema.org/1/2025",
+  "$schema": "https://json-schema.org/v1/2026",
   "$id": "https://example.com/strict-tree",
   "$dynamicAnchor": "node",
 

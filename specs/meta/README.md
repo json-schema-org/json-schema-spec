@@ -27,7 +27,7 @@ First, create a schema that just defines the new keywords.
 
 ```json
 {
-  "$schema": "https://json-schema.org/1",
+  "$schema": "https://json-schema.org/v1",
   "$id": "https://example.com/schema/odds-evens",
 
   "properties": {
@@ -45,10 +45,10 @@ Second, create a new meta-schema that
 
 ```json
 {
-  "$schema": "https://json-schema.org/1",
+  "$schema": "https://json-schema.org/v1",
   "$id": "https://example.com/schema/odds-evens-extension",
 
-  "$ref": "https://json-schema.org/1",
+  "$ref": "https://json-schema.org/v1",
 
   "$defs": {
     "extension": {
