@@ -951,8 +951,19 @@ identified by
 [absolute IRIs](https://www.rfc-editor.org/rfc/rfc3987.html#section-2.2)
 (without fragments). These identifiers are used to create references between
 schema resources. When comparing IRIs for the purposes of resource
-identification, implementations SHOULD first follow the IRI normalization
-procedures defined in [RFC 3987][rfc3987], section 5.3.
+identification, implementations MUST apply the Syntax-Based IRI normalization
+procedures defined in [RFC 3987][rfc3987], section 5.3.2.[^12] Implementations
+MAY also apply Scheme-Based and Protocol-Based Normalization.[^13]
+
+[^12]: [RFC 3987][rfc3987], section 5.1, requires that applications using IRIs
+as non-locating, identifier-only tokens MUST use Simple String Comparison. JSON
+Schema deviates from that requirement by specifying normalization requirements.
+
+[^13]: We expect implementations to use whatever IRI libraries they have
+available to them and therefore don't always have control over which
+normalization rules are applied. Supporting Scheme-Based and Protocol-Based
+Normalization is allowed to accommodate those situations, but it is discouraged
+otherwise.
 
 Several keywords can accept a relative IRI reference, or a value
 used to construct a relative IRI reference. For these keywords, it is necessary
