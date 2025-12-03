@@ -402,13 +402,22 @@ Date and time format names are derived from
 format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
-  valid representation of the "date-time-ext" rule in RFC 9557
+  valid representation of the "date-time-ext" rule in RFC 9557. This SHOULD
+  allow and validate published leap seconds. See RFC 3339, section 5.7.
 - *date*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-date" ABNF rule in RFC 3339
 - *time*: A string instance is valid against this attribute if it is a valid
-  representation according to the "full-time" ABNF rule in RFC 3339
+  representation according to the "full-time" ABNF rule in RFC 3339. This MUST
+  NOT include leap seconds.[^3]
 - *duration*: A string instance is valid against this attribute if it is a valid
   representation according to the "duration" ABNF rule in RFC 3339 Appendix A
+
+[^3]: The `time` format represents a time value that is independent of any
+specific date, such as a scheduled time of day or a measured duration. Because
+there is no date, it is not well suited for capturing a moment in time. For
+that, you would need `date-time`. Because `time` isn't for capturing a moment in
+time, leap seconds don't make sense because leap seconds only apply to
+specific dates. See RFC 3339, section 5.7.
 
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. Implementations SHOULD NOT define extension
