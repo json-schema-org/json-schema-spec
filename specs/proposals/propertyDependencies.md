@@ -137,6 +137,6 @@ vocabulary](../jsonschema-core.md#applicators).
 
 ## Champions
 
-| Champion                   | Company | Email                | URI                              |
-| -------------------------- | ------- | -------------------- | -------------------------------- |
-| Jason Desrosiers           | Postman | <jdesrosi@gmail.com> | <https://github.com/jdesrosiers> |
+| Champion         | Company                  | Email                | URI                              |
+| ---------------- | ------------------------ | -------------------- | -------------------------------- |
+| Jason Desrosiers | Hyperjump Software, Inc. | <jason@hyperjump.io> | <https://github.com/jdesrosiers> |

@@ -18,7 +18,7 @@ export default {
         "Status",
         "Note to Readers",
         "Table of Contents",
-        "Authors' Addresses",
+        "Contributors",
         "Champions",
         "\\[.*\\]",
         "draft-.*"

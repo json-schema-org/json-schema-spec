@@ -907,11 +907,26 @@ to the document.
   - Provide algorithms to calculate schema(s) for array/object instances.
   - Add interoperability considerations.
 
-## Authors' Addresses
-| Author                   | Company | Email                | URI                      |
-| ------------------------ | ------- | -------------------- | ------------------------ |
-| Austin Wright (*editor*) |         | <aaa@bzfx.net>       |                          |
-| Ben Hutton (*editor*)    | Postman | <ben@jsonschema.dev> | <https://jsonschema.dev> |
+## Contributors
+
+The JSON Schema specification is a collaborative work with many contributors
+over its history. This includes, but is not necessarily limited to, the
+following people.
+
+Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, Julian Berman, Austin
+Wright, Henry Andrews, Ben Hutton, Jason Desrosiers, Greg Dennis, Daniel
+Perrett, Erik Wilde, Evgeny Poberezkin, Brad Bowman, Gowry Sankar, Donald
+Pipowitch, Dave Finlay, Denis Laxalde, Phil Sturgeon, Shawn Silverman, Karen
+Etheridge, Juan Cruz Viotti, Matthew Adams.
+
+The group of people maintaining the JSON Schema specification has also changed
+several times over its history. The following people were the maintainers at the
+time this document was published.
+
+| Maintainers      | Company                  | Email                   | URI                              |
+| ---------------- | ------------------------ | ----------------------- | -------------------------------- |
+| Greg Dennis      |                          | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
+| Jason Desrosiers | Hyperjump Software, Inc. | <jason@hyperjump.io>    | <https://github.com/jdesrosiers> |
 
 [^6]: This section to be removed before leaving Internet-Draft status.
 

@@ -2453,16 +2453,6 @@ instance of a distinct class.
 This style of usage requires the annotation to be in the same object as the
 reference, which must be recognizable as a reference.
 
-## %appendix% Acknowledgments
-
-Thanks to Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, and Henry
-Andrews for their work on the initial drafts of JSON Schema.
-
-Thanks to Jason Desrosiers, Daniel Perrett, Erik Wilde, Evgeny Poberezkin, Brad
-Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
-Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
-to the document.
-
 ## %appendix% Change Log[^19]
 
 ### draft-bhutton-json-schema-next
@@ -2624,12 +2614,26 @@ to the document.
 ### draft-zyp-json-schema-00
 - Initial draft.
 
-## Authors' Addresses
-| Author                   | Company | Email                   | URI                              |
-| ------------------------ | ------- | ----------------------- | -------------------------------- |
-| Austin Wright (*editor*) |         | <aaa@bzfx.net>          |                                  |
-| Ben Hutton (*editor*)    | Postman | <ben@jsonschema.dev>    | <https://jsonschema.dev>         |
-| Greg Dennis              |         | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
+## Contributors
+
+The JSON Schema specification is a collaborative work with many contributors
+over its history. This includes, but is not necessarily limited to, the
+following people.
+
+Gary Court, Francis Galiegue, Kris Zyp, Geraint Luff, Julian Berman, Austin
+Wright, Henry Andrews, Ben Hutton, Jason Desrosiers, Greg Dennis, Daniel
+Perrett, Erik Wilde, Evgeny Poberezkin, Brad Bowman, Gowry Sankar, Donald
+Pipowitch, Dave Finlay, Denis Laxalde, Phil Sturgeon, Shawn Silverman, Karen
+Etheridge, Juan Cruz Viotti, Matthew Adams.
+
+The group of people maintaining the JSON Schema specification has also changed
+several times over its history. The following people were the maintainers at the
+time this document was published.
+
+| Maintainers      | Company                  | Email                   | URI                              |
+| ---------------- | ------------------------ | ----------------------- | -------------------------------- |
+| Greg Dennis      |                          | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
+| Jason Desrosiers | Hyperjump Software, Inc. | <jason@hyperjump.io>    | <https://github.com/jdesrosiers> |
 
 [^19]: This section to be removed before leaving Internet-Draft status.
 
