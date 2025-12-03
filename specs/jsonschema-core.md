@@ -1141,23 +1141,17 @@ the positive integer constraint is a subschema in `$defs`:
 This keyword reserves a location for comments from schema authors to readers or
 maintainers of the schema.
 
-The value of this keyword MUST be a string. Implementations MUST NOT present
-this string to end users. Tools for editing schemas SHOULD support displaying
-and editing this keyword. The value of this keyword MAY be used in debug or
-error output which is intended for developers making use of schemas.
+The value of this keyword MUST be a string.
+
+This keyword MUST not affect validation or be collected as an annotation.
+
+The value of this keyword MAY be used as directives for developer tooling such
+as a directive for a linter to ignore a linting rule in a schema.
 
 Tools that translate schemas between media types or programming languages MAY
 choose to convert that media type or programming language's native comments to
 or from `$comment` values. The behavior of such translation when both native
 comments and `$comment` properties are present is implementation-dependent.
-
-Implementations MAY strip `$comment` values at any point during processing. In
-particular, this allows for shortening schemas when the size of deployed schemas
-is a concern.
-
-Implementations MUST NOT take any other action based on the presence, absence,
-or contents of `$comment` properties. In particular, the value of `$comment`
-MUST NOT be collected as an annotation result.
 
 ## Loading and Processing Schemas
 
