@@ -121,7 +121,7 @@ vocabulary](../jsonschema-core.md#applicators).
       "additionalProperties": {
         "type": "object",
         "additionalProperties": {
-         "$dynamicRef": "#meta",
+         "$dynamicRef": "meta",
            "default": true
         },
         "default": {}
