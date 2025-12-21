@@ -105,8 +105,8 @@ define their own dialects of JSON Schema.
 
 ### JSON Document
 
-In JSON Schema, the terms "JSON document", "JSON data", and "JSON value" are
-interchangeable and refer to the data model defined in {{data-model}}.
+In JSON Schema, the terms "JSON document", "JSON data", "JSON text", and "JSON
+value" are interchangeable and refer to the data model defined in {{data-model}}.
 
 JSON Schema is only defined over JSON documents. However, any document or memory
 structure that can be parsed into or processed according to the JSON Schema data
@@ -363,7 +363,7 @@ agreement, schema authors SHALL NOT expect these additional keywords to be
 supported by implementations that do not explicitly document such support.
 
 Extension keywords MUST NOT directly modify the operation of keywords defined by
-this document or the companion JSON Schema Validation specificiation, and SHOULD
+this document or the companion JSON Schema Validation specification, and SHOULD
 NOT directly modify the operation of keywords defined by other extension
 documents.[^11]
 
@@ -407,7 +407,7 @@ provides a guarantee of compatibility for future releases within a version.
 
 ### Future Development and Support of Proposals
 
-Continued development of these specifications and support requirments for
+Continued development of these specifications and support requirements for
 proposed features is managed in the
 [json-schema-org/json-schema-spec](https://github.com/json-schema-org/json-schema-spec)
 GitHub repository and defined by _PROCESS.md_.
@@ -606,7 +606,7 @@ produce the boolean result of the applicator. Applicators may apply any boolean
 logic operation to the assertion results of subschemas, but SHOULD NOT introduce
 new assertion conditions of their own.[^2]
 
-[^2]: It is recommended that keywords have a single resposibility. An example of
+[^2]: It is recommended that keywords have a single responsibility. An example of
 this in action is the separation between `properties`, which verifies object
 property values have the right data _if_ they exist, and `required`, which
 verifies that object properties exist. Separating these concerns allows for more
@@ -854,7 +854,7 @@ Keywords MAY be defined to use JSON Pointers or Relative JSON Pointers to
 examine parts of an instance outside the current evaluation location.
 
 Keywords that allow adjusting the location using a Relative JSON Pointer SHOULD
-default to using the current location if a default is desireable.
+default to using the current location if a default is desirable.
 
 ## The JSON Schema Core Keywords {#core}
 
