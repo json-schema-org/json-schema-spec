@@ -1697,7 +1697,7 @@ length of the array. Only array positions present in both the keyword's value
 and the instance value are affected by this keyword.
 
 This keyword produces an annotation value which is the largest index to which
-this keyword applied a subschema. The value MAY be a boolean true if a subschema
+this keyword applied a subschema. The value MAY be a boolean `true` if a subschema
 was applied to every index of the instance, such as is produced by the `items`
 keyword.
 
