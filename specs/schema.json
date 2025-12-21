@@ -28,7 +28,7 @@
         "definitions": {
             "$comment": "\"definitions\" has been replaced by \"$defs\".",
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
+            "additionalProperties": { "$dynamicRef": "meta" },
             "deprecated": true,
             "default": {}
         },
@@ -37,7 +37,7 @@
             "type": "object",
             "additionalProperties": {
                 "anyOf": [
-                    { "$dynamicRef": "#meta" },
+                    { "$dynamicRef": "meta" },
                     { "$ref": "meta/validation#/$defs/stringArray" }
                 ]
             },

@@ -31,8 +31,8 @@ First, create a schema that just defines the new keywords.
   "$id": "https://example.com/schema/odds-evens",
 
   "properties": {
-    "odds": { "$dynamicRef": "#meta" },
-    "evens": { "$dynamicRef": "#meta" }
+    "odds": { "$dynamicRef": "meta" },
+    "evens": { "$dynamicRef": "meta" }
   }
 }
 ```

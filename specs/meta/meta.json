@@ -14,14 +14,14 @@
         "$schema": { "$ref": "#/$defs/iriString" },
         "$ref": { "$ref": "#/$defs/iriReferenceString" },
         "$anchor": { "$ref": "#/$defs/anchorString" },
-        "$dynamicRef": { "$ref": "#/$defs/iriReferenceString" },
+        "$dynamicRef": { "$ref": "#/$defs/anchorString" },
         "$dynamicAnchor": { "$ref": "#/$defs/anchorString" },
         "$comment": {
             "type": "string"
         },
         "$defs": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" }
+            "additionalProperties": { "$dynamicRef": "meta" }
         },
         "title": {
             "type": "string"
@@ -47,40 +47,40 @@
             "items": true
         },
         "prefixItems": { "$ref": "#/$defs/schemaArray" },
-        "items": { "$dynamicRef": "#meta" },
+        "items": { "$dynamicRef": "meta" },
         "maxContains": { "$ref": "#/$defs/nonNegativeInteger" },
         "minContains": {
             "$ref": "#/$defs/nonNegativeInteger",
             "default": 1
         },
-        "contains": { "$dynamicRef": "#meta" },
-        "additionalProperties": { "$dynamicRef": "#meta" },
+        "contains": { "$dynamicRef": "meta" },
+        "additionalProperties": { "$dynamicRef": "meta" },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
+            "additionalProperties": { "$dynamicRef": "meta" },
             "default": {}
         },
         "patternProperties": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
+            "additionalProperties": { "$dynamicRef": "meta" },
             "propertyNames": { "format": "regex" },
             "default": {}
         },
         "dependentSchemas": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
+            "additionalProperties": { "$dynamicRef": "meta" },
             "default": {}
         },
-        "propertyNames": { "$dynamicRef": "#meta" },
-        "if": { "$dynamicRef": "#meta" },
-        "then": { "$dynamicRef": "#meta" },
-        "else": { "$dynamicRef": "#meta" },
+        "propertyNames": { "$dynamicRef": "meta" },
+        "if": { "$dynamicRef": "meta" },
+        "then": { "$dynamicRef": "meta" },
+        "else": { "$dynamicRef": "meta" },
         "allOf": { "$ref": "#/$defs/schemaArray" },
         "anyOf": { "$ref": "#/$defs/schemaArray" },
         "oneOf": { "$ref": "#/$defs/schemaArray" },
-        "not": { "$dynamicRef": "#meta" },
-        "unevaluatedItems": { "$dynamicRef": "#meta" },
-        "unevaluatedProperties": { "$dynamicRef": "#meta" },
+        "not": { "$dynamicRef": "meta" },
+        "unevaluatedItems": { "$dynamicRef": "meta" },
+        "unevaluatedProperties": { "$dynamicRef": "meta" },
         "type": {
             "anyOf": [
                 { "$ref": "#/$defs/simpleTypes" },
@@ -137,7 +137,7 @@
         "format": { "type": "string" },
         "contentEncoding": { "type": "string" },
         "contentMediaType": { "type": "string" },
-        "contentSchema": { "$dynamicRef": "#meta" },
+        "contentSchema": { "$dynamicRef": "meta" },
 
         "$vocabulary": {
             "$comment": "Proposed keyword: https://github.com/json-schema-org/json-schema-spec/blob/main/specs/proposals/vocabularies.md"
@@ -152,7 +152,7 @@
     "propertyNames": {
       "pattern": "^[^$]|^\\$(id|schema|ref|anchor|dynamicRef|dynamicAnchor|comment|defs)$"
     },
-    "$dynamicRef": "#extension",
+    "$dynamicRef": "extension",
     "unevaluatedProperties": false,
     "$defs": {
         "extension": {
@@ -181,7 +181,7 @@
         "schemaArray": {
             "type": "array",
             "minItems": 1,
-            "items": { "$dynamicRef": "#meta" }
+            "items": { "$dynamicRef": "meta" }
         },
         "simpleTypes": {
             "enum": [
