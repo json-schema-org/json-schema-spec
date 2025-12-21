@@ -108,9 +108,6 @@ define their own dialects of JSON Schema.
 In JSON Schema, the terms "JSON document", "JSON data", and "JSON value" are
 interchangeable and refer to the data model defined in {{data-model}}.
 
-In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are
-interchangeable because of the data model it defines in {{data-model}}.
-
 JSON Schema is only defined over JSON documents. However, any document or memory
 structure that can be parsed into or processed according to the JSON Schema data
 model can be interpreted against a JSON Schema.
