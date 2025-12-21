@@ -910,7 +910,7 @@ steps.
       the specification that applies to that document.
     - If the media type of the schema is known and the media type defines a
       default dialect or a way to declare a dialect, the dialect MUST be
-      determined by the rules of that media types. For example, the
+      determined by the rules of that media type. For example, the
       [application/schema+json] media type includes a `schema` parameter that
       can be used to declare the dialect. A media type will generally only be
       available if the schema has been retrieved from an external source and
