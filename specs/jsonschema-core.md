@@ -1745,7 +1745,7 @@ The annotation result of this keyword is the set of instance property names
 which are also present under this keyword.
 
 The presence of this keyword affects the behaviors of
-[`additionalProperties`(#additionalProperties) and [`unevaluatedProperties`](#unevaluatedproperties).
+[`additionalProperties`](#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `patternProperties`
 
@@ -1765,7 +1765,7 @@ The annotation result of this keyword is the set of instance property names
 matched by at least one property under this keyword.
 
 The presence of this keyword affects the behaviors of
-[`additionalProperties`(#additionalproperties) and
+[`additionalProperties`](#additionalproperties) and
 [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `additionalProperties` {#additionalproperties}
