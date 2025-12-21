@@ -1140,7 +1140,7 @@ maintainers of the schema.
 
 The value of this keyword MUST be a string.
 
-This keyword MUST not affect validation or be collected as an annotation.
+This keyword MUST NOT affect validation or be collected as an annotation.
 
 The value of this keyword MAY be used as directives for developer tooling such
 as a directive for a linter to ignore a linting rule in a schema.
