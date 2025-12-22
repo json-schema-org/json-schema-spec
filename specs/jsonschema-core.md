@@ -398,7 +398,7 @@ they do not know how to process or explicitly choose not to process.
 ## Specification Versioning and Compatibility
 
 This specification is identified collectively by two values: version, denoted as
-the letter "v" and the version number, and release year. For example, "v1/2026"
+the letter "v", the version number, and the release year. For example, "v1/2026"
 denotes version 1, released in 2026; "v2/2042" would denote version 2, released
 in 2042.
 
