@@ -422,9 +422,9 @@ specific dates. See RFC 3339, section 5.7.
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. Implementations SHOULD NOT define extension
 attributes with any name matching an RFC 3339, RFC 9557, or ISO 8601 format
-unless it validates according to the rules of that format.[^5]
+unless it validates according to the rules of that format.[^4]
 
-[^5]: There is not currently consensus on the need for supporting all RFC 3339
+[^4]: There is not currently consensus on the need for supporting all RFC 3339
 formats, so this approach of reserving the namespace will encourage
 experimentation without committing to the entire set. Either the format
 implementation requirements will become more flexible in general, or these will
@@ -612,9 +612,9 @@ Note that evaluating the `contentSchema` subschema in-place (i.e. as part of its
 parent schema) will ensure that it is correctly processed. Independent use of
 the extracted subschema (as returned in an annotation) is only safe if the
 subschema is an embedded resource which defines both a `$schema` and an absolute
-IRI `$id`.[^7]
+IRI `$id`.[^5]
 
-[^7] Processing a non-resource subschema in place will ensure that any
+[^5]: Processing a non-resource subschema in place will ensure that any
 references (e.g. `$ref`) are always resolved properly. This isn't a problem when
 the subschema is itself a resource. See
 https://github.com/json-schema-org/json-schema-spec/issues/1381 for several
@@ -853,7 +853,7 @@ to the document.
     document
   - Also allow RFC 4648 encodings in `contentEncoding`
   - Added `minContains` and `maxContains`
-  - Update RFC reference for nhostname" and "idn-hostname"
+  - Update RFC reference for "hostname" and "idn-hostname"
   - Add "uuid" and "duration" formats
 - *draft-handrews-json-schema-validation-01*
   - This draft is purely a clarification with no functional changes

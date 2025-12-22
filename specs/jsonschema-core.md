@@ -105,11 +105,8 @@ define their own dialects of JSON Schema.
 
 ### JSON Document
 
-In JSON Schema, the terms "JSON document", "JSON data", and "JSON value" are
-interchangeable and refer to the data model defined in {{data-model}}.
-
-In JSON Schema, the terms "JSON document", "JSON text", and "JSON value" are
-interchangeable because of the data model it defines in {{data-model}}.
+In JSON Schema, the terms "JSON document", "JSON data", "JSON text", and "JSON
+value" are interchangeable and refer to the data model defined in {{data-model}}.
 
 JSON Schema is only defined over JSON documents. However, any document or memory
 structure that can be parsed into or processed according to the JSON Schema data
@@ -366,11 +363,11 @@ agreement, schema authors SHALL NOT expect these additional keywords to be
 supported by implementations that do not explicitly document such support.
 
 Extension keywords MUST NOT directly modify the operation of keywords defined by
-this document or the companion JSON Schema Validation specificiation, and SHOULD
+this document or the companion JSON Schema Validation specification, and SHOULD
 NOT directly modify the operation of keywords defined by other extension
-documents.[^11]
+documents.[^1]
 
-[^11]: JSON Schema currently does not have a namespacing mechanism, which would
+[^1]: JSON Schema currently does not have a namespacing mechanism, which would
 allow multiple extensions to define the same keyword differently while also
 giving the schema author the ability to declare which definition is intended.
 Such a feature is planned for future releases. See the
@@ -401,7 +398,9 @@ they do not know how to process or explicitly choose not to process.
 ## Specification Versioning and Compatibility
 
 This specification is identified collectively by two values: version, denoted as
-the letter "v" and the version number, and release year.  For example,
+the letter "v", the version number, and the release year. For example, "v1/2026"
+denotes version 1, released in 2026; "v2/2042" would denote version 2, released
+in 2042.
 
 A schema written to conform with the requirements of a given version is
 compatible with successive specifications, which are published with the same
@@ -410,7 +409,7 @@ provides a guarantee of compatibility for future releases within a version.
 
 ### Future Development and Support of Proposals
 
-Continued development of these specifications and support requirments for
+Continued development of these specifications and support requirements for
 proposed features is managed in the
 [json-schema-org/json-schema-spec](https://github.com/json-schema-org/json-schema-spec)
 GitHub repository and defined by _PROCESS.md_.
@@ -418,7 +417,7 @@ GitHub repository and defined by _PROCESS.md_.
 ## Keyword Behaviors {#keyword-behaviors}
 
 JSON Schema keywords may exhibit one or more behaviors. This specification
-defines three such behaviors[^7]:
+defines three such behaviors[^2]:
 
 - Assertions validate that an instance satisfies constraints, producing a
   boolean result: `true` if the constraints are satisfied; `false` otherwise.
@@ -427,7 +426,7 @@ defines three such behaviors[^7]:
 - Applicators apply subschemas to parts of the instance and combine their
   results.
 
-[^7]: This specification also defines several operational directive keywords,
+[^2]: This specification also defines several operational directive keywords,
 such as `$id` and `$schema`, which do not exhibit these behaviors. Instead,
 these keywords provide metadata that instruct implementations on how to
 interpret and process the schema.
@@ -607,9 +606,9 @@ modified (e.g. the `not` keyword negates its subschema's assertion) and/or
 combined (e.g. `allOf` takes the conjunction of its subschemas' assertions) to
 produce the boolean result of the applicator. Applicators may apply any boolean
 logic operation to the assertion results of subschemas, but SHOULD NOT introduce
-new assertion conditions of their own.[^2]
+new assertion conditions of their own.[^3]
 
-[^2]: It is recommended that keywords have a single resposibility. An example of
+[^3]: It is recommended that keywords have a single responsibility. An example of
 this in action is the separation between `properties`, which verifies object
 property values have the right data _if_ they exist, and `required`, which
 verifies that object properties exist. Separating these concerns allows for more
@@ -857,7 +856,7 @@ Keywords MAY be defined to use JSON Pointers or Relative JSON Pointers to
 examine parts of an instance outside the current evaluation location.
 
 Keywords that allow adjusting the location using a Relative JSON Pointer SHOULD
-default to using the current location if a default is desireable.
+default to using the current location if a default is desirable.
 
 ## The JSON Schema Core Keywords {#core}
 
@@ -911,7 +910,7 @@ steps.
       the specification that applies to that document.
     - If the media type of the schema is known and the media type defines a
       default dialect or a way to declare a dialect, the dialect MUST be
-      determined by the rules of that media types. For example, the
+      determined by the rules of that media type. For example, the
       [application/schema+json] media type includes a `schema` parameter that
       can be used to declare the dialect. A media type will generally only be
       available if the schema has been retrieved from an external source and
@@ -952,14 +951,14 @@ identified by
 (without fragments). These identifiers are used to create references between
 schema resources. When comparing IRIs for the purposes of resource
 identification, implementations MUST apply the Syntax-Based IRI normalization
-procedures defined in [RFC 3987][rfc3987], section 5.3.2.[^12] Implementations
-MAY also apply Scheme-Based and Protocol-Based Normalization.[^13]
+procedures defined in [RFC 3987][rfc3987], section 5.3.2.[^4] Implementations
+MAY also apply Scheme-Based and Protocol-Based Normalization.[^5]
 
-[^12]: [RFC 3987][rfc3987], section 5.1, requires that applications using IRIs
+[^4]: [RFC 3987][rfc3987], section 5.1, requires that applications using IRIs
 as non-locating, identifier-only tokens MUST use Simple String Comparison. JSON
 Schema deviates from that requirement by specifying normalization requirements.
 
-[^13]: We expect implementations to use whatever IRI libraries they have
+[^5]: We expect implementations to use whatever IRI libraries they have
 available to them and therefore don't always have control over which
 normalization rules are applied. Supporting Scheme-Based and Protocol-Based
 Normalization is allowed to accommodate those situations, but it is discouraged
@@ -1015,9 +1014,9 @@ The `$anchor` and `$dynamicAnchor` keywords are used to define
 location-independent identifiers for subschemas within a schema resource.
 
 `$anchor` defines a plain name fragment identifier that can be used in IRI
-fragments as an alternative to JSON Pointers.[^4] See {{fragments}}.
+fragments as an alternative to JSON Pointers.[^6] See {{fragments}}.
 
-[^4]: Note that the anchor string does not include the "#" character, as it is
+[^6]: Note that the anchor string does not include the "#" character, as it is
 just a fragment identifier not an IRI reference. To reference the "foo"
 `$anchor` from the same schema resource, you would use the fragment-only IRI
 `#foo`. See below for full examples.
@@ -1071,9 +1070,9 @@ applicators, applying the referenced schema to the instance.
 ##### Direct References with `$ref` {#ref}
 
 The `$ref` keyword is an applicator that is used to reference a statically
-identified schema. Its results are the results of the referenced schema.[^5]
+identified schema. Its results are the results of the referenced schema.[^7]
 
-[^5]: Note that this definition of how the results are determined means that
+[^7]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
 
 The value of the `$ref` keyword MUST be a string which is an IRI reference.
@@ -1095,9 +1094,9 @@ be extended or a generic schema such as a list whose items are defined by the
 referencing schema.
 
 The value of the `$dynamicRef` property MUST be formatted as a valid
-[fragment-only IRI](#fragments).[^3]
+[fragment-only IRI](#fragments).[^8]
 
-[^3]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`. Although,
+[^8]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`. Although,
 for historical reasons, the value of `$dynamicRef` still uses a fragment-only
 IRI syntax, e.g. `#foo`.
 
@@ -1106,9 +1105,9 @@ in the [dynamic scope](#scopes) which defines a matching `$dynamicAnchor`. The
 schema to apply is the subschema of this resource which contains the matching
 `$dynamicAnchor`. If no matching `$dynamicAnchor` is found, see {{failed-refs}}.
 
-For a full example using these keywords, see {{dynamic-example}}.[^6]
+For a full example using these keywords, see {{dynamic-example}}.[^9]
 
-[^6]: The differences in the hyper-schema meta-schemas from draft-07 and draft
+[^9]: The differences in the hyper-schema meta-schemas from draft-07 and draft
 2019-09 dramatically demonstrates the utility of these keywords.
 
 #### Schema Re-Use With `$defs` {#defs}
@@ -1143,7 +1142,7 @@ maintainers of the schema.
 
 The value of this keyword MUST be a string.
 
-This keyword MUST not affect validation or be collected as an annotation.
+This keyword MUST NOT affect validation or be collected as an annotation.
 
 The value of this keyword MAY be used as directives for developer tooling such
 as a directive for a linter to ignore a linting rule in a schema.
@@ -1340,9 +1339,9 @@ desired to identify the object containing the `$ref` in the second
 Due to the potential break in functionality described above, the behavior for
 using JSON Pointer fragments that point to or cross a resource boundary is
 undefined. Schema authors SHOULD NOT rely on such IRIs, as using them may
-reduce interoperability.[^8]
+reduce interoperability.[^10]
 
-[^8]: This is to avoid requiring implementations to keep track of a whole stack
+[^10]: This is to avoid requiring implementations to keep track of a whole stack
     of possible base IRIs and JSON Pointer fragment identifiers for each, given
 that all but one will be fragile if the schema resources are reorganized. Some
 have argued that this is easy so there is no point in forbidding it, while
@@ -1424,9 +1423,9 @@ as using different dialects, these documents SHOULD NOT be validated by applying
 a meta-schema to the Compound Schema Document as an instance. It is RECOMMENDED
 that an alternate validation process be provided in order to validate Schema
 Documents. Each Schema Resource SHOULD be separately validated against its
-associated meta-schema.[^9]
+associated meta-schema.[^11]
 
-[^9]: If you know a schema is what's being validated, you can identify if the
+[^11]: If you know a schema is what's being validated, you can identify if the
 schemas is a Compound Schema Document or not, by way of use of `$id`, which
 identifies an embedded resource when used not at the document's root.
 
@@ -1461,9 +1460,9 @@ interoperable and should not be relied upon.
 When a schema is resolved over HTTP or another protocol that declares the media
 type of the response, implementations SHOULD refuse to evaluate schemas whose
 declared media type is not a known and supported JSON Schema media type such as
-[application/schema+json].[^10]
+[application/schema+json].[^12]
 
-[^10]: An implementation can certainly try to interpret it as a schema, but
+[^12]: An implementation can certainly try to interpret it as a schema, but
 there's no guarantee that it can be parsed and evaluated as a schema. Therefore,
 interpreting it as such has security implications and may produce unpredictable
 or malicious results.
@@ -1698,7 +1697,7 @@ length of the array. Only array positions present in both the keyword's value
 and the instance value are affected by this keyword.
 
 This keyword produces an annotation value which is the largest index to which
-this keyword applied a subschema. The value MAY be a boolean true if a subschema
+this keyword applied a subschema. The value MAY be a boolean `true` if a subschema
 was applied to every index of the instance, such as is produced by the `items`
 keyword.
 
@@ -1746,7 +1745,7 @@ The annotation result of this keyword is the set of instance property names
 which are also present under this keyword.
 
 The presence of this keyword affects the behaviors of
-[`additionalProperties`(#additionalProperties) and [`unevaluatedProperties`](#unevaluatedproperties).
+[`additionalProperties`](#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `patternProperties`
 
@@ -1766,7 +1765,7 @@ The annotation result of this keyword is the set of instance property names
 matched by at least one property under this keyword.
 
 The presence of this keyword affects the behaviors of
-[`additionalProperties`(#additionalproperties) and
+[`additionalProperties`](#additionalproperties) and
 [`unevaluatedProperties`](#unevaluatedproperties).
 
 ##### `additionalProperties` {#additionalproperties}
@@ -2228,9 +2227,9 @@ Document location `/$defs/C`:
 
 Note: The fragment part of the IRI does not make it canonical or non-canonical,
 rather, the base IRI used (as part of the full IRI with any fragment) is what
-determines the canonical nature of the resulting full IRI.[^18]
+determines the canonical nature of the resulting full IRI.[^13]
 
-[^18]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
+[^13]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
 and direct you to read the CREF located in {{embedded}} for further comments.
 
 While the following IRIs do correctly indicate specific schemas, per the reasons
@@ -2447,7 +2446,7 @@ instance of a distinct class.
 This style of usage requires the annotation to be in the same object as the
 reference, which must be recognizable as a reference.
 
-## %appendix% Change Log[^19]
+## %appendix% Change Log[^14]
 
 ### draft-bhutton-json-schema-next
 - Use IRIs instead of URIs, including allowing unicode in plain-name fragments
@@ -2629,7 +2628,7 @@ time this document was published.
 | Greg Dennis      |                          | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
 | Jason Desrosiers | Hyperjump Software, Inc. | <jason@hyperjump.io>    | <https://github.com/jdesrosiers> |
 
-[^19]: This section to be removed before leaving Internet-Draft status.
+[^14]: This section to be removed before leaving Internet-Draft status.
 
 [rfc3986]: https://www.rfc-editor.org/info/rfc3986
 [rfc3987]: https://www.rfc-editor.org/info/rfc3987
