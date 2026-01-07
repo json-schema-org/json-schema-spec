@@ -2373,7 +2373,7 @@ we resolve it to the `"$dynamicAnchor": "node"` in
  `https://example.com/strict-tree`.
 
 This example shows both `$dynamicAnchor`s in the same place in each schema,
-specifically the resource root schema. Since plain-name identifiers are
+specifically the resource root schema. Since dynamically scoped identifiers are
 independent of the JSON structure, this would work just as well if one or both
 of the node schema objects were moved under `$defs`. It is the matching
 `$dynamicAnchor` values which tell us how to resolve the dynamic reference, not
