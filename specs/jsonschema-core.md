@@ -1010,27 +1010,23 @@ fragments to identify subschemas is sometimes preferable because it is not tied
 to a particular structural location. This allows a subschema to be relocated
 without requiring references to be updated.
 
-The `$anchor` and `$dynamicAnchor` keywords are used to define
-location-independent identifiers for subschemas within a schema resource.
-
-`$anchor` defines a plain name fragment identifier that can be used in IRI
-fragments as an alternative to JSON Pointers.[^6] See {{fragments}}.
+The `$anchor` keyword is used to define location-independent identifiers for
+subschemas within a schema resource. `$anchor` defines a plain name fragment
+identifier that can be used in IRI fragments as an alternative to JSON
+Pointers.[^4] See {{fragments}}.
 
 [^6]: Note that the anchor string does not include the "#" character, as it is
 just a fragment identifier not an IRI reference. To reference the "foo"
 `$anchor` from the same schema resource, you would use the fragment-only IRI
 `#foo`. See below for full examples.
 
-`$dynamicAnchor` defines a (non-fragment) identifier that only has meaning when
-used with `$dynamicRef`.
-
-If present, the value of these keywords MUST be a string and MUST conform to the
+If present, the value of this keyword MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.
 
-`$anchor`, `$dynamicAnchor`, and any extensions that define plain name
-fragment identifiers MUST match XML's
-[`NCName` production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName).
-For convenience, the `NCName` syntax is reproduced here in ABNF form, using a
+`$anchor`, and any extensions that define a plain name fragment identifier MUST
+match XML's [`NCName`
+production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName). For
+convenience, the `NCName` syntax is reproduced here in ABNF form, using a
 minimal set of rules:
 
 ```abnf
@@ -1045,6 +1041,18 @@ NCNameStartChar = "_" / ALPHA
 NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
                       / %xB7 / %x0300-036F / %x203F-2040
 ```
+
+#### Defining dynamically scoped identifiers {#dynamic-anchors}
+
+The `$dynamicAnchor` keyword is used to define location-independent identifiers
+for subschemas within the dynamic scope of a schema evaluation. They are only
+used by `$dynamicRef`. They are not meaningful in IRI fragments.
+
+The fragment identifiers defined by `$dynamicAnchor` are not normal fragment
+identifiers because they identify both the primary resource and the secondary
+resource. See {{dynamic-ref}} for details.
+
+If present, the value of this keyword MUST be a string.
 
 #### Duplicate schema identifiers {#duplicate-iris}
 
