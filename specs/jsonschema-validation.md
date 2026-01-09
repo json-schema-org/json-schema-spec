@@ -437,12 +437,7 @@ These attributes apply to string instances.
 A string instance is valid against these format values if it is a valid Internet
 email address as follows:
 
-- *email:* As defined by the "Mailbox" ABNF rule in [RFC 5321, section
-  4.1.2](https://www.rfc-editor.org/info/rfc5321).
-- *idn-email:* As defined by the extended "Mailbox" ABNF rule in [RFC 6531,
-  section 3.3](https://www.rfc-editor.org/info/rfc6531). Note that all strings
-  valid against the "email" attribute are also valid against the "idn-email"
-  attribute.
+- *email:* As defined by the "Mailbox" ABNF rule in [RFC 5321, section 4.1.2](https://www.rfc-editor.org/info/rfc5321).
 
 #### Hostnames
 
@@ -451,15 +446,7 @@ These attributes apply to string instances.
 A string instance is valid against these attributes if it is a valid
 representation for an Internet hostname as follows:
 
-- *hostname:* As defined by
-  [RFC 1123, section 2.1](https://www.rfc-editor.org/info/rfc1123), including
-  host names produced using the Punycode algorithm specified in [RFC 5891,
-  section 4.4](https://www.rfc-editor.org/info/rfc5891).
-- *idn-hostname:* As defined by either RFC 1123 as for hostname, or an
-  internationalized hostname as defined by [RFC 5890, section
-  2.3.2.3](https://www.rfc-editor.org/info/rfc5890). Note that all strings valid
-  against the "hostname" attribute are also valid against the "idn-hostname"
-  attribute.
+- *hostname:* As defined by [RFC 1123, section 2.1](https://www.rfc-editor.org/info/rfc1123).
 
 #### IP Addresses
 
@@ -853,7 +840,7 @@ to the document.
     document
   - Also allow RFC 4648 encodings in `contentEncoding`
   - Added `minContains` and `maxContains`
-  - Update RFC reference for nhostname" and "idn-hostname"
+  - Update RFC reference for "hostname" and "idn-hostname"
   - Add "uuid" and "duration" formats
 - *draft-handrews-json-schema-validation-01*
   - This draft is purely a clarification with no functional changes
