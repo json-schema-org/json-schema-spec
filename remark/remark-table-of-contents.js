@@ -25,6 +25,17 @@ const remarkTableOfContents = (options) => (tree, file) => {
     const headingText = nodeToString(headingNode);
 
     if (headingText === options.heading) {
+      headingNode.data = {
+        hProperties: {
+          className: ["toc-heading"]
+        }
+      };
+      tableOfContents.data = {
+        hProperties: {
+          className: ["toc"]
+        }
+      };
+
       insertTableOfContents = () => {
         parent.children.splice(index + 1, 0, tableOfContents);
       };
@@ -37,7 +48,7 @@ const remarkTableOfContents = (options) => (tree, file) => {
     while (headingNode.depth > currentDepth) {
       const newList = list("unordered");
       listStack.push(newList);
-      currentList.children.push(newList);
+      currentList.children.push(listItem(newList));
       currentList = newList;
       currentDepth++;
     }

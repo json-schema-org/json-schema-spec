@@ -18,9 +18,17 @@ export default {
     [rehypeHighlightCodeLines, { showLineNumbers: true }],
     rehypeLinkTransformer,
     [rehypeDocument, {
-      css: [
-        "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css",
-        "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github-dark-dimmed.min.css"
+      link: [
+        {
+          rel: "stylesheet",
+          href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github-dark-dimmed.min.css",
+          media: "(prefers-color-scheme: dark)"
+        },
+        {
+          rel: "stylesheet",
+          href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github.css",
+          media: "(prefers-color-scheme: light)"
+        }
       ],
       style: readFileSync(resolve(import.meta.dirname, "spec.css"), "utf8")
     }],
