@@ -1097,12 +1097,17 @@ referencing schema.
 The value of the `$dynamicRef` property MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.[^3]
 
-[^3]: `$dynamicAnchor` and `$dynamicRef` form a string-matched pair.
+[^3]: The reason for limiting `$dynamicAnchor` to fragment identifier syntax no
+longer exists because it isn't used in URIs, but the restriction remains to
+avoid changing things that don't have a compelling reason to change.
+
+`$dynamicAnchor` and `$dynamicRef` form a string-matched pair.
 
 Resolution of `$dynamicRef` begins by identifying the outermost schema resource
 in the [dynamic scope](#scopes) which defines a matching `$dynamicAnchor`. The
-schema to apply is the subschema of this resource which contains the matching
-`$dynamicAnchor`. If no matching `$dynamicAnchor` is found, see {{failed-refs}}.
+schema to apply is the subschema of this resource which contains a
+`$dynamicAnchor` matching the value of `$dynamicRef`. If no matching
+`$dynamicAnchor` is found, see {{failed-refs}}.
 
 For a full example using these keywords, see {{dynamic-example}}.[^9]
 
