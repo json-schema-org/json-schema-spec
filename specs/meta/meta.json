@@ -2,26 +2,51 @@
     "$schema": "https://json-schema.org/v1/2026",
     "$id": "https://json-schema.org/v1/2026",
     "$dynamicAnchor": "meta",
-
     "title": "JSON Schema Core and Validation specification meta-schema",
-    "type": ["object", "boolean"],
+    "type": [
+        "object",
+        "boolean"
+    ],
     "properties": {
         "$id": {
             "$ref": "#/$defs/iriReferenceString",
             "$comment": "Fragments not allowed.",
             "pattern": "^[^#]*$"
         },
-        "$schema": { "$ref": "#/$defs/iriString" },
-        "$ref": { "$ref": "#/$defs/iriReferenceString" },
-        "$anchor": { "$ref": "#/$defs/anchorString" },
-        "$dynamicRef": { "$ref": "#/$defs/iriReferenceString" },
-        "$dynamicAnchor": { "$ref": "#/$defs/anchorString" },
-        "$comment": {
-            "type": "string"
+        "$schema": {
+            "$ref": "#/$defs/iriString"
         },
+        "$ref": {
+            "$ref": "#/$defs/iriReferenceString"
+        },
+        "$anchor": {
+            "$ref": "#/$defs/anchorString"
+        },
+        "$dynamicRef": {
+            "$ref": "#/$defs/iriReferenceString"
+        },
+        "$dynamicAnchor": {
+            "$ref": "#/$defs/anchorString"
+        },
+        "$comment": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+
         "$defs": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" }
+            "additionalProperties": {
+                "$dynamicRef": "#meta"
+            }
         },
         "title": {
             "type": "string"
@@ -46,47 +71,89 @@
             "type": "array",
             "items": true
         },
-        "prefixItems": { "$ref": "#/$defs/schemaArray" },
-        "items": { "$dynamicRef": "#meta" },
-        "maxContains": { "$ref": "#/$defs/nonNegativeInteger" },
+        "prefixItems": {
+            "$ref": "#/$defs/schemaArray"
+        },
+        "items": {
+            "$dynamicRef": "#meta"
+        },
+        "maxContains": {
+            "$ref": "#/$defs/nonNegativeInteger"
+        },
         "minContains": {
             "$ref": "#/$defs/nonNegativeInteger",
             "default": 1
         },
-        "contains": { "$dynamicRef": "#meta" },
-        "additionalProperties": { "$dynamicRef": "#meta" },
+        "contains": {
+            "$dynamicRef": "#meta"
+        },
+        "additionalProperties": {
+            "$dynamicRef": "#meta"
+        },
         "properties": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
+            "additionalProperties": {
+                "$dynamicRef": "#meta"
+            },
             "default": {}
         },
         "patternProperties": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
-            "propertyNames": { "format": "regex" },
+            "additionalProperties": {
+                "$dynamicRef": "#meta"
+            },
+            "propertyNames": {
+                "format": "regex"
+            },
             "default": {}
         },
         "dependentSchemas": {
             "type": "object",
-            "additionalProperties": { "$dynamicRef": "#meta" },
+            "additionalProperties": {
+                "$dynamicRef": "#meta"
+            },
             "default": {}
         },
-        "propertyNames": { "$dynamicRef": "#meta" },
-        "if": { "$dynamicRef": "#meta" },
-        "then": { "$dynamicRef": "#meta" },
-        "else": { "$dynamicRef": "#meta" },
-        "allOf": { "$ref": "#/$defs/schemaArray" },
-        "anyOf": { "$ref": "#/$defs/schemaArray" },
-        "oneOf": { "$ref": "#/$defs/schemaArray" },
-        "not": { "$dynamicRef": "#meta" },
-        "unevaluatedItems": { "$dynamicRef": "#meta" },
-        "unevaluatedProperties": { "$dynamicRef": "#meta" },
+        "propertyNames": {
+            "$dynamicRef": "#meta"
+        },
+        "if": {
+            "$dynamicRef": "#meta"
+        },
+        "then": {
+            "$dynamicRef": "#meta"
+        },
+        "else": {
+            "$dynamicRef": "#meta"
+        },
+        "allOf": {
+            "$ref": "#/$defs/schemaArray"
+        },
+        "anyOf": {
+            "$ref": "#/$defs/schemaArray"
+        },
+        "oneOf": {
+            "$ref": "#/$defs/schemaArray"
+        },
+        "not": {
+            "$dynamicRef": "#meta"
+        },
+        "unevaluatedItems": {
+            "$dynamicRef": "#meta"
+        },
+        "unevaluatedProperties": {
+            "$dynamicRef": "#meta"
+        },
         "type": {
             "anyOf": [
-                { "$ref": "#/$defs/simpleTypes" },
+                {
+                    "$ref": "#/$defs/simpleTypes"
+                },
                 {
                     "type": "array",
-                    "items": { "$ref": "#/$defs/simpleTypes" },
+                    "items": {
+                        "$ref": "#/$defs/simpleTypes"
+                    },
                     "minItems": 1,
                     "uniqueItems": true
                 }
@@ -113,32 +180,53 @@
         "exclusiveMinimum": {
             "type": "number"
         },
-        "maxLength": { "$ref": "#/$defs/nonNegativeInteger" },
-        "minLength": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
+        "maxLength": {
+            "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "minLength": {
+            "$ref": "#/$defs/nonNegativeIntegerDefault0"
+        },
         "pattern": {
             "type": "string",
             "format": "regex"
         },
-        "maxItems": { "$ref": "#/$defs/nonNegativeInteger" },
-        "minItems": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
+        "maxItems": {
+            "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "minItems": {
+            "$ref": "#/$defs/nonNegativeIntegerDefault0"
+        },
         "uniqueItems": {
             "type": "boolean",
             "default": false
         },
-        "maxProperties": { "$ref": "#/$defs/nonNegativeInteger" },
-        "minProperties": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
-        "required": { "$ref": "#/$defs/stringArray" },
+        "maxProperties": {
+            "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "minProperties": {
+            "$ref": "#/$defs/nonNegativeIntegerDefault0"
+        },
+        "required": {
+            "$ref": "#/$defs/stringArray"
+        },
         "dependentRequired": {
             "type": "object",
             "additionalProperties": {
                 "$ref": "#/$defs/stringArray"
             }
         },
-        "format": { "type": "string" },
-        "contentEncoding": { "type": "string" },
-        "contentMediaType": { "type": "string" },
-        "contentSchema": { "$dynamicRef": "#meta" },
-
+        "format": {
+            "type": "string"
+        },
+        "contentEncoding": {
+            "type": "string"
+        },
+        "contentMediaType": {
+            "type": "string"
+        },
+        "contentSchema": {
+            "$dynamicRef": "#meta"
+        },
         "$vocabulary": {
             "$comment": "Proposed keyword: https://github.com/json-schema-org/json-schema-spec/blob/main/specs/proposals/vocabularies.md"
         },
@@ -150,7 +238,7 @@
         "^x-": true
     },
     "propertyNames": {
-      "pattern": "^[^$]|^\\$(id|schema|ref|anchor|dynamicRef|dynamicAnchor|comment|defs)$"
+        "pattern": "^[^$]|^\\$(id|schema|ref|anchor|dynamicRef|dynamicAnchor|comment|defs)$"
     },
     "$dynamicRef": "#extension",
     "unevaluatedProperties": false,
@@ -181,7 +269,9 @@
         "schemaArray": {
             "type": "array",
             "minItems": 1,
-            "items": { "$dynamicRef": "#meta" }
+            "items": {
+                "$dynamicRef": "#meta"
+            }
         },
         "simpleTypes": {
             "enum": [
@@ -196,7 +286,9 @@
         },
         "stringArray": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+                "type": "string"
+            },
             "uniqueItems": true,
             "default": []
         }

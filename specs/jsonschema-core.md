@@ -9,6 +9,9 @@ a JSON document. JSON Schema provides a standardized way to define the contracts
 for JSON-based APIs and data formats, facilitating automated validation,
 documentation, and other related tooling.
 
+The value of `$comment` MAY be either a string or an array of strings. 
+An array of strings SHOULD be treated as a single logical comment.
+
 ## Note to Readers
 
 The issues list for this draft can be found at
