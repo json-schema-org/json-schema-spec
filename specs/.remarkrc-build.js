@@ -9,12 +9,18 @@ import rehypeDocument from "rehype-document";
 import specsPreset from "./.remarkrc-specs.js";
 import rehypeLinkTransformer from "../remark/rehype-link-transformer.js";
 
+// Add these to prevent the "Unknown language" error
+const customLanguages = {
+  ...all,
+  'mermaid': () => ({ contains: [] }), // Register as a dummy grammar to silence the error
+  'http-message': all.http || all.json, // Map http-message to a similar existing grammar
+};
 
 export default {
   plugins: [
     specsPreset,
     remarkRehype,
-    [rehypeHighlight, { languages: all }],
+    [rehypeHighlight, { languages: customLanguages }], // Use our expanded dictionary
     [rehypeHighlightCodeLines, { showLineNumbers: true }],
     rehypeLinkTransformer,
     [rehypeDocument, {
