@@ -55,11 +55,16 @@ const remarkTableOfContents = (options) => (tree, file) => {
     currentList.children.push(listItem(headingNode.children));
   });
 
-  if (insertTableOfContents) {
-    insertTableOfContents();
-  } else {
+if (insertTableOfContents) {
+  insertTableOfContents();
+} else {
+  // Only warn if the file is in the 'specs' directory and not a README
+  const isSpecFile = file.path.includes('specs') && !file.path.endsWith('README.md');
+  
+  if (isSpecFile) {
     file.message(`Table of Contents not added. Add a heading with the text "${options.heading}" or set the 'heading' option to use a different heading.`);
   }
+}
 };
 
 export default remarkTableOfContents;
