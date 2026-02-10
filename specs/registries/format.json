@@ -141,18 +141,14 @@
         "supportedBy": []
     },
     "idn-email": {
-        "description": "An email address as defined as Mailbox in RFC6531",
-        "definingBody": "JSON Schema",
-        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-email-addresses",
+        "description": "An email address as defined by Mailbox in RFC6531 with the domain using the UTS #46 mapping for IDNs",
         "types": ["string"],
         "examples": ["user@exämple.com"],
         "deprecated": false,
         "supportedBy": []
     },
     "idn-hostname": {
-        "description": "An internationalized host name as defined by RFC5890",
-        "definingBody": "JSON Schema",
-        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-hostnames",
+        "description": "An internationalized host name as defined by IDNA2008 using the UTS #46 mapping",
         "types": ["string"],
         "examples": ["exämple.com"],
         "deprecated": false,
