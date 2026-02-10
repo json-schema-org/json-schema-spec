@@ -1010,32 +1010,21 @@ fragments to identify subschemas is sometimes preferable because it is not tied
 to a particular structural location. This allows a subschema to be relocated
 without requiring references to be updated.
 
-The `$anchor` and `$dynamicAnchor` keywords are used to define
-location-independent identifiers for subschemas within a schema resource.
-
-`$anchor` defines a plain name fragment identifier that can be used in IRI
-fragments as an alternative to JSON Pointers.[^6] See {{fragments}}.
+The `$anchor` keyword is used to define location-independent identifiers for
+subschemas within a schema resource. `$anchor` defines a plain name fragment
+identifier that can be used in IRI fragments as an alternative to JSON
+Pointers.[^4] See {{fragments}}.
 
 [^6]: Note that the anchor string does not include the "#" character, as it is
 just a fragment identifier not an IRI reference. To reference the "foo"
 `$anchor` from the same schema resource, you would use the fragment-only IRI
 `#foo`. See below for full examples.
 
-`$dynamicAnchor` defines a different kind of fragment identifier that only has
-meaning when used with `$dynamicRef`. It's not a normal fragment identifier and
-therefore can't be used anywhere other than `$dynamicRef`. Normal [fragment
-identifiers](https://www.rfc-editor.org/rfc/rfc3986#section-3.5) identify the
-secondary resource (the subschema) while the rest of the IRI identifies the
-primary resource (the schema resource). The fragment identifiers defined by
-`$dynamicAnchor` are not normal fragment identifies because they identify both
-the primary resource and the secondary resource. See {{dynamic-ref}} for
-details.
-
-If present, the value of these keywords MUST be a string and MUST conform to the
+If present, the value of this keyword MUST be a string and MUST conform to the
 plain name fragment identifier syntax defined in {{fragments}}.
 
-`$anchor`, `$dynamicAnchor`, and any extensions that define a plain name
-fragment identifiers MUST match XML's [`NCName`
+`$anchor`, and any extensions that define a plain name fragment identifier MUST
+match XML's [`NCName`
 production](https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName). For
 convenience, the `NCName` syntax is reproduced here in ABNF form, using a
 minimal set of rules:
@@ -1053,13 +1042,25 @@ NCNameChar      = NCNameStartChar / "-" / "." / DIGIT
                       / %xB7 / %x0300-036F / %x203F-2040
 ```
 
+#### Defining dynamically scoped identifiers {#dynamic-anchors}
+
+The `$dynamicAnchor` keyword is used to define location-independent identifiers
+for subschemas within the dynamic scope of a schema evaluation. They are only
+used by `$dynamicRef`. They are not meaningful in IRI fragments.
+
+The fragment identifiers defined by `$dynamicAnchor` are not normal fragment
+identifiers because they identify both the primary resource and the secondary
+resource. See {{dynamic-ref}} for details.
+
+If present, the value of this keyword MUST be a string.
+
 #### Duplicate schema identifiers {#duplicate-iris}
 
 A schema MAY (and likely will) have multiple IRIs, but there is no way for an
 IRI to identify more than one schema. When multiple schemas attempt to identify
-as the same IRI through the use of `$id`, `$anchor`, `$dynamicAnchor`, or any
-other mechanism, implementations SHOULD raise an error condition. Otherwise the
-result is undefined, and even if documented will not be interoperable.
+as the same IRI through the use of `$id`, `$anchor`, or any other mechanism,
+implementations SHOULD raise an error condition. Otherwise the result is
+undefined, and even if documented will not be interoperable.
 
 #### Schema References {#references}
 
@@ -1093,17 +1094,20 @@ resolve. This is useful for cases such as authoring a recursive schema that can
 be extended or a generic schema such as a list whose items are defined by the
 referencing schema.
 
-The value of the `$dynamicRef` property MUST be formatted as a valid
-[fragment-only IRI](#fragments).[^8]
+The value of the `$dynamicRef` property MUST be a string and MUST conform to the
+plain name fragment identifier syntax defined in {{fragments}}.[^3]
 
-[^8]: `$dynamicAnchor` defines the anchor with plain text, e.g. `foo`. Although,
-for historical reasons, the value of `$dynamicRef` still uses a fragment-only
-IRI syntax, e.g. `#foo`.
+[^3]: The reason for limiting `$dynamicAnchor` to fragment identifier syntax no
+longer exists because it isn't used in URIs, but the restriction remains to
+avoid changing things that don't have a compelling reason to change.
+
+`$dynamicAnchor` and `$dynamicRef` form a string-matched pair.
 
 Resolution of `$dynamicRef` begins by identifying the outermost schema resource
 in the [dynamic scope](#scopes) which defines a matching `$dynamicAnchor`. The
-schema to apply is the subschema of this resource which contains the matching
-`$dynamicAnchor`. If no matching `$dynamicAnchor` is found, see {{failed-refs}}.
+schema to apply is the subschema of this resource which contains a
+`$dynamicAnchor` matching the value of `$dynamicRef`. If no matching
+`$dynamicAnchor` is found, see {{failed-refs}}.
 
 For a full example using these keywords, see {{dynamic-example}}.[^9]
 
@@ -2322,7 +2326,7 @@ and only allows the "data" and "children" properties. An example instance with
     "children": {
       "type": "array",
       "items": {
-        "$dynamicRef": "#node"
+        "$dynamicRef": "node"
       }
     }
   }
@@ -2347,50 +2351,34 @@ and only allows the "data" and "children" properties. An example instance with
 ```
 
 When we load these two schemas, we will notice the `$dynamicAnchor` named "node"
-(note the lack of "#" as this is just the name) present in each, resulting in
-the following full schema IRIs:
-
-- `https://example.com/tree#node`
-- `https://example.com/strict-tree#node`
-
-In addition, JSON Schema implementations keep track of the fact that these
-fragment identifiers were created with `$dynamicAnchor`.
+present in each.
 
 If we apply the "strict-tree" schema to the instance, we will follow the `$ref`
 to the "tree" schema, examine its "children" subschema, and find the
-`$dynamicRef`: to "#node" (note the `#` for IRI fragment syntax) in its `items`
-subschema. That reference resolves to `https://example.com/tree#node`, which is
-a IRI with a fragment created by `$dynamicAnchor`. Therefore we must examine the
-dynamic scope before following the reference.
+`$dynamicRef` to "node" in its `items` subschema. That reference resolves to
+the `$dynamicAnchor` with value "node" in `https://example.com/tree`. Therefore
+we must examine the dynamic scope before following the reference.
 
 At this point, the evaluation path is
 `/$ref/properties/children/items/$dynamicRef`, with a dynamic scope containing
 (from the outermost scope to the innermost):
 
-1. `https://example.com/strict-tree#`
-1. `https://example.com/tree#`
-1. `https://example.com/tree#/properties/children`
-1. `https://example.com/tree#/properties/children/items`
-
-Since we are looking for a plain name fragment identifier, which can be defined
-anywhere within a schema resource, the JSON Pointer IRI fragments are irrelevant
-to this check. That means that we can remove the fragments and eliminate
-consecutive duplicates, producing:
-
 1. `https://example.com/strict-tree`
-1. `https://example.com/tree`
+2. `https://example.com/tree`
 
-In this case, the outermost resource also has a "node" fragment identifier
-defined by `$dynamicAnchor`. Therefore instead of resolving the `$dynamicRef` to
-`https://example.com/tree#node`, we resolve it to
-`https://example.com/strict-tree#node`.
+To find the resolution target of the `$dynamicRef`, we start at the outermost
+dynamic scope and traverse inward, stopping when we find a schema resource that
+defines a matching `$dynamicAnchor`.
 
-The reference in the "tree" schema resolves to the root of "strict-tree", so
-"strict-tree" is applied not only to the tree instance's root, but also its
-children.
+In this case, the outermost resource "strict-tree" has a "node" identifier
+defined by `$dynamicAnchor`. The subschema that defines that anchor is the
+resolution target of the `$dynamicRef`. Therefore instead of resolving the
+`$dynamicRef` to the `"$dynamicAnchor": "node"` in `https://example.com/tree`,
+we resolve it to the `"$dynamicAnchor": "node"` in
+ `https://example.com/strict-tree`.
 
 This example shows both `$dynamicAnchor`s in the same place in each schema,
-specifically the resource root schema. Since plain-name fragment identifiers are
+specifically the resource root schema. Since dynamically scoped identifiers are
 independent of the JSON structure, this would work just as well if one or both
 of the node schema objects were moved under `$defs`. It is the matching
 `$dynamicAnchor` values which tell us how to resolve the dynamic reference, not
