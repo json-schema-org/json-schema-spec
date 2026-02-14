@@ -21,6 +21,10 @@ export default {
       link: [
         {
           rel: "stylesheet",
+          href: "https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        },
+        {
+          rel: "stylesheet",
           href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github-dark-dimmed.min.css",
           media: "(prefers-color-scheme: dark)"
         },
