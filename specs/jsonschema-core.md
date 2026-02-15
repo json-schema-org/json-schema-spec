@@ -1484,7 +1484,7 @@ In the cases where optimizations are enabled and a schema containing a
 non-resolvable reference would be skipped, as in the example below, behavior is
 implementation-defined.
 
-```json
+```jsonschema
 {
   "anyOf": [
     true,
@@ -1518,7 +1518,7 @@ downloadable JSON Schema using the link relation "describedby", as defined by
 In HTTP, such links can be attached to any response using the [Link
 header][rfc8288]. An example of such a header would be:
 
-```
+```http noLineNumbers
 Link: <https://example.com/my-hyper-schema>; rel="describedby"
 ```
 
@@ -1541,7 +1541,7 @@ implementation or software product. Since symbols are listed in decreasing order
 of significance, the JSON Schema library name/version should precede the more
 generic HTTP library name (if any). For example:
 
-```
+```http noLineNumbers
 User-Agent: product-name/5.4.1 so-cool-json-schema/1.0.2 curl/7.43.0
 ```
 
@@ -1969,7 +1969,7 @@ which evaluation passes to reach the schema object that produced a specific
 result. The value MUST be expressed as a JSON Pointer, and it MUST include any
 by-reference applicators such as `$ref` or `$dynamicRef`.
 
-```
+```text noLineNumbers
 /properties/width/$ref/allOf/1
 ```
 
@@ -1986,7 +1986,7 @@ Pointer fragment indicating the subschema that produced a result. In contrast
 with the evaluation path, the schema location MUST NOT include by-reference
 applicators such as `$ref` or `$dynamicRef`.
 
-```
+```text noLineNumbers
 https://example.com/schemas/common#/$defs/allOf/1
 ```
 

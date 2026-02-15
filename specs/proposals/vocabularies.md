@@ -82,7 +82,7 @@ booleans as values. This keyword only has meaning within a meta-schema. A
 meta-schema which includes a vocabulary's URI in its `$vocabulary` keyword is
 said to "include" that vocabulary.
 
-```jsonc
+```jsonschema
 {
   "$schema": "https://example.org/draft/next/schema",
   "$id": "https://example.org/schema",
@@ -132,7 +132,7 @@ schemas.) To facilitate this extra validation, when a vocabulary schema is
 provided, any meta-schema which includes the vocabulary should also contain a
 reference (via `$ref`) to the vocabulary schema's `$id` value.
 
-```jsonc
+```jsonschema
 {
   "$schema": "https://example.org/draft/next/schema",
   "$id": "https://example.org/schema",
@@ -156,7 +156,7 @@ the meta-schema and added to vocabulary schemas to which the meta-schema will
 contain references. In this way, the meta-schema's functionality remains the
 same.
 
-```json
+```jsonschema
 {
   "$schema": "https://json-schema.org/draft/next/schema",
   "$id": "https://json-schema.org/draft/next/schema",
@@ -246,7 +246,7 @@ For example
 2. The following subschema will be added to the Applicator Vocabulary schema,
    `https://json-schema.org/<version>/<release>/meta/applicator`, at
    `/properties/{keyword}`:
-    ```jsonc
+    ```jsonschema
     {
       // keyword schema
     }

@@ -12,6 +12,11 @@
 }
 
 /* -------- Page -------- */
+
+* {
+  box-sizing: border-box;
+}
+
 html {
   background: var(--bg);
   color: var(--text);
@@ -116,14 +121,39 @@ li code {
   font-size: 0.9em;
 }
 
-pre {
-  padding: 0 1rem;
+figure {
+  margin: 2rem 0;
+  border: 1px solid var(--code-border);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  background: var(--code-bg);
+}
+
+figcaption {
+  position: relative;
+  padding: 0.5rem 3rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--code-border);
+}
+
+figcaption::before {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+figure pre {
+  margin: 0;
   overflow-x: auto;
 }
 
-pre code {
-  background: none;
-  padding: 0;
+figure pre code.hljs {
+  padding: 0.5em 1em ;
 }
 
 /* -------- Blockquotes -------- */
@@ -306,32 +336,12 @@ svg {
 
 /* Remark Code Titles */
 
-.remark-code-container {
-  margin: 1.5rem 0;
-  background: var(--code-bg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--code-border);
-}
-
-.remark-code-title {
-  position: relative;
-  top: 0.5rem;
-  padding: 0 0.5rem 0 3.5rem;
-}
-
-.remark-code-title::before {
-  content: "";
-  position: absolute;
-  left: 1.5em;
-  width: 1.75rem;
-  height: 1.75rem;
-  background-color: currentColor;
-  mask-repeat: no-repeat;
-  mask-size: contain;
-}
-
 .code-title-unknown {
-  padding-left: 1rem;
+  padding: 0.5rem;
+}
+
+.code-title-unknown::before {
+  display: none;
 }
 
 .code-title-jsonschema::before {
