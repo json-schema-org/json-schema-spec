@@ -202,48 +202,51 @@ li code {
 }
 
 figure {
-  margin: 2rem 0;
-  border: 1px solid var(--code-border);
-  border-left: 4px solid var(--accent);
-  border-radius: 6px;
-  background: var(--code-bg);
+  margin: 1.5rem 0;
+  border: 1px solid var(--custom-code-border);
+  border-left: 3px solid var(--custom-accent);
+  border-radius: 8px;
+  background: var(--custom-code-bg);
+  overflow: hidden;
 }
 
 figcaption {
   position: relative;
-  padding: 0.5rem 3rem;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--code-border);
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  left: 2.5rem;
+  color: var(--custom-text-muted);
+  border-bottom: 1px solid var(--custom-code-border);
+  font-size: 0.95rem;
+  font-weight: bold;
 }
 
 figcaption::before {
   content: "";
   position: absolute;
-  left: 1rem;
+  left: -2rem;
   width: 1.5rem;
   height: 1.5rem;
   background-color: currentColor;
   mask-repeat: no-repeat;
   mask-size: contain;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 figure pre {
   margin: 0;
   overflow-x: auto;
   background: var(--custom-code-bg);
-  border: 1px solid var(--custom-code-border);
-  border-left: 3px solid var(--custom-accent);
-  border-radius: 8px;
+  border: none;
+  border-radius: 0;
   line-height: 1.6;
-  margin: 1.5rem 0;
   font-size: 0.95em;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   position: relative;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-pre:hover {
+figure pre:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
               0 4px 6px -2px rgba(0, 0, 0, 0.05);
   transform: translateY(-1px);
