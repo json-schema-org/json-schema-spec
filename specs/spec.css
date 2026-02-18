@@ -377,18 +377,29 @@ svg {
     display: none;
   }
 
-  .toc ul,
-  .toc li {
+  .toc ul {
     list-style: none;
+    padding-left: 0;
+    margin: 0.25rem 0;
   }
 
-  .toc ul {
-    padding-left: 0.5rem;
+  .toc li {
+    list-style: none;
+    margin: 0.25rem 0;
+    line-height: 1.4;
+    padding-left: 0; /* Remove any padding from list items */
+  }
+
+  .toc ul ul {
+    padding-left: 1.25rem; /* Indent nested lists */
   }
 
   .toc a {
-    padding: 0.25rem;
+    display: block;
+    padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
+    text-indent: 0; /* Reset any text indent */
+    text-decoration: none;
   }
 
   .toc-heading {
