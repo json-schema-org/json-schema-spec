@@ -5,16 +5,28 @@
     display: grid;
     grid-template-columns: 16rem minmax(0, 1fr);
     column-gap: 2rem;
+    padding-right: 3rem;
+  }
+
+  body > :not(.toc):not(.toc-heading) {
+    grid-column: 2;
+  }
+
+  body > :not(.toc):not(.toc-heading):first-child {
+    margin-top: 1.5rem;
   }
 
   .toc {
+    grid-column: 1;
     grid-row: 1 / 1000;
     position: sticky;
-    top: 0;
-    max-height: calc(100vh);
+    font-size: medium;
+    top: 1.5rem;
+    align-self: start;
+    max-height: calc(100vh - 1.5rem);
     overflow: auto;
     scroll-target-group: auto;
-    padding: 0;
+    padding: 1.5rem 0 1.5rem 1.5rem;
   }
 
   .toc::-webkit-scrollbar {
@@ -34,6 +46,7 @@
     display: inline-block;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
+    text-decoration: none;
   }
 
   .toc-heading {
