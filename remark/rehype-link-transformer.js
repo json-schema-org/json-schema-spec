@@ -9,7 +9,7 @@ const rehypeLinkTransformer = () => (tree, vfile) => {
     if (node.tagName === "a") {
       const href = url.parse(node.properties.href);
       if (href.hostname === null && href.pathname?.endsWith(".md") && existsSync(vfile.history[0])) {
-        href.pathname = basename(href.pathname).replace(/.md$/, ".html");
+        href.pathname = basename(href.pathname).replace(/\.md$/, ".html");
         node.properties.href = url.format(href);
       }
     }
