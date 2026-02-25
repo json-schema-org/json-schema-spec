@@ -12,9 +12,8 @@ const remarkReferenceLinks = () => (tree, file) => {
       throw Error(`ReferenceLinkError: No header found with id "${id}"`);
     }
 
-    const headingNode = file.data.headings[id];
-    const headerText = nodeToString(headingNode);
-    const linkText = text(headingNode.data.section);
+    const headerText = nodeToString(file.data.headings[id]);
+    const linkText = text(file.data.headings[id].data.section);
     return link(`#${id}`, headerText, [linkText]);
   }]);
 };

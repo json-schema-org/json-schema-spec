@@ -79,7 +79,7 @@ const remarkNumberHeadings = (options) => (tree, file) => {
 
   visit(tree, "heading", (headingNode) => {
     if (headingNode.data?.id) {
-      if (Object.prototype.hasOwnProperty.call(file.data.headings, headingNode.data.id)) {
+      if (headingNode.data.id in file.data.headings) {
         file.message(`Found duplicate heading id "${headingNode.data.id}"`);
       }
       file.data.headings[headingNode.data.id] = headingNode;
