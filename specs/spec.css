@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap');
+
+:root {
+  --pico-font-family: "Geist", system-ui, sans-serif;
+}
+
 body {
   padding: 1.5rem;
 }
@@ -10,7 +16,11 @@ table {
 
 a {
   --pico-color: #96d0ff;
-  text-decoration: none;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #0066cc;
 }
 
 /* remark-table-of-contents */
@@ -29,8 +39,10 @@ a {
     top: 1.5rem;
     max-height: calc(100vh - 4.5rem);
     overflow-y: auto;
+    overflow-x: hidden;
     scroll-target-group: auto;
     padding: 1.5rem 0 1.5rem 0;
+    word-break: break-word;
   }
 
   .toc::-webkit-scrollbar {
@@ -50,7 +62,12 @@ a {
     display: inline-block;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    text-decoration: none;
+    text-decoration: underline;
+  }
+
+  .toc a:hover {
+    color: #0066cc;
+    background-color: rgba(0, 102, 204, 0.1);
   }
 
   .toc-heading {
