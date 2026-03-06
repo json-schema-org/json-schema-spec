@@ -1,7 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap');
-
 :root {
-  --pico-font-family: "Geist", system-ui, sans-serif;
+  --pico-font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --pico-font-size: 16px;
+  --pico-typography-spacing-vertical: 1.25rem;
+}
+
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  --pico-primary: #032f62;
+  --pico-primary-hover: #005cc5;
+  --pico-primary-underline: rgba(3, 47, 98, 0.2);
+  --pico-background-color: #f6f8fa;
+  --pico-color: #24292e;
+  --pico-muted-color: #57606a;
+  --pico-muted-border-color: #d0d7de;
+  --pico-code-background-color: #dde2e8;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-primary: #96d0ff;
+    --pico-primary-hover: #6cb6ff;
+    --pico-primary-underline: rgba(150, 208, 255, 0.2);
+    --pico-background-color: #1d2127;
+    --pico-color: #adbac7;
+    --pico-muted-color: #768390;
+    --pico-muted-border-color: #444c56;
+    --pico-code-background-color: #2d333d;
+  }
+}
+
+[data-theme="dark"] {
+  --pico-primary: #96d0ff;
+  --pico-primary-hover: #6cb6ff;
+  --pico-primary-underline: rgba(150, 208, 255, 0.2);
+  --pico-background-color: #1d2127;
+  --pico-color: #adbac7;
+  --pico-muted-color: #768390;
+  --pico-muted-border-color: #444c56;
+  --pico-code-background-color: #2d333d;
 }
 
 body {
@@ -14,21 +50,12 @@ table {
   overflow-x: auto;
 }
 
-a {
-  --pico-color: #96d0ff;
-  text-decoration: underline;
-}
-
-a:hover {
-  color: #0066cc;
-}
-
 /* remark-table-of-contents */
 
 @media (min-width: 64rem) {
   body {
     display: grid;
-    grid-template-columns: 16rem minmax(0, 1fr);
+    grid-template-columns: 20rem minmax(0, 1fr);
     column-gap: 2rem;
   }
 
@@ -81,7 +108,7 @@ a:hover {
 
   .toc :target-current {
     font-weight: bold;
-    border-left: 2px solid var(--pico-primary);
+    border-left: 2px solid;
   }
 
   ul.toc ul:has(li :target-current) {
@@ -103,7 +130,7 @@ figure {
   margin-bottom: var(--pico-typography-spacing-vertical);
   border: 1px solid var(--pico-muted-border-color);
   border-left: 3px solid var(--pico-primary);
-  border-radius: 8px;
+  border-radius: var(--pico-border-radius);
   background: var(--pico-code-background-color);
 }
 

@@ -30,7 +30,7 @@ export default {
         },
         {
           rel: "stylesheet",
-          href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github.css",
+          href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github.min.css",
           media: "(prefers-color-scheme: light)"
         }
       ],
