@@ -50,6 +50,13 @@ table {
   overflow-x: auto;
 }
 
+code {
+  display: inline;
+  color: inherit;
+  padding: .25rem;
+  font-weight: inherit;
+}
+
 /* remark-table-of-contents */
 
 @media (min-width: 64rem) {
@@ -156,11 +163,13 @@ figure pre {
   overflow-x: auto;
 }
 
-/* remark-highlight-code-lines */
-
-pre code.hljs {
-  display: grid;
+figure:has(figcaption) pre,
+figure:has(figcaption) code {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
+
+/* remark-highlight-code-lines */
 
 .numbered-code-line::before {
   content: attr(data-line-number);
