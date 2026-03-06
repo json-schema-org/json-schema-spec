@@ -51,6 +51,9 @@ a:hover {
 
   .toc ul {
     list-style: none;
+    margin-left: 0.75rem;
+    padding-left: 0;
+    border-left: 1px solid var(--pico-muted-border-color);
   }
 
   .toc li {
@@ -60,14 +63,10 @@ a:hover {
 
   .toc a {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    text-decoration: underline;
-  }
-
-  .toc a:hover {
-    color: #0066cc;
-    background-color: rgba(0, 102, 204, 0.1);
+    text-decoration: none;
+    padding-left: 1.5rem;
+    text-indent: -1rem;
+    word-break: break-word;
   }
 
   .toc-heading {
@@ -82,7 +81,7 @@ a:hover {
 
   .toc :target-current {
     font-weight: bold;
-    background-color: var(--pico-code-background-color);
+    border-left: 2px solid var(--pico-primary);
   }
 
   ul.toc ul:has(li :target-current) {
