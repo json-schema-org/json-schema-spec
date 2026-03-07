@@ -75,7 +75,7 @@ const remarkNumberHeadings = (options) => (tree, file) => {
     file.data = {};
   }
 
-  file.data.headings = {};
+  file.data.headings = Object.create(null);
 
   visit(tree, "heading", (headingNode) => {
     if (headingNode.data?.id) {
