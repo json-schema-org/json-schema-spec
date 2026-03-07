@@ -54,7 +54,7 @@ The `dependentSchemas` keyword is very close to what is needed except it checks
 for the presence of a property rather than it's value. The chosen solution is to
 build on that concept to solve this problem.
 
-```json
+```jsonschema
 {
   "propertyDependencies": {
     "foo": {
@@ -66,7 +66,7 @@ build on that concept to solve this problem.
 
 The validation result is equivalent to the following schema.
 
-```json
+```jsonschema
 {
   "if": {
     "properties": {
@@ -115,7 +115,7 @@ vocabulary](../jsonschema-core.md#applicators).
    `https://json-schema.org/<version>/<release>/meta/applicator` at
    `/properties/propertyDependencies`:
 
-    ```json
+    ```jsonschema
     {
       "type": "object",
       "additionalProperties": {

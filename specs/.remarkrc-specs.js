@@ -5,6 +5,7 @@ import remarkCodeTitles from "../remark/remark-code-titles.js";
 import remarkHeadings from "../remark/remark-headings.js";
 import remarkReferenceLinks from "../remark/remark-reference-links.js";
 import remarkTableOfContents from "../remark/remark-table-of-contents.js";
+import remarkRfc2119 from "../remark/remark-rfc2119.js";
 
 
 export default {
@@ -37,6 +38,7 @@ export default {
       ]
     }],
     remarkFlexibleContainers,
-    remarkCodeTitles
+    remarkCodeTitles,
+    remarkRfc2119
   ]
 };

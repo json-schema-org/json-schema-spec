@@ -15,7 +15,7 @@ const remarkNumberHeadings = () => (tree) => {
     }
 
     let title = "";
-    const titleClasses = ["remark-code-title"];
+    const titleClasses = [];
 
     const language = codeNode.lang ?? "";
     if (language.toLowerCase() === "jsonschema") {
@@ -43,23 +43,34 @@ const remarkNumberHeadings = () => (tree) => {
 
     const containerChildren = [];
     if (title) {
-      const titleNode = div([text(title)], { className: titleClasses });
+      const titleNode = figcaption([text(title)], { className: titleClasses });
       containerChildren.push(titleNode);
     }
     containerChildren.push(codeNode);
 
-    const wrappedCodeNode = div(containerChildren, { className: ["remark-code-container"] });
+    const wrappedCodeNode = figure(containerChildren);
 
     parent.children.splice(index, 1, wrappedCodeNode);
   });
 };
 
-const div = (children, properties) => {
+const figure = (children, properties) => {
   return {
     type: "container",
     children,
     data: {
-      hName: "div",
+      hName: "figure",
+      hProperties: properties
+    }
+  };
+};
+
+const figcaption = (children, properties) => {
+  return {
+    type: "container",
+    children,
+    data: {
+      hName: "figcaption",
       hProperties: properties
     }
   };
