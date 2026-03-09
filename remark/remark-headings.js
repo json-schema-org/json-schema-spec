@@ -62,12 +62,10 @@ const remarkNumberHeadings = (options) => (tree, file) => {
       headingNode.children.splice(0, 0, text(`${sectionNumber}. `));
     }
 
-    if (!("id" in headingNode.data)) {
-      const sectionSlug = headingNode.data?.id
-        ?? headingNode.data.section.replaceAll(/[ .]/g, "-").toLowerCase();
-      headingNode.data.hProperties.id = sectionSlug;
-      headingNode.data.id = sectionSlug;
-    }
+    const sectionSlug = headingNode.data.id
+      ?? headingNode.data.section.replaceAll(/[ .]/g, "-").toLowerCase();
+    headingNode.data.hProperties.id = sectionSlug;
+    headingNode.data.id = sectionSlug;
   });
 
   // Build headings data used by ./remark-reference-links.js
