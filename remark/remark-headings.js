@@ -62,7 +62,8 @@ const remarkNumberHeadings = (options) => (tree, file) => {
       headingNode.children.splice(0, 0, text(`${sectionNumber}. `));
     }
 
-    const sectionSlug = headingNode.data.id
+    const sectionSlug = headingNode.data.hProperties.id
+      ?? headingNode.data.id
       ?? headingNode.data.section.replaceAll(/[ .]/g, "-").toLowerCase();
     headingNode.data.hProperties.id = sectionSlug;
     headingNode.data.id = sectionSlug;
