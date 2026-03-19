@@ -7,10 +7,13 @@
   "scripts": {
     "lint": "eslint . ; remark --no-stdout --frail .",
     "build": "remark --rc-path specs/.remarkrc-build.js --output web/",
-    "build-ietf": "docker-compose run --rm build"
+    "build-ietf": "docker-compose run --rm build",
+    "test": "vitest run --config=vitest-schema.config.js",
+    "test:coverage": "npm test -- --coverage"
   },
   "license": "MIT",
   "devDependencies": {
+    "@hyperjump/json-schema-coverage": "^1.2.1",
     "@stylistic/eslint-plugin": "^2.9.0",
     "eslint": "^9.13.0",
     "eslint-import-resolver-node": "^0.3.9",
@@ -30,6 +33,7 @@
     "remark-preset-lint-markdown-style-guide": "^6.0.0",
     "remark-preset-lint-recommended": "^7.0.0",
     "remark-rehype": "^11.1.1",
-    "remark-validate-links": "^13.0.1"
+    "remark-validate-links": "^13.0.1",
+    "vitest": "^4.1.0"
   }
 }

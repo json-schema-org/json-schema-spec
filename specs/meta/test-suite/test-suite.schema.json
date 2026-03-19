@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "description": { "type": "string" },
+    "tests": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/test" }
+    }
+  },
+  "required": ["description", "tests"],
+
+  "definitions": {
+    "test": {
+      "type": "object",
+      "properties": {
+        "description": { "type": "string" },
+        "schema": { "$ref": "../meta.schema.json" },
+        "valid": { "type": "boolean" }
+      }
+    }
+  }
+}
