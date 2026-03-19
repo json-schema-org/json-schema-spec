@@ -1,0 +1,51 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for the $defs keyword",
+  "tests": [
+    {
+      "description": "Valid definition schema",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$defs": {
+          "foo": {
+            "type": "string"
+          }
+        }
+      },
+      "valid": true
+    },
+    {
+      "description": "Invalid definition schema",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$defs": {
+          "foo": {
+            "type": "invalid"
+          }
+        }
+      },
+      "valid": false
+    },
+    {
+      "description": "Boolean schema",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$defs": {
+          "foo": false
+        }
+      },
+      "valid": true
+    },
+    {
+      "description": "Not a schema",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$defs": {
+          "foo": 42
+        }
+      },
+      "valid": false
+    }
+  ]
+}
