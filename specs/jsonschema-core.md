@@ -257,7 +257,7 @@ are considered to be non-canonical.
 
 A root schema, which may comprise the entire JSON document, is the top-level
 schema that is identified by the absolute IRI. The root schema is always a
-schema resource, where the IRI is determined as described in {{initial-base}}.
+schema resource, where the IRI is determined as described in {{base-iri}}.
 
 Document formats which embed JSON Schemas within them will not necessarily have
 a single root schema in this sense. How root schemas are identified within such
@@ -994,7 +994,7 @@ SHOULD be considered an error per {{duplicate-iris}}.
 
 If no parent schema object explicitly identifies itself as a resource with
 `$id`, the base IRI is that of the entire document, as established by the steps
-given in {{initial-base}}.
+given in {{base-iri}}.
 
 ##### Identifying the root schema
 
@@ -1160,32 +1160,43 @@ comments and `$comment` properties are present is implementation-dependent.
 
 ### Loading a Schema
 
-#### Initial Base IRI {#initial-base}
+#### Base IRI {#base-iri}
 
 [RFC 3987 Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5)
 and
 [RFC 3986 Section 5.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1)
 defines how to determine the default base IRI of a document.
 
-Informatively, the initial base IRI of a schema is the IRI at which it was
-found, whether that was a network location, a local filesystem, or any other
-situation identifiable by a IRI of any known scheme.
+A schema has both a *retrieval IRI* (the IRI at which it was retrieved or
+otherwise identified as a resource) and a *default base IRI* (the IRI used for
+resolving relative references within the retrieved document). These can be
+distinct.
 
-If a schema document defines no explicit base IRI with `$id` (embedded in
-content), the base IRI is that determined per RFC 3987 Section 6.5
-and RFC 3986 section 5.
+In particular, the retrieval IRI is an identification IRI, while the default
+base IRI is used only as a base for resolving relative references.
+
+Implementations SHOULD accept a schema retrieval IRI and a default base IRI
+separately, so that providing an identification IRI need not imply
+anything about the base IRI used for relative reference resolution. When
+only one of these IRIs can be provided, implementations MUST document what
+they assume for the other (<https://github.com/json-schema-org/json-schema-spec/issues/1299>).
+
+For the purpose of processing a schema resource, the base IRI that serves
+as the current base IRI for resolving `$id` values and other relative
+references is initially the document's default base IRI determined per
+RFC 3987 Section 6.5 and RFC 3986 Section 5.
 
 If no source is known, or no IRI scheme is known for the source, a suitable
-implementation-specific default IRI MAY be used as described in RFC 3987 Section
-6.5 and RFC 3986 Section 5.1.4. It is RECOMMENDED that implementations document
-any default base IRI that they assume.
+implementation-specific default IRI MAY be used as described in RFC 3987
+Section 6.5 and RFC 3986 Section 5.1.4. It is RECOMMENDED that
+implementations document any default base IRI that they assume.
 
 If a schema object is embedded in a document that is not a schema, then the
-initial base IRI is determined according to the rules of that document.
+default base IRI is determined according to the rules of that document.
 
-Unless the `$id` keyword described in an earlier section is present in the root
-schema, this base IRI SHOULD be considered the canonical IRI of the schema
-document's root schema resource.
+Unless the `$id` keyword described in an earlier section is present in the
+root schema, this base IRI SHOULD be considered the canonical IRI of the
+schema document's root schema resource.
 
 #### Loading a referenced schema
 
@@ -2526,7 +2537,7 @@ reference, which must be recognizable as a reference.
 - Add recursive referencing, primarily for meta-schema extension
 - Add the concept of formal vocabularies, and how they can be recognized through
   meta-schemas
-- Additional guidance on initial base URIs beyond network retrieval
+- Additional guidance on base IRI beyond network retrieval
 - Allow "schema" media type parameter for `application/schema+json`
 - Better explanation of media type parameters and the HTTP Accept header
 - Use `$id` to establish canonical and base absolute-URIs only, no fragments
