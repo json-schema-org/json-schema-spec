@@ -8,7 +8,7 @@ const referenceLink = /\{\{(?<id>.*?)\}\}/ug;
 const remarkReferenceLinks = () => (tree, file) => {
   findAndReplace(tree, [referenceLink, (value, id) => {
     // file.data.headings comes from ./remark-headings.js
-    if (!(id in file.data.headings)) {
+    if (!Object.prototype.hasOwnProperty.call(file.data.headings, id)) {
       throw Error(`ReferenceLinkError: No header found with id "${id}"`);
     }
 
