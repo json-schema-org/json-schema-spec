@@ -931,7 +931,7 @@ resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an
-[IRI](https://www.rfc-editor.org/info/rfc3987) (containing a scheme) and this
+[absolute IRI](https://www.rfc-editor.org/info/rfc3987) (without a fragment). This
 IRI MUST be normalized.
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
