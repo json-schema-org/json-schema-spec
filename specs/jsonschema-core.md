@@ -931,8 +931,9 @@ resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an
-[absolute IRI](https://www.rfc-editor.org/info/rfc3987) (without a fragment). This
-IRI MUST be normalized.
+[absolute IRI](https://www.rfc-editor.org/info/rfc3987) (without a fragment).
+This IRI MUST be normalized, the rules for which can be found in the
+[next section](#dereferencing).
 
 The `$schema` keyword SHOULD be used in the document root schema object, and MAY
 be used in the root schema objects of embedded schema resources. This keyword
@@ -943,7 +944,7 @@ schema resources.)
 Values for this property are defined elsewhere in this and other documents, and
 by other parties.
 
-### Base IRI, Anchors, and Dereferencing
+### Base IRI, Anchors, and Dereferencing {#dereferencing}
 
 To differentiate between schemas in a vast ecosystem, schema resources are
 identified by
