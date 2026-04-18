@@ -161,6 +161,23 @@ stable features. Questions to address may include:
 At least two (2) Core Team members must have implemented prototypes before the
 concept can continue to the formal proposal process.
 
+## Ecma International Standardization
+
+> **Status: Proposed / In Discussion — not yet current policy**
+
+There is an ongoing community proposal to bring JSON Schema under the umbrella
+of [Ecma International](https://www.ecma-international.org/) as a formal
+Technical Committee (TC). If adopted, the formal ratification process for JSON
+Schema specification versions would change to include Ecma General Assembly
+votes and Ecma document numbering.
+
+For background and current discussion, see:
+- [Community discussion #938](https://github.com/orgs/json-schema-org/discussions/938)
+
+Once a TC is established and the process is agreed upon, this document will be
+updated to reflect the new ratification requirements alongside the existing
+development process described above.
+
 ### Proposal
 
 Once a rough consensus for the idea has been reached, a formal proposal will be
