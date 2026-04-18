@@ -116,7 +116,7 @@
         "supportedBy": []
     },
     "hostname": {
-        "description": "A host name as defined by RFC1123",
+        "description": "A host name as defined by RFC3986 Section 3.2.2 (reg-name); for DNS-resolvable network-scheme hosts, RFC1034/RFC1123 applies",
         "definingBody": "JSON Schema",
         "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-hostnames",
         "types": ["string"],
@@ -148,7 +148,7 @@
         "supportedBy": []
     },
     "idn-hostname": {
-        "description": "An internationalized host name as defined by IDNA2008 using the UTS #46 mapping",
+        "description": "An internationalized host name as defined by RFC3987 Section 3.3 (ireg-name); for network-scheme hosts, RFC5890/RFC5891 applies",
         "types": ["string"],
         "examples": ["exämple.com"],
         "deprecated": false,
