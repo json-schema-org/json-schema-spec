@@ -398,7 +398,7 @@ These attributes apply to string instances.
 
 Date and time format names are derived from
 [RFC 9557, section 4.1](https://www.rfc-editor.org/info/rfc9557) which extends
-[RFC 3339, section 5.6](https://www.rfc-editor.org/info/rfc3339). The duration
+[RFC 3339, sections 5.6 and 5.7](https://www.rfc-editor.org/info/rfc3339). The duration
 format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
