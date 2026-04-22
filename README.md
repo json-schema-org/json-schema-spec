@@ -127,6 +127,12 @@ Descriptions of the xml2rfc, I-D documents, and RFC processes:
 Conformance tests for JSON Schema and its vocabularies may be found
 [in their own repository](https://github.com/json-schema-org/JSON-Schema-Test-Suite).
 
+Tests for the meta-schema are included here. Run `npm test` to run the
+meta-schema tests. To get a test coverage report, you can use `npm run
+test:coverage`. In addition to the CLI report, a detailed HTML report will be
+generated in the `coverage` directory and can be viewed using something like
+`npx http-server coverage`.
+
 ## The website
 
 The JSON Schema web site is at <http://json-schema.org/>

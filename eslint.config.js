@@ -35,7 +35,6 @@ export default [
 
       // Imports
       "import/extensions": ["error", "ignorePackages"],
-      "import/newline-after-import": ["error", { count: 2, exactCount: false, considerComments: true }],
 
       // Stylistic
       "@stylistic/yield-star-spacing": ["error", "after"],

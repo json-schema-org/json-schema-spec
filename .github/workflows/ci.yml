@@ -15,6 +15,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build -- specs
+      - run: npm run test
 
   specs-ietf:
     runs-on: ubuntu-latest
