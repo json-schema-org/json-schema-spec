@@ -923,12 +923,10 @@ MUST refuse to process the schema.
 
 #### The `$schema` Keyword {#keyword-schema}
 
-The `$schema` keyword is both used as a JSON Schema dialect identifier and as
-the identifier of a resource which is itself a JSON Schema, which describes the
-set of valid schemas written for this particular dialect. The identified dialect
-applies to the resource in which it is declared as well as any embedded schema
-resources, unless such a resource itself declares a different dialect by
-including the `$schema` keyword with a different value.
+The `$schema` keyword is used as a JSON Schema dialect identifier. The
+identified dialect applies to the resource in which it is declared as well as
+any embedded schema resources, unless such a resource itself declares a
+different dialect by including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an
 [absolute IRI](https://www.rfc-editor.org/info/rfc3987) (without a fragment).
@@ -1206,24 +1204,6 @@ on location semantics expressed by the IRI, however such functionality SHOULD be
 disabled by default to prefer offline operation. When schemas are downloaded,
 for example by a generic user-agent that does not know until runtime which
 schemas to download, see {{hypermedia}}.
-
-#### Detecting a Meta-Schema
-
-Implementations MUST recognize a schema as a meta-schema if it is being examined
-because it was identified as such by another schema's `$schema` keyword. This
-means that a single schema document might sometimes be considered a regular
-schema, and other times be considered a meta-schema.
-
-In the case of examining a schema which is its own meta-schema, when an
-implementation begins processing it as a regular schema, it is processed under
-those rules. However, when loaded a second time as a result of checking its own
-`$schema` value, it is treated as a meta-schema. So the same document is
-processed both ways in the course of one session.
-
-Implementations MAY allow a schema to be explicitly passed as a meta-schema, for
-implementation-specific purposes, such as pre-loading a commonly used
-meta-schema and checking its requirements up front. Meta-schema authors MUST NOT
-expect such features to be interoperable across implementations.
 
 ### Dereferencing
 
@@ -2317,7 +2297,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Tree schema, extensible"
 {
-  "$schema": "https://json-schema.org/v1/2026",
+  "$schema": "https://json-schema.org/v1",
   "$id": "https://example.com/tree",
   "$dynamicAnchor": "node",
 
@@ -2336,7 +2316,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Strict-tree schema, guards against misspelled properties"
 {
-  "$schema": "https://json-schema.org/v1/2026",
+  "$schema": "https://json-schema.org/v1",
   "$id": "https://example.com/strict-tree",
   "$dynamicAnchor": "node",
 

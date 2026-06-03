@@ -102,12 +102,13 @@ specification.
 
 ## Meta-Schema {#meta-schema}
 
-The current IRI for the default JSON Schema dialect meta-schema is
-`https://json-schema.org/v1/2026`. This IRI encodes the specification's version
-and release year. Because all schemas written to conform to a given version are
-guaranteed to be compatible with later releases within the same version, the
-meta-schema IRI `https://json-schema.org/v1` is also recognized to represent the
-latest release within the indicated version.
+The current IRI for the default JSON Schema dialect is
+`https://json-schema.org/v1`. The current IRI for the meta-schema for this
+dialect is `https://json-schema.org/v1/2026`. This IRI encodes the
+specification's version and release year. Because all schemas written to conform
+to a given version are guaranteed to be compatible with later releases within
+the same version, implementations MAY configure the the dialect IRI to identify
+the meta-schema for the latest release within the indicated version.
 
 The meta-schema describes a dialect consisting of all keywords defined in this
 specification and the JSON Schema Core specification. Certain keywords specify
@@ -119,9 +120,9 @@ Schema Core specification, the specifications take precedence, and the
 meta-schema is to be considered in error. The meta-schema may be occasionally
 updated to correct any such errors.
 
-Although the IRI for the default JSON Schema dialect meta-schema is also a valid
-URL, implementations MUST NOT assume that a document is provided at this
-location. Rather than performing a network request to retrieve the meta-schema,
+Although the IRI for the JSON Schema dialect meta-schema is also a valid URL,
+implementations MUST NOT assume that a document is provided at this location.
+Rather than performing a network request to retrieve the meta-schema,
 implementations SHOULD include a copy of the meta-schema and MAY encode it as
 required by the language or framework used by the implementation.
 
