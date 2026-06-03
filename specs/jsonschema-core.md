@@ -874,21 +874,14 @@ define new keywords that begin with `$`.
 
 ### Meta-Schemas
 
-Meta-schemas are used to inform an implementation how to interpret a schema.
-Every schema has a meta-schema, which can be explicitly declared using the
-`$schema` keyword.
+A meta-schema is a schema that describes the valid syntax for a JSON Schema.
+Meta-schemas can be used by implementations to verify that a schema can be
+processed by that implementation. They can also be used by developer tooling to
+ensure that all schemas in a project are compatible with a specific JSON Schema
+release.[^15]
 
-The meta-schema serves to describe valid schema syntax. A schema resource MUST
-successfully validate against its meta-schema, which constrains the syntax of
-the available keywords. (See {{compound-validation}} for information on
-validating schemas which contain embedded schema resources that declare a
-different meta-schema.) The syntax described for a given keyword is expected to
-be compatible with the document which defines the keyword; while it is possible
-to describe an incompatible syntax, such a meta-schema would be unlikely to be
-useful.
-
-Meta-schema authoring is an advanced usage of JSON Schema, so the design of
-meta-schema features emphasizes flexibility over simplicity.
+[^15]: See {{compound-validation}} for information on validating schemas which
+contain embedded schema resources that declare a different meta-schema.
 
 #### Dialect Determination
 
