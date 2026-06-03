@@ -1,0 +1,31 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for the $id keyword",
+  "tests": [
+    {
+      "description": "Non-relative URI without a fragment",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$id": "https://example.com/main"
+      },
+      "valid": true
+    },
+    {
+      "description": "Non-relative URI with an empty fragment",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$id": "https://example.com/main#"
+      },
+      "valid": false
+    },
+    {
+      "description": "Non-relative URI with a fragment",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$id": "https://example.com/main#foo"
+      },
+      "valid": false
+    }
+  ]
+}
