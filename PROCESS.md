@@ -134,8 +134,8 @@ stateDiagram-v2
     Experimentation --> Proposal
   }
   Development --> Stable
-  Stable --> Deprectated
-  Deprectated --> Removed
+  Stable --> Deprecated
+  Deprecated --> Removed
 ```
 
 ### Concept

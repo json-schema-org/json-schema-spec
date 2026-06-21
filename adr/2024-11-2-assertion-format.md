@@ -63,7 +63,7 @@ This is the current state. The primary benefit is that we don't need to make a
 breaking change.
 
 The primary downside is that the current system of (1) configuring the tool or
-(2) incluing the `format-assertion` vocab[^1] is confusing for many and doesn't
+(2) including the `format-assertion` vocab[^1] is confusing for many and doesn't
 align with user expectations.
 
 ### `format` becomes an assertion keyword by default

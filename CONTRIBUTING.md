@@ -46,7 +46,7 @@ Each milestone is an estimation of the work that will be done for the next
 draft. Milestones are typically named after the meta-schema draft number, and
 the *open* milestone with the lowest draft number is the current active project.
 
-Issues may be removed from a milestoned due to lack of consensus, lack of anyone
+Issues may be removed from a milestone due to lack of consensus, lack of anyone
 with the correct expertise to make a PR, or simply because we wish to publish a
 draft and defer the remaining issues to the next draft.
 
