@@ -2207,7 +2207,7 @@ Document location `/$defs/A`:
   `https://example.com/root.json#/$defs/A`
 
 Document location `/$defs/B`:
-- canonical (and base) `IRI: https://example.com/other.json`
+- canonical (and base) IRI: `https://example.com/other.json`
 - canonical resource IRI plus pointer fragment:
   `https://example.com/other.json#`
 
@@ -2242,7 +2242,7 @@ outlined in {{embedded}}, they are to be avoided as they may not work in all
 implementations:
 
 Document location `/$defs/B`:
-- canonical (and base) `IRI: https://example.com/other.json`
+- canonical (and base) IRI: `https://example.com/other.json`
 - base IRI of enclosing (root.json) resource plus fragment:
   `https://example.com/root.json#/$defs/B`
 
