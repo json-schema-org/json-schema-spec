@@ -258,7 +258,7 @@ not wide-spread or consistent behavior, nor is it expected or required from
 implementations.
 
 This pattern is also inefficient. Generally, there is a single value in the
-object that determines which alternative to chose, but the `oneOf` pattern has
+object that determines which alternative to choose, but the `oneOf` pattern has
 no way to specify what that value is and therefore needs to evaluate the entire
 schema. This is made worse in that every alternative needs to be fully validated
 to ensure that only one of the alternative passes and all the others fail. This

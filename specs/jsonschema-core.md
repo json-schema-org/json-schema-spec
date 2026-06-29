@@ -1475,7 +1475,7 @@ or malicious results.
 #### Failure to resolve references {#failed-refs}
 
 If for any reason a reference cannot be resolved, the evaluation MUST halt and
-return an indeterminant result. Specifically, it MUST NOT return a passing or
+return an indeterminate result. Specifically, it MUST NOT return a passing or
 failing validation result or any annotations. Instead it MUST inform the
 consuming application or user of the evaluation failure via other means. It is
 RECOMMENDED that implementations utilize native functionality for this purpose,
