@@ -195,7 +195,7 @@ A JSON Schema MUST be an object or a boolean.
 Object properties that are applied to the instance are called keywords, or
 schema keywords. Broadly speaking, keywords fall into one of five categories:
 
-- *identifiers*: control schema identification through setting a IRI for the
+- *identifiers*: control schema identification through setting an IRI for the
   schema and/or changing how the base IRI is determined
 - *assertions*: produce a boolean result when applied to an instance
 - *annotations*: attach information to an instance for application use
@@ -719,7 +719,7 @@ A collected annotation MUST include the following information:
 - The instance location to which it is attached, as a JSON Pointer
 - The evaluation path, indicating how reference keywords such as `$ref` were
   followed to reach the absolute schema location.
-- The absolute schema location of the attaching keyword, as a IRI. This MAY be
+- The absolute schema location of the attaching keyword, as an IRI. This MAY be
   omitted if it is the same as the evaluation path from above.
 - The attached value(s)
 
@@ -1170,7 +1170,7 @@ defines how to determine the default base IRI of a document.
 
 Informatively, the initial base IRI of a schema is the IRI at which it was
 found, whether that was a network location, a local filesystem, or any other
-situation identifiable by a IRI of any known scheme.
+situation identifiable by an IRI of any known scheme.
 
 If a schema document defines no explicit base IRI with `$id` (embedded in
 content), the base IRI is that determined per RFC 3987 Section 6.5
@@ -1229,7 +1229,7 @@ expect such features to be interoperable across implementations.
 
 Schemas can be identified by any IRI that has been given to them, including a
 JSON Pointer or their IRI given directly by `$id`. In all cases, dereferencing a
-`$ref` reference involves first resolving its value as a IRI reference against
+`$ref` reference involves first resolving its value as an IRI reference against
 the current base IRI per [RFC 3986][rfc3986].
 
 If the resulting IRI identifies a schema within the current document, or within
@@ -1380,7 +1380,7 @@ the referenced Schema Resources within the referring document. Bundling SHOULD
 be done in such a way that all IRIs (used for referencing) in the base document
 and any referenced/embedded documents do not require altering.
 
-Each embedded JSON Schema Resource MUST identify itself with a IRI using the
+Each embedded JSON Schema Resource MUST identify itself with an IRI using the
 `$id` keyword, and SHOULD make use of the `$schema` keyword to identify the
 dialect it is using, in the root of the schema resource. It is RECOMMENDED that
 the IRI identifier value of `$id` be an Absolute IRI.
