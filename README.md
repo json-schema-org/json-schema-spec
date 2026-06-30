@@ -46,7 +46,7 @@ The spec is built using [Remark](https://remark.js.org/), a markdown engine with
 good support for plugins and lots of existing plugins we can use. Remark also
 has a [language server](https://github.com/remarkjs/remark-language-server) and
 a [VSCode extension](https://github.com/remarkjs/vscode-remark) we can use to
-get linting an link checking while developing the spec.
+get linting and link checking while developing the spec.
 
 #### Plugins
 
