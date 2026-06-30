@@ -54,7 +54,7 @@ schema.
 ### Option 1
 
 The `dependentSchemas` keyword is very close to what is needed except it checks
-for the presence of a property rather than it's value. This option builds on
+for the presence of a property rather than its value. This option builds on
 that concept to solve this problem.
 
 ```json
@@ -270,7 +270,7 @@ less used.
 We can describe this kind of constraint more efficiently and with with better
 error messaging by using `if`/`then`. This allows the user to explicitly specify
 the constraint to be used to select which alternative the schema should be used
-to validate the schema. However, this pattern has problems of it's own. It's
+to validate the schema. However, this pattern has problems of its own. It's
 verbose, error prone, and not particularly intuitive, which leads most people to
 avoid it.
 

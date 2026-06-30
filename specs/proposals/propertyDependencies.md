@@ -51,7 +51,7 @@ adopt or redefine `discriminator`.
 ### Solution
 
 The `dependentSchemas` keyword is very close to what is needed except it checks
-for the presence of a property rather than it's value. The chosen solution is to
+for the presence of a property rather than its value. The chosen solution is to
 build on that concept to solve this problem.
 
 ```jsonschema
