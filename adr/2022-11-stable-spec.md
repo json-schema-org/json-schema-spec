@@ -120,7 +120,7 @@ get them to a stable state much sooner. For example, we have changes to dynamic
 references that have been agreed upon and ready to go for over a year, but users
 can't benefit from the change until we can get the next full release published.
 With this model, the change could have been made available for over a year now
-and we would have a years worth of feedback on it's use. Having a mutable spec
+and we would have a years worth of feedback on its use. Having a mutable spec
 also allows us to introduce new features without having to wait for a release.
 For example, the `propertyDependencies` keyword has also been waiting for months
 for a release. Users could have been benefiting from it for months and providing
