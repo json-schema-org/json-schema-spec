@@ -1,6 +1,9 @@
 FROM fedora
 
 RUN dnf install -y ruby python3-pip
+# Fedora's CA bundle exists, but Ruby OpenSSL defaults to /etc/pki/tls/cert.pem.
+# kramdown-rfc aborts early if that default path is missing.
+RUN ln -sf /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/pki/tls/cert.pem
 RUN gem install kramdown-rfc
 RUN pip install xml2rfc
 
