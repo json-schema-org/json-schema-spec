@@ -54,11 +54,11 @@ The following is a not-necessarily-complete list of configured plugins and the
 features they make available to you.
 
 - [remark-lint](https://github.com/remarkjs/remark-lint) -- Enforce markdown
-  styles guide.
+  style guide.
 - [remark-validate-links](https://github.com/remarkjs/remark-validate-links) --
   Check for broken links.
 - [remark-gfm](https://github.com/remarkjs/remark-gfm) -- Adds support for
-  Github Flavored Markdown specific markdown features such as autolink literals,
+  GitHub Flavored Markdown specific markdown features such as autolink literals,
   footnotes, strikethrough, tables, and tasklists.
 - [remark-heading-id](https://github.com/imcuttle/remark-heading-id) -- Adds
   support for `{#my-anchor}` syntax to add an `id` to an element so it can be

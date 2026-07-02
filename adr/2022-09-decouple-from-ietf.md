@@ -73,7 +73,7 @@ that our "drafts" are intended for use in production.
 1. Join W3C and pursue a standards track with them using their process.
 1. Decouple completely from any standards organization and come up with our own
    specification development lifecycle (SDLC) model inspired by well established
-   projects with an SDLC that more closely meets or needs.
+   projects with an SDLC that more closely meets our needs.
 
 ## Decision Outcome
 
@@ -162,7 +162,7 @@ to be an exception to the rule, and not frequently used.
   member of the OpenJS Foundation, which is a sub-group of the Linux Foundation,
   so we expect standards developers to be just as comfortable referencing JSON
   Schema as they are referencing OpenAPI.
-- Defining our own SLDC process will be a lot of work and none of us have
+- Defining our own SDLC process will be a lot of work and none of us have
   expertise in defining such a process. However, we can take inspiration from
   existing well established projects and we would have the freedom to update our
   process as we learn what works and what doesn't.
