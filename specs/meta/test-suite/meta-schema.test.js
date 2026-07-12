@@ -14,10 +14,11 @@ for (const entry of await fs.readdir(`${import.meta.dirname}/tests`, { withFileT
   describe(suite.description, () => {
     for (const testCase of suite.tests) {
       test(testCase.description, async () => {
+        const metaSchemaUrl = new URL("../meta.schema.json", import.meta.url).href;
         if (testCase.valid) {
-          await expect(testCase.schema).to.matchJsonSchema(`${import.meta.dirname}/../meta.schema.json`);
+          await expect(testCase.schema).to.matchJsonSchema(metaSchemaUrl);
         } else {
-          await expect(testCase.schema).to.not.matchJsonSchema(`${import.meta.dirname}/../meta.schema.json`);
+          await expect(testCase.schema).to.not.matchJsonSchema(metaSchemaUrl);
         }
       });
     }
