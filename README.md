@@ -31,7 +31,7 @@ labels
 [![Low](https://img.shields.io/github/issues/json-schema-org/json-schema-spec/Priority:%20Low.svg)](https://github.com/json-schema-org/json-schema-spec/labels/Priority%3A%20Low)
 
 Labels are assigned based on
-[Sensible Github Labels](https://github.com/Relequestual/sensible-github-labels).
+[Sensible GitHub Labels](https://github.com/Relequestual/sensible-github-labels).
 
 ## Authoring and Building
 
