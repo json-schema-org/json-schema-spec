@@ -165,7 +165,7 @@ naming aside), but otherwise has all the same problems as the other examples.
 
 This one is a variation of `if` that combines `if`, `properties`, and `required`
 to reduce boilerplate. It's also essentially a variation of the previous example
-with better names. This avoids to error proneness problem, but it's still too
+with better names. This avoids the error-proneness problem, but it's still too
 verbose.
 
 ```jsonschema
@@ -267,7 +267,7 @@ less used.
 
 ### `if`/`then`
 
-We can describe this kind of constraint more efficiently and with with better
+We can describe this kind of constraint more efficiently and with better
 error messaging by using `if`/`then`. This allows the user to explicitly specify
 the constraint to be used to select which alternative the schema should be used
 to validate the schema. However, this pattern has problems of its own. It's
