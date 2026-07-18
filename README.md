@@ -9,7 +9,7 @@ manipulate JSON documents.
 This repository contains the sources for the **work in progress** of the next
 set of JSON Schema IETF Internet Draft (I-D) documents. For the latest released
 I-Ds, please see the
-[Specification page](http://json-schema.org/specification.html) on the website.
+[Specification page](https://json-schema.org/specification.html) on the website.
 
 ## Call for contributions and feedback
 
@@ -135,7 +135,7 @@ generated in the `coverage` directory and can be viewed using something like
 
 ## The website
 
-The JSON Schema web site is at <http://json-schema.org/>
+The JSON Schema web site is at <https://json-schema.org/>
 
 The source for the website is [maintained in a separate repository](https://github.com/json-schema-org/website).
 
