@@ -125,7 +125,7 @@ vocabulary.
 Typically, but not required, a schema will accompany the vocabulary description
 document. This _vocabulary schema_ should carry an `$id` value which is distinct
 from the vocabulary URI. The purpose of the vocabulary schema is to provide
-syntactic validation for the the vocabulary's keywords' values for when the
+syntactic validation for the vocabulary's keywords' values for when the
 schema is being validated by a meta-schema that includes the vocabulary. (A
 vocabulary schema is not itself a meta-schema since it does not validate entire
 schemas.) To facilitate this extra validation, when a vocabulary schema is
