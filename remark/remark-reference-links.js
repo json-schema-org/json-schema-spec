@@ -6,9 +6,9 @@ import { findAndReplace } from "mdast-util-find-and-replace";
 const referenceLink = /\{\{(?<id>.*?)\}\}/ug;
 
 const remarkReferenceLinks = () => (tree, file) => {
-  findAndReplace(tree, [referenceLink, (value, id) => {
+  findAndReplace(tree, [referenceLink, (_value, id) => {
     // file.data.headings comes from ./remark-headings.js
-    if (!(id in file.data.headings)) {
+    if (!Object.hasOwn(file.data.headings, id)) {
       throw Error(`ReferenceLinkError: No header found with id "${id}"`);
     }
 
