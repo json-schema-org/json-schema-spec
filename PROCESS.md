@@ -87,7 +87,7 @@ document name. For example,
 Once a specification document has been published, neither the document (save for
 minor errata such as spelling mistakes) nor its publication URL may change. If
 the TSC elects to alter the above URL scheme, the new scheme only applies to
-future publications and are not retroactive.
+future publications and is not retroactive.
 
 ### Meta-schemas
 
@@ -100,7 +100,7 @@ The website will also be configured to:
 
 - serve the meta-schema from its release folder:
   `https://json-schema.org/v1/2026/`
-- serve the meta-schema for the latest release in a version from its version
+- serve the meta-schema for the latest release from its version
   folder: `https://json-schema.org/v1/`
 
 The latest-release meta-schemas will be updated with proposals as indicated by
