@@ -80,8 +80,8 @@ features they make available to you.
     ## Foo {#foo}
     ## Bar
     This is covered in {{foo}} // --> Renders to "This is covered in [Section 2.3](#foo)"
-    - Link text will use "Section" or "Appendix" as needed
     ```
+  - Link text will use "Section" or "Appendix" as needed
 - [remark-table-of-contents](./remark/remark-table-of-contents.js)
   -- Adds a table of contents in a section with a header called "Table of
   Contents".
@@ -95,7 +95,7 @@ features they make available to you.
     ```
   - The languages `jsonschema` and `json` have special styling
   - The title will be parsed as a JSON string, but you have to double escape
-    escaped characters. So, to get `My "quoted" title`, you would need to be
+    escaped characters. So, to get `My "quoted" title`, you would need to write
     `"My \\\\"quoted\\\\" title"`.
 - [rehype-highlight](https://github.com/rehypejs/rehype-highlight) --
   Syntax highlighting.
