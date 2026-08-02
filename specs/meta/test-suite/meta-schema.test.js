@@ -2,7 +2,6 @@ import { describe, expect, test } from "vitest";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const metaSchemaUrl = new URL("../meta.schema.json", import.meta.url).href;
 
 for (const entry of await fs.readdir(`${import.meta.dirname}/tests`, { withFileTypes: true })) {
   if (entry.isDirectory() || path.extname(entry.name) !== ".json") {
@@ -16,9 +15,9 @@ for (const entry of await fs.readdir(`${import.meta.dirname}/tests`, { withFileT
     for (const testCase of suite.tests) {
       test(testCase.description, async () => {
         if (testCase.valid) {
-          await expect(testCase.schema).to.matchJsonSchema(metaSchemaUrl);
+          await expect(testCase.schema).to.matchJsonSchema("specs/meta/meta.schema.json");
         } else {
-          await expect(testCase.schema).to.not.matchJsonSchema(metaSchemaUrl);
+          await expect(testCase.schema).to.not.matchJsonSchema("specs/meta/meta.schema.json");
         }
       });
     }
