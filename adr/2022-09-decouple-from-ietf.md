@@ -19,10 +19,10 @@ spec development and releases but isn't associated with any IETF working group.
 JSON Schema is an individual draft. That means it isn't on a standards track
 with IETF and IETF is not involved nor supports the spec in any way other than
 hosting the canonical version of our I-Ds. Our perceived involvement with IETF
-causes confusion and misunderstanding within our community in the cases were our
-practices and the realities of our situation deviate from a typical IETF I-D
-lifecycle. The thing that makes our situation different than a typical I-D is
-that our "drafts" are intended for use in production.
+causes confusion and misunderstanding within our community in the cases where
+our practices and the realities of our situation deviate from a typical IETF
+I-D lifecycle. The thing that makes our situation different than a typical
+I-D is that our "drafts" are intended for use in production.
 
 ## Decision Drivers
 
