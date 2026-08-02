@@ -38,8 +38,8 @@ The argument was that the behavior of a keyword shouldn't change based on
 whether the vocabulary was required or not.
 
 However, the fact remains that our users consistently report (via questions in
-Slack, GitHub, and Stack Overflow) that they expect format to validate. (The most
-recent case I can think of was only last week, in .NET's effort to build a
+Slack, GitHub, and Stack Overflow) that they expect format to validate. (The
+most recent case I can think of was only last week, in .NET's effort to build a
 short-term solution for schema generation from types.)
 
 Due to this consistency in user expectations, we have decided to:
