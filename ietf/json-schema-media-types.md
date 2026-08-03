@@ -183,7 +183,7 @@ NOTE: '\' line wrapping per RFC 8792
 GET /schemas/v2/pet HTTP/1.1
 Host: foo.example
 Accept: application/schema+json; \
-            schema="https://json-schema.org/v1/2025", \
+            schema="https://json-schema.org/v1", \
         application/schema+json; \
             schema="http://json-schema.org/draft-07/schema#"
 ~~~
@@ -195,11 +195,11 @@ NOTE: '\' line wrapping per RFC 8792
 
 HTTP/1.1 200 OK
 Content-Type: \
-  application/schema+json; schema="https://json-schema.org/v1/2025"
+  application/schema+json; schema="https://json-schema.org/v1"
 
 {
-  "$id": "https://json-schema.org/v1/2025",
-  "$schema": "https://json-schema.org/v1/2025",
+  "$id": "https://json-schema.org/v1/2026",
+  "$schema": "https://json-schema.org/v1",
   ...
 }
 ~~~
