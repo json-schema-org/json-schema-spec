@@ -21,7 +21,7 @@ const KEYWORDS = [
   "OPTIONAL"
 ];
 
-const KEYWORD_REGEX = new RegExp(`(?:${KEYWORDS.map((k) => k.replace(" ", "\\s")).join("|")})`, "gm");
+const KEYWORD_REGEX = new RegExp(`\\b(?:${KEYWORDS.map((k) => k.replace(" ", "\\s")).join("|")})\\b`, "gm");
 
 const skipNodes = new Set(["code", "inlineCode", "link", "definition", "html"]);
 
