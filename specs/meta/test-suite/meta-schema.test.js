@@ -15,9 +15,9 @@ for (const entry of await fs.readdir(`${import.meta.dirname}/tests`, { withFileT
     for (const testCase of suite.tests) {
       test(testCase.description, async () => {
         if (testCase.valid) {
-          await expect(testCase.schema).to.matchJsonSchema(`${import.meta.dirname}/../meta.schema.json`);
+          await expect(testCase.schema).to.matchJsonSchema("specs/meta/meta.schema.json");
         } else {
-          await expect(testCase.schema).to.not.matchJsonSchema(`${import.meta.dirname}/../meta.schema.json`);
+          await expect(testCase.schema).to.not.matchJsonSchema("specs/meta/meta.schema.json");
         }
       });
     }
