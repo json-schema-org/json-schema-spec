@@ -117,7 +117,7 @@ that happens.
 
 There are other concerns including skepticism that even with an extension
 mechanism that the RFC wouldn't need regular updates, which is not normal
-practice for an RFC and would require significant effort to issue a replacing
+practice for an RFC and would require significant effort to issue a replacement
 RFC. Without a concrete proposal on the scope of the RFC and the extension
 mechanisms, it's hard to commit to this path.
 
