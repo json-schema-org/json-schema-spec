@@ -773,7 +773,7 @@ Note that some lines are wrapped for clarity.
 }
 ```
 
-In this example, both Feature A and Feature B make use of the re-usable
+In this example, both Feature A and Feature B make use of the reusable
 "enabledToggle" schema. That schema uses the `title`, `description`, and
 `default` annotations. Therefore the application has to decide how to handle the
 additional `default` value for Feature A, and the additional `description` value
@@ -789,7 +789,7 @@ combined in this way.
 
 The application can use the evaluation path to determine which values are which.
 The values in the feature's immediate "enabled" property schema are more
-specific, while the values under the re-usable schema that is referenced to with
+specific, while the values under the reusable schema that is referenced with
 `$ref` are more generic. The evaluation path will show whether each value was
 found by crossing a `$ref` or not.
 
@@ -835,15 +835,15 @@ assertions.
 
 ### Reserved Locations
 
-A fourth category of keywords simply reserve a location to hold re-usable
+A fourth category of keywords simply reserve a location to hold reusable
 components or data of interest to schema authors that is not suitable for
-re-use. These keywords do not affect validation or annotation results. Their
+reuse. These keywords do not affect validation or annotation results. Their
 purpose is to ensure that locations are available for certain purposes and will
 not be redefined by extension keywords.
 
 While these keywords do not directly affect results, as explained in
 {{non-schemas}} unrecognized extension keywords that reserve locations for
-re-usable schemas may have undesirable interactions with references in certain
+reusable schemas may have undesirable interactions with references in certain
 circumstances.
 
 ### Loading Instance Data
@@ -1113,11 +1113,11 @@ schema to apply is the subschema of this resource which contains a
 For a full example using these keywords, see {{dynamic-example}}.[^9]
 
 [^9]: The differences in the hyper-schema meta-schemas from draft-07 and draft
-2019-09 dramatically demonstrates the utility of these keywords.
+2019-09 dramatically demonstrate the utility of these keywords.
 
-#### Schema Re-Use With `$defs` {#defs}
+#### Schema Reuse With `$defs` {#defs}
 
-The `$defs` keyword reserves a location for schema authors to inline re-usable
+The `$defs` keyword reserves a location for schema authors to inline reusable
 JSON Schemas into a more general schema. The keyword does not directly affect
 the validation result.
 
@@ -2542,7 +2542,7 @@ reference, which must be recognizable as a reference.
 - Exhaustive schema identification examples
 - Replaced "external referencing" with how and when an implementation might know
   of a schema from another document
-- Replaced "internal referencing" with how an implementation should recognized
+- Replaced "internal referencing" with how an implementation should recognize
   schema identifiers during parsing
 - Dereferencing the former "internal" or "external" references is always the
   same process
