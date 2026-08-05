@@ -133,7 +133,7 @@ Published specification:
 
 Applications that use this media type:
 : JSON Schema is used in a variety of applications including API servers and
-  clients that validate JSON requests and responses, IDEs that valid
+  clients that validate JSON requests and responses, IDEs that validate
   configuration files, and databases that store JSON.
 
 Fragment identifier considerations:
@@ -248,7 +248,7 @@ Published specification:
 
 Applications that use this media type:
 : JSON Schema is used in a variety of applications including API servers and
-  clients that validate JSON requests and responses, IDEs that valid
+  clients that validate JSON requests and responses, IDEs that validate
   configuration files, databases that store JSON, and more.
 
 Fragment identifier considerations:
