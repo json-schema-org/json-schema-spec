@@ -18,7 +18,7 @@ const remarkNumberHeadings = () => (tree) => {
     const titleClasses = [];
 
     const language = (codeNode.lang ?? "").toLowerCase();
-    
+
     switch (language) {
       case "jsonschema":
         codeNode.lang = "json";
