@@ -17,19 +17,27 @@ const remarkNumberHeadings = () => (tree) => {
     let title = "";
     const titleClasses = [];
 
-    const language = codeNode.lang ?? "";
-    if (language.toLowerCase() === "jsonschema") {
-      codeNode.lang = "json";
-      title = "JSON Schema";
-      titleClasses.push("code-title-jsonschema");
-    } else if (language.toLowerCase() === "json") {
-      title = "JSON";
-      titleClasses.push("code-title-json");
-    } else if (language.toLowerCase() === "jsonc") {
-      title = "JSON";
-      titleClasses.push("code-title-json");
-    } else {
-      titleClasses.push("code-title-unknown");
+    const language = (codeNode.lang ?? "").toLowerCase();
+
+    switch (language) {
+      case "jsonschema":
+        codeNode.lang = "json";
+        title = "JSON Schema";
+        titleClasses.push("code-title-jsonschema");
+        break;
+
+      case "json":
+        title = "JSON";
+        titleClasses.push("code-title-json");
+        break;
+
+      case "jsonc":
+        title = "JSON";
+        titleClasses.push("code-title-json");
+        break;
+
+      default:
+        titleClasses.push("code-title-unknown");
     }
 
     if ("meta" in codeNode) {
