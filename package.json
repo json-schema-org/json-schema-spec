@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint . && remark --no-stdout --frail .",
-    "build": "remark --rc-path specs/.remarkrc-build.js --ignore-pattern \"*\" --ignore-pattern \"!specs\" --ignore-pattern \"!specs/**\" --ignore-pattern \"specs/**/README.md\" --output web/",
+    "build": "remark --rc-path specs/.remarkrc-build.js --ignore-pattern \"*,!specs,!specs/**,README.md\" --output web/",
     "build-ietf": "docker-compose run --rm build",
     "test": "vitest run --config=vitest-schema.config.js",
     "test:coverage": "npm test -- --coverage"
