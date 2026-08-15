@@ -1,0 +1,26 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for the $vocabulary keyword in propertyNames",
+  "tests": [
+    {
+      "description": "$vocabulary with valid object value",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$vocabulary": {
+          "https://json-schema.org/v1/vocab/core": true,
+          "https://json-schema.org/v1/vocab/applicator": false
+        }
+      },
+      "valid": true
+    },
+    {
+      "description": "$vocabulary with empty object",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$vocabulary": {}
+      },
+      "valid": true
+    }
+  ]
+}
