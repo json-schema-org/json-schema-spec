@@ -11,7 +11,11 @@
             "$comment": "Fragments not allowed.",
             "pattern": "^[^#]*$"
         },
-        "$schema": { "$ref": "#/$defs/iriString" },
+        "$schema": {
+            "$ref": "#/$defs/iriString",
+            "$comment": "Fragments not allowed.",
+            "pattern": "^[^#]*$"
+        },
         "$ref": { "$ref": "#/$defs/iriReferenceString" },
         "$anchor": { "$ref": "#/$defs/anchorString" },
         "$dynamicRef": { "$ref": "#/$defs/anchorString" },

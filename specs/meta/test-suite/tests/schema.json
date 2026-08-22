@@ -1,0 +1,28 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for the $schema keyword",
+  "tests": [
+    {
+      "description": "Absolute URI without a fragment",
+      "schema": {
+        "$schema": "https://json-schema.org/v1"
+      },
+      "valid": true
+    },
+    {
+      "description": "Absolute URI with an empty fragment",
+      "schema": {
+        "$schema": "https://json-schema.org/v1#"
+      },
+      "valid": false
+    },
+    {
+      "description": "Absolute URI with a fragment",
+      "schema": {
+        "$schema": "https://json-schema.org/v1#frag"
+      },
+      "valid": false
+    }
+  ]
+}
