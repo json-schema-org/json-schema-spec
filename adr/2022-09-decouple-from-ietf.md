@@ -60,7 +60,7 @@ I-D is that our "drafts" are intended for use in production.
   have a good relationship with the relatively new HTTPAPIs working group, the
   combination of these other experiences with other mismatches between our
   project and the IETF process contributes to our reluctance to move forward
-  through the iETF.
+  through the IETF.
 
 ## Considered Options
 
@@ -135,7 +135,7 @@ the JSON Schema Org's open ethos.
 Ben Hutton has had multiple calls with various individuals at different levels
 within the W3C, and has a friendly contact should we wish to investigate again
 at a later point. The W3C does have an "invited expert" solution for when
-a persons employer doesn't want to be a paying member, however this is supposed
+a person's employer doesn't want to be a paying member, however this is supposed
 to be an exception to the rule, and not frequently used.
 
 ### Positive Consequences
