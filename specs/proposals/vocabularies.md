@@ -141,11 +141,11 @@ reference (via `$ref`) to the vocabulary schema's `$id` value.
     "https://example.org/vocab/vocab2": true,
     "https://example.org/vocab/vocab3": false
   },
-  "allOf": {
+  "allOf": [
     {"$ref": "meta/vocab1"},  // https://example.org/meta/vocab1
     {"$ref": "meta/vocab2"},  // https://example.org/meta/vocab2
     {"$ref": "meta/vocab3"}   // https://example.org/meta/vocab3
-  }
+  ]
   // ...
 }
 ```
