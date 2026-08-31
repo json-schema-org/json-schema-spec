@@ -1,0 +1,31 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for anchor keywords",
+  "tests": [
+    {
+      "description": "Unicode $anchor",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$anchor": "é"
+      },
+      "valid": true
+    },
+    {
+      "description": "Unicode $dynamicRef",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$dynamicRef": "é"
+      },
+      "valid": true
+    },
+    {
+      "description": "Unicode $dynamicAnchor",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "$dynamicAnchor": "é"
+      },
+      "valid": true
+    }
+  ]
+}
