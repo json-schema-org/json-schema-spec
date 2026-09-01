@@ -2417,7 +2417,7 @@ purposes, and is not intended to propose a functional code generation keyword.
       "$ref": "classes/foo.json"
     },
     "date": {
-      "$ref": "types/dateStruct.json",
+      "$ref": "types/dateStruct.json"
     }
   }
 }
