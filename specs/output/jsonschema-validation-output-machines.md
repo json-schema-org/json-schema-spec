@@ -170,8 +170,8 @@ The failing instance will produce the following errors:
 - The value at `/bar/bar-prop`
   evaluated at `/$defs/bar/properties/bar-prop`
   by following the path `/properties/bar/$ref/properties/bar-prop`
-  by the `type` keyword
-  is not a number.
+  by the `minimum` keyword
+  is less than 10.
 
 <!--
 "minimum" doesn't produce an error because it only operates on instances that
@@ -216,7 +216,7 @@ The passing instance will produce the following annotations:
   will produce `"bar-title"`.
 - The keyword `properties`
   evaluated at `/$defs/bar`
-  by following the path `/properties/var/$ref`
+  by following the path `/properties/bar/$ref`
   will produce `["bar-prop"]`.
 - The keyword `title`
   evaluated at `/$defs/bar/properties/bar-prop`
@@ -284,7 +284,7 @@ completeness.
       "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
       "instanceLocation": "/bar/bar-prop",
       "errors": {
-        "minimum": "2 is less than or equal to 10"
+        "minimum": "2 is less than 10"
       }
     }
   ]
@@ -444,7 +444,7 @@ The location properties of the root output unit MAY be omitted.
               "schemaLocation": "https://json-schema.org/schemas/example#/$defs/bar/properties/bar-prop",
               "instanceLocation": "/bar/bar-prop",
               "errors": {
-                "minimum": "2 is less than or equal to 10"
+                "minimum": "2 is less than 10"
               },
               "droppedAnnotations": {
                 "title": "bar-prop-title"
