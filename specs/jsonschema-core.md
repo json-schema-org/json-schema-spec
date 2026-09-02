@@ -2345,7 +2345,7 @@ and only allows the "data" and "children" properties. An example instance with
 }
 ```
 
-```jsonschema "Instance with misspelled field"
+```json "Instance with misspelled field"
 {
   "children": [ { "daat": 1 } ]
 }
