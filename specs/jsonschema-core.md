@@ -323,9 +323,9 @@ describable by JSON.
 ### Regular Expressions {#regex}
 
 Keywords MAY use regular expressions to express constraints, or constrain the
-instance value to be a regular expression. These regular expressions SHOULD be
-valid according to the regular expression dialect described in [ECMA-262,
-section 21.2.1](https://www.ecma-international.org/ecma-262/11.0/index.html).
+instance value to be a regular expression. Schema authors SHOULD use regular
+expressions that are valid according to the regular expression dialect described
+in [ECMA-262, section 21.2.1](https://www.ecma-international.org/ecma-262/11.0/index.html).
 
 Unless otherwise specified by a keyword, regular expressions MUST NOT be
 considered to be implicitly anchored at either end. All regular expression

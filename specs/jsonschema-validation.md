@@ -96,9 +96,8 @@ with such data.
 ### Regular Expressions {#regexinterop}
 
 Keywords that use regular expressions, or constrain the instance value to be a
-regular expression, are subject to the interoperability considerations for
-regular expressions in the [JSON Schema Core](./jsonschema-core.md)
-specification.
+regular expression, are subject to the interoperability considerations in
+[JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
 
 ## Meta-Schema {#meta-schema}
 
@@ -512,9 +511,8 @@ These attributes apply to string instances.
 
 This attribute applies to string instances.
 
-A regular expression, which SHOULD be valid according to the
-[ECMA-262](https://www.ecma-international.org/ecma-262/11.0/index.html) regular
-expression dialect.
+A regular expression as indicated in [JSON Schema Core, section
+6.3](./jsonschema-core.md#regex).
 
 Implementations that validate formats MUST accept at least the subset of
 ECMA-262 defined in {{regexinterop}}, and SHOULD accept all valid ECMA-262
