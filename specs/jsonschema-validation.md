@@ -96,9 +96,8 @@ with such data.
 ### Regular Expressions {#regexinterop}
 
 Keywords that use regular expressions, or constrain the instance value to be a
-regular expression, are subject to the interoperability considerations for
-regular expressions in the [JSON Schema Core](./jsonschema-core.md)
-specification.
+regular expression, are subject to the interoperability considerations in
+[JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
 
 ## Meta-Schema {#meta-schema}
 
