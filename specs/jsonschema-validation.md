@@ -512,7 +512,7 @@ These attributes apply to string instances.
 
 This attribute applies to string instances.
 
-A regular expression, which SHOULD be valid according to the
+A regular expression that SHOULD be valid according to the
 [ECMA-262](https://www.ecma-international.org/ecma-262/11.0/index.html) regular
 expression dialect.
 
@@ -555,7 +555,7 @@ sections 6.7 and 6.8 of [RFC 2045](https://www.rfc-editor.org/info/rfc2045)
 provide encodings used in MIME. This keyword is derived from MIME's
 Content-Transfer-Encoding header, which was designed to map binary data into
 ASCII characters. It is not related to HTTP's Content-Encoding header, which is
-used to encode (e.g. compress or encrypt) the content of HTTP request and
+used to encode (e.g. compress or encrypt) the content of HTTP requests and
 responses.
 
 As "base64" is defined in both RFCs, the definition from RFC 4648 SHOULD be
