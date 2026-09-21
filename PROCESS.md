@@ -194,9 +194,9 @@ empty.
 
 Tests for the proposal are added to the JSON Schema Test Suite.
 
-```diff
-@@ TODO: Identify a location within the test suite for proposals. @@
-```
+Within the test suite for the relevant specification version, proposal tests
+are placed in the `proposals/` directory, with a subdirectory for each active
+proposal.
 
 Once an initial draft of the proposal has been completed and published, the
 feature moves into Experimentation.
