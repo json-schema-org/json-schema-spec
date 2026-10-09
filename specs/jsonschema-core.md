@@ -2471,9 +2471,6 @@ reference, which must be recognizable as a reference.
 - "contains" assertion result now depends on "minContains" and "maxContains"
 - Affirm that no keyword can un-fail an adjacent keyword ("minContains"
   previously violated this)
-- "contains", "minContains", and "maxContains" now apply to objects as well as
-  arrays
-- As an object keyword, "contains" now affects "unevaluatedProperties"
 - Add `propertyDependencies` keyword
 - Add new "list" and "hierarchical" output formats in place of "basic",
   "detailed", and "verbose"
