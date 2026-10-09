@@ -462,8 +462,8 @@ representation of an IP address as follows:
 
 #### Resource Identifiers These attributes apply to string instances.
 
-- *uri:* A string instance is valid against this attribute if it is a valid IRI,
-  according to [RFC 3987][rfc3987].
+- *uri:* A string instance is valid against this attribute if it is a valid URI,
+  according to [RFC 3986](https://www.rfc-editor.org/info/rfc3986).
 - *uri-reference:* A string instance is valid against this attribute if it is a
   valid URI Reference (either a URI or a relative-reference), according to
   [RFC 3986](https://www.rfc-editor.org/info/rfc3986).
