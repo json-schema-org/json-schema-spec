@@ -10,6 +10,7 @@
   ],
   "$defs": {
     "outputUnit":{
+      "type": "object",
       "properties": {
         "valid": { "type": "boolean" },
         "evaluationPath": {
@@ -76,12 +77,14 @@
       "items": { "$ref": "#/$defs/outputUnit" }
     },
     "flag": {
+      "type": "object",
       "properties": {
         "valid": { "type": "boolean" }
       },
       "required": [ "valid" ]
     },
     "list": {
+      "type": "object",
       "properties": {
         "valid": { "type": "boolean" },
         "details": {
