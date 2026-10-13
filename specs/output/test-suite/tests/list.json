@@ -1,0 +1,78 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for list output",
+  "tests": [
+    {
+      "description": "Empty details",
+      "instance": { "valid": true, "details": [] },
+      "valid": true
+    },
+    {
+      "description": "Details with output units",
+      "instance": {
+        "valid": true,
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "",
+            "schemaLocation": "https://example.com/schema",
+            "instanceLocation": ""
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "description": "Must be an object",
+      "instance": [],
+      "valid": false
+    },
+    {
+      "description": "valid is required",
+      "instance": { "details": [] },
+      "valid": false
+    },
+    {
+      "description": "valid must be a boolean",
+      "instance": { "valid": null, "details": [] },
+      "valid": false
+    },
+    {
+      "description": "details is required",
+      "instance": { "valid": true },
+      "valid": false
+    },
+    {
+      "description": "details must be an array",
+      "instance": { "valid": true, "details": {} },
+      "valid": false
+    },
+    {
+      "description": "details items must be objects",
+      "instance": { "valid": true, "details": [42] },
+      "valid": false
+    },
+    {
+      "description": "details items must be output units",
+      "instance": { "valid": true, "details": [{ "valid": true }] },
+      "valid": false
+    },
+    {
+      "description": "Deeply nested details items must be objects",
+      "instance": {
+        "valid": true,
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "/items",
+            "schemaLocation": "https://example.com/schema#/items",
+            "instanceLocation": "/0",
+            "details": [true]
+          }
+        ]
+      },
+      "valid": false
+    }
+  ]
+}
