@@ -1,0 +1,32 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for flag output",
+  "tests": [
+    {
+      "description": "Valid result",
+      "instance": { "valid": true },
+      "valid": true
+    },
+    {
+      "description": "Invalid result",
+      "instance": { "valid": false },
+      "valid": true
+    },
+    {
+      "description": "Must be an object",
+      "instance": null,
+      "valid": false
+    },
+    {
+      "description": "valid is required",
+      "instance": {},
+      "valid": false
+    },
+    {
+      "description": "valid must be a boolean",
+      "instance": { "valid": "true" },
+      "valid": false
+    }
+  ]
+}

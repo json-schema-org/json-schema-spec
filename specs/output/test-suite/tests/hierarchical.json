@@ -1,0 +1,241 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for hierarchical output",
+  "tests": [
+    {
+      "description": "Minimal output unit",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": ""
+      },
+      "valid": true
+    },
+    {
+      "description": "Must be an object",
+      "instance": "output",
+      "valid": false
+    },
+    {
+      "description": "valid is required",
+      "instance": {
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": ""
+      },
+      "valid": false
+    },
+    {
+      "description": "evaluationPath is required",
+      "instance": {
+        "valid": true,
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": ""
+      },
+      "valid": false
+    },
+    {
+      "description": "schemaLocation is required",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "instanceLocation": ""
+      },
+      "valid": false
+    },
+    {
+      "description": "instanceLocation is required",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema"
+      },
+      "valid": false
+    },
+    {
+      "description": "valid must be a boolean",
+      "instance": {
+        "valid": 1,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": ""
+      },
+      "valid": false
+    },
+    {
+      "description": "Locations must be strings",
+      "instance": {
+        "valid": true,
+        "evaluationPath": [],
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": ""
+      },
+      "valid": false
+    },
+    {
+      "description": "Nested details",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "/items",
+            "schemaLocation": "https://example.com/schema#/items",
+            "instanceLocation": "/0"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "description": "details items must be objects",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "details": [null]
+      },
+      "valid": false
+    },
+    {
+      "description": "Deeply nested details items must be objects",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "/items",
+            "schemaLocation": "https://example.com/schema#/items",
+            "instanceLocation": "/0",
+            "details": [true]
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "description": "errors with an invalid result",
+      "instance": {
+        "valid": false,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "errors": { "type": "Expected a string" }
+      },
+      "valid": true
+    },
+    {
+      "description": "errors with a valid result",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "errors": { "type": "Expected a string" }
+      },
+      "valid": false
+    },
+    {
+      "description": "errors must be an object",
+      "instance": {
+        "valid": false,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "errors": ["Expected a string"]
+      },
+      "valid": false
+    },
+    {
+      "description": "error messages must be strings",
+      "instance": {
+        "valid": false,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "errors": { "type": false }
+      },
+      "valid": false
+    },
+    {
+      "description": "droppedAnnotations with an invalid result",
+      "instance": {
+        "valid": false,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "droppedAnnotations": { "title": "Foo" }
+      },
+      "valid": true
+    },
+    {
+      "description": "droppedAnnotations with a valid result",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "droppedAnnotations": { "title": "Foo" }
+      },
+      "valid": false
+    },
+    {
+      "description": "droppedAnnotations must be an object",
+      "instance": {
+        "valid": false,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "droppedAnnotations": "Foo"
+      },
+      "valid": false
+    },
+    {
+      "description": "annotations with a valid result",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "annotations": { "title": "Foo" }
+      },
+      "valid": true
+    },
+    {
+      "description": "annotations with an invalid result",
+      "instance": {
+        "valid": false,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "annotations": { "title": "Foo" }
+      },
+      "valid": false
+    },
+    {
+      "description": "annotations must be an object",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "annotations": "Foo"
+      },
+      "valid": false
+    },
+    {
+      "description": "Flag output is not hierarchical output",
+      "instance": { "valid": true },
+      "valid": false
+    }
+  ]
+}

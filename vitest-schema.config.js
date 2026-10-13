@@ -7,9 +7,9 @@ import { jsonSchemaCoveragePlugin } from "@hyperjump/json-schema-coverage/vitest
 export default defineConfig({
   plugins: [jsonSchemaCoveragePlugin()],
   test: {
-    include: ["**/*-schema.test.js"],
+    include: ["**/*-schema.test.js", "**/*.schema-files.test.js"],
     coverage: {
-      include: ["specs/meta/*.schema.json"]
+      include: ["specs/meta/*.schema.json", "specs/output/schema.json"]
     }
   }
 });
