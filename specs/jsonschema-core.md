@@ -723,86 +723,12 @@ A collected annotation MUST include the following information:
   omitted if it is the same as the evaluation path from above.
 - The attached value(s)
 
-##### Distinguishing Among Multiple Values
-
-Applications MAY make decisions on which of multiple annotation values to use
-based on the schema location that contributed the value. This is intended to
-allow flexible usage. Collecting the schema location facilitates such usage.
-
-For example, consider this schema, which uses annotations and assertions from
-the [Validation specification](./jsonschema-validation.md):
-
-Note that some lines are wrapped for clarity.
-
-```jsonschema
-{
-  "title": "Feature list",
-  "type": "array",
-  "prefixItems": [
-    {
-      "title": "Feature A",
-      "properties": {
-        "enabled": {
-          "$ref": "#/$defs/enabledToggle",
-          "default": true
-        }
-      }
-    },
-    {
-      "title": "Feature B",
-      "properties": {
-        "enabled": {
-          "description": "If set to null, Feature B
-                          inherits the enabled
-                          value from Feature A",
-          "$ref": "#/$defs/enabledToggle"
-        }
-      }
-    }
-  ],
-  "$defs": {
-    "enabledToggle": {
-      "title": "Enabled",
-      "description": "Whether the feature is enabled (true),
-                      disabled (false), or under
-                      automatic control (null)",
-      "type": ["boolean", "null"],
-      "default": null
-    }
-  }
-}
-```
-
-In this example, both Feature A and Feature B make use of the reusable
-"enabledToggle" schema. That schema uses the `title`, `description`, and
-`default` annotations. Therefore the application has to decide how to handle the
-additional `default` value for Feature A, and the additional `description` value
-for Feature B.
-
-The application programmer and the schema author need to agree on the usage. For
-this example, let's assume that they agree that the most specific `default`
-value will be used, and any additional, more generic `default` values will be
-silently ignored. Let's also assume that they agree that all `description` text
-is to be used, starting with the most generic, and ending with the most
-specific. This requires the schema author to write descriptions that work when
-combined in this way.
-
-The application can use the evaluation path to determine which values are which.
-The values in the feature's immediate "enabled" property schema are more
-specific, while the values under the reusable schema that is referenced with
-`$ref` are more generic. The evaluation path will show whether each value was
-found by crossing a `$ref` or not.
-
-Feature A will therefore use a default value of true, while Feature B will use
-the generic default value of null. Feature A will only have the generic
-description from the "enabledToggle" schema, while Feature B will use that
-description, and also append its locally defined description that explains how
-to interpret a null value.
-
-Note that there are other reasonable approaches that a different application
-might take. For example, an application may consider the presence of two
-different values for `default` to be an error, regardless of their schema
-locations.
+When multiple annotation values are collected for the same keyword at the same
+instance location, implementations MUST report all of them. This specification
+does not define how those values are combined or chosen among; that is left to
+the application. The information collected with each annotation, especially the
+evaluation path, allows applications to make that choice based on where each
+value came from. See {{multiple-annotations}} for an example.
 
 ##### Annotations and Assertions {#annot-assert}
 
@@ -2434,6 +2360,72 @@ instance of a distinct class.
 
 This style of usage requires the annotation to be in the same object as the
 reference, which must be recognizable as a reference.
+
+## %appendix% Applications and multiple annotation values {#multiple-annotations}
+
+This appendix is informative. It shows one way an application might choose
+among multiple annotation values and places no requirements on implementations.
+
+Consider this schema, which uses annotations and assertions from the
+[Validation specification](./jsonschema-validation.md):
+
+```jsonschema
+{
+  "title": "Feature list",
+  "type": "array",
+  "prefixItems": [
+    {
+      "title": "Feature A",
+      "properties": {
+        "enabled": {
+          "$ref": "#/$defs/enabledToggle",
+          "default": true
+        }
+      }
+    },
+    {
+      "title": "Feature B",
+      "properties": {
+        "enabled": {
+          "description": "If set to null, Feature B
+                          inherits the enabled
+                          value from Feature A",
+          "$ref": "#/$defs/enabledToggle"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "enabledToggle": {
+      "title": "Enabled",
+      "description": "Whether the feature is enabled (true),
+                      disabled (false), or under
+                      automatic control (null)",
+      "type": ["boolean", "null"],
+      "default": null
+    }
+  }
+}
+```
+
+Both Feature A and Feature B use the reusable "enabledToggle" schema, which has
+its own `title`, `description`, and `default` annotations. As a result, Feature
+A's "enabled" property has two `default` values, and Feature B's has two
+`description` values.
+
+Suppose the application and the schema author agree on two conventions: the
+most specific `default` value is used, and all `description` values are
+concatenated from most generic to most specific. The application can tell which
+values are more generic from the evaluation path, which shows whether each value
+was found by crossing a `$ref`.
+
+Under these conventions, Feature A uses a default of true and Feature B uses the
+generic default of null. Feature A has only the generic description, while
+Feature B appends its own description explaining how to interpret null.
+
+Other applications might reasonably take different approaches. For example, an
+application might treat two different `default` values as an error, regardless
+of their schema locations.
 
 ## %appendix% Change Log[^14]
 
