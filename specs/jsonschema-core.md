@@ -672,8 +672,7 @@ strings, then including `"null"` in `type` would not have any useful effect.
 
 JSON Schema can annotate an instance with information, whenever the instance
 validates against the schema object containing the annotation, and all of its
-parent schema objects. The information can be a simple value, or can be
-calculated based on the instance contents.
+parent schema objects.
 
 Annotations are attached to specific locations in an instance. Since many
 subschemas can be applied to any single location, applications may need to
@@ -685,11 +684,10 @@ which are provided to applications to use as they see fit. JSON Schema
 implementations are not expected to make use of the collected information on
 behalf of applications.
 
-Unless otherwise specified, a keyword's annotation value is value of the
-keyword itself. However, other behaviors are possible. For example, [JSON
-Hyper-Schema's](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-hyperschema-02)
-`links` keyword is a complex annotation that produces a value based in part on
-the instance data.
+The annotation value of a keyword MUST be the value of the keyword itself.
+Annotation values are never calculated from the instance. Applications that need
+to combine an annotation with instance data can do so using the instance
+location collected with the annotation.
 
 While "short-circuit" evaluation is possible for assertions, collecting
 annotations requires examining all schemas that apply to an instance location,
@@ -1485,8 +1483,8 @@ subschemas. Therefore subschemas may be applied in any order.
 These keywords correspond to logical operators for combining or modifying the
 boolean assertion results of the subschemas. They have no direct impact on
 annotation collection, although they enable the same annotation keyword to be
-applied to an instance location with different values. Annotation keywords
-define their own rules for combining such values.
+applied to an instance location with different values. This specification
+does not define how such values are combined (see {{collect}}).
 
 ##### `allOf` {#allof}
 
@@ -1927,8 +1925,8 @@ use the terms defined by this document to do so.
 ### Annotations
 
 Many keywords are defined to produce annotations for application consumption
-(e.g. `title` or `readOnly`). Annotation values may be of any type and are
-defined by the keywords that produced them.
+(e.g. `title` or `readOnly`). Annotation values are the values of the keywords
+that produced them (see {{annotations}}).
 
 Output specifications which include annotations SHOULD be written such that they
 can be easily associated with the data defined in {{collect}} and SHOULD use the
@@ -2461,6 +2459,10 @@ of their schema locations.
 - Output units in new format group by "schemaLocation", "instanceLocation", and
   "evaluationPath"
 - Add "droppedAnnotations" to output formats
+- Annotation values are always the value of the keyword that produced them
+- Applicator keywords no longer produce annotations
+- Define `unevaluatedItems` and `unevaluatedProperties` in terms of evaluated
+  locations instead of annotations
 
 ### draft-bhutton-json-schema-01
 - Improve and clarify the `type`, `contains`, `unevaluatedProperties`, and
