@@ -537,8 +537,8 @@ following mechanisms:
   contents of another keyword.
 - Dynamic dependencies, in which the dependency relies on the evaluation of
   another keyword against an instance. This dependency may be on either the
-  annotations produced by the keyword or the validation result of its
-  subschema(s).
+  validation result of its subschema(s) or the instance locations it considers
+  evaluated (see {{unevaluated}}).
 
 These mechanisms are used merely to describe dependencies; they are for
 illustrative purposes and not prescriptive. Implementations MAY use whatever
@@ -549,9 +549,7 @@ order to achieve the specified behaviors.
 
 A missing keyword MUST NOT produce a false assertion result, MUST NOT produce
 annotation results, and MUST NOT cause any other schema to be evaluated as part
-of its own behavioral definition. However, given that missing keywords do not
-contribute annotations, the lack of annotation results may indirectly change the
-behavior of other keywords.
+of its own behavioral definition.
 
 In some cases, the missing keyword assertion behavior of a keyword is identical
 to that produced by a certain value, and keyword definitions SHOULD note such
@@ -560,15 +558,7 @@ behavior would produce annotation results if present, the default behavior still
 MUST NOT result in annotations.
 
 Because annotation collection can add significant cost in terms of both
-computation and memory, implementations MAY opt out of this feature. Keywords
-that are specified in terms of collected annotations SHOULD describe reasonable
-alternate approaches when appropriate. This approach is demonstrated by the
-[`items`](#items) and [`additionalProperties`](#additionalproperties) keywords
-in this document.
-
-Note that when no such alternate approach is possible for a keyword,
-implementations that do not support annotation collections will not be able to
-support those keywords.
+computation and memory, implementations MAY opt out of this feature.
 
 ### Identifiers
 
@@ -1616,7 +1606,7 @@ results.
 
 When working with arrays and indices, JSON Schema uses zero-based indexing. This
 aligns with both JSON's JavaScript heritage and its usage of JSON Pointer for
-references and annotations.
+references and instance locations.
 
 ##### `prefixItems`
 
@@ -1748,9 +1738,8 @@ as described below in the section for that keyword.
 This keyword has no assertion behavior. The value of this keyword is used as
 its annotation result.
 
-Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation results.
-However, as described in {{contains}}, the absence of this keyword's annotation
-causes `contains` to assume a minimum value of 1.
+If this keyword is absent, `contains` uses a minimum of 1, as described in
+{{contains}}.
 
 ##### `contains` {#contains}
 
@@ -1937,11 +1926,9 @@ use the terms defined by this document to do so.
 
 ### Annotations
 
-Many keywords are defined to produce annotations, whether intended for
-inter-keyword communication (e.g. between `properties` and
-`unevaluatedProperties`) or for application consumption (e.g. `title` or
-`readOnly`). Annotation values may be of any type and are defined by the
-keywords that produced them.
+Many keywords are defined to produce annotations for application consumption
+(e.g. `title` or `readOnly`). Annotation values may be of any type and are
+defined by the keywords that produced them.
 
 Output specifications which include annotations SHOULD be written such that they
 can be easily associated with the data defined in {{collect}} and SHOULD use the
