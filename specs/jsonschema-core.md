@@ -1627,10 +1627,8 @@ subschema at the same position, if any. This keyword does not constrain the
 length of the array. Only array positions present in both the keyword's value
 and the instance value are affected by this keyword.
 
-This keyword produces an annotation value which is the largest index to which
-this keyword applied a subschema. The value MAY be a boolean `true` if a subschema
-was applied to every index of the instance, such as is produced by the `items`
-keyword.
+Array elements to which this keyword applies a subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behaviors of [`items`](#items) and
 [`unevaluatedItems`](#unevaluateditems).
@@ -1650,9 +1648,8 @@ instance array, `items` applies its subschema to no elements.
 If `prefixItems` does not exist within the same schema object, `items` applies
 its subschema to all elements.
 
-If the `items` subschema is applied to any positions within the instance array,
-it produces an annotation result of boolean true, indicating that all remaining
-array elements have been evaluated against this keyword's subschema.
+Array elements to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
@@ -1672,8 +1669,8 @@ validates against the corresponding schema.
 
 Omitting this keyword has the same assertion behavior as an empty object.
 
-The annotation result of this keyword is the set of instance property names
-which are also present under this keyword.
+Property values to which this keyword applies a subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behaviors of
 [`additionalProperties`](#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
@@ -1692,8 +1689,8 @@ not implicitly anchored.
 
 Omitting this keyword has the same assertion behavior as an empty object.
 
-The annotation result of this keyword is the set of instance property names
-matched by at least one property under this keyword.
+Property values to which this keyword applies a subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behaviors of
 [`additionalProperties`](#additionalproperties) and
@@ -1713,8 +1710,8 @@ against the `additionalProperties` schema.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
-The annotation result of this keyword is the set of instance property names
-validated by this keyword's subschema.
+Property values to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behavior of
 [`unevaluatedProperties`](#unevaluatedproperties).
@@ -1774,12 +1771,9 @@ The minimum number of occurrences is provided by the `minContains` keyword
 within the same schema object as `contains`. If `minContains` is absent, the
 minimum number of occurrences MUST be 1.
 
-This keyword produces an annotation value which is an array of the zero-based
-indices for which this keyword validates successfully when applying its
-subschema, in ascending order. The value MAY be a boolean `true` if the
-subschema validates successfully when applied to every index of the instance.
-The annotation MUST be present if the instance array to which this keyword's
-schema applies is empty.
+Array elements that validate successfully against this keyword's subschema are
+considered evaluated per {{unevaluated}}. Elements that fail to validate
+against its subschema are not.
 
 The presence of this keyword affects the behavior of
 [`unevaluatedItems`](#unevaluateditems).
@@ -1818,7 +1812,17 @@ subschemas.
 
 The behaviors of these keywords depend on adjacent keywords as well as any
 keywords in successfully validated subschemas that apply to the same instance
-location.
+location. Specifically, an array element or property value is considered
+evaluated by a schema object if:
+
+- a keyword in that schema object considers it evaluated, as defined by that
+  keyword; or
+- it is considered evaluated by a subschema that applies to the same instance
+  location, such as through an [in-place applicator](#in-place) or a reference,
+  and that subschema validates successfully.
+
+Keywords that apply subschemas to array elements or property values MUST define
+which of those elements or values are considered evaluated.
 
 ### `unevaluatedItems` {#unevaluateditems}
 
@@ -1833,13 +1837,12 @@ location by evaluating the instance's elements. This includes, but is not
 limited to, `prefixItems`, `items`, and `contains`, itself, and all
 [in-place applicators](#in-place) defined in this document.
 
-This keyword applies its subschema to any array elements which have not been
-deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
+This keyword applies its subschema to any array elements which are not
+considered evaluated per {{unevaluated}}. Validation passes if the keyword's
 subschema validates against all applicable array elements.
 
-If the `unevaluatedItems` subschema is applied to any positions within the
-instance array, it produces an annotation result of boolean true, analogous to
-the behavior of `items`.
+Array elements to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behavior of other `unevaluatedItems`
 keywords found earlier in the dynamic scope that apply to the same instance
@@ -1860,12 +1863,12 @@ location by evaluating the instance's property values. This includes, but is not
 limited to, `properties`, `patternProperties`, and `additionalProperties`,
 itself, and all [in-place applicators](#in-place) defined in this document.
 
-This keyword applies its subschema to any property values which have not been
-deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
+This keyword applies its subschema to any property values which are not
+considered evaluated per {{unevaluated}}. Validation passes if the keyword's
 subschema validates against all applicable property values.
 
-The annotation result of this keyword is the set of instance property names
-validated by this keyword's subschema.
+Property values to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behavior of other
 `unevaluatedProperties` keywords found earlier in the dynamic scope that apply
