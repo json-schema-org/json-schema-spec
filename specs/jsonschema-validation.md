@@ -514,13 +514,15 @@ These attributes apply to string instances.
 
 This attribute applies to string instances.
 
-A regular expression, which SHOULD be valid according to the
+A string instance is valid against this attribute if it is a valid regular
+expression according to the
 [ECMA-262](https://www.ecma-international.org/ecma-262/11.0/index.html) regular
-expression dialect.
+expression dialect with the "u" flag.
 
-Implementations that validate formats MUST accept at least the subset of
-ECMA-262 defined in {{regexinterop}}, and SHOULD accept all valid ECMA-262
-expressions.
+Implementations that validate formats MUST determine validity according to
+ECMA-262, even if they use a different regular expression dialect to evaluate
+keywords as allowed by
+[JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
 
 ## Keywords for the Contents of String-Encoded Data {#content}
 
