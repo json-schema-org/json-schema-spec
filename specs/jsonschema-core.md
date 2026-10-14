@@ -322,22 +322,32 @@ describable by JSON.
 
 ### Regular Expressions {#regex}
 
-Keywords MAY use regular expressions to express constraints, or constrain the
-instance value to be a regular expression. These regular expressions SHOULD be
-valid according to the regular expression dialect described in [ECMA-262,
-section 21.2.1](https://www.ecma-international.org/ecma-262/11.0/index.html).
+Some keywords use regular expressions to express constraints, or constrain the
+instance value to be a regular expression. Unless otherwise specified by a
+keyword, regular expressions in JSON Schema use the dialect described in
+[ECMA-262, section 21.2.1](https://www.ecma-international.org/ecma-262/11.0/index.html).
 
-Unless otherwise specified by a keyword, regular expressions MUST NOT be
-considered to be implicitly anchored at either end. All regular expression
-keywords in this specification and its companion documents are un-anchored.
+Implementations that don't have access to an ECMA-262 regular expression engine
+MAY use a different engine. However, if an implementation encounters a regular
+expression in a schema that its engine can't compile or interpret, it MUST
+refuse to evaluate the schema. If an implementation encounters a regular
+expression in a schema that its engine supports but that isn't valid under
+ECMA-262, it SHOULD refuse to evaluate the schema.
 
-Regular expressions SHOULD be built with the "u" flag (or equivalent) to provide
-[Unicode] support, or processed in such a way which provides Unicode support as
-defined by ECMA-262.
+Regular expressions MUST be evaluated with [Unicode] support equivalent to that
+provided by the ECMA-262 "u" flag.
 
-Furthermore, given the high disparity in regular expression constructs support,
-schema authors SHOULD limit themselves to the following regular expression
-tokens:
+Unless otherwise specified by a keyword, implementations MUST NOT treat regular
+expressions as implicitly anchored at either end. For example, the pattern "es"
+matches "expression". All regular expression keywords in this specification and
+its companion documents are un-anchored.
+
+::: note Interoperable Regular Expressions
+
+Because support for regular expression constructs varies widely between engines,
+schema authors who want their schemas to work across the widest range of
+implementations are encouraged to limit themselves to the following regular
+expression tokens:
 
 - individual Unicode code points, as defined by the [JSON
   specification][rfc8259];
@@ -352,9 +362,7 @@ tokens:
 - the beginning-of-input (`^`) and end-of-input (`$`) anchors;
 - simple grouping (using `(` and `)`) and alternation (`|`).
 
-Finally, implementations MUST NOT take regular expressions to be anchored,
-neither at the beginning nor at the end. This means, for instance, the pattern
-"es" matches "expression".
+:::
 
 ### Extending JSON Schema {#extending}
 
