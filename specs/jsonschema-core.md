@@ -1014,7 +1014,7 @@ without requiring references to be updated.
 The `$anchor` keyword is used to define location-independent identifiers for
 subschemas within a schema resource. `$anchor` defines a plain name fragment
 identifier that can be used in IRI fragments as an alternative to JSON
-Pointers.[^4] See {{fragments}}.
+Pointers.[^6] See {{fragments}}.
 
 [^6]: Note that the anchor string does not include the "#" character, as it is
 just a fragment identifier not an IRI reference. To reference the "foo"
@@ -1096,10 +1096,10 @@ be extended or a generic schema such as a list whose items are defined by the
 referencing schema.
 
 The value of the `$dynamicRef` property MUST be a string and MUST conform to the
-plain name fragment identifier syntax defined in {{fragments}}.[^3]
+plain name fragment identifier syntax defined in {{fragments}}.[^8]
 
-[^3]: The reason for limiting `$dynamicAnchor` to fragment identifier syntax no
-longer exists because it isn't used in URIs, but the restriction remains to
+[^8]: The reason for limiting `$dynamicRef` to plain-name fragment syntax no
+longer exists because it isn't used in IRIs, but the restriction remains to
 avoid changing things that don't have a compelling reason to change.
 
 `$dynamicAnchor` and `$dynamicRef` form a string-matched pair.
@@ -1166,7 +1166,7 @@ comments and `$comment` properties are present is implementation-dependent.
 [RFC 3987 Section 6.5](https://www.rfc-editor.org/rfc/rfc3987.html#section-6.5)
 and
 [RFC 3986 Section 5.1](https://www.rfc-editor.org/rfc/rfc3986.html#section-5.1)
-defines how to determine the default base IRI of a document.
+define how to determine the default base IRI of a document.
 
 Informatively, the initial base IRI of a schema is the IRI at which it was
 found, whether that was a network location, a local filesystem, or any other
@@ -2234,7 +2234,7 @@ Note: The fragment part of the IRI does not make it canonical or non-canonical,
 rather, the base IRI used (as part of the full IRI with any fragment) is what
 determines the canonical nature of the resulting full IRI.[^13]
 
-[^13]: Multiple "canonical" IRIs? We Acknowledge this is potentially confusing,
+[^13]: Multiple "canonical" IRIs? We acknowledge this is potentially confusing,
 and direct you to read the CREF located in {{embedded}} for further comments.
 
 While the following IRIs do correctly indicate specific schemas, per the reasons

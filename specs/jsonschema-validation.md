@@ -238,7 +238,7 @@ Omitting this keyword has the same behavior as a value of 0.
 The value of this keyword MUST be a string. This string SHOULD be a valid
 regular expression as indicated in
 [JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
-<!-- This link assume a publish path, which we don't know yet. -->
+<!-- This link assumes a publish path, which we don't know yet. -->
 
 A string instance is considered valid if the regular expression matches the
 instance successfully. Recall: regular expressions are not implicitly anchored.
@@ -405,12 +405,12 @@ format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
   valid representation of the "date-time-ext" rule in RFC 9557. This SHOULD
   allow and validate published leap seconds. See RFC 3339, section 5.7.
 - *date*: A string instance is valid against this attribute if it is a valid
-  representation according to the "full-date" ABNF rule in RFC 3339
+  representation according to the "full-date" ABNF rule in RFC 3339.
 - *time*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-time" ABNF rule in RFC 3339. This MUST
   NOT include leap seconds.[^3]
 - *duration*: A string instance is valid against this attribute if it is a valid
-  representation according to the "duration" ABNF rule in RFC 3339 Appendix A
+  representation according to the "duration" ABNF rule in RFC 3339 Appendix A.
 
 [^3]: The `time` format represents a time value that is independent of any
 specific date, such as a scheduled time of day or a measured duration. Because
@@ -460,7 +460,9 @@ representation of an IP address as follows:
 - *ipv6:* An IPv6 address as defined in
   [RFC 4291, section 2.2](https://www.rfc-editor.org/info/rfc4291).
 
-#### Resource Identifiers These attributes apply to string instances.
+#### Resource Identifiers
+
+These attributes apply to string instances.
 
 - *uri:* A string instance is valid against this attribute if it is a valid URI,
   according to [RFC 3986](https://www.rfc-editor.org/info/rfc3986).
