@@ -134,7 +134,7 @@
         "supportedBy": []
     },
     "http-date": {
-        "description": "Date and time as defined by HTTP-date - RFC7231",
+        "description": "Date and time as defined by HTTP-date - RFC9110",
         "types": ["string"],
         "examples": ["Sun, 06 Nov 1994 08:49:37 GMT"],
         "deprecated": false,
@@ -142,6 +142,8 @@
     },
     "idn-email": {
         "description": "An email address as defined by Mailbox in RFC6531 with the domain using the UTS #46 mapping for IDNs",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-email-addresses",
         "types": ["string"],
         "examples": ["user@exämple.com"],
         "deprecated": false,
@@ -149,6 +151,8 @@
     },
     "idn-hostname": {
         "description": "An internationalized host name as defined by IDNA2008 using the UTS #46 mapping",
+        "definingBody": "JSON Schema",
+        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-hostnames",
         "types": ["string"],
         "examples": ["exämple.com"],
         "deprecated": false,
@@ -198,7 +202,7 @@
         "supportedBy": []
     },
     "ipv6": {
-        "description": "An IPv6 address as defined by RFC4673",
+        "description": "An IPv6 address as defined in RFC 4291, section 2.2",
         "definingBody": "JSON Schema",
         "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-ip-addresses",
         "types": ["string"],
@@ -216,7 +220,7 @@
         "supportedBy": []
     },
     "iri-reference": {
-        "description": "An Internationalized Resource Identifier as defined in RFC3987",
+        "description": "An IRI reference (either an IRI or a relative reference) as defined in RFC 3987",
         "definingBody": "JSON Schema",
         "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
         "types": ["string"],
@@ -234,11 +238,11 @@
         "supportedBy": []
     },
     "media-range": {
-        "description": "A media type as defined by the media-range ABNF production in RFC9110.",
+        "description": "A media range as defined by the media-range ABNF production in RFC 9110.",
         "definingBody": "OpenAPI",
         "definition": "https://www.rfc-editor.org/rfc/rfc9110#field.accept",
         "types": ["string"],
-        "examples": ["text/html"],
+        "examples": ["text/html", "text/*", "*/*"],
         "deprecated": false,
         "supportedBy": []
     },
@@ -252,7 +256,7 @@
         "supportedBy": []
     },
     "relative-json-pointer": {
-        "description": "A JSON string representation of a relative JSON Pointer as defined in draft RFC 01",
+        "description": "A JSON string representation of a relative JSON Pointer as defined in draft-handrews-relative-json-pointer-01",
         "definingBody": "JSON Schema",
         "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-json-pointers",
         "types": ["string"],
@@ -265,7 +269,7 @@
         "definingBody": "RFC 8941",
         "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-byte-sequences",
         "types": ["string"],
-        "examples": ["U3dhZ2dlciByb2Nrcw=="],
+        "examples": [":U3dhZ2dlciByb2Nrcw==:"],
         "deprecated": false,
         "supportedBy": []
     },
@@ -274,7 +278,7 @@
         "definingBody": "RFC 8941",
         "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-booleans",
         "types": ["string"],
-        "examples": ["true", "false"],
+        "examples": ["?1", "?0"],
         "deprecated": false,
         "supportedBy": []
     },
@@ -283,7 +287,7 @@
         "definingBody": "RFC 8941",
         "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-decimals",
         "types": ["number"],
-        "examples": ["123.45"],
+        "examples": [123.45],
         "deprecated": false,
         "supportedBy": []
     },
