@@ -1053,7 +1053,12 @@ The fragment identifiers defined by `$dynamicAnchor` are not normal fragment
 identifiers because they identify both the primary resource and the secondary
 resource. See {{dynamic-ref}} for details.
 
-If present, the value of this keyword MUST be a string.
+If present, the value of this keyword MUST be a string and MUST conform to the
+plain name fragment identifier syntax defined in {{fragments}}.[^8]
+
+[^8]: The reason for limiting `$dynamicAnchor` to fragment identifier syntax no
+longer exists because it isn't used in IRIs, but the restriction remains to
+avoid changing things that don't have a compelling reason to change.
 
 #### Duplicate schema identifiers {#duplicate-iris}
 
@@ -1096,11 +1101,7 @@ be extended or a generic schema such as a list whose items are defined by the
 referencing schema.
 
 The value of the `$dynamicRef` property MUST be a string and MUST conform to the
-plain name fragment identifier syntax defined in {{fragments}}.[^8]
-
-[^8]: The reason for limiting `$dynamicRef` to plain-name fragment syntax no
-longer exists because it isn't used in IRIs, but the restriction remains to
-avoid changing things that don't have a compelling reason to change.
+plain name fragment identifier syntax defined in {{fragments}}.
 
 `$dynamicAnchor` and `$dynamicRef` form a string-matched pair.
 
