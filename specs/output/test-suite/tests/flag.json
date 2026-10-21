@@ -27,6 +27,11 @@
       "description": "valid must be a boolean",
       "instance": { "valid": "true" },
       "valid": false
+    },
+    {
+      "description": "Additional properties are forbidden",
+      "instance": { "valid": true, "extra": "not-allowed" },
+      "valid": false
     }
   ]
 }

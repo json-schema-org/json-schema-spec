@@ -9,7 +9,7 @@
     { "$ref": "#/$defs/hierarchical" }
   ],
   "$defs": {
-    "outputUnit":{
+    "rootOutputUnit": {
       "type": "object",
       "properties": {
         "valid": { "type": "boolean" },
@@ -41,7 +41,7 @@
           "additionalProperties": { "type": "string" }
         }
       },
-      "required": [ "valid", "evaluationPath", "schemaLocation", "instanceLocation" ],
+      "required": [ "valid" ],
       "allOf": [
         {
           "if": {
@@ -72,6 +72,12 @@
         }
       ]
     },
+    "outputUnit": {
+      "allOf": [
+        { "$ref": "#/$defs/rootOutputUnit" },
+        { "required": [ "evaluationPath", "schemaLocation", "instanceLocation" ] }
+      ]
+    },
     "outputUnitArray": {
       "type": "array",
       "items": { "$ref": "#/$defs/outputUnit" }
@@ -81,7 +87,8 @@
       "properties": {
         "valid": { "type": "boolean" }
       },
-      "required": [ "valid" ]
+      "required": [ "valid" ],
+      "additionalProperties": false
     },
     "list": {
       "type": "object",
@@ -91,8 +98,22 @@
           "$ref": "#/$defs/outputUnitArray"
         }
       },
-      "required": [ "valid", "details" ]
+      "required": [ "valid", "details" ],
+      "additionalProperties": false
     },
-    "hierarchical": { "$ref": "#/$defs/outputUnit" }
+    "hierarchical": {
+      "allOf": [
+        { "$ref": "#/$defs/rootOutputUnit" },
+        {
+          "anyOf": [
+            { "required": [ "evaluationPath", "schemaLocation", "instanceLocation" ] },
+            { "required": [ "details" ] },
+            { "required": [ "annotations" ] },
+            { "required": [ "droppedAnnotations" ] },
+            { "required": [ "errors" ] }
+          ]
+        }
+      ]
+    }
   }
 }
