@@ -142,8 +142,6 @@
     },
     "idn-email": {
         "description": "An email address as defined by Mailbox in RFC6531 with the domain using the UTS #46 mapping for IDNs",
-        "definingBody": "JSON Schema",
-        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-email-addresses",
         "types": ["string"],
         "examples": ["user@exämple.com"],
         "deprecated": false,
@@ -151,8 +149,6 @@
     },
     "idn-hostname": {
         "description": "An internationalized host name as defined by IDNA2008 using the UTS #46 mapping",
-        "definingBody": "JSON Schema",
-        "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-hostnames",
         "types": ["string"],
         "examples": ["exämple.com"],
         "deprecated": false,
@@ -202,7 +198,7 @@
         "supportedBy": []
     },
     "ipv6": {
-        "description": "An IPv6 address as defined in RFC 4291, section 2.2",
+        "description": "An IPv6 address as defined in RFC4291, section 2.2",
         "definingBody": "JSON Schema",
         "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-ip-addresses",
         "types": ["string"],
@@ -220,7 +216,7 @@
         "supportedBy": []
     },
     "iri-reference": {
-        "description": "An IRI reference (either an IRI or a relative reference) as defined in RFC 3987",
+        "description": "An IRI reference (either an IRI or a relative reference) as defined in RFC3987",
         "definingBody": "JSON Schema",
         "definition": "https://json-schema.org/draft/2020-12/json-schema-validation.html#name-resource-identifiers",
         "types": ["string"],
@@ -238,7 +234,7 @@
         "supportedBy": []
     },
     "media-range": {
-        "description": "A media range as defined by the media-range ABNF production in RFC 9110.",
+        "description": "A media range as defined by the media-range ABNF production in RFC9110.",
         "definingBody": "OpenAPI",
         "definition": "https://www.rfc-editor.org/rfc/rfc9110#field.accept",
         "types": ["string"],
@@ -305,7 +301,7 @@
         "definingBody": "RFC 8941",
         "definition": "https://www.rfc-editor.org/rfc/rfc8941#name-strings",
         "types": ["string"],
-        "examples": ["example"],
+        "examples": ["\"example\""],
         "deprecated": false,
         "supportedBy": []
     },
