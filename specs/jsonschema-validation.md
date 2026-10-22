@@ -93,13 +93,6 @@ JSON Schema can be arbitrarily large and/or have an arbitrarily long decimal
 part, regardless of the ability of the underlying programming language to deal
 with such data.
 
-### Regular Expressions {#regexinterop}
-
-Keywords that use regular expressions, or constrain the instance value to be a
-regular expression, are subject to the interoperability considerations for
-regular expressions in the [JSON Schema Core](./jsonschema-core.md)
-specification.
-
 ## Meta-Schema {#meta-schema}
 
 The current IRI for the default JSON Schema dialect meta-schema is
@@ -235,9 +228,9 @@ Omitting this keyword has the same behavior as a value of 0.
 
 #### `pattern` {#pattern}
 
-The value of this keyword MUST be a string. This string SHOULD be a valid
-regular expression as indicated in
-[JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
+The value of this keyword MUST be a string. This string MUST be a regular
+expression as described in [JSON Schema Core, Regular
+Expressions](./jsonschema-core.md#regex).
 <!-- This link assumes a publish path, which we don't know yet. -->
 
 A string instance is considered valid if the regular expression matches the
@@ -517,12 +510,12 @@ This attribute applies to string instances.
 A string instance is valid against this attribute if it is a valid regular
 expression according to the [ECMA-262, 17th
 edition](https://262.ecma-international.org/17.0/#sec-patterns) regular
-expression dialect with the "u" flag.
+expression dialect with the "u" flag and no other flags.
 
 Implementations that validate formats MUST determine validity according to
 ECMA-262, even if they use a different regular expression dialect to evaluate
-keywords as allowed by
-[JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
+keywords as allowed by [JSON Schema Core, Regular
+Expressions](./jsonschema-core.md#regex).
 
 ## Keywords for the Contents of String-Encoded Data {#content}
 
@@ -819,6 +812,8 @@ to the document.
   - Remove the optional automatic second-pass validation of "content*" keywords
   - Clarify that "contentSchema"'s value is a schema just like any other
     subschema
+  - "regex" format validates against ECMA-262, 17th edition with the "u" flag
+  - "pattern" MUST be a regular expression as described in JSON Schema Core
 - *draft-bhutton-json-schema-validation-01*
   - Improve and clarify the `minContains` keyword explanation
   - Remove the use of "production" in favour of "ABNF rule"

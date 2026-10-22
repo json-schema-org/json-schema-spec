@@ -328,15 +328,21 @@ keyword, regular expressions in JSON Schema use the dialect described in
 [ECMA-262, 17th edition](https://262.ecma-international.org/17.0/#sec-patterns)
 or any later edition.
 
-Implementations that don't have access to an ECMA-262 regular expression engine
-MAY use a different engine. However, if an implementation encounters a regular
-expression in a schema that its engine can't compile or interpret, it MUST
-refuse to evaluate the schema. If an implementation encounters a regular
-expression in a schema that its engine supports but that isn't valid under
-ECMA-262, it SHOULD refuse to evaluate the schema.
+Regular expressions MUST be evaluated as if the ECMA-262 "u" flag, and no other
+flags, were set. The "u" flag provides [Unicode] support. Leaving out the other
+flags means, for example, that matching is case-sensitive and that `^` and `$`
+match only at the beginning and end of the input.
 
-Regular expressions MUST be evaluated with [Unicode] support equivalent to that
-provided by the ECMA-262 "u" flag.
+Implementations that don't have access to an ECMA-262 regular expression engine
+MAY use a different engine, but they MUST produce the same results an ECMA-262
+engine would. Engines often differ in subtle ways even when they share syntax.
+For example, in many engines `$` also matches before a trailing newline, and `.`
+matches line terminators other than `\n` that ECMA-262 excludes. If an
+implementation encounters a regular expression in a schema that its engine can't
+compile, or can't evaluate with the same results as ECMA-262, it MUST refuse to
+evaluate the schema. If an implementation encounters a regular expression in a
+schema that its engine supports but that isn't valid under ECMA-262, it SHOULD
+refuse to evaluate the schema.
 
 Unless otherwise specified by a keyword, implementations MUST NOT treat regular
 expressions as implicitly anchored at either end. For example, the pattern "es"
@@ -1765,7 +1771,7 @@ The presence of this keyword affects the behaviors of
 ##### `patternProperties`
 
 The value of `patternProperties` MUST be an object. Each property name of this
-object SHOULD be a valid regular expression as indicated in {{regex}}. Each
+object MUST be a regular expression as described in {{regex}}. Each
 property value of this object MUST be a valid JSON Schema.
 
 Validation succeeds if, for each instance name that matches any regular
@@ -2461,6 +2467,9 @@ reference, which must be recognizable as a reference.
 - Remove outdated pre-annotation-collection section on annotation-applicator
   interaction
 - Clarify that regular expressions are not anchored
+- Clarify regular expression requirements for implementations, including
+  evaluation with only the "u" flag and handling of non-ECMA-262 engines
+- Reference ECMA-262, 17th edition or later for regular expressions
 - Specify valid implementation-defined options for handling schemas without
   "$schema"
 - Clarify that vocabularies omitted from "$vocabulary" MUST NOT be available for
