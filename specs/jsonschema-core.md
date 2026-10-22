@@ -322,22 +322,39 @@ describable by JSON.
 
 ### Regular Expressions {#regex}
 
-Keywords MAY use regular expressions to express constraints, or constrain the
-instance value to be a regular expression. These regular expressions SHOULD be
-valid according to the regular expression dialect described in [ECMA-262,
-section 21.2.1](https://www.ecma-international.org/ecma-262/11.0/index.html).
+Some keywords use regular expressions to express constraints, or constrain the
+instance value to be a regular expression. Unless otherwise specified by a
+keyword, regular expressions in JSON Schema use the dialect described in
+[ECMA-262, 17th edition](https://262.ecma-international.org/17.0/#sec-patterns)
+or any later edition.
 
-Unless otherwise specified by a keyword, regular expressions MUST NOT be
-considered to be implicitly anchored at either end. All regular expression
-keywords in this specification and its companion documents are un-anchored.
+Regular expressions MUST be evaluated as if the ECMA-262 "u" flag, and no other
+flags, were set. The "u" flag provides [Unicode] support. Leaving out the other
+flags means, for example, that matching is case-sensitive and that `^` and `$`
+match only at the beginning and end of the input.
 
-Regular expressions SHOULD be built with the "u" flag (or equivalent) to provide
-[Unicode] support, or processed in such a way which provides Unicode support as
-defined by ECMA-262.
+Implementations that don't have access to an ECMA-262 regular expression engine
+MAY use a different engine, but they MUST produce the same results an ECMA-262
+engine would. Engines often differ in subtle ways even when they share syntax.
+For example, in many engines `$` also matches before a trailing newline, and `.`
+matches line terminators other than `\n` that ECMA-262 excludes. If an
+implementation encounters a regular expression in a schema that its engine can't
+compile, or can't evaluate with the same results as ECMA-262, it MUST refuse to
+evaluate the schema. If an implementation encounters a regular expression in a
+schema that its engine supports but that isn't valid under ECMA-262, it SHOULD
+refuse to evaluate the schema.
 
-Furthermore, given the high disparity in regular expression constructs support,
-schema authors SHOULD limit themselves to the following regular expression
-tokens:
+Unless otherwise specified by a keyword, implementations MUST NOT treat regular
+expressions as implicitly anchored at either end. For example, the pattern "es"
+matches "expression". All regular expression keywords in this specification and
+its companion documents are un-anchored.
+
+::: note Interoperable Regular Expressions
+
+Because support for regular expression constructs varies widely between engines,
+schema authors who want their schemas to work across the widest range of
+implementations are encouraged to limit themselves to the following regular
+expression tokens:
 
 - individual Unicode code points, as defined by the [JSON
   specification][rfc8259];
@@ -352,9 +369,7 @@ tokens:
 - the beginning-of-input (`^`) and end-of-input (`$`) anchors;
 - simple grouping (using `(` and `)`) and alternation (`|`).
 
-Finally, implementations MUST NOT take regular expressions to be anchored,
-neither at the beginning nor at the end. This means, for instance, the pattern
-"es" matches "expression".
+:::
 
 ### Extending JSON Schema {#extending}
 
@@ -1756,7 +1771,7 @@ The presence of this keyword affects the behaviors of
 ##### `patternProperties`
 
 The value of `patternProperties` MUST be an object. Each property name of this
-object SHOULD be a valid regular expression as indicated in {{regex}}. Each
+object MUST be a regular expression as described in {{regex}}. Each
 property value of this object MUST be a valid JSON Schema.
 
 Validation succeeds if, for each instance name that matches any regular
@@ -2452,6 +2467,9 @@ reference, which must be recognizable as a reference.
 - Remove outdated pre-annotation-collection section on annotation-applicator
   interaction
 - Clarify that regular expressions are not anchored
+- Clarify regular expression requirements for implementations, including
+  evaluation with only the "u" flag and handling of non-ECMA-262 engines
+- Reference ECMA-262, 17th edition or later for regular expressions
 - Specify valid implementation-defined options for handling schemas without
   "$schema"
 - Clarify that vocabularies omitted from "$vocabulary" MUST NOT be available for
