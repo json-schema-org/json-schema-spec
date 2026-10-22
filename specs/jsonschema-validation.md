@@ -515,8 +515,8 @@ These attributes apply to string instances.
 This attribute applies to string instances.
 
 A string instance is valid against this attribute if it is a valid regular
-expression according to the
-[ECMA-262](https://tc39.es/ecma262/#sec-patterns) regular
+expression according to the [ECMA-262, 17th
+edition](https://262.ecma-international.org/17.0/#sec-patterns) regular
 expression dialect with the "u" flag.
 
 Implementations that validate formats MUST determine validity according to
