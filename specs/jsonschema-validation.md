@@ -64,8 +64,8 @@ for working with documents embedded as JSON strings.
 
 ## Keyword Behaviors
 
-The keywords defined by this document exhibit one or more behaviors as defined by
-the [JSON Schema Core Specification](./jsonschema-core.md#keyword-behaviors).
+The keywords defined by this document exhibit one or more behaviors as defined in
+{{./jsonschema-core.md#keyword-behaviors}} of the JSON Schema Core Specification.
 
 Keywords which are not defined to exhibit a particular behavior MUST NOT affect
 that aspect of the evaluation outcome. In particular, the keywords defined in
@@ -236,8 +236,8 @@ Omitting this keyword has the same behavior as a value of 0.
 #### `pattern` {#pattern}
 
 The value of this keyword MUST be a string. This string SHOULD be a valid
-regular expression as indicated in
-[JSON Schema Core, section 6.3](./jsonschema-core.md#regex).
+regular expression as indicated in JSON Schema Core,
+{{./jsonschema-core.md#regex}}.
 <!-- This link assumes a publish path, which we don't know yet. -->
 
 A string instance is considered valid if the regular expression matches the

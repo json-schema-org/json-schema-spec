@@ -8,24 +8,26 @@ import remarkTableOfContents from "../remark/remark-table-of-contents.js";
 import remarkRfc2119 from "../remark/remark-rfc2119.js";
 
 
+const headingsOptions = {
+  startDepth: 2,
+  skip: [
+    "Abstract",
+    "Status",
+    "Note to Readers",
+    "Table of Contents",
+    "Contributors",
+    "Champions",
+    "\\[.*\\]",
+    "draft-.*"
+  ]
+};
+
 export default {
   plugins: [
     remarkGfm,
     remarkHeadingId,
-    [remarkHeadings, {
-      startDepth: 2,
-      skip: [
-        "Abstract",
-        "Status",
-        "Note to Readers",
-        "Table of Contents",
-        "Contributors",
-        "Champions",
-        "\\[.*\\]",
-        "draft-.*"
-      ]
-    }],
-    remarkReferenceLinks,
+    [remarkHeadings, headingsOptions],
+    [remarkReferenceLinks, { headingsOptions }],
     [remarkTableOfContents, {
       startDepth: 2,
       skip: [
