@@ -325,7 +325,8 @@ describable by JSON.
 Some keywords use regular expressions to express constraints, or constrain the
 instance value to be a regular expression. Unless otherwise specified by a
 keyword, regular expressions in JSON Schema use the dialect described in
-[ECMA-262](https://tc39.es/ecma262/#sec-patterns).
+[ECMA-262, 17th edition](https://262.ecma-international.org/17.0/#sec-patterns)
+or any later edition.
 
 Implementations that don't have access to an ECMA-262 regular expression engine
 MAY use a different engine. However, if an implementation encounters a regular
