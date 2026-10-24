@@ -537,8 +537,8 @@ following mechanisms:
   contents of another keyword.
 - Dynamic dependencies, in which the dependency relies on the evaluation of
   another keyword against an instance. This dependency may be on either the
-  annotations produced by the keyword or the validation result of its
-  subschema(s).
+  validation result of its subschema(s) or the instance locations it considers
+  evaluated (see {{unevaluated}}).
 
 These mechanisms are used merely to describe dependencies; they are for
 illustrative purposes and not prescriptive. Implementations MAY use whatever
@@ -549,9 +549,7 @@ order to achieve the specified behaviors.
 
 A missing keyword MUST NOT produce a false assertion result, MUST NOT produce
 annotation results, and MUST NOT cause any other schema to be evaluated as part
-of its own behavioral definition. However, given that missing keywords do not
-contribute annotations, the lack of annotation results may indirectly change the
-behavior of other keywords.
+of its own behavioral definition.
 
 In some cases, the missing keyword assertion behavior of a keyword is identical
 to that produced by a certain value, and keyword definitions SHOULD note such
@@ -560,15 +558,7 @@ behavior would produce annotation results if present, the default behavior still
 MUST NOT result in annotations.
 
 Because annotation collection can add significant cost in terms of both
-computation and memory, implementations MAY opt out of this feature. Keywords
-that are specified in terms of collected annotations SHOULD describe reasonable
-alternate approaches when appropriate. This approach is demonstrated by the
-[`items`](#items) and [`additionalProperties`](#additionalproperties) keywords
-in this document.
-
-Note that when no such alternate approach is possible for a keyword,
-implementations that do not support annotation collections will not be able to
-support those keywords.
+computation and memory, implementations MAY opt out of this feature.
 
 ### Identifiers
 
@@ -682,8 +672,7 @@ strings, then including `"null"` in `type` would not have any useful effect.
 
 JSON Schema can annotate an instance with information, whenever the instance
 validates against the schema object containing the annotation, and all of its
-parent schema objects. The information can be a simple value, or can be
-calculated based on the instance contents.
+parent schema objects.
 
 Annotations are attached to specific locations in an instance. Since many
 subschemas can be applied to any single location, applications may need to
@@ -695,11 +684,10 @@ which are provided to applications to use as they see fit. JSON Schema
 implementations are not expected to make use of the collected information on
 behalf of applications.
 
-Unless otherwise specified, a keyword's annotation value is value of the
-keyword itself. However, other behaviors are possible. For example, [JSON
-Hyper-Schema's](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-hyperschema-02)
-`links` keyword is a complex annotation that produces a value based in part on
-the instance data.
+The annotation value of a keyword MUST be the value of the keyword itself.
+Annotation values are never calculated from the instance. Applications that need
+to combine an annotation with instance data can do so using the instance
+location collected with the annotation.
 
 While "short-circuit" evaluation is possible for assertions, collecting
 annotations requires examining all schemas that apply to an instance location,
@@ -723,86 +711,12 @@ A collected annotation MUST include the following information:
   omitted if it is the same as the evaluation path from above.
 - The attached value(s)
 
-##### Distinguishing Among Multiple Values
-
-Applications MAY make decisions on which of multiple annotation values to use
-based on the schema location that contributed the value. This is intended to
-allow flexible usage. Collecting the schema location facilitates such usage.
-
-For example, consider this schema, which uses annotations and assertions from
-the [Validation specification](./jsonschema-validation.md):
-
-Note that some lines are wrapped for clarity.
-
-```jsonschema
-{
-  "title": "Feature list",
-  "type": "array",
-  "prefixItems": [
-    {
-      "title": "Feature A",
-      "properties": {
-        "enabled": {
-          "$ref": "#/$defs/enabledToggle",
-          "default": true
-        }
-      }
-    },
-    {
-      "title": "Feature B",
-      "properties": {
-        "enabled": {
-          "description": "If set to null, Feature B
-                          inherits the enabled
-                          value from Feature A",
-          "$ref": "#/$defs/enabledToggle"
-        }
-      }
-    }
-  ],
-  "$defs": {
-    "enabledToggle": {
-      "title": "Enabled",
-      "description": "Whether the feature is enabled (true),
-                      disabled (false), or under
-                      automatic control (null)",
-      "type": ["boolean", "null"],
-      "default": null
-    }
-  }
-}
-```
-
-In this example, both Feature A and Feature B make use of the reusable
-"enabledToggle" schema. That schema uses the `title`, `description`, and
-`default` annotations. Therefore the application has to decide how to handle the
-additional `default` value for Feature A, and the additional `description` value
-for Feature B.
-
-The application programmer and the schema author need to agree on the usage. For
-this example, let's assume that they agree that the most specific `default`
-value will be used, and any additional, more generic `default` values will be
-silently ignored. Let's also assume that they agree that all `description` text
-is to be used, starting with the most generic, and ending with the most
-specific. This requires the schema author to write descriptions that work when
-combined in this way.
-
-The application can use the evaluation path to determine which values are which.
-The values in the feature's immediate "enabled" property schema are more
-specific, while the values under the reusable schema that is referenced with
-`$ref` are more generic. The evaluation path will show whether each value was
-found by crossing a `$ref` or not.
-
-Feature A will therefore use a default value of true, while Feature B will use
-the generic default value of null. Feature A will only have the generic
-description from the "enabledToggle" schema, while Feature B will use that
-description, and also append its locally defined description that explains how
-to interpret a null value.
-
-Note that there are other reasonable approaches that a different application
-might take. For example, an application may consider the presence of two
-different values for `default` to be an error, regardless of their schema
-locations.
+When multiple annotation values are collected for the same keyword at the same
+instance location, implementations MUST report all of them. This specification
+does not define how those values are combined or chosen among; that is left to
+the application. The information collected with each annotation, especially the
+evaluation path, allows applications to make that choice based on where each
+value came from. See {{multiple-annotations}} for an example.
 
 ##### Annotations and Assertions {#annot-assert}
 
@@ -1570,8 +1484,8 @@ subschemas. Therefore subschemas may be applied in any order.
 These keywords correspond to logical operators for combining or modifying the
 boolean assertion results of the subschemas. They have no direct impact on
 annotation collection, although they enable the same annotation keyword to be
-applied to an instance location with different values. Annotation keywords
-define their own rules for combining such values.
+applied to an instance location with different values. This specification
+does not define how such values are combined (see {{collect}}).
 
 ##### `allOf` {#allof}
 
@@ -1691,7 +1605,7 @@ results.
 
 When working with arrays and indices, JSON Schema uses zero-based indexing. This
 aligns with both JSON's JavaScript heritage and its usage of JSON Pointer for
-references and annotations.
+references and instance locations.
 
 ##### `prefixItems`
 
@@ -1702,10 +1616,8 @@ subschema at the same position, if any. This keyword does not constrain the
 length of the array. Only array positions present in both the keyword's value
 and the instance value are affected by this keyword.
 
-This keyword produces an annotation value which is the largest index to which
-this keyword applied a subschema. The value MAY be a boolean `true` if a subschema
-was applied to every index of the instance, such as is produced by the `items`
-keyword.
+Array elements to which this keyword applies a subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behaviors of [`items`](#items) and
 [`unevaluatedItems`](#unevaluateditems).
@@ -1725,9 +1637,8 @@ instance array, `items` applies its subschema to no elements.
 If `prefixItems` does not exist within the same schema object, `items` applies
 its subschema to all elements.
 
-If the `items` subschema is applied to any positions within the instance array,
-it produces an annotation result of boolean true, indicating that all remaining
-array elements have been evaluated against this keyword's subschema.
+Array elements to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
@@ -1747,8 +1658,8 @@ validates against the corresponding schema.
 
 Omitting this keyword has the same assertion behavior as an empty object.
 
-The annotation result of this keyword is the set of instance property names
-which are also present under this keyword.
+Property values to which this keyword applies a subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behaviors of
 [`additionalProperties`](#additionalproperties) and [`unevaluatedProperties`](#unevaluatedproperties).
@@ -1767,8 +1678,8 @@ not implicitly anchored.
 
 Omitting this keyword has the same assertion behavior as an empty object.
 
-The annotation result of this keyword is the set of instance property names
-matched by at least one property under this keyword.
+Property values to which this keyword applies a subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behaviors of
 [`additionalProperties`](#additionalproperties) and
@@ -1788,8 +1699,8 @@ against the `additionalProperties` schema.
 
 Omitting this keyword has the same assertion behavior as an empty schema.
 
-The annotation result of this keyword is the set of instance property names
-validated by this keyword's subschema.
+Property values to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behavior of
 [`unevaluatedProperties`](#unevaluatedproperties).
@@ -1826,9 +1737,8 @@ as described below in the section for that keyword.
 This keyword has no assertion behavior. The value of this keyword is used as
 its annotation result.
 
-Per {{default-behaviors}}, omitted keywords MUST NOT produce annotation results.
-However, as described in {{contains}}, the absence of this keyword's annotation
-causes `contains` to assume a minimum value of 1.
+If this keyword is absent, `contains` uses a minimum of 1, as described in
+{{contains}}.
 
 ##### `contains` {#contains}
 
@@ -1849,12 +1759,9 @@ The minimum number of occurrences is provided by the `minContains` keyword
 within the same schema object as `contains`. If `minContains` is absent, the
 minimum number of occurrences MUST be 1.
 
-This keyword produces an annotation value which is an array of the zero-based
-indices for which this keyword validates successfully when applying its
-subschema, in ascending order. The value MAY be a boolean `true` if the
-subschema validates successfully when applied to every index of the instance.
-The annotation MUST be present if the instance array to which this keyword's
-schema applies is empty.
+Array elements that validate successfully against this keyword's subschema are
+considered evaluated per {{unevaluated}}. Elements that fail to validate
+against its subschema are not.
 
 The presence of this keyword affects the behavior of
 [`unevaluatedItems`](#unevaluateditems).
@@ -1893,7 +1800,17 @@ subschemas.
 
 The behaviors of these keywords depend on adjacent keywords as well as any
 keywords in successfully validated subschemas that apply to the same instance
-location.
+location. Specifically, an array element or property value is considered
+evaluated by a schema object if:
+
+- a keyword in that schema object considers it evaluated, as defined by that
+  keyword; or
+- it is considered evaluated by a subschema that applies to the same instance
+  location, such as through an [in-place applicator](#in-place) or a reference,
+  and that subschema validates successfully.
+
+Keywords that apply subschemas to array elements or property values MUST define
+which of those elements or values are considered evaluated.
 
 ### `unevaluatedItems` {#unevaluateditems}
 
@@ -1908,13 +1825,12 @@ location by evaluating the instance's elements. This includes, but is not
 limited to, `prefixItems`, `items`, and `contains`, itself, and all
 [in-place applicators](#in-place) defined in this document.
 
-This keyword applies its subschema to any array elements which have not been
-deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
+This keyword applies its subschema to any array elements which are not
+considered evaluated per {{unevaluated}}. Validation passes if the keyword's
 subschema validates against all applicable array elements.
 
-If the `unevaluatedItems` subschema is applied to any positions within the
-instance array, it produces an annotation result of boolean true, analogous to
-the behavior of `items`.
+Array elements to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behavior of other `unevaluatedItems`
 keywords found earlier in the dynamic scope that apply to the same instance
@@ -1935,12 +1851,12 @@ location by evaluating the instance's property values. This includes, but is not
 limited to, `properties`, `patternProperties`, and `additionalProperties`,
 itself, and all [in-place applicators](#in-place) defined in this document.
 
-This keyword applies its subschema to any property values which have not been
-deemed "evaluated" per {{unevaluated}}. Validation passes if the keyword's
+This keyword applies its subschema to any property values which are not
+considered evaluated per {{unevaluated}}. Validation passes if the keyword's
 subschema validates against all applicable property values.
 
-The annotation result of this keyword is the set of instance property names
-validated by this keyword's subschema.
+Property values to which this keyword applies its subschema are considered
+evaluated per {{unevaluated}}.
 
 The presence of this keyword affects the behavior of other
 `unevaluatedProperties` keywords found earlier in the dynamic scope that apply
@@ -2009,11 +1925,9 @@ use the terms defined by this document to do so.
 
 ### Annotations
 
-Many keywords are defined to produce annotations, whether intended for
-inter-keyword communication (e.g. between `properties` and
-`unevaluatedProperties`) or for application consumption (e.g. `title` or
-`readOnly`). Annotation values may be of any type and are defined by the
-keywords that produced them.
+Many keywords are defined to produce annotations for application consumption
+(e.g. `title` or `readOnly`). Annotation values are the values of the keywords
+that produced them (see {{annotations}}).
 
 Output specifications which include annotations SHOULD be written such that they
 can be easily associated with the data defined in {{collect}} and SHOULD use the
@@ -2436,6 +2350,72 @@ instance of a distinct class.
 This style of usage requires the annotation to be in the same object as the
 reference, which must be recognizable as a reference.
 
+## %appendix% Applications and multiple annotation values {#multiple-annotations}
+
+This appendix is informative. It shows one way an application might choose
+among multiple annotation values and places no requirements on implementations.
+
+Consider this schema, which uses annotations and assertions from the
+[Validation specification](./jsonschema-validation.md):
+
+```jsonschema
+{
+  "title": "Feature list",
+  "type": "array",
+  "prefixItems": [
+    {
+      "title": "Feature A",
+      "properties": {
+        "enabled": {
+          "$ref": "#/$defs/enabledToggle",
+          "default": true
+        }
+      }
+    },
+    {
+      "title": "Feature B",
+      "properties": {
+        "enabled": {
+          "description": "If set to null, Feature B
+                          inherits the enabled
+                          value from Feature A",
+          "$ref": "#/$defs/enabledToggle"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "enabledToggle": {
+      "title": "Enabled",
+      "description": "Whether the feature is enabled (true),
+                      disabled (false), or under
+                      automatic control (null)",
+      "type": ["boolean", "null"],
+      "default": null
+    }
+  }
+}
+```
+
+Both Feature A and Feature B use the reusable "enabledToggle" schema, which has
+its own `title`, `description`, and `default` annotations. As a result, Feature
+A's "enabled" property has two `default` values, and Feature B's has two
+`description` values.
+
+Suppose the application and the schema author agree on two conventions: the
+most specific `default` value is used, and all `description` values are
+concatenated from most generic to most specific. The application can tell which
+values are more generic from the evaluation path, which shows whether each value
+was found by crossing a `$ref`.
+
+Under these conventions, Feature A uses a default of true and Feature B uses the
+generic default of null. Feature A has only the generic description, while
+Feature B appends its own description explaining how to interpret null.
+
+Other applications might reasonably take different approaches. For example, an
+application might treat two different `default` values as an error, regardless
+of their schema locations.
+
 ## %appendix% Change Log[^14]
 
 ### draft-bhutton-json-schema-next
@@ -2480,6 +2460,10 @@ reference, which must be recognizable as a reference.
 - Output units in new format group by "schemaLocation", "instanceLocation", and
   "evaluationPath"
 - Add "droppedAnnotations" to output formats
+- Annotation values are always the value of the keyword that produced them
+- Applicator keywords no longer produce annotations
+- Define `unevaluatedItems` and `unevaluatedProperties` in terms of evaluated
+  locations instead of annotations
 
 ### draft-bhutton-json-schema-01
 - Improve and clarify the `type`, `contains`, `unevaluatedProperties`, and
