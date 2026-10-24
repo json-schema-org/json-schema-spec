@@ -713,10 +713,10 @@ A collected annotation MUST include the following information:
 
 When multiple annotation values are collected for the same keyword at the same
 instance location, implementations MUST report all of them. This specification
-does not define how those values are combined or chosen among; that is left to
-the application. The information collected with each annotation, especially the
-evaluation path, allows applications to make that choice based on where each
-value came from. See {{multiple-annotations}} for an example.
+does not define how those values are combined or selected; that is left to the
+application. The information collected with each annotation, especially the
+evaluation path, allows applications to make that decision based on the source
+of each value. See {{multiple-annotations}} for an example.
 
 ##### Annotations and Assertions {#annot-assert}
 
@@ -1483,8 +1483,7 @@ subschemas. Therefore subschemas may be applied in any order.
 These keywords correspond to logical operators for combining or modifying the
 boolean assertion results of the subschemas. They have no direct impact on
 annotation collection, although they enable the same annotation keyword to be
-applied to an instance location with different values. This specification
-does not define how such values are combined (see {{collect}}).
+applied to an instance location with different values.
 
 ##### `allOf` {#allof}
 
