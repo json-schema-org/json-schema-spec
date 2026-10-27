@@ -444,81 +444,6 @@ means that the keyword produces an assertion result of `true` if the instance
 satisfies the given constraint; otherwise an assertion result of `false` is
 produced.
 
-<!-- The next two paragraphs and the following section seem to have more to
-do with schema evaluation than keywords specifically. I'd like to move them out
-of the "keyword behaviors" h2, but will do so separately. [TODO: GD] -->
-
-Evaluating an instance against a schema involves processing all of the keywords
-in the schema against the appropriate locations within the instance. Typically,
-applicator keywords are processed until a schema object with no applicators (and
-therefore no subschemas) is reached. The appropriate location in the instance is
-evaluated against the assertion and annotation keywords in the schema object.
-The interactions of those keyword results to produce the schema object results
-are governed by {{annot-assert}}, while the relationship of subschema results to
-the results of the applicator keyword that applied them is described by
-{{applicators}}.
-
-Evaluation of a parent schema object can complete once all of its subschemas
-have been evaluated, although in some circumstances evaluation may be
-short-circuited due to assertion results. When annotations are being collected,
-some assertion result short-circuiting is not possible due to the need to
-examine all subschemas for annotation collection, including those that cannot
-further change the assertion result.
-
-### Lexical Scope and Dynamic Scope {#scopes}
-
-While most JSON Schema keywords can be evaluated on their own, or at most need
-to take into account the values or results of adjacent keywords in the same
-schema object, a few have more complex behavior. This behavior is generally
-governed by the scope of the keyword.
-
-This specification defines two such scopes: lexical and dynamic.
-
-#### Lexical Scope
-
-The lexical scope of a keyword is determined by the nested JSON data structure
-of objects and arrays. The smallest such scope is a single schema object with no
-subschemas. The largest scope is an entire schema document, recursively
-including all of its subschemas.
-
-Keywords MAY be defined with a partial value which must be resolved against
-another value found within the lexical structure of the JSON document. The
-`$id`, `$schema`, and `$ref` core keywords, and the `base` JSON Hyper-Schema
-keyword, are some such keywords. For example, an `$id` keyword found in an
-embedded schema resource may have a value that is a relative IRI. This value
-must be resolved against another `$id` keyword found in an ancestor subschema,
-or the root schema, to produce an absolute IRI which fully identifies that
-embedded schema resource.
-
-Note that some keywords, such as `$schema`, apply to the lexical scope of the
-entire schema resource, and therefore MUST only appear in a schema resource's
-root object.
-
-#### Dynamic Scope
-
-The dynamic scope is the ordered collection of schema resources navigated during
-evaluation, starting at the root and ending at the schema resource which
-contains the subschema under evaluation. The outermost dynamic scope is the
-schema resource at which processing begins. The path that evaluation takes,
-starting from the subschema to any particular subschema (including any `$ref`
-and `$dynamicRef` keywords that may have been resolved), is considered the
-"evaluation path".
-
-Lexical and dynamic scopes align until a reference keyword is encountered. While
-following the reference moves processing from one lexical scope into a different
-one, from the perspective of dynamic scope, following a reference is no
-different from descending into a subschema. A keyword on the far side of the
-reference that resolves information through the dynamic scope will consider the
-originating side of the reference to be its dynamic parent rather than examining
-the local lexically enclosing parent.
-
-The concept of dynamic scope is primarily used with `$dynamicRef` and
-`$dynamicAnchor`, and should be considered an advanced feature and used with
-caution when defining additional keywords. It also appears when reporting errors
-and collected annotations, as it may be possible to revisit the same lexical
-scope repeatedly with different dynamic scopes. For this reason, it is important
-to inform the user of the evaluation path that produced the error or annotation.
-
 ### Keyword Interactions
 
 Unless otherwise specified, keywords act independently.
@@ -701,12 +626,6 @@ Hyper-Schema's](https://datatracker.ietf.org/doc/html/draft-handrews-json-schema
 `links` keyword is a complex annotation that produces a value based in part on
 the instance data.
 
-While "short-circuit" evaluation is possible for assertions, collecting
-annotations requires examining all schemas that apply to an instance location,
-even if they cannot change the overall assertion result. The only exception is
-that subschemas of a schema object that has failed validation MAY be skipped, as
-annotations are not retained for failing schemas.
-
 #### Collecting Annotations {#collect}
 
 Annotations are collected by keywords that explicitly define
@@ -846,10 +765,95 @@ While these keywords do not directly affect results, as explained in
 reusable schemas may have undesirable interactions with references in certain
 circumstances.
 
-### Loading Instance Data
+## Schema Evaluation {#evaluation}
 
-While none of the keywords defined as part of this or the associated
-documents define a keyword which target and/or load instance data, it is
+Evaluating an instance against a schema starts by evaluating the root of the
+instance against the schema at which evaluation begins. Each schema object
+evaluates its keywords against the instance location to which it is applied.
+Assertion and annotation keywords produce results for that location directly.
+Applicator keywords apply subschemas to that location or to its children, and
+each subschema is evaluated in the same way, until schema objects with no
+subschemas are reached.
+
+The results of the keywords in a schema object are combined to produce the
+result of that schema object as defined by {{annot-assert}}. The results of the
+subschemas applied by an applicator keyword are combined to produce the result
+of that applicator keyword as defined by {{applicators}}.
+
+Evaluation of a parent schema object is complete once all of its keywords and
+subschemas have been evaluated, although in some circumstances evaluation may be
+short-circuited due to assertion results. When annotations are being collected,
+some assertion result short-circuiting is not possible due to the need to
+examine all subschemas for annotation collection, including those that cannot
+further change the assertion result. The only exception is that subschemas of a
+schema object that has failed validation MAY be skipped, as annotations are not
+retained for failing schemas.
+
+### Evaluation Path {#evaluation-path}
+
+The evaluation path is the sequence of keys through which evaluation passes,
+starting from the schema at which evaluation begins, to reach a particular
+schema object. Unlike the location of the schema object within its schema
+document, the evaluation path includes any reference keywords, such as `$ref`
+and `$dynamicRef`, that were followed along the way. Because a schema object can
+be reached through different references, the same schema object may be
+evaluated with more than one evaluation path.
+
+### Lexical Scope and Dynamic Scope {#scopes}
+
+While most JSON Schema keywords can be evaluated on their own, or at most need
+to take into account the values or results of adjacent keywords in the same
+schema object, a few have more complex behavior. This behavior is generally
+governed by the scope of the keyword.
+
+This specification defines two such scopes: lexical and dynamic.
+
+#### Lexical Scope
+
+The lexical scope of a keyword is determined by the nested JSON data structure
+of objects and arrays. The smallest such scope is a single schema object with no
+subschemas. The largest scope is an entire schema document, recursively
+including all of its subschemas.
+
+Keywords MAY be defined with a partial value which must be resolved against
+another value found within the lexical structure of the JSON document. The
+`$id`, `$ref`, and `$dynamicRef` keywords are examples of such keywords. For
+example, an `$id` keyword found in an embedded schema resource may have a value
+that is a relative IRI. This value must be resolved against the base IRI of its
+parent schema to produce an absolute IRI which fully identifies that embedded
+schema resource.
+
+Note that some keywords, such as `$schema`, apply to the lexical scope of the
+entire schema resource, and therefore can only appear in a schema resource's
+root object (see {{keyword-schema}}).
+
+#### Dynamic Scope
+
+The dynamic scope is the ordered collection of schema resources navigated during
+evaluation, starting at the root and ending at the schema resource which
+contains the subschema under evaluation. The outermost dynamic scope is the
+schema resource at which processing begins.
+
+Lexical and dynamic scopes align until a reference keyword is encountered. While
+following the reference moves processing from one lexical scope into a different
+one, from the perspective of dynamic scope, following a reference is no
+different from descending into a subschema. A keyword on the far side of the
+reference that resolves information through the dynamic scope will consider the
+originating side of the reference to be its dynamic parent rather than examining
+the local lexically enclosing parent.
+
+The concept of dynamic scope is primarily used with `$dynamicRef` and
+`$dynamicAnchor`, and should be considered an advanced feature and used with
+caution when defining additional keywords. It also appears when reporting errors
+and collected annotations, as it may be possible to revisit the same lexical
+scope repeatedly with different dynamic scopes. For this reason, it is important
+to inform the user of the [evaluation path](#evaluation-path) that produced the
+error or annotation.
+
+### Accessing Other Instance Locations
+
+None of the keywords defined as part of this or the associated documents access
+instance data outside of the current evaluation location. However, it is
 possible that extensions may wish to do so.
 
 Keywords MAY be defined to use JSON Pointers or Relative JSON Pointers to
@@ -1966,10 +1970,9 @@ specifications which use these terms MUST maintain their meaning.
 
 ### Evaluation path
 
-The evaluation path is the set of keys, starting from the schema root, through
-which evaluation passes to reach the schema object that produced a specific
-result. The value MUST be expressed as a JSON Pointer, and it MUST include any
-by-reference applicators such as `$ref` or `$dynamicRef`.
+This is the [evaluation path](#evaluation-path) of the schema object that
+produced a specific result. The value MUST be expressed as a JSON Pointer, and
+it MUST include any by-reference applicators such as `$ref` or `$dynamicRef`.
 
 ```text noLineNumbers
 /properties/width/$ref/allOf/1
