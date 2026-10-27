@@ -402,17 +402,37 @@ Date and time format names are derived from
 format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
-  valid representation of the "date-time-ext" rule in RFC 9557. This SHOULD
-  allow and validate published leap seconds. See RFC 3339, section 5.7.
+  valid representation of the "date-time-ext" rule in RFC 9557. Validation of
+  the RFC 9557 suffix is limited to its syntax. Implementations MUST NOT fail
+  validation because a time zone name does not appear in the IANA Time Zone
+  Database, because a time-offset is inconsistent with the time zone in the
+  suffix, or because a syntactically valid suffix-key is not recognized. This
+  holds whether or not the critical flag ("!") is present.[^3] Implementations
+  SHOULD allow and validate published leap seconds. See RFC 3339, section
+  5.7.[^4]
 - *date*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-date" ABNF rule in RFC 3339.
 - *time*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-time" ABNF rule in RFC 3339. This MUST
-  NOT include leap seconds.[^3]
+  NOT include leap seconds.[^5]
 - *duration*: A string instance is valid against this attribute if it is a valid
   representation according to the "duration" ABNF rule in RFC 3339 Appendix A.
 
-[^3]: The `time` format represents a time value that is independent of any
+[^3]: Time zone names and offsets depend on the edition of the IANA Time Zone
+Database an implementation has, which changes several times a year. Checking
+them would make results differ across implementations and over time. The
+critical flag tells applications how to handle a suffix they cannot honor; it
+does not affect syntactic validity. Applications that need these checks can
+perform them after validation.
+
+[^4]: Unlike time zone rules, the list of published leap seconds will not
+change. The General Conference on Weights and Measures (CGPM) decided that UTC
+becomes continuous, with no further leap seconds, on 20 May 2027
+([CGPM 2026, Resolution 5](https://www.bipm.org/en/cgpm-2026/resolution-5)).
+Because the list is final, validating against it will not cause results to
+differ over time.
+
+[^5]: The `time` format represents a time value that is independent of any
 specific date, such as a scheduled time of day or a measured duration. Because
 there is no date, it is not well suited for capturing a moment in time. For
 that, you would need `date-time`. Because `time` isn't for capturing a moment in
@@ -422,9 +442,9 @@ specific dates. See RFC 3339, section 5.7.
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. Implementations SHOULD NOT define extension
 attributes with any name matching an RFC 3339, RFC 9557, or ISO 8601 format
-unless it validates according to the rules of that format.[^4]
+unless it validates according to the rules of that format.[^6]
 
-[^4]: There is not currently consensus on the need for supporting all RFC 3339
+[^6]: There is not currently consensus on the need for supporting all RFC 3339
 formats, so this approach of reserving the namespace will encourage
 experimentation without committing to the entire set. Either the format
 implementation requirements will become more flexible in general, or these will
@@ -601,9 +621,9 @@ Note that evaluating the `contentSchema` subschema in-place (i.e. as part of its
 parent schema) will ensure that it is correctly processed. Independent use of
 the extracted subschema (as returned in an annotation) is only safe if the
 subschema is an embedded resource which defines both a `$schema` and an absolute
-IRI `$id`.[^5]
+IRI `$id`.[^7]
 
-[^5]: Processing a non-resource subschema in place will ensure that any
+[^7]: Processing a non-resource subschema in place will ensure that any
 references (e.g. `$ref`) are always resolved properly. This isn't a problem when
 the subschema is itself a resource. See
 https://github.com/json-schema-org/json-schema-spec/issues/1381 for several
@@ -808,7 +828,7 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## %appendix% Change Log[^6]
+## %appendix% Change Log[^8]
 
 - *draft-next*
   - Use IRIs instead of URIs
@@ -817,6 +837,7 @@ to the document.
   - Remove the optional automatic second-pass validation of "content*" keywords
   - Clarify that "contentSchema"'s value is a schema just like any other
     subschema
+  - Clarify that "date-time" validation of the RFC 9557 suffix is syntactic only
 - *draft-bhutton-json-schema-validation-01*
   - Improve and clarify the `minContains` keyword explanation
   - Remove the use of "production" in favour of "ABNF rule"
@@ -926,7 +947,7 @@ time this document was published.
 | Greg Dennis      |                          | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
 | Jason Desrosiers | Hyperjump Software, Inc. | <jason@hyperjump.io>    | <https://github.com/jdesrosiers> |
 
-[^6]: This section to be removed before leaving Internet-Draft status.
+[^8]: This section to be removed before leaving Internet-Draft status.
 
 [rfc3987]: https://www.rfc-editor.org/info/rfc3987
 [rfc8259]: https://www.rfc-editor.org/info/rfc8259
