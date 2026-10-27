@@ -523,22 +523,23 @@ to inform the user of the evaluation path that produced the error or annotation.
 
 Unless otherwise specified, keywords act independently.
 
-Keywords MAY modify their behavior based on the presence, absence, or value of
-another keyword in the same schema object. Such keywords MUST NOT result in a
-circular dependency.
+Keywords MAY modify their behavior based on other keywords. Such keywords MUST
+NOT result in a circular dependency.
 
 Supplementary specifications are encouraged to specify any dependencies as part
 of the dependent keyword (i.e. the keyword whose behavior is modified).
 
-Within this document, keyword dependencies are expressed using one of the
-following mechanisms:
+Within this document, keyword dependencies take one of two forms:
 
-- Static dependencies, in which the dependency relies on the presence or
-  contents of another keyword.
-- Dynamic dependencies, in which the dependency relies on the evaluation of
-  another keyword against an instance. This dependency may be on either the
-  validation result of its subschema(s) or the instance locations it considers
-  evaluated (see {{unevaluated}}).
+- Static dependencies, which can be determined from the schema alone. A static
+  dependency relies on the presence, absence, or value of another keyword. For
+  example, `items` depends on the number of subschemas in `prefixItems`.
+- Dynamic dependencies, which can only be determined during evaluation. A
+  dynamic dependency relies on either the outcome of evaluating other keywords
+  against the instance or the path by which evaluation reached the dependent
+  keyword. For example, `then` depends on whether the instance validates
+  against `if`, and `$dynamicRef` depends on the `$dynamicAnchor` keywords in
+  the dynamic scope.
 
 These mechanisms are used merely to describe dependencies; they are for
 illustrative purposes and not prescriptive. Implementations MAY use whatever
