@@ -560,6 +560,8 @@ MUST NOT result in annotations.
 
 Because annotation collection can add significant cost in terms of both
 computation and memory, implementations MAY opt out of this feature.
+Implementations MAY also allow annotation collection to be limited, such as to a
+subset of annotation keywords.
 
 ### Identifiers
 
