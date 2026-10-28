@@ -1,0 +1,45 @@
+{
+  "$schema": "../test-suite.schema.json",
+
+  "description": "Tests for the patternProperties keyword",
+  "tests": [
+    {
+      "description": "Valid regex property names",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "patternProperties": {
+          "^[a-z]+$": true
+        }
+      },
+      "valid": true
+    },
+    {
+      "description": "Invalid ECMA-262 regex property names are still allowed",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "patternProperties": {
+          "(": true
+        }
+      },
+      "valid": true
+    },
+    {
+      "description": "Invalid schema for patternProperties value",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "patternProperties": {
+          "foo": 42
+        }
+      },
+      "valid": false
+    },
+    {
+      "description": "Non-object patternProperties is invalid",
+      "schema": {
+        "$schema": "https://json-schema.org/v1",
+        "patternProperties": "foo"
+      },
+      "valid": false
+    }
+  ]
+}

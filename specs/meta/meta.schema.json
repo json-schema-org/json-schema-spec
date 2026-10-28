@@ -67,7 +67,6 @@
         "patternProperties": {
             "type": "object",
             "additionalProperties": { "$dynamicRef": "meta" },
-            "propertyNames": { "format": "regex" },
             "default": {}
         },
         "dependentSchemas": {
@@ -120,8 +119,7 @@
         "maxLength": { "$ref": "#/$defs/nonNegativeInteger" },
         "minLength": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
         "pattern": {
-            "type": "string",
-            "format": "regex"
+            "type": "string"
         },
         "maxItems": { "$ref": "#/$defs/nonNegativeInteger" },
         "minItems": { "$ref": "#/$defs/nonNegativeIntegerDefault0" },
