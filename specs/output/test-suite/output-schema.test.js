@@ -19,3 +19,15 @@ for (const type of ["flag", "list", "hierarchical"]) {
     }
   });
 }
+
+describe("Output schema root", () => {
+  const schema = "specs/output/schema.json";
+
+  test("Rejects malformed known list properties even when valid is present", async () => {
+    await expect({ valid: true, details: "not-an-array" }).to.not.matchJsonSchema(schema);
+  });
+
+  test("Allows unknown extension properties on flag output", async () => {
+    await expect({ valid: true, implementation: "example" }).to.matchJsonSchema(schema);
+  });
+});

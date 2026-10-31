@@ -236,6 +236,37 @@
       "description": "Flag output is not hierarchical output",
       "instance": { "valid": true },
       "valid": false
+    },
+    {
+      "description": "Root location properties MAY be omitted when details is present",
+      "instance": {
+        "valid": false,
+        "details": [
+          {
+            "valid": false,
+            "evaluationPath": "/properties/foo",
+            "schemaLocation": "https://example.com/schema#/properties/foo",
+            "instanceLocation": "/foo"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "description": "Root location properties MAY be omitted when errors is present",
+      "instance": {
+        "valid": false,
+        "errors": { "type": "Value is not a string" }
+      },
+      "valid": true
+    },
+    {
+      "description": "Root location properties MAY be omitted when annotations is present",
+      "instance": {
+        "valid": true,
+        "annotations": { "title": "root" }
+      },
+      "valid": true
     }
   ]
 }
