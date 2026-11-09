@@ -1073,9 +1073,9 @@ identifiers because they identify both the primary resource and the secondary
 resource. See {{dynamic-ref}} for details.
 
 If present, the value of this keyword MUST be a string and MUST conform to the
-plain name fragment identifier syntax defined in {{fragments}}.[^8]
+plain name fragment identifier syntax defined in {{fragments}}.[^7]
 
-[^8]: The reason for limiting `$dynamicAnchor` to fragment identifier syntax no
+[^7]: The reason for limiting `$dynamicAnchor` to fragment identifier syntax no
 longer exists because it isn't used in IRIs, but the restriction remains to
 avoid changing things that don't have a compelling reason to change.
 
@@ -1096,9 +1096,9 @@ applicators, applying the referenced schema to the instance.
 ##### Direct References with `$ref` {#ref}
 
 The `$ref` keyword is an applicator that is used to reference a statically
-identified schema. Its results are the results of the referenced schema.[^7]
+identified schema. Its results are the results of the referenced schema.[^8]
 
-[^7]: Note that this definition of how the results are determined means that
+[^8]: Note that this definition of how the results are determined means that
 other keywords can appear alongside of `$ref` in the same schema object.
 
 The value of the `$ref` keyword MUST be a string which is an IRI reference.
