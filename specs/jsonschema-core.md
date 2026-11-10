@@ -2493,7 +2493,6 @@ reference, which must be recognizable as a reference.
 - "contains" assertion result now depends on "minContains" and "maxContains"
 - Affirm that no keyword can un-fail an adjacent keyword ("minContains"
   previously violated this)
-- Add `propertyDependencies` keyword
 - Add new "list" and "hierarchical" output formats in place of "basic",
   "detailed", and "verbose"
 - Rename "absoluteKeywordLocation" and "keywordLocation" to "schemaLocation" and
