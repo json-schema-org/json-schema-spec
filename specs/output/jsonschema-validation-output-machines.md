@@ -368,7 +368,7 @@ All output units are included in this format.
 
 The location properties of the root output unit MAY be omitted.
 
-```json "failing Results
+```json "Failing Results"
 {
   "valid": false,
   "evaluationPath": "",
@@ -458,7 +458,7 @@ The location properties of the root output unit MAY be omitted.
 }
 ```
 
-```json "Passing Results
+```json "Passing Results"
 {
   "valid": true,
   "evaluationPath": "",
