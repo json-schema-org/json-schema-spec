@@ -468,7 +468,7 @@ These attributes apply to string instances.
   [RFC 3987][rfc3987].
 - *uuid:* A string instance is valid against this attribute if it is a valid
   string representation of a UUID, according to
-  [RFC 4122](https://www.rfc-editor.org/info/rfc4122).
+  [RFC 9562](https://www.rfc-editor.org/info/rfc9562).
 
 Note that all valid URIs are valid IRIs, and all valid URI References are also
 valid IRI References.
