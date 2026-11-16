@@ -394,17 +394,28 @@ Date and time format names are derived from
 format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
-  valid representation of the "date-time-ext" rule in RFC 9557. This SHOULD
-  allow and validate published leap seconds. See RFC 3339, section 5.7.
+  valid representation of the "date-time-ext" rule in RFC 9557. A leap second
+  (a "time-second" value of 60) is valid only if, after applying the
+  time-offset, it is a leap second published by the International Earth
+  Rotation and Reference Systems Service (IERS). Implementations MUST accept
+  published leap seconds and MUST reject all others.[^3] See RFC 3339, section
+  5.7.
 - *date*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-date" ABNF rule in RFC 3339.
 - *time*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-time" ABNF rule in RFC 3339. This MUST
-  NOT include leap seconds.[^3]
+  NOT include leap seconds.[^4]
 - *duration*: A string instance is valid against this attribute if it is a valid
   representation according to the "duration" ABNF rule in RFC 3339 Appendix A.
 
-[^3]: The `time` format represents a time value that is independent of any
+[^3]: The list of published leap seconds is final. The General Conference on
+Weights and Measures (CGPM) decided that UTC becomes continuous, with no further
+leap seconds, on 20 May 2027
+([CGPM 2026, Resolution 5](https://www.bipm.org/en/cgpm-2026/resolution-5)).
+Because the list will not change, every implementation can validate against the
+same list, and results will not differ across implementations or over time.
+
+[^4]: The `time` format represents a time value that is independent of any
 specific date, such as a scheduled time of day or a measured duration. Because
 there is no date, it is not well suited for capturing a moment in time. For
 that, you would need `date-time`. Because `time` isn't for capturing a moment in
@@ -414,9 +425,9 @@ specific dates. See RFC 3339, section 5.7.
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. Implementations SHOULD NOT define extension
 attributes with any name matching an RFC 3339, RFC 9557, or ISO 8601 format
-unless it validates according to the rules of that format.[^4]
+unless it validates according to the rules of that format.[^5]
 
-[^4]: There is not currently consensus on the need for supporting all RFC 3339
+[^5]: There is not currently consensus on the need for supporting all RFC 3339
 formats, so this approach of reserving the namespace will encourage
 experimentation without committing to the entire set. Either the format
 implementation requirements will become more flexible in general, or these will
@@ -594,9 +605,9 @@ Note that evaluating the `contentSchema` subschema in-place (i.e. as part of its
 parent schema) will ensure that it is correctly processed. Independent use of
 the extracted subschema (as returned in an annotation) is only safe if the
 subschema is an embedded resource which defines both a `$schema` and an absolute
-IRI `$id`.[^5]
+IRI `$id`.[^6]
 
-[^5]: Processing a non-resource subschema in place will ensure that any
+[^6]: Processing a non-resource subschema in place will ensure that any
 references (e.g. `$ref`) are always resolved properly. This isn't a problem when
 the subschema is itself a resource. See
 https://github.com/json-schema-org/json-schema-spec/issues/1381 for several
@@ -801,7 +812,7 @@ Bowman, Gowry Sankar, Donald Pipowitch, Dave Finlay, Denis Laxalde, Phil
 Sturgeon, Shawn Silverman, and Karen Etheridge for their submissions and patches
 to the document.
 
-## %appendix% Change Log[^6]
+## %appendix% Change Log[^7]
 
 - *draft-next*
   - Use IRIs instead of URIs
@@ -812,6 +823,7 @@ to the document.
     subschema
   - "regex" format validates against ECMA-262, 17th edition with the "u" flag
   - "pattern" MUST be a regular expression as described in JSON Schema Core
+  - "date-time" MUST accept published leap seconds and reject all others
 - *draft-bhutton-json-schema-validation-01*
   - Improve and clarify the `minContains` keyword explanation
   - Remove the use of "production" in favour of "ABNF rule"
@@ -921,7 +933,7 @@ time this document was published.
 | Greg Dennis      |                          | <gregsdennis@yahoo.com> | <https://github.com/gregsdennis> |
 | Jason Desrosiers | Hyperjump Software, Inc. | <jason@hyperjump.io>    | <https://github.com/jdesrosiers> |
 
-[^6]: This section to be removed before leaving Internet-Draft status.
+[^7]: This section to be removed before leaving Internet-Draft status.
 
 [rfc3987]: https://www.rfc-editor.org/info/rfc3987
 [rfc8259]: https://www.rfc-editor.org/info/rfc8259
