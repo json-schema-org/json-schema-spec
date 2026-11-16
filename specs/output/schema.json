@@ -63,6 +63,18 @@
       "allOf": [
         { "$ref": "#/$defs/rootOutputUnit" },
         {
+          "if": {
+            "anyOf": [
+              { "required": [ "evaluationPath" ] },
+              { "required": [ "schemaLocation" ] },
+              { "required": [ "instanceLocation" ] }
+            ]
+          },
+          "then": {
+            "required": [ "evaluationPath", "schemaLocation", "instanceLocation" ]
+          }
+        },
+        {
           "anyOf": [
             { "required": [ "evaluationPath", "schemaLocation", "instanceLocation" ] },
             { "required": [ "details" ] },
