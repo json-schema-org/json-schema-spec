@@ -264,18 +264,27 @@
       "valid": true
     },
     {
-      "description": "Root location properties MAY be omitted when errors is present",
+      "description": "Errors alone do not qualify as hierarchical output",
       "instance": {
         "valid": false,
         "errors": { "type": "Value is not a string" }
       },
-      "valid": true
+      "valid": false
     },
     {
-      "description": "Root location properties MAY be omitted when annotations is present",
+      "description": "Annotations alone do not qualify as hierarchical output",
       "instance": {
         "valid": true,
         "annotations": { "title": "root" }
+      },
+      "valid": false
+    },
+    {
+      "description": "Root location properties MAY be omitted when details and annotations are present",
+      "instance": {
+        "valid": true,
+        "annotations": { "title": "root" },
+        "details": []
       },
       "valid": true
     },
