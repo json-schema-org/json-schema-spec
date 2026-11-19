@@ -195,8 +195,8 @@ The passing instance will produce the following annotations:
   by following the path ``
   will produce `["foo", "bar"]`.
 - The keyword `title`
-  evaluated at `/properties/foo`
-  by following the path `/properties/foo`
+  evaluated at `/properties/foo/allOf/1`
+  by following the path `/properties/foo/allOf/1`
   will produce `"foo-title"`.
 - The keyword `properties`
   evaluated at `/properties/foo/allOf/1`
