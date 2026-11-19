@@ -122,6 +122,23 @@ Descriptions of the xml2rfc, I-D documents, and RFC processes:
 - <https://www.ietf.org/ietf-ftp/1id-guidelines.html>
 - <https://www.rfc-editor.org/rfc/rfc7322.txt>
 
+### Staging the v1 HTML files for publication
+
+Build the Markdown and IETF documents, then stage the HTML files for the manual
+website handoff:
+
+```sh
+npm run build -- specs
+npm run build-ietf
+npm run stage-release
+```
+
+Copy `web/release/core.html`, `web/release/validation.html`, and
+`web/release/json-schema-media-types.html` together to the website's version
+directory. The staging command updates the links for the public filenames and
+checks relative links and fragment targets in the Core and Validation pages
+before writing the staged files. It leaves the build output in `web/` intact.
+
 ## Test suites
 
 Conformance tests for JSON Schema and its vocabularies may be found

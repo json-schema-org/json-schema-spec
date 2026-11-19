@@ -9,7 +9,8 @@
     "build": "remark --rc-path specs/.remarkrc-build.js --ignore-pattern \"*,!specs,!specs/**,README.md\" --output web/",
     "build-ietf": "docker-compose run --rm build",
     "test": "vitest run --config=vitest-schema.config.js",
-    "test:coverage": "npm test -- --coverage"
+    "test:coverage": "npm test -- --coverage",
+    "stage-release": "node scripts/stage-release.js"
   },
   "license": "MIT",
   "devDependencies": {
@@ -24,6 +25,7 @@
     "rehype-document": "^7.0.3",
     "rehype-highlight": "^7.0.2",
     "rehype-highlight-code-lines": "^1.1.3",
+    "rehype-parse": "^9.0.1",
     "rehype-stringify": "^10.0.1",
     "remark-cli": "^12.0.1",
     "remark-flexible-containers": "^1.2.1",
