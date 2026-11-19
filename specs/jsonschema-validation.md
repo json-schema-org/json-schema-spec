@@ -389,13 +389,12 @@ custom format values.
 These attributes apply to string instances.
 
 Date and time format names are derived from
-[RFC 9557, section 4.1](https://www.rfc-editor.org/info/rfc9557) which extends
 [RFC 3339, section 5.6](https://www.rfc-editor.org/info/rfc3339). The duration
 format is from ISO 8601 as formalized into ABNF by RFC 3339 Appendix A.
 
 - *date-time*: A string instance is valid against this attribute if it is a
-  valid representation of the "date-time-ext" rule in RFC 9557. This SHOULD
-  allow and validate published leap seconds. See RFC 3339, section 5.7.
+  valid representation according to the "date-time" ABNF rule in RFC 3339. This
+  SHOULD allow and validate published leap seconds. See RFC 3339, section 5.7.
 - *date*: A string instance is valid against this attribute if it is a valid
   representation according to the "full-date" ABNF rule in RFC 3339.
 - *time*: A string instance is valid against this attribute if it is a valid
@@ -413,8 +412,8 @@ specific dates. See RFC 3339, section 5.7.
 
 Implementations MAY support additional attributes using the other format names
 defined anywhere in that RFC. Implementations SHOULD NOT define extension
-attributes with any name matching an RFC 3339, RFC 9557, or ISO 8601 format
-unless it validates according to the rules of that format.[^4]
+attributes with any name matching an RFC 3339 format unless it validates
+according to the rules of that format.[^4]
 
 [^4]: There is not currently consensus on the need for supporting all RFC 3339
 formats, so this approach of reserving the namespace will encourage
