@@ -99,8 +99,9 @@ The current IRI for the default JSON Schema dialect meta-schema is
 `https://json-schema.org/v1/2026`. This IRI encodes the specification's version
 and release year. Because all schemas written to conform to a given version are
 guaranteed to be compatible with later releases within the same version, the
-meta-schema IRI `https://json-schema.org/v1` is also recognized to represent the
-latest release within the indicated version.
+dialect IRI `https://json-schema.org/v1` is used to identify the dialect
+supported by all releases within the indicated version. This dialect IRI does
+not identify a meta-schema, and the meta-schema IRI does not identify a dialect.
 
 The meta-schema describes a dialect consisting of all keywords defined in this
 specification and the JSON Schema Core specification. Certain keywords specify

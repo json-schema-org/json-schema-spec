@@ -894,17 +894,16 @@ define new keywords that begin with `$`.
 ### Meta-Schemas
 
 Meta-schemas are used to inform an implementation how to interpret a schema.
-Every schema has a meta-schema, which can be explicitly declared using the
-`$schema` keyword.
+A schema's meta-schema can be explicitly declared using the `$schema` keyword.
 
-The meta-schema serves to describe valid schema syntax. A schema resource MUST
-successfully validate against its meta-schema, which constrains the syntax of
-the available keywords. (See {{compound-validation}} for information on
-validating schemas which contain embedded schema resources that declare a
-different meta-schema.) The syntax described for a given keyword is expected to
-be compatible with the document which defines the keyword; while it is possible
-to describe an incompatible syntax, such a meta-schema would be unlikely to be
-useful.
+The meta-schema serves to describe valid schema syntax. A schema resource that
+declares a meta-schema MUST successfully validate against its meta-schema, which
+constrains the syntax of the available keywords. (See {{compound-validation}}
+for information on validating schemas which contain embedded schema resources
+that declare a different meta-schema.) The syntax described for a given keyword
+is expected to be compatible with the document which defines the keyword; while
+it is possible to describe an incompatible syntax, such a meta-schema would be
+unlikely to be useful.
 
 Meta-schema authoring is an advanced usage of JSON Schema, so the design of
 meta-schema features emphasizes flexibility over simplicity.
@@ -942,11 +941,13 @@ MUST refuse to process the schema.
 
 #### The `$schema` Keyword {#keyword-schema}
 
-The `$schema` keyword is both used as a JSON Schema dialect identifier and as
-the identifier of a resource which is itself a JSON Schema, which describes the
-set of valid schemas written for this particular dialect. The identified dialect
-applies to the resource in which it is declared as well as any embedded schema
-resources, unless such a resource itself declares a different dialect by
+The `$schema` keyword is used as a JSON Schema dialect identifier and/or as the
+identifier of a resource which is itself a JSON Schema, which describes the set
+of valid schemas written for this particular dialect. If the value identifies a
+dialect known to the implementation, it is a dialect identifier. If the value
+identifies a schema resource, it is a meta-schema identifier. The identified
+dialect applies to the resource in which it is declared as well as any embedded
+schema resources, unless such a resource itself declares a different dialect by
 including the `$schema` keyword with a different value.
 
 The value of this keyword MUST be an
@@ -2336,7 +2337,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Tree schema, extensible"
 {
-  "$schema": "https://json-schema.org/v1/2026",
+  "$schema": "https://json-schema.org/v1",
   "$id": "https://example.com/tree",
   "$dynamicAnchor": "node",
 
@@ -2355,7 +2356,7 @@ and only allows the "data" and "children" properties. An example instance with
 
 ```jsonschema "Strict-tree schema, guards against misspelled properties"
 {
-  "$schema": "https://json-schema.org/v1/2026",
+  "$schema": "https://json-schema.org/v1",
   "$id": "https://example.com/strict-tree",
   "$dynamicAnchor": "node",
 
