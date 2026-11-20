@@ -104,6 +104,17 @@
       "valid": false
     },
     {
+      "description": "Nested output units require location properties",
+      "instance": {
+        "valid": true,
+        "evaluationPath": "",
+        "schemaLocation": "https://example.com/schema",
+        "instanceLocation": "",
+        "details": [{ "valid": true, "annotations": { "title": "nested" } }]
+      },
+      "valid": false
+    },
+    {
       "description": "Deeply nested details items must be objects",
       "instance": {
         "valid": true,
@@ -235,6 +246,55 @@
     {
       "description": "Flag output is not hierarchical output",
       "instance": { "valid": true },
+      "valid": false
+    },
+    {
+      "description": "Root location properties MAY be omitted when details is present",
+      "instance": {
+        "valid": false,
+        "details": [
+          {
+            "valid": false,
+            "evaluationPath": "/properties/foo",
+            "schemaLocation": "https://example.com/schema#/properties/foo",
+            "instanceLocation": "/foo"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "description": "Errors alone do not qualify as hierarchical output",
+      "instance": {
+        "valid": false,
+        "errors": { "type": "Value is not a string" }
+      },
+      "valid": false
+    },
+    {
+      "description": "Annotations alone do not qualify as hierarchical output",
+      "instance": {
+        "valid": true,
+        "annotations": { "title": "root" }
+      },
+      "valid": false
+    },
+    {
+      "description": "Root location properties MAY be omitted when details and annotations are present",
+      "instance": {
+        "valid": true,
+        "annotations": { "title": "root" },
+        "details": []
+      },
+      "valid": true
+    },
+    {
+      "description": "Root location properties must be provided together",
+      "instance": {
+        "valid": true,
+        "details": [],
+        "evaluationPath": ""
+      },
       "valid": false
     }
   ]
