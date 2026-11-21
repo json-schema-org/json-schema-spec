@@ -16,13 +16,13 @@ Technical Story:
 
 A common need in JSON Schema is to select between one schema or another to
 validate an instance based on the value of some property in the JSON instance.
-There are a several patterns people use to accomplish this, but they all have
+There are several patterns people use to accomplish this, but they all have
 significant [problems](#problems).
 
 OpenAPI solves this problem with the `discriminator` keyword. However, their
 approach is more oriented toward code generation concerns, is poorly specified
 when it comes to validation, and is coupled to OpenAPI concepts that don't exist
-is JSON Schema. Therefore, it's necessary to define something new rather than
+in JSON Schema. Therefore, it's necessary to define something new rather than
 adopt or redefine `discriminator`.
 
 ## Decision Drivers
@@ -67,7 +67,7 @@ that concept to solve this problem.
 }
 ```
 
-- Good, because it handle the most common use case: string property values
+- Good, because it handles the most common use case: string property values
 - Good, because all property values are grouped together
 - Good, because it's less verbose
 - Bad, because it doesn't handle non-string property values
@@ -181,7 +181,7 @@ verbose.
       "ifProperties": {
         "foo": { "const": "bbb" }
       },
-      "then": { "$ref": "#/$defs/foo-aaa" }
+      "then": { "$ref": "#/$defs/foo-bbb" }
     }
   ]
 }
@@ -261,7 +261,7 @@ This pattern is also inefficient. Generally, there is a single value in the
 object that determines which alternative to choose, but the `oneOf` pattern has
 no way to specify what that value is and therefore needs to evaluate the entire
 schema. This is made worse in that every alternative needs to be fully validated
-to ensure that only one of the alternative passes and all the others fail. This
+to ensure that only one of the alternatives passes and all the others fail. This
 last problem can be avoided by using `anyOf` instead, but that pattern is much
 less used.
 

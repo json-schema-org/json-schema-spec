@@ -38,14 +38,14 @@ specification](../jsonschema-core.md) also apply to this document.
 
 A common need in JSON Schema is to select between one schema or another to
 validate an instance based on the value of some property in the JSON instance.
-There are a several patterns people use to accomplish this, but they all have
+There are several patterns people use to accomplish this, but they all have
 significant [problems](propertyDependencies-adr.md#problems). <!-- Update when
 moving ADR -->
 
 OpenAPI solves this problem with the `discriminator` keyword. However, their
 approach is more oriented toward code generation concerns, is poorly specified
 when it comes to validation, and is coupled to OpenAPI concepts that don't exist
-is JSON Schema. Therefore, it's necessary to define something new rather than
+in JSON Schema. Therefore, it's necessary to define something new rather than
 adopt or redefine `discriminator`.
 
 ### Solution
@@ -121,8 +121,8 @@ vocabulary](../jsonschema-core.md#applicators).
       "additionalProperties": {
         "type": "object",
         "additionalProperties": {
-         "$dynamicRef": "meta",
-           "default": true
+          "$dynamicRef": "meta",
+          "default": true
         },
         "default": {}
       }
@@ -132,8 +132,8 @@ vocabulary](../jsonschema-core.md#applicators).
 ## %appendix% Change Log
 
 - \[March 2021\] - Initially proposed
-- \[October 2021\] Added to specification document
-- \[May 2024\] Extracted from specification document as experimental feature
+- \[October 2021\] - Added to specification document
+- \[May 2024\] - Extracted from specification document as experimental feature
 
 ## Champions
 
