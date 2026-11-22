@@ -9,68 +9,70 @@ const defaultOptions = {
   skip: []
 };
 
-const remarkTableOfContents = (options) => (tree, file) => {
-  options = { ...defaultOptions, ...options };
-  options.skip.push(options.heading);
-  options.skip = new RegExp(`^(${options.skip.join("|")})$`, "u");
+const remarkTableOfContents = (options = {}) => {
+  const mergedOptions = { ...defaultOptions, ...options };
+  const skipList = [...(options.skip ?? defaultOptions.skip), mergedOptions.heading];
+  const skipRegex = new RegExp(`^(${skipList.join("|")})$`, "u");
 
-  let insertTableOfContents;
+  return (tree, file) => {
+    let insertTableOfContents;
 
-  const tableOfContents = list("unordered");
-  let currentList = tableOfContents;
-  const listStack = [currentList];
-  let currentDepth = options.startDepth;
+    const tableOfContents = list("unordered");
+    let currentList = tableOfContents;
+    const listStack = [currentList];
+    let currentDepth = mergedOptions.startDepth;
 
-  visit(tree, "heading", (headingNode, index, parent) => {
-    const headingText = nodeToString(headingNode);
+    visit(tree, "heading", (headingNode, index, parent) => {
+      const headingText = nodeToString(headingNode);
 
-    if (headingText === options.heading) {
-      headingNode.data = {
-        hProperties: {
-          className: ["toc-heading"]
-        }
-      };
-      tableOfContents.data = {
-        hProperties: {
-          className: ["toc"]
-        }
-      };
+      if (headingText === mergedOptions.heading) {
+        headingNode.data = {
+          hProperties: {
+            className: ["toc-heading"]
+          }
+        };
+        tableOfContents.data = {
+          hProperties: {
+            className: ["toc"]
+          }
+        };
 
-      insertTableOfContents = () => {
-        parent.children.splice(index + 1, 0, tableOfContents);
-      };
+        insertTableOfContents = () => {
+          parent.children.splice(index + 1, 0, tableOfContents);
+        };
+      }
+
+      if (headingNode.depth < mergedOptions.startDepth) {
+        return;
+      }
+
+      if (skipRegex.test(headingText)) {
+        return;
+      }
+
+      while (headingNode.depth > currentDepth) {
+        const newList = list("unordered");
+        listStack.push(newList);
+        currentList.children.push(listItem(newList));
+        currentList = newList;
+        currentDepth++;
+      }
+
+      while (headingNode.depth < currentDepth) {
+        listStack.pop();
+        currentList = listStack[listStack.length - 1];
+        currentDepth--;
+      }
+
+      currentList.children.push(listItem(headingNode.children));
+    });
+
+    if (insertTableOfContents) {
+      insertTableOfContents();
+    } else {
+      file.message(`Table of Contents not added. Add a heading with the text "${mergedOptions.heading}" or set the 'heading' option to use a different heading.`);
     }
-
-    if (headingNode.depth < options.startDepth) {
-      return;
-    }
-
-    while (headingNode.depth > currentDepth) {
-      const newList = list("unordered");
-      listStack.push(newList);
-      currentList.children.push(listItem(newList));
-      currentList = newList;
-      currentDepth++;
-    }
-
-    while (headingNode.depth < currentDepth) {
-      listStack.pop();
-      currentList = listStack[listStack.length - 1];
-      currentDepth--;
-    }
-
-    if (options.skip.test(headingText)) {
-      return;
-    }
-
-    currentList.children.push(listItem(headingNode.children));
-  });
-
-  if (insertTableOfContents) {
-    insertTableOfContents();
-  } else {
-    file.message(`Table of Contents not added. Add a heading with the text "${options.heading}" or set the 'heading' option to use a different heading.`);
-  }
+  };
 };
 
 export default remarkTableOfContents;
