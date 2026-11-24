@@ -59,6 +59,62 @@
       "valid": false
     },
     {
+      "description": "List output units cannot contain empty nested details",
+      "instance": {
+        "valid": true,
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "/items",
+            "schemaLocation": "https://example.com/schema#/items",
+            "instanceLocation": "/0",
+            "details": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "description": "List output units cannot contain nested output units",
+      "instance": {
+        "valid": true,
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "/items",
+            "schemaLocation": "https://example.com/schema#/items",
+            "instanceLocation": "/0",
+            "details": [
+              {
+                "valid": true,
+                "evaluationPath": "/items/properties/name",
+                "schemaLocation": "https://example.com/schema#/items/properties/name",
+                "instanceLocation": "/0/name"
+              }
+            ]
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "description": "List output units allow additional implementation information",
+      "instance": {
+        "valid": true,
+        "details": [
+          {
+            "valid": true,
+            "evaluationPath": "",
+            "schemaLocation": "https://example.com/schema",
+            "instanceLocation": "",
+            "implementation": "example",
+            "annotations": { "title": "example" }
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
       "description": "Deeply nested details items must be objects",
       "instance": {
         "valid": true,

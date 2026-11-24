@@ -76,6 +76,12 @@
       "type": "array",
       "items": { "$ref": "#/$defs/outputUnit" }
     },
+    "listOutputUnit": {
+      "$ref": "#/$defs/outputUnit",
+      "properties": {
+        "details": false
+      }
+    },
     "flag": {
       "type": "object",
       "properties": {
@@ -88,7 +94,8 @@
       "properties": {
         "valid": { "type": "boolean" },
         "details": {
-          "$ref": "#/$defs/outputUnitArray"
+          "type": "array",
+          "items": { "$ref": "#/$defs/listOutputUnit" }
         }
       },
       "required": [ "valid", "details" ]
