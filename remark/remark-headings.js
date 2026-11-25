@@ -11,9 +11,9 @@ const defaultOptions = {
   appendixPrefix: "Appendix"
 };
 
-const remarkNumberHeadings = (options) => (tree, file) => {
-  options = { ...defaultOptions, ...options };
-  options.skip = new RegExp(`^(${options.skip.join("|")})$`, "u");
+const remarkNumberHeadings = (userOptions) => (tree, file) => {
+  const options = { ...defaultOptions, ...userOptions };
+  const skipRegex = new RegExp(`^(${options.skip.join("|")})$`, "u");
 
   // Auto-number headings
   let sectionNumbers = [];
@@ -24,7 +24,7 @@ const remarkNumberHeadings = (options) => (tree, file) => {
     }
 
     const headingText = nodeToString(headingNode);
-    if (options.skip.test(headingText)) {
+    if (skipRegex.test(headingText)) {
       return;
     }
 
