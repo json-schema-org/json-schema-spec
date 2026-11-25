@@ -13,20 +13,7 @@ const defaultOptions = {
 
 const remarkNumberHeadings = (userOptions) => (tree, file) => {
   const options = { ...defaultOptions, ...userOptions };
-  const skipRegex = new RegExp(`^(${options.skip.join("|")})import { visit } from "unist-util-visit";
-import { link, text } from "mdast-builder";
-import { findAndReplace } from "mdast-util-find-and-replace";
-import { toString as nodeToString } from "mdast-util-to-string";
-
-
-const defaultOptions = {
-  startDepth: 1,
-  skip: [],
-  appendixToken: "%appendix%",
-  appendixPrefix: "Appendix"
-};
-
-, "u");
+  const skipRegex = new RegExp(`^(${options.skip.join("|")})$`, "u");
 
   // Auto-number headings
   let sectionNumbers = [];
